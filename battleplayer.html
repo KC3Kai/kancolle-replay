@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+		<script src="jquery-1.11.3.min.js"></script>
+		<script src="kcSHIPDATA.js"></script>
+		<script src="kcEQDATA.js"></script>
+		<script src="test2.js"></script>
+		<script src="pixi.js"></script>
+	</head>
+	<body>
+		<div>
+			<div>
+				<div style="width:150px;float:left">
+					
+				</div>
+				<div style="float:left">
+					<!--<input type="button" value="&lt; Back" onclick="clickedBack()" />-->
+					<input type="button" value="Pause" onclick="if(started)PAUSE=!PAUSE;" />
+					<!--<input type="button" value="Skip &gt;" onclick="clickedSkip()" />-->
+					<input type="button" value="Restart" onclick="if(started)reset(true)" />
+				</div>
+			</div>
+			<div style="width:800px;height:100px;padding-top:20px;clear:both">
+				<div style="float:left;width:240px">
+					Detection: <span id="plDet1"></span><br><br>
+					Air Battle: <span id="plAS1" style="font-weight:bold;font-size:20px"></span><br><br>
+					<canvas id="plHP1" width="240px" height="10px" style="border:1px solid black;border-radius:5px"></canvas>
+				</div>
+				<div style="float:left;width:320px;text-align:center">
+					<br><br>
+					Engagement:<br>
+					<span id="plEngage" style="font-size:20px"></span> <span id="plEngageT" style="font-size:18px;font-weight:bold"></span>
+				</div>
+				<div style="float:right;width:240px;align:right">
+					<br><br>
+					Air Battle: <span id="plAS2" style="font-weight:bold;font-size:20px"></span><br><br>
+					<canvas id="plHP2" width="240px" height="10px" style="border:1px solid black;border-radius:5px"></canvas>
+				</div>
+			</div>
+			<!--<input type="button" id="startb" value="Start" onClick="startPlayer()" />
+			<input type="button" id="hideb" value="Show" onClick="hidePlayer()" />-->
+			<script src="player.js"></script>
+		</div>
+		<div>
+			<span style="font-size:12px;margin-left:750px">FPS: <span id="FPS"></span></span><br>
+			<textarea id="code" cols="40" rows="5"></textarea>
+			<br>
+			<input id="codeb" type="button" value="Load" onClick="loadCode()" />
+			<input type="button" value="Paste Sample Code 1" onclick="$('#code').val(APIsample);"/>
+			<input type="button" value="Paste Sample Code 2" onclick="$('#code').val(APIsample2);"/>
+			<br><span id="error" style="color:red;width:100px"></span>
+			
+		</div>
+		<br/><br/>
+	</body>
+</html>
