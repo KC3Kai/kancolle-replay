@@ -194,8 +194,8 @@
       if(image.length) {
         var dataURL = image;
         image = new Image();
+		image.onload=function(){ console.log("image is loaded onto the script"); }
         image.src = dataURL;
-		// console.log("image", image);
       }
 	  
       shadowCanvas.width = options.width || image.width;
@@ -205,7 +205,8 @@
       } else {
         shadowCtx.drawImage(image, 0, 0);
       }
-
+	  
+      console.log("image being accessed by the script");
       imageData = shadowCtx.getImageData(0, 0, shadowCanvas.width, shadowCanvas.height);
       data = imageData.data;
 
