@@ -1,0 +1,23 @@
+<input type="file" onchange="previewFile()"><br>
+<img src="" height="200" alt="Image preview...">
+
+<script type="text/javascript" src="steganography.js"></script>
+<script type="text/javascript">
+function previewFile() {
+  var preview = document.querySelector('img');
+  var file    = document.querySelector('input[type=file]').files[0];
+  var reader  = new FileReader();
+
+  reader.onloadend = function () {
+    preview.src = reader.result;
+	var msg = steganography.decode(reader.result);
+	console.log(msg);
+  }
+
+  if (file) {
+    reader.readAsDataURL(file);
+  } else {
+    preview.src = "";
+  }
+}
+</script>
