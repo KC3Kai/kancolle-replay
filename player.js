@@ -1,7 +1,7 @@
 // var sim = function() {
 
 var renderer = PIXI.autoDetectRenderer(800, 480,{backgroundColor : 0x000000});
-document.body.appendChild(renderer.view);
+document.getElementById('battlespace').appendChild(renderer.view);
 // console.log(renderer);
 
 // create the root of the scene graph
