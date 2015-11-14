@@ -7,6 +7,27 @@
 		<script src="kcEQDATA.js"></script>
 		<script src="test2.js"></script>
 		<script src="pixi.js"></script>
+		<script type="text/javascript" src="reader/steganography.js"></script>
+		<script type="text/javascript">
+		function previewFile() {
+		  var preview = document.querySelector('img');
+		  var file    = document.querySelector('input[type=file]').files[0];
+		  var reader  = new FileReader();
+
+		  reader.onloadend = function () {
+			preview.src = reader.result;
+			var msg = steganography.decode(reader.result);
+			document.getElementById('code').value = msg;
+			loadCode();
+		  }
+
+		  if (file) {
+			reader.readAsDataURL(file);
+		  } else {
+			preview.src = "";
+		  }
+		}
+		</script>
 	</head>
 	<body>
 		<div>
@@ -45,6 +66,10 @@
 		</div>
 		<div>
 			<span style="font-size:12px;margin-left:750px">FPS: <span id="FPS"></span></span><br>
+			<span>Load from image: </span><input type="file" onchange="previewFile()"><br>
+			<img src="" height="200" alt="Image preview..."><br>
+			<br>
+			<span>Load from text:</span><br>
 			<textarea id="code" cols="40" rows="5"></textarea>
 			<br>
 			<input id="codeb" type="button" value="Load" onClick="loadCode()" />
