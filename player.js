@@ -1470,6 +1470,8 @@ function resetBattle() {
 	
 	$('#plEngage').text('');
 	$('#plEngageT').text('');
+	if (ENGAGEPIDS[0]) { clearInterval(ENGAGEPIDS[0]); ENGAGEPIDS[0] = null; }
+	if (ENGAGEPIDS[1]) { clearTimeout(ENGAGEPIDS[1]); ENGAGEPIDS[1] = null; }
 	$('#plAS1').text('');
 	$('#plAS2').text('');
 }
@@ -1551,7 +1553,7 @@ function skipToBattle(battle) {
 			if (fleet1[i].hp != hps[i]) shipSetHP(fleet1[i],hps[i]);
 		}
 		for (var i=0; i<fleet2.length; i++) {
-			if (fleet2[i].hp != hps[i+6]) shipSetHP(fleet2[i],hps[i+6]);
+			if (fleet2[i].hp != hps[i+6]) shipSetHP(fleet2[i],fleet2[i].hpmax);
 		}
 		if (COMBINED) {
 			for (var i=0; i<fleet1C.length; i++) {
@@ -1654,9 +1656,12 @@ function showAS(AS1,AS2) {
     }, 1000/60);
 }
 
+var ENGAGEPIDS = [null,null];
 function showEngage(engage) {
 	$('#plEngage').text('');
 	$('#plEngageT').text('');
+	if (ENGAGEPIDS[0]) { clearInterval(ENGAGEPIDS[0]); ENGAGEPIDS[0] = null; }
+	if (ENGAGEPIDS[1]) { clearTimeout(ENGAGEPIDS[1]); ENGAGEPIDS[1] = null; }
 	var txt = '', extra = '';
 	switch(parseFloat(engage)) {
 		case 1:
@@ -1678,15 +1683,19 @@ function showEngage(engage) {
 			break;
 	}
 	var i=0;
-    var pid = setInterval(function() {
+    ENGAGEPIDS[0] = setInterval(function() {
         var intxt = $('#plEngage').text();
         $('#plEngage').text(intxt+txt[i]);
         i++;
         if (i >= txt.length) {
-            if (extra) setTimeout(function() {
-                $('#plEngageT').text(extra);
-            },500);
-            clearInterval(pid);
+            if (extra) {
+				ENGAGEPIDS[1] = setTimeout(function() {
+					$('#plEngageT').text(extra);
+					ENGAGEPIDS[1] = null;
+				},500);
+			}
+            clearInterval(ENGAGEPIDS[0]);
+			ENGAGEPIDS[0] = null;
         }
     }, 150);
 }
