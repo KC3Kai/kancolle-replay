@@ -198,3 +198,112 @@ function genResultsHTML(data) {
 	
 	WROTESTATS = true;
 }
+
+//deprecated
+function setup() {
+	if (!ALLLOADED) {
+		setTimeout(function() { setup(); },200);
+		console.log('a');
+		return;
+	}
+	console.log(code);
+	
+	var phases = code.split('~');
+
+	var ships1 = phases[1].split('|');
+	for (i=0; i<ships1.length; i++) {
+		fleet1.push(createShip(ships1[i].split(','),0,i));
+		stage.addChild(fleet1[i].graphic);
+	}
+
+	var ships2 = phases[2].split('|');
+	for (i=0; i<ships2.length; i++) {
+		fleet2.push(createShip(ships2[i].split(','),1,i));
+		stage.addChild(fleet2[i].graphic);
+	}
+	
+	var s = phases[0].split(',');
+	GEngage = s[0].replace('B:',''); GAP1 = s[3]; GAP2 = s[4];
+	createDots(dots1,s[1],ships1.length,0);
+	createDots(dots2,s[2],ships2.length,1);
+	var NBonly = parseInt(s[5]);
+	if (NBonly) { stage.removeChild(bg); stage.addChildAt(bg2,0); }
+	
+	var HP1 = [];
+	var HP2 = [];
+	var s = phases[1].split('|');
+	for (var i=0; i<s.length; i++) HP1.push(parseInt(s[i].split(',')[2]));
+	var s = phases[2].split('|');
+	for (var i=0; i<s.length; i++) HP2.push(parseInt(s[i].split(',')[2]));
+	eventqueue.push([battleStart,[],{e:0,HP1:HP1.slice(),HP2:HP2.slice()}]);
+
+	//set up events
+	var f2 = fleet2;
+	for (i=3; i<phases.length; i++) {
+		var parts = phases[i].substring(2,phases[i].length).split('|');
+		if (parts == '') continue;
+		if (phases[i][0] == 'S' || phases[i][0] == 'N') {
+			if (phases[i][0] == 'N' && !NBonly) { eventqueue.push([wait,[1000],null]); eventqueue.push([shutters,[],null]);}
+			for (j=0; j<parts.length; j++) {
+				var data = parts[j].split(','); data[0] = parseInt(data[0]); data[1] = parseInt(data[1]);
+				var state = {e:eventqueue.length,HP1:HP1.slice(),HP2:HP2.slice()};
+				if (data[1] < 10) HP1[data[1]] -= Math.max(0,parseInt(data[3])); //set up states
+				else HP2[data[1]-10] -= Math.max(0,parseInt(data[3]));
+				var ship = (data[0] < 10) ? fleet1[data[0]] : f2[data[0]-10];
+				var target = (data[1] < 10) ? fleet1[data[1]] : f2[data[1]-10];
+				if (data[2] == '1') eventqueue.push([shoot,[ship,target,parseInt(data[3])],state]);
+				else if(data[2] == '2') eventqueue.push([shootDA,[ship,target,parseInt(data[3]),parseInt(data[4])],state]);
+				else if(data[2] == '3') eventqueue.push([shootCutIn,[ship,target,parseInt(data[3])],state]);
+				else if(data[2] == '4') eventqueue.push([shootPlane,[ship,target,parseInt(data[3])],state]);
+				else if(data[2] == '5') eventqueue.push([shootASW,[ship,target,parseInt(data[3])],state]);
+				else if(data[2] == '6') eventqueue.push([shootBigTorp,[ship,target,parseInt(data[3])],state]);
+				else if(data[2] == '7') eventqueue.push([shootBigGun,[ship,target,parseInt(data[3])],state]);
+				else if(data[2] == '8') eventqueue.push([shootTorp,[ship,target,parseInt(data[3])],state]);
+			}
+		} else if (phases[i][0] == 'T' || phases[i][0] == 'A') {
+			var shots = []; var extra = [];
+			if (phases[i][0] == 'A') {
+				var s = phases[i].substring(2,phases[i].length).split(':');
+				parts = s[1].split('|');
+				extra = s[0].split(',');
+				if (parts[0]=='') parts = [];
+				for (var j=0; j<4; j++) if (j < extra.length) extra[j] = parseInt(extra[j]); else extra.push(0);
+			}
+			var state = {e:eventqueue.length,HP1:HP1.slice(),HP2:HP2.slice()};
+			for (j=0; j<parts.length; j++) {
+				var data = parts[j].split(','); data[0] = parseInt(data[0]); data[1] = parseInt(data[1]);
+				if (data[1] < 10) HP1[data[1]] -= Math.max(0,parseInt(data[2])); //set up states
+				else HP2[data[1]-10] -= Math.max(0,parseInt(data[2]));
+				data[0] = (data[0] < 10) ? fleet1[data[0]] : f2[data[0]-10];
+				data[1] = (data[1]==-1)? -1: (data[1] < 10) ? fleet1[data[1]] : f2[data[1]-10];
+				for (var k=2; k<data.length; k++) data[k] = parseInt(data[k]);
+				if (data.length > 3) data[3] = (data[3] < 10)? fleet1[data[3]] : f2[data[3]-10];
+				shots.push(data);
+			}
+			if (shots.length > 0) {
+				eventqueue.push([wait,[1000],null]);
+				if (phases[i][0] == 'T') eventqueue.push([GTorpedoPhase,[shots],state]);
+				else if(phases[i][0] == 'A') eventqueue.push([GAirPhase,[shots,extra[0],extra[1],extra[2],extra[3]],state]);
+			}
+		} else if (phases[i][0] == 'B') {
+			var battledata = phases[i].substr(2).split(',');
+			var newships = phases[i+2].split('|');
+			for (var j=0; j<newships.length; j++) newships[j] = createShip(newships[j].split(','),1,j);
+			eventqueue.push([wait,[3000]]);
+			eventqueue.push([shuttersNextBattle,[battledata,newships]]);
+			eventqueue.push([battleStart,[]]);
+			f2 = newships;
+			NBonly = (battledata[5]=='1');
+			i+=2;
+		}
+	}
+	eventqueue.push([battleEnd,[],{e:eventqueue.length,HP1:HP1.slice(),HP2:HP2.slice()}]);
+	// console.log(eventqueue);
+	// ecomplete = true;
+	
+	stage.addChild(shutterTop); stage.addChild(shutterBottom);
+	shutterTop.y = -246; shutterTop.alpha = .25;
+	shutterBottom.y = 456; shutterBottom.alpha = .25;
+	
+	animate();
+}
