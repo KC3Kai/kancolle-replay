@@ -1,5 +1,3 @@
-// var sim = function() {
-
 var renderer = PIXI.autoDetectRenderer(800, 480,{backgroundColor : 0x000000});
 document.getElementById('battlespace').appendChild(renderer.view);
 // console.log(renderer);
@@ -1769,16 +1767,8 @@ function loadCode(fromOwn) {
 		started = true;
 		CANRESET = true;
 	};
-	if (started) reset(f);
-	else f();
 	$('#error').text('Loading');
 	HASLOADTEXT = true;
-
+	if (started) reset(f);
+	else f();
 }
-
-
-
-// }
-
-console.log(code);
-// setup();
