@@ -634,6 +634,7 @@ function animate() {
     requestAnimationFrame(animate);
 	
 	if (!ALLLOADED) return; //??????
+	if (HASLOADTEXT) { $('#error').text(''); HASLOADTEXT = false; }
 	
 	frameselapsed++;
 	currtime = Date.now();
@@ -1741,6 +1742,7 @@ function clickedSkip() {
 
 }
 
+var HASLOADTEXT = false;
 function loadCode(fromOwn) {
 	if (!CANRESET) return;
 	var f = function() {
@@ -1761,6 +1763,7 @@ function loadCode(fromOwn) {
 	if (started) reset(f);
 	else f();
 	$('#error').text('Loading');
+	HASLOADTEXT = true;
 
 }
 
