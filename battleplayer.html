@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+		<script src="jquery-1.11.3.min.js"></script>
+		<script src="kcSHIPDATA.js"></script>
+		<script src="kcEQDATA.js"></script>
+		<script src="shared.js"></script>
+		<script src="pixi.js"></script>
+		<script type="text/javascript" src="reader/steganography.js"></script>
+		<script type="text/javascript">
+		function previewFile() {
+			var preview = document.querySelector('img');
+			var file    = document.querySelector('input[type=file]').files[0];
+			var reader  = new FileReader();
+			$('#error').text('Loading');
+
+			preview.onload = function(){
+				console.log(reader.result);
+				var msg = steganography.decode(reader.result);
+				document.getElementById('code').value = msg;
+				loadCode();
+				$('#error').text('');
+			};
+
+			reader.onloadend = function (e) {
+				preview.src = reader.result;
+			}
+			
+		  
+		  if (file) {
+			reader.readAsDataURL(file);
+		  } else {
+			preview.src = "";
+		  }
+		}
+		</script>
+	</head>
+	<body>
+		<span style="font-size:24px;font-weight:bold">KanColle Battle Replayer</span> <span style="color:red;margin-left:20px">v1.0 Beta 1</span>
+		<br><br>
+		<div>
+			<div>
+				<div style="width:150px;float:left">
+					
+				</div>
+				<div style="float:left;width:400px">
+					<!--<input type="button" value="&lt; Back" onclick="clickedBack()" />-->
+					<input type="button" value="Pause" onclick="if(started) {PAUSE=!PAUSE;$(this).css('background-color',(PAUSE)?'grey':'');}" />
+					<!--<input type="button" value="Skip &gt;" onclick="clickedSkip()" />-->
+					<input type="button" value="Restart" onclick="if(started)reset(function(){processAPI(API);})" />
+				</div>
+				<div style="float:left;width:400px">
+					<span>Skip to Battle: </span>
+					<span id="skipbuttonspace"></span>
+				</div>
+			</div>
+			<div style="width:800px;height:100px;padding-top:20px;clear:both">
+				<div style="float:left;width:240px">
+					<!--Detection: <span id="plDet1"></span>--><br><br>
+					Air Battle: <span id="plAS1" style="font-weight:bold;font-size:20px"></span><br><br>
+					<canvas id="plHP1" width="240px" height="10px" style="border:1px solid black;border-radius:5px"></canvas>
+				</div>
+				<div style="float:left;width:320px;text-align:center">
+					<br><br>
+					Engagement:<br>
+					<span id="plEngage" style="font-size:20px"></span> <span id="plEngageT" style="font-size:18px;font-weight:bold"></span>
+				</div>
+				<div style="float:right;width:240px;align:right">
+					<br><br>
+					Air Battle: <span id="plAS2" style="font-weight:bold;font-size:20px"></span><br><br>
+					<canvas id="plHP2" width="240px" height="10px" style="border:1px solid black;border-radius:5px"></canvas>
+				</div>
+			</div>
+		
+			<div id="battlespace"></div>
+			<script src="player.js"></script>
+		</div>
+		<div>
+			<span style="font-size:12px;margin-left:750px">FPS: <span id="FPS"></span></span><br>
+			<div style="float:left;width:400px">
+				<span>Load from image: </span><input type="file" onchange="previewFile()"><br>
+				<img src="" height="200" alt="Image preview..."><br>
+				<br>
+			</div>
+			<div style="float:left;width:400px">
+				<span>Load from text:</span><br>
+				<textarea id="code" cols="40" rows="5"></textarea>
+				<br>
+				<input id="codeb" type="button" value="Load" onClick="loadCode()" />
+				<input type="button" value="Paste Sample Code 1" onclick="$('#code').val(APIsample);"/>
+				<input type="button" value="Paste Sample Code 2" onclick="$('#code').val(APIsample2);"/>
+				<br><span id="error" style="color:red;width:100px"></span>
+			</div>
+			
+		</div>
+		<br/><br/>
+	</body>
+</html>
