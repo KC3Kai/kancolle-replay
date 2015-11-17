@@ -5,7 +5,6 @@
 		<script src="jquery-1.11.3.min.js"></script>
 		<script src="kcSHIPDATA.js"></script>
 		<script src="kcEQDATA.js"></script>
-		<script src="test2.js"></script>
 		<script src="pixi.js"></script>
 		<script type="text/javascript" src="reader/steganography.js"></script>
 		<script type="text/javascript">
@@ -44,7 +43,7 @@
 				</div>
 				<div style="float:left;width:400px">
 					<!--<input type="button" value="&lt; Back" onclick="clickedBack()" />-->
-					<input type="button" value="Pause" onclick="if(started)PAUSE=!PAUSE;" />
+					<input type="button" value="Pause" onclick="if(started) {PAUSE=!PAUSE;$(this).css('background-color',(PAUSE)?'grey':'');}" />
 					<!--<input type="button" value="Skip &gt;" onclick="clickedSkip()" />-->
 					<input type="button" value="Restart" onclick="if(started)reset(function(){processAPI(API);})" />
 				</div>
@@ -55,7 +54,7 @@
 			</div>
 			<div style="width:800px;height:100px;padding-top:20px;clear:both">
 				<div style="float:left;width:240px">
-					Detection: <span id="plDet1"></span><br><br>
+					<!--Detection: <span id="plDet1"></span>--><br><br>
 					Air Battle: <span id="plAS1" style="font-weight:bold;font-size:20px"></span><br><br>
 					<canvas id="plHP1" width="240px" height="10px" style="border:1px solid black;border-radius:5px"></canvas>
 				</div>
@@ -76,16 +75,20 @@
 		</div>
 		<div>
 			<span style="font-size:12px;margin-left:750px">FPS: <span id="FPS"></span></span><br>
-			<span>Load from image: </span><input type="file" onchange="previewFile()"><br>
-			<img src="" height="200" alt="Image preview..."><br>
-			<br>
-			<span>Load from text:</span><br>
-			<textarea id="code" cols="40" rows="5"></textarea>
-			<br>
-			<input id="codeb" type="button" value="Load" onClick="loadCode()" />
-			<input type="button" value="Paste Sample Code 1" onclick="$('#code').val(APIsample);"/>
-			<input type="button" value="Paste Sample Code 2" onclick="$('#code').val(APIsample2);"/>
-			<br><span id="error" style="color:red;width:100px"></span>
+			<div style="float:left;width:400px">
+				<span>Load from image: </span><input type="file" onchange="previewFile()"><br>
+				<img src="" height="200" alt="Image preview..."><br>
+				<br>
+			</div>
+			<div style="float:left;width:400px">
+				<span>Load from text:</span><br>
+				<textarea id="code" cols="40" rows="5"></textarea>
+				<br>
+				<input id="codeb" type="button" value="Load" onClick="loadCode()" />
+				<input type="button" value="Paste Sample Code 1" onclick="$('#code').val(APIsample);"/>
+				<input type="button" value="Paste Sample Code 2" onclick="$('#code').val(APIsample2);"/>
+				<br><span id="error" style="color:red;width:100px"></span>
+			</div>
 			
 		</div>
 		<br/><br/>
