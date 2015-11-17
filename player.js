@@ -1,3 +1,8 @@
+var API = {};
+var APIsample = '{"diff":0,"world":3,"mapnum":5,"fleetnum":1,"combined":0,"fleet1":[{"mst_id":326,"level":75,"kyouka":[39,56,50,37,0],"morale":49,"equip":[63,63,106,0]},{"mst_id":188,"level":79,"kyouka":[31,50,50,31,0],"morale":49,"equip":[90,90,134,79]},{"mst_id":159,"level":72,"kyouka":[43,60,50,40,0],"morale":49,"equip":[90,90,102,0]},{"mst_id":144,"level":86,"kyouka":[56,56,43,38,0],"morale":49,"equip":[63,63,28,0]},{"mst_id":145,"level":89,"kyouka":[44,56,48,38,0],"morale":49,"equip":[3,3,58,0]},{"mst_id":437,"level":80,"kyouka":[46,58,40,36,0],"morale":49,"equip":[3,3,28,0]}],"fleet2":[{"mst_id":308,"level":42,"kyouka":[17,28,22,16,0],"morale":49,"equip":[0,0,0,0]},{"mst_id":7,"level":5,"kyouka":[6,4,4,4,0],"morale":49,"equip":[0,0,0,0]},{"mst_id":163,"level":7,"kyouka":[2,1,0,6,0],"morale":49,"equip":[0,0,0,0]},{"mst_id":28,"level":5,"kyouka":[3,2,4,2,0],"morale":49,"equip":[1,0,0,0]}],"fleet3":[{"mst_id":213,"level":53,"kyouka":[36,49,29,31,0],"morale":64,"equip":[6,75,6,0]},{"mst_id":250,"level":41,"kyouka":[22,32,20,23,0],"morale":49,"equip":[75,75,75,0]},{"mst_id":255,"level":42,"kyouka":[15,31,15,14,0],"morale":64,"equip":[2,2,75,0]},{"mst_id":236,"level":37,"kyouka":[28,51,11,36,0],"morale":64,"equip":[2,75,2,0]},{"mst_id":237,"level":36,"kyouka":[18,51,17,36,0],"morale":63,"equip":[2,2,75,0]},{"mst_id":6,"level":5,"kyouka":[5,6,5,0,0],"morale":49,"equip":[75,75,0,0]}],"fleet4":[{"mst_id":434,"level":69,"kyouka":[35,51,18,31,0],"morale":64,"equip":[75,75,75,0]},{"mst_id":31,"level":34,"kyouka":[19,25,22,13,0],"morale":49,"equip":[75,75,0,0]},{"mst_id":248,"level":40,"kyouka":[24,46,22,25,0],"morale":64,"equip":[75,75,75,0]},{"mst_id":402,"level":28,"kyouka":[4,9,0,5,0],"morale":49,"equip":[0,0,0,0]},{"mst_id":17,"level":37,"kyouka":[11,49,21,13,0],"morale":63,"equip":[75,75,0,0]},{"mst_id":42,"level":42,"kyouka":[18,36,25,13,0],"morale":64,"equip":[75,75,0,0]}],"support1":0,"support2":0,"time":1445741527,"hq":"8018568","id":1,"battles":[{"sortie_id":1,"node":6,"enemyId":0,"data":{"api_dock_id":1,"api_ship_ke":[555,527,521,521,576,576],"api_ship_lv":[-1,1,1,1,1,1,1],"api_nowhps":[-1,31,47,50,31,31,31,57,76,50,50,37,37],"api_maxhps":[-1,31,59,50,31,31,31,57,76,50,50,37,37],"api_midnight_flag":1,"api_eSlot":[[506,525,542,543,-1],[505,506,515,525,-1],[506,514,514,-1,-1],[506,514,514,-1,-1],[502,545,542,-1,-1],[502,545,542,-1,-1]],"api_eKyouka":[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],"api_fParam":[[52,88,73,51],[77,82,82,79],[70,98,68,69],[73,93,59,52],[57,84,72,52],[60,90,59,50]],"api_eParam":[[48,80,30,39],[68,48,40,70],[35,72,20,34],[35,72,20,34],[38,66,32,26],[38,66,32,26]],"api_search":[1,1],"api_formation":[1,1,2],"api_stage_flag":[1,1,1],"api_kouku":{"api_plane_from":[[2],[-1]],"api_stage1":{"api_f_count":5,"api_f_lostcount":0,"api_e_count":0,"api_e_lostcount":0,"api_disp_seiku":1,"api_touch_plane":[-1,-1]},"api_stage2":{"api_f_count":5,"api_f_lostcount":0,"api_e_count":0,"api_e_lostcount":0},"api_stage3":{"api_frai_flag":[-1,0,0,0,0,0,0],"api_erai_flag":[-1,0,0,0,0,0,0],"api_fbak_flag":[-1,0,0,0,0,0,0],"api_ebak_flag":[-1,0,0,1,0,0,0],"api_fcl_flag":[-1,0,0,0,0,0,0],"api_ecl_flag":[-1,0,0,0,0,0,0],"api_fdam":[-1,0,0,0,0,0,0],"api_edam":[-1,0,0,11,0,0,0]}},"api_support_flag":0,"api_support_info":null,"api_opening_flag":0,"api_opening_atack":null,"api_hourai_flag":[1,0,0,1],"api_hougeki1":{"api_at_list":[-1,3,7,2,8,6,9,4,5,1,11],"api_at_type":[-1,0,0,0,0,0,0,0,0,0,0],"api_df_list":[-1,[9],[6],[10],[3],[12],[2],[9],[12],[7],[4]],"api_si_list":[-1,[90],[506],[90],[505],[3],[506],[63],[3],[63],[502]],"api_cl_list":[-1,[1],[0],[2],[1],[1],[0],[0],[1],[0],[0]],"api_damage":[-1,[32],[0],[102],[15],[33],[0.1],[0],[26],[0],[0]]},"api_hougeki2":null,"api_hougeki3":null,"api_raigeki":{"api_frai":[-1,1,2,3,3,3,2],"api_erai":[-1,4,2,0,0,2,0],"api_fdam":[-1,0,4,0,0,0,0],"api_edam":[-1,35,18,149,0,0,0],"api_fydam":[-1,35,10,51,48,50,8],"api_eydam":[-1,0,0,0,0,4,0],"api_fcl":[-1,1,1,1,1,1,1],"api_ecl":[-1,0,0,0,0,1,0]}},"yasen":{},"rating":"B","drop":0,"time":1445741527,"baseEXP":400,"hqEXP":75,"shizunde":[[],[]],"mvp":[2],"hq":"8018568","id":1},{"sortie_id":1,"node":7,"enemyId":0,"data":{"api_dock_id":1,"api_ship_ke":[560,527,522,577,575,575],"api_ship_lv":[-1,1,1,1,1,1,1],"api_nowhps":[-1,31,43,35,31,31,31,84,76,60,38,35,35],"api_maxhps":[-1,31,59,50,31,31,31,84,76,60,38,35,35],"api_midnight_flag":1,"api_eSlot":[[520,524,524,517,-1],[505,506,515,525,-1],[505,506,525,525,-1],[502,515,542,-1,-1],[502,545,542,-1,-1],[502,545,542,-1,-1]],"api_eKyouka":[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],"api_fParam":[[52,88,73,51],[77,82,82,79],[70,98,68,69],[73,93,59,52],[57,84,72,52],[60,90,59,50]],"api_eParam":[[18,0,36,70],[68,48,40,70],[58,42,30,60],[44,72,36,29],[38,60,30,22],[38,60,30,22]],"api_search":[1,1],"api_formation":[1,3,1],"api_stage_flag":[1,1,1],"api_kouku":{"api_plane_from":[[2],[7]],"api_stage1":{"api_f_count":5,"api_f_lostcount":1,"api_e_count":88,"api_e_lostcount":2,"api_disp_seiku":4,"api_touch_plane":[-1,517]},"api_stage2":{"api_f_count":4,"api_f_lostcount":0,"api_e_count":66,"api_e_lostcount":21},"api_stage3":{"api_frai_flag":[-1,0,0,1,0,0,0],"api_erai_flag":[-1,0,0,0,0,0,0],"api_fbak_flag":[-1,1,0,0,1,0,0],"api_ebak_flag":[-1,0,0,0,0,1,0],"api_fcl_flag":[-1,0,0,0,0,0,0],"api_ecl_flag":[-1,0,0,0,0,0,0],"api_fdam":[-1,0,0,18,4,0,0],"api_edam":[-1,0,0,0,0,0,0]}},"api_support_flag":0,"api_support_info":null,"api_opening_flag":0,"api_opening_atack":null,"api_hourai_flag":[1,0,0,1],"api_hougeki1":{"api_at_list":[-1,2,8,3,9,5,1,12,4,10,6,7],"api_at_type":[-1,0,0,0,0,0,0,0,0,0,0,0],"api_df_list":[-1,[11],[4],[9],[1],[10],[12],[2],[8],[4],[12],[3]],"api_si_list":[-1,[90],[505],[90],[505],[3],[63],[502],[63],[502],[3],[-1]],"api_cl_list":[-1,[1],[0],[1],[0],[0],[0],[0],[0],[1],[0],[0]],"api_damage":[-1,[90.1],[0],[21],[0],[0],[0],[0],[0],[3],[0],[0]]},"api_hougeki2":null,"api_hougeki3":null,"api_raigeki":{"api_frai":[-1,3,6,0,1,4,1],"api_erai":[-1,0,3,6,3,0,4],"api_fdam":[-1,0,0,0,0,0,0],"api_edam":[-1,100,0,46,79.1,0,68.1],"api_fydam":[-1,46,68,0,62,79,38],"api_eydam":[-1,0,0,0,0,0,0],"api_fcl":[-1,1,1,0,2,1,1],"api_ecl":[-1,0,0,0,0,0,0]}},"yasen":{},"rating":"A","drop":41,"time":1445741660,"baseEXP":400,"hqEXP":120,"shizunde":[[],[]],"mvp":[2],"hq":"8018568","id":2},{"sortie_id":1,"node":11,"enemyId":0,"data":{"api_dock_id":1,"api_ship_ke":[591,558,558,543,578,578],"api_ship_lv":[-1,1,1,1,1,1,1],"api_nowhps":[-1,31,43,17,24,31,31,48,130,130,90,40,40],"api_maxhps":[-1,31,59,50,31,31,31,48,130,130,90,40,40],"api_midnight_flag":1,"api_eSlot":[[550,550,545,525,-1],[506,504,504,-1,-1],[506,504,504,-1,-1],[509,509,525,529,-1],[502,515,542,-1,-1],[502,515,542,-1,-1]],"api_eKyouka":[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],"api_fParam":[[52,88,73,51],[77,82,82,79],[70,98,68,69],[73,93,59,52],[57,84,72,52],[60,90,59,50]],"api_eParam":[[58,84,88,55],[55,0,40,65],[55,0,40,65],[85,0,70,96],[48,84,38,33],[48,84,38,33]],"api_search":[1,1],"api_formation":[1,1,1],"api_stage_flag":[1,1,1],"api_kouku":{"api_plane_from":[[2],[-1]],"api_stage1":{"api_f_count":4,"api_f_lostcount":0,"api_e_count":0,"api_e_lostcount":0,"api_disp_seiku":1,"api_touch_plane":[-1,-1]},"api_stage2":{"api_f_count":4,"api_f_lostcount":3,"api_e_count":0,"api_e_lostcount":0},"api_stage3":{"api_frai_flag":[-1,0,0,0,0,0,0],"api_erai_flag":[-1,0,0,0,0,0,0],"api_fbak_flag":[-1,0,0,0,0,0,0],"api_ebak_flag":[-1,0,0,0,1,0,0],"api_fcl_flag":[-1,0,0,0,0,0,0],"api_ecl_flag":[-1,0,0,0,0,0,0],"api_fdam":[-1,0,0,0,0,0,0],"api_edam":[-1,0,0,0,11,0,0]}},"api_support_flag":0,"api_support_info":null,"api_opening_flag":0,"api_opening_atack":null,"api_hourai_flag":[1,1,0,1],"api_hougeki1":{"api_at_list":[-1,2,10,3,8,5,7,1,4,12,6,11],"api_at_type":[-1,2,0,0,0,0,0,0,0,0,0,0],"api_df_list":[-1,[9,9],[2],[12],[6],[10],[2],[8],[10],[2],[8],[5]],"api_si_list":[-1,[90,90],[509],[90],[506],[3],[550],[63],[63],[502],[3],[502]],"api_cl_list":[-1,[1,1],[0],[0],[0],[1],[0],[1],[0],[0],[2],[1]],"api_damage":[-1,[65.1,79.1],[0],[0],[0],[6],[0],[11],[0],[0],[36],[11]]},"api_hougeki2":{"api_at_list":[-1,1,7,2,8,3,10,4,5,12,6],"api_at_type":[-1,0,0,3,0,0,0,0,0,0,0],"api_df_list":[-1,[10],[6],[11],[2],[7],[4],[10],[7],[5],[8]],"api_si_list":[-1,[63],[550],[79,90,134],[506],[90],[509],[63],[3],[502],[3]],"api_cl_list":[-1,[2],[1],[1],[2],[0],[1],[1],[0],[0],[1]],"api_damage":[-1,[16],[8.1],[86],[21],[0],[15],[5],[0],[0],[11]]},"api_hougeki3":null,"api_raigeki":{"api_frai":[-1,4,0,0,0,6,6],"api_erai":[-1,3,0,0,0,0,2],"api_fdam":[-1,0,16,5,0,0,0],"api_edam":[-1,0,0,0,4,0,62],"api_fydam":[-1,4,0,0,0,0,62],"api_eydam":[-1,5,0,0,0,0,16],"api_fcl":[-1,1,0,0,0,0,1],"api_ecl":[-1,1,0,0,0,0,1]}},"yasen":{"api_deck_id":"1","api_nowhps":[-1,31,6,12,9,20,23,48,72,0,48,0,0],"api_ship_ke":[591,558,558,543,578,578],"api_ship_lv":[-1,1,1,1,1,1,1],"api_maxhps":[-1,31,59,50,31,31,31,48,130,130,90,40,40],"api_eSlot":[[550,550,545,525,-1],[506,504,504,-1,-1],[506,504,504,-1,-1],[509,509,525,529,-1],[502,515,542,-1,-1],[502,515,542,-1,-1]],"api_eKyouka":[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],"api_fParam":[[52,88,73,51],[77,82,82,79],[70,98,68,69],[73,93,59,52],[57,84,72,52],[60,90,59,50]],"api_eParam":[[58,84,88,55],[55,0,40,65],[55,0,40,65],[85,0,70,96],[48,84,38,33],[48,84,38,33]],"api_touch_plane":[102,-1],"api_flare_pos":[-1,-1],"api_hougeki":{"api_at_list":[-1,1,7,8,4,6],"api_df_list":[-1,[10,10],[5,5],[2,-1,-1],[10,10],[7,7]],"api_si_list":[-1,[63,63],[550,550],[506,504,504],[63,63],[3,3]],"api_cl_list":[-1,[1,1],[1,1],[1,-1,-1],[1,1],[1,1]],"api_sp_list":[-1,1,1,5,1,1],"api_damage":[-1,[4,2],[1,12],[3,-1,-1],[2,23],[120,0]]}},"rating":"A","drop":52,"time":1445741789,"baseEXP":400,"hqEXP":2225,"shizunde":[[],[]],"mvp":[2],"hq":"8018568","id":3}]}';
+var APIsample2 = '{"fleet2": [{"morale": 68, "equip": [2, 2, 74, 0], "kyouka": [56, 56, 28, 38, 0], "mst_id": 144, "level": 71}, {"morale": 57, "equip": [50, 6, 102, 0], "kyouka": [43, 62, 50, 40, 0], "mst_id": 158, "level": 79}, {"morale": 62, "equip": [6, 6, 59, 30], "kyouka": [34, 55, 42, 31, 0], "mst_id": 273, "level": 73}, {"morale": 59, "equip": [114, 114, 59, 36], "kyouka": [25, 20, 35, 13, 0], "mst_id": 178, "level": 92}, {"morale": 62, "equip": [90, 6, 25, 28], "kyouka": [30, 45, 45, 30, 0], "mst_id": 272, "level": 75}, {"morale": 61, "equip": [58, 58, 101, 0], "kyouka": [47, 61, 43, 45, 0], "mst_id": 228, "level": 87}], "fleet3": [{"morale": 62, "equip": [2, 2, 2, 0], "kyouka": [26, 51, 26, 36, 0], "mst_id": 201, "level": 55}, {"morale": 62, "equip": [8, 76, 76, 28], "kyouka": [16, 0, 46, 17, 0], "mst_id": 286, "level": 65}, {"morale": 62, "equip": [8, 8, 8, 142], "kyouka": [16, 0, 39, 17, 0], "mst_id": 287, "level": 59}, {"morale": 62, "equip": [24, 24, 57, 30], "kyouka": [5, 0, 3, 10, 0], "mst_id": 282, "level": 29}, {"morale": 62, "equip": [24, 24, 30, 30], "kyouka": [46, 0, 39, 39, 0], "mst_id": 277, "level": 50}, {"morale": 62, "equip": [2, 27, 106, 0], "kyouka": [53, 57, 20, 39, 0], "mst_id": 195, "level": 75}], "fleet1": [{"morale": 69, "equip": [131, 71, 32, 85], "kyouka": [35, 50, 34, 30, 0], "mst_id": 428, "level": 86}, {"morale": 65, "equip": [8, 104, 59, 36], "kyouka": [9, 0, 61, 13, 0], "mst_id": 275, "level": 77}, {"morale": 62, "equip": [104, 8, 25, 36], "kyouka": [9, 0, 50, 13, 0], "mst_id": 276, "level": 64}, {"morale": 56, "equip": [57, 112, 57, 22], "kyouka": [39, 0, 40, 34, 0], "mst_id": 280, "level": 73}, {"morale": 62, "equip": [22, 22, 144, 57], "kyouka": [49, 0, 41, 39, 0], "mst_id": 278, "level": 68}, {"morale": 57, "equip": [111, 22, 22, 54], "kyouka": [40, 0, 38, 31, 0], "mst_id": 408, "level": 89}], "fleet4": [{"morale": 60, "equip": [24, 24, 24, 30], "kyouka": [29, 0, 19, 34, 0], "mst_id": 281, "level": 53}, {"morale": 55, "equip": [2, 2, 27, 0], "kyouka": [44, 56, 41, 38, 0], "mst_id": 145, "level": 67}, {"morale": 62, "equip": [7, 76, 7, 28], "kyouka": [19, 0, 22, 14, 0], "mst_id": 441, "level": 37}, {"morale": 62, "equip": [7, 7, 117, 30], "kyouka": [22, 0, 36, 24, 0], "mst_id": 149, "level": 78}, {"morale": 61, "equip": [2, 2, 2, 0], "kyouka": [45, 51, 40, 45, 0], "mst_id": 229, "level": 63}, {"morale": 54, "equip": [24, 24, 24, 30], "kyouka": [39, 0, 28, 30, 0], "mst_id": 288, "level": 44}], "hq": "13126679", "time": 1441510719, "mapnum": 7, "battles": [{"node": 5, "rating": "S", "hq": "13126679", "drop": 13, "enemyId": 0, "yasen": {}, "sortie_id": 1526, "time": 1441510719, "data": {"api_eKyouka": [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], "api_opening_flag": 0, "api_maxhps": [-1, 57, 90, 90, 65, 79, 55, 76, 80, 53, 46, 35, 35], "api_ship_lv": [-1, 1, 1, 1, 1, 1, 1], "api_fParam_combined": [[73, 93, 44, 52], [67, 88, 70, 69], [76, 79, 66, 77], [99, 36, 70, 95], [78, 69, 65, 75], [59, 89, 59, 59]], "api_opening_atack": null, "api_nowhps_combined": [-1, 31, 48, 56, 96, 57, 32], "api_hougeki1": {"api_si_list": [-1, [114, 114], [505], [6], [505], [90, 6], [50], [-1], [2]], "api_damage": [-1, [138, 139], [0], [0], [0], [4.1, 159.1], [0.1], [7], [0.1]], "api_at_list": [-1, 4, 7, 3, 8, 5, 2, 6, 1], "api_df_list": [-1, [10, 10], [1], [7], [5], [12, 12], [8], [8], [8]], "api_at_type": [-1, 2, 0, 0, 0, 2, 0, 0, 0], "api_cl_list": [-1, [1, 1], [0], [0], [0], [1, 2], [0], [1], [0]]}, "api_kouku": {"api_plane_from": [[4, 5, 6], [-1]], "api_stage3": {"api_ecl_flag": [-1, 0, 0, 0, 0, 1, 0], "api_frai_flag": [-1, 0, 0, 0, 0, 0, 0], "api_erai_flag": [-1, 0, 0, 0, 0, 1, 0], "api_ebak_flag": [-1, 0, 0, 1, 0, 1, 1], "api_fdam": [-1, 0, 0, 0, 0, 0, 0], "api_fcl_flag": [-1, 0, 0, 0, 0, 0, 0], "api_fbak_flag": [-1, 0, 0, 0, 0, 0, 0], "api_edam": [-1, 0, 0, 0, 0, 235, 0]}, "api_stage2": {"api_f_count": 143, "api_e_lostcount": 0, "api_f_lostcount": 6, "api_e_count": 0}, "api_stage1": {"api_touch_plane": [59, -1], "api_disp_seiku": 1, "api_f_count": 233, "api_e_lostcount": 0, "api_f_lostcount": 4, "api_e_count": 0}, "api_stage3_combined": {"api_fbak_flag": [-1, 0, 0, 0, 0, 0, 0], "api_fcl_flag": [-1, 0, 0, 0, 0, 0, 0], "api_fdam": [-1, 0, 0, 0, 0, 0, 0], "api_frai_flag": [-1, 0, 0, 0, 0, 0, 0]}}, "api_hougeki2": {"api_si_list": [-1, [59, 8, 104], [505], [104, 8]], "api_damage": [-1, [137], [6], [105, 87]], "api_at_list": [-1, 2, 7, 3], "api_df_list": [-1, [8], [5], [7, 7]], "api_at_type": [-1, 6, 0, 2], "api_cl_list": [-1, [1], [1], [1, 1]]}, "api_midnight_flag": 0, "api_maxhps_combined": [-1, 31, 48, 56, 96, 57, 32], "api_support_info": {"api_support_airatack": null, "api_support_hourai": {"api_undressing_flag": [0, 0, 0, 0, 0, 0], "api_damage": [-1, 0, 0, 151, 0, 0, 0], "api_deck_id": 3, "api_ship_id": [1481, 224, 256, 93, 199, 1926], "api_cl_list": [-1, 0, 0, 2, 0, 0, 0]}}, "api_raigeki": {"api_frai": [-1, 1, 1, 1, 2, 1, 2], "api_fydam": [-1, 24, 6, 14, 8, 3, 14], "api_fcl": [-1, 1, 1, 1, 1, 1, 1], "api_fdam": [-1, 0, 0, 0, 0, 0, 0], "api_eydam": [-1, 0, 0, 0, 0, 0, 0], "api_edam": [-1, 47, 22, 0, 0, 0, 0], "api_erai": [-1, 1, 3, 0, 0, 0, 0], "api_ecl": [-1, 0, 0, 0, 0, 0, 0]}, "api_hourai_flag": [1, 1, 1, 0], "api_eSlot": [[505, 506, 515, 525, -1], [505, 505, 515, 525, -1], [504, 542, 543, -1, -1], [502, 559, 544, -1, -1], [502, 545, 542, -1, -1], [502, 545, 542, -1, -1]], "api_ship_ke": [527, 594, 554, 623, 575, 575], "api_support_flag": 2, "api_nowhps": [-1, 57, 90, 90, 61, 74, 55, 76, 80, 53, 46, 35, 35], "api_stage_flag": [1, 1, 1], "api_fParam": [[77, 84, 106, 78], [99, 0, 94, 98], [99, 0, 83, 98], [39, 0, 70, 69], [49, 0, 71, 79], [40, 0, 74, 62]], "api_formation": ["14", 2, 2], "api_search": [1, 1], "api_deck_id": "1", "api_eParam": [[68, 48, 40, 70], [73, 66, 72, 82], [42, 72, 27, 36], [58, 76, 48, 36], [38, 60, 30, 22], [38, 60, 30, 22]]}, "id": 3080}, {"node": 10, "rating": "S", "hq": "13126679", "drop": 0, "enemyId": 0, "yasen": {}, "sortie_id": 1526, "time": 1441510895, "data": {"api_eKyouka": [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], "api_opening_flag": 0, "api_maxhps": [-1, 57, 90, 90, 65, 79, 55, 160, 96, 80, 40, 35, 35], "api_ship_lv": [-1, 1, 1, 1, 1, 1, 1], "api_fParam_combined": [[73, 93, 44, 52], [67, 88, 70, 69], [76, 79, 66, 77], [99, 36, 70, 95], [78, 69, 65, 75], [59, 89, 59, 59]], "api_opening_atack": null, "api_hougeki3": {"api_si_list": [-1, [71], [-1], [8], [25, 104, 8]], "api_damage": [-1, [14], [18], [34], [114]], "api_at_list": [-1, 1, 7, 2, 3], "api_df_list": [-1, [7], [2], [7], [7]], "api_at_type": [-1, 0, 0, 0, 6], "api_cl_list": [-1, [1], [1], [1], [1]]}, "api_nowhps_combined": [-1, 31, 48, 56, 96, 57, 32], "api_hougeki1": {"api_si_list": [-1, [114], [505], [6, 6], [502], [90], [-1], [50, 6], [-1], [-1], [2]], "api_damage": [-1, [0], [0], [36, 3], [2], [0], [24], [11, 15], [0], [0], [0]], "api_at_list": [-1, 4, 9, 3, 10, 5, 7, 2, 8, 6, 1], "api_df_list": [-1, [8], [5], [9, 9], [6], [9], [2], [7, 7], [5], [9], [10]], "api_at_type": [-1, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0], "api_cl_list": [-1, [0], [0], [1, 1], [1], [0], [1], [1, 1], [0], [0], [0]]}, "api_kouku": {"api_plane_from": [[4, 5, 6], [7, 8]], "api_stage3": {"api_ecl_flag": [-1, 0, 0, 0, 0, 0, 0], "api_frai_flag": [-1, 0, 0, 0, 1, 0, 0], "api_erai_flag": [-1, 0, 0, 0, 0, 0, 1], "api_ebak_flag": [-1, 1, 1, 0, 1, 0, 0], "api_fdam": [-1, 0, 0, 11, 37, 0, 0], "api_fcl_flag": [-1, 0, 0, 0, 0, 0, 0], "api_fbak_flag": [-1, 0, 0, 1, 0, 0, 0], "api_edam": [-1, 0, 0, 0, 0, 0, 129]}, "api_stage2": {"api_f_count": 125, "api_e_lostcount": 28, "api_f_lostcount": 13, "api_e_count": 108}, "api_stage1": {"api_touch_plane": [-1, -1], "api_disp_seiku": 2, "api_f_count": 223, "api_e_lostcount": 98, "api_f_lostcount": 21, "api_e_count": 240}, "api_stage3_combined": {"api_fbak_flag": [-1, 0, 0, 0, 0, 0, 0], "api_fcl_flag": [-1, 0, 0, 0, 0, 0, 0], "api_fdam": [-1, 0, 0, 0, 0, 0, 0], "api_frai_flag": [-1, 0, 0, 0, 0, 0, 1]}}, "api_hougeki2": {"api_si_list": [-1, [104], [8], [-1], [71], [-1], [-1]], "api_damage": [-1, [149], [5], [0], [11], [71], [5]], "api_at_list": [-1, 3, 2, 7, 1, 5, 6], "api_df_list": [-1, [9], [7], [4], [8], [8], [7]], "api_at_type": [-1, 0, 0, 0, 0, 0, 0], "api_cl_list": [-1, [2], [1], [0], [2], [1], [1]]}, "api_midnight_flag": 0, "api_maxhps_combined": [-1, 31, 48, 56, 96, 57, 32], "api_support_info": {"api_support_airatack": null, "api_support_hourai": {"api_undressing_flag": [0, 0, 0, 0, 0, 0], "api_damage": [-1, 0, 43, 0, 0, 93, 0], "api_deck_id": 3, "api_ship_id": [1481, 224, 256, 93, 199, 1926], "api_cl_list": [-1, 0, 1, 0, 0, 1, 0]}}, "api_raigeki": {"api_frai": [-1, 3, 0, 3, 1, 4, 4], "api_fydam": [-1, 3, 0, 4, 17, 18, 49], "api_fcl": [-1, 1, 0, 1, 1, 1, 1], "api_fdam": [-1, 0, 0, 0, 0, 0, 6], "api_eydam": [-1, 0, 0, 3, 3, 0, 0], "api_edam": [-1, 17, 0, 7, 67, 0, 0], "api_erai": [-1, 0, 0, 6, 6, 0, 0], "api_ecl": [-1, 0, 0, 2, 1, 0, 0]}, "api_hourai_flag": [1, 1, 1, 1], "api_eSlot": [[547, 548, 549, 549, -1], [547, 548, 549, 549, -1], [505, 505, 515, 525, -1], [502, 515, 542, -1, -1], [502, 545, 542, -1, -1], [502, 545, 542, -1, -1]], "api_ship_ke": [616, 579, 594, 578, 575, 575], "api_support_flag": 2, "api_nowhps": [-1, 57, 90, 90, 61, 68, 55, 160, 96, 80, 40, 35, 35], "api_stage_flag": [1, 1, 1], "api_fParam": [[77, 84, 106, 78], [99, 0, 94, 98], [99, 0, 83, 98], [39, 0, 70, 69], [49, 0, 71, 79], [40, 0, 74, 62]], "api_formation": ["14", 2, 2], "api_search": [1, 1], "api_deck_id": "1", "api_eParam": [[40, 0, 90, 120], [25, 0, 50, 80], [73, 66, 72, 82], [48, 84, 38, 33], [38, 60, 30, 22], [38, 60, 30, 22]]}, "id": 3081}, {"node": 13, "rating": "S", "hq": "13126679", "drop": 9, "enemyId": 0, "yasen": {}, "sortie_id": 1526, "time": 1441511102, "data": {"api_eKyouka": [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], "api_opening_flag": 0, "api_maxhps": [-1, 57, 90, 90, 65, 79, 55, 160, 160, 66, 49, 49, 80], "api_ship_lv": [-1, 1, 1, 1, 1, 1, 1], "api_fParam_combined": [[73, 93, 44, 52], [67, 88, 70, 69], [76, 79, 66, 77], [99, 36, 70, 95], [78, 69, 65, 75], [59, 89, 59, 59]], "api_opening_atack": null, "api_nowhps_combined": [-1, 31, 24, 56, 96, 57, 24], "api_hougeki1": {"api_si_list": [-1, [114, 114], [50, 6], [502], [6], [90], [-1], [2], [-1]], "api_damage": [-1, [133, 0], [4, 57], [10], [12], [0], [55], [52], [2]], "api_at_list": [-1, 4, 2, 10, 3, 5, 8, 1, 6], "api_df_list": [-1, [9, 9], [11, 11], [4], [8], [10], [4], [8], [8]], "api_at_type": [-1, 2, 2, 0, 0, 0, 0, 0, 0], "api_cl_list": [-1, [1, 1], [1, 1], [1], [1], [0], [2], [2], [1]]}, "api_kouku": {"api_plane_from": [[4, 5, 6], [7, 8]], "api_stage3": {"api_ecl_flag": [-1, 0, 0, 0, 0, 0, 0], "api_frai_flag": [-1, 0, 0, 0, 0, 0, 0], "api_erai_flag": [-1, 0, 1, 0, 1, 0, 0], "api_ebak_flag": [-1, 0, 1, 0, 0, 1, 1], "api_fdam": [-1, 0, 0, 0, 0, 0, 0], "api_fcl_flag": [-1, 0, 0, 0, 0, 0, 0], "api_fbak_flag": [-1, 0, 0, 0, 0, 0, 0], "api_edam": [-1, 0, 0, 0, 0, 4, 20]}, "api_stage2": {"api_f_count": 101, "api_e_lostcount": 81, "api_f_lostcount": 30, "api_air_fire": {"api_kind": 10, "api_use_items": [71, 131, 32], "api_idx": 0}, "api_e_count": 111}, "api_stage1": {"api_touch_plane": [-1, -1], "api_disp_seiku": 2, "api_f_count": 189, "api_e_lostcount": 157, "api_f_lostcount": 17, "api_e_count": 288}, "api_stage3_combined": {"api_fbak_flag": [-1, 0, 0, 0, 0, 0, 0], "api_fcl_flag": [-1, 0, 0, 0, 0, 0, 0], "api_fdam": [-1, 0, 0, 0, 0, 0, 0], "api_frai_flag": [-1, 0, 0, 1, 1, 0, 0]}}, "api_hougeki2": {"api_si_list": [-1, [59, 8, 104], [25, 104, 8], [71], [-1], [-1]], "api_damage": [-1, [117], [93], [7], [42], [20]], "api_at_list": [-1, 2, 3, 1, 5, 6], "api_df_list": [-1, [8], [7], [7], [7], [7]], "api_at_type": [-1, 6, 6, 0, 0, 0], "api_cl_list": [-1, [1], [1], [1], [1], [1]]}, "api_midnight_flag": 0, "api_maxhps_combined": [-1, 31, 48, 56, 96, 57, 32], "api_support_info": {"api_support_airatack": null, "api_support_hourai": {"api_undressing_flag": [0, 0, 0, 0, 0, 0], "api_damage": [-1, 0, 67, 0, 0, 0, 119], "api_deck_id": 3, "api_ship_id": [1481, 224, 256, 93, 199, 1926], "api_cl_list": [-1, 0, 2, 0, 0, 0, 1]}}, "api_raigeki": {"api_frai": [-1, 2, 0, 4, 0, 2, 4], "api_fydam": [-1, 3, 0, 32, 0, 1, 53], "api_fcl": [-1, 1, 0, 1, 0, 1, 1], "api_fdam": [-1, 4, 0, 0, 0, 0, 0], "api_eydam": [-1, 0, 0, 0, 4, 0, 0], "api_edam": [-1, 0, 4, 0, 85, 0, 0], "api_erai": [-1, 0, 0, 0, 1, 0, 0], "api_ecl": [-1, 0, 0, 0, 1, 0, 0]}, "api_hourai_flag": [1, 1, 1, 0], "api_eSlot": [[547, 548, 549, 549, -1], [547, 548, 549, 549, -1], [550, 550, 545, 525, -1], [502, 502, 559, -1, -1], [502, 502, 559, -1, -1], [501, 503, 503, -1, -1]], "api_ship_ke": [616, 616, 592, 624, 624, 526], "api_support_flag": 2, "api_nowhps": [-1, 57, 72, 79, 24, 68, 55, 160, 160, 66, 49, 49, 80], "api_stage_flag": [1, 1, 1], "api_fParam": [[77, 84, 106, 78], [99, 0, 94, 98], [99, 0, 83, 98], [39, 0, 70, 69], [49, 0, 71, 79], [40, 0, 74, 62]], "api_formation": ["14", 3, 1], "api_search": [1, 1], "api_deck_id": "1", "api_eParam": [[40, 0, 90, 120], [40, 0, 90, 120], [64, 92, 96, 68], [64, 98, 48, 48], [64, 98, 48, 48], [15, 0, 0, 35]]}, "id": 3082}, {"node": 26, "rating": "S", "hq": "13126679", "drop": 123, "enemyId": 0, "yasen": {"api_fParam": [[77, 84, 106, 78], [99, 0, 94, 98], [99, 0, 84, 98], [39, 0, 70, 69], [49, 0, 71, 79], [40, 0, 74, 62]], "api_eKyouka": [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], "api_fParam_combined": [[73, 93, 44, 52], [67, 88, 70, 69], [76, 79, 66, 77], [99, 36, 70, 95], [78, 69, 65, 75], [59, 89, 59, 59]], "api_eSlot": [[553, 553, 531, -1, -1], [509, 509, 512, 529, -1], [505, 505, 515, 525, -1], [505, 505, 515, 525, -1], [502, 515, 542, -1, -1], [502, 515, 542, -1, -1]], "api_hougeki": {"api_si_list": [-1, [2, 2], [553, 553], [50, 6], [6, 6], [114, 114], [90, 6]], "api_sp_list": [-1, 1, 1, 1, 1, 1, 1], "api_damage": [-1, [51, 7], [3, 1], [23, 18], [19, 7], [3, 29], [35, 35]], "api_at_list": [-1, 1, 7, 2, 3, 4, 5], "api_df_list": [-1, [7, 7], [6, 6], [8, 8], [7, 7], [7, 7], [7, 7]], "api_cl_list": [-1, [1, 1], [1, 2], [1, 1], [1, 1], [1, 2], [1, 1]]}, "api_ship_ke": [629, 557, 594, 594, 578, 578], "api_maxhps": [-1, 57, 90, 90, 65, 79, 55, 255, 400, 80, 80, 40, 40], "api_maxhps_combined": [-1, 31, 48, 56, 96, 57, 32], "api_flare_pos": [6, -1], "api_touch_plane": [-1, -1], "api_ship_lv": [-1, 1, 1, 1, 1, 1, 1], "api_deck_id": "1", "api_nowhps": [-1, 57, 72, 40, 24, 9, 55, 137, 7, 0, 0, 0, 0], "api_eParam": [[160, 90, 360, 303], [180, 0, 80, 160], [73, 66, 72, 82], [73, 66, 72, 82], [48, 84, 38, 33], [48, 84, 38, 33]], "api_nowhps_combined": [-1, 27, 21, 56, 31, 57, 5]}, "sortie_id": 1526, "time": 1441511314, "data": {"api_eKyouka": [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], "api_opening_flag": 0, "api_maxhps": [-1, 57, 90, 90, 65, 79, 55, 255, 400, 80, 80, 40, 40], "api_ship_lv": [-1, 1, 1, 1, 1, 1, 1], "api_fParam_combined": [[73, 93, 44, 52], [67, 88, 70, 69], [76, 79, 66, 77], [99, 36, 70, 95], [78, 69, 65, 75], [59, 89, 59, 59]], "api_opening_atack": null, "api_hougeki3": {"api_si_list": [-1, [71], [553], [8], [512], [25, 104, 8], [-1]], "api_damage": [-1, [3], [39], [3], [16], [44], [1]], "api_at_list": [-1, 1, 7, 2, 8, 3, 6], "api_df_list": [-1, [7], [3], [8], [5], [8], [8]], "api_at_type": [-1, 0, 0, 0, 0, 6, 0], "api_cl_list": [-1, [2], [1], [1], [1], [1], [1]]}, "api_nowhps_combined": [-1, 27, 24, 56, 31, 57, 24], "api_hougeki1": {"api_si_list": [-1, [114, 114], [509], [90, 6], [553], [50], [505], [6, 6], [502], [-1], [2]], "api_damage": [-1, [24, 23], [0], [60, 1], [0], [0], [3], [21, 13], [0], [45], [0]], "api_at_list": [-1, 4, 8, 5, 7, 2, 9, 3, 11, 6, 1], "api_df_list": [-1, [7, 7], [6], [9, 9], [6], [7], [2], [7, 7], [1], [11], [8]], "api_at_type": [-1, 2, 0, 2, 0, 0, 0, 2, 0, 0, 0], "api_cl_list": [-1, [1, 1], [0], [1, 1], [0], [0], [1], [1, 1], [0], [1], [0]]}, "api_kouku": {"api_plane_from": [[4, 5, 6], [-1]], "api_stage3": {"api_ecl_flag": [-1, 0, 0, 0, 0, 0, 0], "api_frai_flag": [-1, 0, 0, 0, 0, 0, 0], "api_erai_flag": [-1, 1, 0, 0, 0, 1, 0], "api_ebak_flag": [-1, 0, 0, 1, 1, 0, 1], "api_fdam": [-1, 0, 0, 0, 0, 0, 0], "api_fcl_flag": [-1, 0, 0, 0, 0, 0, 0], "api_fbak_flag": [-1, 0, 0, 0, 0, 0, 0], "api_edam": [-1, 24, 0, 9, 7, 0, 60]}, "api_stage2": {"api_f_count": 70, "api_e_lostcount": 0, "api_f_lostcount": 11, "api_e_count": 0}, "api_stage1": {"api_touch_plane": [59, -1], "api_disp_seiku": 1, "api_f_count": 142, "api_e_lostcount": 0, "api_f_lostcount": 1, "api_e_count": 0}, "api_stage3_combined": {"api_fbak_flag": [-1, 0, 0, 0, 0, 0, 0], "api_fcl_flag": [-1, 0, 0, 0, 0, 0, 0], "api_fdam": [-1, 0, 0, 0, 0, 0, 0], "api_frai_flag": [-1, 0, 0, 0, 0, 0, 0]}}, "api_hougeki2": {"api_si_list": [-1, [25, 104, 8], [509], [59, 8, 104], [553], [71], [-1]], "api_damage": [-1, [109], [0], [84], [43], [4], [7]], "api_at_list": [-1, 3, 8, 2, 7, 1, 6], "api_df_list": [-1, [8], [5], [8], [5], [8], [8]], "api_at_type": [-1, 6, 0, 6, 0, 0, 0], "api_cl_list": [-1, [1], [0], [1], [1], [1], [1]]}, "api_midnight_flag": 1, "api_maxhps_combined": [-1, 31, 48, 56, 96, 57, 32], "api_support_info": {"api_support_airatack": null, "api_support_hourai": {"api_undressing_flag": [0, 0, 0, 0, 0, 0], "api_damage": [-1, 0, 87, 0, 73, 0, 0], "api_deck_id": 4, "api_ship_id": [325, 17, 889, 287, 456, 884], "api_cl_list": [-1, 0, 2, 0, 1, 0, 0]}}, "api_raigeki": {"api_frai": [-1, 2, 0, 1, 0, 2, 3], "api_fydam": [-1, 33, 0, 10, 0, 21, 32], "api_fcl": [-1, 1, 0, 1, 0, 1, 1], "api_fdam": [-1, 0, 0, 0, 0, 0, 19], "api_eydam": [-1, 19, 0, 0, 0, 0, 0], "api_edam": [-1, 10, 54.1, 32, 0, 0, 0], "api_erai": [-1, 6, 0, 0, 0, 0, 0], "api_ecl": [-1, 1, 0, 0, 0, 0, 0]}, "api_hourai_flag": [1, 1, 1, 1], "api_eSlot": [[553, 553, 531, -1, -1], [509, 509, 512, 529, -1], [505, 505, 515, 525, -1], [505, 505, 515, 525, -1], [502, 515, 542, -1, -1], [502, 515, 542, -1, -1]], "api_ship_ke": [629, 557, 594, 594, 578, 578], "api_support_flag": 2, "api_nowhps": [-1, 57, 72, 79, 24, 68, 55, 255, 400, 80, 80, 40, 40], "api_stage_flag": [1, 1, 1], "api_fParam": [[77, 84, 106, 78], [99, 0, 94, 98], [99, 0, 84, 98], [39, 0, 70, 69], [49, 0, 71, 79], [40, 0, 74, 62]], "api_formation": ["14", 1, 1], "api_search": [1, 1], "api_deck_id": "1", "api_eParam": [[160, 90, 360, 303], [180, 0, 80, 160], [73, 66, 72, 82], [73, 66, 72, 82], [48, 84, 38, 33], [48, 84, 38, 33]]}, "id": 3083}], "id": 1526, "fleetnum": 1, "combined": 1, "world": 31, "diff": 1, "support2": 4, "support1": 3}';
+var started = false;
+
 var renderer = PIXI.autoDetectRenderer(800, 480,{backgroundColor : 0x000000});
 document.getElementById('battlespace').appendChild(renderer.view);
 // console.log(renderer);
@@ -54,6 +59,7 @@ loader.add('BG1','assets/82_res.images.ImgBackgroundDay.jpg')
 	.add('216','assets/216.png')
 	.add('aaci1','assets/aaci1.png')
 	.add('aaci2','assets/aaci2.png')
+	.add('shield','assets/221_shield_png$f90866d61f09304ed4b65cd1a8d0dbbc1744783129.png')
 	.add('mask','assets/mask.png');
 for (var i=389; i <= 417; i+=2) loader.add(i.toString(),'assets/'+i+'.png');
 for (var i=0; i<=9; i++) loader.add('C'+i,'assets/C'+i+'.png');
@@ -281,7 +287,7 @@ function createShip(data,side,i) {
 	ship.issub = (sdata.type == 'SS' || sdata.type == 'SSV');
 	ship.isinstall = (sdata.type == 'Installation');
 	ship.isCV = (sdata.type == 'CV' || sdata.type == 'CVL' || sdata.type == 'CVN' || sdata.type == 'CVB' || (sdata.type=='AO'&&ship.hasbomber));
-	//ship.hasWG = 
+	ship.shakepid = 0;
 	return ship;
 }
 
@@ -425,14 +431,14 @@ function processAPI(root) {
 					for (var i=0; i<fleet1.length; i++) {
 						if (fleet1[i].hasAAgear) { shots.push([-1,-1,-1,fleet1[i],-1,-1]); anyAA = true; }
 					}
-					if (!anyAA && kouku.api_stage3.api_e_lostcount) shots.push([-1,-1,-1,fleet1[0],-1,-1]);
+					if (!anyAA && (kouku.api_stage1.api_e_lostcount || kouku.api_stage2.api_e_lostcount)) shots.push([-1,-1,-1,fleet1[0],-1,-1]);
 				}
 				if (kouku.api_plane_from[0][0] != -1) {
 					var anyAA = false;
 					for (var i=0; i<f2.length; i++) {
 						if (f2[i].hasAAgear) { shots.push([-1,-1,-1,f2[i],-1,-1]); anyAA = true; }
 					}
-					if (!anyAA && kouku.api_stage3.api_f_lostcount) shots.push([-1,-1,-1,f2[0],-1,-1]);
+					if (!anyAA && (kouku.api_stage1.api_f_lostcount || kouku.api_stage2.api_f_lostcount)) shots.push([-1,-1,-1,f2[0],-1,-1]);
 				}
 				//anti air cut-in
 				var AACI1 = -1;
@@ -499,6 +505,8 @@ function processAPI(root) {
 					d.push(parseInt(hou.api_damage[j][k])); //damage
 					HPstate[hou.api_df_list[j][0]-1+((f1[0].escort && hou.api_df_list[j][0] < 7)?12:0)] -= Math.floor(hou.api_damage[j][k]);
 				}
+				for (var k=0; k<hou.api_cl_list[j].length; k++) d.push((hou.api_cl_list[j][k]==2));
+				d.push((hou.api_damage[j][0] != Math.floor(hou.api_damage[j][0])));
 				
 				switch(hou.api_at_type[j]) {
 					case 0:
@@ -581,6 +589,8 @@ function processAPI(root) {
 					d.push(parseInt(hou.api_damage[j][k])); //damage
 					HPstate[hou.api_df_list[j][0]-1+((COMBINED && hou.api_df_list[j][0] < 7)?12:0)] -= Math.floor(hou.api_damage[j][k]);
 				}
+				for (var k=0; k<hou.api_cl_list[j].length; k++) d.push((hou.api_cl_list[j][k]==2));
+				d.push((hou.api_damage[j][0] != Math.floor(hou.api_damage[j][0])));
 				
 				switch(hou.api_sp_list[j]) {
 					case 0:
@@ -593,11 +603,11 @@ function processAPI(root) {
 						eventqueue.push([shootDA,d,getState()]); break;
 					case 2:
 					case 3:
-						d[2] += d[3];
+						d[2] += d[3]; d[3] = (d[4]||d[5]); d[4] = d[6];
 						eventqueue.push([shootBigTorp,d,getState()]); break;
 					case 4:
 					case 5:
-						d[2] += d[3];
+						d[2] += d[3]; d[3] = (d[4]||d[5]); d[4] = d[6];
 						eventqueue.push([shootBigGun,d,getState()]); break;
 				}
 				
@@ -625,6 +635,7 @@ var ecomplete = true;
 var PAUSE = false;
 var END = false;
 var statechangefunc = null;
+var STEPBYFRAME = false;
 
 var prevtime = Date.now(), currtime = Date.now(), timeelapsed = 0, frameselapsed;
 function animate() {
@@ -645,6 +656,8 @@ function animate() {
 	prevtime = currtime;
 	
 	if (PAUSE) return;
+	if (STEPBYFRAME) PAUSE = true;
+	
 	if (statechangefunc) {
 		statechangefunc();
 		statechangefunc = null;
@@ -658,7 +671,7 @@ function animate() {
 	}
 	
 	for (i=0; i<updates.length; i++) {
-		if( updates[i][0].apply(null,updates[i][1]) ) updates.splice(i,1);
+		if( updates[i][0].apply(null,updates[i][1]) ) updates.splice(i--,1);
 	}
 	
 	for (var i=0; i<timeouts.length; i++) {
@@ -675,7 +688,7 @@ function animate() {
 
 //-----------------------------------------
 
-function createExplosion(x,y,scale) {
+function createExplosion(x,y,scale,parent) {
 	if (!scale) scale = 1;
 	var explosion = getFromPool('explosion');
 	if (!explosion) explosion = new PIXI.extras.MovieClip(frames_exp);
@@ -685,13 +698,14 @@ function createExplosion(x,y,scale) {
 	explosion.loop = false;
 	explosion.position.set(x,y);
 	explosion.scale.set(scale);
-	explosion.onComplete = function() { /*stage.removeChild(this);*/ this.gotoAndStop(0); recycle(this); }
+	explosion.onComplete = function() { this.gotoAndStop(0); recycle(this); }
 	explosion.play();
 	explosion.notpersistent = true;
-	stage.addChild(explosion);
+	if (parent) parent.addChild(explosion);
+	else stage.addChild(explosion);
 }
 
-function createNumber(x,y,number) {
+function createNumber(x,y,number,forcecrit) {
 	var ng = new PIXI.Container;
 	number = number.toString();
 	if (number <= 0) {
@@ -700,7 +714,7 @@ function createNumber(x,y,number) {
 		sprite.anchor.set(.5);
 		sprite.vspeed = -2.5; sprite.bounce = 2; //updates.push([moveNumber,[sprite]]);
 		ng.addChild(sprite);
-	} else if (number < 40) {
+	} else if (number <= 14 || (number < 40 && !forcecrit)) {
 		for (i=0; i<number.length; i++) {
 			var j = 0;
 			addTimeout(function(){
@@ -883,21 +897,40 @@ function shipMoveTo(ship,targetx,speed) {
 	return (ship.graphic.x == targetx);
 }
 
-function shipShake(ship,amount,decay,time) {
-	if (ship.shakepid) clearInterval(ship.shakepid);
-	ship.graphic.pivot.x = (ship.side == 1) ? amount : -amount;
-	ship.shakepid= setInterval(function(){
-		ship.graphic.pivot.x *= -1;
-		ship.graphic.pivot.x -= (ship.graphic.pivot.x > 0) ? decay : -decay;
-		if (Math.abs(ship.graphic.pivot.x) < decay) {
-			ship.graphic.pivot.x = 0;
-			clearInterval(ship.shakepid);
-			ship.shakepid = false;
+// function shipShake(ship,amount,decay,time) {
+	// if (ship.shakepid) clearInterval(ship.shakepid);
+	// ship.graphic.pivot.x = (ship.side == 1) ? amount : -amount;
+	// ship.shakepid= setInterval(function(){
+		// ship.graphic.pivot.x *= -1;
+		// ship.graphic.pivot.x -= (ship.graphic.pivot.x > 0) ? decay : -decay;
+		// if (Math.abs(ship.graphic.pivot.x) < decay) {
+			// ship.graphic.pivot.x = 0;
+			// clearInterval(ship.shakepid);
+			// ship.shakepid = false;
+		// }
+	// },30);
+	// if (time) {
+		// addTimeout(function(){ ship.graphic.pivot.x = 0; clearInterval(ship.shakepid); ship.shakepid = false;}, time);
+	// }
+// }
+
+function shipShake(ship,amplitude,decay,time,halfperiod) {
+	var pid = ++ship.shakepid;
+	if (!halfperiod) halfperiod = 2;
+	var step = (ship.side==1)? 0 : halfperiod;
+	// decay = .175/2;
+	updates.push([function() {
+		if (pid != ship.shakepid) { ship.graphic.pivot.x = 0; return true; }//end if another shake is added
+		ship.graphic.pivot.x = amplitude * Math.sin(Math.PI*step/halfperiod);
+		// console.log(ship.graphic.pivot.x);
+		step++;
+		amplitude -= decay;
+		if (amplitude <= 0) { ship.graphic.pivot.x = 0; return true; }
+		if (time) { //if given time, end after timeout
+			if (--time <= 0) { ship.graphic.pivot.x = 0; return true; }
 		}
-	},30);
-	if (time) {
-		addTimeout(function(){ ship.graphic.pivot.x = 0; clearInterval(ship.shakepid); ship.shakepid = false;}, time);
-	}
+		return false;
+	},[]]);
 }
 
 function radarGrow(radar) {
@@ -986,7 +1019,7 @@ function battleEnd() {
 	}, 2000);
 }
 
-function standardHit(target,damage,move) {
+function standardHit(target,damage,move,protect,forcecrit) {
 	move = typeof move !== 'undefined' ? move : true;
 	if (damage <= 10) standardExplosion(target,1);
 	else if (damage < 40) {
@@ -994,12 +1027,18 @@ function standardHit(target,damage,move) {
 	} else {
 		standardExplosion(target,3);
 	}
-	createNumber(target.xorigin+85,target.graphic.y+22,damage);
+	createNumber(target.xorigin+85,target.graphic.y+22,damage,forcecrit);
 	shipSetHP(target,target.hp-Math.max(0,damage));
 	if (move) {
-		target.graphic.x = target.xorigin-25+50*target.side;
-		updates.push([shipMoveTo,[target,target.xorigin,2]]);
-		shipShake(target,5,.175);
+		if (protect) {
+			createShield(target.graphic.x + ((target.side==0)? 180 : -10),target.side);
+			addTimeout(function() { updates.push([shipMoveTo,[target,target.xorigin,3]]); }, 500);
+			shipShake(target,12,.5,undefined,10);
+		} else {
+			target.graphic.x = target.xorigin-25+50*target.side;
+			updates.push([shipMoveTo,[target,target.xorigin,2]]);
+			shipShake(target,5,.175/2);
+		}
 	}
 }
 
@@ -1020,66 +1059,73 @@ function standardExplosion(target,num) {
 	}
 }
 
-function shoot(ship,target,damage) {
-	// addTimeout(function(){ updates.push([shipMoveOut,fleet1[0],2]); }, 1000);
-	// addTimeout(function(){ updates.push([shipMoveOut,fleet1[1],2]); }, 2000);
+function shoot(ship,target,damage,forcecrit,protect) {
 	updates.push([shipMoveTo,[ship,ship.xorigin+25-50*ship.side,2]]);
-	updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,2]]);
+	if (!protect) updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,2]]);
+	else {
+		// var flag = (target.side==0)? fleet1[0] : fleet2[0];  //for fun
+		// updates.push([shipMoveTo,[flag,flag.xorigin+25-50*flag.side,2]]);
+		// addTimeout(function(){updates.push([shipMoveTo,[flag,flag.xorigin,2]]);},1000);
+		addTimeout(function() { updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,3]]); }, 675);
+	}
 	addTimeout(function(){
-		standardHit(target,damage);
+		standardHit(target,damage,true,protect);
 	},800);
 	addTimeout(function(){updates.push([shipMoveTo,[ship,ship.xorigin,2]]);},1000);
-	addTimeout(function(){ ecomplete = true; }, 1500);
+	addTimeout(function(){ ecomplete = true; }, (protect)? 1600 : 1500);
 }
 
-function shootDA(ship,target,damage1,damage2) {
+function shootDA(ship,target,damage1,damage2,crit1,crit2,protect) {
 	updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,2]]);
 	addTimeout(function(){ updates.push([shipMoveTo,[ship,ship.xorigin+25-50*ship.side,3]]); }, 500);
 	addTimeout(function(){
-		standardHit(target,damage1);
+		standardHit(target,damage1,true,protect,crit1);
 	},650);
 	addTimeout(function(){
-		standardHit(target,damage2);
+		standardHit(target,damage2,true,protect,crit2);
 	},1500);
 	addTimeout(function(){updates.push([shipMoveTo,[ship,ship.xorigin,2]]);},1800);
 	addTimeout(function(){ ecomplete = true; }, 2300);
 }
 
-function shootPlane(ship,target,damage) {
+function shootPlane(ship,target,damage,forcecrit,protect) {
 	var planes = createPlane(ship.graphic.x+85,ship.graphic.y+22,ship.planetypes);
 	
 	var angle = Math.atan((ship.graphic.y-target.graphic.y)/(ship.graphic.x-target.graphic.x));
 	updates.push([movePlane,[planes,angle,(ship.side==0) ? 5 : -5, (ship.escort||target.escort)]]);
 	
-	addTimeout(function(){ standardHit(target,damage); }, (ship.escort||target.escort)? 1600 : 2200);
+	if (protect) addTimeout(function() { updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,2]]); }, (ship.escort||target.escort)? 1400 : 2000);
+	addTimeout(function(){ standardHit(target,damage,true,protect,forcecrit); }, (ship.escort||target.escort)? 1600 : 2200);
 	
 	addTimeout(function(){stage.removeChild(planes); ecomplete=true;},3000);
 }
 
-function shootASW(ship,target,damage) {
+function shootASW(ship,target,damage,forcecrit,protect) {
 	updates.push([shipMoveTo,[ship,ship.xorigin+25-50*ship.side,2]]);
 	updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,2]]);
 	addTimeout(function(){
-		updates.push([shipMoveTo,[target,target.xorigin,4]]);
-		shipShake(target,5,.125);
-		target.graphic.x = target.xorigin-25+50*target.side;
+		if (!protect) updates.push([shipMoveTo,[target,target.xorigin,4]]);
+		if (!protect) target.graphic.x = target.xorigin-25+50*target.side;
+		shipShake(target,5,.125/2);
 		createExplosion(target.xorigin+65+40-80*target.side,target.graphic.y+42,1);
 		addTimeout(function(){createExplosion(target.xorigin+105+40-80*target.side,target.graphic.y+2,1);},75);
 	},1000);
 	addTimeout(function(){
-		standardHit(target,damage,false);
+		standardHit(target,damage,protect,protect,forcecrit);
+		// if (protect) updates.push([shipMoveTo,[target,target.xorigin+50-100*target.side,3]]);
 		updates.push([shipMoveTo,[ship,ship.xorigin,2]]);
 	},1500);
 	addTimeout(function(){ ecomplete = true; }, 2000);
 }
 
-function shootCutIn(ship,target,damage) {
+function shootCutIn(ship,target,damage,forcecrit,protect) {
 	updates.push([shipMoveTo,[ship,ship.xorigin+25-50*ship.side,2]]);
-	updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,2]]);
+	if (!protect) updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,2]]);
+	else addTimeout(function() { updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,3]]); }, 675);
 	addTimeout(function(){
-		updates.push([shipMoveTo,[target,target.xorigin,4]]);
-		shipShake(target,5,.125,650);
-		target.graphic.x = target.xorigin-25+50*target.side;
+		if (!protect) updates.push([shipMoveTo,[target,target.xorigin,4]]);
+		shipShake(target,5,.125,40);
+		if (!protect) target.graphic.x = target.xorigin-25+50*target.side;
 		createExplosion(target.xorigin+40+80*Math.random(),target.graphic.y+42*Math.random(),1);
 		addTimeout(function(){createExplosion(target.xorigin+40+80*Math.random(),target.graphic.y+42*Math.random(),1);},75);
 		addTimeout(function(){createExplosion(target.xorigin+40+80*Math.random(),target.graphic.y+42*Math.random(),1);},150);
@@ -1088,42 +1134,45 @@ function shootCutIn(ship,target,damage) {
 		// addTimeout(function(){createExplosion(target.xorigin+40+80*Math.random(),target.graphic.y+42*Math.random(),1);},250);
 	},800);
 	addTimeout(function(){
-		standardHit(target,damage);
+		standardHit(target,damage,true,protect,forcecrit);
 		updates.push([shipMoveTo,[ship,ship.xorigin,2]]);
 	},1500);
 	addTimeout(function(){ ecomplete = true; }, 2200);
 }
 
-function shootBigGun(ship,target,damage) {
+function shootBigGun(ship,target,damage,forcecrit,protect) {
 	updates.push([shipMoveTo,[ship,ship.xorigin+25-50*ship.side,2]]);
-	updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,2]]);
+	if (!protect) updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,2]]);
+	else addTimeout(function() { updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,3]]); }, 675);
 	addTimeout(function(){
-		updates.push([shipMoveTo,[target,target.xorigin,4]]);
-		shipShake(target,5,.175);
-		target.graphic.x = target.xorigin-25+50*target.side;
+		if (!protect) updates.push([shipMoveTo,[target,target.xorigin,4]]);
+		shipShake(target,5,.175/2);
+		if (!protect) target.graphic.x = target.xorigin-25+50*target.side;
 		standardExplosion(target,3);
 		addTimeout(function(){standardExplosion(target,3);},300);
 		addTimeout(function(){standardExplosion(target,3);},600);
 	},800);
 	addTimeout(function(){
-		standardHit(target,damage);
+		standardHit(target,damage,true,protect,forcecrit);
 		updates.push([shipMoveTo,[ship,ship.xorigin,2]]);
 	},2000);
 	addTimeout(function(){ ecomplete = true; }, 2700);
 }
 
-function shootTorp(ship,target,damage) {
-	shipShake(ship,2,0,600);
+function shootTorp(ship,target,damage,forcecrit,protect) {
+	shipShake(ship,3,0,36);
 	addTimeout(function(){ createTorp(ship,target,6); }, 500);
-	addTimeout(function(){ standardHit(target,damage); },1900);
+	if (protect) addTimeout(function() { updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,2]]); }, 1700);
+	addTimeout(function(){ standardHit(target,damage,true,protect,forcecrit); },1900);
 	
 	addTimeout(function(){ ecomplete = true; }, 2600);
 }
 
-function shootBigTorp(ship,target,damage) {
-	shipShake(ship,2,0,600);
+function shootBigTorp(ship,target,damage,forcecrit,protect) {
+	shipShake(ship,3,0,36);
 	addTimeout(function(){ createTorp(ship,target,12,true); }, 500);
-	addTimeout(function(){ standardHit(target,damage); },1300);
+	if (protect) addTimeout(function() { updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,2]]); }, 1100);
+	addTimeout(function(){ standardHit(target,damage,true,protect,forcecrit); },1300);
 	
 	addTimeout(function(){ ecomplete = true; }, 2200);
 }
@@ -1140,7 +1189,8 @@ function createPlane(x,y,planetypes,shots) {
 			plane.y = (i==1) ? -15 : 15;
 			plane.scale.set(.8);
 			planes.addChild(plane);
-			if (shots) plane.shot = shots[i];
+			// if (shots) plane.shot = shots[i];
+			// plane.shot = 2;
 		}
 	} else if (num == 2) {
 		for (var i=0; i<2; i++) {
@@ -1149,13 +1199,15 @@ function createPlane(x,y,planetypes,shots) {
 			plane.y = (i==1) ? -15 : 15;
 			plane.scale.set(.8);
 			planes.addChild(plane);
-			if (shots) plane.shot = shots[i];
+			// if (shots) plane.shot = shots[i];
+			// plane.shot = 2;
 		}
 	} else if (num == 1) {
 		var plane = PIXI.Sprite.fromImage('assets/'+PLANESPRITES[planetypes[0]-1]+'.png');
 		plane.scale.set(.8);
 		planes.addChild(plane);
-		if (shots) plane.shot = shots[0];
+		// if (shots) plane.shot = shots[0];
+		// plane.shot = 2;
 	}
 	planes.position.set(x,y);
 	planes.pivot.set(40);
@@ -1177,8 +1229,10 @@ function movePlane(planes,angle,speed,withescort) {
 		var plane = planes.getChildAt(i);
 		plane.pivot.y = 3*Math.sin(planes.x/80+Math.PI*2*i/3);
 		if (plane.shot == 2 && ((speed > 0)? (planes.x > 320):(planes.x < 480))) {
-			createExplosion(planes.x+plane.x,planes.y-planes.pivot.y+plane.y,.5);
-			planes.removeChild(plane);
+			console.log('p');
+			createExplosion(plane.x+30,-planes.pivot.y+plane.y-30,.5,planes);
+			addTimeout(function() { planes.removeChild(plane); }, 1000);
+			plane.shot = -1;
 		}
 	}
 	
@@ -1192,18 +1246,18 @@ function GTorpedoPhase(shots) {
 		var ship = shots[i][0]; var target = shots[i][1]; var damage = shots[i][2];
 		if (targets.indexOf(target) == -1) { targets.push(target); damages.push(damage); }
 		else damages[targets.indexOf(target)] += damage;
-		shipShake(ship,2,0,500);
+		shipShake(ship,3,0,30);
 		var j2=0;
 		addTimeout(function() {
 			var sh = shots[j2][0];
 			sh.graphic.x = sh.xorigin-8+16*sh.side;
 			j2++;
-		}, 450);
+		}, 500);
 		addTimeout(function(){
 			updates.push([shipMoveTo,[shots[j][0],shots[j][0].xorigin,4]]);
 			createTorp(shots[j][0],shots[j][1],(COMBINED)? 3 : 4);
 			j++;
-		}, 500);
+		}, 550);
 	}
 	
 	var k = 0;
@@ -1270,7 +1324,7 @@ function GAirPhase(shots,aaci1,aaci2,contact1,contact2,AS1,AS2) {
 				updates.push([shipMoveTo,[fleet2[aaci2-10],fleet2[aaci2-10].xorigin+25-50*fleet2[aaci2-10].side,3]]);
 				addTimeout(function() { updates.push([shipMoveTo,[fleet2[aaci2-10],fleet2[aaci2-10].xorigin,3]]); }, 800);
 			}
-		},800);
+		},700);
 	}
 	
 	addTimeout(function() {
@@ -1286,7 +1340,7 @@ function GAirPhase(shots,aaci1,aaci2,contact1,contact2,AS1,AS2) {
 				ii++;
 			}, 500);
 		}
-		if (AS1 && AS2) showAS(AS1,AS2);
+		showAS(AS1,AS2);
 	}, 900);
 	
 	var k = 0;
@@ -1301,7 +1355,7 @@ function GAirPhase(shots,aaci1,aaci2,contact1,contact2,AS1,AS2) {
 }
 
 function createAAfire(x,y,angle) {
-	var fire = PIXI.Sprite.fromImage('assets/216.png');
+	var fire = getFromPool('aafire','assets/216.png');
 	fire.pivot.y = 5;
 	fire.position.set(x,y);
 	fire.rotation = -angle+Math.PI;
@@ -1325,7 +1379,10 @@ function moveAAfire(fire,angle) {
 	fire.y -= Math.sin(angle)*15;
 	
 	if (fire.x < 0 || fire.x > 1000) {
-		stage.removeChild(fire);
+		recycle(fire);
+		stage.removeChild(fire.mask);
+		fire.mask.destroy();
+		fire.mask = null;
 		return true;
 	}
 	return false;
@@ -1413,6 +1470,29 @@ function escortFadeIn(ship) {
 	return false;
 }
 
+function createShield(x,side) {
+	var shield = getFromPool('shield','assets/221_shield_png$f90866d61f09304ed4b65cd1a8d0dbbc1744783129.png');
+	shield.position.set(x,(side==0)? 60 : 127);
+	shield.alpha = 0;
+	shield.lifetime = 30;
+	if (side==1) shield.scale.x = -1;
+	else shield.scale.x = 1;
+	updates.push([animShield,[shield]]);
+	stage.addChild(shield);
+}
+
+function animShield(shield) {
+	shield.lifetime--;
+	if (shield.lifetime >= 25) shield.alpha += .2;
+	else if (shield.lifetime <= 5) shield.alpha -= .2;
+	// else shield.tint += 0x111111;
+	if (shield.lifetime <= 0) {
+		recycle(shield);
+		return true;
+	}
+	return false;
+}
+
 function NBstart() {
 	if (COMBINED) {
 		for (var i=0; i<fleet1.length; i++) {
@@ -1447,7 +1527,11 @@ function resetBattle() {
 		stage.removeChild(bg2);
 		stage.addChildAt(bg,0);
 	}
-	for (var i=0; i<fleet1.length; i++) fleet1[i].graphic.x = -220;
+	for (var i=0; i<fleet1.length; i++) {
+		fleet1[i].graphic.x = -220;
+		fleet1[i].shakepid = 0;
+		fleet1[i].graphic.pivot.x = 0;
+	}
 	for (var i=0; i<fleet1C.length; i++) {
 		fleet1C[i].graphic.y = 557+44*i;
 		fleet1C[i].graphic.x = 152;
@@ -1458,9 +1542,17 @@ function resetBattle() {
 		fleet1C[i].mask.x = 0;
 		fleet1C[i].xorigin = 152;
 		fleet1C[i].escort = true;
+		fleet1C[i].shakepid = 0;
+		fleet1C[i].graphic.pivot.x = 0;
 	}
 
-	for (var i=0; i<fleet2.length; i++) stage.removeChild(fleet2[i].graphic);
+	for (var i=0; i<fleet2.length; i++) {
+		stage.removeChild(fleet2[i].graphic);
+		fleet2[i].shakepid = 0;
+		fleet2[i].graphic.pivot.x = 0;
+		fleet2[i].graphic.x = 851;
+		if (fleet2[i].hp != fleet2[i].hpmax) shipSetHP(fleet2[i],fleet2[i].hpmax);
+	}
 	
 	dots1.removeChildren(); dots2.removeChildren();
 	dots1.alpha = dots2.alpha = 0;
@@ -1531,11 +1623,10 @@ function skipToBattle(battle) {
 	if (battle > battlestarts.length) battle = battlestarts.length;
 	console.log(battle);
 	statechangefunc = function() {
-		console.log('doing stuff');
 		updates = [];
 		timeouts = [];
 		ecomplete = true;
-		for (var i=0; i<fleet2.length; i++) fleet2[i].graphic.x = 851;
+		
 		for (var i=0; i<stage.children.length; i++) {
 			var child = stage.getChildAt(i);
 			if (child.notpersistent) {
@@ -1549,9 +1640,6 @@ function skipToBattle(battle) {
 		var hps = eventqueue[e][2].HP;
 		for (var i=0; i<fleet1.length; i++) {
 			if (fleet1[i].hp != hps[i]) shipSetHP(fleet1[i],hps[i]);
-		}
-		for (var i=0; i<fleet2.length; i++) {
-			if (fleet2[i].hp != hps[i+6]) shipSetHP(fleet2[i],fleet2[i].hpmax);
 		}
 		if (COMBINED) {
 			for (var i=0; i<fleet1C.length; i++) {
@@ -1580,19 +1668,19 @@ function reset(callback) {
 		PAUSE = true;
 		stage.removeChildren();
 		for (var i=0; i<fleet1.length; i++) {
-			if (fleet1[i].shakepid) clearInterval(fleet1[i].shakepid);
+			fleet1[i].shakepid = 0; if (fleet1[i].graphic.pivot) fleet1[i].graphic.pivot.x = 0; // if (fleet1[i].shakepid) clearInterval(fleet1[i].shakepid);
 			for (var j=0; j<fleet1[i].graphic.children.length; j++) fleet1[i].graphic.getChildAt(j).destroy();
 			fleet1[i].graphic.destroy();
 		}
 		for (var i=0; i<fleet1C.length; i++) {
-			if (fleet1C[i].shakepid) clearInterval(fleet1C[i].shakepid);
+			fleet1C[i].shakepid = 0; if (fleet1C[i].graphic.pivot) fleet1C[i].graphic.pivot.x = 0;// if (fleet1C[i].shakepid) clearInterval(fleet1C[i].shakepid);
 			for (var j=0; j<fleet1C[i].graphic.children.length; j++) fleet1C[i].graphic.getChildAt(j).destroy();
 			fleet1C[i].graphic.destroy();
 		}
 		for (var k=0; k<allfleets2.length; k++) {
 			for (var i=0; i<allfleets2[k].length; i++) {
 				var ship = allfleets2[k][i];
-				if (ship.shakepid) clearInterval(ship.shakepid);
+				ship.shakepid = 0; if (ship.graphic.pivot) ship.graphic.pivot.x = 0;// if (ship.shakepid) clearInterval(ship.shakepid);
 				for (var j=0; j<ship.graphic.children.length; j++) ship.graphic.getChildAt(j).destroy();
 				ship.graphic.destroy();
 			}
