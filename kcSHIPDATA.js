@@ -6354,6 +6354,26 @@ var SHIPDATA = {
         fuel: 120,
         ammo: 20
     },
+	353: {
+		name: 'GrafZeppelinKai',
+		image: 'KGrafZeppelinKai.jpg',
+		type: 'CV'
+	},
+	354: {
+		name: 'ArashiKai',
+		image: 'KArashiKai.jpg',
+		type: 'DD'
+	},
+	355: {
+		name: 'HagikazeKai',
+		image: 'KHagikazeKai.jpg',
+		type: 'DD'
+	},
+	356: {
+		name: 'KashimaKai',
+		image: 'KKashimaKai.jpg',
+		type: 'CT'
+	},
     398: {
         name: 'I-168Kai',
         image: 'KI-168Kai.jpg',
@@ -6964,6 +6984,11 @@ var SHIPDATA = {
         fuel: 10,
         ammo: 20
     },
+	432: {
+		name: 'Graf Zeppelin',
+		image: 'KGrafZeppelin.jpg',
+		type: 'CV'
+	},
     434: {
         name: 'MutsukiKai2',
         image: 'KMutsukiKai2.jpg',
@@ -7211,6 +7236,16 @@ var SHIPDATA = {
         fuel: 15,
         ammo: 20
     },
+	454: {
+		name: 'Arashi',
+        image: 'KArashi.jpg',
+        type: 'DD'
+	},
+	455: {
+		name: 'Hagikaze',
+        image: 'KHagikaze.jpg',
+        type: 'DD'
+	},
     458: {
         name: 'Umikaze',
         image: 'KUmikaze.jpg',
@@ -7306,6 +7341,11 @@ var SHIPDATA = {
         fuel: 90,
         ammo: 85
     },
+	465: {
+		name: 'Kashima',
+		image: 'KKashima.jpg',
+		type: 'CT'
+	},
     466: {
         name: 'ShoukakuKai2A',
         image: 'KShoukakuKai2A.jpg',
@@ -9958,6 +9998,71 @@ var SHIPDATA = {
 		EQUIPS: [556, 557, 558, 558],
 		fuel: 0,
 		ammo: 0
+	},
+	637: {
+		name: 'PT Imp Pack',
+		image: 'SPTPack.jpg',
+		type: 'DD'
+	},
+	638: {
+		name: 'PT Imp Pack 2',
+		image: 'SPTPack.jpg',
+		type: 'DD'
+	},
+	639: {
+		name: 'PT Imp Pack 3',
+		image: 'SPTPack.jpg',
+		type: 'DD'
+	},
+	640: {
+		name: 'PT Imp Pack 4',
+		image: 'SPTPack.jpg',
+		type: 'DD'
+	},
+	641: {
+		name: 'Light Cruiser Princess',
+		image: 'SCLH.jpg',
+		type: 'CL'
+	},
+	642: {
+		name: 'Light Cruiser Princess 2',
+		image: 'SCLH.jpg',
+		type: 'CL'
+	},
+	643: {
+		name: 'Light Cruiser Princess 3',
+		image: 'SCLH.jpg',
+		type: 'CL'
+	},
+	644: {
+		name: 'Submarine Princess',
+		image: 'SSSH.jpg',
+		type: 'SS'
+	},
+	645: {
+		name: 'Submarine Princess 2',
+		image: 'SSSH.jpg',
+		type: 'SS'
+	},
+	646: {
+		name: 'Submarine Princess 3',
+		image: 'SSSH.jpg',
+		type: 'SS'
+	},
+	647: {
+		name: 'Destroyer Water Demon',
+		image: 'SDDWD.jpg',
+		type: 'DD'
+	},
+	648: {
+		name: 'Destroyer Water Demon 2',
+		image: 'SDDWD.jpg',
+		type: 'DD'
+	},
+	649: {
+		name: 'Destroyer Water Demon 3',
+		image: 'SDDWD.jpg',
+		type: 'DD'
 	},
 	901: {
 		name: 'Iona',
