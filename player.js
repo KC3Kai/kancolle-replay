@@ -61,6 +61,9 @@ for (var i=0; i<=9; i++) loader.add('C'+i,'assets/C'+i+'.png');
 for (var i=0; i<=9; i++) loader.add('N'+i,'assets/N'+i+'.png');
 var ALLLOADED = false;
 loader.load(function() { ALLLOADED = true; });
+var loader2 = new PIXI.loaders.Loader();
+var SHIPSLOADED = true; //will be set to false in processAPI if PRELOADSHIPS == true
+var PRELOADSHIPS = true;
 
 // create a new Sprite using the texture
 var bg = PIXI.Sprite.fromImage('assets/82_res.images.ImgBackgroundDay.jpg');
@@ -278,6 +281,7 @@ function createShip(data,side,i) {
 			if (eq.atype && eq.atype != A_GUN) ship.hasAAgear = true;
 		}
 	}
+	ship.hasonlytorp = hasonlytorp;
 	ship.hasbomber = (ship.planetypes.length > 0);
 	ship.issub = (sdata.type == 'SS' || sdata.type == 'SSV');
 	ship.isinstall = (sdata.type == 'Installation');
@@ -320,6 +324,8 @@ function processAPI(root) {
 		}
 	}
 	
+	loader2.reset();
+	if (PRELOADSHIPS) SHIPSLOADED = false;
 	//load friendly ships
 	var fleet = 'fleet'+root.fleetnum;
 	var fships = [], fequips = [], fshipsC = [], fequipsC = [];
@@ -327,12 +333,14 @@ function processAPI(root) {
 		if(!root[fleet][i] || root[fleet][i] == -1) continue;
 		fships.push(root[fleet][i].mst_id);
 		fequips.push(root[fleet][i].equip);
+		loader2.add('ship'+i,'assets/icons/'+SHIPDATA[root[fleet][i].mst_id].image);
 	}
 	if (root.combined) {
 		for (var i=0; i<root.fleet2.length; i++) {
 			if(!root.fleet2[i] || root.fleet2[i] == -1) continue;
 			fshipsC.push(root.fleet2[i].mst_id);
 			fequipsC.push(root.fleet2[i].equip);
+			loader2.add('ship'+i+'C','assets/icons/'+SHIPDATA[root.fleet2[i].mst_id].image);
 		}
 	}
 	fleet1 = []; fleet2 = []; fleet1C = [];
@@ -379,6 +387,7 @@ function processAPI(root) {
 		if (data.api_ship_ke[0] == -1) data.api_ship_ke = data.api_ship_ke.slice(1);
 		for (var i=0; i<data.api_ship_ke.length; i++) {
 			if (!data.api_ship_ke[i] || data.api_ship_ke[i] == -1) continue;
+			loader2.add('ship'+b+i,'assets/icons/'+SHIPDATA[data.api_ship_ke[i]].image);
 			var d = [data.api_ship_ke[i],data.api_maxhps[i+7],data.api_nowhps[i+7]];
 			if (data.api_eSlot[0] == -1) data.api_eSlot = data.api_eSlot.slice(1);
 			for (var j=0; j<data.api_eSlot[i].length; j++) {
@@ -654,6 +663,8 @@ function processAPI(root) {
 		}
 	}
 	
+	loader2.load(function() { SHIPSLOADED = true; });
+	
 	stage.addChild(shutterTop); stage.addChild(shutterBottom);
 	shutterTop.y = -246; shutterTop.alpha = .25;
 	shutterBottom.y = 456; shutterBottom.alpha = .25;
@@ -676,19 +687,19 @@ var END = false;
 var statechangefunc = null;
 var STEPBYFRAME = false;
 
-var prevtime = Date.now(), currtime = Date.now(), timeelapsed = 0, frameselapsed;
+var prevtime = Date.now(), currtime = Date.now(), timeelapsed = 0, frameselapsed = 0;
 function animate() {
 	if (END) return;
     requestAnimationFrame(animate);
 	
-	if (!ALLLOADED) return; //??????
+	if (!ALLLOADED || !SHIPSLOADED) return; //??????
 	if (HASLOADTEXT) { $('#error').text(''); HASLOADTEXT = false; }
 	
 	frameselapsed++;
 	currtime = Date.now();
 	timeelapsed += currtime - prevtime;
 	if (timeelapsed >= 1000) {
-		timeelapsed -= 1000;
+		timeelapsed = timeelapsed % 1000;
 		$('#FPS').text(frameselapsed);
 		frameselapsed = 0;
 	}
@@ -1131,7 +1142,7 @@ function shootPlane(ship,target,damage,forcecrit,protect) {
 	var angle = Math.atan((ship.graphic.y-target.graphic.y)/(ship.graphic.x-target.graphic.x));
 	updates.push([movePlane,[planes,angle,(ship.side==0) ? 5 : -5, (ship.escort||target.escort)]]);
 	
-	if (protect) addTimeout(function() { updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,2]]); }, (ship.escort||target.escort)? 1400 : 2000);
+	if (protect) addTimeout(function() { updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,3]]); }, (ship.escort||target.escort)? 1475 : 2075);
 	addTimeout(function(){ standardHit(target,damage,true,protect,forcecrit); }, (ship.escort||target.escort)? 1600 : 2200);
 	
 	addTimeout(function(){stage.removeChild(planes); ecomplete=true;},3000);
@@ -1152,7 +1163,7 @@ function shootASW(ship,target,damage,forcecrit,protect) {
 		// if (protect) updates.push([shipMoveTo,[target,target.xorigin+50-100*target.side,3]]);
 		updates.push([shipMoveTo,[ship,ship.xorigin,2]]);
 	},1500);
-	addTimeout(function(){ ecomplete = true; }, 2000);
+	addTimeout(function(){ ecomplete = true; }, 2000 + ((protect)?100:0));
 }
 
 function shootCutIn(ship,target,damage,forcecrit,protect) {
@@ -1199,7 +1210,7 @@ function shootBigGun(ship,target,damage,forcecrit,protect) {
 function shootTorp(ship,target,damage,forcecrit,protect) {
 	shipShake(ship,3,0,36);
 	addTimeout(function(){ createTorp(ship,target,6); }, 500);
-	if (protect) addTimeout(function() { updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,2]]); }, 1700);
+	if (protect) addTimeout(function() { updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,3]]); }, 1775);
 	addTimeout(function(){ standardHit(target,damage,true,protect,forcecrit); },1900);
 	
 	addTimeout(function(){ ecomplete = true; }, 2600);
@@ -1208,7 +1219,7 @@ function shootTorp(ship,target,damage,forcecrit,protect) {
 function shootBigTorp(ship,target,damage,forcecrit,protect) {
 	shipShake(ship,3,0,36);
 	addTimeout(function(){ createTorp(ship,target,12,true); }, 500);
-	if (protect) addTimeout(function() { updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,2]]); }, 1100);
+	if (protect) addTimeout(function() { updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,3]]); }, 1175);
 	addTimeout(function(){ standardHit(target,damage,true,protect,forcecrit); },1300);
 	
 	addTimeout(function(){ ecomplete = true; }, 2200);

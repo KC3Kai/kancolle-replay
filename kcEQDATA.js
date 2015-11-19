@@ -1944,5 +1944,11 @@ var EQDATA = {
 		EV: 3,
 		LOS: 3,
 		ACC: 5
+	},
+	560: {
+		name: 'Abyssal Searchlight',
+		type: SEARCHLIGHTS,
+		FP: 2,
+		LOS: 2
 	}
 };
