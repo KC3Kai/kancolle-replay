@@ -133,7 +133,7 @@ function genFleetHTML(rootid,fleetnum,fleetname) {
         td.setAttribute('colspan','2');
         // var num = document.createTextNode((i+1).toString());
 		var num = document.createElement('img');
-		num.setAttribute('src','assets/stats/f'+(i+1)+'.png');
+		num.setAttribute('src','assets/stats/F'+(i+1)+'.png');
         // var b = document.createElement('input');
         // b.setAttribute('type','button');
         // b.setAttribute('value','Clear');
