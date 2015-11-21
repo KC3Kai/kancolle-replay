@@ -6357,7 +6357,7 @@ var SHIPDATA = {
 	353: {
 		name: 'GrafZeppelinKai',
 		image: 'KGrafZeppelinKai.jpg',
-		type: 'CV',
+		type: 'CVN',
 		HP: 78,
         FP: 50,
         TP: 0,
@@ -7047,7 +7047,7 @@ var SHIPDATA = {
 	432: {
 		name: 'Graf Zeppelin',
 		image: 'KGrafZeppelin.jpg',
-		type: 'CV',
+		type: 'CVN',
 		HP: 70,
         FP: 40,
         TP: 0,

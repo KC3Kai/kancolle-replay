@@ -30,7 +30,7 @@ loader.add('BG1','assets/82_res.images.ImgBackgroundDay.jpg')
 	.add('dminor','assets/d383.png')
 	.add('dmedium','assets/d385.png')
 	.add('dmajor','assets/d387.png')
-	.add('dfcf','assets/d393.png')
+	.add('dfcf','assets/d403.png')
 	.add('938','assets/938.png')
 	.add('914','assets/914.png')
 	.add('916','assets/916.png')
@@ -878,7 +878,7 @@ function shipAddEscape(ship) {
 	ship.escaped = true;
 	if (ship.damg) ship.graphic.removeChild(ship.damg);
 	for (i=0; i<5; i++) ship.graphic.getChildAt(i).filters = [new PIXI.filters.GrayFilter()];
-	var dam = PIXI.Sprite.fromImage('assets/d393.png'); dam.y += 2;
+	var dam = PIXI.Sprite.fromImage('assets/d403.png'); dam.y += 2;
 	ship.graphic.addChild(dam);
 	ship.damg = dam;
 	if (ship.side == 1) dam.x += 10;
