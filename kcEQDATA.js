@@ -1459,6 +1459,32 @@ var EQDATA = {
 		EV: 4,
 		LOS: 3
 	},
+	158: {
+		name: 'Bf 109T Kai',
+		type: FIGHTER,
+		isfighter: true,
+		AA: 8,
+		FP: 1,
+		EV: 4
+	},
+	159: {
+		name: 'Fw 190T Kai',
+		type: FIGHTER,
+		isfighter: true,
+		AA: 10,
+		FP: 2,
+		EV: 2
+	},
+	160: {
+		name: '10.5cm Twin Gun Mount',
+		type: SECGUN,
+		atype: A_HAGUN,
+		FP: 3,
+		AA: 6,
+		ACC: 2,
+		EV: 1,
+		RNG: 1
+	},
 	501: {
 		name: '5inch Single Cannon',
 		type: MAINGUNS,

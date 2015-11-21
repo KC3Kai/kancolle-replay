@@ -30,6 +30,7 @@ loader.add('BG1','assets/82_res.images.ImgBackgroundDay.jpg')
 	.add('dminor','assets/d383.png')
 	.add('dmedium','assets/d385.png')
 	.add('dmajor','assets/d387.png')
+	.add('dfcf','assets/d393.png')
 	.add('938','assets/938.png')
 	.add('914','assets/914.png')
 	.add('916','assets/916.png')
@@ -51,6 +52,7 @@ loader.add('BG1','assets/82_res.images.ImgBackgroundDay.jpg')
 	.add('469','assets/469.png')
 	.add('471','assets/471.png')
 	.add('473','assets/473.png')
+	.add('dotOrange','assets/dotOrange.png')
 	.add('216','assets/216.png')
 	.add('aaci1','assets/aaci1.png')
 	.add('aaci2','assets/aaci2.png')
@@ -121,6 +123,8 @@ function createDots(container,form,num,side) {
 	var name, path;
 	if (side) { name = 'dotRed'; path = 'assets/467.png'; } //change path
 	else { name = 'dotGreen'; path = 'assets/465.png'; }
+	var nameC = (COMBINED==1)? 'dotBlue' : (COMBINED==3)? 'dotOrange' : 'dotYellow';
+	var pathC = (COMBINED==1)? 'assets/471.png' : (COMBINED==3)? 'assets/dotOrange.png' : 'assets.469.png';
 	form = parseInt(form);
 	switch(form) {
 		case 0:
@@ -189,7 +193,7 @@ function createDots(container,form,num,side) {
 			}
 			coords = [[-10,23],[-10,7],[-10,-7],[-10,-23],[-24,7],[-24,-7]];
 			for (var i=0; i<coords.length; i++) {
-				var dot = getFromPool((COMBINED==2)?'dotYellow':'dotBlue',(COMBINED==2)?'assets/469.png':'assets/471.png');
+				var dot = getFromPool(nameC,pathC);
 				dot.position.set(coords[i][0],coords[i][1]);
 				dot.anchor.set(.5);
 				container.addChild(dot);
@@ -207,7 +211,7 @@ function createDots(container,form,num,side) {
 			}
 			coords = [[0,7],[0,-7],[-14,7],[-14,-7],[14,7],[14,-7]];
 			for (var i=0; i<coords.length; i++) {
-				var dot = getFromPool((COMBINED==2)?'dotYellow':'dotBlue',(COMBINED==2)?'assets/469.png':'assets/471.png');
+				var dot = getFromPool(nameC,pathC);
 				dot.position.set(coords[i][0],coords[i][1]);
 				dot.anchor.set(.5);
 				container.addChild(dot);
@@ -223,7 +227,7 @@ function createDots(container,form,num,side) {
 			}
 			coords = [[0,0],[-12,0],[-24,7],[-24,-7],[-36,7],[-36,-7]];
 			for (var i=0; i<coords.length; i++) {
-				var dot = getFromPool((COMBINED==2)?'dotYellow':'dotBlue',(COMBINED==2)?'assets/469.png':'assets/471.png');
+				var dot = getFromPool(nameC,pathC);
 				dot.position.set(coords[i][0],coords[i][1]);
 				dot.anchor.set(.5);
 				container.addChild(dot);
@@ -403,11 +407,14 @@ function processAPI(root) {
 		if (COMBINED) for (var i=0; i<fleet1C.length; i++) HPstate[i+12] = data.api_nowhps_combined[i+1];
 		var NBonly = (!!data.api_hougeki || Object.keys(data).length <= 0);
 		var battledata = [data.api_formation[2],data.api_formation[0],data.api_formation[1],0,0,(NBonly)?1:0];
+		var escape = [[],[]];
+		if (data.api_escape_idx) escape[0] = data.api_escape_idx;
+		if (data.api_escape_idx_combined) escape[1] = data.api_escape_idx_combined;
 		if (b>0) {
 			eventqueue.push([wait,[3000]]);
 			eventqueue.push([shuttersNextBattle,[battledata,f2]]);
 		}
-		eventqueue.push([battleStart,[battledata,f2],getState(true)]);
+		eventqueue.push([battleStart,[battledata,f2,escape],getState(true)]);
 		battlestarts.push(eventqueue.length-1);
 		allfleets2.push(f2);
 		
@@ -605,19 +612,19 @@ function processAPI(root) {
 		if (data.api_opening_atack) processRaigeki(data.api_opening_atack,f);
 		
 		//shelling 1, 2, 3
-		f = (COMBINED == 1)? fleet1C : fleet1;
+		f = (COMBINED == 1 || COMBINED == 3)? fleet1C : fleet1;
 		if (data.api_hougeki1) processHougeki(data.api_hougeki1,f);
 		//CTF does closing torpedo
-		if (COMBINED == 1 && data.api_raigeki) processRaigeki(data.api_raigeki,f);
+		if ((COMBINED == 1 || COMBINED == 3) && data.api_raigeki) processRaigeki(data.api_raigeki,f);
 		
 		if (data.api_hougeki2) processHougeki(data.api_hougeki2,fleet1); //always main fleet
-		f = (COMBINED == 1)? fleet1 : fleet1C;
+		f = (COMBINED == 1 || COMBINED == 3)? fleet1 : fleet1C;
 		if (COMBINED == 2) eventqueue.push([wait,[1000]]); //short pause between main and escort shelling if STF
 		if (data.api_hougeki3) processHougeki(data.api_hougeki3,f);
 		
-		//closing torp (if not CTF)
+		//closing torp (if not CTF/TTF)
 		f = (COMBINED)? fleet1C : fleet1;
-		if (COMBINED != 1 && data.api_raigeki) processRaigeki(data.api_raigeki,f);
+		if (COMBINED != 1 && COMBINED != 3 && data.api_raigeki) processRaigeki(data.api_raigeki,f);
 		
 		//night battle
 		var f1 = (COMBINED)? fleet1C : fleet1;
@@ -866,12 +873,25 @@ function moveTorp(torp,speed) {
 	return false;
 }
 
+function shipAddEscape(ship) {
+	if (ship.escaped) return;
+	ship.escaped = true;
+	if (ship.damg) ship.graphic.removeChild(ship.damg);
+	for (i=0; i<5; i++) ship.graphic.getChildAt(i).filters = [new PIXI.filters.GrayFilter()];
+	var dam = PIXI.Sprite.fromImage('assets/d393.png'); dam.y += 2;
+	ship.graphic.addChild(dam);
+	ship.damg = dam;
+	if (ship.side == 1) dam.x += 10;
+	ship.status = 0;
+}
+
 function shipSetHP(ship,hp) {
 	if (hp > ship.hpmax) hp = ship.hpmax;
 	if (hp < 0) hp = 0;
 	
 	if (ship.side==0) { HPnow1 -= ship.hp-hp; setHPBar(1,1-HPnow1/HPtotal1); } //update HP bars
 	else { HPnow2 -= ship.hp-hp; setHPBar(0,1-HPnow2/HPtotal2); }
+	ship.escaped = false;
 
 	var hpbar = ship.graphic.getChildAt(1);  //change bar
 	var percent = hp/ship.hpmax;
@@ -887,20 +907,20 @@ function shipSetHP(ship,hp) {
 	var dtext = ship.graphic.getChildAt(4);
 	dtext.text = hp+'/'+ship.hpmax;  //change text
 	if (ship.side == 1) dtext.x  = -7-dtext.width;
-	
+
 	if (hp <= 0) {
 		if (ship.status != 0) {
-			if (ship.status < 4) ship.graphic.removeChildAt(5);
+			if (ship.damg) ship.graphic.removeChild(ship.damg);
 			for (i=0; i<5; i++) ship.graphic.getChildAt(i).filters = [new PIXI.filters.GrayFilter()];
 			var dam = PIXI.Sprite.fromImage('assets/d389.png'); dam.y += 2;
 			ship.graphic.addChild(dam);
 			ship.damg = dam;
-			if (ship.side == 1) ship.graphic.getChildAt(5).x += 10;
+			if (ship.side == 1) dam.x += 10;
 			ship.status = 0;
 		}
 	} else if (hp <= ship.hpmax/4) {
 		if (ship.status != 1) {
-			if (ship.status < 4) ship.graphic.removeChild(ship.damg);
+			if (ship.damg) ship.graphic.removeChild(ship.damg);
 			if (ship.status == 0) for (i=0; i<5; i++) ship.graphic.getChildAt(i).filters = null;
 			var dam = PIXI.Sprite.fromImage('assets/d387.png'); dam.y += 2;
 			ship.graphic.addChild(dam);
@@ -910,7 +930,7 @@ function shipSetHP(ship,hp) {
 		}
 	} else if (hp <= ship.hpmax/2) {
 		if (ship.status != 2) {
-			if (ship.status < 4) ship.graphic.removeChild(ship.damg);
+			if (ship.damg) ship.graphic.removeChild(ship.damg);
 			if (ship.status == 0) for (i=0; i<5; i++) ship.graphic.getChildAt(i).filters = null;
 			var dam = PIXI.Sprite.fromImage('assets/d385.png'); dam.y += 2;
 			ship.graphic.addChild(dam);
@@ -920,7 +940,7 @@ function shipSetHP(ship,hp) {
 		}
 	} else if (hp <= ship.hpmax*.75) {
 		if (ship.status != 3) {
-			if (ship.status < 4) ship.graphic.removeChild(ship.damg);
+			if (ship.damg) ship.graphic.removeChild(ship.damg);
 			if (ship.status == 0) for (i=0; i<5; i++) ship.graphic.getChildAt(i).filters = null;
 			var dam = PIXI.Sprite.fromImage('assets/d383.png'); dam.y += 2;
 			ship.graphic.addChild(dam);
@@ -995,7 +1015,7 @@ function dotAppear(dots) {
 }
 
 //--------------------
-function battleStart(battledata,newships) {
+function battleStart(battledata,newships,escape) {
 	if (battledata[5] == '1' && !bg2.parent) {  //just in case background wasn't changed
 		stage.removeChild(bg);
 		stage.addChildAt(bg2,0);
@@ -1023,6 +1043,17 @@ function battleStart(battledata,newships) {
 	for (var i=0; i<fleet2.length; i++) HPtotal2 += fleet2[i].hp;
 	HPnow1 = HPtotal1; HPnow2 = HPtotal2;
 	clearHPBar(0); clearHPBar(1);
+	
+	if (escape) {
+		for (var i=0; i<escape[0].length; i++) {
+			ship = fleet1[escape[0][i]-1];
+			shipAddEscape(ship);
+		}
+		for (var i=0; i<escape[1].length; i++) {
+			ship = fleet1C[escape[1][i]-1];
+			shipAddEscape(ship);
+		}
+	}
 	
 	var j = 0;
 	for (var i=0; i<fleet1.length; i++) {
@@ -1476,6 +1507,7 @@ function GSupportPhase(ships,damages) {
 	
 	addTimeout(function() {
 		for (var i=0; i<damages.length; i++) {
+			if (i >= fleet2.length) break;
 			standardHit(fleet2[i],damages[i]);
 		}
 	}, 1000);
@@ -1692,11 +1724,11 @@ function skipToBattle(battle) {
 		e = battlestarts[battle-1];
 		var hps = eventqueue[e][2].HP;
 		for (var i=0; i<fleet1.length; i++) {
-			if (fleet1[i].hp != hps[i]) shipSetHP(fleet1[i],hps[i]);
+			if (fleet1[i].hp != hps[i] || fleet1[i].escaped) shipSetHP(fleet1[i],hps[i]);
 		}
 		if (COMBINED) {
 			for (var i=0; i<fleet1C.length; i++) {
-				if (fleet1C[i].hp != hps[i+12]) shipSetHP(fleet1C[i],hps[i+12]);
+				if (fleet1C[i].hp != hps[i+12] || fleet1C[i].escaped) shipSetHP(fleet1C[i],hps[i+12]);
 			}
 		}
 		shutterTop.y = -246; shutterTop.alpha = .25;

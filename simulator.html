@@ -1,0 +1,246 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+		<meta content="utf-8" http-equiv="encoding">
+		<script src="jquery-1.11.3.min.js"></script>
+		<script src="chosen.jquery.js"></script>
+		<link rel="stylesheet" href="chosen.css"/>
+		<script src="kcships.js"></script>
+		<script src="kcSHIPDATA.js"></script>
+		<script src="kcEQDATA.js"></script>
+		<script src="kcENEMYCOMP.js"></script>
+		<script src="shared.js"></script>
+		<script src="kcsim.js"></script>
+		<script src="pixi.js"></script>
+		<style>
+		table.t1 {
+			border-collapse: collapse;
+		}
+		table.t1 td {
+			border: 1px solid black;
+			padding: 1px;
+		}
+		table.t1 select {
+			width: 160px;
+		}
+		table.t1 input[type="number"] {
+			width: 50px;
+			float: right;
+		}
+		table.t1 input[type="button"] {
+			float: right;
+			vertical-align: bottom;
+		}
+		h3 {
+			padding: 0px;
+			margin-bottom: 0px;
+		}
+		div.clickable {
+			cursor: pointer;
+			height:100%;
+			width:100%;
+		}
+		table.stattable {
+			border-collapse: collapse;
+		}
+		table.stattable td {
+			border-left: 1px solid black;
+			width: 45px;
+		}
+		#resultspace img {
+			vertical-align: middle;
+		}
+		.rescolumn {
+			float:left;
+			width:300px;
+		}
+		</style>
+	</head>
+	<body>
+		<h1 title="a">Boat Cockfight Simulator</h1> <h4>v1.0 Alpha 1</h4>
+		<!--<h4>Ver. Alpha 0.1.poot</h4>-->
+		<br><br><br><br>
+		<div id="fleetspace1" style="clear:both"></div>
+		<br>
+		<div style="width:1000px">
+			<div style="width:200px;margin:auto">
+			<input type="button" id="btnAddComb" value="Add Combined Fleet" onClick="clickedAddComb(true)"/>
+			<input type="button" id="btnDelComb" value="Remove Combined Fleet" style="display:none" onClick="clickedDelComb()"/>
+			</div>
+		</div>
+		<br>
+		<div id="fleetspace1S"></div>
+		<div style="width:1000px">
+			<div style="width:200px;margin:auto">
+			<input type="button" id="btnAddSup" value="Add Support" onClick="clickedAddNode(true)"/>
+			<input type="button" id="btnDelSup" value="Remove Support" style="visibility:hidden" onClick="clickedDelNode()"/>
+			</div>
+		</div>
+		<br><hr><br><br>
+		<div id="fleetspace2"></div>
+		<br>
+		<div style="width:1000px">
+			<div style="width:200px;margin:auto">
+			<input type="button" id="btnAddNode" value="Add Node" onClick="clickedAddNode(true)"/>
+			<input type="button" id="btnDelNode" value="Remove Node" style="visibility:hidden" onClick="clickedDelNode()"/>
+			</div>
+		</div>
+		<br>
+		<hr>
+		
+		<h2>Simulator</h2>
+		<div>
+			<input type="checkbox" id="cbredretr" checked="true" onchange="changedCBRedRetr(this.checked);raiseFleetChange()"/>
+			<label for="cbredretr">Retreat on <img src="assets/stats/taiha.png" style="vertical-align:middle"/>?</label>
+			<img src="assets/stats/kuso.png" id="redretrkuso" style="display:none;vertical-align:middle"/>
+			<br><br>
+			<table id="optionstable">
+			
+			</table>
+		</div><br>
+		<div>Simulate <input type="number" value="10000" max="100000" min="1" id="simnum" style="width:60px" onChange="changedSimNumber()"/> times and show statistics:<br><input type="button" id="simgo" value="Go" onClick="clickedSimGo()"/></div>
+		<br>
+		<span id="simnotespace" style="color:#FF0000"></span>
+		<br><br>
+		<div id="resultspace" style="display:none">
+			
+			<h3>Statistics</h3>
+			<div>Number of runs: <span id="rnumruns">0</span></div><br>
+			<div class="rescolumn">
+				<div class="ressingle">Rank Rate:<br></div>
+				<div class="resmulti">Final Rank Rate:<br></div>
+				<img src="assets/stats/S.png"></img> <span id="rankS" style="font-weight:bold">0</span><br>
+				<img src="assets/stats/A.png"></img> <span id="rankA">0</span><br>
+				<img src="assets/stats/B.png"></img> <span id="rankB">0</span><br>
+				<img src="assets/stats/C.png"></img> <span id="rankC">0</span><br>
+				<img src="assets/stats/D.png"></img> <span id="rankD">0</span><br>
+				<img src="assets/stats/E.png"></img> <span id="rankE">0</span><br>
+				<div class="resmulti"><img src="assets/stats/salt.png"></img> <span id="rankNone">0</span><br></div>
+				<br>
+				Enemy Flagship Sunk Rate:<br>
+				<img src="assets/stats/flagsunk.png"></img> <span id="rsunkfs" style="font-weight:bold">0</span><br>
+				<br>
+				<div class="resmulti">
+					<span>Rank Per Battle:</span>
+					<table id="ranktab" class="stattable"></table>
+				</div>
+			</div>
+			<div class="rescolumn">
+				<div class="ressingle">
+					<span><img src="assets/stats/mvp.png"> Rate:</span><br>
+					<img src="assets/stats/F1.png"></img> <span id="mvp1">0</span><br>
+					<img src="assets/stats/F2.png"></img> <span id="mvp2">0</span><br>
+					<img src="assets/stats/F3.png"></img> <span id="mvp3">0</span><br>
+					<img src="assets/stats/F4.png"></img> <span id="mvp4">0</span><br>
+					<img src="assets/stats/F5.png"></img> <span id="mvp5">0</span><br>
+					<img src="assets/stats/F6.png"></img> <span id="mvp6">0</span><br>
+				</div>
+				<div class="resmulti">
+					<span><img src="assets/stats/mvp.png"> Rate Per Battle:</span>
+					<table id="mvptab" class="stattable"></table>
+				</div>
+				<br>
+			</div>
+			<div class="rescolumn">
+				<div class="ressingle">
+					Major Damage Rate:<br>
+					<img src="assets/stats/taiha.png"></img>Any: <span id="rredany" style="font-weight:bold">0</span><br>
+					<br>
+					Individual <img src="assets/stats/taiha.png">:<br>
+					<img src="assets/stats/F1.png"></img> <span id="red1">0</span><br>
+					<img src="assets/stats/F2.png"></img> <span id="red2">0</span><br>
+					<img src="assets/stats/F3.png"></img> <span id="red3">0</span><br>
+					<img src="assets/stats/F4.png"></img> <span id="red4">0</span><br>
+					<img src="assets/stats/F5.png"></img> <span id="red5">0</span><br>
+					<img src="assets/stats/F6.png"></img> <span id="red6">0</span><br>
+					<br>
+					No Medium Damage:<br>
+					<img src=""></img> <span id="rnodam">0</span><br>
+				</div>
+				<div class="resmulti">
+					<img src="assets/stats/taiha.png"> Rate Per Battle:<br>
+					<div id="dmglist"></div><br>
+					<br>
+					Individual <img src="assets/stats/taiha.png">:<br>
+					<table id="dmgtab" class="stattable"></table><br>
+					<br>
+					No Medium Damage Rate After Battle:<br>
+					<div id="nodmglist"></div><br>
+				</div>
+				<br>
+			</div>
+			<div class="rescolumn">
+				Avg Resupply:<br>
+				<img src="assets/stats/fuel.png"></img> <span id="rfsup">0</span><br>
+				<img src="assets/stats/ammo.png"></img> <span id="rasup">0</span><br>
+				<img src="assets/stats/baux.png"></img> <span id="rbsup">0</span><br><br>
+				Avg Repair:<br>
+				<img src="assets/stats/fuel.png"></img> <span id="rfrep">0</span><br>
+				<img src="assets/stats/steel.png"></img> <span id="rsrep">0</span><br><br>
+				Avg Resource Per <img src="assets/stats/S.png" style="vertical-align:middle" />:<br>
+				<img src="assets/stats/fuel.png"></img> <span id="rfpS" style="font-weight:bold">0</span><br>
+				<img src="assets/stats/ammo.png"></img> <span id="rapS" style="font-weight:bold">0</span><br>
+				<img src="assets/stats/steel.png"></img> <span id="rspS" style="font-weight:bold">0</span><br>
+				<img src="assets/stats/baux.png"></img> <span id="rbpS" style="font-weight:bold">0</span><br><br>
+				Avg Resource Per <img src="assets/stats/flagsunk.png" style="vertical-align:middle" />:<br>
+				<img src="assets/stats/fuel.png"></img> <span id="rfpF" style="font-weight:bold">0</span><br>
+				<img src="assets/stats/ammo.png"></img> <span id="rapF" style="font-weight:bold">0</span><br>
+				<img src="assets/stats/steel.png"></img> <span id="rspF" style="font-weight:bold">0</span><br>
+				<img src="assets/stats/baux.png"></img> <span id="rbpF" style="font-weight:bold">0</span><br>
+				<br>
+			</div>
+			
+			
+		</div>
+		<br style="clear:both">
+		<hr>
+		
+		
+		<div>
+			<div>
+				<div style="width:150px;float:left">
+					<input type="button" id="btnWatch" value="Watch Battle" onClick="clickedWatchBattle()"/>
+				</div>
+				<div style="float:left">
+					<input type="button" value="&lt; Back" onclick="clickedBack()" />
+					<input type="button" value="Pause" onclick="PAUSE=!PAUSE;" />
+					<input type="button" value="Skip &gt;" onclick="clickedSkip()" />
+					<input type="button" value="Restart" onclick="reset(true)" />
+				</div>
+			</div>
+			<div style="width:800px;height:100px;padding-top:20px;clear:both">
+				<div style="float:left;width:240px">
+					Detection: <span id="plDet1"></span><br><br>
+					Air Battle: <span id="plAS1" style="font-weight:bold;font-size:20px"></span><br><br>
+					<div style="width:240px;height:10px;border:1px solid black;border-radius:5px">
+						<div id="plHP1" style="width:240px;height:10px;background-color:green;border-radius:4px"></div>
+					</div>
+				</div>
+				<div style="float:left;width:320px;text-align:center">
+					<br><br>
+					Engagement:<br>
+					<span id="plEngage" style="font-size:20px"></span> <span id="plEngageT" style="font-size:18px;font-weight:bold"></span>
+				</div>
+				<div style="float:right;width:240px;align:right">
+					<br><br>
+					Air Battle: <span id="plAS2" style="font-weight:bold;font-size:20px"></span><br><br>
+					<div style="width:240px;height:10px;border:1px solid black;border-radius:5px">
+						<div id="plHP2" style="width:240px;height:10px;background-color:red;border-radius:4px"></div>
+					</div>
+				</div>
+			</div>
+			<!--<input type="button" id="startb" value="Start" onClick="startPlayer()" />
+			<input type="button" id="hideb" value="Show" onClick="hidePlayer()" />-->
+			<div id="movie"><div id="battlespace"></div><script src="player.js"></script></div>
+			<script src='ui.js'></script>
+		</div>
+		<div>
+			<textarea id="code" cols="40" rows="5"></textarea>
+			<br/>
+			<input id="codeb" type="button" value="Load" onClick="loadCode()" />
+			<span id="error" style="color:red"></span>
+		</div>
+		<br/><br/>
+	</body>
+</html>
