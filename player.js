@@ -617,7 +617,15 @@ function processAPI(root) {
 				for (var i=0; i<damages.length; i++) {
 					HPstate[i+6] -= Math.floor(damages[i]);
 				}
-				eventqueue.push([GSupportPhase,[[],damages]]);
+				eventqueue.push([GSupportPhase,[[],damages,(data.api_support_flag==3)]]);
+			} else if (data.api_support_info.api_support_airatack) {
+				var stage3 = data.api_support_info.api_support_airatack.api_stage3;
+				var targetdata = [];
+				for (var i=1; i<stage3.api_edam.length; i++) {
+					if (stage3.api_ebak_flag[i] || stage3.api_erai_flag[i])
+						targetdata.push([f2[i-1],Math.floor(stage3.api_edam[i])]);
+				}
+				eventqueue.push([GAirPhase,[[1,1],targetdata,[],-1,-1,-1,-1,-1,-1,true]]);
 			}
 		}
 		
@@ -1375,17 +1383,27 @@ function GTorpedoPhase(shots) {
 	addTimeout(function(){ ecomplete = true; }, 4000);
 }
 
-function GAirPhase(attackdata,targetdata,defenders,aaci1,aaci2,contact1,contact2,AS1,AS2) {
+function GAirPhase(attackdata,targetdata,defenders,aaci1,aaci2,contact1,contact2,AS1,AS2,issupport) {
 	var allplanes = [];
-	for (var i=0; i<attackdata.length; i++) {
-		var ship = attackdata[i][0]; var statuses = attackdata[i][1]; var statuses2 = attackdata[i][2];
-		// console.log(statuses);
-		var planes = createPlane(ship.graphic.x+85,ship.graphic.y+22,ship.planetypes,statuses,statuses2);
-		updates.push([movePlane,[planes,Math.PI*ship.side,(ship.side==0) ? 4 : -4]]);
-		// for (var j=0; j<statuses.length; j++) {  //remove graphics if plane completely shot down, may not need
-			// if (statuses[i][j] == 2) ship.planetypes.splice(i,1);
-		// }
+	if (!issupport) {
+		for (var i=0; i<attackdata.length; i++) {
+			var ship = attackdata[i][0]; var statuses = attackdata[i][1]; var statuses2 = attackdata[i][2];
+			var planes = createPlane(ship.graphic.x+85,ship.graphic.y+22,ship.planetypes,statuses,statuses2);
+			updates.push([movePlane,[planes,Math.PI*ship.side,(ship.side==0) ? 4 : -4]]);
+			// for (var j=0; j<statuses.length; j++) {  //remove graphics if plane completely shot down, may not need
+				// if (statuses[i][j] == 2) ship.planetypes.splice(i,1);
+			// }
+			allplanes.push(planes);
+		}
+	} else {
+		var planes = createPlane(-200,-100,[1]);
+		updates.push([movePlane,[planes,Math.PI/8,6]]);
 		allplanes.push(planes);
+		addTimeout(function() {
+			var planes2 = createPlane(-200,-100,[1,1,1]);
+			updates.push([movePlane,[planes2,Math.PI/8,6]]);
+			allplanes.push(planes2);
+		}, 250);
 	}
 	
 	if (aaci1 > -1 || aaci2 > -1) {  //AACI freeze
@@ -1512,11 +1530,21 @@ function moveAACIfire(fire,fade) {
 }
 
 
-function GSupportPhase(ships,damages) {
-	for (var i=0; i<12; i++) {
-		addTimeout(function() {
-			createSupportShell(200,-20,Math.PI*(.15+.1*Math.random()));
-		}, 100+i*50);
+function GSupportPhase(ships,damages,istorpedo) {
+	if (!istorpedo) {
+		for (var i=0; i<12; i++) {
+			addTimeout(function() {
+				createSupportShell(200,-20,Math.PI*(.15+.1*Math.random()));
+			}, 100+i*50);
+		}
+	} else {
+		for (var i=0; i<6; i++) {
+			var targets = shuffle(fleet2.slice()), j=0;
+			addTimeout(function() {
+				createSupportTorp(0,-200,Math.atan((targets[j].graphic.y+200)/(targets[j].graphic.x)));
+				j++;
+			}, i*100);
+		}
 	}
 	
 	addTimeout(function() {
@@ -1548,6 +1576,26 @@ function moveSupportShell(shell,angle) {
 	if (shell.lifetime <= 20) shell.alpha -= .05;
 	if(shell.lifetime <= 0) { recycle(shell); return true; }
 	return false;
+}
+
+function createSupportTorp(x,y,angle) {
+	var torp = getFromPool('torpedoBig','assets/493.png');
+	torp.alpha = 1;
+	torp.position.set(x,y);
+	torp.pivot.set(0,13);
+	torp.lifetime = 50;
+	torp.rotation = angle;
+	torp.notpersistent = true;
+	torp.mask = null;
+	stage.addChild(torp);
+	updates.push([function() {
+		torp.x += 12*Math.cos(angle);
+		torp.y += 12*Math.sin(angle);
+		torp.lifetime--;
+		if (torp.lifetime <= 20) torp.alpha -= .05;
+		if(torp.lifetime <= 0) { recycle(torp); return true; }
+		return false;
+	},[]]);
 }
 
 function escortFadeIn(ship) {
