@@ -625,7 +625,7 @@ function processAPI(root) {
 					if (stage3.api_ebak_flag[i] || stage3.api_erai_flag[i])
 						targetdata.push([f2[i-1],Math.floor(stage3.api_edam[i])]);
 				}
-				eventqueue.push([GAirPhase,[[1,1],targetdata,[],-1,-1,-1,-1,-1,-1,true]]);
+				eventqueue.push([GAirPhase,[[1,1],targetdata,[],-1,-1,-1,-1,false,false,true]]);
 			}
 		}
 		
@@ -1447,7 +1447,7 @@ function GAirPhase(attackdata,targetdata,defenders,aaci1,aaci2,contact1,contact2
 				ii++;
 			}, 500);
 		}
-		showAS(AS1,AS2);
+		if (AS1!==false && AS2!==false) showAS(AS1,AS2);
 	}, 900);
 	
 	var k = 0;
