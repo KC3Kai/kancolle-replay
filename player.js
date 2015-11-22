@@ -124,7 +124,7 @@ function createDots(container,form,num,side) {
 	if (side) { name = 'dotRed'; path = 'assets/467.png'; } //change path
 	else { name = 'dotGreen'; path = 'assets/465.png'; }
 	var nameC = (COMBINED==1)? 'dotBlue' : (COMBINED==3)? 'dotOrange' : 'dotYellow';
-	var pathC = (COMBINED==1)? 'assets/471.png' : (COMBINED==3)? 'assets/dotOrange.png' : 'assets.469.png';
+	var pathC = (COMBINED==1)? 'assets/471.png' : (COMBINED==3)? 'assets/dotOrange.png' : 'assets/469.png';
 	form = parseInt(form);
 	switch(form) {
 		case 0:
@@ -200,6 +200,20 @@ function createDots(container,form,num,side) {
 			}
 			break;
 		case 12:
+			var coords = [[3,7],[3,-7],[16,0],[30,0],[30,17],[30,-17]];
+			for (var i=0; i<coords.length; i++) {
+				var dot = getFromPool('dotGreenC','assets/473.png');
+				dot.position.set(coords[i][0],coords[i][1]);
+				dot.anchor.set(.5);
+				container.addChild(dot);
+			}
+			coords = [[-10,7],[-10,-7],[-23,7],[-23,-7],[-36,7],[-36,-7]];
+			for (var i=0; i<coords.length; i++) {
+				var dot = getFromPool(nameC,pathC);
+				dot.position.set(coords[i][0],coords[i][1]);
+				dot.anchor.set(.5);
+				container.addChild(dot);
+			}
 			break;
 		case 13:
 			var coords = [[32,0],[-32,0],[14,30],[14,-30],[-14,30],[-14,-30]];
