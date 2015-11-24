@@ -95,8 +95,8 @@
 		<div>
 			<span style="font-size:12px;margin-left:750px">FPS: <span id="FPS"></span></span><br>
 			<div style="float:left;width:400px">
-				<span style="font-weight:bold">Upload image: </span><input type="file" onchange="loadImage(this.files[0])"><br>
-				<span style="font-weight:bold">Load from URL: </span><input id="textimgurl" type="text"><input type="button" value="Load" onclick="loadImgURL($('#textimgurl').val())"/><br>
+				<div style="padding-bottom:8px"><span style="font-weight:bold">Upload image: </span><input type="file" onchange="loadImage(this.files[0])"></div>
+				<div style="padding-bottom:8px"><span style="font-weight:bold">Load from URL: </span><input id="textimgurl" type="text"><input type="button" value="Load" onclick="loadImgURL($('#textimgurl').val())"/></div>
 				<img src="" id="imgpreview" height="200" alt="Image preview..."><br>
 				<br>
 			</div>

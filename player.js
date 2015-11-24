@@ -341,7 +341,7 @@ function processAPI(root) {
 	if (bspace) {
 		bspace.html('');
 		for (var i=0; i<root.battles.length; i++) {
-			bspace.append('<input type="button" value="'+(i+1)+'" onclick="skipToBattle(this.value)"/>');
+			bspace.append('<input type="button" value="'+String.fromCharCode(64+root.battles[i].node)+'" onclick="skipToBattle('+(i+1)+')"/>');
 		}
 	}
 	
