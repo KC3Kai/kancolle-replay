@@ -98,6 +98,10 @@
 			<table id="optionstable">
 			
 			</table>
+			<br>
+			<span><img src="assets/stats/bucket.png" alt="Bucket"/> Conditions:</span>
+			<span>If HP &le; <input type="number" id="numbucketpercent" min="0" max="100" value="0" style="width:50px"/>%</span>
+			<span>OR if Repair Time &gt; <input type="number" id="numbucketrepair" min="0" max="99" value="99" step=".1" style="width:50px"/> hours</span><br>
 		</div><br>
 		<div>Simulate <input type="number" value="10000" max="100000" min="1" id="simnum" style="width:60px" onChange="changedSimNumber()"/> times and show statistics:<br><input type="button" id="simgo" value="Go" onClick="clickedSimGo()"/></div>
 		<br>
@@ -116,7 +120,7 @@
 				<img src="assets/stats/C.png"></img> <span id="rankC">0</span><br>
 				<img src="assets/stats/D.png"></img> <span id="rankD">0</span><br>
 				<img src="assets/stats/E.png"></img> <span id="rankE">0</span><br>
-				<div class="resmulti"><img src="assets/stats/salt.png"></img> <span id="rankNone">0</span><br></div>
+				<div class="resmulti"><img src="assets/stats/taiha.png"></img> <span id="rankNone">0</span><br></div>
 				<br>
 				Enemy Flagship Sunk Rate:<br>
 				<img src="assets/stats/flagsunk.png"></img> <span id="rsunkfs" style="font-weight:bold">0</span><br>
@@ -165,7 +169,7 @@
 					Individual <img src="assets/stats/taiha.png">:<br>
 					<table id="dmgtab" class="stattable"></table><br>
 					<br>
-					No Medium Damage Rate After Battle:<br>
+					No Medium Damage After Battle:<br>
 					<div id="nodmglist"></div><br>
 				</div>
 				<br>
@@ -177,17 +181,20 @@
 				<img src="assets/stats/baux.png"></img> <span id="rbsup">0</span><br><br>
 				Avg Repair:<br>
 				<img src="assets/stats/fuel.png"></img> <span id="rfrep">0</span><br>
-				<img src="assets/stats/steel.png"></img> <span id="rsrep">0</span><br><br>
+				<img src="assets/stats/steel.png"></img> <span id="rsrep">0</span><br>
+				<img src="assets/stats/bucket.png"></img> <span id="bucketrep">0</span><br><br>
 				Avg Resource Per <img src="assets/stats/S.png" style="vertical-align:middle" />:<br>
 				<img src="assets/stats/fuel.png"></img> <span id="rfpS" style="font-weight:bold">0</span><br>
 				<img src="assets/stats/ammo.png"></img> <span id="rapS" style="font-weight:bold">0</span><br>
 				<img src="assets/stats/steel.png"></img> <span id="rspS" style="font-weight:bold">0</span><br>
-				<img src="assets/stats/baux.png"></img> <span id="rbpS" style="font-weight:bold">0</span><br><br>
+				<img src="assets/stats/baux.png"></img> <span id="rbpS" style="font-weight:bold">0</span><br>
+				<img src="assets/stats/bucket.png"></img> <span id="bucketpS" style="font-weight:bold">0</span><br><br>
 				Avg Resource Per <img src="assets/stats/flagsunk.png" style="vertical-align:middle" />:<br>
 				<img src="assets/stats/fuel.png"></img> <span id="rfpF" style="font-weight:bold">0</span><br>
 				<img src="assets/stats/ammo.png"></img> <span id="rapF" style="font-weight:bold">0</span><br>
 				<img src="assets/stats/steel.png"></img> <span id="rspF" style="font-weight:bold">0</span><br>
 				<img src="assets/stats/baux.png"></img> <span id="rbpF" style="font-weight:bold">0</span><br>
+				<img src="assets/stats/bucket.png"></img> <span id="bucketpF" style="font-weight:bold">0</span><br>
 				<br>
 			</div>
 			

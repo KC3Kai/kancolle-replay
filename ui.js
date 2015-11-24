@@ -711,6 +711,22 @@ function updateResults(results) {
 	resultAddWeight('rbsup',results.totalBauxS,results.totalnum);
 	resultAddWeight('rfrep',results.totalFuelR,results.totalnum);
 	resultAddWeight('rsrep',results.totalSteelR,results.totalnum);
+	resultAddWeight('bucketrep',results.totalBuckets,results.totalnum);
+	
+	var Srate = RESVALUES['rankS'][0]/results.totalnum;
+	$('#rfpS').text(Math.round(1000*(RESVALUES['rfsup'][0]+RESVALUES['rfrep'][0])/results.totalnum/Srate)/1000);
+	$('#rapS').text(Math.round(1000*RESVALUES['rasup'][0]/results.totalnum/Srate)/1000);
+	$('#rspS').text(Math.round(1000*RESVALUES['rsrep'][0]/results.totalnum/Srate)/1000);
+	$('#rbpS').text(Math.round(1000*RESVALUES['rbsup'][0]/results.totalnum/Srate)/1000);
+	$('#bucketpS').text(Math.round(1000*RESVALUES['bucketrep'][0]/results.totalnum/Srate)/1000);
+	
+	var Frate = RESVALUES['rsunkfs'][0]/results.totalnum;
+	$('#rfpF').text(Math.round(1000*(RESVALUES['rfsup'][0]+RESVALUES['rfrep'][0])/results.totalnum/Frate)/1000);
+	$('#rapF').text(Math.round(1000*RESVALUES['rasup'][0]/results.totalnum/Frate)/1000);
+	$('#rspF').text(Math.round(1000*RESVALUES['rsrep'][0]/results.totalnum/Frate)/1000);
+	$('#rbpF').text(Math.round(1000*RESVALUES['rbsup'][0]/results.totalnum/Frate)/1000);
+	$('#bucketpF').text(Math.round(1000*RESVALUES['bucketrep'][0]/results.totalnum/Frate)/1000);
+	
 	document.getElementById('rnumruns').innerHTML = prevnum + results.totalnum;
 	
 	WROTESTATS = true;
@@ -1091,3 +1107,16 @@ for (var i=0; i<fs.length; i++) {
 }
 
 $('#simgo').attr('disabled',false);
+
+$('#numbucketpercent').change(function() {
+	if (parseInt(this.value) < parseInt(this.min)) this.value = this.min;
+	if (parseInt(this.value) > parseInt(this.max)) this.value = this.max;
+	BUCKETPERCENT = parseInt(this.value)/100;
+	raiseFleetChange();
+});
+$('#numbucketrepair').change(function() {
+	if (parseFloat(this.value) < parseInt(this.min)) this.value = this.min;
+	if (parseFloat(this.value) > parseInt(this.max)) this.value = this.max;
+	BUCKETTIME = 3600*parseFloat(this.value);
+	raiseFleetChange();
+});

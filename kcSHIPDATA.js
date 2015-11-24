@@ -10207,31 +10207,37 @@ var SHIPDATA = {
 	644: {
 		name: 'Submarine Princess',
 		image: 'SSSH.jpg',
+		imageDam: 'SSSHdam.jpg',
 		type: 'SS'
 	},
 	645: {
 		name: 'Submarine Princess 2',
 		image: 'SSSH.jpg',
+		imageDam: 'SSSHdam.jpg',
 		type: 'SS'
 	},
 	646: {
 		name: 'Submarine Princess 3',
 		image: 'SSSH.jpg',
+		imageDam: 'SSSHdam.jpg',
 		type: 'SS'
 	},
 	647: {
 		name: 'Destroyer Water Demon',
 		image: 'SDDWD.jpg',
+		imageDam: 'SDDWDdam.jpg',
 		type: 'DD'
 	},
 	648: {
 		name: 'Destroyer Water Demon 2',
 		image: 'SDDWD.jpg',
+		imageDam: 'SDDWDdam.jpg',
 		type: 'DD'
 	},
 	649: {
 		name: 'Destroyer Water Demon 3',
 		image: 'SDDWD.jpg',
+		imageDam: 'SDDWDdam.jpg',
 		type: 'DD'
 	},
 	901: {

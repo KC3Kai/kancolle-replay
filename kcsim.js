@@ -12,11 +12,36 @@ var FLEETS2 = [];
 var ENGAGEMENT = 1;
 const CRITMOD = 1.5;
 
+var BUCKETPERCENT = 0;
+var BUCKETTIME = 99*3600;
+
 var C = true;
 
 function getRepairCost(ship) {
 	var base = (ship.maxHP - ship.HP)*SHIPDATA[ship.mid].fuel;
 	return [Math.floor(base*.032),Math.floor(base*.06)];
+}
+
+function getRepairTime(ship) {
+	var mod, base;
+	if (ship.LVL <= 12) base = 10*ship.LVL;
+	else if (ship.LVL < 100) {
+		base = 120;
+		var extra = 0, count = 0, bm = 2;
+		for (var i=13; i<=ship.LVL; i++) {
+			base += 5;
+			if (count++ >= bm) { bm += 2; count = 0; base += 10; }
+		}
+	} else if (ship.LVL <= 128) base = 650 + 5*(ship.LVL-100);
+	else if (ship.LVL < 150) base = 800 + 5*(ship.LVL-128);
+	else base = 915;
+	switch (ship.type) {
+		case 'BB': case 'BBV': case 'CV': case 'AR': mod = 2; break;
+		case 'CA': case 'CAV': case 'FBB': case 'CVL': case 'AS': mod = 1.5; break;
+		case 'SS': mod = .5; break;
+		default: mod = 1; break;
+	}
+	return (ship.maxHP - ship.HP)*base*mod+30;
 }
 
 function shell(ship,target,APIhou) {
@@ -849,9 +874,11 @@ function sim(F1,F2,doNB,NBonly,aironly,BAPI) {
 	results.reddedIndiv = [false,false,false,false,false];
 	results.flagsunk = (ships2[0].HP <= 0);
 	results.undamaged = true;
+	results.buckets = 0;
 	for (var i=0; i<ships1.length; i++) {
 		if (ships1[i].HP/ships1[i].maxHP <= .25) { results.redded = true; results.reddedIndiv[i] = true; }
 		if (ships1[i].HP/ships1[i].maxHP <= .5) results.undamaged = false;
+		if (ships1[i].HP/ships1[i].maxHP <= BUCKETPERCENT || getRepairTime(ships1[i]) > BUCKETTIME) results.buckets++;
 	}
 	results.MVP = F1.getMVP();
 	if (didNB) results.didNB = true;
@@ -989,6 +1016,7 @@ function simStats(numsims,doNB,NBonly,aironly) {
 		totalBauxS: 0,
 		totalFuelR: 0,
 		totalSteelR: 0,
+		totalBuckets: 0,
 		nodes: []
 	};
 	for (var i=0; i<FLEETS2.length; i++) {
@@ -1026,6 +1054,7 @@ function simStats(numsims,doNB,NBonly,aironly) {
 			var r = getRepairCost(ship);
 			totalResult.totalFuelR += r[0];
 			totalResult.totalSteelR += r[1];
+			if (ship.HP/ship.maxHP <= BUCKETPERCENT || getRepairTime(ship) > BUCKETTIME) totalResult.totalBuckets++;
 			totalResult.totalFuelS += Math.floor(ship.fuel * .2 * FLEETS2.length);
 			totalResult.totalAmmoS += Math.floor(ship.ammo * (.2*FLEETS2.length + .1*totalDidNB));
 			for (var k=0; k<ship.PLANESLOTS.length; k++) totalResult.totalBauxS += 5*(ship.PLANESLOTS[k]-ship.planecount[k]);

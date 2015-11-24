@@ -52,6 +52,8 @@ loader.add('BG1','assets/82_res.images.ImgBackgroundDay.jpg')
 	.add('469','assets/469.png')
 	.add('471','assets/471.png')
 	.add('473','assets/473.png')
+	.add('aswdown','assets/296.png')
+	.add('aswup','assets/299.png')
 	.add('dotOrange','assets/dotOrange.png')
 	.add('216','assets/216.png')
 	.add('aaci1','assets/aaci1.png')
@@ -258,11 +260,12 @@ var eventqueue = [];
 var battlestarts = [];
 var HPtotal1 = 0, HPtotal2 = 0, HPnow1 = 0, HPnow2 = 0;
 
-function createShip(data,side,i) {
+function createShip(data,side,i,damaged) {
 	var ship = new ShipG(i+((side==1)?10:0),side,parseInt(data[1]));
 	var graphic = new PIXI.Container();
 	var sdata = SHIPDATA[parseInt(data[0])];
-	var portrait = PIXI.Sprite.fromImage('assets/icons/'+sdata.image);
+	var imgname = ((damaged && sdata.imageDam)? sdata.imageDam : sdata.image)
+	var portrait = PIXI.Sprite.fromImage('assets/icons/'+imgname);
 	portrait.position.set((side==1)?11:-3,2);
 	var hpbar = new PIXI.Graphics();
 	hpbar.beginFill(0x00ff00);
@@ -412,7 +415,7 @@ function processAPI(root) {
 				if (data.api_eSlot[i][j] == -1) break;
 				d.push(data.api_eSlot[i][j]);
 			}
-			var sh = createShip(d,1,i);
+			var sh = createShip(d,1,i,data.api_boss_damaged);
 			f2.push(sh);
 			HPstate[i+6] = data.api_nowhps[i+7];
 			// stage.addChild(sh.graphic);
@@ -1824,6 +1827,7 @@ function reset(callback) {
 			for (var j=0; j<fleet1C[i].graphic.children.length; j++) fleet1C[i].graphic.getChildAt(j).destroy();
 			fleet1C[i].graphic.destroy();
 		}
+		fleet1C = [];
 		for (var k=0; k<allfleets2.length; k++) {
 			for (var i=0; i<allfleets2[k].length; i++) {
 				var ship = allfleets2[k][i];

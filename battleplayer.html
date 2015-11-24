@@ -9,35 +9,51 @@
 		<script src="pixi.js"></script>
 		<script type="text/javascript" src="reader/steganography.js"></script>
 		<script type="text/javascript">
-		function previewFile() {
-			var preview = document.querySelector('img');
-			var file    = document.querySelector('input[type=file]').files[0];
+		function loadImage(file) {
+			var preview = document.getElementById('imgpreview');
 			var reader  = new FileReader();
 			$('#error').text('Loading');
 
 			preview.onload = function(){
 				console.log(reader.result);
-				var msg = steganography.decode(reader.result);
-				document.getElementById('code').value = msg;
+				try { 
+					var msg = steganography.decode(reader.result);
+					document.getElementById('code').value = msg;
+				} catch(e) {
+					$('#error').text('Error, data may be corrupted');
+					return;
+				}
 				loadCode();
-				$('#error').text('');
+				//$('#error').text('');
 			};
 
 			reader.onloadend = function (e) {
 				preview.src = reader.result;
 			}
 			
-		  
-		  if (file) {
-			reader.readAsDataURL(file);
-		  } else {
-			preview.src = "";
-		  }
+			if (file) {
+				reader.readAsDataURL(file);
+			} else {
+				preview.src = "";
+			}
+		}
+		function loadImgURL(url) {
+			var preview = document.getElementById('imgpreview');
+			var xhr = new XMLHttpRequest();
+			xhr.responseType = 'blob';
+			xhr.onload = function() {
+				loadImage(xhr.response);
+			}
+			xhr.onerror = function() {
+				$('#error').text('Invalid URL');
+			}
+			xhr.open('GET',url);
+			xhr.send();
 		}
 		</script>
 	</head>
 	<body>
-		<span style="font-size:24px;font-weight:bold">KanColle Battle Replayer</span> <span style="color:red;margin-left:20px">v1.0 Beta 1.2</span>
+		<span style="font-size:24px;font-weight:bold">KanColle Battle Replayer</span> <span style="color:red;margin-left:20px">v1.0 Beta 1.3</span>
 		<br><br>
 		<div>
 			<div>
@@ -79,8 +95,9 @@
 		<div>
 			<span style="font-size:12px;margin-left:750px">FPS: <span id="FPS"></span></span><br>
 			<div style="float:left;width:400px">
-				<span style="font-weight:bold">Load from image: </span><input type="file" onchange="previewFile()"><br>
-				<img src="" height="200" alt="Image preview..."><br>
+				<span style="font-weight:bold">Upload image: </span><input type="file" onchange="loadImage(this.files[0])"><br>
+				<span style="font-weight:bold">Load from URL: </span><input id="textimgurl" type="text"><input type="button" value="Load" onclick="loadImgURL($('#textimgurl').val())"/><br>
+				<img src="" id="imgpreview" height="200" alt="Image preview..."><br>
 				<br>
 			</div>
 			<div style="float:left;width:400px">
