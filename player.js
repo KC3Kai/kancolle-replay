@@ -341,7 +341,10 @@ function processAPI(root) {
 	if (bspace) {
 		bspace.html('');
 		for (var i=0; i<root.battles.length; i++) {
-			bspace.append('<input type="button" value="'+String.fromCharCode(64+root.battles[i].node)+'" onclick="skipToBattle('+(i+1)+')"/>');
+			var letter, edges = EDGES['World '+root.world+'-'+root.mapnum];
+			if (edges && edges[root.battles[i].node]) letter = edges[root.battles[i].node][1];
+			else letter = (root.battles[i].node <= 26)? String.fromCharCode(64+root.battles[i].node) : '-';
+			bspace.append('<input type="button" style="width:32px" value="'+letter+'" onclick="skipToBattle('+(i+1)+')"/>');
 		}
 	}
 	

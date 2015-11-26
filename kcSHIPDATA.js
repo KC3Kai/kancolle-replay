@@ -385,7 +385,7 @@ var SHIPDATA = {
     },
     24: {
         name: 'Ooi',
-        image: 'KOoiKai.png',
+        image: 'KOoi.jpg',
         type: 'CL',
         HP: 25,
         FP: 49,
@@ -1981,7 +1981,7 @@ var SHIPDATA = {
     },
     108: {
         name: 'ChitoseCVL',
-        image: 'KChitoseCVLKai2.jpg',
+        image: 'KChitoseCVL.png',
         type: 'CVL',
         HP: 47,
         FP: 19,
@@ -2000,7 +2000,7 @@ var SHIPDATA = {
     },
     109: {
         name: 'ChiyodaCVL',
-        image: 'KChiyodaCVLKai2.jpg',
+        image: 'KChiyodaCVL.png',
         type: 'CVL',
         HP: 47,
         FP: 19,
@@ -2247,7 +2247,7 @@ var SHIPDATA = {
     },
     122: {
         name: 'Maikaze',
-        image: 'KMaikazeKai.jpg',
+        image: 'KMaikaze.jpg',
         type: 'DD',
         HP: 16,
         FP: 29,
@@ -2456,7 +2456,7 @@ var SHIPDATA = {
     },
     133: {
         name: 'Yuugumo',
-        image: 'KYuugumoKai.jpg',
+        image: 'KYuugumo.png',
         type: 'DD',
         HP: 16,
         FP: 30,
@@ -2532,7 +2532,7 @@ var SHIPDATA = {
     },
     137: {
         name: 'Agano',
-        image: 'KAganoKai.jpg',
+        image: 'KAgano.jpg',
         type: 'CL',
         HP: 30,
         FP: 42,
@@ -2647,7 +2647,7 @@ var SHIPDATA = {
     },
     143: {
         name: 'Musashi',
-        image: 'KMusashiKai.jpg',
+        image: 'KMusashi.jpg',
         type: 'BB',
         HP: 94,
         FP: 129,
@@ -2856,7 +2856,7 @@ var SHIPDATA = {
     },
     154: {
         name: 'Katori',
-        image: 'KKatoriKai.jpg',
+        image: 'KKatori.png',
         type: 'CT',
         HP: 36,
         FP: 28,
@@ -3255,7 +3255,7 @@ var SHIPDATA = {
     },
     176: {
         name: 'PrinzEugen',
-        image: 'KPrinzEugenKai.jpg',
+        image: 'KPrinzEugen.jpg',
         type: 'CA',
         HP: 50,
         FP: 56,
@@ -3390,7 +3390,7 @@ var SHIPDATA = {
     },
     183: {
         name: 'Ooyodo',
-        image: 'KOoyodoKai.jpg',
+        image: 'KOoyodo.jpg',
         type: 'CL',
         HP: 34,
         FP: 48,
@@ -3447,7 +3447,7 @@ var SHIPDATA = {
     },
     186: {
         name: 'Tokitsukaze',
-        image: 'KTokitsukazeKai.jpg',
+        image: 'KTokitsukaze.jpg',
         type: 'DD',
         HP: 16,
         FP: 29,
@@ -4093,7 +4093,7 @@ var SHIPDATA = {
     },
     222: {
         name: 'SendaiKai',
-        image: 'KSendaiKai2.jpg',
+        image: 'KSendaiKai.jpg',
         type: 'CL',
         HP: 44,
         FP: 59,
@@ -4131,7 +4131,7 @@ var SHIPDATA = {
     },
     224: {
         name: 'NakaKai',
-        image: 'KNakaKai2.jpg',
+        image: 'KNakaKai.png',
         type: 'CL',
         HP: 44,
         FP: 59,
@@ -4492,7 +4492,7 @@ var SHIPDATA = {
     },
     243: {
         name: 'ShigureKai',
-        image: 'KShigureKai2.jpg',
+        image: 'KShigureKai.jpg',
         type: 'DD',
         HP: 30,
         FP: 49,
@@ -5081,7 +5081,7 @@ var SHIPDATA = {
     },
     274: {
         name: 'ChikumaKai',
-        image: 'KChikumaKai2.jpg',
+        image: 'KChikumaKai.jpg',
         type: 'CA',
         HP: 56,
         FP: 76,
@@ -5404,7 +5404,7 @@ var SHIPDATA = {
     },
     291: {
         name: 'ChitoseCVLKai',
-        image: 'KChitoseCVLKai2.jpg',
+        image: 'KChitoseCVLKai.png',
         type: 'CVL',
         HP: 57,
         FP: 34,
@@ -5423,7 +5423,7 @@ var SHIPDATA = {
     },
     292: {
         name: 'ChiyodaCVLKai',
-        image: 'KChiyodaCVLKai2.jpg',
+        image: 'KChiyodaCVLKai.png',
         type: 'CVL',
         HP: 57,
         FP: 34,
@@ -6108,7 +6108,7 @@ var SHIPDATA = {
     },
     331: {
         name: 'Amagi',
-        image: 'KAmagiKai.jpg',
+        image: 'KAmagi.png',
         type: 'CV',
         HP: 48,
         FP: 25,
@@ -6569,7 +6569,7 @@ var SHIPDATA = {
     },
     405: {
         name: 'Harusame',
-        image: 'KHarusameKai.jpg',
+        image: 'KHarusame.png',
         type: 'DD',
         HP: 16,
         FP: 29,
@@ -6721,7 +6721,7 @@ var SHIPDATA = {
     },
     413: {
         name: 'Asagumo',
-        image: 'KAsagumoKai.jpg',
+        image: 'KAsagumo.jpg',
         type: 'DD',
         HP: 16,
         FP: 29,
@@ -6854,7 +6854,7 @@ var SHIPDATA = {
     },
     421: {
         name: 'Akizuki',
-        image: 'KAkizukiKai.jpg',
+        image: 'KAkizuki.jpg',
         type: 'DD',
 		hasBuiltInFD: true,
         HP: 20,
@@ -6913,7 +6913,7 @@ var SHIPDATA = {
     },
     425: {
         name: 'Asashimo',
-        image: 'KAsashimoKai.jpg',
+        image: 'KAsashimo.png',
         type: 'DD',
         HP: 16,
         FP: 29,
@@ -7027,7 +7027,7 @@ var SHIPDATA = {
     },
     431: {
         name: 'U-511',
-        image: 'KU-511Kai.jpg',
+        image: 'KU-511.png',
         type: 'SS',
         HP: 8,
         FP: 8,
