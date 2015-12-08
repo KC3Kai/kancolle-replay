@@ -10214,7 +10214,22 @@ var SHIPDATA = {
 		name: 'Submarine Princess 2',
 		image: 'SSSH.jpg',
 		imageDam: 'SSSHdam.jpg',
-		type: 'SS'
+		type: 'SS',
+		HP: 130,
+		FP: 74,
+		TP: 96,
+		AA: 55,
+		AR: 73,
+		EV: 40,
+		ASW: 1,
+		LOS: 1,
+		LUK: 1,
+		RNG: 1,
+		SPD: 1,
+		SLOTS: [1, 1, 1],
+		EQUIPS: [],
+		fuel: 0,
+		ammo: 0
 	},
 	646: {
 		name: 'Submarine Princess 3',
