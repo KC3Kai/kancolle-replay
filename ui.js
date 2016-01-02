@@ -9,7 +9,7 @@ var WROTESTATS = false;
 var IMPROVEHTMLNONE = '<option value="0"></option>';
 var IMPROVEHTMLAKASHI = '<option value="0">+0</option><option value="1">+1</option><option value="2">+2</option><option value="3">+3</option><option value="4">+4</option><option value="5">+5</option><option value="6">+6</option><option value="7">+7</option><option value="8">+8</option><option value="9">+9</option><option value="10">MAX</option>';
 var IMPROVEHTMLPLANE = '<option value="0"></option><option value="1" style="color:#4A84B5">|</option><option value="2" style="color:#4A84B5">||</option><option value="3" style="color:#4A84B5">|||</option><option value="4" style="color:#D49C0A">/</option><option value="5" style="color:#D49C0A">//</option><option value="6" style="color:#D49C0A">///</option><option value="7" style="color:#D49C0A">&gt;&gt;</option>';
-				
+
 function genFleetHTML(rootid,fleetnum,fleetname) {
     var root = document.getElementById(rootid);
     PREVEQS[fleetnum] = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
@@ -224,7 +224,7 @@ function genFleetHTML(rootid,fleetnum,fleetname) {
         [['fp','fp.png',0,999],['tp','tp.png',0,999]],
         [['aa','aa.png',0,999],['ar','ar.png',0,999]],
         [['ev','ev.png',1,999],['asw','as.png',0,999]],
-        [['spd','sp.png',0,1],['los','ls.png',0,999]],
+        [['spd','sp.png',0,10],['los','ls.png',0,999]],
         [['rng','rn.png',0,4],['luk','lk.png',0,99]],
     ];
     for (var i=0; i<stats.length; i++) {
@@ -459,7 +459,7 @@ function clickedClear(fleet,slot) {
 	}
 }
 
-var SCALELEVEL = false;
+var SCALELEVEL = true;
 function changedNum(fleet,slot,stat) {
 	var nbox = document.getElementById('T'+fleet+stat+slot);
 	if (parseInt(nbox.value) < parseInt(nbox.min)) nbox.value = nbox.min;
@@ -479,6 +479,8 @@ function changedNum(fleet,slot,stat) {
 			}
 			$('#T'+fleet+stats[i]+slot).val(Math.floor(smin+(smax-smin)*parseInt(nbox.value)/99 + eqbonus));
 		}
+		if (parseInt(nbox.value) >= 100) $('#T'+fleet+'hp'+slot).val(SHIPDATA[mid].HPmax);
+		else $('#T'+fleet+'hp'+slot).val(SHIPDATA[mid].HP);
 	}
 }
 

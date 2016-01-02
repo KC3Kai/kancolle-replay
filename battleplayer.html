@@ -45,16 +45,32 @@
 			xhr.onload = function() {
 				loadImage(xhr.response);
 			}
-			xhr.onerror = function() {
+			xhr.onerror = function(e) {
 				$('#error').text('Invalid URL');
+				console.log(e);
 			}
 			xhr.open('GET',url);
 			xhr.send();
 		}
 		</script>
+		<style>
+			.infotable {
+				border-collapse: collapse;
+				font-size: 14px;
+			}
+			.infotable td {
+				border: 1px solid black;
+				padding: 0px;
+				width:50px;
+				height:10px;
+			}
+			.infotable img {
+				vertical-align: middle;
+			}
+		</style>
 	</head>
 	<body>
-		<span style="font-size:24px;font-weight:bold">KanColle Battle Replayer</span> <span style="color:red;margin-left:20px">v1.0 Beta 1.4</span>
+		<span style="font-size:24px;font-weight:bold">KanColle Battle Replayer</span> <span style="color:red;margin-left:20px">v1.0 Beta 1.5</span>
 		<br><br>
 		<div>
 			<div>
@@ -66,6 +82,8 @@
 					<input type="button" value="Pause" onclick="if(started) {PAUSE=!PAUSE;$(this).css('background-color',(PAUSE)?'grey':'');}" />
 					<!--<input type="button" value="Skip &gt;" onclick="clickedSkip()" />-->
 					<input type="button" value="Restart" onclick="if(started)reset(function(){processAPI(API);})" />
+					<input type="range" value="40" min="0" max="80" oninput="var num=parseInt(this.value);RATE=(num<40)?num/40:(num-40)/10+1;$('#speednum').text('x'+RATE)"/>
+					<span id="speednum">x1</span>
 				</div>
 				<div style="float:left;width:400px">
 					<span>Skip to Battle: </span>
@@ -112,6 +130,111 @@
 			</div>
 			
 		</div>
-		<br/><br/>
+		<br style="clear:both"><br>
+		<div>
+			<input type="button" value="Show Fleet Details" onclick="loadFleetInfo(API)"/>
+			<input id="radJP" type="radio" name="lang" onclick="translateTable()" /><label for="radJP">JP</label>
+			<input id="radEN" type="radio" name="lang" onclick="translateTable()" checked="checked" /><label for="radEN">EN</label>
+			<div id="fleetinfospace">
+				<div id="friendfleetspace"></div><br><br>
+				<div id="enemyfleetspace"></div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			function makeTable(root,name,num) {
+				if (!num) num = 6;
+				var table = $('<table id="T'+name+'" class="infotable"></table>');
+				var tr = $('<tr></tr>');
+				for (var i=0; i<num; i++) tr.append($('<td colspan="4" id="name'+name+i+'"></td>'));
+				table.append(tr);
+				tr = $('<tr></tr>');
+				for (var i=0; i<num; i++) tr.append($('<td colspan="4" style="text-align:center"><img id="img'+name+i+'"/></td>'));
+				table.append(tr);
+				tr = $('<tr></tr>');
+				for (var i=0; i<num; i++) tr.append($('<td colspan="2"><img src="assets/stats/lv.png"/> <span id="lvl'+name+i+'"></span></td><td colspan="2"><img src="assets/stats/hp.png"/> <span id="hp'+name+i+'"></span></td>'));
+				table.append(tr);
+				tr = $('<tr></tr>');
+				for (var i=0; i<num; i++) tr.append($('<td><img src="assets/stats/fp.png"/> <span id="fp'+name+i+'"></span></td><td><img src="assets/stats/tp.png"/> <span id="tp'+name+i+'"></span></td><td><img src="assets/stats/aa.png"/> <span id="aa'+name+i+'"></span></td><td><img src="assets/stats/ar.png"/> <span id="ar'+name+i+'"></span></td>'));
+				table.append(tr);
+				for (var j=0; j<4; j++) {
+					tr = $('<tr></tr>');
+					for (var i=0; i<num; i++) tr.append($('<td colspan="4"><span id="eq'+j+name+i+'"></span></td>'));
+					table.append(tr);
+				}
+				$('#'+root).append(table);
+				$('#'+root).append($('<br>'));
+			}
+			function loadFleetInfo(API) {
+				if (!started) return;
+				$('#friendfleetspace').html('');
+				$('#enemyfleetspace').html('');
+				makeTable('friendfleetspace','1');
+				var fleet = API['fleet'+API.fleetnum];
+				for (var i=0; i<fleet.length; i++) {
+					var b = API.battles[0].data;
+					if ($('#radJP').prop('checked')) $('#name1'+i).text(fleet[i].mst_id+'. '+SHIPDATA[fleet[i].mst_id].nameJP);
+					else $('#name1'+i).text(fleet[i].mst_id+'. '+SHIPDATA[fleet[i].mst_id].name);
+					$('#img1'+i).attr('src','assets/icons/'+SHIPDATA[fleet[i].mst_id].image);
+					$('#lvl1'+i).text(fleet[i].level); $('#hp1'+i).text(b.api_maxhps[i+1]); 
+					$('#fp1'+i).text(b.api_fParam[i][0]);$('#tp1'+i).text(b.api_fParam[i][1]);$('#aa1'+i).text(b.api_fParam[i][2]);$('#ar1'+i).text(b.api_fParam[i][3]);
+					for (var j=0; j<4; j++) {
+						if (!fleet[i].equip[j]) continue;
+						if (EQDATA[fleet[i].equip[j]]) $('#eq'+j+'1'+i).text(EQDATA[fleet[i].equip[j]][$('#radJP').prop('checked')?'nameJP':'name']);
+						else $('#eq'+j+'1'+i).text(fleet[i].equip[j]);
+						$('#eq'+j+'1'+i).attr('title',fleet[i].equip[j]);
+					}
+				}
+				for (var k=0; k<API.battles.length; k++) {
+					var b = API.battles[k].data;
+					if (!b.api_ship_ke) b = API.battles[k].yasen;
+					makeTable('enemyfleetspace','2'+k);
+					for (var i=0; i<b.api_ship_ke.length; i++) {
+						var mid = b.api_ship_ke[i];
+						if (mid <= 0) continue;
+						if ($('#radJP').prop('checked')) $('#name2'+k+i).text(mid+'. '+SHIPDATA[mid].nameJP);
+						else $('#name2'+k+i).text(mid+'. '+SHIPDATA[mid].name);
+						$('#img2'+k+i).attr('src','assets/icons/'+SHIPDATA[mid].image);
+						$('#lvl2'+k+i).text(b.api_ship_lv[i+1]); $('#hp2'+k+i).text(b.api_maxhps[i+7]); 
+						$('#fp2'+k+i).text(b.api_eParam[i][0]);$('#tp2'+k+i).text(b.api_eParam[i][1]);$('#aa2'+k+i).text(b.api_eParam[i][2]);$('#ar2'+k+i).text(b.api_eParam[i][3]);
+						for (var j=0; j<4; j++) {
+							if (b.api_eSlot[i][j] <= 0) continue;
+							if (EQDATA[b.api_eSlot[i][j]]) $('#eq'+j+'2'+k+i).text(EQDATA[b.api_eSlot[i][j]][$('#radJP').prop('checked')?'nameJP':'name']);
+							else $('#eq'+j+'2'+k+i).text(b.api_eSlot[i][j]);
+							$('#eq'+j+'2'+k+i).attr('title',b.api_eSlot[i][j]);
+						}
+					}
+				}
+			}
+			function translateTable() {
+				if (!started) return;
+				var fleet = API['fleet'+API.fleetnum];
+				for (var i=0; i<fleet.length; i++) {
+					if ($('#radJP').prop('checked')) $('#name1'+i).text(fleet[i].mst_id+'. '+SHIPDATA[fleet[i].mst_id].nameJP);
+					else $('#name1'+i).text(fleet[i].mst_id+'. '+SHIPDATA[fleet[i].mst_id].name);
+					for (var j=0; j<4; j++) {
+						if (!fleet[i].equip[j]) continue;
+						if (EQDATA[fleet[i].equip[j]]) $('#eq'+j+'1'+i).text(EQDATA[fleet[i].equip[j]][$('#radJP').prop('checked')?'nameJP':'name']);
+						else $('#eq'+j+'1'+i).text(fleet[i].equip[j]);
+						$('#eq'+j+'1'+i).attr('title',fleet[i].equip[j]);
+					}
+				}
+				for (var k=0; k<API.battles.length; k++) {
+					var b = API.battles[k].data;
+					if (!b.api_ship_ke) b = API.battles[k].yasen;
+					for (var i=0; i<b.api_ship_ke.length; i++) {
+						var mid = b.api_ship_ke[i];
+						if (mid <= 0) continue;
+						if ($('#radJP').prop('checked')) $('#name2'+k+i).text(mid+'. '+SHIPDATA[mid].nameJP);
+						else $('#name2'+k+i).text(mid+'. '+SHIPDATA[mid].name);
+						for (var j=0; j<4; j++) {
+							if (b.api_eSlot[i][j] <= 0) continue;
+							if (EQDATA[b.api_eSlot[i][j]]) $('#eq'+j+'2'+k+i).text(EQDATA[b.api_eSlot[i][j]][$('#radJP').prop('checked')?'nameJP':'name']);
+							else $('#eq'+j+'2'+k+i).text(b.api_eSlot[i][j]);
+							$('#eq'+j+'2'+k+i).attr('title',b.api_eSlot[i][j]);
+						}
+					}
+				}
+			}
+		</script>
 	</body>
 </html>

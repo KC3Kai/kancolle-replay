@@ -65,6 +65,8 @@ loader.add('BG1','assets/82_res.images.ImgBackgroundDay.jpg')
 	.add('216','assets/216.png')
 	.add('aaci1','assets/aaci1.png')
 	.add('aaci2','assets/aaci2.png')
+	.add('tbomb1','assets/951.png')
+	.add('tbomb2','assets/956.png')
 	.add('shield','assets/221_shield_png$f90866d61f09304ed4b65cd1a8d0dbbc1744783129.png')
 	.add('mask','assets/mask.png');
 for (var i=389; i <= 417; i+=2) loader.add(i.toString(),'assets/'+i+'.png');
@@ -302,7 +304,8 @@ function createShip(data,side,i,damaged) {
 		var eq = EQDATA[data[j]];
 		if (eq) {
 			if (eq.b_image) ship.planetypes.push(eq.b_image);
-			else if (eq.isfighter||eq.istorpbomber||eq.isdivebomber) ship.planetypes.push(1);
+			else if (eq.isfighter||eq.istorpbomber||eq.isdivebomber||eq.type==AUTOGYRO||eq.type==ASWPLANE) ship.planetypes.push(1+side);
+			if (eq.istorpbomber) ship.hastorpbomber = true;
 			if (hasonlytorp == undefined && eq.type == TORPEDO) hasonlytorp = true;
 			if ([MAINGUNS,MAINGUNM,MAINGUNL].indexOf(eq.type) != -1) hasonlytorp = false;
 			if (eq.type == WG42) ship.hasWG = true;
@@ -524,18 +527,18 @@ function processAPI(root) {
 						var dam = parseInt(kouku.api_stage3.api_fdam[i+1]);  //remember later, .1 = protect
 						HPstate[i] -= Math.floor(dam);
 						var hit = (kouku.api_stage3.api_frai_flag[i+1] || kouku.api_stage3.api_fbak_flag[i+1]);
-						if (hit) targetdata.push([fleet1[i],(dam>0)? dam:0]);
+						if (hit) targetdata.push([fleet1[i],(dam>0)? dam:0,(dam!=kouku.api_stage3.api_fdam[i+1]),kouku.api_stage3.api_fcl_flag[i+1],kouku.api_stage3.api_frai_flag[i+1]]);
 						
 						dam = parseInt(kouku.api_stage3.api_edam[i+1]);
 						HPstate[i+6] -= Math.floor(dam);
 						hit = (kouku.api_stage3.api_erai_flag[i+1] || kouku.api_stage3.api_ebak_flag[i+1]);
-						if (hit) targetdata.push([f2[i],(dam>0)? dam:0]);
+						if (hit) targetdata.push([f2[i],(dam>0)? dam:0,(dam!=kouku.api_stage3.api_edam[i+1]),kouku.api_stage3.api_ecl_flag[i+1],kouku.api_stage3.api_erai_flag[i+1]]);
 						
 						if (COMBINED) {
 							var dam = parseInt(kouku.api_stage3_combined.api_fdam[i+1]);  //remember later, .1 = protect
 							HPstate[i+12] -= Math.floor(dam);
 							var hit = (kouku.api_stage3_combined.api_frai_flag[i+1] || kouku.api_stage3_combined.api_fbak_flag[i+1]);
-							if (hit) targetdata.push([fleet1C[i],(dam>0)? dam:0]);
+							if (hit) targetdata.push([fleet1C[i],(dam>0)? dam:0,(dam!=kouku.api_stage3_combined.api_fdam[i+1]),kouku.api_stage3_combined.api_fcl_flag[i+1],kouku.api_stage3_combined.api_frai_flag[i+1]]);
 						}
 					}
 				}
@@ -729,6 +732,7 @@ var PAUSE = false;
 var END = false;
 var statechangefunc = null;
 var STEPBYFRAME = false;
+var RATE = 1, RCOUNTER = 0;
 
 var prevtime = Date.now(), currtime = Date.now(), timeelapsed = 0, frameselapsed = 0;
 function animate() {
@@ -757,22 +761,25 @@ function animate() {
 		return;
 	}
 	
-	if (ecomplete && e < eventqueue.length) {
-		eventqueue[e][0].apply(null,eventqueue[e][1]);
-		e++;
-		ecomplete = false;
-	}
-	
-	for (i=0; i<updates.length; i++) {
-		if( updates[i][0].apply(null,updates[i][1]) ) updates.splice(i--,1);
-	}
-	
-	for (var i=0; i<timeouts.length; i++) {
-		timeouts[i][1] -= 1000/60;
-		if (timeouts[i][1] <= 0) {
-			var f = timeouts[i][0];
-			timeouts.splice(i--,1);
-			f();
+	RCOUNTER += RATE;
+	for (RCOUNTER; RCOUNTER >= 1; RCOUNTER--) {
+		if (ecomplete && e < eventqueue.length) {
+			eventqueue[e][0].apply(null,eventqueue[e][1]);
+			e++;
+			ecomplete = false;
+		}
+		
+		for (i=0; i<updates.length; i++) {
+			if( updates[i][0].apply(null,updates[i][1]) ) updates.splice(i--,1);
+		}
+		
+		for (var i=0; i<timeouts.length; i++) {
+			timeouts[i][1] -= 1000/60;
+			if (timeouts[i][1] <= 0) {
+				var f = timeouts[i][0];
+				timeouts.splice(i--,1);
+				f();
+			}
 		}
 	}
 	
@@ -1236,6 +1243,7 @@ function shootASW(ship,target,damage,forcecrit,protect) {
 		arc.position.set(ship.graphic.x+120-80*ship.side,ship.graphic.y-208);
 		arc.alpha = 0;
 		arc.lifetime = 30;
+		arc.notpersistent = true;
 		stage.addChild(arc);
 		updates.push([arcFade,[arc]]);
 	}, 200);
@@ -1245,6 +1253,7 @@ function shootASW(ship,target,damage,forcecrit,protect) {
 		arc.position.set(target.graphic.x-50+260*(target.side==0),target.graphic.y-208);
 		arc.alpha = 0;
 		arc.lifetime = 30;
+		arc.notpersistent = true;
 		stage.addChild(arc);
 		updates.push([arcFade,[arc]]);
 	}, 1000);
@@ -1395,6 +1404,36 @@ function movePlane(planes,angle,speed,withescort) {
 	return (speed > 0) ? (planes.x > 900) : (planes.x < -100);
 }
 
+function createTorpedoBomber1(x,y,target) {
+	var torp = getFromPool('tbomber','assets/956.png'); torp.notpersistent = true;
+	torp.position.set(x,y); torp.scale.x = (target.side==1)? -1 : 1; torp.pivot.set(12,4);
+	stage.addChild(torp); torp.lifetime = 45;
+	updates.push([function(torp) {
+		torp.y+=.075*(42-torp.lifetime); torp.lifetime--;
+		if (torp.lifetime <= 0) {
+			createTorpedoBomber2(torp.x,torp.y,target);
+			recycle(torp);
+			return true;
+		}
+		return false;
+	},[torp]]);
+}
+
+function createTorpedoBomber2(x,y,target) {
+	var torp = getFromPool('tbomber2','assets/951.png'); torp.notpersistent = true;
+	torp.position.set(x,y); torp.pivot.set(75,8);
+	torp.rotation = Math.atan((torp.y-target.graphic.y-20)/(torp.x-target.graphic.x-160*(1-target.side)))+Math.PI*(1-target.side);
+	stage.addChild(torp); var speed = (target.graphic.x+(1-target.side)*160 - torp.x)/40;
+	updates.push([function(torp,speed) {
+		torp.x += speed; torp.y += Math.tan(torp.rotation)*speed;
+		if (Math.abs(torp.x - target.graphic.x - (1-target.side)*160)<Math.abs(speed)) {
+			recycle(torp);
+			return true;
+		}
+		return false;
+	},[torp,speed]]);
+}
+
 function GTorpedoPhase(shots) {
 	targets = []; damages = [];
 	for (i=0; i<shots.length; i++) {
@@ -1433,7 +1472,7 @@ function GAirPhase(attackdata,targetdata,defenders,aaci1,aaci2,contact1,contact2
 		for (var i=0; i<attackdata.length; i++) {
 			var ship = attackdata[i][0]; var statuses = attackdata[i][1]; var statuses2 = attackdata[i][2];
 			var planes = createPlane(ship.graphic.x+85,ship.graphic.y+22,ship.planetypes,statuses,statuses2);
-			updates.push([movePlane,[planes,Math.PI*ship.side,(ship.side==0) ? 4 : -4]]);
+			updates.push([movePlane,[planes,-Math.PI/30-(28*Math.PI/30)*ship.side,(ship.side==0) ? 4 : -4]]);
 			// for (var j=0; j<statuses.length; j++) {  //remove graphics if plane completely shot down, may not need
 				// if (statuses[i][j] == 2) ship.planetypes.splice(i,1);
 			// }
@@ -1494,10 +1533,20 @@ function GAirPhase(attackdata,targetdata,defenders,aaci1,aaci2,contact1,contact2
 		if (AS1!==false && AS2!==false) showAS(AS1,AS2);
 	}, 900);
 	
+	if (!issupport) addTimeout(function() {
+		var pos = [[],[]];
+		for (var i=0; i<attackdata.length; i++) if (attackdata[i][0].hastorpbomber) pos[attackdata[i][0].side].push(attackdata[i][0].graphic.y);
+		for (var i=0; i<targetdata.length; i++) {
+			var target = targetdata[i][0];
+			if (targetdata[i][4])
+				createTorpedoBomber1(380+40*target.side,pos[(1-target.side)][Math.floor(Math.random()*pos[(1-target.side)].length)],target);
+		}
+	}, 1400);
+	
 	var k = 0;
 	for (var i=0; i<targetdata.length; i++) {
 		addTimeout(function(){
-			standardHit(targetdata[k][0],targetdata[k][1]);
+			standardHit(targetdata[k][0],targetdata[k][1],true,targetdata[k][2],targetdata[k][3]);
 			k++;
 		},2700);
 	}
@@ -1745,8 +1794,8 @@ function moveFlare2(flare) {
 	flare.x += flare.speed*Math.cos(flare.rotation);
 	flare.y += flare.speed*Math.sin(flare.rotation);
 	flare.speed = Math.max(0,flare.speed-.25);
-	if (flare.speed <= 1) {
-		flare.alpha -= .033;
+	if (flare.speed <= 2) {
+		flare.alpha -= .05;
 	}
 	if (flare.alpha <= 0) {
 		recycle(flare);
@@ -2177,7 +2226,7 @@ function clickedSkip() {
 }
 
 var HASLOADTEXT = false;
-function loadCode(fromOwn) {
+function loadCode(fromOwn,callback) {
 	if (!CANRESET) return;
 	var f = function() {
 		CANRESET = false;
@@ -2185,6 +2234,8 @@ function loadCode(fromOwn) {
 		try { 
 			if (!fromOwn) API = JSON.parse(document.getElementById("code").value);
 			processAPI(API);
+			console.log(API.id);
+			if (callback) callback(API);
 		} catch(e) {
 			console.log(e);
 			document.getElementById("error").innerHTML = 'Error';
