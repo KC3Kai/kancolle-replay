@@ -6,20 +6,20 @@ function SoundManager() {
 	this.BGMnum = 0;
 	this._sounds = {};
 	for (name in SOUNDNAMES) {
-		var vol = (SOUNDNAMES[name].voldef)? SOUNDNAMES[name].voldef : .4;
+		var vol = (SOUNDNAMES[name].voldef)? SOUNDNAMES[name].voldef : .6;
 		this._sounds[name] = new Howl({urls:[SOUNDNAMES[name].path],volume:vol*this._volume});
 	}
 }
 var SOUNDNAMES = {
-	'crit': { path: 'assets/sounds/49_res.sounds.battle.SE_battle_bomb3.mp3',voldef:.35 },
-	'hit': { path: 'assets/sounds/50_res.sounds.battle.SE_battle_bomb2.mp3',voldef:.35 },
-	'fire': { path: 'assets/sounds/51_res.sounds.battle.SE_battle_bomb1.mp3',voldef:.35 },
+	'crit': { path: 'assets/sounds/49_res.sounds.battle.SE_battle_bomb3.mp3',voldef:.5 },
+	'hit': { path: 'assets/sounds/50_res.sounds.battle.SE_battle_bomb2.mp3',voldef:.5 },
+	'fire': { path: 'assets/sounds/51_res.sounds.battle.SE_battle_bomb1.mp3',voldef:.5 },
 	'torpedo': { path: 'assets/sounds/41_res.sounds.battle.SE_battle_gyorai.mp3' },
-	'planelaunch': { path: 'assets/sounds/38_res.sounds.battle.SE_battle_plane1.mp3',voldef:.35 },
+	'planelaunch': { path: 'assets/sounds/38_res.sounds.battle.SE_battle_plane1.mp3',voldef:.5 },
 	'planeatk': { path: 'assets/sounds/36_res.sounds.battle.SE_battle_shoot.mp3',voldef:1 },
 	'shutters': { path: 'assets/sounds/29_res.sounds.SE_frame_close.mp3' },
-	'enter': { path: 'assets/sounds/48_res.sounds.battle.SE_battle_card.mp3',voldef:.3 },
-	'airphase': { path: 'assets/sounds/42_res.sounds.battle.SE_battle_fannelCutIn.mp3',voldef:.35 },
+	'enter': { path: 'assets/sounds/48_res.sounds.battle.SE_battle_card.mp3',voldef:.45 },
+	'airphase': { path: 'assets/sounds/42_res.sounds.battle.SE_battle_fannelCutIn.mp3',voldef:.5 },
 	'aaci': { path: 'assets/sounds/52_res.sounds.battle.SE_Bam.mp3' },
 }
 SoundManager.prototype = {
