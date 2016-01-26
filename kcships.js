@@ -10,7 +10,6 @@ function Fleet(id) {
 	this.FAA = 0;  //fleet anti air
 	this.AS = 0;  //air superiority
 	this.DMGTOTALS = [0,0,0,0,0,0];
-	//fuel, ammo mod?
 }
 Fleet.prototype.loadShips = function(ships) {
 	this.AP = 0; this.FLoS = 0; this.FAA = 0; this.noRedT = false;
@@ -111,6 +110,9 @@ function Ship(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	this.PLANESLOTS = planeslots;
 	this.planecount = planeslots.slice();
 	this.AACItype = 0;
+	this.fuelleft = 10;
+	this.ammoleft = 10;
+	this.protection = (side==0)?true:false;
 	
 	this._nbtype = false;
 	this._astype = false;
@@ -314,6 +316,9 @@ Ship.prototype.getAACItype = function(atypes) {
 Ship.prototype.reset = function() {
 	this.HP = this.maxHP;
 	this.planecount = this.PLANESLOTS.slice();
+	this.fuelleft = 10;
+	this.ammoleft = 10;
+	if (this.side==0) this.protection = true;
 }
 //-----------------
 
@@ -536,3 +541,27 @@ function LHA() {};
 
 var PLANEDEFAULT = new Ship(0,'',0, 1,1, 0,0,0,0, 0, 0,0,0, 1);
 
+function Equip(equipid,level) {
+	for(var key in EQDATA[equipid]) this[key] = EQDATA[equipid][key];
+	this.mid = equipid;
+	if (level) this.setImprovement(level);
+}
+Equip.prototype.setImprovement = function(level) {
+	//if level: reset original stats
+	//add stats, do I want to do it like this? maybe give separate dayFP and nightFP prop to ships
+	// this.FPbonus = 1;
+	// this.FPbonusNB = 1;
+	// this.ACCbonus = 1;
+	//set level
+	if (this.improveType == 1) {
+		var improve = IMPROVEDATA[this.type];
+		if (!improve) return;
+		for (var key in improve) {
+			this[key+'bonus'] = improve[key]*Math.sqrt(level);
+		}
+	} else if (this.improveType == 2) {
+		if (this.type == FIGHTER) this.APbonus = 25;
+		else if (this.isfighter) this.APbonus = 9;
+	}
+	this.level = level;
+}

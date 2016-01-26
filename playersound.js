@@ -29,11 +29,12 @@ SoundManager.prototype = {
 		return this._sounds[name];
 	},
 	playBGM: function(num,vol) {
-		if (!vol) vol = (BGMLIST[num].voldef)? BGMLIST[num].voldef : .4,
+		if (!vol) vol = (BGMLIST[num].voldef)? BGMLIST[num].voldef : .3,
 		this._bgm = new Howl({
 			urls:[BGMLIST[num].url],
 			volume:vol*this._volume,
-			loop:true
+			loop:true,
+			buffer:true
 		});
 		this._bgm.play();
 		this.BGMnum = num;

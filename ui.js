@@ -10,6 +10,92 @@ var IMPROVEHTMLNONE = '<option value="0"></option>';
 var IMPROVEHTMLAKASHI = '<option value="0">+0</option><option value="1">+1</option><option value="2">+2</option><option value="3">+3</option><option value="4">+4</option><option value="5">+5</option><option value="6">+6</option><option value="7">+7</option><option value="8">+8</option><option value="9">+9</option><option value="10">MAX</option>';
 var IMPROVEHTMLPLANE = '<option value="0"></option><option value="1" style="color:#4A84B5">|</option><option value="2" style="color:#4A84B5">||</option><option value="3" style="color:#4A84B5">|||</option><option value="4" style="color:#D49C0A">/</option><option value="5" style="color:#D49C0A">//</option><option value="6" style="color:#D49C0A">///</option><option value="7" style="color:#D49C0A">&gt;&gt;</option>';
 
+$('#dialogselclass').dialog({autoOpen:false,width:690,height:480});
+$('#dialogselship').dialog({autoOpen:false,width:720,height:480});
+$('#dialogselequip').dialog({autoOpen:false,width:400,height:600});
+var SELFLEET, SELSLOT;
+function dialogType(button,fleet,slot) {
+	SELFLEET = fleet; SELSLOT = slot;
+	$('#dialogselclass').dialog("option","position",{my:"left top",at:"center",of:button});
+	$('#dialogselclass').dialog("open");
+	$('#dialogselship').dialog("close");
+}
+function dialogShip(types,side) {
+	$('#dialogselship').html('');
+	var table = $('<table class="dialog2"></table>');
+	$('#dialogselship').append(table);
+	var c=0, tr = $('<tr></tr>'), baseships = [], done = [];
+	for (var i=0; i<types.length; i++) {
+		for (var mid in SHIPDATA) {
+			var ship = SHIPDATA[mid];
+			if ((side==0&&mid>=500)||(side==1&&(mid<500||mid>800))||ship.type != types[i]) continue;
+			if (ship.name.indexOf('Kai')!=-1) continue;
+			if (done.indexOf(mid)==-1) {
+				var ships = [mid]; done.push(mid);
+				while (ship.next) {
+					mid = ship.next;
+					ship = SHIPDATA[mid];
+					if (ships.indexOf(mid)!=-1||types.indexOf(ship.type)==-1) break; else ships.push(mid);
+					done.push(mid.toString());
+				}
+				baseships.push(ships);
+			}
+		}
+	}
+	if (side==0) baseships.sort(function(a,b) {return (SHIPDATA[a[0]].nid<SHIPDATA[b[0]].nid)?-1:1;});
+	for (var i=0; i<baseships.length; i++) {
+		var shiplast = SHIPDATA[baseships[i][baseships[i].length-1]];
+		var shipbase = SHIPDATA[baseships[i][0]];
+		if (--c<=0) { c=4; table.append(tr); tr = $('<tr></tr>'); }
+		var html = '<td><img src="assets/icons/'+shiplast.image+'" onclick="dSetShip('+baseships[i][baseships[i].length-1]+')"/><br>';
+		if (side==1) html = html.replace('<td>','<td onclick="dSetShip('+baseships[i][baseships[i].length-1]+')" style="cursor:pointer">');
+		var namechange = (shiplast.name.indexOf(shipbase.name)!=-1);
+		if (namechange) html+='<span>'+shipbase.name+'</span><br>';
+		else html+='<span>'+shiplast.name+'</span><br>';
+		if (side==0) {
+			if (namechange) html+='<span onclick="dSetShip('+baseships[i][0]+')" class="dialogkai">Base</span>';
+			else html+='<span onclick="dSetShip('+baseships[i][0]+')" class="dialogkai">'+shipbase.name+'</span>';
+			for (var j=1; j<baseships[i].length; j++) {
+				html+='<span onclick="dSetShip('+baseships[i][j]+')" class="dialogkai">'+SHIPDATA[baseships[i][j]].name.substr(SHIPDATA[baseships[i][j]].name.indexOf(' ')+1)+'</span>';
+			}
+		} else html+='<br>'
+		tr.append(html);
+	}
+	table.append(tr);
+	$('#dialogselclass').dialog("close");
+	$('#dialogselship').dialog("open");
+}
+
+function dSetShip(mid) {
+	if (SELFLEET===undefined || SELSLOT===undefined) return;
+	$('#dialogselship').dialog("close");
+	$('#T'+SELFLEET+'n'+SELSLOT).val(mid);
+	$('#T'+SELFLEET+'n'+SELSLOT).trigger("chosen:updated");
+	changedShipForm(SELFLEET,SELSLOT);
+	SELFLEET = SELSLOT = undefined;
+}
+
+function dialogEquip(types) {
+	$('#dialogselequip').html('');
+	var table = $('<table class="dialog3"></table>');
+	var STATS = ['DIVEBOMB','FP','TP','AA','AR','ACC','EV','ASW','LOS'];
+	for (var eqid in EQDATA) {
+		var equip = EQDATA[eqid];
+		if (types.indexOf(equip.type)==-1) continue;
+		var tr = $('<tr></tr>');
+		tr.append('<td class="left"><img src="assets/items/'+EQIMAGES[equip.type]+'.png"/></td>');
+		var td = $('<td></td>');
+		td.append('<span>'+equip.name+'</span><br>');
+		for (var j=0; j<STATS.length; j++) {
+			if (equip[STATS[j]]) td.append('<span><img class="imgstat" src="assets/stats/'+STATS[j].toLowerCase()+'.png"/>'+equip[STATS[j]]+'</span>');
+		}
+		tr.append(td);
+		table.append(tr);
+	}
+	$('#dialogselequip').append(table);
+	$('#dialogselequip').dialog("open");
+}
+
 function genFleetHTML(rootid,fleetnum,fleetname) {
     var root = document.getElementById(rootid);
     PREVEQS[fleetnum] = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
@@ -193,7 +279,8 @@ function genFleetHTML(rootid,fleetnum,fleetname) {
 		
         sel.setAttribute('onChange','changedShipForm('+fleetnum+','+i+');updateFleetCode('+fleetnum+')');
         td.appendChild(sel);
-		$(sel).chosen({width:'160px',search_contains:true,allow_single_deselect:true});
+		$(sel).chosen({width:'140px',search_contains:true,allow_single_deselect:true});
+		$(td).append('<img class="searchbutton" src="assets/stats/search.png" onclick="dialogType(this,'+fleetnum+','+i+')" />');
         tr.appendChild(td);
     }
     t.appendChild(tr);
@@ -223,8 +310,8 @@ function genFleetHTML(rootid,fleetnum,fleetname) {
         [['lvl','lv.png',1,150],['hp','hp.png',1,999]],
         [['fp','fp.png',0,999],['tp','tp.png',0,999]],
         [['aa','aa.png',0,999],['ar','ar.png',0,999]],
-        [['ev','ev.png',1,999],['asw','as.png',0,999]],
-        [['spd','sp.png',0,10],['los','ls.png',0,999]],
+        [['ev','ev.png',1,999],['asw','asw.png',0,999]],
+        [['spd','sp.png',0,10],['los','los.png',0,999]],
         [['rng','rn.png',0,4],['luk','lk.png',0,99]],
     ];
     for (var i=0; i<stats.length; i++) {
@@ -383,11 +470,11 @@ function tableSetShip(fleet,slot,shipid,stats,equips,improves) {
 	if (shipid != '0') {
 		img.draggable = true;
 		img.title = 'Drag to swap slots';
-		img.style = 'cursor:move';
+		$(img).css('cursor','move');
 	} else {
 		img.draggable = false;
 		img.title = '';
-		img.style = '';
+		$(img).css('cursor','');
 	}
 	img.src = 'assets/icons/'+SHIPDATA[shipid].image;
 	document.getElementById('T'+fleet+'i'+slot+'alt').src = 'assets/icons/'+SHIPDATA[shipid].image;
@@ -418,11 +505,11 @@ function changedShipForm(fleet,slot) {
 	if (shipid != '0') {
 		img.draggable = true;
 		img.title = 'Drag to swap slots';
-		img.style = 'cursor:move';
+		$(img).css('cursor','move');
 	} else {
 		img.draggable = false;
 		img.title = '';
-		img.style = '';
+		$(img).css('cursor','');
 	}
 	document.getElementById('T'+fleet+'i'+slot+'alt').src = 'assets/icons/'+SHIPDATA[shipid].image;
 	document.getElementById('T'+fleet+'lvl'+slot).value = (shipid=='0')? '' : (parseInt(shipid)<500)? 99 : (SHIPDATA[shipid].type == 'SS')? 50 : 1;
@@ -799,9 +886,10 @@ function genStatTableHTML() {
 }
 genStatTableHTML();
 
+var DORETREAT = true;
 function changedCBRedRetr(checked) {
-	if (!checked) $('#redretrkuso').show();
-	else $('#redretrkuso').hide();
+	if (!checked) { $('#redretrkuso').show(); DORETREAT = false; }
+	else { $('#redretrkuso').hide(); DORETREAT = true; }
 }
 
 // updateResults(10000,{S:.2,A:.2,B:.2,C:.2,D:.2},.3,[.5,.1,.1,.1,.1,.1],[.2,.01,.01,.01,.01,.01,.01],.1,[10,20,30,40,50]);
@@ -954,7 +1042,7 @@ function clickedSimGo() {
 	error = loadIntoSim(2,1);
 	if (error) { document.getElementById('simnotespace').innerHTML = 'Fleet '+error+' has no ships.'; return; }
 	for (var i=2; i<=NUMFLEETS2; i++) {
-		error = loadIntoSim(20+NUMFLEETS2,1);
+		error = loadIntoSim(20+i,1);
 		if (error) { document.getElementById('simnotespace').innerHTML = 'Fleet '+error+' has no ships.'; return; }
 	}
 	
@@ -1046,7 +1134,7 @@ function clickedWatchBattle() {
 		var res = sim(FLEETS1[0],FLEETS2[j],doNB[j],NBonly[j],aironly[j],BAPI);
 		API.battles.push(BAPI);
 		console.log('c');
-		if (res.redded) break;
+		if ((res.redded && DORETREAT) || res.flagredded) break;
 	}
 	console.log(API);
 	// return;

@@ -443,15 +443,17 @@ function processAPI(root) {
 		var escape = [[],[]];
 		if (data.api_escape_idx) escape[0] = data.api_escape_idx;
 		if (data.api_escape_idx_combined) escape[1] = data.api_escape_idx_combined;
-		var bgm, map = MAPDATA[root.world].maps[root.mapnum];
-		var isboss = (map.bossnode==EDGES['World '+root.world+'-'+root.mapnum][root.battles[b].node][1].charCodeAt()-64);
-		if (isboss) bgm = (NBonly)? map.bgmNB : map.bgmDB;
-		else bgm = (NBonly)? map.bgmNN : map.bgmDN;
-		var orel = false; if (root.world==2 && root.mapnum==3) { //orel cruise
-			var allsub = true;
-			for (var i=0; i<fleet1.length; i++) if (!fleet1[i].issub) allsub = false;
-			if (allsub) { bgm = 999; isboss = false; orel = true; }
-		}
+		try {
+			var bgm, map = MAPDATA[root.world].maps[root.mapnum];
+			var isboss = (map.bossnode==EDGES['World '+root.world+'-'+root.mapnum][root.battles[b].node][1].charCodeAt()-64);
+			if (isboss) bgm = (NBonly)? map.bgmNB : map.bgmDB;
+			else bgm = (NBonly)? map.bgmNN : map.bgmDN;
+			var orel = false; if (root.world==2 && root.mapnum==3) { //orel cruise
+				var allsub = true;
+				for (var i=0; i<fleet1.length; i++) if (!fleet1[i].issub) allsub = false;
+				if (allsub) { bgm = 999; isboss = false; orel = true; }
+			}
+		} catch(e) { var bgm = (NBonly)?2:1, orel = false, isboss = false, map = {bgmNB:2,bgmDB:2,bgmNN:2,bgmDN:1}; }
 		if (b>0) {
 			eventqueue.push([wait,[3000,(isboss||(NBonly && map.bgmDN!=map.bgmNN))]]);
 			eventqueue.push([shuttersNextBattle,[battledata,f2]]);

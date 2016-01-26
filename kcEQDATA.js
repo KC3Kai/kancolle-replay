@@ -43,6 +43,7 @@ const NIGHTSCOUT = 41;
 const OTHER = 99;
 
 var EQNAMES = {}; EQNAMES[MAINGUNS]='Main Gun (S)';EQNAMES[MAINGUNM]='Main Gun (M)';EQNAMES[MAINGUNL]='Main Gun (L)';EQNAMES[MAINGUNXL]='Main Gun (L+)';EQNAMES[SECGUN]='Secondary Gun';EQNAMES[AAGUN]='Anti-Air Gun';EQNAMES[AAFD]='Fire Director';EQNAMES[TORPEDO]='Torpedo';EQNAMES[TORPEDOSS]='Torpedo';EQNAMES[MIDGETSUB]='Midget Sub';EQNAMES[FIGHTER]='Fighter';EQNAMES[TORPBOMBER]='Torpedo Bomber';EQNAMES[DIVEBOMBER]='Dive Bomber';EQNAMES[SEAPLANE]='Recon Seaplane';EQNAMES[SEAPLANEBOMBER]='Seaplane Bomber';EQNAMES[CARRIERSCOUT]='Scout Plane';EQNAMES[AUTOGYRO]='Anti-Sub Plane';EQNAMES[ASWPLANE]='Anti-Sub Plane';EQNAMES[RADARS]='Radar (S)';EQNAMES[RADARL]='Radar (L)';EQNAMES[RADARXL]='Radar (L+)';EQNAMES[SONARS]='Sonar';EQNAMES[SONARL]='Sonar';EQNAMES[DEPTHCHARGE]='Depth Charge';EQNAMES[ENGINE]='Engine';EQNAMES[APSHELL]='AP Shell';EQNAMES[TYPE3SHELL]='Anti-Air Shell';EQNAMES[BULGEM]='Torpedo Bulge';EQNAMES[BULGEL]='Torpedo Bulge';EQNAMES[SEARCHLIGHTS]='Night Equip';EQNAMES[SEARCHLIGHTL]='Night Equip';EQNAMES[STARSHELL]='Night Equip';EQNAMES[PICKET]='Night Equip';EQNAMES[FLYINGBOAT]='Recon Seaplane';EQNAMES[NIGHTSCOUT]='Recon Seaplane';EQNAMES[LANDINGCRAFT]='Misc';EQNAMES[WG42]='Misc';EQNAMES[SCAMP]='Misc';EQNAMES[FCF]='Misc';EQNAMES[SRF]='Misc';EQNAMES[DRUM]='Misc';EQNAMES[OTHER]='Misc';
+var EQIMAGES = {}; EQIMAGES[MAINGUNS]=1;EQIMAGES[MAINGUNM]=2;EQIMAGES[MAINGUNL]=3;EQIMAGES[MAINGUNXL]=3;EQIMAGES[SECGUN]=4;EQIMAGES[AAGUN]=15;EQIMAGES[AAFD]=30;EQIMAGES[TORPEDO]=5;EQIMAGES[TORPEDOSS]=5;EQIMAGES[MIDGETSUB]=5;EQIMAGES[FIGHTER]=6;EQIMAGES[TORPBOMBER]=8;EQIMAGES[DIVEBOMBER]=7;EQIMAGES[SEAPLANE]=10;EQIMAGES[SEAPLANEBOMBER]=10;EQIMAGES[CARRIERSCOUT]=9;EQIMAGES[AUTOGYRO]=21;EQIMAGES[ASWPLANE]=22;EQIMAGES[RADARS]=11;EQIMAGES[RADARL]=11;EQIMAGES[RADARXL]=11;EQIMAGES[SONARS]=18;EQIMAGES[SONARL]=18;EQIMAGES[DEPTHCHARGE]=17;EQIMAGES[ENGINE]=19;EQIMAGES[APSHELL]=13;EQIMAGES[TYPE3SHELL]=12;EQIMAGES[BULGEM]=23;EQIMAGES[BULGEL]=23;EQIMAGES[SEARCHLIGHTS]=24;EQIMAGES[SEARCHLIGHTL]=24;EQIMAGES[STARSHELL]=27;EQIMAGES[PICKET]=32;EQIMAGES[FLYINGBOAT]=33;EQIMAGES[NIGHTSCOUT]=10;EQIMAGES[LANDINGCRAFT]=20;EQIMAGES[WG42]=31;EQIMAGES[SCAMP]=29;EQIMAGES[FCF]=28;EQIMAGES[SRF]=26;EQIMAGES[DRUM]=25;EQIMAGES[OTHER]=14;
 var IMPROVEDATA = {};
 IMPROVEDATA[MAINGUNS] = {FPD:1,FPN:1,ACC:1.5};
 IMPROVEDATA[MAINGUNM] = {FPD:1,FPN:1,ACC:1.5};
@@ -78,31 +79,6 @@ const A_TYPE3SHELL = 5;
 const A_AIRRADAR = 6;
 const A_AAGUN = 7;
 const A_GUN = 8;
-
-function Equip(equipid,level) {
-	for(var key in EQDATA[equipid]) this[key] = EQDATA[equipid][key];
-	this.mid = equipid;
-	if (level) this.setImprovement(level);
-}
-Equip.prototype.setImprovement = function(level) {
-	//if level: reset original stats
-	//add stats, do I want to do it like this? maybe give separate dayFP and nightFP prop to ships
-	// this.FPbonus = 1;
-	// this.FPbonusNB = 1;
-	// this.ACCbonus = 1;
-	//set level
-	if (this.improveType == 1) {
-		var improve = IMPROVEDATA[this.type];
-		if (!improve) return;
-		for (var key in improve) {
-			this[key+'bonus'] = improve[key]*Math.sqrt(level);
-		}
-	} else if (this.improveType == 2) {
-		if (this.type == FIGHTER) this.APbonus = 25;
-		else if (this.isfighter) this.APbonus = 9;
-	}
-	this.level = level;
-}
 
 var EQDATA = {
     0: {
@@ -599,7 +575,8 @@ var EQDATA = {
 		nameJP: '紫電改二',
 		type: FIGHTER,
 		isfighter: true,
-		AA: 9
+		AA: 9,
+		EV: 3
 	},
 	56: {
 		name: 'Shinden Kai',
@@ -1644,6 +1621,17 @@ var EQDATA = {
 		ACC: 2,
 		EV: 1,
 		RNG: 1
+	},
+	161: {
+		name: '16inch Triple Gun Mount Mk.7',
+		nameJP: '16inch三連装砲 Mk.7',
+		type: MAINGUNL,
+		atype: A_GUN,
+		FP: 24,
+		AA: 3,
+		AR: 1,
+		ACC: 4,
+		RNG: 3
 	},
 	501: {
 		name: '5inch Single Cannon',
