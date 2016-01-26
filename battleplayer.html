@@ -10,6 +10,7 @@
 		<script src="shared.js"></script>
 		<script src="pixi.js"></script>
 		<script src="howler.min.js"></script>
+		<script src="URI.js"></script>
 		<script type="text/javascript" src="reader/steganography.js"></script>
 		<script type="text/javascript">
 		function loadImage(file) {
@@ -242,6 +243,13 @@
 					}
 				}
 			}
+
+			var uri = new URI(window.location.href);
+			var qs = uri.search( true );
+			if (qs.fromImg) {
+				loadImgURL(qs.fromImg);
+			}
+
 		</script>
 	</body>
 </html>
