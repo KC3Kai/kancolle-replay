@@ -247,7 +247,7 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor) {
 	dl.setAttribute('style','float:left;width:250px');
 	if (TUTORIAL && fleetnum==1) {
 		$(dl).attr('id','flashingdiv');
-		$(dl).css('border','3px solid yellow');
+		$(dl).css('border','3px solid red');
 		$(dl).css('animation','flashing .75s linear 0s infinite alternate');
 	}
 	$(dl).append('<b>From .kc3 file:(<a href="#" id="'+tid+'qdq" onclick="showKC3QDpopup()">?</a>):</b><br>');
@@ -286,7 +286,7 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor) {
 	dl.appendChild(sel3);
 	dl.appendChild(document.createElement('br'));
 	if (TUTORIAL && fleetnum==2) {
-		$(sel1).css('border','3px solid yellow');
+		$(sel1).css('border','3px solid red');
 		$(sel1).css('animation','flashing .75s linear 0s infinite alternate');
 	}
 	// var btn = document.createElement('input');

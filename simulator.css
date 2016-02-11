@@ -143,6 +143,6 @@ div.secret:hover {
 	vertical-align: middle;
 }
 @keyframes flashing {
-	from {border-color: yellow;}
+	from {border-color: red;}
 	to {border-color: white;}
 }
