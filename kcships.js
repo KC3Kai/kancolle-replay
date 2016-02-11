@@ -1,8 +1,9 @@
 
 //-------
-function Fleet(id) {
+function Fleet(id,isescort) {
 	this.id = id;
 	this.ships = [];
+	if (isescort) this.isescort = true;
 	
 	this.formation = false;
 	this.AP = 0;  //air (fighter) power
@@ -23,6 +24,7 @@ Fleet.prototype.loadShips = function(ships) {
 		for (var j=0; j<ships[i].equips.length; j++) {
 			if (ships[i].equips[j].noRedT) { this.noRedT = true; break; }
 		}
+		if (this.isescort) ships[i].isescort = true;
 	}
 	this.ships[0].isflagship = true;
 }
@@ -122,10 +124,11 @@ function Ship(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 Ship.prototype.loadEquips = function(equips,levels,addstats) {
 	if (!equips || this.equips.length > 0) return;  //don't load if already have equips, do removeEquips() first
 	var atypes = {};
+	var planeacc = 0, planetype = 0;
 	for (var i=0; i<equips.length; i++){
 		// console.log(typeof equips[i]);
 		if (!equips[i]) continue;
-		var eq = new Equip(equips[i],1);  //remember change 1 to actual level
+		var eq = new Equip(equips[i],levels[i]);  //remember change 1 to actual level
 		//eq.setImprovement(level);
 		if (eq.RNG && eq.RNG > this.RNG) this.RNG = eq.RNG;
 		if (eq.ACC) this.ACC += eq.ACC;
@@ -142,16 +145,29 @@ Ship.prototype.loadEquips = function(equips,levels,addstats) {
 		}
 		if (eq.type == TYPE3SHELL) this.hasT3Shell = true;
 		if (eq.type == MIDGETSUB) this.hasMidgetSub = true;
+		if (eq.type == STARSHELL) this.hasStarShell = true;
+		if (eq.type == SEARCHLIGHTS || eq.type == SEARCHLIGHTL) this.hasSearchlight = true;
+		if (eq.type == NIGHTSCOUT) this.hasNightScout = true;
 		
 		//add improvement stats
 		for (var key in eq) {
 			if (key.indexOf('bonus')==-1) continue;
+			if (key=='planeaccbonus') {
+				if (eq.isdivebomber) {
+					if (planetype==0) { planetype = 1; planeacc = 0; }
+					planeacc = Math.max(planeacc,eq.planeaccbonus);
+				}
+				else if (planetype==0 && eq.istorpbomber) planeacc = Math.max(planeacc,eq.planeaccbonus);
+				continue;
+			}
 			if (this[key]) this[key] += eq[key];
 			else this[key] = eq[key];
+			if (i==0 && key=='critdmgbonus') this[key] += eq[key]; //double for first slot plane
 		}
 		
 		this.equips.push(eq);
 	}
+	this.ACCbonus = (this.ACCbonus)? this.ACCbonus+planeacc : planeacc;
 	this.AACItype = this.getAACItype(atypes);
 	if (addstats) {
 		for (var i=0; i<equips.length; i++){
@@ -230,10 +246,11 @@ Ship.prototype.APmod = function(target) {
 
 Ship.prototype.shellPower = function(onInstallation) {
 	var bonus = (this.FPDbonus)? Math.floor(this.FPDbonus) : 0;
+	var shellbonus = (this.fleet && this.fleet.formation.shellbonus!==undefined)? this.fleet.formation.shellbonus : 5;
 	if (onInstallation) {
-		if (this.hasT3Shell) return this.FP*2.5 + 5 + bonus;
+		if (this.hasT3Shell) return this.FP*2.5 + shellbonus + bonus;
 	}
-	return this.FP + 5 + bonus;
+	return this.FP + shellbonus + bonus;
 }
 
 Ship.prototype.NBPower = function(onInstallation) {
@@ -281,8 +298,9 @@ Ship.prototype.weightedAntiAir = function() {
 			default:
 				continue;
 		}
-		aa += this.equips[i].AA * mod; //ADD IMPROVEMENT HERE
+		aa += this.equips[i].AA * mod;
 	}
+	aa += (this.AAbonus)? this.AAbonus : 0;
 	return aa;
 }
 
@@ -291,7 +309,7 @@ Ship.prototype.getAACItype = function(atypes) {
 	for (var i=0; i<this.equips.length; i++) {
 		if (this.equips[i].isconcentrated) { concentrated = true; break; }
 	}
-	if (this.mid == 428 && concentrated && atypes[A_HAGUN]) {   //428 = Maya Kai Ni
+	if (this.mid == 428 && concentrated && (atypes[A_HAGUN]||atypes[A_HAFD])) {   //428 = Maya Kai Ni
 		if (atypes[A_AIRRADAR]) return 11; 
 		else return 10;
 	}
@@ -389,6 +407,12 @@ BB.prototype = Object.create(Ship.prototype);
 BB.prototype.canTorp = function() { return false; }
 BB.prototype.APweak = true;
 
+function FBB(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
+	BB.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
+	this.type = 'BB';
+}
+FBB.prototype = Object.create(BB.prototype);
+
 
 function CAV(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	Carrier.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
@@ -446,7 +470,8 @@ CV.prototype.shellPower = function() {
 	for (var i=0; i<this.equips.length; i++) {
 		if(this.equips[i].DIVEBOMB) dp += this.equips[i].DIVEBOMB;
 	}
-	return 55 + 1.5*this.FP + 1.5*this.TP + 2*dp;
+	var bonus = (this.fleet && this.fleet.formation.shellbonus!==undefined)? this.fleet.formation.shellbonus : 5;
+	return 50 + bonus + 1.5*this.FP + 1.5*this.TP + 2*dp;
 }
 
 function CVL(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
@@ -539,7 +564,8 @@ function CT() {};
 function LHA() {};
 
 
-var PLANEDEFAULT = new Ship(0,'',0, 1,1, 0,0,0,0, 0, 0,0,0, 1);
+var PLANEDEFAULT = new Ship(0,'PLANEDEFAULT',0, 1,1, 0,0,0,0, 0, 0,0,0, 1);
+PLANEDEFAULT.CVshelltype = true;
 
 function Equip(equipid,level) {
 	for(var key in EQDATA[equipid]) this[key] = EQDATA[equipid][key];
@@ -547,12 +573,6 @@ function Equip(equipid,level) {
 	if (level) this.setImprovement(level);
 }
 Equip.prototype.setImprovement = function(level) {
-	//if level: reset original stats
-	//add stats, do I want to do it like this? maybe give separate dayFP and nightFP prop to ships
-	// this.FPbonus = 1;
-	// this.FPbonusNB = 1;
-	// this.ACCbonus = 1;
-	//set level
 	if (this.improveType == 1) {
 		var improve = IMPROVEDATA[this.type];
 		if (!improve) return;
@@ -560,8 +580,16 @@ Equip.prototype.setImprovement = function(level) {
 			this[key+'bonus'] = improve[key]*Math.sqrt(level);
 		}
 	} else if (this.improveType == 2) {
-		if (this.type == FIGHTER) this.APbonus = 25;
-		else if (this.isfighter) this.APbonus = 9;
-	}
+		if (this.type == FIGHTER) this.APbonus = [0,1,3,7,11,16,16,25][level];
+		else if (this.isfighter) this.APbonus = [0,1,2,3,3,5,5,9][level];
+		else if (this.istorpbomber||this.isdivebomber) this.APbonus = [0,1,1,2,2,2,2,3][level];
+		//add crit bonus, crit rate bonus, acc bonus
+		if (this.istorpbomber) this.planeaccbonus = 4.7*Math.sqrt(level);
+		else if (this.isdivebomber) this.planeaccbonus = 3*Math.sqrt(level);
+		if (this.istorpbomber || this.isdivebomber) {
+			this.critratebonus = 2.25*Math.sqrt(level);
+			this.critdmgbonus = [0,2.5,3,4.5,6,7.5,8,10][level];
+		}
+	} else return;
 	this.level = level;
 }

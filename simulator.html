@@ -6,130 +6,26 @@
 		<script src="jquery-1.11.3.min.js"></script>
 		<script src="chosen.jquery.js"></script>
 		<link rel="stylesheet" href="chosen.css"/>
-		<script src="http://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
-		<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+		<script src="jquery-ui/jquery-ui.min.js"></script>
+		<link rel="stylesheet" href="jquery-ui/jquery-ui.css">
 		<script src="kcships.js"></script>
 		<script src="kcSHIPDATA.js"></script>
 		<script src="kcEQDATA.js"></script>
 		<script src="kcENEMYCOMP.js"></script>
 		<script src="shared.js"></script>
 		<script src="kcsim.js"></script>
+		<script src="kcsimcombined.js"></script>
 		<script src="pixi.js"></script>
 		<script src="howler.min.js"></script>
 		<script src="playersound.js"></script>
-		<style>
-		table.t1 {
-			border-collapse: collapse;
-		}
-		table.t1 td {
-			border: 1px solid black;
-			padding: 1px;
-		}
-		table.t1 select {
-			width: 160px;
-		}
-		table.t1 input[type="number"] {
-			width: 50px;
-			float: right;
-		}
-		table.t1 input[type="button"] {
-			float: right;
-			vertical-align: bottom;
-		}
-		h3 {
-			padding: 0px;
-			margin-bottom: 0px;
-		}
-		div.clickable {
-			cursor: pointer;
-			height:100%;
-			width:100%;
-		}
-		table.stattable {
-			border-collapse: collapse;
-		}
-		table.stattable td {
-			border-left: 1px solid black;
-			width: 45px;
-		}
-		#resultspace img {
-			vertical-align: middle;
-		}
-		.rescolumn {
-			float:left;
-			width:300px;
-		}
-		table.dialog1 {
-			border-collapse:collapse
-		}
-		table.dialog1 td {
-			text-align:center;
-			border:1px solid black;
-			background-color:#eeeeee;
-			cursor:pointer
-		}
-		table.dialog1 td:hover {
-			background-color:#888888
-		}
-		table.dialog2 td {
-			text-align:center;
-			border:1px solid black;
-			background-color:#eeeeee;
-		}
-		table.dialog2 img:hover {
-			cursor:pointer
-		}
-		table.dialog2 span.dialogkai {
-			cursor:pointer;
-			font-size:14px;
-			text-decoration:underline;
-			margin: 0 7px
-		}
-		table.dialog2 span:hover.dialogkai {
-			color:blue
-		}
-		table.dialog3 {
-			font-size:12px;
-			border-spacing: 0 2px;
-			width: 360px;
-		}
-		table.dialog3 tr {
-			background-color: #ffffff;
-		}
-		table.dialog3 tr:hover {
-			background-color: #78BEB5;
-			cursor: pointer;
-		}
-		table.dialog3 td.left {
-			border: 1px solid black;
-			border-right: 0;
-			width: 10%;
-		}
-		table.dialog3 td {
-			border: 1px solid black;
-			border-left: 0;
-		}
-		table.dialog3 img.imgstat {
-			vertical-align:middle;
-			margin-left: 12px;
-			margin-right: 2px;
-		}
-		.searchbutton {
-			float:right;
-			width:18px;
-			height:18px;
-			cursor:pointer;
-			border: 1px solid grey
-		}
-		.searchbutton:hover {
-			border: 1px solid #7A9CD3
-		}
-		</style>
+		<link rel="stylesheet" href="simulator.css"/>
 	</head>
-	<body style="display:none">
-		<h1 title="a">Boat Cockfight Simulator</h1> <h4>v1.0 Alpha 1</h4>
-		<!--<h4>Ver. Alpha 0.1.poot</h4>-->
-		<br><br><br><br>
+	<body>
+		<h1 title="a">Boat Cockfight Simulator</h1> <span style="color:red">v1.0 Beta 1 <span style="margin-left:20px;font-style:italic">(Last updated: 2016-2-10)</span></span>
+		<br><br><br>
+		<input type="radio" id="radJP" name="lang" onchange="transNames('JP')"/><label for="radJP">JP</label>
+		<input type="radio" id="radEN" name="lang" onchange="transNames('EN')" checked /><label for="radEN">EN</label>
+		<br><br>
 		<div id="fleetspace1" style="clear:both"></div>
 		<br>
 		<div style="width:1000px">
@@ -138,13 +34,23 @@
 			<input type="button" id="btnDelComb" value="Remove Combined Fleet" style="display:none" onClick="clickedDelComb()"/>
 			</div>
 		</div>
+		<br><br>
+		<div id="fleetspace1SN"></div>
 		<br>
-		<div id="fleetspace1S"></div>
 		<div style="width:1000px">
 			<div style="width:200px;margin:auto">
-			<input type="button" id="btnAddSup" value="Add Support" onClick="clickedAddNode(true)"/>
-			<input type="button" id="btnDelSup" value="Remove Support" style="visibility:hidden" onClick="clickedDelNode()"/>
+			<input type="button" id="btnAddSupN" value="Add Support" onClick="clickedAddSupportN(true)"/>
+			<input type="button" id="btnDelSupN" value="Remove Support" style="display:none" onClick="clickedDelSupportN()"/>
 			</div>
+		</div>
+		<div id="supportboss" style="display:none">
+		<div id="fleetspace1SB"></div>
+		<div style="width:1000px">
+			<div style="width:200px;margin:auto">
+			<input type="button" id="btnAddSupB" value="Add Boss Support" onClick="clickedAddSupportB(true)"/>
+			<input type="button" id="btnDelSupB" value="Remove Boss Support" style="display:none" onClick="clickedDelSupportB()"/>
+			</div>
+		</div>
 		</div>
 		<br><hr><br><br>
 		<div id="fleetspace2"></div>
@@ -179,6 +85,7 @@
 		<div id="resultspace" style="display:none">
 			
 			<h3>Statistics</h3>
+			<span style="color:red;font-size:14px">Accuracy of calculations is a work in progress and will be improved as new information is discovered. Please note that values are rough and may not exactly reflect real in-game rates.</span><br>
 			<div>Number of runs: <span id="rnumruns">0</span></div><br>
 			<div class="rescolumn">
 				<div class="ressingle">Rank Rate:<br></div>
@@ -189,7 +96,7 @@
 				<img src="assets/stats/C.png"></img> <span id="rankC">0</span><br>
 				<img src="assets/stats/D.png"></img> <span id="rankD">0</span><br>
 				<img src="assets/stats/E.png"></img> <span id="rankE">0</span><br>
-				<div class="resmulti"><img src="assets/stats/taiha.png"></img> <span id="rankNone">0</span><br></div>
+				<div class="resmulti"><img src="assets/stats/retreat.png"></img> <span id="rankNone">0</span><br></div>
 				<br>
 				Enemy Flagship Sunk Rate:<br>
 				<img src="assets/stats/flagsunk.png"></img> <span id="rsunkfs" style="font-weight:bold">0</span><br>
@@ -202,12 +109,23 @@
 			<div class="rescolumn">
 				<div class="ressingle">
 					<span><img src="assets/stats/MVP.png"> Rate:</span><br>
+					<span class="rescombined"><br>Main<br></span>
 					<img src="assets/stats/F1.png"></img> <span id="mvp1">0</span><br>
 					<img src="assets/stats/F2.png"></img> <span id="mvp2">0</span><br>
 					<img src="assets/stats/F3.png"></img> <span id="mvp3">0</span><br>
 					<img src="assets/stats/F4.png"></img> <span id="mvp4">0</span><br>
 					<img src="assets/stats/F5.png"></img> <span id="mvp5">0</span><br>
 					<img src="assets/stats/F6.png"></img> <span id="mvp6">0</span><br>
+					<div class="rescombined">
+						<br>
+						<span>Escort</span><br>
+						<img src="assets/stats/F1.png"></img> <span id="mvpc1">0</span><br>
+						<img src="assets/stats/F2.png"></img> <span id="mvpc2">0</span><br>
+						<img src="assets/stats/F3.png"></img> <span id="mvpc3">0</span><br>
+						<img src="assets/stats/F4.png"></img> <span id="mvpc4">0</span><br>
+						<img src="assets/stats/F5.png"></img> <span id="mvpc5">0</span><br>
+						<img src="assets/stats/F6.png"></img> <span id="mvpc6">0</span><br>
+					</div>
 				</div>
 				<div class="resmulti">
 					<span><img src="assets/stats/MVP.png"> Rate Per Battle:</span>
@@ -217,19 +135,29 @@
 			</div>
 			<div class="rescolumn">
 				<div class="ressingle">
-					Major Damage Rate:<br>
-					<img src="assets/stats/taiha.png"></img>Any: <span id="rredany" style="font-weight:bold">0</span><br>
+					<img src="assets/stats/taiha.png"> Rate: <span id="rredany" style="font-weight:bold">0</span><br>
 					<br>
 					Individual <img src="assets/stats/taiha.png">:<br>
+					<span class="rescombined">Main<br></span>
 					<img src="assets/stats/F1.png"></img> <span id="red1">0</span><br>
 					<img src="assets/stats/F2.png"></img> <span id="red2">0</span><br>
 					<img src="assets/stats/F3.png"></img> <span id="red3">0</span><br>
 					<img src="assets/stats/F4.png"></img> <span id="red4">0</span><br>
 					<img src="assets/stats/F5.png"></img> <span id="red5">0</span><br>
 					<img src="assets/stats/F6.png"></img> <span id="red6">0</span><br>
+					<div class="rescombined">
+						<br>
+						<span>Escort</span><br>
+						<img src="assets/stats/F1.png"></img> <span id="redc1">0</span><br>
+						<img src="assets/stats/F2.png"></img> <span id="redc2">0</span><br>
+						<img src="assets/stats/F3.png"></img> <span id="redc3">0</span><br>
+						<img src="assets/stats/F4.png"></img> <span id="redc4">0</span><br>
+						<img src="assets/stats/F5.png"></img> <span id="redc5">0</span><br>
+						<img src="assets/stats/F6.png"></img> <span id="redc6">0</span><br>
+					</div>
 					<br>
 					No Medium Damage:<br>
-					<img src=""></img> <span id="rnodam">0</span><br>
+					<span id="rnodam">0</span><br>
 				</div>
 				<div class="resmulti">
 					<img src="assets/stats/taiha.png"> Rate Per Battle:<br>
@@ -278,20 +206,26 @@
 				<div style="width:150px;float:left">
 					<input type="button" id="btnWatch" value="Watch Battle" onClick="clickedWatchBattle()"/>
 				</div>
+				<div style="float:left;width:150px">
+					<!--<input type="button" value="&lt; Back" onclick="clickedBack()" />-->
+					<input type="button" value="Pause" onclick="if(started) {PAUSE=!PAUSE;$(this).css('background-color',(PAUSE)?'grey':'');}" />
+					<!--<input type="button" value="Skip &gt;" onclick="clickedSkip()" />-->
+					<input type="button" value="Restart" onclick="if(started)reset(function(){processAPI(API);})" />
+				</div>
+				<div style="float:left;width:400px">
+					<input type="range" value="40" min="0" max="80" oninput="var num=parseInt(this.value);RATE=(num<40)?num/40:(num-40)/10+1;$('#speednum').text('x'+RATE)"/>
+					<span id="speednum">x1</span>
+				</div>
 				<div style="float:left">
-					<input type="button" value="&lt; Back" onclick="clickedBack()" />
-					<input type="button" value="Pause" onclick="PAUSE=!PAUSE;" />
-					<input type="button" value="Skip &gt;" onclick="clickedSkip()" />
-					<input type="button" value="Restart" onclick="reset(true)" />
+					<input type="button" value="&#128266;" style="width:30px" onclick="if(!Howler._muted){Howler.mute();this.value='&#128263;'}else{Howler.unmute();this.value='&#128266;';Howler.volume(parseFloat($('#rngvol').val()))}" />
+					<input id="rngvol" type="range" value=".6" step=".01" min="0" max="1" style="width:100px" oninput="if(!Howler._muted)Howler.volume(parseFloat(this.value))" />
 				</div>
 			</div>
 			<div style="width:800px;height:100px;padding-top:20px;clear:both">
 				<div style="float:left;width:240px">
-					Detection: <span id="plDet1"></span><br><br>
+					<br><br>
 					Air Battle: <span id="plAS1" style="font-weight:bold;font-size:20px"></span><br><br>
-					<div style="width:240px;height:10px;border:1px solid black;border-radius:5px">
-						<div id="plHP1" style="width:240px;height:10px;background-color:green;border-radius:4px"></div>
-					</div>
+					<canvas id="plHP1" width="240px" height="10px" style="border:1px solid black;border-radius:5px"></canvas>
 				</div>
 				<div style="float:left;width:320px;text-align:center">
 					<br><br>
@@ -301,9 +235,7 @@
 				<div style="float:right;width:240px;align:right">
 					<br><br>
 					Air Battle: <span id="plAS2" style="font-weight:bold;font-size:20px"></span><br><br>
-					<div style="width:240px;height:10px;border:1px solid black;border-radius:5px">
-						<div id="plHP2" style="width:240px;height:10px;background-color:red;border-radius:4px"></div>
-					</div>
+					<canvas id="plHP2" width="240px" height="10px" style="border:1px solid black;border-radius:5px"></canvas>
 				</div>
 			</div>
 			<!--<input type="button" id="startb" value="Start" onClick="startPlayer()" />
@@ -318,7 +250,7 @@
 			<span id="error" style="color:red"></span>
 		</div>
 		<br/><br/>
-		<div id="dialogselclass">
+		<div id="dialogselclass" style="display:none">
 			<span style="font-weight:bold;text-decoration:underline">Shipgirls</span><br>
 			<table class="dialog1">
 				<tr><td onclick="dialogShip(['DD'],0)"><img src="assets/icons/KFubuki.jpg"/><br><span style="font-weight:bold">DD</span></td>
@@ -329,7 +261,7 @@
 					<td onclick="dialogShip(['CV','CVB','CVN'],0)"><img src="assets/icons/KAkagi.png"/><br><span style="font-weight:bold">CV</span></td>
 					<td onclick="dialogShip(['SS','SSV'],0)"><img src="assets/icons/KI-168.jpg"/><br><span style="font-weight:bold">SS</span></td>
 					<td onclick="dialogShip(['AV','AS','AR','CT','AO','LHA'],0)"><img src="assets/icons/KAkashi.jpg"/><br><span style="font-weight:bold">Other</span></td></tr>
-			<table>
+			</table>
 			<br><br>
 			<span style="font-weight:bold;text-decoration:underline">Abyssals</span><br>
 			<table class="dialog1">
@@ -339,19 +271,55 @@
 					<td onclick="dialogShip(['BB'],1)"><img src="assets/icons/SRu.png"/><br><span style="font-weight:bold">BB</span></td></tr>
 				<tr><td onclick="dialogShip(['CVL','CV','CVN'],1)"><img src="assets/icons/SWo.png"/><br><span style="font-weight:bold">CV(L)</span></td>
 					<td onclick="dialogShip(['SS'],1)"><img src="assets/icons/SKa.jpg"/><br><span style="font-weight:bold">SS</span></td>
-					<td onclick="dialogShip(['AO'],1)"><img src="assets/icons/SWa.jpg"/><br><span style="font-weight:bold">Other</span></td>
+					<td onclick="dialogShip(['AO','AV','AS','AR','CT','AO','LHA'],1)"><img src="assets/icons/SWa.jpg"/><br><span style="font-weight:bold">Other</span></td>
 					<td onclick="dialogShip(['Installation','BBVT'],1)"><img src="assets/icons/SAirH.jpg"/><br><span style="font-weight:bold">Boss</span></td></tr>
-			<table>
-		</div>
-		<div id="dialogselship"></div>
-		<div id="dialogselequiptype">
-			<table class="dialog3">
-				<tr><td></td>
-					<td></td>
-					
 			</table>
+			<br><br>
+			<span style="font-weight:bold;text-decoration:underline">Extra</span><br>
+			<table class="dialog1">
+				<tr><td onclick="dialogShipFog()"><img src="assets/icons/AIona.png"/><br><span style="font-weight:bold">Arpeggio</span></td><tr>
+			</table>
+			<div class="secret" onclick="dialogShipSecret()">???</div>
 		</div>
-		<div id="dialogselequip" style="background-color:#EDE6D8"></div>
+		<div id="dialogselship" style="background-color:#EDE6D8;display:none"></div>
+		<div id="dialogselequiptype" style="background-color:#EDE6D8;display:none"></div>
+		<div id="dialogselequip" style="background-color:#EDE6D8;display:none"></div>
+		<div id="dialogkc3file" style="display:none;background-color:#DDEEFF">
+			<p>You can import your in-game fleet using KC3Kai's Quick Data file.<br><br>
+			1. Set up your fleet in-game.<br><br>
+			2. <b>Return to secretary screen.</b><br><br>
+			3. Refresh Strategy Room.<br><br>
+			4. On the Profile tab, click <span style="color:#337AB7">Export Quick Data to a file</span><br><br>
+			5. Select the fleet number you want and upload your file here.<br><br></p>
+		</div>
+		<br><hr><br>
+		<div style="font-size:14px">
+			<span>Sources: <span style="color:red">coming soon</span></span><br><br>
+			<span>Bug report, feature request, or game mechanic article you want to share? Leave an issue on <a href="https://github.com/KC3Kai/kancolle-replay/issues">Github</a> or post on my <a href="http://kancolle.wikia.com/wiki/Message_Wall:Fouryuu">wiki page<a>!</span>
+		</div>
+		<script>
+			var edata = [['Main Gun (S)',[1,51],[1]],['Main Gun (M)',[2],[2]],['Main Gun (L)',[3,4],[3]],['Secondary Gun',[5,55],[5]],
+							['Anti-Air Gun',[6],[6]],['AA Fire Director',[7],[7]],['Torpedo',[8,9],[8]],['Midget Sub',[10],[10]],
+							['Fighter',[11],[11]],['Torpedo Bomber',[12],[12]],['Dive Bomber',[13],[13]],['Other Aircraft',[16,17,18],[16,17,18]],
+							['Seaplane',[14,40,41],[14]],['Seaplane Bomber',[15],[15]],['RADAR',[19,20,21],[19]],['SONAR',[22,23],[22]],
+							['Depth Charge',[24],[24]],['Engine',[25],[25]],['Shells',[26,27],[26,27]],['Bulge',[28,29],[28]],
+							['Night Battle',[31,32,33,34,41],[31,33,34]],['Misc',[30,35,36,37,38,39,42,43,99],[]]];
+			var table = $('<table class="dialog4"></table>'), c = 0;
+			while (c < edata.length) {
+				var tr = $('<tr></tr>');
+				for (var i=0; i<4; i++) {
+					var td = $('<td onclick="dialogEquip(['+edata[c][1]+'])"></td>');
+					for (var j=0; j<edata[c][2].length; j++) {
+						td.append('<img src="assets/items/'+EQIMAGES[edata[c][2][j]]+'.png"/>');
+					}
+					td.append('<br><span>'+edata[c][0]+'</span>');
+					tr.append(td);
+					if (++c >= edata.length) break;
+				}
+				table.append(tr);
+			}
+			$('#dialogselequiptype').append(table);
+		</script>
 		<script src='ui.js'></script>
 	</body>
 </html>

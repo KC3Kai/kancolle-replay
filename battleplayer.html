@@ -199,8 +199,9 @@
 						var mid = b.api_ship_ke[i];
 						if (mid <= 0) continue;
 						if ($('#radJP').prop('checked')) $('#name2'+k+i).text(mid+'. '+SHIPDATA[mid].nameJP);
-						else $('#name2'+k+i).text(mid+'. '+SHIPDATA[mid].name);
-						$('#img2'+k+i).attr('src','assets/icons/'+SHIPDATA[mid].image);
+						else if (SHIPDATA[mid]) $('#name2'+k+i).text(mid+'. '+SHIPDATA[mid].name);
+						else $('#name2'+k+i).text(mid);
+						if (SHIPDATA[mid]) $('#img2'+k+i).attr('src','assets/icons/'+SHIPDATA[mid].image);
 						$('#lvl2'+k+i).text(b.api_ship_lv[i+1]); $('#hp2'+k+i).text(b.api_maxhps[i+7]); 
 						$('#fp2'+k+i).text(b.api_eParam[i][0]);$('#tp2'+k+i).text(b.api_eParam[i][1]);$('#aa2'+k+i).text(b.api_eParam[i][2]);$('#ar2'+k+i).text(b.api_eParam[i][3]);
 						for (var j=0; j<4; j++) {

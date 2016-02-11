@@ -68,6 +68,10 @@ loader.add('BG1','assets/82_res.images.ImgBackgroundDay.jpg')
 	.add('tbomb1','assets/951.png')
 	.add('tbomb2','assets/956.png')
 	.add('shield','assets/221_shield_png$f90866d61f09304ed4b65cd1a8d0dbbc1744783129.png')
+	.add('laser','assets/laser.png')
+	.add('laserring','assets/laserring.png')
+	.add('plane9','assets/plane9.png')
+	.add('plane10','assets/plane10.png')
 	.add('mask','assets/mask.png');
 for (var i=389; i <= 417; i+=2) loader.add(i.toString(),'assets/'+i+'.png');
 for (var i=0; i<=9; i++) loader.add('C'+i,'assets/C'+i+'.png');
@@ -275,6 +279,7 @@ function createShip(data,side,i,damaged) {
 	var ship = new ShipG(i+((side==1)?10:0),side,parseInt(data[1]));
 	var graphic = new PIXI.Container();
 	var sdata = SHIPDATA[parseInt(data[0])];
+	if (!sdata) sdata = SHIPDATA[0];
 	var imgname = ((damaged && sdata.imageDam)? sdata.imageDam : sdata.image)
 	var portrait = PIXI.Sprite.fromImage('assets/icons/'+imgname);
 	portrait.position.set((side==1)?11:-3,2);
@@ -424,7 +429,10 @@ function processAPI(root) {
 		if (data.api_ship_ke[0] == -1) data.api_ship_ke = data.api_ship_ke.slice(1);
 		for (var i=0; i<data.api_ship_ke.length; i++) {
 			if (!data.api_ship_ke[i] || data.api_ship_ke[i] == -1) continue;
-			loader2.add('ship'+b+i,'assets/icons/'+SHIPDATA[data.api_ship_ke[i]].image);
+			if (SHIPDATA[data.api_ship_ke[i]])
+				loader2.add('ship'+b+i,'assets/icons/'+SHIPDATA[data.api_ship_ke[i]].image);
+			else
+				loader2.add('ship'+b+i,'assets/icons/K.png');
 			var d = [data.api_ship_ke[i],data.api_maxhps[i+7],data.api_nowhps[i+7]];
 			if (data.api_eSlot[0] == -1) data.api_eSlot = data.api_eSlot.slice(1);
 			for (var j=0; j<data.api_eSlot[i].length; j++) {
@@ -613,6 +621,8 @@ function processAPI(root) {
 						else eventqueue.push([shoot,d,getState()]);
 						break;
 					case 1:
+						var targets = []; for (var t=0; t<hou.api_df_list[j].length; t++) targets.push((hou.api_df_list[j][t]>6)? f2[hou.api_df_list[j][t]-7] : f1[hou.api_df_list[j][t]-1]);
+						eventqueue.push([shootLaser,[d[0],targets,hou.api_damage[j]]]);
 						break; //laser
 					case 2:
 						eventqueue.push([shootDA,d,getState()]); break;
@@ -1364,7 +1374,75 @@ function shootBigTorp(ship,target,damage,forcecrit,protect) {
 	addTimeout(function(){ ecomplete = true; }, 2200);
 }
 
-var PLANESPRITES = ['938','914','916','918','920','922','924','926'];
+function shootLaser(ship,targets,damages) {
+	updates.push([shipMoveTo,[ship,ship.xorigin+25-50*ship.side,2]]);
+	var fleet = (targets[0].side==0)? fleet1 : fleet2;
+	for (var i=0; i<fleet.length; i++) {
+		updates.push([shipMoveTo,[fleet[i],fleet[i].xorigin+25-50*fleet[i].side,2]]);
+	}
+	SM.play('fire');
+	addTimeout(function(){
+		if (Math.random()<.5) createLaser(ship,fleet[0],fleet[fleet.length-1]);
+		else createLaser(ship,fleet[fleet.length-1],fleet[0]);
+	},300);
+	addTimeout(function(){ for (var i=0; i<targets.length; i++) standardHit(targets[i],damages[i]); },1800);
+	addTimeout(function(){
+		updates.push([shipMoveTo,[ship,ship.xorigin,2]]);
+		for (var i=0; i<fleet.length; i++) if (targets.indexOf(fleet[i])==-1) updates.push([shipMoveTo,[fleet[i],fleet[i].xorigin,2]]);
+	},2000);
+	addTimeout(function(){ ecomplete = true; }, 2500);
+}
+
+function createLaser(ship,targetfirst,targetlast) {
+	var laser = getFromPool('laser','assets/laser.png');
+	stage.addChildAt(laser,1);
+	laser.pivot.y = 45;
+	laser.position.set(ship.graphic.x+(1-ship.side)*200,ship.graphic.y+20);
+	laser.notpersistent = true;
+	laser.rotation = Math.atan2(targetfirst.graphic.y+20-laser.y,targetfirst.graphic.x+80-laser.x);
+	var anglelast = Math.atan2(targetlast.graphic.y+20-laser.y,targetlast.graphic.x+80-laser.x);
+	if (anglelast-laser.rotation > Math.PI) anglelast -= 2*Math.PI;
+	if (anglelast-laser.rotation < -Math.PI) anglelast += 2*Math.PI;
+	var speed = (anglelast-laser.rotation)/90;
+	laser.lifetime = 90; laser.phase = 0;
+	var msk = new PIXI.Graphics();
+	msk.beginFill(0x000000);
+	msk.drawRect((ship.escort||targetfirst.escort)? 321 : 169, 0, (ship.escort||targetfirst.escort)? 310 : 462, 480);
+	laser.mask = msk;
+	updates.push([function(laser) {
+		laser.rotation += speed;
+		laser.scale.y = .9+.1*Math.sin(laser.phase*.5); laser.phase+=.4;
+		laser.alpha = .9+.05*Math.sin(laser.phase*.6); laser.phase+=.4;
+		if (laser.lifetime % 20 == 10) createLaserRing(laser);
+		if (--laser.lifetime <= 0) {
+			recycle(laser);
+			return true;
+		}
+		return false;
+	},[laser]]);
+}
+
+function createLaserRing(laser) {
+	var ring = getFromPool('laserring','assets/laserring.png');
+	ring.scale.set(0); ring.alpha = .8;
+	ring.rotation = laser.rotation;
+	ring.position.set(laser.x+Math.cos(laser.rotation)*25,laser.y+Math.sin(laser.rotation)*25);
+	ring.lifetime = 40;
+	ring.pivot.set(42,104);
+	console.log('ring');
+	stage.addChild(ring);
+	updates.push([function(ring,laser) {
+		ring.lifetime--;
+		ring.position.set(laser.x+Math.cos(laser.rotation)*25,laser.y+Math.sin(laser.rotation)*25);
+		ring.rotation = laser.rotation;
+		ring.scale.set(ring.scale.x+.025);
+		if (ring.lifetime <= 16) ring.alpha-=.05;
+		if (ring.lifetime <= 0) { recycle(ring); return true; }
+		return false;
+	},[ring,laser]]);
+}
+
+var PLANESPRITES = ['938','914','916','918','920','922','924','926','plane9','plane10'];
 function createPlane(x,y,planetypes,shots,shots2) {
 	var num = Math.min(3,planetypes.length);
 	if (shots) shots = shuffle(shots);
@@ -1373,7 +1451,7 @@ function createPlane(x,y,planetypes,shots,shots2) {
 	var planes = new PIXI.Container();
 	if (num == 3) {
 		for (var i=0; i<3; i++) {
-			var plane = PIXI.Sprite.fromImage('assets/'+PLANESPRITES[planetypes[i]-1]+'.png');
+			var plane = PIXI.Sprite.fromImage('assets/'+PLANESPRITES[planetypes[2-i]-1]+'.png');
 			plane.x = i*25-25;
 			plane.y = (i==1) ? -15 : 15;
 			plane.scale.set(.8);
@@ -1384,7 +1462,7 @@ function createPlane(x,y,planetypes,shots,shots2) {
 		}
 	} else if (num == 2) {
 		for (var i=0; i<2; i++) {
-			var plane = PIXI.Sprite.fromImage('assets/'+PLANESPRITES[planetypes[i]-1]+'.png');
+			var plane = PIXI.Sprite.fromImage('assets/'+PLANESPRITES[planetypes[1-i]-1]+'.png');
 			plane.x = i*30-15;
 			plane.y = (i==1) ? -15 : 15;
 			plane.scale.set(.8);

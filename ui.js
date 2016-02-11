@@ -5,41 +5,89 @@
 var STATNAMES = ['lvl','hp','fp','tp','aa','ar','ev','asw','los','luk','rng','spd'];
 var PREVEQS = {};
 var WROTESTATS = false;
+var TUTORIAL = false;
 
 var IMPROVEHTMLNONE = '<option value="0"></option>';
 var IMPROVEHTMLAKASHI = '<option value="0">+0</option><option value="1">+1</option><option value="2">+2</option><option value="3">+3</option><option value="4">+4</option><option value="5">+5</option><option value="6">+6</option><option value="7">+7</option><option value="8">+8</option><option value="9">+9</option><option value="10">MAX</option>';
 var IMPROVEHTMLPLANE = '<option value="0"></option><option value="1" style="color:#4A84B5">|</option><option value="2" style="color:#4A84B5">||</option><option value="3" style="color:#4A84B5">|||</option><option value="4" style="color:#D49C0A">/</option><option value="5" style="color:#D49C0A">//</option><option value="6" style="color:#D49C0A">///</option><option value="7" style="color:#D49C0A">&gt;&gt;</option>';
 
-$('#dialogselclass').dialog({autoOpen:false,width:690,height:480});
+function transNames(lang) {
+	if (lang != 'JP' && lang != 'EN') return;
+	if (lang=='JP') {
+		for (var mid in SHIPDATA) {
+			var ship = SHIPDATA[mid];
+			if (ship.nameJP) { ship.nameEN = ship.name; ship.name = ship.nameJP; }
+		}
+		for (var eqid in EQDATA) {
+			var eq = EQDATA[eqid];
+			if (eq.nameJP) { eq.nameEN = eq.name; eq.name = eq.nameJP; }
+		}
+	} else if (lang == 'EN') {
+		for (var mid in SHIPDATA) {
+			var ship = SHIPDATA[mid];
+			if (ship.nameEN) ship.name = ship.nameEN;
+		}
+		for (var eqid in EQDATA) {
+			var eq = EQDATA[eqid];
+			if (eq.nameEN) eq.name = eq.nameEN;
+		}
+	}
+	$('.fleet').each(function() {
+		var id = $(this).attr('id');
+		for (var i=0; i<6; i++) {
+			$('#'+id+'n'+i).children().each(function() {
+				$(this).children().each(function() {
+					$(this).text(SHIPDATA[$(this).val()].name);
+				});
+			});
+			$('#'+id+'n'+i).trigger('chosen:updated');
+			for (var j=0; j<4; j++) {
+				$('#'+id+'e'+i+j).children().each(function() {
+					$(this).children().each(function() {
+						$(this).text(EQDATA[$(this).val()].name);
+					});
+				});
+				$('#'+id+'e'+i+j).trigger('chosen:updated');
+			}
+		}
+	});
+}
+
+$('#dialogselclass').dialog({autoOpen:false,width:690,height:600});
 $('#dialogselship').dialog({autoOpen:false,width:720,height:480});
+$('#dialogselequiptype').dialog({autoOpen:false,width:690,height:480});
 $('#dialogselequip').dialog({autoOpen:false,width:400,height:600});
-var SELFLEET, SELSLOT;
+$('#dialogkc3file').dialog({autoOpen:false,width:720,height:400});
+function showKC3QDpopup() {
+	$('#dialogkc3file').dialog("open");
+}
+var SELFLEET, SELSLOT, SELEQ;
 function dialogType(button,fleet,slot) {
 	SELFLEET = fleet; SELSLOT = slot;
-	$('#dialogselclass').dialog("option","position",{my:"left top",at:"center",of:button});
+	$('#dialogselclass').dialog("option","position",{my:"center",at:"center",of:window});
 	$('#dialogselclass').dialog("open");
 	$('#dialogselship').dialog("close");
+	$('#dialogselequiptype').dialog("close");
+	$('#dialogselequip').dialog("close");
 }
 function dialogShip(types,side) {
 	$('#dialogselship').html('');
 	var table = $('<table class="dialog2"></table>');
 	$('#dialogselship').append(table);
 	var c=0, tr = $('<tr></tr>'), baseships = [], done = [];
-	for (var i=0; i<types.length; i++) {
-		for (var mid in SHIPDATA) {
-			var ship = SHIPDATA[mid];
-			if ((side==0&&mid>=500)||(side==1&&(mid<500||mid>800))||ship.type != types[i]) continue;
-			if (ship.name.indexOf('Kai')!=-1) continue;
-			if (done.indexOf(mid)==-1) {
-				var ships = [mid]; done.push(mid);
-				while (ship.next) {
-					mid = ship.next;
-					ship = SHIPDATA[mid];
-					if (ships.indexOf(mid)!=-1||types.indexOf(ship.type)==-1) break; else ships.push(mid);
-					done.push(mid.toString());
-				}
-				baseships.push(ships);
+	for (var mid in SHIPDATA) {
+		var ship = SHIPDATA[mid];
+		if ((side==0&&mid>=500)||(side==1&&(mid<500||mid>800))||types.indexOf(ship.type)==-1) continue;
+		if (ship.prev && SHIPDATA[ship.prev].type==ship.type) continue;
+		if (done.indexOf(mid)==-1) {
+			var ships = [mid]; done.push(mid);
+			while (ship.next) {
+				mid = ship.next;
+				ship = SHIPDATA[mid];
+				if (ships.indexOf(mid)!=-1||types.indexOf(ship.type)==-1) break; else ships.push(mid);
+				done.push(mid.toString());
 			}
+			baseships.push(ships);
 		}
 	}
 	if (side==0) baseships.sort(function(a,b) {return (SHIPDATA[a[0]].nid<SHIPDATA[b[0]].nid)?-1:1;});
@@ -56,59 +104,99 @@ function dialogShip(types,side) {
 			if (namechange) html+='<span onclick="dSetShip('+baseships[i][0]+')" class="dialogkai">Base</span>';
 			else html+='<span onclick="dSetShip('+baseships[i][0]+')" class="dialogkai">'+shipbase.name+'</span>';
 			for (var j=1; j<baseships[i].length; j++) {
-				html+='<span onclick="dSetShip('+baseships[i][j]+')" class="dialogkai">'+SHIPDATA[baseships[i][j]].name.substr(SHIPDATA[baseships[i][j]].name.indexOf(' ')+1)+'</span>';
+				var name = (SHIPDATA[baseships[i][j]].name.indexOf(shipbase.name)!=-1)? SHIPDATA[baseships[i][j]].name.substr(shipbase.name.length).trim() : SHIPDATA[baseships[i][j]].name;
+				html+='<span onclick="dSetShip('+baseships[i][j]+')" class="dialogkai">'+name+'</span>';
 			}
 		} else html+='<br>'
 		tr.append(html);
 	}
 	table.append(tr);
-	$('#dialogselclass').dialog("close");
+	// $('#dialogselclass').dialog("close");
+	$('#dialogselship').dialog("open");
+}
+
+function dialogShipFog() {
+	$('#dialogselship').html('<table class="dialog2"><tr><td onclick="dSetShip(901)"><img src="assets/icons/AIona.png"><br><span>Iona</span><br></td><td onclick="dSetShip(902)"><img src="assets/icons/ATakao.png"><br><span>Takao</span><br></td><td onclick="dSetShip(903)"><img src="assets/icons/AHaruna.png"><br><span>Haruna</span><br></td></tr><tr><td onclick="dSetShip(904)"><img src="assets/icons/AKirishima.png"><br><span>Kirishima</span><br></td><td onclick="dSetShip(905)"><img src="assets/icons/AMaya.png"><br><span>Maya</span><br></td><td onclick="dSetShip(906)"><img src="assets/icons/AKongou.jpg"><br><span>Kongou</span><br></td><td onclick="dSetShip(907)"><img src="assets/icons/ANagara.png"><br><span>Nagara-Class</span><br></td></tr></table>');
+	$('#dialogselship').dialog("open");
+}
+
+function dialogShipSecret() {
+	$('#dialogselship').html('<table class="dialog2"><tr><td onclick="dSetShip(1001)"><img src="assets/icons/KShinano.png"><br><span>???????</span><br></td></tr></table><br><br><table class="dialog2"><tr><td onclick="dSetShip(1002)"><img src="assets/icons/SBYamato.png"><br><span>????? ?????????? ??????</span><br></td></tr></table>');
 	$('#dialogselship').dialog("open");
 }
 
 function dSetShip(mid) {
 	if (SELFLEET===undefined || SELSLOT===undefined) return;
 	$('#dialogselship').dialog("close");
+	$('#dialogselclass').dialog("close");
 	$('#T'+SELFLEET+'n'+SELSLOT).val(mid);
 	$('#T'+SELFLEET+'n'+SELSLOT).trigger("chosen:updated");
 	changedShipForm(SELFLEET,SELSLOT);
+	updateFleetCode(SELFLEET);
 	SELFLEET = SELSLOT = undefined;
+}
+
+function dSetEquip(eqid) {
+	if (SELFLEET===undefined || SELSLOT===undefined || SELEQ===undefined) return;
+	$('#dialogselequiptype').dialog("close");
+	$('#dialogselequip').dialog("close");
+	$('#T'+SELFLEET+'e'+SELSLOT+SELEQ).val(eqid);
+	$('#T'+SELFLEET+'e'+SELSLOT+SELEQ).trigger("chosen:updated");
+	changedEquip(SELFLEET,SELSLOT,SELEQ);
+	updateFleetCode(SELFLEET);
+	SELFLEET = SELSLOT = SELEQ = undefined;
+}
+
+function dialogEquipType(button,fleet,slot,equipslot) {
+	SELFLEET = fleet; SELSLOT = slot; SELEQ = equipslot;
+	$('#dialogselequiptype').dialog("open");
+	$('#dialogselequiptype').dialog("option","position",{my:"center",at:"center",of:window});
+	$('#dialogselship').dialog("close");
+	$('#dialogselclass').dialog("close");
 }
 
 function dialogEquip(types) {
 	$('#dialogselequip').html('');
-	var table = $('<table class="dialog3"></table>');
-	var STATS = ['DIVEBOMB','FP','TP','AA','AR','ACC','EV','ASW','LOS'];
-	for (var eqid in EQDATA) {
-		var equip = EQDATA[eqid];
-		if (types.indexOf(equip.type)==-1) continue;
-		var tr = $('<tr></tr>');
-		tr.append('<td class="left"><img src="assets/items/'+EQIMAGES[equip.type]+'.png"/></td>');
-		var td = $('<td></td>');
-		td.append('<span>'+equip.name+'</span><br>');
-		for (var j=0; j<STATS.length; j++) {
-			if (equip[STATS[j]]) td.append('<span><img class="imgstat" src="assets/stats/'+STATS[j].toLowerCase()+'.png"/>'+equip[STATS[j]]+'</span>');
+	for (var k=0; k<2; k++) {
+		if (k==0) $('#dialogselequip').append('<span>Player:</span><br>');
+		else $('#dialogselequip').append('<span>Abyssal:</span><br>');
+		var table = $('<table class="dialog3"></table>');
+		var STATS = ['DIVEBOMB','FP','TP','AA','AR','ACC','EV','ASW','LOS'];
+		for (var eqid in EQDATA) {
+			if ((k==0&&eqid>=500)||(k==1&&eqid<500)) continue;
+			var equip = EQDATA[eqid];
+			if (types.indexOf(equip.type)==-1) continue;
+			var tr = $('<tr></tr>');
+			tr.append('<td class="left" onclick="dSetEquip('+eqid+')"><img src="assets/items/'+EQIMAGES[equip.type]+'.png"/></td>');
+			var td = $('<td onclick="dSetEquip('+eqid+')"></td>');
+			td.append('<span>'+equip.name+'</span><br>');
+			for (var j=0; j<STATS.length; j++) {
+				if (equip[STATS[j]]) td.append('<span><img class="imgstat" src="assets/stats/'+STATS[j].toLowerCase()+'.png"/>'+equip[STATS[j]]+'</span>');
+			}
+			tr.append(td);
+			table.append(tr);
 		}
-		tr.append(td);
-		table.append(tr);
+		$('#dialogselequip').append(table);
+		if (k==0) $('#dialogselequip').append('<br>');
 	}
-	$('#dialogselequip').append(table);
 	$('#dialogselequip').dialog("open");
 }
 
-function genFleetHTML(rootid,fleetnum,fleetname) {
+function genFleetHTML(rootid,fleetnum,fleetname,tabcolor) {
+	if (!tabcolor) tabcolor = '#CCCCCC';
     var root = document.getElementById(rootid);
     PREVEQS[fleetnum] = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
     var tid = 'T'+fleetnum;
     var da = document.createElement('div');
     da.setAttribute('id',tid);
+    da.setAttribute('class','fleet');
     // da.setAttribute('height',');
     da.setAttribute('style','width:980px; border:1px solid black');
      
     var dhead = document.createElement('div');
     dhead.setAttribute('id',tid+'head');
     dhead.setAttribute('class','clickable');
-    dhead.setAttribute('style','background-color:#CCCCCC');
+    dhead.setAttribute('style','background-color:'+tabcolor);
     dhead.setAttribute('onClick','clickedExpandFleet('+fleetnum+')');
     var b = document.createElement('b');
     b.appendChild(document.createTextNode(fleetname));
@@ -157,14 +245,22 @@ function genFleetHTML(rootid,fleetnum,fleetname) {
 	d.appendChild(dl);
 	dl = document.createElement('div');
 	dl.setAttribute('style','float:left;width:250px');
-	dl.innerHTML = '<b>From .kc3 file:(<a href="#" id="{tid}qdq" onmouseover="$(\'#qdinfo{nt}\').css(\'display\',\'block\')" onmouseout="$(\'#qdinfo{nt}\').css(\'display\',\'none\')">?</a>):</b><br><input id="{tid}sfile" type="file" accept=".kc3" onChange="loadFile({nt},1)" /><br><br>'.replace(/{tid}/g,tid).replace(/{nt}/g,fleetnum);
-	$(dl).append('<div style="display:none;position:absolute" id="qdinfo'+fleetnum+'"><div style="background-color:white;border:1px solid black;position:relative;top:-200px;left:140px;width:400px;height:250px"><p style="margin:10px 10px;font-size:12px">You can import your in-game fleet using KC3Kai\'s Quick Data file.<br><br>Go to Profile</p></div><div>');
+	if (TUTORIAL && fleetnum==1) {
+		$(dl).attr('id','flashingdiv');
+		$(dl).css('border','3px solid yellow');
+		$(dl).css('animation','flashing .75s linear 0s infinite alternate');
+	}
+	$(dl).append('<b>From .kc3 file:(<a href="#" id="'+tid+'qdq" onclick="showKC3QDpopup()">?</a>):</b><br>');
+	$(dl).append('<span>Fleet: </span><select id="T'+fleetnum+'sfilefrom"><option>1</option><option>2</option><option>3</option><option>4</option></select><br>');
+	$(dl).append('<input id="'+tid+'sfile" type="file" accept=".kc3" onChange="loadFile('+fleetnum+')" /><br>');
+	// $(dl).append('<div style="display:none;position:absolute" id="qdinfo'+fleetnum+'"><div style="background-color:white;border:1px solid black;position:relative;top:-200px;left:140px;width:400px;height:250px"><p style="margin:10px 10px;font-size:12px">You can import your in-game fleet using KC3Kai\'s Quick Data file.<br><br>Go to Profile</p></div><div>');
 	d.appendChild(dl);
 	dl = document.createElement('div');
 	// dl.setAttribute('style','float:left;width:250px');
 	dl.innerHTML = '<b>From preset:</b><br>'; //<select id="{tid}pre1"></select> <select id="{tid}pre2"></select> <select id="{tid}pre3"></select>'.replace(/{tid}/g,tid);
 	var sel1 = document.createElement('select');  //world+level
 	sel1.setAttribute('id',tid+'pre1');
+	sel1.setAttribute('title','Map');
 	sel1.setAttribute('onChange','changedPreset1('+fleetnum+')');
 	var o = document.createElement('option');
 	o.setAttribute('value','');
@@ -173,6 +269,7 @@ function genFleetHTML(rootid,fleetnum,fleetname) {
 	dl.appendChild(document.createTextNode(' '));
 	var sel2 = document.createElement('select');  //nodes
 	sel2.setAttribute('id',tid+'pre2');
+	sel2.setAttribute('title','Node');
 	sel2.setAttribute('onChange','changedPreset2('+fleetnum+')');
 	var o = document.createElement('option');
 	o.setAttribute('value','');
@@ -181,12 +278,17 @@ function genFleetHTML(rootid,fleetnum,fleetname) {
 	dl.appendChild(document.createTextNode(' '));
 	var sel3 = document.createElement('select');  //comps
 	sel3.setAttribute('id',tid+'pre3');
+	sel3.setAttribute('title','Comp');
 	sel3.setAttribute('onChange','changedPreset3('+fleetnum+')');
 	var o = document.createElement('option');
 	o.setAttribute('value','');
 	sel3.appendChild(o);
 	dl.appendChild(sel3);
 	dl.appendChild(document.createElement('br'));
+	if (TUTORIAL && fleetnum==2) {
+		$(sel1).css('border','3px solid yellow');
+		$(sel1).css('animation','flashing .75s linear 0s infinite alternate');
+	}
 	// var btn = document.createElement('input');
 	// btn.setAttribute('type','button');
 	// btn.setAttribute('onClick','clickedLoadPreset('+fleetnum+');updateFleetCode('+fleetnum+')');
@@ -386,7 +488,11 @@ function genFleetHTML(rootid,fleetnum,fleetname) {
 			var sp = document.createElement('span');
 			var nid = tid+'imprv'+j+i;
 			var plid = tid+'plane'+j+i;
-			sp.innerHTML = '<img src="assets/stats/ac.png" style="float:left"/><input type="number" id="{plid}" style="width:40px;float:left" disabled="true"/><span style="float:right;font-size:12px">&#9733; <select id="{nid}" style="width:50px" onchange="updateFleetCode({f})"><option value="0"></option></select></span><br>'.replace('{nid}',nid).replace('{plid}',plid).replace('{f}',fleetnum);
+			var imgid = tid+'eqimg'+j+i;
+			$(sp).append('<div style="float:left;width:24px;height:24px"><img src="assets/items/0.png" style="position:absolute;width:24;height:24px"/><img id="'+imgid+'" src="assets/items/empty.png" style="position:absolute;width:24px;height:24px"/></div>');
+			$(sp).append('<img class="searchbutton" style="float:right" src="assets/stats/search.png" onclick="dialogEquipType(this,'+fleetnum+','+j+','+i+')" />');
+			$(sp).append('<input type="number" id="'+plid+'" style="width:35px;float:left" disabled="true"/>');
+			$(sp).append('<span style="float:right;font-size:12px;color:#45A9A5">&#9733; <select id="'+nid+'" style="width:50px" onchange="updateFleetCode('+fleetnum+');changedImprove(this)"><option value="0"></option></select></span><br>');
 			td.appendChild(sp);
 			tr.appendChild(td);
         }
@@ -394,25 +500,53 @@ function genFleetHTML(rootid,fleetnum,fleetname) {
     }
     d.appendChild(t);
     d.appendChild(document.createElement('br'));
-     
-    var f = document.createElement('form');
-    f.setAttribute('id',tid+'F');
-    for (var i=0; i<5; i++) {
-        var r = document.createElement('input');
-        r.setAttribute('type','radio');
-        r.setAttribute('id',tid+'r'+(i+1));
-        r.setAttribute('name','formation');
-        r.setAttribute('value',i+1);
-        r.setAttribute('style','vertical-align:middle');
-        r.setAttribute('onChange','updateFleetCode('+fleetnum+')');
-        f.appendChild(r);
-          
-        var img = document.createElement('img');
-        img.setAttribute('style','vertical-align:middle');
-        img.setAttribute('src','assets/stats/form'+(i+1)+'.jpg');
-        f.appendChild(img);
-    }
-    d.appendChild(f);
+    
+	if (fleetnum == 11) { //combined fleet, formation and type
+		var f = $('<div style="float:left"></div>');
+		for (var i=11; i<=14; i++) {
+			f.append($('<input type="radio" id="T11r'+i+'" name="T11formation" value="'+i+'" style="vertical-align:middle" onchange="updateFleetCode(11)" '+((i==14)?'checked':'')+'/>'));
+			f.append($('<label for="T11r'+i+'"><img src="assets/stats/form'+i+'.png" style="vertical-align:middle"/></label>'));
+		}
+		$(d).append(f);
+		f = $('<div style="float:left;margin-left:50px"></div>');
+		var names = ['Carrier Task Force', 'Surface Task Force', 'Transport Task Force'];
+		for (var i=1; i<=3; i++) {
+			f.append($('<input type="radio" id="T11t'+i+'" name="T11type" value="'+i+'" onchange="updateFleetCode(11)" '+((i==1)?'checked':'')+'/>'));
+			f.append($('<label for="T11t'+i+'"><img src="assets/stats/combine'+i+'.png" title="'+names[i-1]+'"/> </label>'));
+		}
+		$(d).append(f);
+		$(d).append('<br style="clear:both">');
+	} else if (fleetnum == 12 || fleetnum == 13) {
+		var f = $('<div></div>');
+		f.append('<input type="radio" id="T12t2" name="T12type" value="2" checked/><label for="T12t2">Shelling</label>');
+		f.append('<input type="radio" id="T12t1" name="T12type" value="1" disabled/><label for="T12t1">Airstrike</label>');
+		f.append('<input type="radio" id="T12t3" name="T12type" value="3" disabled/><label for="T12t3">Torpedo</label>');
+		f.append('<span style="color:red;margin-left:20px">In progress</span>');
+		$(d).append(f);
+	} else {  //normal formation select
+		var f = document.createElement('form');
+		f.setAttribute('id',tid+'F');
+		for (var i=0; i<5; i++) {
+			var r = document.createElement('input');
+			r.setAttribute('type','radio');
+			r.setAttribute('id',tid+'r'+(i+1));
+			r.setAttribute('name',tid+'formation');
+			r.setAttribute('value',i+1);
+			r.setAttribute('style','vertical-align:middle');
+			r.setAttribute('onChange','updateFleetCode('+fleetnum+')');
+			if (i==0) r.checked = true;
+			f.appendChild(r);
+			
+			var label = document.createElement('label');
+			label.setAttribute('for',tid+'r'+(i+1));
+			var img = document.createElement('img');
+			img.setAttribute('style','vertical-align:middle');
+			img.setAttribute('src','assets/stats/form'+(i+1)+'.jpg');
+			label.appendChild(img);
+			f.appendChild(label);
+		}
+		d.appendChild(f);
+	}
     d.appendChild(document.createElement('br'));
      
     da.appendChild(d);
@@ -422,10 +556,32 @@ function genFleetHTML(rootid,fleetnum,fleetname) {
 	// root.appendChild(document.createElement('br'));
 }
 
+function changedImprove(e) {
+	if ($(e).html()!=IMPROVEHTMLPLANE) return;
+	var level = $(e).val();
+	if (level>=4) $(e).css('color','#D49C0A');
+	else if (level>=1) $(e).css('color','#4A84B5');
+	else $(e).css('color','');
+}
+
 function genOptions(fleetnum) {
 	var num = (fleetnum == 2)? '1' : (fleetnum-20).toString();
-	var html = '<tr id="options{f}"><td>Node {n}:</td><td><input id="NB{f}" type="checkbox" checked="true" onclick="updateOptionsCookies({f});raiseFleetChange()"/><label for="NB{f}">Night battle?</label></td><td><input id="NBonly{f}" type="checkbox" onclick="updateOptionsCookies({f});raiseFleetChange()"/><label for="NBonly{f}">Night Only Node</label></td><td><input id="aironly{f}" type="checkbox" onclick="updateOptionsCookies({f});raiseFleetChange()"/><label for="aironly{f}">Air Node</label></td></tr>'.replace('{n}',num).replace(/{f}/g,fleetnum.toString());
-	$('#optionstable').append($(html));
+	var html = $('<tr id="options'+fleetnum+'"></tr>');
+	html.append('<td>Node '+num+':</td>');
+	html.append('<td><input id="NB'+fleetnum+'" type="checkbox" checked="true" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="NB'+fleetnum+'">Night battle?</label></td>');
+	html.append('<td class="line"><input id="NBonly'+fleetnum+'" type="checkbox" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="NBonly'+fleetnum+'">Night-Only Node</label></td>');
+	html.append('<td><input id="aironly'+fleetnum+'" type="checkbox" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="aironly'+fleetnum+'">Air Node</label></td>');
+	html.append('<td class="line"><input value="0" id="oformdef'+fleetnum+'" type="radio" name="radform'+fleetnum+'" checked/><label for="oformdef'+fleetnum+'">Default</label></td>');
+	html.append('<td class="ofsingle"'+((ADDEDCOMBINED)?' style="display:none"':'')+'><input value="1" id="o1form'+fleetnum+'" type="radio" name="radform'+fleetnum+'" onclick="raiseFleetChange()"/><label for="o1form'+fleetnum+'"><img src="assets/stats/form1.jpg"/></label></td>');
+	html.append('<td class="ofsingle"'+((ADDEDCOMBINED)?' style="display:none"':'')+'><input value="2" id="o2form'+fleetnum+'" type="radio" name="radform'+fleetnum+'" onclick="raiseFleetChange()"/><label for="o2form'+fleetnum+'"><img src="assets/stats/form2.jpg"/></label></td>');
+	html.append('<td class="ofsingle"'+((ADDEDCOMBINED)?' style="display:none"':'')+'><input value="3" id="o3form'+fleetnum+'" type="radio" name="radform'+fleetnum+'" onclick="raiseFleetChange()"/><label for="o3form'+fleetnum+'"><img src="assets/stats/form3.jpg"/></label></td>');
+	html.append('<td class="ofsingle"'+((ADDEDCOMBINED)?' style="display:none"':'')+'><input value="4" id="o4form'+fleetnum+'" type="radio" name="radform'+fleetnum+'" onclick="raiseFleetChange()"/><label for="o4form'+fleetnum+'"><img src="assets/stats/form4.jpg"/></label></td>');
+	html.append('<td class="ofsingle"'+((ADDEDCOMBINED)?' style="display:none"':'')+'><input value="5" id="o5form'+fleetnum+'" type="radio" name="radform'+fleetnum+'" onclick="raiseFleetChange()"/><label for="o5form'+fleetnum+'"><img src="assets/stats/form5.jpg"/></label></td>');
+	html.append('<td class="ofcombined"'+((!ADDEDCOMBINED)?' style="display:none"':'')+'><input value="11" id="o11form'+fleetnum+'" type="radio" name="radform'+fleetnum+'" onclick="raiseFleetChange()"/><label for="o11form'+fleetnum+'"><img src="assets/stats/form11.png"/></label></td>');
+	html.append('<td class="ofcombined"'+((!ADDEDCOMBINED)?' style="display:none"':'')+'><input value="12" id="o12form'+fleetnum+'" type="radio" name="radform'+fleetnum+'" onclick="raiseFleetChange()"/><label for="o12form'+fleetnum+'"><img src="assets/stats/form12.png"/></label></td>');
+	html.append('<td class="ofcombined"'+((!ADDEDCOMBINED)?' style="display:none"':'')+'><input value="13" id="o13form'+fleetnum+'" type="radio" name="radform'+fleetnum+'" onclick="raiseFleetChange()"/><label for="o13form'+fleetnum+'"><img src="assets/stats/form13.png"/></label></td>');
+	html.append('<td class="ofcombined"'+((!ADDEDCOMBINED)?' style="display:none"':'')+'><input value="14" id="o14form'+fleetnum+'" type="radio" name="radform'+fleetnum+'" onclick="raiseFleetChange()"/><label for="o14form'+fleetnum+'"><img src="assets/stats/form14.png"/></label></td>');
+	$('#optionstable').append(html);
 }
 
 function updateOptionsCookies(num) {
@@ -471,19 +627,24 @@ function tableSetShip(fleet,slot,shipid,stats,equips,improves) {
 		img.draggable = true;
 		img.title = 'Drag to swap slots';
 		$(img).css('cursor','move');
+		$('#T'+fleet+'n'+slot+'_chosen').attr('title',SHIPDATA[shipid].name);
 	} else {
 		img.draggable = false;
 		img.title = '';
 		$(img).css('cursor','');
+		$('#T'+fleet+'n'+slot+'_chosen').attr('title','');
 	}
 	img.src = 'assets/icons/'+SHIPDATA[shipid].image;
 	document.getElementById('T'+fleet+'i'+slot+'alt').src = 'assets/icons/'+SHIPDATA[shipid].image;
 	for (var i=0; i<stats.length; i++) {
 		document.getElementById('T'+fleet+STATNAMES[i]+slot).value = (stats[i])? stats[i] : '';
+		if (SHIPDATA[shipid].unknownstats && ['ev','asw','los','luk'].indexOf(STATNAMES[i])!=-1) { $('#T'+fleet+STATNAMES[i]+slot).css('background-color','yellow'); $('#T'+fleet+STATNAMES[i]+slot).attr('title',"This stat's true value is currently unknown."); }
+		else { $('#T'+fleet+STATNAMES[i]+slot).css('background-color',''); $('#T'+fleet+STATNAMES[i]+slot).attr('title',""); }
 	}
 	for (var i=0; i<4; i++) {
 		var eqid = (equips[i])? equips[i] : '0';
 		$('#T'+fleet+'e'+slot+i).val(eqid);
+		$('#T'+fleet+'e'+slot+i+'_chosen').attr('title',EQDATA[eqid].name);
 		$('#T'+fleet+'e'+slot+i).trigger("chosen:updated");
 		PREVEQS[fleet][slot][i] = eqid;
 		if (shipid!=0 && i<SHIPDATA[shipid].SLOTS.length)
@@ -491,11 +652,29 @@ function tableSetShip(fleet,slot,shipid,stats,equips,improves) {
 		else
 			$('#T'+fleet+'plane'+slot+i).val('');
 			
-		if(EQDATA[eqid].improveType == 2) $('#T'+fleet+'imprv'+slot+i).html(IMPROVEHTMLPLANE);
-		else if(EQDATA[eqid].improveType == 1) $('#T'+fleet+'imprv'+slot+i).html(IMPROVEHTMLAKASHI);
-		else $('#T'+fleet+'imprv'+slot+i).html(IMPROVEHTMLNONE);
-		if (improves && improves[i]) $('#T'+fleet+'imprv'+slot+i).val(improves[i]);
+		setImprove(fleet,slot,i,EQDATA[eqid].improveType,(improves)?improves[i]:0);
+		if (eqid!='0') $('#T'+fleet+'eqimg'+slot+i).attr('src','assets/items/'+EQIMAGES[EQDATA[eqid].type]+'.png');
+		else $('#T'+fleet+'eqimg'+slot+i).attr('src','assets/items/empty.png');
 	}
+}
+
+function setImprove(fleet,ship,eqslot,type,level) {
+	if(type == 2) {
+		$('#T'+fleet+'imprv'+ship+eqslot).html(IMPROVEHTMLPLANE);
+		$('#T'+fleet+'imprv'+ship+eqslot).css('font-weight','bold');
+		if (level>=4) $('#T'+fleet+'imprv'+ship+eqslot).css('color','#D49C0A');
+		else if (level>=1) $('#T'+fleet+'imprv'+ship+eqslot).css('color','#4A84B5');
+		else $('#T'+fleet+'imprv'+ship+eqslot).css('color','');
+	} else if(type == 1) {
+		$('#T'+fleet+'imprv'+ship+eqslot).html(IMPROVEHTMLAKASHI);
+		$('#T'+fleet+'imprv'+ship+eqslot).css('font-weight','');
+		$('#T'+fleet+'imprv'+ship+eqslot).css('color','');
+	} else {
+		$('#T'+fleet+'imprv'+ship+eqslot).html(IMPROVEHTMLNONE);
+		$('#T'+fleet+'imprv'+ship+eqslot).css('font-weight','');
+		$('#T'+fleet+'imprv'+ship+eqslot).css('color','');
+	}
+	if (level) $('#T'+fleet+'imprv'+ship+eqslot).val(level);
 }
 
 function changedShipForm(fleet,slot) {
@@ -506,28 +685,35 @@ function changedShipForm(fleet,slot) {
 		img.draggable = true;
 		img.title = 'Drag to swap slots';
 		$(img).css('cursor','move');
+		$('#T'+fleet+'n'+slot+'_chosen').attr('title',SHIPDATA[shipid].name);
 	} else {
 		img.draggable = false;
 		img.title = '';
 		$(img).css('cursor','');
+		$('#T'+fleet+'n'+slot+'_chosen').attr('title','');
 	}
 	document.getElementById('T'+fleet+'i'+slot+'alt').src = 'assets/icons/'+SHIPDATA[shipid].image;
 	document.getElementById('T'+fleet+'lvl'+slot).value = (shipid=='0')? '' : (parseInt(shipid)<500)? 99 : (SHIPDATA[shipid].type == 'SS')? 50 : 1;
 	for (var i=1; i<STATNAMES.length; i++) {
 		document.getElementById('T'+fleet+STATNAMES[i]+slot).value = SHIPDATA[shipid][STATNAMES[i].toUpperCase()];
-		// changedNum(fleet,slot,STATNAMES[i]);
+		if (SHIPDATA[shipid].unknownstats && ['ev','asw','los','luk'].indexOf(STATNAMES[i])!=-1) { $('#T'+fleet+STATNAMES[i]+slot).css('background-color','yellow'); $('#T'+fleet+STATNAMES[i]+slot).attr('title',"This stat's true value is currently unknown."); }
+		else { $('#T'+fleet+STATNAMES[i]+slot).css('background-color',''); $('#T'+fleet+STATNAMES[i]+slot).attr('title',""); }
 	}
-	// if (SHIPDATA[shipid].EQUIPS) {
+	var equips;
+	if (SHIPDATA[shipid].EQUIPS) equips = SHIPDATA[shipid].EQUIPS;
+	else if (defaultEquips[SHIPDATA[shipid].type]) equips = defaultEquips[SHIPDATA[shipid].type];
+	else equips = [0,0,0,0];
 	for (var i=0; i<4; i++) {
-		var equipid = (SHIPDATA[shipid].EQUIPS && i < SHIPDATA[shipid].EQUIPS.length)? SHIPDATA[shipid].EQUIPS[i] : 0;
+		var equipid = (i < equips.length)? equips[i] : 0;
 		$('#T'+fleet+'e'+slot+i).val(equipid);
 		$('#T'+fleet+'e'+slot+i).trigger("chosen:updated");
 		if (shipid!=0 && i<SHIPDATA[shipid].SLOTS.length)
-			$('#T'+fleet+'plane'+slot+i).val(SHIPDATA[shipid].SLOTS[i]); //$('#T'+fleet+'e'+slot+i+'_chosen').attr('title','('+SHIPDATA[shipid].SLOTS[i]+')');
+			$('#T'+fleet+'plane'+slot+i).val(SHIPDATA[shipid].SLOTS[i]);
 		else
-			$('#T'+fleet+'plane'+slot+i).val('');//$('#T'+fleet+'e'+slot+i+'_chosen').attr('title','(-)');
+			$('#T'+fleet+'plane'+slot+i).val('');
 		PREVEQS[fleet][slot][i] = 0;
 		changedEquip(fleet,slot,i);
+		if (EQDATA[equipid].improveType == 2) { $('#T'+fleet+'imprv'+slot+i).val(7); changedImprove('#T'+fleet+'imprv'+slot+i); }
 	}
 	// }
 }
@@ -575,6 +761,7 @@ function changedEquip(fleet,slot,equipslot) {
 	var equipid = document.getElementById('T'+fleet+'e'+slot+equipslot).value;
 	var equip = EQDATA[equipid];
 	if (equipid) {  //add new equip
+		$('#T'+fleet+'e'+slot+equipslot+'_chosen').attr('title',equip.name);
 		for (var i=2; i<STATNAMES.length-2; i++) {
 			var stat = equip[STATNAMES[i].toUpperCase()];
 			if (stat) {
@@ -582,15 +769,13 @@ function changedEquip(fleet,slot,equipslot) {
 				if (cstat == '') cstat = 0;
 				document.getElementById('T'+fleet+STATNAMES[i]+slot).value = parseInt(cstat) + parseInt(stat);
 				changedNum(fleet,slot,STATNAMES[i]);
-				
-				var previmprove = $('#T'+fleet+'imprv'+slot+equipslot).val();
-				if(equip.improveType == 2) $('#T'+fleet+'imprv'+slot+i).html(IMPROVEHTMLPLANE);
-				else if(equip.improveType == 1) $('#T'+fleet+'imprv'+slot+equipslot).html(IMPROVEHTMLAKASHI);
-				else $('#T'+fleet+'imprv'+slot+equipslot).html(IMPROVEHTMLNONE);
-				if (equip.improveType && equip.improveType==EQDATA[PREVEQS[fleet][slot][equipslot]].improveType) $('#T'+fleet+'imprv'+slot+equipslot).val(previmprove);			
 			}
 		}
-	}
+		// var previmprove = $('#T'+fleet+'imprv'+slot+equipslot).val();
+		setImprove(fleet,slot,equipslot,equip.improveType,0);
+		if(equipid!='0') $('#T'+fleet+'eqimg'+slot+equipslot).attr('src','assets/items/'+EQIMAGES[equip.type]+'.png');
+		else  $('#T'+fleet+'eqimg'+slot+equipslot).attr('src','assets/items/empty.png');
+	} else $('#T'+fleet+'e'+slot+equipslot+'_chosen').attr('title','');
 	var pequipid = PREVEQS[fleet][slot][equipslot];
 	if (pequipid && equipid != pequipid) {  //remove old equip
 		var pequip = EQDATA[pequipid];
@@ -619,7 +804,7 @@ function changedEquip(fleet,slot,equipslot) {
 	}
 }
 
-function loadIntoSim(fleet,side) {
+function loadIntoSim(fleet,side,isescort) {
 	var ships = [];
 	for (var i=0; i<6; i++) {
 		var mid = parseInt(document.getElementById('T'+fleet+'n'+i).value);
@@ -630,34 +815,45 @@ function loadIntoSim(fleet,side) {
 				var stat = parseInt(document.getElementById('T'+fleet+STATNAMES[j]+i).value);
 				s[STATNAMES[j]] = (stat)? stat : 0;
 			}
-			var equips = [];
+			var equips = [], levels = [];
 			for (var j=0; j<4; j++) {
-				if (parseInt(PREVEQS[fleet][i][j])) equips.push(parseInt(PREVEQS[fleet][i][j]));
+				if (parseInt(PREVEQS[fleet][i][j])) { equips.push(parseInt(PREVEQS[fleet][i][j])); levels.push(parseInt($('#T'+fleet+'imprv'+i+j).val())); }
 			}
 			
+			console.log(levels);
 			//do I want to do it like this?
 			var protect = (mid < 500 && side==0)? 0 : 1;
 			if (side == 0 && [901,902,903,1001].indexOf(mid) != -1) protect = 0;
 			var ship = new ShipType(mid,SHIPDATA[mid].name,protect,s.lvl,s.hp,s.fp,s.tp,s.aa,s.ar,s.ev,s.asw,s.los,s.luk,s.rng,SHIPDATA[mid].SLOTS);
-			ship.loadEquips(equips);
+			ship.loadEquips(equips,levels);
 			if (SHIPDATA[mid].isInstall) ship.isInstall = true;
 			ships.push(ship);
 		}
 	}
 	if (ships.length == 0) return fleet; //error, no ships filled
 	
-	var formation = 1;  //line ahead default
-	for (var i=1; i<=5; i++) {
-		if (document.getElementById('T'+fleet+'r'+i).checked) { formation = document.getElementById('T'+fleet+'r'+i).value; break; }
+	if (ADDEDCOMBINED && side==0) {
+		var type = $('input[name=T11type]:checked').val();
+		var form = $('input[name=T11formation]:checked').val();
+		var formation = type+form;
+		if (isescort) formation += 'E';
+	} else if (fleet==12||fleet==13) {
+		var formation = 1;
+	} else {
+		var formation = 1;  //line ahead default
+		for (var i=1; i<=5; i++) {
+			if (document.getElementById('T'+fleet+'r'+i).checked) { formation = document.getElementById('T'+fleet+'r'+i).value; break; }
+		}
 	}
 	
-	loadFleet(side,ships,formation);
+	loadFleet(side,ships,formation,isescort);
 	
 	return 0; //success
 }
 
-genFleetHTML('fleetspace1', 1, 'Main Fleet');
-genFleetHTML('fleetspace2', 2, 'Enemy Fleet 1');
+if (document.cookie.split(';')[0] == '') TUTORIAL = true;
+genFleetHTML('fleetspace1', 1, 'Main Fleet', '#90ee90');
+genFleetHTML('fleetspace2', 2, 'Enemy Fleet 1', '#ffaaaa');
 genOptions(2);
 
 var NUMFLEETS2 = 1;
@@ -672,7 +868,7 @@ function clickedAddNode(update) {
 		e.setAttribute('style','margin-left:470px;font-size:50px');
 		e.innerHTML = '&darr;';
 		document.getElementById('fleetspace2').appendChild(e);
-		genFleetHTML('fleetspace2', 20+NUMFLEETS2, 'Enemy Fleet '+NUMFLEETS2);
+		genFleetHTML('fleetspace2', 20+NUMFLEETS2, 'Enemy Fleet '+NUMFLEETS2, '#ffaaaa');
 		genOptions(20+NUMFLEETS2);
 	} else {
 		$('#T2'+NUMFLEETS2).css('display','block');
@@ -709,7 +905,7 @@ function clickedAddComb(update) {
 		e.setAttribute('style','margin-left:470px;font-size:50px');
 		e.innerHTML = '+';
 		document.getElementById('fleetspace1').appendChild(e);
-		genFleetHTML('fleetspace1', 11, 'Escort Fleet');
+		genFleetHTML('fleetspace1', 11, 'Escort Fleet', '#89C6FF');
 	} else {
 		$('#T11').css('display','block');
 		$('#plus').css('display','block');
@@ -718,6 +914,12 @@ function clickedAddComb(update) {
 	if (update) updateFleetCode('11');
 	$('#btnDelComb').css('display','');
 	$('#btnAddComb').css('display','none');
+	$('.ofcombined').each(function(){ $(this).show(); });
+	$('.ofsingle').each(function(){ $(this).hide(); });
+	for (var i=1; i<=NUMFLEETS2; i++) { var fl = '2'+((i!=1)? i:''); $('#oformdef'+fl).prop('checked',true); }
+	
+	$('input[name=T1formation]').each(function() { $(this).prop('disabled',true); });
+	raiseFleetChange();
 }
 
 function clickedDelComb() {
@@ -730,6 +932,42 @@ function clickedDelComb() {
 	ADDEDCOMBINED = false;
 	$('#btnDelComb').css('display','none');
 	$('#btnAddComb').css('display','');
+	$('.ofcombined').each(function(){ $(this).hide(); });
+	$('.ofsingle').each(function(){ $(this).show(); });
+	for (var i=1; i<=NUMFLEETS2; i++) { var fl = '2'+((i!=1)? i:''); $('#oformdef'+fl).prop('checked',true); }
+	
+	$('input[name=T1formation]').each(function() { $(this).prop('disabled',false); });
+	raiseFleetChange();
+}
+
+var ADDEDSUPPORTN = false;
+function clickedAddSupportN(update) {
+	if (ADDEDSUPPORTN) return;
+	if (!document.getElementById('T12')) genFleetHTML('fleetspace1SN', 12, 'Support Fleet', '#AACCEE');
+	else $('#T12').css('display','block');
+	ADDEDSUPPORTN = true;
+	if (update) updateFleetCode('12');
+	$('#btnDelSupN').css('display','');
+	$('#btnAddSupN').css('display','none');
+	raiseFleetChange();
+}
+
+function clickedDelSupportN() {
+	if (!ADDEDSUPPORTN) return;
+	$('#T12').css('display','none');
+	document.cookie = 'fleet12=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+	ADDEDSUPPORTN = false;
+	$('#btnDelSupN').css('display','none');
+	$('#btnAddSupN').css('display','');
+	raiseFleetChange();
+}
+
+function clickedAddSupportB() {
+
+}
+
+function clickedDelSupportB() {
+
 }
 
 // tableSetShip(1,2,1,[50,32,59,89,51,59,91,60,1,50,1,60]);
@@ -750,6 +988,9 @@ function updateResults(results) {
 	console.log(results);
 	var prevnum = parseInt(document.getElementById('rnumruns').innerHTML);
 	
+	if (ADDEDCOMBINED) $('.rescombined').each(function() { $(this).show(); });
+	else $('.rescombined').each(function() { $(this).hide(); });
+	
 	if (results.nodes.length == 1) {
 		var node = results.nodes[0];
 		var addnum = node.num;
@@ -757,9 +998,11 @@ function updateResults(results) {
 		resultAddWeight('rsunkfs',node.flagsunk,addnum);
 		
 		for(var i=1; i<=node.MVPs.length; i++) resultAddWeight('mvp'+i,node.MVPs[i-1],addnum);
+		if (node.MVPsC) for(var i=1; i<=node.MVPsC.length; i++) resultAddWeight('mvpc'+i,node.MVPsC[i-1],addnum);
 		
 		resultAddWeight('rredany',node.redded,addnum);
 		for(var i=0; i<node.redIndiv.length; i++) resultAddWeight('red'+(i+1),node.redIndiv[i],addnum);
+		if (node.redIndivC) for(var i=0; i<node.redIndivC.length; i++) resultAddWeight('redc'+(i+1),node.redIndivC[i],addnum);
 		resultAddWeight('rnodam',node.undamaged,addnum);
 	
 		$('.ressingle').each(function() { $(this).show(); });
@@ -774,9 +1017,11 @@ function updateResults(results) {
 			resultAddWeight('rankflagsunk'+n,node.flagsunk,addnum);
 			
 			for(var i=1; i<=node.MVPs.length; i++) resultAddWeight('mvp'+i+n,node.MVPs[i-1],addnum);
+			if(node.MVPsC) for(var i=1; i<=node.MVPsC.length; i++) resultAddWeight('mvpc'+i+n,node.MVPsC[i-1],addnum);
 			
 			resultAddWeight('redany'+n,node.redded,addnum);
 			for(var i=0; i<node.redIndiv.length; i++) resultAddWeight('red'+(i+1)+n,node.redIndiv[i],addnum);
+			if(node.redIndivC) for(var i=0; i<node.redIndivC.length; i++) resultAddWeight('redc'+(i+1)+n,node.redIndivC[i],addnum);
 			resultAddWeight('nodam'+n,node.undamaged,addnum);
 			
 			$('.res'+n).each(function() { $(this).show(); } );
@@ -855,12 +1100,20 @@ function genStatTableHTML() {
 		}
 		mvptab.append(tr);
 	}
+	mvptab.append('<tr class="rescombined" style="height:20px"></tr>');
+	for (var i=1; i<=6; i++) {
+		var tr = $('<tr class="rescombined"><th><img src="assets/stats/F'+i+'.png" /></th></tr>');
+		for (var j=1; j<=NUMNODESDEFAULT; j++) {
+			tr.append($('<td id="mvpc'+i+j+'" class="res'+j+'">0.222</td>'));
+		}
+		mvptab.append(tr);
+	}
+	
 	
 	//damage lists and table
 	var dmglist = $('#dmglist');
 	for (var i=1; i<=NUMNODESDEFAULT; i++) {
-		dmglist.append($('<span class="res'+i+'">'+i+': <span id="redany'+i+'">0.222</span></span>'));
-		dmglist.append($('<br>'));
+		dmglist.append($('<span class="res'+i+'">'+i+': <span id="redany'+i+'">0.222</span><br></span>'));
 	}
 	var dmgtab = $('#dmgtab');
 	var tr = $('<tr><th></th></tr>');
@@ -872,6 +1125,14 @@ function genStatTableHTML() {
 		var tr = $('<tr><th><img src="assets/stats/F'+i+'.png" /></th></tr>');
 		for (var j=1; j<=NUMNODESDEFAULT; j++) {
 			tr.append($('<td id="red'+i+j+'" class="res'+j+'">0.222</td>'));
+		}
+		dmgtab.append(tr);
+	}
+	dmgtab.append('<tr class="rescombined" style="height:20px"></tr>');
+	for (var i=1; i<=6; i++) {
+		var tr = $('<tr class="rescombined"><th><img src="assets/stats/F'+i+'.png" /></th></tr>');
+		for (var j=1; j<=NUMNODESDEFAULT; j++) {
+			tr.append($('<td id="redc'+i+j+'" class="res'+j+'">0.222</td>'));
 		}
 		dmgtab.append(tr);
 	}
@@ -912,6 +1173,7 @@ function clickedCollapseFleet(fleet) {
 
 function changedPreset1(fleet) {
 	var s = document.getElementById('T'+fleet+'pre1').value.split('|');
+	if ($('#T'+fleet+'pre1').css('animation')) { $('#T'+fleet+'pre1').css('animation',''); $('#T'+fleet+'pre1').css('border',''); }
 	var world = s[0], level = s[1];
 	var preset2 = document.getElementById('T'+fleet+'pre2');
 	preset2.innerHTML = '';
@@ -955,8 +1217,8 @@ function changedPreset3(fleet) {
 		}
 	}
 	var form = ENEMYCOMPS[world][level][node][version].f;
-	document.getElementById('T'+fleet+'r'+form).checked = true;
 	if (fleet.toString()[0] == '2') {
+		document.getElementById('T'+fleet+'r'+form).checked = true;
 		if (node.toLowerCase().indexOf('boss') != -1) $('#NB'+fleet).prop('checked',true);
 		else $('#NB'+fleet).prop('checked',false);
 		if (ENEMYCOMPS[world][level][node][version].NB) $('#NBonly'+fleet).prop('checked',true);
@@ -970,11 +1232,12 @@ function changedPreset3(fleet) {
 }
 
 function updateFleetCode(fleet) {
-	var formation = 1;
-	for (var i=1; i<=5; i++) {
-		if (document.getElementById('T'+fleet+'r'+i).checked) { formation = document.getElementById('T'+fleet+'r'+i).value; break; }
-	}
+	var formation = $('input[name=T'+fleet+'formation]:checked').val();
 	var c = formation+',0,0|';
+	if (fleet==11) {
+		var type = $('input[name=T'+fleet+'type]:checked').val();
+		c = formation+','+type+',0|';
+	}
 	for (var i=0; i<6; i++) {
 		var shipid = document.getElementById('T'+fleet+'n'+i).value;
 		if (parseInt(shipid)) {
@@ -1015,7 +1278,8 @@ function raiseFleetChange() {
 function loadFleetFromCode(fleet,fcode) {
 	var parts = fcode.split('|');
 	var s = parts[0].split(',');
-	document.getElementById('T'+fleet+'r'+s[0]).checked = true;
+	if(document.getElementById('T'+fleet+'r'+s[0])) document.getElementById('T'+fleet+'r'+s[0]).checked = true;
+	if(document.getElementById('T'+fleet+'t'+s[1])) document.getElementById('T'+fleet+'t'+s[1]).checked = true;
 	for (var i=0; i<6; i++) {
 		var s = parts[i+1].split(',');
 		tableSetShip(fleet,i,parseInt(s[0]),s.slice(1,13),s.slice(13,17),s.slice(17,21));
@@ -1033,27 +1297,16 @@ function clickedLoadFromCode(fleet) {
 	
 }
 
+
 function clickedSimGo() {
-	FLEETS1 = []; FLEETS2 = [];
 	var numsims = parseInt(document.getElementById('simnum').value);
-	console.log(document.getElementById('simnum').value);
-	var error = loadIntoSim(1,0);
-	if (error) { document.getElementById('simnotespace').innerHTML = 'Fleet '+error+' has no ships.'; return; }
-	error = loadIntoSim(2,1);
-	if (error) { document.getElementById('simnotespace').innerHTML = 'Fleet '+error+' has no ships.'; return; }
-	for (var i=2; i<=NUMFLEETS2; i++) {
-		error = loadIntoSim(20+i,1);
-		if (error) { document.getElementById('simnotespace').innerHTML = 'Fleet '+error+' has no ships.'; return; }
-	}
 	
-	var doNB = [$('#NB2').prop('checked')]; 
-	for (var i=2; i<=NUMFLEETS2; i++) doNB.push($('#NB2'+i).prop('checked'));
-	var NBonly = [$('#NBonly2').prop('checked')]; 
-	for (var i=2; i<=NUMFLEETS2; i++) NBonly.push($('#NBonly2'+i).prop('checked'));
-	var aironly = [$('#aironly2').prop('checked')]; 
-	for (var i=2; i<=NUMFLEETS2; i++) aironly.push($('#aironly2'+i).prop('checked'));
+	var options = extractForSim();
+	if (!options) return;
+	$('#simnotespace').text('');
 	
-	simStats(numsims,doNB,NBonly,aironly);
+	if (ADDEDCOMBINED) simStatsCombined(numsims,parseInt($('input[name=T11type]:checked').val()),options.doNB,options.NBonly,options.aironly,options.formover);
+	else simStats(numsims,options.doNB,options.NBonly,options.aironly,options.formover);
 	
 	document.getElementById('resultspace').style.display = 'block';
 	document.getElementById('simnotespace').innerHTML = '';
@@ -1069,7 +1322,7 @@ function changedSimNumber() {
 function clickedResetStats() {
 	RESVALUES = {};
 	document.getElementById('rnumruns').innerHTML = '0';
-	var letters = ['S','A','B','C','D'];
+	var letters = ['S','A','B','C','D','E'];
 	for(var i=0; i<letters.length; i++) document.getElementById('rank'+letters[i]).innerHTML = '0';
 	document.getElementById('rsunkfs').innerHTML = '0';
 	
@@ -1085,29 +1338,54 @@ function clickedResetStats() {
 	WROTESTATS = false;
 }
 
+function extractForSim() {
+	FLEETS1 = []; FLEETS2 = [];
+	var error = loadIntoSim(1,0);
+	if (error) { document.getElementById('simnotespace').innerHTML = 'Main Fleet has no ships.'; return; }
+	if (ADDEDCOMBINED) {
+		var error = loadIntoSim(11,0,true);
+		if (error) { document.getElementById('simnotespace').innerHTML = 'Escort Fleet has no ships.'; return; }
+	}
+	error = loadIntoSim(2,1);
+	if (error) { document.getElementById('simnotespace').innerHTML = 'Enemy Fleet 1 has no ships.'; return; }
+	for (var i=2; i<=NUMFLEETS2; i++) {
+		error = loadIntoSim(20+i,1);
+		if (error) { document.getElementById('simnotespace').innerHTML = 'Enemy Fleet '+(error-20)+' has no ships.'; return; }
+	}
+	
+	FLEETS1S = [null,null];
+	if (ADDEDSUPPORTN) {
+		var error = loadIntoSim(12,2);
+		if (error) FLEETS1S[0] = null;
+	}
+	
+	var options = {};
+	options.doNB = [$('#NB2').prop('checked')]; 
+	for (var i=2; i<=NUMFLEETS2; i++) options.doNB.push($('#NB2'+i).prop('checked'));
+	options.NBonly = [$('#NBonly2').prop('checked')]; 
+	for (var i=2; i<=NUMFLEETS2; i++) options.NBonly.push($('#NBonly2'+i).prop('checked'));
+	options.aironly = [$('#aironly2').prop('checked')]; 
+	for (var i=2; i<=NUMFLEETS2; i++) options.aironly.push($('#aironly2'+i).prop('checked'));
+	options.formover = [$('input[name=radform2]:checked').val()];
+	for (var i=2; i<=NUMFLEETS2; i++) options.formover.push($('input[name=radform2'+i+']:checked').val());
+	
+	return options;
+}
+
 //player-----------------------------------
 function clickedWatchBattle() {
 	if (!CANRESET) return;
 	
-	// if (started) {
-		// reset(true);
-	// }
-	console.log('butts');
-	FLEETS1 = []; FLEETS2 = [];
-	var error = loadIntoSim(1,0);
-	if (error) { document.getElementById('simnotespace').innerHTML = 'Fleet '+error+' has no ships.'; return; }
-	error = loadIntoSim(2,1);
-	if (error) { document.getElementById('simnotespace').innerHTML = 'Fleet '+error+' has no ships.'; return; }
-	for (var i=2; i<=NUMFLEETS2; i++) {
-		error = loadIntoSim(20+i,1);
-		if (error) { document.getElementById('simnotespace').innerHTML = 'Fleet '+error+' has no ships.'; return; }
-	}
-	$('#btnWatch').val('New Battle');
-	
 	C=true;
 	code = '';
 	
-	API = {battles:[],fleetnum:1,support1:3,support2:4};
+	var options = extractForSim();
+	if (!options) return;
+	$('#simnotespace').text('');
+	$('#btnWatch').val('New Battle');
+	
+	//set up API info
+	API = {battles:[],fleetnum:1,support1:3,support2:4,source:1};
 	for (var i=0; i<4; i++) {
 		if (i >= FLEETS1.length) break;
 		API['fleet'+(i+1)] = [];
@@ -1122,29 +1400,36 @@ function clickedWatchBattle() {
 			API['fleet'+(i+1)].push(obj);
 		}
 	}
+	if (ADDEDCOMBINED) {
+		API.combined = parseInt($('input[name=T11type]:checked').val()); //change later for type
+		var formdefc = FLEETS1[1].formation;
+	}
 	
-	var doNB = [$('#NB2').prop('checked')]; 
-	for (var i=2; i<=NUMFLEETS2; i++) doNB.push($('#NB2'+i).prop('checked'));
-	var NBonly = [$('#NBonly2').prop('checked')]; 
-	for (var i=2; i<=NUMFLEETS2; i++) NBonly.push($('#NBonly2'+i).prop('checked'));
-	var aironly = [$('#aironly2').prop('checked')]; 
-	for (var i=2; i<=NUMFLEETS2; i++) aironly.push($('#aironly2'+i).prop('checked'));
+	var supportN = (ADDEDSUPPORTN)? FLEETS1S[0] : null;
+	
+	var formdef = FLEETS1[0].formation;
 	for (var j=0; j<FLEETS2.length; j++) {
 		var BAPI = {data:{},yasen:{},mvp:[],rating:''};
-		var res = sim(FLEETS1[0],FLEETS2[j],doNB[j],NBonly[j],aironly[j],BAPI);
+		if (options.formover[j] != '0') {
+			if (ADDEDCOMBINED) { FLEETS1[0].formation = ALLFORMATIONS[API.combined+options.formover[j]]; FLEETS1[1].formation = ALLFORMATIONS[API.combined+options.formover[j]+'E']; }
+			else FLEETS1[0].formation = ALLFORMATIONS[options.formover[j]];
+		} else {
+			FLEETS1[0].formation = formdef;
+			if (ADDEDCOMBINED) FLEETS1[1].formation = formdefc;
+		}
+		
+		var res;
+		if (ADDEDCOMBINED)
+			res = simCombined(API.combined,FLEETS1[0],FLEETS1[1],FLEETS2[j],supportN,options.doNB[j],options.NBonly[j],options.aironly[j],BAPI);
+		else
+			res = sim(FLEETS1[0],FLEETS2[j],supportN,options.doNB[j],options.NBonly[j],options.aironly[j],BAPI);
 		API.battles.push(BAPI);
-		console.log('c');
 		if ((res.redded && DORETREAT) || res.flagredded) break;
 	}
 	console.log(API);
-	// return;
-	// if (!started) {
-		// started = true;
-		// setup();
-		// processAPI(API);
+	
 	$('#code').val(JSON.stringify(API));
 	loadCode(true);
-	// }
 }
 
 
@@ -1163,6 +1448,10 @@ for (var i=2; i<=5; i++) {
 		}
 	}
 	if (!found) break;
+}
+for (var i=0; i<fs.length; i++) {
+	if (fs[i].indexOf('fleet11=')!=-1) clickedAddComb();
+	if (fs[i].indexOf('fleet12=')!=-1) clickedAddSupportN();
 }
 for (var i=0; i<fs.length; i++) {
 	if (fs[i].indexOf('=') != -1) {
