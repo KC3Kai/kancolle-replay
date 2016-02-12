@@ -558,11 +558,33 @@ Installation.prototype.shellPower = CV.prototype.shellPower;
 Installation.prototype.canShell = CV.prototype.canShell;
 Installation.prototype.canStillShell = CV.prototype.canStillShell;
 
-function AS() {};
-function AR() {};
-function CT() {};
-function LHA() {};
+function AS(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
+	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
+	this.type = 'AS';
+};
+AS.prototype = Object.create(Ship.prototype);
+AS.prototype.canTorp = function() { return false; }
 
+function AR(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
+	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
+	this.type = 'AR';
+};
+AR.prototype = Object.create(Ship.prototype);
+AR.prototype.canTorp = function() { return false; }
+
+function CT(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
+	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
+	this.type = 'CT';
+};
+CT.prototype = Object.create(Ship.prototype);
+CT.prototype.canASW = function() { return true; }
+
+function LHA(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
+	Carrier.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
+	this.type = 'LHA';
+};
+LHA.prototype = Object.create(Carrier.prototype);
+LHA.prototype.canTorp = function() { return false; }
 
 var PLANEDEFAULT = new Ship(0,'PLANEDEFAULT',0, 1,1, 0,0,0,0, 0, 0,0,0, 1);
 PLANEDEFAULT.CVshelltype = true;

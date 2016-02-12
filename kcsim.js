@@ -356,7 +356,7 @@ function shellPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,APIhou) {
 				var target = choiceWProtect(subsalive2);
 				if (ASW(order1[i],target,false,APIhou)) subsalive2.splice(subsalive2.indexOf(target),1);
 			} else if (alive2.length) {
-				if (order1[i].canlaser && Math.random() < 1) {
+				if (order1[i].canlaser && Math.random() < .5) {
 					var targets = shuffle(alive2.slice()).slice(0,2+Math.max(0,Math.floor((alive2.length-2)*Math.random())));
 					laser(order1[i],targets,APIhou);
 					for (var j=0; j<targets.length; j++) if (targets[j].HP <= 0) alive2.splice(alive2.indexOf(targets[j]),1);
