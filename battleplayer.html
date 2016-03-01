@@ -73,7 +73,7 @@
 		</style>
 	</head>
 	<body>
-		<span style="font-size:24px;font-weight:bold">KanColle Battle Replayer</span> <span style="color:red;margin-left:20px">v1.0 Beta 2.1 <span style="margin-left:20px;font-style:italic">(Last update: 2016-01-25)</span></span>
+		<span style="font-size:24px;font-weight:bold">KanColle Battle Replayer</span> <span style="color:red;margin-left:20px">v1.0 Beta 2.2 <span style="margin-left:20px;font-style:italic">(Last update: 2016-01-25)</span></span>
 		<br><br>
 		<div>
 			<div>
@@ -180,6 +180,7 @@
 				var fleet = API['fleet'+API.fleetnum];
 				for (var i=0; i<fleet.length; i++) {
 					var b = API.battles[0].data;
+					if (!Object.keys(b).length) b = API.battles[0].yasen;
 					if ($('#radJP').prop('checked')) $('#name1'+i).text(fleet[i].mst_id+'. '+SHIPDATA[fleet[i].mst_id].nameJP);
 					else $('#name1'+i).text(fleet[i].mst_id+'. '+SHIPDATA[fleet[i].mst_id].name);
 					$('#img1'+i).attr('src','assets/icons/'+SHIPDATA[fleet[i].mst_id].image);

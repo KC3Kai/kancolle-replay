@@ -359,6 +359,7 @@ function processAPI(root) {
 	if (bspace.length) {
 		bspace.html('');
 		for (var i=0; i<root.battles.length; i++) {
+			if (Object.keys(root.battles[i].data).length==0 && Object.keys(root.battles[i].yasen).length==0) continue;
 			var letter, edges = EDGES['World '+root.world+'-'+root.mapnum];
 			if (edges && edges[root.battles[i].node]) letter = edges[root.battles[i].node][1];
 			else letter = (root.battles[i].node <= 26)? String.fromCharCode(64+root.battles[i].node) : '-';
@@ -424,6 +425,7 @@ function processAPI(root) {
 		// console.log(root.battles[b]);
 		data = root.battles[b].data;
 		if (Object.keys(data).length <= 0) data = root.battles[b].yasen;
+		if (Object.keys(data).length <= 0) continue;
 		var f2 = [];
 		//load enemies
 		if (data.api_ship_ke[0] == -1) data.api_ship_ke = data.api_ship_ke.slice(1);
@@ -453,7 +455,8 @@ function processAPI(root) {
 		if (data.api_escape_idx_combined) escape[1] = data.api_escape_idx_combined;
 		try {
 			var bgm, map = MAPDATA[root.world].maps[root.mapnum];
-			var isboss = (map.bossnode==EDGES['World '+root.world+'-'+root.mapnum][root.battles[b].node][1].charCodeAt()-64);
+			var isboss = (Array.isArray(map.bossnode))? (map.bossnode.indexOf(EDGES['World '+root.world+'-'+root.mapnum][root.battles[b].node][1].charCodeAt()-64) != -1)
+				: (map.bossnode==EDGES['World '+root.world+'-'+root.mapnum][root.battles[b].node][1].charCodeAt()-64);
 			if (isboss) bgm = (NBonly)? map.bgmNB : map.bgmDB;
 			else bgm = (NBonly)? map.bgmNN : map.bgmDN;
 			var orel = false; if (root.world==2 && root.mapnum==3) { //orel cruise
@@ -1848,7 +1851,7 @@ function animShield(shield) {
 
 function createFlare1(x,y,side) {
 	var flare = getFromPool('flare1','assets/86.png');
-	flare.pivot.set(0,18); flare.scale.set(0); flare.alpha = 1; flare.rotation = (side==0)? Math.PI*7/4 : Math.PI*5/4;
+	flare.pivot.set(0,18); flare.scale.set(0); flare.alpha = 1; flare.rotation = (side==0)? Math.PI*5/3 : Math.PI*4/3;
 	flare.position.set(x,y);
 	updates.push([moveFlare1,[flare]]); stage.addChild(flare); flare.notpersistent = true;
 }

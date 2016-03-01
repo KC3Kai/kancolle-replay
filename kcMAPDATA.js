@@ -421,5 +421,37 @@ var MAPDATA = {
 				bossnode: 14,
 			},
 		}
+	},
+	33: {
+		name: 'Event Winter 2016',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmMap: 1,
+				bgmDN: 58,
+				bgmNN: 58,
+				bgmDB: 59,
+				bgmNB: 59,
+				bossnode: 10,
+			},
+			2: {
+				name: 'E2',
+				bgmMap: 1,
+				bgmDN: 58,
+				bgmNN: 58,
+				bgmDB: 59,
+				bgmNB: 59,
+				bossnode: 15,
+			},
+			3: {
+				name: 'E3',
+				bgmMap: 1,
+				bgmDN: 60,
+				bgmNN: 60,
+				bgmDB: 59,
+				bgmNB: 59,
+				bossnode: [19,20],
+			},
+		}
 	}
 }

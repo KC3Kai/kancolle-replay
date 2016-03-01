@@ -1,5 +1,5 @@
-function simCombined(type,F1,F1C,F2,Fsupport,doNB,NBonly,aironly,BAPI) {
-	bombing = false;
+function simCombined(type,F1,F1C,F2,Fsupport,doNB,NBonly,aironly,landbomb,BAPI) {
+	bombing = landbomb;
 	var ships1 = F1.ships, ships2 = F2.ships, ships1C = F1C.ships;
 	var alive1 = [], alive1C = [], alive2 = [], subsalive1 = [], subsalive1C = [], subsalive2 = [];
 	for (var i=0; i<ships1.length; i++) {
@@ -24,7 +24,8 @@ function simCombined(type,F1,F1C,F2,Fsupport,doNB,NBonly,aironly,BAPI) {
 	compareAP(F1,F2);
 	F1C.AS = F1.AS;
 	
-	if (aironly && ships2.length <= 2 && [652,651,650].indexOf(ships2[0].mid) != -1) bombing = true;
+	// if (aironly && ships2.length <= 2 && [652,651,650].indexOf(ships2[0].mid) != -1) bombing = true;
+	if (bombing) aironly = true;
 	
 	//code here
 	if (C) {
@@ -316,7 +317,7 @@ function simCombined(type,F1,F1C,F2,Fsupport,doNB,NBonly,aironly,BAPI) {
 	return results;
 }
 
-function simStatsCombined(numsims,type,doNB,NBonly,aironly,forms) {
+function simStatsCombined(numsims,type,doNB,NBonly,aironly,landbomb,forms) {
 	console.log(type);
 	var totalResult = {
 		totalnum: numsims,
@@ -356,7 +357,7 @@ function simStatsCombined(numsims,type,doNB,NBonly,aironly,forms) {
 				FLEETS1[0].formation = formdef;
 				FLEETS1[1].formation = formdefc;
 			}
-			var res = simCombined(type,FLEETS1[0],FLEETS1[1],FLEETS2[j],FLEETS1S[0],doNB[j],NBonly[j],aironly[j]);//,BAPI);
+			var res = simCombined(type,FLEETS1[0],FLEETS1[1],FLEETS2[j],FLEETS1S[0],doNB[j],NBonly[j],aironly[j],landbomb[j]);//,BAPI);
 			totalResult.nodes[j].num++;
 			if (res.redded) totalResult.nodes[j].redded++;
 			for (var k=0; k<res.reddedIndiv.length; k++) if (res.reddedIndiv[k]) totalResult.nodes[j].redIndiv[k]++;

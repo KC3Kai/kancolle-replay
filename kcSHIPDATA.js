@@ -6002,9 +6002,9 @@ var SHIPDATA = {
 		SLOTS: [0, 0, 0],
 		fuel: 15,
 		ammo: 15,
-		next: 0,
+		next: 418,
 		prev: 28,
-		nextlvl: 0,
+		nextlvl: 75,
 	},
 	257: {
 		name: 'Fumizuki Kai',
@@ -8170,6 +8170,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 448,
 		nextlvl: 0,
+		iscarrier: true,
 	},
 	359: {
 		name: 'Okinami Kai',
@@ -8673,6 +8674,30 @@ var SHIPDATA = {
 		ammo: 65,
 		next: 0,
 		prev: 263,
+		nextlvl: 0,
+	},
+	418: {
+		name: 'Satsuki Kai 2',
+		nameJP: '皐月改二',
+		image: 'KSatsukiKai2.png',
+		type: 'DD',
+		nid: 218,
+		HP: 28, HPmax: 44,
+		FP: 42, FPbase: 8,
+		TP: 78, TPbase: 27,
+		AA: 82, AAbase: 40,
+		AR: 45, ARbase: 12,
+		EV: 96, EVbase: 60,
+		ASW: 81, ASWbase: 30,
+		LOS: 45, LOSbase: 10,
+		LUK: 20, LUKmax: 79,
+		RNG: 1,
+		SPD: 10,
+		SLOTS: [0, 0, 0],
+		fuel: 15,
+		ammo: 15,
+		next: 0,
+		prev: 256,
 		nextlvl: 0,
 	},
 	419: {
@@ -9230,6 +9255,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 441,
 		nextlvl: 0,
+		iscarrier: true,
 	},
 	447: {
 		name: 'Roma Kai',
@@ -9254,6 +9280,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 442,
 		nextlvl: 0,
+		iscarrier: true,
 	},
 	448: {
 		name: 'Zara',
@@ -13265,5 +13292,6 @@ var SHIPDATA = {
 		NBPower: function() { return 2000000; },
 		ASWPower: function() { return 2000000; },
 		ACCbonus: 40
-	}
+	},
+	
 };

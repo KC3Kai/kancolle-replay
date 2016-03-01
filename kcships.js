@@ -83,6 +83,7 @@ Fleet.prototype.getMVP = function() {
 function Ship(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	this.id = 0;
 	this.mid = id;
+	this.iscarrier = true;
 	if (!(typeof SHIPDATA == 'undefined')) {
 		for (var key in SHIPDATA[id]) {  //load extra data
 			if (['image','type','EQUIPS','SLOTS'].indexOf(key) == -1) this[key] = SHIPDATA[id][key];
@@ -107,7 +108,6 @@ function Ship(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	this.equips = [];
 	this.fleet = false;
 	this.isflagship = false;
-	this.iscarrier = false;
 	if (!planeslots) planeslots = [0,0,0,0];
 	this.PLANESLOTS = planeslots;
 	this.planecount = planeslots.slice();
@@ -271,7 +271,7 @@ Ship.prototype.ASWPower = function() {
 		if (this.equips[i].btype == B_DEPTHCHARGE) hasdc = true;
 	}
 	var bonus = (this.ASWbonus)? Math.floor(this.ASWbonus) : 0;
-	this._aswpower = (2*Math.sqrt(this.ASW-equipASW)+1.5*equipASW+((this.iscarrier)? 8 : 13))* ((hassonar && hasdc)? 1.15 : 1) + bonus;
+	this._aswpower = (2*Math.sqrt(this.ASW-equipASW)+1.5*equipASW+((this.planeasw)? 8 : 13))* ((hassonar && hasdc)? 1.15 : 1) + bonus;
 	return this._aswpower;
 }
 
@@ -368,6 +368,8 @@ Carrier.prototype.numBombers = function () {
 	}
 	return planes;
 }
+Ship.prototype.airPower = Carrier.prototype.airPower;
+Ship.prototype.numBombers = Carrier.prototype.numBombers;
 //------------------
 
 function DD(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
@@ -417,6 +419,7 @@ FBB.prototype = Object.create(BB.prototype);
 function CAV(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	Carrier.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
 	this.type = 'CAV';
+	this.planeasw = true;
 }
 CAV.prototype = Object.create(Carrier.prototype);
 CAV.prototype.APweak = true;
@@ -428,6 +431,7 @@ CAV.prototype.canASW = function() {
 function BBV(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	Carrier.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
 	this.type = 'BBV';
+	this.planeasw = true;
 }
 BBV.prototype = Object.create(Carrier.prototype);
 BBV.prototype.APweak = true;
@@ -477,6 +481,7 @@ CV.prototype.shellPower = function() {
 function CVL(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	CV.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
 	this.type = 'CVL';
+	this.planeasw = true;
 }
 CVL.prototype = Object.create(CV.prototype);
 CVL.prototype.canASW = function() {
@@ -538,6 +543,7 @@ AO.prototype.loadEquips = function(equips,addstats) {
 	for (var i=0; i<equips.length; i++) {
 		if (equips[i] && (EQDATA[equips[i]].istorpbomber||EQDATA[equips[i]].isdivebomber)) {
 			this.iscarrier = true;
+			this.planeasw = true;
 			this.CVshelltype = true;
 			this.shellPower = CV.prototype.shellPower;
 			this.canShell = CV.prototype.canShell;

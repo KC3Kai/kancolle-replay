@@ -1710,6 +1710,18 @@ var EQDATA = {
 		EV: 1,
 		LOS: 4
 	},
+	164: {
+		name: 'Ro.44 Seaplane Fighter',
+		nameJP: 'Ro.44水上戦闘機',
+		type: SEAPLANE,
+		isfighter: true,
+		DIVEBOMB: 1,
+		AA: 2,
+		ASW: 1,
+		ACC: 1,
+		EV: 2,
+		LOS: 2
+	},
 	501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',

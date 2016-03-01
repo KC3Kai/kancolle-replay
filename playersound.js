@@ -82,5 +82,8 @@ var BGMLIST = {
 	52: {url:'http://vignette1.wikia.nocookie.net/kancolle/images/7/7b/Sound_b_bgm_52.ogg'},
 	53: {url:'http://vignette3.wikia.nocookie.net/kancolle/images/0/0e/Sound_b_bgm_53.ogg'},
 	55: {url:'http://vignette4.wikia.nocookie.net/kancolle/images/6/61/Sound_b_bgm_55.ogg'},
+	58: {url:'http://vignette1.wikia.nocookie.net/kancolle/images/3/38/Sound_b_bgm_58.ogg'},
+	59: {url:'http://vignette2.wikia.nocookie.net/kancolle/images/4/44/Sound_b_bgm_59.ogg'},
+	60: {url:'http://vignette3.wikia.nocookie.net/kancolle/images/d/d0/Sound_b_bgm_60.ogg'},
 	999: {url:'https://dl.dropboxusercontent.com/u/79056688/Orel%20Cruising%20%26%20LSC%20Song%20%5BENG%20Sub%5D.mp3',voldef:.3},
 };

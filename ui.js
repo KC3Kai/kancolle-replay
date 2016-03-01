@@ -569,23 +569,24 @@ function genOptions(fleetnum) {
 	var html = $('<tr id="options'+fleetnum+'"></tr>');
 	html.append('<td>Node '+num+':</td>');
 	html.append('<td><input id="NB'+fleetnum+'" type="checkbox" checked="true" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="NB'+fleetnum+'">Night battle?</label></td>');
-	html.append('<td class="line"><input id="NBonly'+fleetnum+'" type="checkbox" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="NBonly'+fleetnum+'">Night-Only Node</label></td>');
-	html.append('<td><input id="aironly'+fleetnum+'" type="checkbox" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="aironly'+fleetnum+'">Air Node</label></td>');
+	html.append('<td class="line"><input id="NBonly'+fleetnum+'" type="checkbox" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="NBonly'+fleetnum+'">Night-Only</label></td>');
+	html.append('<td><input id="aironly'+fleetnum+'" type="checkbox" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="aironly'+fleetnum+'">Air-Only</label></td>');
+	html.append('<td><input id="landbomb'+fleetnum+'" type="checkbox" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="landbomb'+fleetnum+'">Land Bombing</label></td>');
 	html.append('<td class="line"><input value="0" id="oformdef'+fleetnum+'" type="radio" name="radform'+fleetnum+'" checked/><label for="oformdef'+fleetnum+'">Default</label></td>');
-	html.append('<td class="ofsingle"'+((ADDEDCOMBINED)?' style="display:none"':'')+'><input value="1" id="o1form'+fleetnum+'" type="radio" name="radform'+fleetnum+'" onclick="raiseFleetChange()"/><label for="o1form'+fleetnum+'"><img src="assets/stats/form1.jpg"/></label></td>');
-	html.append('<td class="ofsingle"'+((ADDEDCOMBINED)?' style="display:none"':'')+'><input value="2" id="o2form'+fleetnum+'" type="radio" name="radform'+fleetnum+'" onclick="raiseFleetChange()"/><label for="o2form'+fleetnum+'"><img src="assets/stats/form2.jpg"/></label></td>');
-	html.append('<td class="ofsingle"'+((ADDEDCOMBINED)?' style="display:none"':'')+'><input value="3" id="o3form'+fleetnum+'" type="radio" name="radform'+fleetnum+'" onclick="raiseFleetChange()"/><label for="o3form'+fleetnum+'"><img src="assets/stats/form3.jpg"/></label></td>');
-	html.append('<td class="ofsingle"'+((ADDEDCOMBINED)?' style="display:none"':'')+'><input value="4" id="o4form'+fleetnum+'" type="radio" name="radform'+fleetnum+'" onclick="raiseFleetChange()"/><label for="o4form'+fleetnum+'"><img src="assets/stats/form4.jpg"/></label></td>');
-	html.append('<td class="ofsingle"'+((ADDEDCOMBINED)?' style="display:none"':'')+'><input value="5" id="o5form'+fleetnum+'" type="radio" name="radform'+fleetnum+'" onclick="raiseFleetChange()"/><label for="o5form'+fleetnum+'"><img src="assets/stats/form5.jpg"/></label></td>');
-	html.append('<td class="ofcombined"'+((!ADDEDCOMBINED)?' style="display:none"':'')+'><input value="11" id="o11form'+fleetnum+'" type="radio" name="radform'+fleetnum+'" onclick="raiseFleetChange()"/><label for="o11form'+fleetnum+'"><img src="assets/stats/form11.png"/></label></td>');
-	html.append('<td class="ofcombined"'+((!ADDEDCOMBINED)?' style="display:none"':'')+'><input value="12" id="o12form'+fleetnum+'" type="radio" name="radform'+fleetnum+'" onclick="raiseFleetChange()"/><label for="o12form'+fleetnum+'"><img src="assets/stats/form12.png"/></label></td>');
-	html.append('<td class="ofcombined"'+((!ADDEDCOMBINED)?' style="display:none"':'')+'><input value="13" id="o13form'+fleetnum+'" type="radio" name="radform'+fleetnum+'" onclick="raiseFleetChange()"/><label for="o13form'+fleetnum+'"><img src="assets/stats/form13.png"/></label></td>');
-	html.append('<td class="ofcombined"'+((!ADDEDCOMBINED)?' style="display:none"':'')+'><input value="14" id="o14form'+fleetnum+'" type="radio" name="radform'+fleetnum+'" onclick="raiseFleetChange()"/><label for="o14form'+fleetnum+'"><img src="assets/stats/form14.png"/></label></td>');
+	html.append('<td class="ofsingle"'+((ADDEDCOMBINED)?' style="display:none"':'')+'><input value="1" id="o1form'+fleetnum+'" type="radio" name="radform'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="o1form'+fleetnum+'"><img src="assets/stats/form1.jpg"/></label></td>');
+	html.append('<td class="ofsingle"'+((ADDEDCOMBINED)?' style="display:none"':'')+'><input value="2" id="o2form'+fleetnum+'" type="radio" name="radform'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="o2form'+fleetnum+'"><img src="assets/stats/form2.jpg"/></label></td>');
+	html.append('<td class="ofsingle"'+((ADDEDCOMBINED)?' style="display:none"':'')+'><input value="3" id="o3form'+fleetnum+'" type="radio" name="radform'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="o3form'+fleetnum+'"><img src="assets/stats/form3.jpg"/></label></td>');
+	html.append('<td class="ofsingle"'+((ADDEDCOMBINED)?' style="display:none"':'')+'><input value="4" id="o4form'+fleetnum+'" type="radio" name="radform'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="o4form'+fleetnum+'"><img src="assets/stats/form4.jpg"/></label></td>');
+	html.append('<td class="ofsingle"'+((ADDEDCOMBINED)?' style="display:none"':'')+'><input value="5" id="o5form'+fleetnum+'" type="radio" name="radform'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="o5form'+fleetnum+'"><img src="assets/stats/form5.jpg"/></label></td>');
+	html.append('<td class="ofcombined"'+((!ADDEDCOMBINED)?' style="display:none"':'')+'><input value="11" id="o11form'+fleetnum+'" type="radio" name="radform'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="o11form'+fleetnum+'"><img src="assets/stats/form11.png"/></label></td>');
+	html.append('<td class="ofcombined"'+((!ADDEDCOMBINED)?' style="display:none"':'')+'><input value="12" id="o12form'+fleetnum+'" type="radio" name="radform'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="o12form'+fleetnum+'"><img src="assets/stats/form12.png"/></label></td>');
+	html.append('<td class="ofcombined"'+((!ADDEDCOMBINED)?' style="display:none"':'')+'><input value="13" id="o13form'+fleetnum+'" type="radio" name="radform'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="o13form'+fleetnum+'"><img src="assets/stats/form13.png"/></label></td>');
+	html.append('<td class="ofcombined"'+((!ADDEDCOMBINED)?' style="display:none"':'')+'><input value="14" id="o14form'+fleetnum+'" type="radio" name="radform'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="o14form'+fleetnum+'"><img src="assets/stats/form14.png"/></label></td>');
 	$('#optionstable').append(html);
 }
 
 function updateOptionsCookies(num) {
-	var optionstr = ''+($('#NB'+num).prop('checked')?1:0)+','+($('#NBonly'+num).prop('checked')?1:0)+','+($('#aironly'+num).prop('checked')?1:0);
+	var optionstr = ''+($('#NB'+num).prop('checked')?1:0)+','+($('#NBonly'+num).prop('checked')?1:0)+','+($('#aironly'+num).prop('checked')?1:0)+','+($('#landbomb'+num).prop('checked')?1:0)+','+$('input[name=radform'+num+']:checked').val();
 	console.log(optionstr);
 	document.cookie = 'option'+num+'='+optionstr+';';
 }
@@ -1223,8 +1224,10 @@ function changedPreset3(fleet) {
 		else $('#NB'+fleet).prop('checked',false);
 		if (ENEMYCOMPS[world][level][node][version].NB) $('#NBonly'+fleet).prop('checked',true);
 		else $('#NBonly'+fleet).prop('checked',false);
-		if (ENEMYCOMPS[world][level][node][version].AIR) $('#aironly'+fleet).prop('checked',true);
+		if (ENEMYCOMPS[world][level][node][version].air) $('#aironly'+fleet).prop('checked',true);
 		else $('#aironly'+fleet).prop('checked',false);
+		if (ENEMYCOMPS[world][level][node][version].bomb) $('#landbomb'+fleet).prop('checked',true);
+		else $('#landbomb'+fleet).prop('checked',false);
 	}
 	
 	updateFleetCode(fleet);
@@ -1305,8 +1308,8 @@ function clickedSimGo() {
 	if (!options) return;
 	$('#simnotespace').text('');
 	
-	if (ADDEDCOMBINED) simStatsCombined(numsims,parseInt($('input[name=T11type]:checked').val()),options.doNB,options.NBonly,options.aironly,options.formover);
-	else simStats(numsims,options.doNB,options.NBonly,options.aironly,options.formover);
+	if (ADDEDCOMBINED) simStatsCombined(numsims,parseInt($('input[name=T11type]:checked').val()),options.doNB,options.NBonly,options.aironly,options.landbomb,options.formover);
+	else simStats(numsims,options.doNB,options.NBonly,options.aironly,options.landbomb,options.formover);
 	
 	document.getElementById('resultspace').style.display = 'block';
 	document.getElementById('simnotespace').innerHTML = '';
@@ -1366,6 +1369,8 @@ function extractForSim() {
 	for (var i=2; i<=NUMFLEETS2; i++) options.NBonly.push($('#NBonly2'+i).prop('checked'));
 	options.aironly = [$('#aironly2').prop('checked')]; 
 	for (var i=2; i<=NUMFLEETS2; i++) options.aironly.push($('#aironly2'+i).prop('checked'));
+	options.landbomb = [$('#landbomb2').prop('checked')]; 
+	for (var i=2; i<=NUMFLEETS2; i++) options.landbomb.push($('#landbomb2'+i).prop('checked'));
 	options.formover = [$('input[name=radform2]:checked').val()];
 	for (var i=2; i<=NUMFLEETS2; i++) options.formover.push($('input[name=radform2'+i+']:checked').val());
 	
@@ -1420,9 +1425,9 @@ function clickedWatchBattle() {
 		
 		var res;
 		if (ADDEDCOMBINED)
-			res = simCombined(API.combined,FLEETS1[0],FLEETS1[1],FLEETS2[j],supportN,options.doNB[j],options.NBonly[j],options.aironly[j],BAPI);
+			res = simCombined(API.combined,FLEETS1[0],FLEETS1[1],FLEETS2[j],supportN,options.doNB[j],options.NBonly[j],options.aironly[j],options.landbomb[j],BAPI);
 		else
-			res = sim(FLEETS1[0],FLEETS2[j],supportN,options.doNB[j],options.NBonly[j],options.aironly[j],BAPI);
+			res = sim(FLEETS1[0],FLEETS2[j],supportN,options.doNB[j],options.NBonly[j],options.aironly[j],options.landbomb[j],BAPI);
 		API.battles.push(BAPI);
 		if ((res.redded && DORETREAT) || res.flagredded) break;
 	}
@@ -1479,6 +1484,11 @@ for (var i=0; i<fs.length; i++) {
 			$('#NB'+optionnum).prop('checked',(checks[0]=='1')?true:false);
 			$('#NBonly'+optionnum).prop('checked',(checks[1]=='1')?true:false);
 			$('#aironly'+optionnum).prop('checked',(checks[2]=='1')?true:false);
+			if (checks.length > 3) $('#landbomb'+optionnum).prop('checked',(checks[3]=='1')?true:false);
+			if (checks.length > 4) {
+				if (ADDEDCOMBINED) $('#o'+checks[4]+'form'+optionnum).prop('checked',true);
+				else $('#oformdef'+optionnum).prop('checked',true);
+			}
 			continue;
 		}
 		document.cookie = s[0]+'=; expires=Thu, 01 Jan 1970 00:00:01 GMT;'; //remove cookie that shouldn't be there

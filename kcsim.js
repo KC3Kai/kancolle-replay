@@ -296,7 +296,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen) {
 }
 
 function ASW(ship,target,isnight,APIhou) {
-	var res = rollHit(accuracyAndCrit(ship,target,1/ship.fleet.formation.shellacc),(ship.iscarrier)? ship.critdmgbonus:0);
+	var res = rollHit(accuracyAndCrit(ship,target,1/ship.fleet.formation.shellacc),(ship.planeasw)? ship.critdmgbonus:0);
 	var dmg = 0, realdmg = 0;
 	var premod = (isnight)? 0 : ship.fleet.formation.ASWmod*ENGAGEMENT*ship.damageMod();
 	if (res) {
@@ -307,7 +307,7 @@ function ASW(ship,target,isnight,APIhou) {
 	ship.fleet.giveCredit(ship,dmg);
 	if (C) {
 		console.log(ship.name+' shells '+target.name+' for '+dmg+' damage, '+target.HP+'/'+target.maxHP+' left');
-		var stype = (ship.iscarrier)? '4' : '5';
+		var stype = (ship.planeasw)? '4' : '5';
 		// code += ship.id+','+target.id+','+stype+','+((target.side==0)? realdmg:dmg)+'|';
 		APIhou.api_at_list.push(ship.apiID);
 		APIhou.api_df_list.push([target.apiID]);
@@ -418,7 +418,7 @@ function nightPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,NBonly,API
 	}
 	for (var i=0; i<6; i++) {
 		if (i < order1.length && order1[i].canNB()) {
-			if (subsalive2.length && order1[i].canASW() && !order1[i].iscarrier) {
+			if (subsalive2.length && order1[i].canASW() && !order1[i].planeasw) {
 				var target = choiceWProtect(subsalive2);
 				if (ASW(order1[i],target,!NBonly,APIhou)) subsalive2.splice(subsalive2.indexOf(target),1);
 			} else if (alive2.length) {
@@ -429,7 +429,7 @@ function nightPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,NBonly,API
 		}
 		if (alive2.length+subsalive2.length <= 0) break;
 		if (i < order2.length && order2[i].canNB()) {
-			if (subsalive1.length && order2[i].canASW() && !order2[i].iscarrier) {
+			if (subsalive1.length && order2[i].canASW() && !order2[i].planeasw) {
 				var target = choiceWProtect(subsalive1);
 				if (ASW(order2[i],target,!NBonly,APIhou)) subsalive1.splice(subsalive1.indexOf(target),1);
 			} else if (alive1.length) {
@@ -632,8 +632,7 @@ function choiceWProtect(targets,rate) {
 	if (!target.isflagship) return target;
 	
 	if (!rate) {
-		if (target.side==1) rate = [0,.45,.6,.7,.6,.6][target.fleet.formation.id];
-		else if (target.side==0) rate = .45;
+		rate = [0,.45,.6,.7,.6,.6][target.fleet.formation.id];
 	}
 	if (Math.random() < rate) {
 		var defenders = [];
@@ -823,8 +822,8 @@ function airPhase(alive1,subsalive1,alive2,subsalive2,APIkouku) {
 }
 
 var bombing = false;
-function sim(F1,F2,Fsupport,doNB,NBonly,aironly,BAPI) {
-	bombing = false;
+function sim(F1,F2,Fsupport,doNB,NBonly,aironly,landbomb,BAPI) {
+	bombing = landbomb;
 	var ships1 = F1.ships, ships2 = F2.ships;
 	var alive1 = [], alive2 = [], subsalive1 = [], subsalive2 = [];
 	for (var i=0; i<ships1.length; i++) {
@@ -846,7 +845,8 @@ function sim(F1,F2,Fsupport,doNB,NBonly,aironly,BAPI) {
 	
 	compareAP(F1,F2);
 	
-	if (aironly && ships2.length <= 2 && [652,651,650].indexOf(ships2[0].mid) != -1) bombing = true;
+	// if (aironly && ships2.length <= 2 && [652,651,650].indexOf(ships2[0].mid) != -1) bombing = true;
+	if (bombing) aironly = true;
 	
 	//code here
 	if (C) {
@@ -1034,9 +1034,16 @@ function sim(F1,F2,Fsupport,doNB,NBonly,aironly,BAPI) {
 	}
 	
 	for (var i=0; i<ships1.length; i++) {
-		ships1[i].fuelleft -= 2;
-		ships1[i].ammoleft -= (didNB)? 3 : 2;
-		if (C) console.log('aaaaaaaaaaaaaaaaaaaaa'+ships1[i].fuelleft);
+		if (bombing) {
+			ships1[i].fuelleft -= .5;
+			ships1[i].ammoleft -= .5;
+		} else {
+			var subonly = true;
+			for (var j=0; j<ships2.length; j++) if (ships2[j].type != 'SS') subonly = false;
+			ships1[i].fuelleft -= 2;
+			if (!subonly) ships1[i].ammoleft -= (didNB)? 3 : 2;
+			if (C) console.log('aaaaaaaaaaaaaaaaaaaaa'+ships1[i].fuelleft);
+		}
 	}
 	
 	// console.log(code);
@@ -1221,7 +1228,7 @@ function createDefaultShip(mid) {
 
 // sim(FLEET1,FLEET2,true);
 
-function simStats(numsims,doNB,NBonly,aironly,forms) {
+function simStats(numsims,doNB,NBonly,aironly,landbomb,forms) {
 	// if (FLEET1.ships.length <= 0) return 1;
 	// if (FLEET2.ships.length <= 0) return 2;
 	var totalResult = {
@@ -1255,7 +1262,7 @@ function simStats(numsims,doNB,NBonly,aironly,forms) {
 		for (var j=0; j<FLEETS2.length; j++) {
 			if (forms[j] != '0') FLEETS1[0].formation = ALLFORMATIONS[forms[j]];
 			else FLEETS1[0].formation = formdef;
-			var res = sim(FLEETS1[0],FLEETS2[j],FLEETS1S[0],doNB[j],NBonly[j],aironly[j]);//,BAPI);
+			var res = sim(FLEETS1[0],FLEETS2[j],FLEETS1S[0],doNB[j],NBonly[j],aironly[j],landbomb[j]);//,BAPI);
 			totalResult.nodes[j].num++;
 			if (res.redded) totalResult.nodes[j].redded++;
 			for (var k=0; k<res.reddedIndiv.length; k++) if (res.reddedIndiv[k]) totalResult.nodes[j].redIndiv[k]++;
