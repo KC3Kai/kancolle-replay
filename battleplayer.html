@@ -42,7 +42,7 @@
 			}
 		}
 		function loadImgURL(url) {
-			if (url.indexOf('imgur')==-1 && url.indexOf('crossorigin')==-1) url = 'https://crossorigin.me/'+url;
+			if (url.indexOf('crossorigin')==-1) url = 'https://crossorigin.me/'+url;
 			var preview = document.getElementById('imgpreview');
 			var xhr = new XMLHttpRequest();
 			xhr.responseType = 'blob';
