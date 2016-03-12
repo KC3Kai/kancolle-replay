@@ -455,8 +455,8 @@ function processAPI(root) {
 		if (data.api_escape_idx_combined) escape[1] = data.api_escape_idx_combined;
 		try {
 			var bgm, map = MAPDATA[root.world].maps[root.mapnum];
-			var isboss = (Array.isArray(map.bossnode))? (map.bossnode.indexOf(EDGES['World '+root.world+'-'+root.mapnum][root.battles[b].node][1].charCodeAt()-64) != -1)
-				: (map.bossnode==EDGES['World '+root.world+'-'+root.mapnum][root.battles[b].node][1].charCodeAt()-64);
+			var letter = (EDGES['World '+root.world+'-'+root.mapnum])? EDGES['World '+root.world+'-'+root.mapnum][root.battles[b].node][1].charCodeAt()-64 : root.battles[b].node;
+			var isboss = (Array.isArray(map.bossnode))? (map.bossnode.indexOf(letter) != -1) : (map.bossnode==letter);
 			if (isboss) bgm = (NBonly)? map.bgmNB : map.bgmDB;
 			else bgm = (NBonly)? map.bgmNN : map.bgmDN;
 			var orel = false; if (root.world==2 && root.mapnum==3) { //orel cruise
@@ -1432,7 +1432,6 @@ function createLaserRing(laser) {
 	ring.position.set(laser.x+Math.cos(laser.rotation)*25,laser.y+Math.sin(laser.rotation)*25);
 	ring.lifetime = 40;
 	ring.pivot.set(42,104);
-	console.log('ring');
 	stage.addChild(ring);
 	updates.push([function(ring,laser) {
 		ring.lifetime--;

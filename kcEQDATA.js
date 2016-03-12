@@ -1722,6 +1722,17 @@ var EQDATA = {
 		EV: 2,
 		LOS: 2
 	},
+	165: {
+		name: 'Type 2 Seaplane Fighter Kai',
+		nameJP: '二式水戦改',
+		type: SEAPLANE,
+		isfighter: true,
+		AA: 3,
+		ASW: 1,
+		ACC: 1,
+		EV: 2,
+		LOS: 1
+	},
 	501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
@@ -2324,5 +2335,38 @@ var EQDATA = {
 		ASW: 2,
 		ACC: 5,
 		LOS: 5
+	},
+	565: {
+		name: '5inch Coastal Gun',
+		nameJP: '5inch沿岸設置砲',
+		type: MAINGUNS,
+		btype: B_MAINGUN,
+		atype: A_GUN,
+		FP: 3,
+		AR: 2,
+		EV: 3,
+		RNG: 2
+	},
+	566: {
+		name: 'Abyssal Cat Fighter (Bombing)',
+		nameJP: '深海猫艦戦(爆装)',
+		b_image: 6,
+		type: DIVEBOMBER,
+		isdivebomber: true,
+		isfighter: true,
+		DIVEBOMB: 8,
+		AA: 7,
+		ASW: 2,
+		ACC: 2
+	},
+	567: {
+		name: 'Coastal Radar',
+		nameJP: '沿岸設置レーダー',
+		type: RADARL,
+		btype: B_RADAR,
+		atype: A_AIRRADAR,
+		AA: 4,
+		ACC: 16,
+		LOS: 8
 	}
 };
