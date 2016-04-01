@@ -72,6 +72,8 @@ loader.add('BG1','assets/82_res.images.ImgBackgroundDay.jpg')
 	.add('laserring','assets/laserring.png')
 	.add('plane9','assets/plane9.png')
 	.add('plane10','assets/plane10.png')
+	.add('repairteam','assets/Emergency_Repair_Personnel_042_Card.png')
+	.add('repairgoddess','assets/Emergency_Repair_Goddess_043_Card.png')
 	.add('mask','assets/mask.png');
 for (var i=389; i <= 417; i+=2) loader.add(i.toString(),'assets/'+i+'.png');
 for (var i=0; i<=9; i++) loader.add('C'+i,'assets/C'+i+'.png');
@@ -307,7 +309,7 @@ function createShip(data,side,i,damaged) {
 
 	if (data.length > 2) shipSetHP(ship,data[2]);
 	var hasonlytorp;
-	for (var j=3; j<=6; j++) {
+	for (var j=3; j<=7; j++) {
 		var eq = EQDATA[data[j]];
 		if (eq) {
 			if (eq.b_image) ship.planetypes.push(eq.b_image);
@@ -318,6 +320,8 @@ function createShip(data,side,i,damaged) {
 			if (eq.type == WG42) ship.hasWG = true;
 			if (eq.atype && eq.atype != A_GUN) ship.hasAAgear = true;
 			if (eq.type == SEARCHLIGHTS || eq.type == SEARCHLIGHTL) ship.hassearchlight = true;
+			if (data[j]==42) ship.hasrepairteam = true;
+			if (data[j]==43) ship.hasrepairgoddess = true;
 		}
 	}
 	ship.hasonlytorp = hasonlytorp;
@@ -575,6 +579,22 @@ function processAPI(root) {
 					eventqueue.push([wait,[1000]]);
 					eventqueue.push([GAirPhase,[attackdata,targetdata,defenders,AACI1,undefined,undefined,undefined,AS1,AS2],getState()]);  //remember AACI
 				}
+				
+				// for (var i=0; i<6; i++) {
+					// var ind = i;
+					// if (HPstate[ind] <= 0) {
+						// if (f1[i].hasrepairgoddess) {
+							// HPstate[ind] = f1[i].hpmax
+							// eventqueue.push([wait,[1000]]);
+							// eventqueue.push([repairTeam,[f1[i],true]]);
+						// } else if (f1[i].hasrepairteam) {
+							// HPstate[ind] = Math.floor(f1[i].hpmax/4);
+							// eventqueue.push([wait,[1000]]);
+							// eventqueue.push([repairTeam,[f1[i],false]]);
+						// }
+						// alert('sink '+i);
+					// }
+				// }
 			}
 		};
 		
@@ -586,18 +606,34 @@ function processAPI(root) {
 					var target = f2[rai.api_frai[i+1]-1];
 					var attacker = f1[i];
 					shots.push([attacker,target,rai.api_fydam[i+1]]);
-					HPstate[i+6] -= Math.floor(rai.api_edam[i+1]);
 				}
 				if (rai.api_erai[i+1] > 0) {
 					var target = f1[rai.api_erai[i+1]-1];
 					var attacker = f2[i];
 					shots.push([attacker,target,rai.api_eydam[i+1]]);
-					HPstate[i+((COMBINED)?12:0)] -= Math.floor(rai.api_fdam[i+1]);
 				}
+				HPstate[i+6] -= Math.floor(rai.api_edam[i+1]);
+				HPstate[i+((COMBINED)?12:0)] -= Math.floor(rai.api_fdam[i+1]);
 			}
 			if (shots.length) {
 				eventqueue.push([wait,[1000]]);
 				eventqueue.push([GTorpedoPhase,[shots],getState()]);
+			}
+			
+			for (var i=0; i<f1.length; i++) {
+				var ind = (f1[0].escort)? i+12 : i;
+				if (HPstate[ind] <= 0) {
+					if (f1[i].hasrepairgoddess) {
+						HPstate[ind] = f1[i].hpmax
+						eventqueue.push([wait,[1000]]);
+						eventqueue.push([repairTeam,[f1[i],true]]);
+					} else if (f1[i].hasrepairteam) {
+						HPstate[ind] = Math.floor(f1[i].hpmax/4);
+						eventqueue.push([wait,[1000]]);
+						eventqueue.push([repairTeam,[f1[i],false]]);
+					}
+					alert('sink '+i);
+				}
 			}
 		};
 		
@@ -634,6 +670,22 @@ function processAPI(root) {
 					case 5:
 					case 6:
 						eventqueue.push([shootCutIn,d,getState()]); break;
+				}
+				console.log(HPstate[16]);
+				for (var i=0; i<f1.length; i++) {
+					var ind = (f1[0].escort)? i+12 : i;
+					if (HPstate[ind] <= 0) {
+						if (f1[i].hasrepairgoddess) {
+							HPstate[ind] = f1[i].hpmax
+							eventqueue.push([wait,[1000]]);
+							eventqueue.push([repairTeam,[f1[i],true]]);
+						} else if (f1[i].hasrepairteam) {
+							HPstate[ind] = Math.floor(f1[i].hpmax/4);
+							eventqueue.push([wait,[1000]]);
+							eventqueue.push([repairTeam,[f1[i],false]]);
+						}
+						alert('sink '+i);
+					}
 				}
 				
 			}
@@ -729,6 +781,22 @@ function processAPI(root) {
 					case 5:
 						d[2] += Math.max(0,d[3]); d[3] = (d[4]||d[5]); d[4] = d[6];
 						eventqueue.push([shootBigGun,d,getState()]); break;
+				}
+				
+				for (var i=0; i<6; i++) {
+					var ind = (COMBINED)? i+12 : i;
+					if (HPstate[ind] <= 0) {
+						if (f1[i].hasrepairgoddess) {
+							HPstate[ind] = f1[i].hpmax
+							eventqueue.push([wait,[1000]]);
+							eventqueue.push([repairTeam,[f1[i],true]]);
+						} else if (f1[i].hasrepairteam) {
+							HPstate[ind] = Math.floor(f1[i].hpmax/4);
+							eventqueue.push([wait,[1000]]);
+							eventqueue.push([repairTeam,[f1[i],false]]);
+						}
+						alert('sink '+i);
+					}
 				}
 			}
 			if (!isboss && map.bgmNN != map.bgmDN) eventqueue.push([wait,[1,true]]);
@@ -1038,22 +1106,6 @@ function shipMoveTo(ship,targetx,speed) {
 	return (ship.graphic.x == targetx);
 }
 
-// function shipShake(ship,amount,decay,time) {
-	// if (ship.shakepid) clearInterval(ship.shakepid);
-	// ship.graphic.pivot.x = (ship.side == 1) ? amount : -amount;
-	// ship.shakepid= setInterval(function(){
-		// ship.graphic.pivot.x *= -1;
-		// ship.graphic.pivot.x -= (ship.graphic.pivot.x > 0) ? decay : -decay;
-		// if (Math.abs(ship.graphic.pivot.x) < decay) {
-			// ship.graphic.pivot.x = 0;
-			// clearInterval(ship.shakepid);
-			// ship.shakepid = false;
-		// }
-	// },30);
-	// if (time) {
-		// addTimeout(function(){ ship.graphic.pivot.x = 0; clearInterval(ship.shakepid); ship.shakepid = false;}, time);
-	// }
-// }
 
 function shipShake(ship,amplitude,decay,time,halfperiod) {
 	var pid = ++ship.shakepid;
@@ -2037,6 +2089,34 @@ function NBstart(flares,bgm) {
 	}
 		
 	addTimeout(function() { ecomplete = true; }, 1+((COMBINED)? 1499:0)+nbtimer);
+}
+
+function repairTeam(ship,isgoddess) {
+	var repairteam;
+	if (isgoddess) repairteam = getFromPool('repairgoddess','assets/Emergency_Repair_Goddess_043_Card.png');
+	else repairteam = getFromPool('repairteam','assets/Emergency_Repair_Personnel_042_Card.png');
+	stage.addChild(repairteam); repairteam.pivot.set(130,130); repairteam.position.set(ship.graphic.x+80,ship.graphic.y+20);
+	repairteam.alpha = 0; repairteam.scale.set(1); repairteam.timer = 120;
+	updates.push([function(repairteam) {
+		repairteam.timer--;
+		if (repairteam.timer > 70) {
+			repairteam.alpha += .02;
+			repairteam.scale.set(repairteam.scale.x-.0125);
+		} else if (repairteam.timer < 30) {
+			repairteam.alpha -= .05;
+			repairteam.scale.set(repairteam.scale.x+.03);
+		} else if (repairteam.timer <= 0) {
+			recycle(repairteam);
+			return true;
+		}
+		return false;
+	},[repairteam]]);
+		
+	addTimeout(function() {
+		shipSetHP(ship,(isgoddess)? ship.hpmax : Math.floor(ship.hpmax/4));
+	}, 1500);
+	
+	addTimeout(function() { ecomplete = true; }, 2000);
 }
 
 function resetBattle() {

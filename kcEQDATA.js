@@ -1733,6 +1733,16 @@ var EQDATA = {
 		EV: 2,
 		LOS: 1
 	},
+	166: {
+		name: 'Daihatsu Landing Craft (Type 89 Medium Tank & Landing Force)',
+		nameJP: '大発動艇(八九式中戦車&陸戦隊)',
+		type: LANDINGCRAFT
+	},
+	167: {
+		name: 'Special Type 2 Amphibious Landing Craft',
+		nameJP: '特二式内火艇',
+		type: LANDINGCRAFT
+	},
 	501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',

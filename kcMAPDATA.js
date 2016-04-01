@@ -678,7 +678,7 @@ var MAPDATA = {
 		}
 	},
 	30: {
-		name: 'Event Summer 2015',
+		name: 'Event Spring 2015',
 		maps: {
 			1: {
 				name: 'E1',
