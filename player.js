@@ -632,7 +632,7 @@ function processAPI(root) {
 						eventqueue.push([wait,[1000]]);
 						eventqueue.push([repairTeam,[f1[i],false]]);
 					}
-					alert('sink '+i);
+					// alert('sink '+i);
 				}
 			}
 		};
@@ -684,7 +684,7 @@ function processAPI(root) {
 							eventqueue.push([wait,[1000]]);
 							eventqueue.push([repairTeam,[f1[i],false]]);
 						}
-						alert('sink '+i);
+						// alert('sink '+i);
 					}
 				}
 				
@@ -795,7 +795,7 @@ function processAPI(root) {
 							eventqueue.push([wait,[1000]]);
 							eventqueue.push([repairTeam,[f1[i],false]]);
 						}
-						alert('sink '+i);
+						// alert('sink '+i);
 					}
 				}
 			}
