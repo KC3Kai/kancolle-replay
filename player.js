@@ -787,7 +787,7 @@ function processAPI(root) {
 						eventqueue.push([shootBigGun,d,getState()]); break;
 				}
 				
-				for (var i=0; i<6; i++) {
+				for (var i=0; i<f1.length; i++) {
 					var ind = (COMBINED)? i+12 : i;
 					if (HPstate[ind] <= 0) {
 						if (f1[i].hasrepairgoddess) {
