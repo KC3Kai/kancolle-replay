@@ -72,6 +72,8 @@ loader.add('BG1','assets/82_res.images.ImgBackgroundDay.jpg')
 	.add('laserring','assets/laserring.png')
 	.add('plane9','assets/plane9.png')
 	.add('plane10','assets/plane10.png')
+	.add('plane11','assets/plane11.png')
+	.add('plane12','assets/plane12.png')
 	.add('repairteam','assets/Emergency_Repair_Personnel_042_Card.png')
 	.add('repairgoddess','assets/Emergency_Repair_Goddess_043_Card.png')
 	.add('mask','assets/mask.png');
@@ -312,8 +314,10 @@ function createShip(data,side,i,damaged) {
 	for (var j=3; j<=7; j++) {
 		var eq = EQDATA[data[j]];
 		if (eq) {
-			if (eq.b_image) ship.planetypes.push(eq.b_image);
-			else if (eq.isfighter||eq.istorpbomber||eq.isdivebomber||eq.type==AUTOGYRO||eq.type==ASWPLANE) ship.planetypes.push(1+side);
+			if (eq.b_image) {
+				if ((eq.b_image==11||eq.b_image==12)&&side==1) ship.planetypes.push(2);
+				else ship.planetypes.push(eq.b_image);
+			} else if (eq.isfighter||eq.istorpbomber||eq.isdivebomber||eq.type==AUTOGYRO||eq.type==ASWPLANE) ship.planetypes.push(1+side);
 			if (eq.istorpbomber) ship.hastorpbomber = true;
 			if (hasonlytorp == undefined && eq.type == TORPEDO) hasonlytorp = true;
 			if ([MAINGUNS,MAINGUNM,MAINGUNL].indexOf(eq.type) != -1) hasonlytorp = false;
@@ -1496,7 +1500,7 @@ function createLaserRing(laser) {
 	},[ring,laser]]);
 }
 
-var PLANESPRITES = ['938','914','916','918','920','922','924','926','plane9','plane10'];
+var PLANESPRITES = ['938','914','916','918','920','922','924','926','plane9','plane10','plane11','plane12'];
 function createPlane(x,y,planetypes,shots,shots2) {
 	var num = Math.min(3,planetypes.length);
 	if (shots) shots = shuffle(shots);

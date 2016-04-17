@@ -342,6 +342,7 @@ var EQDATA = {
 	26: {
 		name: 'Zuiun',
 		nameJP: '瑞雲',
+		b_image: 11,
 		type: SEAPLANEBOMBER,
 		btype: B_RECON,
 		isfighter: true,
@@ -659,6 +660,7 @@ var EQDATA = {
 	62: {
 		name: 'Prototype Seiran',
 		nameJP: '試製晴嵐',
+		b_image: 11,
 		type: SEAPLANEBOMBER,
 		btype: B_RECON,
 		isdivebomber: true,
@@ -814,6 +816,7 @@ var EQDATA = {
 	79: {
 		name: 'Zuiun(634)',
 		nameJP: '瑞雲(六三四空)',
+		b_image: 11,
 		type: SEAPLANEBOMBER,
 		btype: B_RECON,
 		isfighter: true,
@@ -828,6 +831,7 @@ var EQDATA = {
 	80: {
 		name: 'Zuiun Model 12',
 		nameJP: '瑞雲12型',
+		b_image: 11,
 		type: SEAPLANEBOMBER,
 		btype: B_RECON,
 		isfighter: true,
@@ -842,6 +846,7 @@ var EQDATA = {
 	81: {
 		name: 'Zuiun Model 12(634)',
 		nameJP: '瑞雲12型(六三四空)',
+		b_image: 11,
 		type: SEAPLANEBOMBER,
 		btype: B_RECON,
 		isfighter: true,
@@ -1713,6 +1718,7 @@ var EQDATA = {
 	164: {
 		name: 'Ro.44 Seaplane Fighter',
 		nameJP: 'Ro.44水上戦闘機',
+		b_image: 12,
 		type: SEAPLANE,
 		isfighter: true,
 		DIVEBOMB: 1,
@@ -1725,6 +1731,7 @@ var EQDATA = {
 	165: {
 		name: 'Type 2 Seaplane Fighter Kai',
 		nameJP: '二式水戦改',
+		b_image: 12,
 		type: SEAPLANE,
 		isfighter: true,
 		AA: 3,
