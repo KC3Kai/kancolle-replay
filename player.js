@@ -2113,7 +2113,7 @@ function repairTeam(ship,isgoddess) {
 	},[repairteam]]);
 		
 	addTimeout(function() {
-		shipSetHP(ship,(isgoddess)? ship.hpmax : Math.floor(ship.hpmax/4));
+		shipSetHP(ship,(isgoddess)? ship.hpmax : Math.floor(ship.hpmax/5));
 	}, 1500);
 	
 	addTimeout(function() { ecomplete = true; }, 2000);

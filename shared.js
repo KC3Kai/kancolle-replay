@@ -134,3 +134,64 @@ function processFile(fleetnum,reader,fromfleet) {
 	// started = true;
 }
 
+function getHP(ship, lv) {
+    if (lv <= 99) return ship.HP
+    var ret
+    if (ship.HP >= 90) ret = ship.HP + 9
+    else if (ship.HP >= 70) ret = ship.HP + 8
+    else if (ship.HP >= 50) ret = ship.HP + 7
+    else if (ship.HP >= 40) ret = ship.HP + 6
+    else if (ship.HP >= 30) ret = ship.HP + 5
+    else ret = ship.HP + 4
+    if (ret > ship.HPmax) ret = ship.HPmax
+    return ret
+}
+
+function processDeckbuilderCode(fleet,dbcode) {
+	try {
+		var data = JSON.parse(dbcode);
+	} catch(e) {
+		return;
+	}
+	
+	for (var slot in data.f1) {
+		var ship = data.f1[slot];
+		var slotn = parseInt(slot.substr(1))-1;
+		var shipd = SHIPDATA[ship.id];
+		var stats = [ship.lv,getHP(shipd,ship.lv),shipd.FP,shipd.TP,shipd.AA,shipd.AR,shipd.EV,shipd.ASW,shipd.LOS,(ship.luck)? ship.luck : shipd.LUK,shipd.RNG,shipd.SPD];
+		var equips = [0,0,0,0], improvs = [0,0,0,0];
+		for (var item in ship.items) {
+			var islot = item.substr(1);
+			if (islot=='x') continue;
+			equips[islot-1] = ship.items[item].id;
+			improvs[islot-1] = ship.items[item].rf;
+		}
+		tableSetShip(fleet,slotn,ship.id,stats,equips,improvs);
+		for (var i=0; i<4; i++) changedEquip(fleet,slotn,i,true);
+	}
+	
+	updateFleetCode(fleet);
+}
+
+function exportDeckbuilder(fleet) {
+	var data = {version:3,f1:{}};
+	for (var i=0; i<6; i++) {
+		var mid = parseInt($('#T'+fleet+'n'+i).val());
+		if (mid >= 900) return;
+		if (!mid) continue;
+		var ship = data.f1['s'+(i+1)] = {};
+		ship.id = mid;
+		ship.lv = parseInt($('#T'+fleet+'lvl'+i).val());
+		ship.luck = parseInt($('#T'+fleet+'luk'+i).val());
+		ship.items = {};
+		for (var j=0; j<4; j++) {
+			var eq = parseInt(PREVEQS[fleet][i][j]);
+			if (!eq) continue;
+			var impr = parseInt($('#T'+fleet+'imprv'+i+j).val());
+			ship.items['i'+(j+1)] = {id:eq};
+			if (impr) ship.items['i'+(j+1)].rf = impr;
+		}
+	}
+	var url = 'http://www.kancolle-calc.net/deckbuilder.html?predeck='+encodeURI(JSON.stringify(data));
+	window.open(url);
+}

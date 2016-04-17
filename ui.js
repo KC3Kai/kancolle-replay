@@ -313,6 +313,8 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor) {
 	btnall.setAttribute('onclick','clickedClear({f},1);clickedClear({f},2);clickedClear({f},3);clickedClear({f},4);clickedClear({f},5);clickedClear({f},0);'.replace(/{f}/g,fleetnum.toString()));
 	d.appendChild(btnall);
 	
+	$(d).append('<br><br><input type="button" style="float:right" value="Export DeckBuilder" onclick="exportDeckbuilder('+fleetnum+')"/>');
+	
     var t = document.createElement('table');
     t.setAttribute('class','t1');
     var tr = document.createElement('tr'); //number, clear button
@@ -638,7 +640,7 @@ function tableSetShip(fleet,slot,shipid,stats,equips,improves) {
 	img.src = 'assets/icons/'+SHIPDATA[shipid].image;
 	document.getElementById('T'+fleet+'i'+slot+'alt').src = 'assets/icons/'+SHIPDATA[shipid].image;
 	for (var i=0; i<stats.length; i++) {
-		document.getElementById('T'+fleet+STATNAMES[i]+slot).value = (stats[i])? stats[i] : '';
+		document.getElementById('T'+fleet+STATNAMES[i]+slot).value = (stats[i]||stats[i]==0)? stats[i] : '';
 		if (SHIPDATA[shipid].unknownstats && ['ev','asw','los','luk'].indexOf(STATNAMES[i])!=-1) { $('#T'+fleet+STATNAMES[i]+slot).css('background-color','yellow'); $('#T'+fleet+STATNAMES[i]+slot).attr('title',"This stat's true value is currently unknown."); }
 		else { $('#T'+fleet+STATNAMES[i]+slot).css('background-color',''); $('#T'+fleet+STATNAMES[i]+slot).attr('title',""); }
 	}
@@ -753,12 +755,12 @@ function changedNum(fleet,slot,stat) {
 			}
 			$('#T'+fleet+stats[i]+slot).val(Math.floor(smin+(smax-smin)*parseInt(nbox.value)/99 + eqbonus));
 		}
-		if (parseInt(nbox.value) >= 100) $('#T'+fleet+'hp'+slot).val(SHIPDATA[mid].HPmax);
+		if (parseInt(nbox.value) >= 100) $('#T'+fleet+'hp'+slot).val(getHP(SHIPDATA[mid],nbox.value));
 		else $('#T'+fleet+'hp'+slot).val(SHIPDATA[mid].HP);
 	}
 }
 
-function changedEquip(fleet,slot,equipslot) {
+function changedEquip(fleet,slot,equipslot,nochangeimprov) {
 	var equipid = document.getElementById('T'+fleet+'e'+slot+equipslot).value;
 	var equip = EQDATA[equipid];
 	if (equipid) {  //add new equip
@@ -773,7 +775,7 @@ function changedEquip(fleet,slot,equipslot) {
 			}
 		}
 		// var previmprove = $('#T'+fleet+'imprv'+slot+equipslot).val();
-		setImprove(fleet,slot,equipslot,equip.improveType,0);
+		if (!nochangeimprov) setImprove(fleet,slot,equipslot,equip.improveType,0);
 		if(equipid!='0') $('#T'+fleet+'eqimg'+slot+equipslot).attr('src','assets/items/'+EQIMAGES[equip.type]+'.png');
 		else  $('#T'+fleet+'eqimg'+slot+equipslot).attr('src','assets/items/empty.png');
 	} else $('#T'+fleet+'e'+slot+equipslot+'_chosen').attr('title','');
@@ -1279,6 +1281,7 @@ function raiseFleetChange() {
 }
 
 function loadFleetFromCode(fleet,fcode) {
+	if (fcode.substr(0,11)=='{"version":') { processDeckbuilderCode(fleet,fcode); return; }
 	var parts = fcode.split('|');
 	var s = parts[0].split(',');
 	if(document.getElementById('T'+fleet+'r'+s[0])) document.getElementById('T'+fleet+'r'+s[0]).checked = true;
