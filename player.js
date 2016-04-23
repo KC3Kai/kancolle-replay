@@ -97,6 +97,7 @@ var frames_exp = [];
 for (var i=389; i <= 417; i+=2) frames_exp.push(PIXI.Texture.fromImage('assets/'+i+'.png'));
 
 var COMBINED = false;
+var PVPMODE = false;
 
 var FLEET2ORIGIN = 631;
 
@@ -1031,6 +1032,7 @@ function shipAddEscape(ship) {
 function shipSetHP(ship,hp) {
 	if (hp > ship.hpmax) hp = ship.hpmax;
 	if (hp < 0) hp = 0;
+	if (PVPMODE && ship.side==1 && hp <= 0) hp = 1;
 	
 	if (ship.side==0) { HPnow1 -= ship.hp-hp; setHPBar(1,1-HPnow1/HPtotal1); } //update HP bars
 	else { HPnow2 -= ship.hp-hp; setHPBar(0,1-HPnow2/HPtotal2); }
@@ -1245,6 +1247,7 @@ function standardHit(target,damage,move,protect,forcecrit) {
 		standardExplosion(target,3);
 		SM.play('crit');
 	}
+	if (PVPMODE && target.side==1 && damage > target.hp-1) damage = target.hp-1;
 	createNumber(target.xorigin+85,target.graphic.y+22,damage,forcecrit);
 	shipSetHP(target,target.hp-Math.max(0,damage));
 	if (protect) {
