@@ -74,6 +74,7 @@ loader.add('BG1','assets/82_res.images.ImgBackgroundDay.jpg')
 	.add('plane10','assets/plane10.png')
 	.add('plane11','assets/plane11.png')
 	.add('plane12','assets/plane12.png')
+	.add('plane13','assets/plane13.png')
 	.add('repairteam','assets/Emergency_Repair_Personnel_042_Card.png')
 	.add('repairgoddess','assets/Emergency_Repair_Goddess_043_Card.png')
 	.add('mask','assets/mask.png');
@@ -483,9 +484,8 @@ function processAPI(root) {
 		allfleets2.push(f2);
 		
 		//for reading air phase
-		var processKouku = function(kouku) {
+		var processKouku = function(kouku,isbombing) {
 			if (kouku && (kouku.api_plane_from[0][0] != -1 || kouku.api_plane_from[1][0] != -1)) {
-			
 				//air state
 				var AS1 = {0:0,1:2,2:1,3:-1,4:-2}[kouku.api_stage1.api_disp_seiku];
 				if (AS1 > 2) AS1 = -AS1+2;
@@ -496,8 +496,9 @@ function processAPI(root) {
 				var attackers = [];
 				if (kouku.api_plane_from[0][0] != -1) {
 					for (var i=0; i<kouku.api_plane_from[0].length; i++) {
-						attackdata.push([fleet1[kouku.api_plane_from[0][i]-1],[],[]]);
-						attackers.push(fleet1[kouku.api_plane_from[0][i]-1]);
+						var ship = (isbombing)? kouku.api_plane_from[0][i] : fleet1[kouku.api_plane_from[0][i]-1];
+						attackdata.push([ship,[],[]]);
+						attackers.push(ship);
 					}
 				}
 				if (kouku.api_plane_from[1][0] != -1) {
@@ -529,12 +530,20 @@ function processAPI(root) {
 						var kstage = (j==0)? kouku.api_stage1 : kouku.api_stage2;
 						if (!kstage) continue;
 						var carriers = [];
-						for (var k=0; k<fleet.length; k++) {
-							if (attackers.indexOf(fleet[k]) == -1) continue;
-							for (var kk=0; kk<Math.min(3,fleet[k].planetypes.length); kk++) carriers.push(k);
+						if (isbombing && i==0) {
+							for (var k=0; k<attackdata.length; k++) {
+								if (!(attackdata[k][0]-1)) continue;
+								carriers.push(attackdata[k][0]-7);
+								carriers.push(attackdata[k][0]-7);
+							}
+						} else {
+							for (var k=0; k<fleet.length; k++) {
+								if (attackers.indexOf(fleet[k]) == -1) continue;
+								for (var kk=0; kk<Math.min(3,fleet[k].planetypes.length); kk++) carriers.push(k);
+							}
 						}
 						carriers = shuffle(carriers);
-						// console.log(carriers);
+						//if (isbombing) console.log(carriers);
 						var numplane = carriers.length;
 						var percent = kstage['api_'+l+'_lostcount']/Math.max(1,kstage['api_'+l+'_count']);
 						var num = 2*numplane*percent;
@@ -543,7 +552,8 @@ function processAPI(root) {
 						// console.log(''+i+j+' '+num+' '+numshot+' '+numdestroy+' '+numplane);
 						// console.log(carriers);
 						for (var k=0; k<carriers.length; k++) {
-							var ind = attackers.indexOf(fleet[carriers[k]]);
+							var ship = (isbombing && i==0)? carriers[k]+7 : fleet[carriers[k]];
+							var ind = attackers.indexOf(ship);
 							if (k<numdestroy) attackdata[ind][j+1].push(2);
 							else if (k<numshot) attackdata[ind][j+1].push(1);
 							else attackdata[ind][j+1].push(0);
@@ -557,17 +567,21 @@ function processAPI(root) {
 				var targetdata = [];
 				if (kouku.api_stage3) {
 					for (var i=0; i<6; i++) {
-						var dam = parseInt(kouku.api_stage3.api_fdam[i+1]);  //remember later, .1 = protect
-						HPstate[i] -= Math.floor(dam);
-						var hit = (kouku.api_stage3.api_frai_flag[i+1] || kouku.api_stage3.api_fbak_flag[i+1]);
-						if (hit) targetdata.push([fleet1[i],(dam>0)? dam:0,(dam!=kouku.api_stage3.api_fdam[i+1]),kouku.api_stage3.api_fcl_flag[i+1],kouku.api_stage3.api_frai_flag[i+1]]);
+						if (kouku.api_stage3.api_fdam) {
+							var dam = parseInt(kouku.api_stage3.api_fdam[i+1]);  //remember later, .1 = protect
+							HPstate[i] -= Math.floor(dam);
+							var hit = (kouku.api_stage3.api_frai_flag[i+1] || kouku.api_stage3.api_fbak_flag[i+1]);
+							if (hit) targetdata.push([fleet1[i],(dam>0)? dam:0,(dam!=kouku.api_stage3.api_fdam[i+1]),kouku.api_stage3.api_fcl_flag[i+1],kouku.api_stage3.api_frai_flag[i+1]]);
+						}
 						
-						dam = parseInt(kouku.api_stage3.api_edam[i+1]);
-						HPstate[i+6] -= Math.floor(dam);
-						hit = (kouku.api_stage3.api_erai_flag[i+1] || kouku.api_stage3.api_ebak_flag[i+1]);
-						if (hit) targetdata.push([f2[i],(dam>0)? dam:0,(dam!=kouku.api_stage3.api_edam[i+1]),kouku.api_stage3.api_ecl_flag[i+1],kouku.api_stage3.api_erai_flag[i+1]]);
+						if (kouku.api_stage3.api_edam) {
+							var dam = parseInt(kouku.api_stage3.api_edam[i+1]);
+							HPstate[i+6] -= Math.floor(dam);
+							hit = (kouku.api_stage3.api_erai_flag[i+1] || kouku.api_stage3.api_ebak_flag[i+1]);
+							if (hit) targetdata.push([f2[i],(dam>0)? dam:0,(dam!=kouku.api_stage3.api_edam[i+1]),kouku.api_stage3.api_ecl_flag[i+1],kouku.api_stage3.api_erai_flag[i+1]]);
+						}
 						
-						if (COMBINED) {
+						if (COMBINED && kouku.api_stage3_combined) {
 							var dam = parseInt(kouku.api_stage3_combined.api_fdam[i+1]);  //remember later, .1 = protect
 							HPstate[i+12] -= Math.floor(dam);
 							var hit = (kouku.api_stage3_combined.api_frai_flag[i+1] || kouku.api_stage3_combined.api_fbak_flag[i+1]);
@@ -582,7 +596,7 @@ function processAPI(root) {
 					for (var i=0; i<fleet1.length; i++) if (!fleet1[i].issub) { show = true; break; }
 				if (targetdata.length || show) {
 					eventqueue.push([wait,[1000]]);
-					eventqueue.push([GAirPhase,[attackdata,targetdata,defenders,AACI1,undefined,undefined,undefined,AS1,AS2],getState()]);  //remember AACI
+					eventqueue.push([GAirPhase,[attackdata,targetdata,defenders,AACI1,undefined,undefined,undefined,AS1,AS2,false,isbombing],getState()]);  //remember AACI
 				}
 				
 				// for (var i=0; i<6; i++) {
@@ -676,7 +690,7 @@ function processAPI(root) {
 					case 6:
 						eventqueue.push([shootCutIn,d,getState()]); break;
 				}
-				console.log(HPstate[16]);
+				//console.log(HPstate[16]);
 				for (var i=0; i<f1.length; i++) {
 					var ind = (f1[0].escort)? i+12 : i;
 					if (HPstate[ind] <= 0) {
@@ -699,6 +713,14 @@ function processAPI(root) {
 		// var checkSink = function() {
 			
 		// }
+		
+		//land bombing
+		if (data.api_air_base_attack) {
+			for (var i=0; i<data.api_air_base_attack.length; i++) {
+				data.api_air_base_attack[i].api_plane_from[1] = (data.api_kouku)? data.api_kouku.api_plane_from[1] : [-1];
+				processKouku(data.api_air_base_attack[i],true);
+			}
+		}
 		
 		//air phase
 		if (data.api_kouku) processKouku(data.api_kouku);
@@ -1503,7 +1525,7 @@ function createLaserRing(laser) {
 	},[ring,laser]]);
 }
 
-var PLANESPRITES = ['938','914','916','918','920','922','924','926','plane9','plane10','plane11','plane12'];
+var PLANESPRITES = ['938','914','916','918','920','922','924','926','plane9','plane10','plane11','plane12','plane13'];
 function createPlane(x,y,planetypes,shots,shots2) {
 	var num = Math.min(3,planetypes.length);
 	if (shots) shots = shuffle(shots);
@@ -1555,7 +1577,7 @@ function movePlane(planes,angle,speed,withescort) {
 	var x1 = (withescort)? 237 : 85;
 	if (!withescort||planes.x > 120)
 		planes.pivot.y = 40-100*Math.sin(Math.PI*(planes.x-x1)/(715-x1));
-	else planes.pivot.y += 2.5; //so it doesn't start snaking
+	else { console.log('a'); planes.pivot.y += 2.5; } //so it doesn't start snaking
 	var fire = false;
 	for (var i=0; i<planes.children.length; i++) {
 		var plane = planes.getChildAt(i);
@@ -1641,18 +1663,26 @@ function GTorpedoPhase(shots) {
 	addTimeout(function(){ ecomplete = true; }, 4000);
 }
 
-function GAirPhase(attackdata,targetdata,defenders,aaci1,aaci2,contact1,contact2,AS1,AS2,issupport) {
+function GAirPhase(attackdata,targetdata,defenders,aaci1,aaci2,contact1,contact2,AS1,AS2,issupport,isbombing) {
 	var allplanes = [];
 	if (!issupport) {
 		var side1 = false, side2 = false;
 		for (var i=0; i<attackdata.length; i++) {
 			var ship = attackdata[i][0]; var statuses = attackdata[i][1]; var statuses2 = attackdata[i][2];
-			var planes = createPlane(ship.graphic.x+85,ship.graphic.y+22,ship.planetypes,statuses,statuses2);
-			updates.push([movePlane,[planes,-Math.PI/30-(28*Math.PI/30)*ship.side,(ship.side==0) ? 4 : -4]]);
+			var planes;
+			if (isbombing&&(attackdata[i][0]-6)) {
+				console.log(statuses);
+				planes = createPlane(-50,200+(attackdata[i][0]-7)*40,[13,13],statuses,statuses2);
+				updates.push([movePlane,[planes,-Math.PI/30,5]]);
+			} else {
+				planes = createPlane(ship.graphic.x+85,ship.graphic.y+22,ship.planetypes,statuses,statuses2);
+				updates.push([movePlane,[planes,-Math.PI/30-(28*Math.PI/30)*ship.side,(ship.side==0) ? 4 : -4]]);
+			}
 			// for (var j=0; j<statuses.length; j++) {  //remove graphics if plane completely shot down, may not need
 				// if (statuses[i][j] == 2) ship.planetypes.splice(i,1);
 			// }
 			allplanes.push(planes);
+			if (isbombing&&(attackdata[i][0]-6)) { side1 = true; continue; }
 			if (ship.side==0) side1 = true;
 			if (ship.side==1) side2 = true;
 		}
@@ -1717,7 +1747,10 @@ function GAirPhase(attackdata,targetdata,defenders,aaci1,aaci2,contact1,contact2
 	
 	if (!issupport) addTimeout(function() {
 		var pos = [[],[]];
-		for (var i=0; i<attackdata.length; i++) if (attackdata[i][0].hastorpbomber) pos[attackdata[i][0].side].push(attackdata[i][0].graphic.y);
+		for (var i=0; i<attackdata.length; i++) {
+			if (isbombing&&(attackdata[i][0]-6)) pos[0].push(200+(attackdata[i][0]-7)*40);
+			else if (attackdata[i][0].hastorpbomber) pos[attackdata[i][0].side].push(attackdata[i][0].graphic.y);
+		}
 		for (var i=0; i<targetdata.length; i++) {
 			var target = targetdata[i][0];
 			if (targetdata[i][4])
@@ -1733,7 +1766,7 @@ function GAirPhase(attackdata,targetdata,defenders,aaci1,aaci2,contact1,contact2
 		},2700);
 	}
 	
-	addTimeout(function(){ for(var i=0; i<allplanes.length; i++) stage.removeChild(allplanes[i]); ecomplete = true; }, 3700);
+	addTimeout(function(){ for(var i=0; i<allplanes.length; i++) stage.removeChild(allplanes[i]); ecomplete = true; }, (isbombing)? 3000 : 3700);
 }
 
 function createAAfire(x,y,angle) {

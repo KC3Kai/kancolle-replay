@@ -44,7 +44,7 @@ Fleet.prototype.fleetAntiAir = function() {
 			switch(equip.atype) {
 				case A_GUN:
 				case A_AAGUN:
-					mod = 6; break;
+					mod = .2; break;
 				case A_HAGUN:
 				case A_HAFD:
 				case A_AAFD:
@@ -284,17 +284,19 @@ Ship.prototype.damageMod = function() {
 }
 Ship.prototype.weightedAntiAir = function() {
 	var aa = this.AA;
+	for (var i=0; i<this.equips.length; i++) if (this.equips[i].AA) aa -= this.equips[i].AA; //get base AA
+	if (this.side==1) aa = 2*Math.sqrt(aa);
 	for (var i=0; i<this.equips.length; i++) {
 		var mod = 0;
 		switch (this.equips[i].atype) {
 			case A_HAGUN:
 			case A_HAFD:
 			case A_AAFD:
-				mod = 3; break;
+				mod = 4; break;
 			case A_AAGUN:
-				mod = 5; break;
+				mod = 6; break;
 			case A_AIRRADAR:
-				mod = 2; break;
+				mod = 3; break;
 			default:
 				continue;
 		}

@@ -1750,6 +1750,121 @@ var EQDATA = {
 		nameJP: '特二式内火艇',
 		type: LANDINGCRAFT
 	},
+	168: {
+		name: 'Type 96 Land-based Attack Aircraft',
+		nameJP: '九六式陸攻',
+		type: DIVEBOMBER,
+		isdivebomber: true,
+		DIVEBOMB: 10,
+		TP: 8,
+		AA: 1,
+		ASW: 2,
+		LOS: 2
+	},
+	169: {
+		name: 'Type 1 Land-based Attack Aircraft',
+		nameJP: '一式陸攻',
+		type: DIVEBOMBER,
+		isdivebomber: true,
+		DIVEBOMB: 12,
+		TP: 10,
+		AA: 2,
+		ASW: 2,
+		LOS: 3
+	},
+	170: {
+		name: 'Type 1 Land-based Attack Aircraft (Nonaka Squadron)',
+		nameJP: '一式陸攻(野中隊)',
+		type: DIVEBOMBER,
+		isdivebomber: true,
+		DIVEBOMB: 13,
+		TP: 12,
+		AA: 3,
+		ASW: 2,
+		ACC: 1,
+		LOS: 4
+	},
+	171: {
+		name: 'OS2U',
+		nameJP: 'OS2U',
+		type: SEAPLANE,
+		btype: B_RECON,
+		DIVEBOMB: 1,
+		AA: 1,
+		ASW: 1,
+		ACC: 2,
+		EV: 1,
+		LOS: 6
+	},
+	172: {
+		name: '5inch Twin Gun Mount Mk.28 mod.2',
+		nameJP: '5inch連装砲 Mk.28 mod.2',
+		type: SECGUNAA,
+		btype: B_SECGUN,
+		atype: A_HAGUN,
+		FP: 4,
+		AA: 9,
+		AR: 1,
+		ACC: 2,
+		EV: 1,
+		RNG: 1,
+	},
+	173: {
+		name: 'Bofors 40mm Quadruple Autocannon Mount',
+		nameJP: 'Bofors 40mm四連装機関砲',
+		type: AAGUN,
+		atype: A_AAGUN,
+		isconcentrated: true,
+		FP: 1,
+		AA: 10,
+		AR: 1,
+		ACC: 1,
+		EV: 2
+	},
+	174: {
+		name: '53cm Twin Torpedo Mount',
+		nameJP: '53cm連装魚雷',
+		type: TORPEDO,
+		TP: 3,
+		EV: 2,
+		RNG: 1
+	},
+	175: {
+		name: 'Raiden',
+		nameJP: '雷電',
+		type: FIGHTER,
+		isfighter: true,
+		AA: 6,
+		ACC: 5,
+		EV: 2
+	},
+	176: {
+		name: 'Type 3 Fighter Hien',
+		nameJP: '三式戦 飛燕',
+		type: FIGHTER,
+		isfighter: true,
+		AA: 8,
+		ACC: 1,
+		EV: 3
+	},
+	177: {
+		name: 'Type 3 Fighter Hien (244th Air Combat Group)',
+		nameJP: '三式戦 飛燕(飛行第244戦隊)',
+		type: FIGHTER,
+		isfighter: true,
+		AA: 9,
+		ACC: 3,
+		EV: 4
+	},
+	178: {
+		name: 'PBY-5A Catalina',
+		nameJP: 'PBY-5A Catalina',
+		type: FLYINGBOAT,
+		btype: B_RECON,
+		ASW: 2,
+		ACC: 2,
+		LOS: 9
+	},
 	501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
@@ -1773,7 +1888,7 @@ var EQDATA = {
 		nameJP: '3inch単装高角砲',
 		type: MAINGUNSAA,
 		btype: B_MAINGUN,
-		atype: A_HAGUN,
+		atype: A_GUN, //regular gun in AA calculation?
 		FP: 1,
 		AA: 1,
 		RNG: 1,
@@ -2293,6 +2408,7 @@ var EQDATA = {
 		nameJP: '深海FCS+CIC',
 		type: SONARS,
 		btype: B_SONAR,
+		atype: A_GUN, //.2 mult
 		AA: 6,
 		ASW: 20,
 		EV: 3,

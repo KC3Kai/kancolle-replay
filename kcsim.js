@@ -676,6 +676,16 @@ function AADefenceFighters(carriers,showplanes,APIkouku) {
 	}
 }
 
+function getAAShotProp(defender,carrier,slot) {
+	if (defender.side==0) return Math.floor(carrier.planecount[slot]*Math.floor(.9*defender.weightedAntiAir())/360);
+	else return Math.floor(carrier.planecount[slot]*Math.floor(defender.weightedAntiAir())/400);
+}
+
+function getAAShotFlat(defender) {
+	var mod = (defender.side==0)? 10 : 10.6;
+	return Math.floor(Math.floor(defender.weightedAntiAir()+defender.fleet.fleetAntiAir())/mod);
+}
+
 function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku) {
 	var bombers = [], hasbomber = false;
 	for (var i=0; i<carriers.length; i++) {
@@ -748,10 +758,10 @@ function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku) {
 		for (var j=0; j<bombers[i].length; j++) {
 			var slot = bombers[i][j];
 			var defender = defenders[Math.floor(Math.random()*defenders.length)];
-			var shotProp = (Math.random() < .5)? Math.floor(ship.planecount[slot]*Math.floor(defender.weightedAntiAir()*.9)/360) : 0;
-			var shotFlat = (Math.random() < .5)? Math.floor((defender.weightedAntiAir()+defender.fleet.fleetAntiAir())*.1) : 0;
+			var shotProp = (Math.random() < .5)? getAAShotProp(defender,ship,slot) : 0;
+			var shotFlat = (Math.random() < .5)? getAAShotFlat(defender) : 0;
 			var shotFix = ((defender.side==0)? 1 : 0) + AACInum;
-			if (defender.side==1) shotFlat = (shotFlat)?1:0;  //TEMP NERF FOR ENEMY, REMEMBER CHANGE
+			//if (defender.side==1) shotFlat = (shotFlat)?1:0;  //TEMP NERF FOR ENEMY, REMEMBER CHANGE
 			if (C) {
 				APIkouku.api_stage2[(ship.id>9)?'api_e_count':'api_f_count'] += ship.planecount[slot];
 				APIkouku.api_stage2[(ship.id>9)?'api_e_lostcount':'api_f_lostcount'] += shotProp+shotFlat+shotFix;
