@@ -75,6 +75,12 @@ loader.add('BG1','assets/82_res.images.ImgBackgroundDay.jpg')
 	.add('plane11','assets/plane11.png')
 	.add('plane12','assets/plane12.png')
 	.add('plane13','assets/plane13.png')
+	.add('WG1','assets/684.png')
+	.add('WG2','assets/687.png')
+	.add('WG3','assets/690.png')
+	.add('WG4','assets/693.png')
+	.add('lc1','assets/LC1.png')
+	.add('lc2','assets/LC2.png')
 	.add('repairteam','assets/Emergency_Repair_Personnel_042_Card.png')
 	.add('repairgoddess','assets/Emergency_Repair_Goddess_043_Card.png')
 	.add('mask','assets/mask.png');
@@ -324,6 +330,8 @@ function createShip(data,side,i,damaged) {
 			if (hasonlytorp == undefined && eq.type == TORPEDO) hasonlytorp = true;
 			if ([MAINGUNS,MAINGUNM,MAINGUNL].indexOf(eq.type) != -1) hasonlytorp = false;
 			if (eq.type == WG42) ship.hasWG = true;
+			if (data[j] == 68 || data[j] == 166) ship.haslandingcraft1 = true;
+			if (data[j] == 167) ship.haslandingcraft2 = true;
 			if (eq.atype && eq.atype != A_GUN) ship.hasAAgear = true;
 			if (eq.type == SEARCHLIGHTS || eq.type == SEARCHLIGHTL) ship.hassearchlight = true;
 			if (data[j]==42) ship.hasrepairteam = true;
@@ -676,7 +684,12 @@ function processAPI(root) {
 							else eventqueue.push([shootASW,d,getState()]);
 						}
 						else if (d[0].isCV) eventqueue.push([shootPlane,d,getState()]);
-						else eventqueue.push([shoot,d,getState()]);
+						else if (d[1].isinstall) {
+							if (d[0].haslandingcraft2) { d.push(2); eventqueue.push([shootLandingCraft,d,getState()]); }
+							else if (d[0].haslandingcraft1) { d.push(1); eventqueue.push([shootLandingCraft,d,getState()]); }
+							else if (d[0].hasWG) eventqueue.push([shootWG,d,getState()]);
+							else eventqueue.push([shoot,d,getState()]);
+						} else eventqueue.push([shoot,d,getState()]);
 						break;
 					case 1:
 						var targets = []; for (var t=0; t<hou.api_df_list[j].length; t++) targets.push((hou.api_df_list[j][t]>6)? f2[hou.api_df_list[j][t]-7] : f1[hou.api_df_list[j][t]-1]);
@@ -794,8 +807,12 @@ function processAPI(root) {
 				switch(hou.api_sp_list[j]) {
 					case 0:
 						if (d[0].isCV) eventqueue.push([shootPlane,d,getState()]);
-						else if (d[1].isinstall) eventqueue.push([shoot,d,getState()]);
-						else if (d[1].issub) eventqueue.push([shootASW,d,getState()]);
+						else if (d[1].isinstall) {
+							if (d[0].haslandingcraft2) { d.push(2); eventqueue.push([shootLandingCraft,d,getState()]); }
+							else if (d[0].haslandingcraft1) { d.push(1); eventqueue.push([shootLandingCraft,d,getState()]); }
+							else if (d[0].hasWG) eventqueue.push([shootWG,d,getState()]);
+							else eventqueue.push([shoot,d,getState()]);
+						} else if (d[1].issub) eventqueue.push([shootASW,d,getState()]);
 						else if (d[0].issub || d[0].hasonlytorp) eventqueue.push([shootTorp,d,getState()]);
 						else eventqueue.push([shoot,d,getState()]); break;  //add ASW and plane in somehow
 					case 1:
@@ -1456,6 +1473,131 @@ function shootBigTorp(ship,target,damage,forcecrit,protect) {
 	addTimeout(function(){ standardHit(target,damage,true,protect,forcecrit); },1300);
 	
 	addTimeout(function(){ ecomplete = true; }, 2200);
+}
+
+function shootWG(ship,target,damage,forcecrit,protect) {
+	updates.push([shipMoveTo,[ship,ship.xorigin+25-50*ship.side,2]]);
+	updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,2]]);
+	addTimeout(function() {
+		var smoke = getFromPool('smoke','assets/89.png');
+		smoke.position.set(ship.graphic.x+160-160*ship.side,ship.graphic.y); smoke.pivot.set(70,59);
+		smoke.alpha = 0; smoke.lifetime = 40; smoke.notpersistent = true; smoke.scale.set(0);
+		stage.addChild(smoke);
+		updates.push([function(smoke) {
+			smoke.lifetime--;
+			smoke.scale.set(smoke.scale.x+.04);
+			if (smoke.lifetime >= 20) smoke.alpha += .05;
+			else smoke.alpha -= .05;
+			if (smoke.lifetime <= 0) {
+				recycle(smoke);
+				return true;
+			}
+			return false;
+		},[smoke]]);
+	}, 200);
+	addTimeout(function() { createWGFire(target.graphic.x+160-160*target.side,target.graphic.y+20); }, 1000);
+	addTimeout(function(){
+		if (!protect) updates.push([shipMoveTo,[target,target.xorigin,4]]);
+		if (!protect) target.graphic.x = target.xorigin-25+50*target.side;
+		shipShake(target,5,.125/2);
+		createExplosion(target.xorigin+65+40-80*target.side,target.graphic.y+42,1);
+		addTimeout(function(){
+			createExplosion(target.xorigin+105+40-80*target.side,target.graphic.y+2,1);
+			SM.play('hit');
+		},75);
+	},1500);
+	addTimeout(function(){
+		standardHit(target,damage,protect,protect,forcecrit);
+		// if (protect) updates.push([shipMoveTo,[target,target.xorigin+50-100*target.side,3]]);
+		updates.push([shipMoveTo,[ship,ship.xorigin,2]]);
+	},2000);
+	addTimeout(function(){ ecomplete = true; }, 2500 + ((protect)?100:0));
+}
+
+function createWGFire(x,y) {
+	var WG1 = getFromPool('WG1','assets/684.png');
+	var WG2 = getFromPool('WG2','assets/687.png');
+	var WG4 = getFromPool('WG4','assets/693.png');
+	var WG3a = getFromPool('WG3','assets/690.png');
+	var WG3b = getFromPool('WG3','assets/690.png');
+	WG1.scale.set(0); WG2.scale.set(0); WG4.scale.set(0);
+	WG1.position.set(x,y); WG2.position.set(x,y); WG4.position.set(x,y);
+	WG1.pivot.set(46,90); WG2.pivot.set(58,90); WG4.pivot.set(40,80);
+	WG1.alpha = WG2.alpha = WG4.alpha = 1;
+	WG1.notpersistent = WG2.notpersistent = WG4.notpersistent = true;
+	WG1.timer = 0;
+	WG3a.alpha = WG3b.alpha = 1;
+	WG3a.position.set(x-20,y-20); WG3b.position.set(x+20,y-10);
+	WG3a.pivot.set(17,35); WG3b.pivot.set(17,35);
+	WG3a.scale.set(0); WG3b.scale.set(0);
+	WG3a.notpersistent = WG3b.notpersistent = true;
+	stage.addChild(WG4); stage.addChild(WG2); stage.addChild(WG1); stage.addChild(WG3a); stage.addChild(WG3b);
+	updates.push([function(WG1,WG2,WG4,WG3a,WG3b) {
+		WG1.timer++;
+		if (WG1.timer < 8) WG1.scale.set(WG1.scale.x+.125);
+		else {
+			WG1.scale.set(WG1.scale.x+.01);
+		}
+		WG2.scale.set(WG1.scale.x); WG4.scale.set(WG1.scale.x);
+		if (WG1.timer > 15 && WG1.alpha > 0) WG1.alpha -= .1;
+		if (WG1.timer > 20 && WG2.alpha > 0) WG2.alpha -= .1;
+		if (WG1.timer > 25 && WG4.alpha > 0) WG4.alpha -= .1;
+		if (WG1.timer > 5) {
+			if (WG3a.scale.x < 1) WG3a.scale.set(WG3a.scale.x += .2);
+			else if (WG3a.alpha > 0) WG3a.alpha -= .2;
+		}
+		if (WG1.timer == 5) SM.play('fire',.5);
+		if (WG1.timer > 10) {
+			if (WG3b.scale.x < 1) WG3b.scale.set(WG3b.scale.x += .2);
+			else if (WG3b.alpha > 0) WG3b.alpha -= .2;
+		}
+		if (WG1.timer == 10) SM.play('fire',.5);
+		if (WG4.alpha <= 0) {
+			recycle(WG1); recycle(WG2); recycle(WG4); recycle(WG3a); recycle(WG3b);
+			return true;
+		}
+		return false;
+	},[WG1,WG2,WG4,WG3a,WG3b]]);
+}
+
+function shootLandingCraft(ship,target,damage,forcecrit,protect,image) {
+	updates.push([shipMoveTo,[ship,ship.xorigin+25-50*ship.side,2]]);
+	updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,2]]);
+	createLandingCraft(230+ship.side*340,ship.graphic.y,Math.atan2(target.graphic.y-ship.graphic.y,target.graphic.x-ship.graphic.x-185+370*ship.side),image);
+	addTimeout(function(){
+		standardHit(target,damage,true,protect,forcecrit);
+		updates.push([shipMoveTo,[ship,ship.xorigin,2]]);
+	},1700);
+	addTimeout(function() { ecomplete = true; }, 2200);
+}
+
+function createLandingCraft(x,y,dir,image) {
+	if (!image) image = 1;
+	var craft = getFromPool('lc'+image,'assets/LC'+image+'.png');
+	craft.pivot.set(30,11); craft.alpha = 0; craft.position.set(x,y); craft.scale.x = (Math.cos(dir)>0)? 1 : -1;
+	craft.timer = 0; craft.speed = 0; craft.bounce = 0; craft.notpersistent = true;
+	stage.addChild(craft);
+	updates.push([function(craft) {
+		craft.timer++;
+		if (craft.timer < 10) craft.alpha += .1;
+		if (craft.timer < 15) {
+			craft.bounce += .05;
+			craft.y += craft.bounce;
+		} else if (craft.timer < 25) {
+			craft.bounce -= .125;
+			craft.y += craft.bounce;
+		} else {
+			if (craft.speed < 5) craft.speed += .075;
+			craft.x += craft.speed*Math.cos(dir);
+			craft.y += craft.speed*Math.sin(dir);
+		}
+		if (craft.timer >= 90) craft.alpha -= .1;
+		if (craft.timer >= 100) {
+			recycle(craft);
+			return true;
+		}
+		return false;
+	},[craft]]);
 }
 
 function shootLaser(ship,targets,damages) {

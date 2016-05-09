@@ -946,23 +946,25 @@ function sim(F1,F2,Fsupport,doNB,NBonly,aironly,landbomb,BAPI) {
 			BAPI.data.api_support_info = { api_support_airatack:null, api_support_hourai:null };
 			/*if type == 2*/ BAPI.data.api_support_info.api_support_hourai = { api_cl_list:[0,0,0,0,0,0,0], api_damage:[0,0,0,0,0,0,0], api_deck_id:3};
 		}
-		var hou = (BAPI)? BAPI.data.api_support_info.api_support_hourai : undefined;
-		for (var i=0; i<shipsS.length; i++) {
-			var ship = shipsS[i];
-			var target = choiceWProtect(alive2);
-			var res = rollHit(accuracyAndCrit(ship,target,1,.5),(ship.CVshelltype)? ship.critdmgbonus:0);
-			var dmg = 0, realdmg = 0;
-			if (res) {
-				dmg = damage(ship,target,ship.shellPower(target.isInstall),1,res);
-				realdmg = takeDamage(target,dmg);
-			} else { realdmg = 0; }
-			if (C) {
-				hou.api_cl_list[i+1] = 1;
-				hou.api_damage[target.apiID-7] += realdmg;
+		if (alive2.length) {
+			var hou = (BAPI)? BAPI.data.api_support_info.api_support_hourai : undefined;
+			for (var i=0; i<shipsS.length; i++) {
+				var ship = shipsS[i];
+				var target = choiceWProtect(alive2);
+				var res = rollHit(accuracyAndCrit(ship,target,1,.5),(ship.CVshelltype)? ship.critdmgbonus:0);
+				var dmg = 0, realdmg = 0;
+				if (res) {
+					dmg = damage(ship,target,ship.shellPower(target.isInstall),1,res);
+					realdmg = takeDamage(target,dmg);
+				} else { realdmg = 0; }
+				if (C) {
+					hou.api_cl_list[i+1] = 1;
+					hou.api_damage[target.apiID-7] += realdmg;
+				}
 			}
-		}
-		for (var i=0; i<alive2.length; i++) {
-			if (alive2[i].HP <= 0) { alive2.splice(i,1); i--; }
+			for (var i=0; i<alive2.length; i++) {
+				if (alive2[i].HP <= 0) { alive2.splice(i,1); i--; }
+			}
 		}
 	}
 	
