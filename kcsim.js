@@ -939,7 +939,7 @@ function sim(F1,F2,Fsupport,doNB,NBonly,aironly,landbomb,BAPI) {
 	}
 	
 	//support phase
-	if (Fsupport && !NBonly && !aironly && alive1.length+subsalive1.length > 0 && alive2.length > 0) {
+	if (Fsupport && !NBonly && !aironly && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length > 0) {
 		var shipsS = Fsupport.ships;
 		if (C) {
 			BAPI.data.api_support_flag = 2;
