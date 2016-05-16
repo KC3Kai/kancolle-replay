@@ -148,13 +148,13 @@ function shell(ship,target,APIhou) {
 		var res = rollHit(accuracyAndCrit(ship,target,evMod),(ship.CVshelltype)? ship.critdmgbonus:0);
 		var dmg1 = Math.floor(target.HP*(.06+.08*Math.random())), realdmg1 = 0;
 		if (res) {
-			dmg1 = damage(ship,target,ship.shellPower(target.isInstall),preMod,1.2*res*postMod);
+			dmg1 = damage(ship,target,ship.shellPower(target),preMod,1.2*res*postMod);
 			realdmg1 = takeDamage(target,dmg1);
 		} else { realdmg1 = takeDamage(target,dmg1) };
 		res = rollHit(accuracyAndCrit(ship,target,evMod),(ship.CVshelltype)? ship.critdmgbonus:0);
 		var dmg2 = Math.floor(target.HP*(.06+.08*Math.random())), realdmg2 = 0;
 		if (res) {
-			dmg2 = damage(ship,target,ship.shellPower(target.isInstall),preMod,1.2*res*postMod);
+			dmg2 = damage(ship,target,ship.shellPower(target),preMod,1.2*res*postMod);
 			realdmg2 = takeDamage(target,dmg2);
 		} else { realdmg2 = takeDamage(target,dmg2); }
 		ship.fleet.giveCredit(ship,dmg1+dmg2);
@@ -172,7 +172,7 @@ function shell(ship,target,APIhou) {
 		var res = rollHit(accuracyAndCrit(ship,target,evMod),(ship.CVshelltype)? ship.critdmgbonus:0);
 		var dmg = (cutin)? Math.floor(target.HP*(.06+.08*Math.random())) : 0, realdmg = 0;
 		if (res) {
-			dmg = damage(ship,target,ship.shellPower(target.isInstall),preMod,res*postMod);
+			dmg = damage(ship,target,ship.shellPower(target),preMod,res*postMod);
 			realdmg = takeDamage(target,dmg);
 		} else { realdmg = takeDamage(target,dmg); }
 		ship.fleet.giveCredit(ship,dmg);
@@ -250,13 +250,13 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen) {
 		var res = rollHit(accuracyAndCrit(ship,target,evMod),0);
 		var dmg1 = Math.floor(target.HP*(.06+.08*Math.random())), realdmg1 = 0;
 		if (res) {
-			dmg1 = damage(ship,target,ship.NBPower(target.isInstall)+bonus,preMod,res*postMod,300);
+			dmg1 = damage(ship,target,ship.NBPower(target)+bonus,preMod,res*postMod,300);
 			realdmg1 = takeDamage(target,dmg1);
 		} else { realdmg1 = takeDamage(target,dmg1) };
 		res = rollHit(accuracyAndCrit(ship,target,evMod),0);
 		var dmg2 = Math.floor(target.HP*(.06+.08*Math.random())), realdmg2 = 0;
 		if (res) {
-			dmg2 = damage(ship,target,ship.NBPower(target.isInstall)+bonus,preMod,res*postMod,300);
+			dmg2 = damage(ship,target,ship.NBPower(target)+bonus,preMod,res*postMod,300);
 			realdmg2 = takeDamage(target,dmg2);
 		} else { realdmg2 = takeDamage(target,dmg2); }
 		ship.fleet.giveCredit(ship,dmg1+dmg2);
@@ -275,7 +275,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen) {
 		var res = rollHit(accuracyAndCrit(ship,target,evMod),0);
 		var dmg = (cutin)? Math.floor(target.HP*(.06+.08*Math.random())) : 0; var realdmg = 0;
 		if (res) {
-			dmg = damage(ship,target,ship.NBPower(target.isInstall)+bonus,preMod,res*postMod,300);
+			dmg = damage(ship,target,ship.NBPower(target)+bonus,preMod,res*postMod,300);
 			realdmg = takeDamage(target,dmg);
 		} else { realdmg = takeDamage(target,dmg); }
 		ship.fleet.giveCredit(ship,dmg);
@@ -954,7 +954,7 @@ function sim(F1,F2,Fsupport,doNB,NBonly,aironly,landbomb,BAPI) {
 				var res = rollHit(accuracyAndCrit(ship,target,1,.5),(ship.CVshelltype)? ship.critdmgbonus:0);
 				var dmg = 0, realdmg = 0;
 				if (res) {
-					dmg = damage(ship,target,ship.shellPower(target.isInstall),1,res);
+					dmg = damage(ship,target,ship.shellPower(target),1,res);
 					realdmg = takeDamage(target,dmg);
 				} else { realdmg = 0; }
 				if (C) {

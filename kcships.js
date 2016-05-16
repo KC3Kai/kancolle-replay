@@ -144,6 +144,7 @@ Ship.prototype.loadEquips = function(equips,levels,addstats) {
 			}
 		}
 		if (eq.type == TYPE3SHELL) this.hasT3Shell = true;
+		if (eq.type == WG42) this.numWG = (this.numWG)? this.numWG+1 : 1;
 		if (eq.type == MIDGETSUB) this.hasMidgetSub = true;
 		if (eq.type == STARSHELL) this.hasStarShell = true;
 		if (eq.type == SEARCHLIGHTS || eq.type == SEARCHLIGHTL) this.hasSearchlight = true;
@@ -244,19 +245,24 @@ Ship.prototype.APmod = function(target) {
 	}
 }
 
-Ship.prototype.shellPower = function(onInstallation) {
+Ship.prototype.shellPower = function(target) {
 	var bonus = (this.FPDbonus)? Math.floor(this.FPDbonus) : 0;
 	var shellbonus = (this.fleet && this.fleet.formation.shellbonus!==undefined)? this.fleet.formation.shellbonus : 5;
-	if (onInstallation) {
-		if (this.hasT3Shell) return this.FP*2.5 + shellbonus + bonus;
+	if (target.isInstall) {
+		if (target.isPillbox) {
+			
+		}
+		if (this.numWG) bonus += 75 * Math.sqrt(this.numWG);
+		if (this.hasT3Shell) return this.FP*target.T3mult + shellbonus + bonus;
 	}
 	return this.FP + shellbonus + bonus;
 }
 
-Ship.prototype.NBPower = function(onInstallation) {
+Ship.prototype.NBPower = function(target) {
 	var bonus = (this.FPNbonus)? Math.floor(this.FPNbonus) : 0;
-	if (onInstallation) {
-		if (this.hasT3Shell) return this.FP*2.5 + bonus;
+	if (target.isInstall) {
+		if (this.numWG) bonus += 75 * Math.sqrt(this.numWG);
+		if (this.hasT3Shell) return this.FP*target.T3mult + bonus;
 		return this.FP+bonus;
 	}
 	return this.FP+this.TP+bonus;
@@ -561,8 +567,9 @@ AO.prototype.loadEquips = function(equips,addstats) {
 }
 
 function Installation(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
-	BBV.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
 	this.isInstall = true;
+	this.T3mult = 2.5;
+	BBV.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
 };
 Installation.prototype = Object.create(BBV.prototype);
 //want CVshelltype=true? impossible to know ingame

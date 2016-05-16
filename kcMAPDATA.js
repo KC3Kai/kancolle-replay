@@ -937,8 +937,8 @@ var MAPDATA = {
 			6: {
 				name: 'E6',
 				bgmMap: 1,
-				bgmDN: 63,
-				bgmNN: 63,
+				bgmDN: 64,
+				bgmNN: 64,
 				bgmDB: 68,
 				bgmNB: 68,
 				bossnode: 14,

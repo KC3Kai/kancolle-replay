@@ -861,7 +861,7 @@ genOptions(2);
 
 var NUMFLEETS2 = 1;
 function clickedAddNode(update) {
-	if (NUMFLEETS2 >= 5) return;
+	if (NUMFLEETS2 >= NUMNODESDEFAULT) return;
 	NUMFLEETS2++;
 	console.log(NUMFLEETS2);
 	if (!document.getElementById('T2'+NUMFLEETS2)) {
@@ -881,7 +881,7 @@ function clickedAddNode(update) {
 	
 	if (update) updateFleetCode('2'+NUMFLEETS2);
 	$('#btnDelNode').css('visibility','visible');
-	if (NUMFLEETS2 >= 5) $('#btnAddNode').css('visibility','hidden');
+	if (NUMFLEETS2 >= NUMNODESDEFAULT) $('#btnAddNode').css('visibility','hidden');
 }
 
 function clickedDelNode() {
@@ -984,6 +984,7 @@ function resultAddWeight(id,numnew,totalnew) {
 	if (!RESVALUES[id]) RESVALUES[id]=[0,0]; //[num,total]
 	RESVALUES[id][0] += numnew;
 	RESVALUES[id][1] += totalnew;
+	if (!document.getElementById(id)) return;
 	document.getElementById(id).innerHTML = Math.round(1000*RESVALUES[id][0]/RESVALUES[id][1])/1000;
 }
 
@@ -1069,7 +1070,7 @@ function updateResults(results) {
 	WROTESTATS = true;
 }
 
-const NUMNODESDEFAULT = 5;
+const NUMNODESDEFAULT = 6;
 function genStatTableHTML() {
 	// console.log('tables');
 	
@@ -1445,7 +1446,7 @@ function clickedWatchBattle() {
 //load fleets from cookies, make sure done after genFleetFromHTML
 var fs = document.cookie.split(';');
 //gen fleets if saved
-for (var i=2; i<=5; i++) {
+for (var i=2; i<=NUMNODESDEFAULT; i++) {
 	var found = false;
 	for (var j=0; j<fs.length; j++) {
 		if (fs[j].indexOf('fleet2'+i+'=')!=-1) {

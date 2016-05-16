@@ -1495,7 +1495,7 @@ function shootWG(ship,target,damage,forcecrit,protect) {
 			return false;
 		},[smoke]]);
 	}, 200);
-	addTimeout(function() { createWGFire(target.graphic.x+160-160*target.side,target.graphic.y+20); }, 1000);
+	addTimeout(function() { createWGFire(target.graphic.x+140-120*target.side,target.graphic.y+20); }, 1000);
 	addTimeout(function(){
 		if (!protect) updates.push([shipMoveTo,[target,target.xorigin,4]]);
 		if (!protect) target.graphic.x = target.xorigin-25+50*target.side;
@@ -1563,7 +1563,7 @@ function createWGFire(x,y) {
 function shootLandingCraft(ship,target,damage,forcecrit,protect,image) {
 	updates.push([shipMoveTo,[ship,ship.xorigin+25-50*ship.side,2]]);
 	updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,2]]);
-	createLandingCraft(230+ship.side*340,ship.graphic.y,Math.atan2(target.graphic.y-ship.graphic.y,target.graphic.x-ship.graphic.x-185+370*ship.side),image);
+	createLandingCraft(ship.graphic.x+230-ship.side*291,ship.graphic.y,Math.atan2(target.graphic.y-ship.graphic.y,target.graphic.x-ship.graphic.x-185+370*ship.side),image);
 	addTimeout(function(){
 		standardHit(target,damage,true,protect,forcecrit);
 		updates.push([shipMoveTo,[ship,ship.xorigin,2]]);
