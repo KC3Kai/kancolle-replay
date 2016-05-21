@@ -1753,6 +1753,7 @@ var EQDATA = {
 	168: {
 		name: 'Type 96 Land-based Attack Aircraft',
 		nameJP: '九六式陸攻',
+		b_image: 13,
 		type: DIVEBOMBER,
 		isdivebomber: true,
 		DIVEBOMB: 10,
@@ -1764,6 +1765,7 @@ var EQDATA = {
 	169: {
 		name: 'Type 1 Land-based Attack Aircraft',
 		nameJP: '一式陸攻',
+		b_image: 13,
 		type: DIVEBOMBER,
 		isdivebomber: true,
 		DIVEBOMB: 12,
@@ -1775,6 +1777,7 @@ var EQDATA = {
 	170: {
 		name: 'Type 1 Land-based Attack Aircraft (Nonaka Squadron)',
 		nameJP: '一式陸攻(野中隊)',
+		b_image: 13,
 		type: DIVEBOMBER,
 		isdivebomber: true,
 		DIVEBOMB: 13,
@@ -1832,6 +1835,7 @@ var EQDATA = {
 	175: {
 		name: 'Raiden',
 		nameJP: '雷電',
+		b_image: 13,
 		type: FIGHTER,
 		isfighter: true,
 		AA: 6,
@@ -1841,6 +1845,7 @@ var EQDATA = {
 	176: {
 		name: 'Type 3 Fighter Hien',
 		nameJP: '三式戦 飛燕',
+		b_image: 13,
 		type: FIGHTER,
 		isfighter: true,
 		AA: 8,
@@ -1850,6 +1855,7 @@ var EQDATA = {
 	177: {
 		name: 'Type 3 Fighter Hien (244th Air Combat Group)',
 		nameJP: '三式戦 飛燕(飛行第244戦隊)',
+		b_image: 13,
 		type: FIGHTER,
 		isfighter: true,
 		AA: 9,
@@ -2501,5 +2507,28 @@ var EQDATA = {
 		AA: 4,
 		ACC: 16,
 		LOS: 8
+	},
+	568: {
+		name: '16inch Triple Gun Mount (Abyssal)',
+		nameJP: '16inch三連装砲',
+		type: MAINGUNL,
+		btype: B_MAINGUN,
+		atype: A_GUN,
+		FP: 24,
+		AA: 3,
+		AR: 1,
+		ACC: 4,
+		RNG: 3
+	},
+	569: {
+		name: 'Abyssal Reconnaissance Flying Boat',
+		nameJP: '深海偵察飛行艇',
+		type: SEAPLANE,
+		btype: B_RECON,
+		FP: 3,
+		AA: 1,
+		ASW: 2,
+		ACC: 8,
+		LOS: 9
 	}
 };

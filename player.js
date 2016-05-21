@@ -322,10 +322,9 @@ function createShip(data,side,i,damaged) {
 	for (var j=3; j<=7; j++) {
 		var eq = EQDATA[data[j]];
 		if (eq) {
-			if (eq.b_image) {
-				if ((eq.b_image==11||eq.b_image==12)&&side==1) ship.planetypes.push(2);
-				else ship.planetypes.push(eq.b_image);
-			} else if (eq.isfighter||eq.istorpbomber||eq.isdivebomber||eq.type==AUTOGYRO||eq.type==ASWPLANE) ship.planetypes.push(1+side);
+			if (eq.b_image) ship.planetypes.push(eq.b_image);
+			else if (eq.isfighter||eq.istorpbomber||eq.isdivebomber||eq.type==AUTOGYRO||eq.type==ASWPLANE) ship.planetypes.push(1+side);
+			else if (eq.type==SEAPLANE||eq.type==FLYINGBOAT) ship.planetypes.push(11);
 			if (eq.istorpbomber) ship.hastorpbomber = true;
 			if (hasonlytorp == undefined && eq.type == TORPEDO) hasonlytorp = true;
 			if ([MAINGUNS,MAINGUNM,MAINGUNL].indexOf(eq.type) != -1) hasonlytorp = false;
@@ -506,6 +505,11 @@ function processAPI(root) {
 					for (var i=0; i<kouku.api_plane_from[0].length; i++) {
 						var ship = (isbombing)? kouku.api_plane_from[0][i] : fleet1[kouku.api_plane_from[0][i]-1];
 						attackdata.push([ship,[],[]]);
+						if (isbombing) {
+							var eqid = kouku.api_squadron_plane[i].api_mst_id;
+							if (EQDATA[eqid]) attackdata[i].push((EQDATA[eqid].b_image)? EQDATA[eqid].b_image : 1);
+							else attackdata[i].push(13);
+						}
 						attackers.push(ship);
 					}
 				}
@@ -730,7 +734,12 @@ function processAPI(root) {
 		//land bombing
 		if (data.api_air_base_attack) {
 			for (var i=0; i<data.api_air_base_attack.length; i++) {
-				data.api_air_base_attack[i].api_plane_from[1] = (data.api_kouku)? data.api_kouku.api_plane_from[1] : [-1];
+				data.api_air_base_attack[i].api_plane_from[1] = [];
+				for (var j=0; j<f2.length; j++)
+					if (f2[j].planetypes.length) data.api_air_base_attack[i].api_plane_from[1].push(7+j);
+				if (data.api_air_base_attack[i].api_plane_from[1].length <= 0) data.api_air_base_attack[i].api_plane_from[1] = [-1];
+				for (var j=0; j<data.api_air_base_attack[i].api_squadron_plane.length; j++) 
+					if (data.api_air_base_attack[i].api_squadron_plane[j].api_mst_id) data.api_air_base_attack[i].api_plane_from[0][j] = j+7;
 				processKouku(data.api_air_base_attack[i],true);
 			}
 		}
@@ -1348,7 +1357,7 @@ function shootDA(ship,target,damage1,damage2,crit1,crit2,protect) {
 }
 
 function shootPlane(ship,target,damage,forcecrit,protect) {
-	var planes = createPlane(ship.graphic.x+85,ship.graphic.y+22,ship.planetypes);
+	var planes = createPlane(ship.graphic.x+85,ship.graphic.y+22,ship.planetypes,null,null,ship.side);
 	
 	var angle = Math.atan((ship.graphic.y-target.graphic.y)/(ship.graphic.x-target.graphic.x));
 	updates.push([movePlane,[planes,angle,(ship.side==0) ? 5 : -5, (ship.escort||target.escort)]]);
@@ -1668,7 +1677,7 @@ function createLaserRing(laser) {
 }
 
 var PLANESPRITES = ['938','914','916','918','920','922','924','926','plane9','plane10','plane11','plane12','plane13'];
-function createPlane(x,y,planetypes,shots,shots2) {
+function createPlane(x,y,planetypes,shots,shots2,side) {
 	var num = Math.min(3,planetypes.length);
 	if (shots) shots = shuffle(shots);
 	if (shots2) shots2 = shuffle(shots2);
@@ -1680,6 +1689,7 @@ function createPlane(x,y,planetypes,shots,shots2) {
 			plane.x = i*25-25;
 			plane.y = (i==1) ? -15 : 15;
 			plane.scale.set(.8);
+			if (side && [11,12].indexOf(planetypes[2-i])!=-1) { plane.scale.x = -plane.scale.x; plane.pivot.x = 50; }
 			planes.addChild(plane);
 			if (shots) plane.shot = shots[i];
 			if (shots2) plane.shot2 = shots2[i];
@@ -1691,6 +1701,7 @@ function createPlane(x,y,planetypes,shots,shots2) {
 			plane.x = i*30-15;
 			plane.y = (i==1) ? -15 : 15;
 			plane.scale.set(.8);
+			if (side && [11,12].indexOf(planetypes[1-i])!=-1) { plane.scale.x = -plane.scale.x; plane.pivot.x = 50; }
 			planes.addChild(plane);
 			if (shots) plane.shot = shots[i];
 			if (shots2) plane.shot2 = shots2[i];
@@ -1699,6 +1710,7 @@ function createPlane(x,y,planetypes,shots,shots2) {
 	} else if (num == 1) {
 		var plane = PIXI.Sprite.fromImage('assets/'+PLANESPRITES[planetypes[0]-1]+'.png');
 		plane.scale.set(.8);
+		if (side && [11,12].indexOf(planetypes[0])!=-1) { plane.scale.x = -plane.scale.x; plane.pivot.x = 50; }
 		planes.addChild(plane);
 		if (shots) plane.shot = shots[0];
 		if (shots2) plane.shot2 = shots2[0];
@@ -1719,7 +1731,7 @@ function movePlane(planes,angle,speed,withescort) {
 	var x1 = (withescort)? 237 : 85;
 	if (!withescort||planes.x > 120)
 		planes.pivot.y = 40-100*Math.sin(Math.PI*(planes.x-x1)/(715-x1));
-	else { console.log('a'); planes.pivot.y += 2.5; } //so it doesn't start snaking
+	else { planes.pivot.y += 2.5; } //so it doesn't start snaking
 	var fire = false;
 	for (var i=0; i<planes.children.length; i++) {
 		var plane = planes.getChildAt(i);
@@ -1813,11 +1825,12 @@ function GAirPhase(attackdata,targetdata,defenders,aaci1,aaci2,contact1,contact2
 			var ship = attackdata[i][0]; var statuses = attackdata[i][1]; var statuses2 = attackdata[i][2];
 			var planes;
 			if (isbombing&&(attackdata[i][0]-6)) {
-				console.log(statuses);
-				planes = createPlane(-50,200+(attackdata[i][0]-7)*40,[13,13],statuses,statuses2);
+				//console.log(statuses);
+				planes = createPlane(-50,180+(attackdata[i][0]-7)*60,[attackdata[i][3],attackdata[i][3]],statuses,statuses2);
 				updates.push([movePlane,[planes,-Math.PI/30,5]]);
 			} else {
-				planes = createPlane(ship.graphic.x+85,ship.graphic.y+22,ship.planetypes,statuses,statuses2);
+				if (ship.hp <= 0) continue;
+				planes = createPlane(ship.graphic.x+85,ship.graphic.y+22,ship.planetypes,statuses,statuses2,ship.side);
 				updates.push([movePlane,[planes,-Math.PI/30-(28*Math.PI/30)*ship.side,(ship.side==0) ? 4 : -4]]);
 			}
 			// for (var j=0; j<statuses.length; j++) {  //remove graphics if plane completely shot down, may not need
@@ -1873,6 +1886,7 @@ function GAirPhase(attackdata,targetdata,defenders,aaci1,aaci2,contact1,contact2
 	
 	addTimeout(function() {
 		for (var i=0; i<defenders.length; i++) {
+			if (defenders[i].hp <= 0) continue;
 			var angle1 = Math.random()*Math.PI/12 + ((defenders[i].side==0)? Math.PI/6 : 4*Math.PI/6);
 			var angle2 = -Math.random()*Math.PI/12 + ((defenders[i].side==0)? Math.PI/3 : 5*Math.PI/6);
 			createAAfire(defenders[i].graphic.position.x+70,defenders[i].graphic.position.y+15,angle1);
@@ -1890,7 +1904,7 @@ function GAirPhase(attackdata,targetdata,defenders,aaci1,aaci2,contact1,contact2
 	if (!issupport) addTimeout(function() {
 		var pos = [[],[]];
 		for (var i=0; i<attackdata.length; i++) {
-			if (isbombing&&(attackdata[i][0]-6)) pos[0].push(200+(attackdata[i][0]-7)*40);
+			if (isbombing&&(attackdata[i][0]-6)) pos[0].push(180+(attackdata[i][0]-7)*60);
 			else if (attackdata[i][0].hastorpbomber) pos[attackdata[i][0].side].push(attackdata[i][0].graphic.y);
 		}
 		for (var i=0; i<targetdata.length; i++) {
@@ -2267,7 +2281,6 @@ function NBstart(flares,bgm) {
 	if (bgm != SM.BGMnum) {
 		SM.stopBGM();
 		SM.playBGM(bgm);
-		console.log('asdf');
 	}
 		
 	addTimeout(function() { ecomplete = true; }, 1+((COMBINED)? 1499:0)+nbtimer);
@@ -2481,7 +2494,6 @@ function reset(callback) {
 		// dots1.removeChildren(); dots2.removeChildren();
 		while (dots1.children.length) recycle(dots1.getChildAt(0));
 		while (dots2.children.length) recycle(dots2.getChildAt(0));
-		console.log(SPRITEPOOL.dotGreen);
 		dots1.alpha = dots2.alpha = 0;
 		stage.addChild(dots1);
 		stage.addChild(dots2);
