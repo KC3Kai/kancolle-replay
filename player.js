@@ -325,6 +325,7 @@ function createShip(data,side,i,damaged) {
 			if (eq.b_image) ship.planetypes.push(eq.b_image);
 			else if (eq.isfighter||eq.istorpbomber||eq.isdivebomber||eq.type==AUTOGYRO||eq.type==ASWPLANE) ship.planetypes.push(1+side);
 			else if (eq.type==SEAPLANE||eq.type==FLYINGBOAT) ship.planetypes.push(11);
+			if (eq.istorpbomber||eq.isdivebomber||eq.type==AUTOGYRO||eq.type==ASWPLANE) ship.hasbomber = true;
 			if (eq.istorpbomber) ship.hastorpbomber = true;
 			if (hasonlytorp == undefined && eq.type == TORPEDO) hasonlytorp = true;
 			if ([MAINGUNS,MAINGUNM,MAINGUNL].indexOf(eq.type) != -1) hasonlytorp = false;
@@ -338,7 +339,6 @@ function createShip(data,side,i,damaged) {
 		}
 	}
 	ship.hasonlytorp = hasonlytorp;
-	ship.hasbomber = (ship.planetypes.length > 0);
 	ship.issub = (sdata.type == 'SS' || sdata.type == 'SSV');
 	ship.isinstall = (sdata.type == 'Installation');
 	ship.isCV = (sdata.type == 'CV' || sdata.type == 'CVL' || sdata.type == 'CVN' || sdata.type == 'CVB' || (sdata.type=='AO'&&ship.hasbomber));
