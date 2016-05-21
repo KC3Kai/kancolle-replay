@@ -6633,7 +6633,7 @@ var SHIPDATA = {
 	282: {
 		name: 'Shouhou Kai',
 		nameJP: '祥鳳改',
-		image: 'KShouhouKai.png',
+		image: 'KShouhouKai.jpg',
 		type: 'CVL',
 		nid: 1382,
 		HP: 45, HPmax: 69,

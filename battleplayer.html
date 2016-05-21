@@ -19,7 +19,7 @@
 			$('#error').text('Loading');
 
 			preview.onload = function(){
-				console.log(reader.result);
+				//console.log(reader.result);
 				try { 
 					var msg = steganography.decode(reader.result);
 					document.getElementById('code').value = msg;
@@ -74,7 +74,7 @@
 		</style>
 	</head>
 	<body>
-		<span style="font-size:24px;font-weight:bold">KanColle Battle Replayer</span> <span style="color:red;margin-left:20px">v1.0 Beta 2.6 <span style="margin-left:20px;font-style:italic">(Last update: 2016-05-16)</span></span>
+		<span style="font-size:24px;font-weight:bold">KanColle Battle Replayer</span> <span style="color:red;margin-left:20px">v1.0 Beta 2.6 <span style="margin-left:20px;font-style:italic">(Last update: 2016-05-21)</span></span>
 		<br><br>
 		<div>
 			<div>
