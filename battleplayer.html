@@ -74,7 +74,7 @@
 		</style>
 	</head>
 	<body>
-		<span style="font-size:24px;font-weight:bold">KanColle Battle Replayer</span> <span style="color:red;margin-left:20px">v1.0 Beta 2.6 <span style="margin-left:20px;font-style:italic">(Last update: 2016-05-21)</span></span>
+		<span style="font-size:24px;font-weight:bold">KanColle Battle Replayer</span> <span style="color:red;margin-left:20px">v1.0 Beta 2.6 <span style="margin-left:20px;font-style:italic">(Last update: 2016-05-25)</span></span>
 		<br><br>
 		<div>
 			<div>
@@ -173,70 +173,62 @@
 				$('#'+root).append(table);
 				$('#'+root).append($('<br>'));
 			}
-			function loadFleetInfo(API) {
-				if (!started) return;
-				$('#friendfleetspace').html('');
-				$('#enemyfleetspace').html('');
-				makeTable('friendfleetspace','1');
-				var fleet = API['fleet'+API.fleetnum];
+
+			function fillTableF(API,num,combined,translate) {
+				var fleet = API['fleet'+num];
 				for (var i=0; i<fleet.length; i++) {
 					var b = API.battles[0].data;
 					if (!Object.keys(b).length) b = API.battles[0].yasen;
-					if ($('#radJP').prop('checked')) $('#name1'+i).text(fleet[i].mst_id+'. '+SHIPDATA[fleet[i].mst_id].nameJP);
-					else $('#name1'+i).text(fleet[i].mst_id+'. '+SHIPDATA[fleet[i].mst_id].name);
-					$('#img1'+i).attr('src','assets/icons/'+SHIPDATA[fleet[i].mst_id].image);
-					$('#lvl1'+i).text(fleet[i].level); $('#hp1'+i).text(b.api_maxhps[i+1]); 
-					$('#fp1'+i).text(b.api_fParam[i][0]);$('#tp1'+i).text(b.api_fParam[i][1]);$('#aa1'+i).text(b.api_fParam[i][2]);$('#ar1'+i).text(b.api_fParam[i][3]);
+					if (SHIPDATA[fleet[i].mst_id]) {
+						if ($('#radJP').prop('checked')) $('#name'+num+i).text(fleet[i].mst_id+'. '+SHIPDATA[fleet[i].mst_id].nameJP);
+						else $('#name'+num+i).text(fleet[i].mst_id+'. '+SHIPDATA[fleet[i].mst_id].name);
+					} else $('#name'+num+i).text(fleet[i].mst_id+'.');
+					if (!translate) {
+						if (SHIPDATA[fleet[i].mst_id]) $('#img'+num+i).attr('src','assets/icons/'+SHIPDATA[fleet[i].mst_id].image);
+						var maxhps = (combined)? 'api_maxhps_combined' : 'api_maxhps';
+						var fparam = (combined)? 'api_fParam_combined' : 'api_fParam';
+						$('#lvl'+num+i).text(fleet[i].level); $('#hp'+num+i).text(b[maxhps][i+1]); 
+						$('#fp'+num+i).text(b[fparam][i][0]);$('#tp'+num+i).text(b[fparam][i][1]);$('#aa'+num+i).text(b[fparam][i][2]);$('#ar'+num+i).text(b[fparam][i][3]);
+					}
 					for (var j=0; j<4; j++) {
 						if (!fleet[i].equip[j]) continue;
-						if (EQDATA[fleet[i].equip[j]]) $('#eq'+j+'1'+i).text(EQDATA[fleet[i].equip[j]][$('#radJP').prop('checked')?'nameJP':'name']);
-						else $('#eq'+j+'1'+i).text(fleet[i].equip[j]);
-						$('#eq'+j+'1'+i).attr('title',fleet[i].equip[j]);
-					}
-				}
-				for (var k=0; k<API.battles.length; k++) {
-					var b = API.battles[k].data;
-					if (!b.api_ship_ke) b = API.battles[k].yasen;
-					makeTable('enemyfleetspace','2'+k);
-					for (var i=0; i<b.api_ship_ke.length; i++) {
-						var mid = b.api_ship_ke[i];
-						if (mid <= 0) continue;
-						if ($('#radJP').prop('checked')) $('#name2'+k+i).text(mid+'. '+SHIPDATA[mid].nameJP);
-						else if (SHIPDATA[mid]) $('#name2'+k+i).text(mid+'. '+SHIPDATA[mid].name);
-						else $('#name2'+k+i).text(mid);
-						if (SHIPDATA[mid]) $('#img2'+k+i).attr('src','assets/icons/'+SHIPDATA[mid].image);
-						$('#lvl2'+k+i).text(b.api_ship_lv[i+1]); $('#hp2'+k+i).text(b.api_maxhps[i+7]); 
-						$('#fp2'+k+i).text(b.api_eParam[i][0]);$('#tp2'+k+i).text(b.api_eParam[i][1]);$('#aa2'+k+i).text(b.api_eParam[i][2]);$('#ar2'+k+i).text(b.api_eParam[i][3]);
-						for (var j=0; j<4; j++) {
-							if (b.api_eSlot[i][j] <= 0) continue;
-							if (EQDATA[b.api_eSlot[i][j]]) $('#eq'+j+'2'+k+i).text(EQDATA[b.api_eSlot[i][j]][$('#radJP').prop('checked')?'nameJP':'name']);
-							else $('#eq'+j+'2'+k+i).text(b.api_eSlot[i][j]);
-							$('#eq'+j+'2'+k+i).attr('title',b.api_eSlot[i][j]);
-						}
+						if (EQDATA[fleet[i].equip[j]]) $('#eq'+j+num+i).text(EQDATA[fleet[i].equip[j]][$('#radJP').prop('checked')?'nameJP':'name']);
+						else $('#eq'+j+num+i).text(fleet[i].equip[j]);
+						$('#eq'+j+num+i).attr('title',fleet[i].equip[j]);
 					}
 				}
 			}
-			function translateTable() {
+
+			function loadFleetInfo(API,translate) {
 				if (!started) return;
-				var fleet = API['fleet'+API.fleetnum];
-				for (var i=0; i<fleet.length; i++) {
-					if ($('#radJP').prop('checked')) $('#name1'+i).text(fleet[i].mst_id+'. '+SHIPDATA[fleet[i].mst_id].nameJP);
-					else $('#name1'+i).text(fleet[i].mst_id+'. '+SHIPDATA[fleet[i].mst_id].name);
-					for (var j=0; j<4; j++) {
-						if (!fleet[i].equip[j]) continue;
-						if (EQDATA[fleet[i].equip[j]]) $('#eq'+j+'1'+i).text(EQDATA[fleet[i].equip[j]][$('#radJP').prop('checked')?'nameJP':'name']);
-						else $('#eq'+j+'1'+i).text(fleet[i].equip[j]);
-						$('#eq'+j+'1'+i).attr('title',fleet[i].equip[j]);
-					}
+				if (!translate) {
+					$('#friendfleetspace').html('');
+					$('#enemyfleetspace').html('');
+					makeTable('friendfleetspace',API.fleetnum,API['fleet'+API.fleetnum].length);
+					if (API.combined) makeTable('friendfleetspace',2,API.fleet2.length);
 				}
+				fillTableF(API,API.fleetnum,false,translate);
+				if (API.combined) fillTableF(API,2,true,translate);
+				
 				for (var k=0; k<API.battles.length; k++) {
 					var b = API.battles[k].data;
 					if (!b.api_ship_ke) b = API.battles[k].yasen;
+					if (!translate) {
+						var numships = 0; for (var i=0; i<b.api_ship_ke.length; i++) if (b.api_ship_ke[i] > 0) numships++;
+						makeTable('enemyfleetspace','2'+k,numships);
+					}
 					for (var i=0; i<b.api_ship_ke.length; i++) {
 						var mid = b.api_ship_ke[i];
 						if (mid <= 0) continue;
-						if ($('#radJP').prop('checked')) $('#name2'+k+i).text(mid+'. '+SHIPDATA[mid].nameJP);
-						else $('#name2'+k+i).text(mid+'. '+SHIPDATA[mid].name);
+						if (SHIPDATA[mid]) {
+							if ($('#radJP').prop('checked')) $('#name2'+k+i).text(mid+'. '+SHIPDATA[mid].nameJP);
+							else $('#name2'+k+i).text(mid+'. '+SHIPDATA[mid].name);
+						} else $('#name2'+k+i).text(mid+'.');
+						if (!translate) {
+							if (SHIPDATA[mid]) $('#img2'+k+i).attr('src','assets/icons/'+SHIPDATA[mid].image);
+							$('#lvl2'+k+i).text(b.api_ship_lv[i+1]); $('#hp2'+k+i).text(b.api_maxhps[i+7]); 
+							$('#fp2'+k+i).text(b.api_eParam[i][0]);$('#tp2'+k+i).text(b.api_eParam[i][1]);$('#aa2'+k+i).text(b.api_eParam[i][2]);$('#ar2'+k+i).text(b.api_eParam[i][3]);
+						}
 						for (var j=0; j<4; j++) {
 							if (b.api_eSlot[i][j] <= 0) continue;
 							if (EQDATA[b.api_eSlot[i][j]]) $('#eq'+j+'2'+k+i).text(EQDATA[b.api_eSlot[i][j]][$('#radJP').prop('checked')?'nameJP':'name']);
@@ -247,6 +239,10 @@
 				}
 			}
 
+			function translateTable() {
+				loadFleetInfo(API,true);
+			}
+		
 			var uri = new URI(window.location.href);
 			var qs = uri.search( true );
 			if (qs.fromImg) {

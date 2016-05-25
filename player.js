@@ -1,6 +1,5 @@
 var renderer = PIXI.autoDetectRenderer(800, 480,{backgroundColor : 0x000000});
 document.getElementById('battlespace').appendChild(renderer.view);
-// console.log(renderer);
 
 // create the root of the scene graph
 var stage = new PIXI.Container();
@@ -324,7 +323,7 @@ function createShip(data,side,i,damaged) {
 		if (eq) {
 			if (eq.b_image) ship.planetypes.push(eq.b_image);
 			else if (eq.isfighter||eq.istorpbomber||eq.isdivebomber||eq.type==AUTOGYRO||eq.type==ASWPLANE) ship.planetypes.push(1+side);
-			else if (eq.type==SEAPLANE||eq.type==FLYINGBOAT) ship.planetypes.push(11);
+			//else if (eq.type==SEAPLANE||eq.type==FLYINGBOAT) ship.planetypes.push(11);
 			if (eq.istorpbomber||eq.isdivebomber||eq.type==AUTOGYRO||eq.type==ASWPLANE) ship.hasbomber = true;
 			if (eq.istorpbomber) ship.hastorpbomber = true;
 			if (hasonlytorp == undefined && eq.type == TORPEDO) hasonlytorp = true;
@@ -393,6 +392,7 @@ function processAPI(root) {
 		if(!root[fleet][i] || root[fleet][i] == -1) continue;
 		fships.push(root[fleet][i].mst_id);
 		fequips.push(root[fleet][i].equip);
+		if (!SHIPDATA[root[fleet][i].mst_id]) continue;
 		loader2.add('ship'+i,'assets/icons/'+SHIPDATA[root[fleet][i].mst_id].image);
 	}
 	if (root.combined) {
@@ -400,6 +400,7 @@ function processAPI(root) {
 			if(!root.fleet2[i] || root.fleet2[i] == -1) continue;
 			fshipsC.push(root.fleet2[i].mst_id);
 			fequipsC.push(root.fleet2[i].equip);
+			if (!SHIPDATA[root.fleet2[i].mst_id]) continue;
 			loader2.add('ship'+i+'C','assets/icons/'+SHIPDATA[root.fleet2[i].mst_id].image);
 		}
 	}
