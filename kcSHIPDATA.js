@@ -8403,6 +8403,7 @@ var SHIPDATA = {
 		SLOTS: [30, 13, 10, 3],
 		fuel: 70,
 		ammo: 80,
+		nightgun: true,
 		next: 0,
 		prev: 432,
 		nextlvl: 0,
@@ -8583,7 +8584,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0,
 		next: 0,
-		prev: 0,
+		prev: 440,
 		nextlvl: 0,
 	},
 	361: {
@@ -8608,7 +8609,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0,
 		next: 0,
-		prev: 0,
+		prev: 449,
 		nextlvl: 0,
 	},
 	362: {
@@ -8633,7 +8634,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0,
 		next: 0,
-		prev: 0,
+		prev: 456,
 		nextlvl: 0,
 	},
 	363: {
@@ -8658,7 +8659,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0,
 		next: 0,
-		prev: 0,
+		prev: 473,
 		nextlvl: 0,
 	},
 	398: {
@@ -9536,6 +9537,7 @@ var SHIPDATA = {
 		SLOTS: [20, 13, 10],
 		fuel: 55,
 		ammo: 65,
+		nightgun: true,
 		next: 353,
 		prev: 0,
 		nextlvl: 50,
@@ -9661,7 +9663,7 @@ var SHIPDATA = {
 		SLOTS: [0, 0, 0, 0],
 		fuel: 0,
 		ammo: 0,
-		next: 0,
+		next: 360,
 		prev: 0,
 		nextlvl: 0,
 	},
@@ -9864,7 +9866,7 @@ var SHIPDATA = {
 		SLOTS: [0, 0, 0, 0],
 		fuel: 0,
 		ammo: 0,
-		next: 0,
+		next: 361,
 		prev: 0,
 		nextlvl: 0,
 	},
@@ -10040,7 +10042,7 @@ var SHIPDATA = {
 		SLOTS: [0, 0, 0, 0],
 		fuel: 0,
 		ammo: 0,
-		next: 0,
+		next: 362,
 		prev: 0,
 		nextlvl: 0,
 	},
@@ -10340,7 +10342,7 @@ var SHIPDATA = {
 		SLOTS: [0, 0, 0, 0],
 		fuel: 0,
 		ammo: 0,
-		next: 0,
+		next: 476,
 		prev: 0,
 		nextlvl: 0,
 	},
@@ -10365,7 +10367,7 @@ var SHIPDATA = {
 		SLOTS: [0, 0, 0, 0],
 		fuel: 0,
 		ammo: 0,
-		next: 0,
+		next: 363,
 		prev: 0,
 		nextlvl: 0,
 	},
@@ -10391,7 +10393,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0,
 		next: 0,
-		prev: 0,
+		prev: 471,
 		nextlvl: 0,
 	},
 	501: {
@@ -14152,7 +14154,8 @@ var SHIPDATA = {
 		SLOTS: [40, 30, 30, 30],
 		EQUIPS: [562,561,556,566],
 		fuel: 0,
-		ammo: 0
+		ammo: 0,
+		nightgun: true,
 	},
 	680: {
 		name: 'Lycoris Princess 2',
@@ -14174,7 +14177,8 @@ var SHIPDATA = {
 		SLOTS: [40, 30, 30, 30],
 		EQUIPS: [562,561,556,566],
 		fuel: 0,
-		ammo: 0
+		ammo: 0,
+		nightgun: true,
 	},
 	681: {
 		name: 'Lycoris Princess 3',
@@ -14196,7 +14200,8 @@ var SHIPDATA = {
 		SLOTS: [40, 30, 30, 30],
 		EQUIPS: [562,561,556,566],
 		fuel: 0,
-		ammo: 0
+		ammo: 0,
+		nightgun: true,
 	},
 	682: {
 		name: 'Lycoris Princess 4',
@@ -14218,7 +14223,8 @@ var SHIPDATA = {
 		SLOTS: [40, 30, 30, 30],
 		EQUIPS: [562,561,556,566],
 		fuel: 0,
-		ammo: 0
+		ammo: 0,
+		nightgun: true,
 	},
 	683: {
 		name: 'Lycoris Princess 5',
@@ -14240,7 +14246,8 @@ var SHIPDATA = {
 		SLOTS: [40, 30, 30, 30],
 		EQUIPS: [562,561,556,566],
 		fuel: 0,
-		ammo: 0
+		ammo: 0,
+		nightgun: true,
 	},
 	684: {
 		name: 'Central Princess',
