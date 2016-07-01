@@ -23,6 +23,8 @@ loader.add('BG1','assets/82_res.images.ImgBackgroundDay.jpg')
 	.add('BG2','assets/83_res.images.ImgBackgroundNight.jpg')
 	.add('shutter1','assets/513_res.common.ImgShutterTopDark.png')
 	.add('shutter2','assets/511_res.common.ImgShutterBottomDark.png')
+	.add('shutter11','assets/512_res.common.ImgShutterTop.png')
+	.add('shutter12','assets/510_res.common.ImgShutterBottom.png')
 	.add('radar','assets/375_res.battle.images.ImgRaderBG.png')
 	.add('nmiss','assets/Nmiss.png')
 	.add('ccrit','assets/Ccrit.png')
@@ -108,6 +110,10 @@ var PVPMODE = false;
 var FLEET2ORIGIN = 631;
 
 var SM = new SoundManager();
+if ($('#chkvoice')) $('#chkvoice').click(function() {
+	if (this.checked) SM.turnOnVoice();
+	else SM.turnOffVoice();
+});
 
 function ShipG(id,side,hpmax) {
 	this.id = id;
@@ -280,7 +286,8 @@ function createDots(container,form,num,side) {
 
 var shutterTop = PIXI.Sprite.fromImage('assets/513_res.common.ImgShutterTopDark.png');
 var shutterBottom = PIXI.Sprite.fromImage('assets/511_res.common.ImgShutterBottomDark.png');
-
+var shutterTop2 = PIXI.Sprite.fromImage('assets/512_res.common.ImgShutterTop.png');
+var shutterBottom2 = PIXI.Sprite.fromImage('assets/510_res.common.ImgShutterBottom.png');
 
 var eventqueue = [];
 var battlestarts = [];
@@ -340,8 +347,10 @@ function createShip(data,side,i,damaged) {
 	ship.hasonlytorp = hasonlytorp;
 	ship.issub = (sdata.type == 'SS' || sdata.type == 'SSV');
 	ship.isinstall = (sdata.type == 'Installation');
-	ship.isCV = (sdata.type == 'CV' || sdata.type == 'CVL' || sdata.type == 'CVN' || sdata.type == 'CVB' || (sdata.type=='AO'&&ship.hasbomber));
+	ship.isCV = (sdata.type == 'CV' || sdata.type == 'CVL' || sdata.type == 'CVN' || sdata.type == 'CVB' || (sdata.type=='AO'&&ship.hasbomber) || [679,680,681,682,683].indexOf(data[0])!=-1);
+	if (sdata.nightgun) ship.nightgun = true;
 	ship.shakepid = 0;
+	ship.mid = data[0];
 	return ship;
 }
 
@@ -774,6 +783,10 @@ function processAPI(root) {
 			}
 		}
 		
+		//opening asw
+		var f = (COMBINED)? fleet1C : fleet1;
+		if (data.api_opening_taisen) processHougeki(data.api_opening_taisen,f);
+		
 		//opening torp
 		var f = (COMBINED)? fleet1C : fleet1;
 		if (data.api_opening_atack) processRaigeki(data.api_opening_atack,f);
@@ -816,7 +829,7 @@ function processAPI(root) {
 				
 				switch(hou.api_sp_list[j]) {
 					case 0:
-						if (d[0].isCV) eventqueue.push([shootPlane,d,getState()]);
+						if (d[0].isCV && !d[0].nightgun) eventqueue.push([shootPlane,d,getState()]);
 						else if (d[1].isinstall) {
 							if (d[0].haslandingcraft2) { d.push(2); eventqueue.push([shootLandingCraft,d,getState()]); }
 							else if (d[0].haslandingcraft1) { d.push(1); eventqueue.push([shootLandingCraft,d,getState()]); }
@@ -860,9 +873,12 @@ function processAPI(root) {
 	
 	loader2.load(function() { SHIPSLOADED = true; });
 	
+	stage.addChild(shutterTop2); stage.addChild(shutterBottom2);
+	shutterTop2.y = -246; shutterTop2.alpha = 1;
+	shutterBottom2.y = 456; shutterBottom2.alpha = 1;
 	stage.addChild(shutterTop); stage.addChild(shutterBottom);
-	shutterTop.y = -246; shutterTop.alpha = .25;
-	shutterBottom.y = 456; shutterBottom.alpha = .25;
+	shutterTop.y = -246; shutterTop.alpha = 0;
+	shutterBottom.y = 456; shutterBottom.alpha = 0;
 	if (!started) animate();
 	SM.stopBGM();
 }
@@ -1233,6 +1249,8 @@ function battleStart(battledata,newships,escape,bgm) {
 		}
 	}
 	
+	if (VOICES[fleet2[0].mid] && VOICES[fleet2[0].mid].start) SM.playVoice(fleet2[0].mid,'start',10);
+	else SM.playVoice(fleet1[0].mid,'start',0);
 	var j = 0;
 	for (var i=0; i<fleet1.length; i++) {
 		addTimeout(function(){
@@ -1282,6 +1300,7 @@ function battleEnd() {
 		// console.log('end');
 		SM.fadeBGM();
 	}, 1000);
+	addTimeout(function() { ecomplete = true; }, 2000);
 }
 
 function standardHit(target,damage,move,protect,forcecrit) {
@@ -1296,6 +1315,12 @@ function standardHit(target,damage,move,protect,forcecrit) {
 		standardExplosion(target,3);
 		SM.play('crit');
 	}
+	if (target.mid > 500 && damage > 0) { if (target.hp-Math.max(0,damage) > 0) addTimeout(function() { SM.playVoice(target.mid,'damage',target.id); }, 100); }
+	else if (target.hp/target.hpmax > .5 && (target.hp-Math.max(0,damage))/target.hpmax <= .5)
+		addTimeout(function() { SM.playVoice(target.mid,'damage3',target.id); }, 100);
+	else if (target.hp/target.hpmax > .75 && (target.hp-Math.max(0,damage))/target.hpmax <= .75)
+		addTimeout(function() { SM.playVoice(target.mid,'damage'+((Math.random()<.5)? 1:2),target.id); }, 100);
+	
 	if (PVPMODE && target.side==1 && damage > target.hp-1) damage = target.hp-1;
 	createNumber(target.xorigin+85,target.graphic.y+22,damage,forcecrit);
 	shipSetHP(target,target.hp-Math.max(0,damage));
@@ -1337,6 +1362,7 @@ function shoot(ship,target,damage,forcecrit,protect) {
 		addTimeout(function() { updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,3]]); }, 675);
 	}
 	addTimeout(function() { SM.play('fire'); }, 200);
+	addTimeout(function() { SM.playVoice(ship.mid,'attack',ship.id); }, 200);
 	addTimeout(function(){
 		standardHit(target,damage,true,protect,forcecrit);
 	},800);
@@ -1346,6 +1372,7 @@ function shoot(ship,target,damage,forcecrit,protect) {
 
 function shootDA(ship,target,damage1,damage2,crit1,crit2,protect) {
 	updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,2]]);
+	addTimeout(function() { SM.playVoice(ship.mid,'nbattack',ship.id); }, 400);
 	addTimeout(function(){ updates.push([shipMoveTo,[ship,ship.xorigin+25-50*ship.side,3]]); }, 500);
 	addTimeout(function(){
 		standardHit(target,damage1,!protect,protect,crit1);
@@ -1363,6 +1390,7 @@ function shootPlane(ship,target,damage,forcecrit,protect) {
 	var angle = Math.atan((ship.graphic.y-target.graphic.y)/(ship.graphic.x-target.graphic.x));
 	updates.push([movePlane,[planes,angle,(ship.side==0) ? 5 : -5, (ship.escort||target.escort)]]);
 	SM.play('planelaunch');
+	SM.playVoice(ship.mid,'attack',ship.id);
 	
 	addTimeout(function() { SM.play('planeatk'); },(ship.escort||target.escort)? 1300 : 1900);
 	if (protect) addTimeout(function() { updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,3]]); }, (ship.escort||target.escort)? 1475 : 2075);
@@ -1395,6 +1423,7 @@ function shootASW(ship,target,damage,forcecrit,protect) {
 		arc.notpersistent = true;
 		stage.addChild(arc);
 		updates.push([arcFade,[arc]]);
+		SM.playVoice(ship.mid,'attack',ship.id);
 	}, 200);
 	addTimeout(function() {
 		var arc = getFromPool('aswdown','assets/296.png');
@@ -1440,6 +1469,7 @@ function shootCutIn(ship,target,damage,forcecrit,protect) {
 		if (damage<=14) SM.play('fire');
 		else if (damage<40) SM.play('hit');
 		else { SM.play('crit'); SM.play('fire'); }
+		SM.playVoice(ship.mid,'nbattack',ship.id);
 	},800);
 	addTimeout(function(){
 		standardHit(target,damage,true,protect,forcecrit);
@@ -1469,6 +1499,7 @@ function shootBigGun(ship,target,damage,forcecrit,protect) {
 
 function shootTorp(ship,target,damage,forcecrit,protect) {
 	shipShake(ship,3,0,36);
+	SM.playVoice(ship.mid,'nbattack',ship.id);
 	addTimeout(function(){ createTorp(ship,target,6); SM.play('torpedo'); }, 500);
 	if (protect) addTimeout(function() { updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,3]]); }, 1775);
 	addTimeout(function(){ standardHit(target,damage,true,protect,forcecrit); },1900);
@@ -1478,6 +1509,7 @@ function shootTorp(ship,target,damage,forcecrit,protect) {
 
 function shootBigTorp(ship,target,damage,forcecrit,protect) {
 	shipShake(ship,3,0,36);
+	SM.playVoice(ship.mid,'nbattack',ship.id);
 	addTimeout(function(){ createTorp(ship,target,12,true); SM.play('torpedo');}, 500);
 	if (protect) addTimeout(function() { updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,3]]); }, 1175);
 	addTimeout(function(){ standardHit(target,damage,true,protect,forcecrit); },1300);
@@ -1504,6 +1536,7 @@ function shootWG(ship,target,damage,forcecrit,protect) {
 			}
 			return false;
 		},[smoke]]);
+		SM.playVoice(ship.mid,'attack',ship.id);
 	}, 200);
 	addTimeout(function() { createWGFire(target.graphic.x+140-120*target.side,target.graphic.y+20); }, 1000);
 	addTimeout(function(){
@@ -1574,6 +1607,7 @@ function shootLandingCraft(ship,target,damage,forcecrit,protect,image) {
 	updates.push([shipMoveTo,[ship,ship.xorigin+25-50*ship.side,2]]);
 	updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,2]]);
 	createLandingCraft(ship.graphic.x+230-ship.side*291,ship.graphic.y,Math.atan2(target.graphic.y-ship.graphic.y,target.graphic.x-ship.graphic.x-185+370*ship.side),image);
+	addTimeout(function() { SM.playVoice(ship.mid,'attack',ship.id); }, 200);
 	addTimeout(function(){
 		standardHit(target,damage,true,protect,forcecrit);
 		updates.push([shipMoveTo,[ship,ship.xorigin,2]]);
@@ -1805,6 +1839,8 @@ function GTorpedoPhase(shots) {
 			j++;
 		}, 550);
 	}
+	var s; for (s=0; s<shots.length; s++) if (shots[s][0].id < 10) break;
+	if (s < shots.length) SM.playVoice(shots[s][0].mid,'attack',shots[s][0].id);
 	addTimeout(function() { SM.play('torpedo'); }, 550);
 	
 	var k = 0;
@@ -1870,6 +1906,7 @@ function GAirPhase(attackdata,targetdata,defenders,aaci1,aaci2,contact1,contact2
 				addTimeout(function() { createAACIfire(600,370); }, 100);
 				addTimeout(function() { createAACIfire(600,290); }, 300);
 				var aaciship = (aaci1 > 5)? fleet1C[aaci1-6] : fleet1[aaci1];
+				SM.playVoice(aaciship.mid,'nbattack',aaciship.id);
 				updates.push([shipMoveTo,[aaciship,aaciship.xorigin+25-50*aaciship.side,3]]);
 				addTimeout(function() { updates.push([shipMoveTo,[aaciship,aaciship.xorigin,3]]); }, 800);
 			}
@@ -2269,7 +2306,7 @@ function NBstart(flares,bgm) {
 	}
 	var f1 = (COMBINED)? fleet1C : fleet1;
 	var light1 = null, light2 = null;
-	for (var i=0; i<f1.length; i++) if (f1[i].hassearchlight && f1[i].hp > 1) { light1 = f1[i]; break; }
+	for (var i=0; i<f1.length; i++) if (f1[i].hassearchlight && f1[i].hp > 1 && !f1[i].escaped) { light1 = f1[i]; break; }
 	for (var i=0; i<fleet2.length; i++) if (fleet2[i].hassearchlight && fleet2[i].hp > 1) { light2 = fleet2[i]; break; }
 	if (light1 || light2) {
 		if (nbtimer < 2500) nbtimer = 2500;
@@ -2406,7 +2443,7 @@ function openShutters() {
 	if (shutterTop.y <= -246) {
 		shutterTop.y = -246;
 		shutterBottom.y = 456;
-		shutterTop.alpha = shutterBottom.alpha = .25;
+		shutterTop.alpha = shutterBottom.alpha = 0;
 		return true;
 	}
 	return false;
@@ -2444,8 +2481,8 @@ function skipToBattle(battle) {
 				if (fleet1C[i].hp != hps[i+12] || fleet1C[i].escaped) shipSetHP(fleet1C[i],hps[i+12]);
 			}
 		}
-		shutterTop.y = -246; shutterTop.alpha = .25;
-		shutterBottom.y = 456; shutterBottom.alpha = .25;
+		shutterTop.y = -246; shutterTop.alpha = 0;
+		shutterBottom.y = 456; shutterBottom.alpha = 0;
 		SM.stopBGM();
 	}
 }
@@ -2618,7 +2655,7 @@ function clickedBack() {
 		for (var i=0; i<stage.children.length; i++) {
 			if (stage.getChildAt(i).notpersistent) { recycle(stage.getChildAt(i)); i--; }
 		}
-		shutterTop.y = -246; shutterBottom.y = 456; shutterTop.alpha = shutterBottom.alpha = .25;
+		shutterTop.y = -246; shutterBottom.y = 456; shutterTop.alpha = shutterBottom.alpha = 0;
 		for (var i=0; i<fleet1.length; i++) {
 			fleet1[i].graphic.x = fleet1[i].xorigin;
 			if (fleet1[i].shakepid) clearInterval(fleet1[i].shakepid);

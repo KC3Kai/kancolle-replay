@@ -5,6 +5,8 @@ function SoundManager() {
 	this._bgm = null;
 	this.BGMnum = 0;
 	this._sounds = {};
+	this._voices = [null,null,null,null,null,null,null,null,null,null,null,null];
+	this._voiceON = true;
 	for (name in SOUNDNAMES) {
 		var vol = (SOUNDNAMES[name].voldef)? SOUNDNAMES[name].voldef : .6;
 		this._sounds[name] = new Howl({urls:[SOUNDNAMES[name].path],volume:vol*this._volume});
@@ -49,6 +51,32 @@ SoundManager.prototype = {
 		if (!dur) dur = 2000;
 		this._bgm.fade(this._bgm.volume(),0,dur);
 		this.BGMnum = 0;
+	},
+	playVoice: function(shipid,type,slot) {
+		if (!this._voiceON) return;
+		if (!VOICES[shipid]) return;
+		// if (slot > 10) return; //want non boss voices?
+		if (type=='nbattack' && !VOICES[shipid].nbattack) type = 'attack';
+		if (!VOICES[shipid][type]) return;
+		if (!this._sounds['V'+type+shipid]) this._sounds['V'+type+shipid] = new Howl({
+			urls:[VOICES[shipid][type]],
+			volume:.4*this._volume,
+			buffer:true
+			});
+		if (this._voices[slot] && shipid < 500) {
+			this._voices[slot].stop();
+		}
+		this._voices[slot] = this._sounds['V'+type+shipid];
+		this._sounds['V'+type+shipid].play();
+	},
+	turnOffVoice: function() {
+		this._voiceON = false;
+		for (var snd in this._sounds) {
+			if (snd[0] == 'V') this._sounds[snd].stop();
+		}
+	},
+	turnOnVoice: function() {
+		this._voiceON = true;
 	}
 }
 
@@ -105,4 +133,7 @@ var BGMLIST = {
 	107: {url:'http://vignette1.wikia.nocookie.net/kancolle/images/b/b2/107b.ogg'},
 	998: {url:'https://dl.dropboxusercontent.com/u/79056688/savior%20of%20song.mp3'},
 	999: {url:'https://dl.dropboxusercontent.com/u/79056688/Orel%20Cruising%20%26%20LSC%20Song%20%5BENG%20Sub%5D.mp3',voldef:.3},
+	1001: {url:'http://vignette2.wikia.nocookie.net/kancolle/images/2/2f/103v.ogg'},
+	1027: {url:'http://vignette4.wikia.nocookie.net/kancolle/images/0/06/Sound_bgm_almi.ogg'},
 };
+

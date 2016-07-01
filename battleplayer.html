@@ -74,7 +74,7 @@
 		</style>
 	</head>
 	<body>
-		<span style="font-size:24px;font-weight:bold">KanColle Battle Replayer</span> <span style="color:red;margin-left:20px">v1.0 Beta 2.6 <span style="margin-left:20px;font-style:italic">(Last update: 2016-05-25)</span></span>
+		<span style="font-size:24px;font-weight:bold">KanColle Battle Replayer</span> <span style="color:red;margin-left:20px">v1.0 Beta 2.7 <span style="margin-left:20px;font-style:italic">(Last update: 2016-06-30)</span></span>
 		<br><br>
 		<div>
 			<div>
@@ -96,6 +96,7 @@
 				<div style="float:left;width:200px">
 					<input type="button" value="&#128266;" style="width:30px" onclick="if(!Howler._muted){Howler.mute();this.value='&#128263;'}else{Howler.unmute();this.value='&#128266;';Howler.volume(parseFloat($('#rngvol').val()))}" />
 					<input id="rngvol" type="range" value=".6" step=".01" min="0" max="1" style="width:100px" oninput="if(!Howler._muted)Howler.volume(parseFloat(this.value))" />
+					<br><span style="margin-left:45px">Voice <input id="chkvoice" type="checkbox" checked="checked" /></span>
 				</div>
 			</div>
 			<div style="width:800px;height:100px;padding-top:20px;clear:both">
@@ -118,6 +119,7 @@
 		
 			<div id="battlespace"></div>
 			<script src="playersound.js"></script>
+			<script src="playersound2.js"></script>
 			<script src="player.js"></script>
 		</div>
 		<div>
