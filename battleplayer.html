@@ -74,7 +74,7 @@
 		</style>
 	</head>
 	<body>
-		<span style="font-size:24px;font-weight:bold">KanColle Battle Replayer</span> <span style="color:red;margin-left:20px">v1.0 Beta 2.7 <span style="margin-left:20px;font-style:italic">(Last update: 2016-07-02)</span></span>
+		<span style="font-size:24px;font-weight:bold">KanColle Battle Replayer</span> <span style="color:red;margin-left:20px">v1.0 Beta 3.0 <span style="margin-left:20px;font-style:italic">(Last update: 2016-08-07)</span></span>
 		<br><br>
 		<div>
 			<div>
@@ -250,6 +250,10 @@
 			if (qs.fromImg) {
 				loadImgURL(qs.fromImg);
 			}
+			
+			$('#textimgurl').on('keypress', function(e) {
+				if (e.keyCode === 13 && this.value) loadImgURL(this.value);
+			});
 
 		</script>
 	</body>

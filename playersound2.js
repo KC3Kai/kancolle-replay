@@ -2967,6 +2967,14 @@ var VOICES = {
 		damage2: "http://vignette4.wikia.nocookie.net/kancolle/images/f/fd/Littorio-Minor_Damage_2.ogg",
 		damage3: "http://vignette2.wikia.nocookie.net/kancolle/images/3/3e/Littorio-Major_Damage.ogg",
 	},
+	446: {
+		start: "http://vignette1.wikia.nocookie.net/kancolle/images/8/87/Littorio-Battle_Start.ogg",
+		attack: "http://vignette2.wikia.nocookie.net/kancolle/images/6/66/Littorio-Attack.ogg",
+		nbattack: "http://vignette3.wikia.nocookie.net/kancolle/images/e/e6/Littorio-Night_Attack.ogg",
+		damage1: "http://vignette4.wikia.nocookie.net/kancolle/images/3/31/Littorio-Minor_Damage_1.ogg",
+		damage2: "http://vignette4.wikia.nocookie.net/kancolle/images/f/fd/Littorio-Minor_Damage_2.ogg",
+		damage3: "http://vignette2.wikia.nocookie.net/kancolle/images/3/3e/Littorio-Major_Damage.ogg",
+	},
 	442: {
 		start: "http://vignette1.wikia.nocookie.net/kancolle/images/4/46/Roma-Battle_Start.ogg",
 		attack: "http://vignette1.wikia.nocookie.net/kancolle/images/c/cd/Roma-Attack.ogg",

@@ -120,13 +120,17 @@ function Ship(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	this._astype = false;
 	this._aswpower = false;
 	this._apmod = false;
+	
+	if (this.installtype) {
+		this.isInstall = true;
+	}
 }
 Ship.prototype.loadEquips = function(equips,levels,addstats) {
 	if (!equips || this.equips.length > 0) return;  //don't load if already have equips, do removeEquips() first
 	var atypes = {};
 	var planeacc = 0, planetype = 0;
+	var installeqs = {DH1:0,DH2:0,DH3:0,WG:0,AP:0,T3:0,SB:0,SF:0};
 	for (var i=0; i<equips.length; i++){
-		// console.log(typeof equips[i]);
 		if (!equips[i]) continue;
 		var eq = new Equip(equips[i],levels[i]);  //remember change 1 to actual level
 		//eq.setImprovement(level);
@@ -166,6 +170,15 @@ Ship.prototype.loadEquips = function(equips,levels,addstats) {
 			if (i==0 && key=='critdmgbonus') this[key] += eq[key]; //double for first slot plane
 		}
 		
+		//installation equips
+		if (eq.btype == B_LC1) installeqs.DH1++;
+		else if(eq.btype == B_LC2) { installeqs.DH2++; this.hasDH2 = true; }
+		else if(eq.btype == B_LC3) { installeqs.DH3++; this.hasDH3 = true; }
+		else if(eq.type == APSHELL) installeqs.AP++;
+		else if(eq.type == TYPE3SHELL) installeqs.T3++;
+		else if(eq.type == SEAPLANEBOMBER) installeqs.SB++;
+		//seaplane fighter?
+		
 		this.equips.push(eq);
 	}
 	this.ACCbonus = (this.ACCbonus)? this.ACCbonus+planeacc : planeacc;
@@ -183,6 +196,26 @@ Ship.prototype.loadEquips = function(equips,levels,addstats) {
 			if (eq.LUK) this.LUK += eq.LUK;
 		}
 	}
+	
+	this.pillboxMult = (this.type=='DD'||this.type=='CL')? 1.4 : 1;
+	if (installeqs.WG >= 2) this.pillboxMult*=2.72;
+	else if (installeqs.WG == 1) this.pillboxMult*=1.6;
+	if (installeqs.DH2 >= 2) this.pillboxMult*=3;
+	else if (installeqs.DH2 == 1) this.pillboxMult*=2.15;
+	else if (installeqs.DH1) this.pillboxMult*=1.8;
+	if (installeqs.DH3) this.pillboxMult*=2.4;
+	if (installeqs.AP) this.pillboxMult*=1.85;
+	if (installeqs.SB) this.pillboxMult*=1.5;
+	
+	this.isoMult = 1;
+	if (installeqs.WG >= 2) this.isoMult*=2.1;
+	else if (installeqs.WG == 1) this.isoMult*=1.4;
+	if (installeqs.DH2 >= 2) this.isoMult*=3;
+	else if (installeqs.DH2 == 1) this.isoMult*=2.15;
+	else if (installeqs.DH1) this.isoMult*=1.8;
+	if (installeqs.DH3) this.isoMult*=2.4;
+	if (installeqs.T3) this.isoMult*=1.75;
+	
 	// this.equips = equips;
 }
 
@@ -245,15 +278,38 @@ Ship.prototype.APmod = function(target) {
 	}
 }
 
+function WGpower(num) {
+	switch (num) {
+		case 1: return 75;
+		case 2: return 110;
+		case 3: return 140;
+		case 4: return 160;
+		default: return 0;
+	}
+}
+
 Ship.prototype.shellPower = function(target) {
 	var bonus = (this.FPDbonus)? Math.floor(this.FPDbonus) : 0;
 	var shellbonus = (this.fleet && this.fleet.formation.shellbonus!==undefined)? this.fleet.formation.shellbonus : 5;
 	if (target.isInstall) {
-		if (target.isPillbox) {
-			
+		switch (target.installtype) {
+			case 2:
+				if (this.numWG) bonus += WGpower(this.numWG);
+				if (this.pillboxMult) return this.FP*this.pillboxMult + shellbonus + bonus;
+				break;
+			case 3:
+				if (this.numWG) bonus += WGpower(this.numWG);
+				if (this.hasT3Shell) return this.FP*3.5 + shellbonus + bonus;
+				break;
+			case 4:
+				if (this.numWG) bonus += WGpower(this.numWG);
+				if (this.isoMult) return this.FP*this.isoMult + shellbonus + bonus;
+				break;
+			default:
+				if (this.numWG) bonus += WGpower(this.numWG);
+				if (this.hasT3Shell) return this.FP*2.5 + shellbonus + bonus;
+				break;
 		}
-		if (this.numWG) bonus += 75 * Math.sqrt(this.numWG);
-		if (this.hasT3Shell) return this.FP*target.T3mult + shellbonus + bonus;
 	}
 	return this.FP + shellbonus + bonus;
 }
@@ -261,11 +317,27 @@ Ship.prototype.shellPower = function(target) {
 Ship.prototype.NBPower = function(target) {
 	var bonus = (this.FPNbonus)? Math.floor(this.FPNbonus) : 0;
 	if (target.isInstall) {
-		if (this.numWG) bonus += 75 * Math.sqrt(this.numWG);
-		if (this.hasT3Shell) return this.FP*target.T3mult + bonus;
-		return this.FP+bonus;
+		switch (target.installtype) {
+			case 2:
+				if (this.numWG) bonus += WGpower(this.numWG);
+				if (this.pillboxMult) return this.FP*this.pillboxMult + bonus;
+				break;
+			case 3:
+				if (this.numWG) bonus += WGpower(this.numWG);
+				if (this.hasT3Shell) return this.FP*3.5 + bonus;
+				break;
+			case 4:
+				if (this.numWG) bonus += WGpower(this.numWG);
+				if (this.isoMult) return this.FP*this.isoMult + bonus;
+				break;
+			default:
+				if (this.numWG) bonus += WGpower(this.numWG);
+				if (this.hasT3Shell) return this.FP*2.5 + bonus;
+				break;
+		}
+		return this.FP + bonus;
 	}
-	return this.FP+this.TP+bonus;
+	return this.FP + this.TP + bonus;
 }
 
 Ship.prototype.ASWPower = function() {
@@ -568,7 +640,6 @@ AO.prototype.loadEquips = function(equips,addstats) {
 
 function Installation(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	this.isInstall = true;
-	this.T3mult = 2.5;
 	BBV.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
 };
 Installation.prototype = Object.create(BBV.prototype);
@@ -615,15 +686,26 @@ function Equip(equipid,level) {
 }
 Equip.prototype.setImprovement = function(level) {
 	if (this.improveType == 1) {
-		var improve = IMPROVEDATA[this.type];
+		var improve = EQTDATA[this.type].improve;
 		if (!improve) return;
 		for (var key in improve) {
 			this[key+'bonus'] = improve[key]*Math.sqrt(level);
 		}
 	} else if (this.improveType == 2) {
-		if (this.type == FIGHTER) this.APbonus = [0,1,3,7,11,16,16,25][level];
-		else if (this.isfighter) this.APbonus = [0,1,2,3,3,5,5,9][level];
-		else if (this.istorpbomber||this.isdivebomber) this.APbonus = [0,1,1,2,2,2,2,3][level];
+		switch (this.type) {
+			case FIGHTER:
+			case SEAPLANEFIGHTER:
+			case INTERCEPTOR:
+				this.APbonus = [0,1,3,7,11,16,16,25][level]; break;
+			case SEAPLANEBOMBER:
+				this.APbonus = [0,1,2,3,3,5,5,9][level]; break;
+			case DIVEBOMBER:
+			case TORPBOMBER:
+			case LANDBOMBER:
+				this.APbonus = [0,1,1,2,2,2,2,3][level]; break;
+			default:
+				break;
+		}
 		//add crit bonus, crit rate bonus, acc bonus
 		if (this.istorpbomber) this.planeaccbonus = 4.7*Math.sqrt(level);
 		else if (this.isdivebomber) this.planeaccbonus = 3*Math.sqrt(level);
