@@ -23,6 +23,10 @@ var SOUNDNAMES = {
 	'enter': { path: 'assets/sounds/48_res.sounds.battle.SE_battle_card.mp3',voldef:.45 },
 	'airphase': { path: 'assets/sounds/42_res.sounds.battle.SE_battle_fannelCutIn.mp3',voldef:.5 },
 	'aaci': { path: 'assets/sounds/52_res.sounds.battle.SE_Bam.mp3' },
+	'text': { path: 'assets/sounds/44_res.sounds.battle.SE_battle_don.mp3' },
+	'mapradar': {  path: 'assets/sounds/3_res.sounds.SE_sally_ping.mp3',voldef:.5 },
+	'mapcompass': { path: 'assets/sounds/4_res.sounds.SE_sally_compass.mp3',voldef:.5 },
+	'click': { path: 'assets/sounds/47_res.sounds.SE_battle_click.mp3',voldef: .5 },
 }
 SoundManager.prototype = {
 	play: function(name,vol,loop) {
@@ -134,6 +138,7 @@ var BGMLIST = {
 	998: {url:'https://dl.dropboxusercontent.com/u/79056688/savior%20of%20song.mp3'},
 	999: {url:'https://dl.dropboxusercontent.com/u/79056688/Orel%20Cruising%20%26%20LSC%20Song%20%5BENG%20Sub%5D.mp3',voldef:.3},
 	1001: {url:'http://vignette2.wikia.nocookie.net/kancolle/images/2/2f/103v.ogg'},
-	1027: {url:'http://vignette4.wikia.nocookie.net/kancolle/images/0/06/Sound_bgm_almi.ogg'},
+	2027: {url:'http://vignette4.wikia.nocookie.net/kancolle/images/0/06/Sound_bgm_almi.ogg'},
+	2031: {url:'http://vignette4.wikia.nocookie.net/kancolle/images/b/b8/903y.ogg'},
 };
 

@@ -82,8 +82,20 @@ loader.add('BG1','assets/82_res.images.ImgBackgroundDay.jpg')
 	.add('WG4','assets/693.png')
 	.add('lc1','assets/LC1.png')
 	.add('lc2','assets/LC2.png')
+	.add('edou','assets/Edou.png')
+	.add('ehan','assets/Ehan.png')
+	.add('ekou','assets/Ekou.png')
+	.add('esen','assets/Esen.png')
+	.add('eT','assets/ET.png')
+	.add('eji','assets/Eji.png')
+	.add('eadv','assets/Eadv.png')
+	.add('edisadv','assets/Edisadv.png')
+	.add('airASP','assets/386_res.battle.images.SeikuuTextKakuhoImage.png')
+	.add('airAD','assets/387_res.battle.images.SeikuuTextSoushitsuImage.png')
+	.add('airAS','assets/388_res.battle.images.SeikuuTextYuseiImage.png')
 	.add('repairteam','assets/Emergency_Repair_Personnel_042_Card.png')
 	.add('repairgoddess','assets/Emergency_Repair_Goddess_043_Card.png')
+	.add('bossbar','assets/bossbar.png')
 	.add('mask','assets/mask.png');
 for (var i=389; i <= 417; i+=2) loader.add(i.toString(),'assets/'+i+'.png');
 for (var i=0; i<=9; i++) loader.add('C'+i,'assets/C'+i+'.png');
@@ -98,7 +110,6 @@ var PRELOADSHIPS = true;
 var bg = PIXI.Sprite.fromImage('assets/82_res.images.ImgBackgroundDay.jpg');
 var bg2 = PIXI.Sprite.fromImage('assets/83_res.images.ImgBackgroundNight.jpg');
 
-// stage.addChild(bunny);
 stage.addChild(bg);
 
 var frames_exp = [];
@@ -289,6 +300,15 @@ var shutterBottom = PIXI.Sprite.fromImage('assets/511_res.common.ImgShutterBotto
 var shutterTop2 = PIXI.Sprite.fromImage('assets/512_res.common.ImgShutterTop.png');
 var shutterBottom2 = PIXI.Sprite.fromImage('assets/510_res.common.ImgShutterBottom.png');
 
+var bossbar = new PIXI.Container();
+var bossbarback = new PIXI.Graphics();
+bossbarback.position.set(80,18);
+bossbar.addChild(bossbarback);
+bossbarback.beginFill(0xff0000);
+bossbarback.drawRect(0,0,1,7);
+bossbar.addChild(PIXI.Sprite.fromImage('assets/bossbar.png'));
+bossBarReset();
+
 var eventqueue = [];
 var battlestarts = [];
 var HPtotal1 = 0, HPtotal2 = 0, HPnow1 = 0, HPnow2 = 0;
@@ -346,7 +366,7 @@ function createShip(data,side,i,damaged) {
 	}
 	ship.hasonlytorp = hasonlytorp;
 	ship.issub = (sdata.type == 'SS' || sdata.type == 'SSV');
-	ship.isinstall = (sdata.type == 'Installation');
+	ship.isinstall = (sdata.type == 'Installation' || sdata.installtype > 0);
 	ship.isCV = (sdata.type == 'CV' || sdata.type == 'CVL' || sdata.type == 'CVN' || sdata.type == 'CVB' || (sdata.type=='AO'&&ship.hasbomber) || [679,680,681,682,683].indexOf(data[0])!=-1);
 	if (sdata.nightgun) ship.nightgun = true;
 	ship.shakepid = 0;
@@ -363,6 +383,7 @@ function processAPI(root) {
 	}
 	console.log(root);
 	COMBINED = root.combined;
+	PVPMODE = (root.world <= 0)? true : false;
 	var HPstate = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1];
 	var HPbeginstate = null, battlenumstate = 0;
 	var getState = function(newbattle) {
@@ -482,7 +503,7 @@ function processAPI(root) {
 		if (data.api_escape_idx_combined) escape[1] = data.api_escape_idx_combined;
 		try {
 			var bgm, map = MAPDATA[root.world].maps[root.mapnum];
-			var letter = (EDGES['World '+root.world+'-'+root.mapnum])? EDGES['World '+root.world+'-'+root.mapnum][root.battles[b].node][1].charCodeAt()-64 : root.battles[b].node;
+			var letter = (window['EDGES'] && EDGES['World '+root.world+'-'+root.mapnum])? EDGES['World '+root.world+'-'+root.mapnum][root.battles[b].node][1].charCodeAt()-64 : root.battles[b].node;
 			var isboss = (Array.isArray(map.bossnode))? (map.bossnode.indexOf(letter) != -1) : (map.bossnode==letter);
 			if (isboss) bgm = (NBonly)? map.bgmNB : map.bgmDB;
 			else bgm = (NBonly)? map.bgmNN : map.bgmDN;
@@ -496,7 +517,7 @@ function processAPI(root) {
 			eventqueue.push([wait,[3000,(isboss||(NBonly && map.bgmDN!=map.bgmNN))]]);
 			eventqueue.push([shuttersNextBattle,[battledata,f2]]);
 		}
-		eventqueue.push([battleStart,[battledata,f2,escape,bgm],getState(true)]);
+		eventqueue.push([battleStart,[battledata,f2,escape,bgm,(isboss&&root.max_maphp&&root.now_maphp)],getState(true)]);
 		battlestarts.push(eventqueue.length-1);
 		allfleets2.push(f2);
 		
@@ -737,9 +758,6 @@ function processAPI(root) {
 			}
 		};
 		
-		// var checkSink = function() {
-			
-		// }
 		
 		//land bombing
 		if (data.api_air_base_attack) {
@@ -790,6 +808,9 @@ function processAPI(root) {
 		//opening torp
 		var f = (COMBINED)? fleet1C : fleet1;
 		if (data.api_opening_atack) processRaigeki(data.api_opening_atack,f);
+		
+		//engagement
+		if (data.hasOwnProperty('api_hougeki1')) eventqueue.push([battleEngageShow,[data.api_formation[2]]]);
 		
 		//shelling 1, 2, 3
 		f = (COMBINED == 1 || COMBINED == 3)? fleet1C : fleet1;
@@ -879,6 +900,11 @@ function processAPI(root) {
 	stage.addChild(shutterTop); stage.addChild(shutterBottom);
 	shutterTop.y = -246; shutterTop.alpha = 0;
 	shutterBottom.y = 456; shutterBottom.alpha = 0;
+	
+	if (root.now_maphp && root.max_maphp) {
+		bossbar.maxhp = root.max_maphp; bossbar.nowhp = root.now_maphp;
+	}
+	
 	if (!started) animate();
 	SM.stopBGM();
 }
@@ -960,10 +986,10 @@ function createExplosion(x,y,scale,parent) {
 	if (!explosion) explosion = new PIXI.extras.MovieClip(frames_exp);
 	explosion.name = 'explosion';
 	explosion.animationSpeed = .5;
-	explosion.anchor.set(.5);
 	explosion.loop = false;
 	explosion.position.set(x,y);
 	explosion.scale.set(scale);
+	explosion.anchor.set(.5);
 	explosion.onComplete = function() { this.gotoAndStop(0); recycle(this); }
 	explosion.gotoAndPlay(0);
 	explosion.notpersistent = true;
@@ -1097,7 +1123,7 @@ function shipAddEscape(ship) {
 function shipSetHP(ship,hp) {
 	if (hp > ship.hpmax) hp = ship.hpmax;
 	if (hp < 0) hp = 0;
-	if (PVPMODE && ship.side==1 && hp <= 0) hp = 1;
+	if (PVPMODE && hp <= 0) hp = 1;
 	
 	if (ship.side==0) { HPnow1 -= ship.hp-hp; setHPBar(1,1-HPnow1/HPtotal1); } //update HP bars
 	else { HPnow2 -= ship.hp-hp; setHPBar(0,1-HPnow2/HPtotal2); }
@@ -1209,7 +1235,7 @@ function dotAppear(dots) {
 }
 
 //--------------------
-function battleStart(battledata,newships,escape,bgm) {
+function battleStart(battledata,newships,escape,bgm,showbosshp) {
 	if (battledata[5] == '1' && !bg2.parent) {  //just in case background wasn't changed
 		stage.removeChild(bg);
 		stage.addChildAt(bg2,0);
@@ -1228,6 +1254,12 @@ function battleStart(battledata,newships,escape,bgm) {
 	updates.push([radarGrow,[radar2]]);
 	updates.push([dotAppear,[dots1]]);
 	updates.push([dotAppear,[dots2]]);
+	
+	if (showbosshp) {
+		stage.addChildAt(bossbar,stage.getChildIndex(dots2));
+		updates.push([bossBarAppear,[]]);
+		bossbar.active = true;
+	}
 
 	addTimeout(function() { showEngage(GEngage); }, 500);
 	
@@ -1303,6 +1335,87 @@ function battleEnd() {
 	addTimeout(function() { ecomplete = true; }, 2000);
 }
 
+function battleEngageShow(engage) {
+	var k1,k2,k4;
+	switch (engage) {
+		case 1:
+			k1 = 'Edou'; k2 = 'Ekou'; break;
+		case 2:
+			k1 = 'Ehan'; k2 = 'Ekou'; break;
+		case 3:
+			k1 = 'ET'; k2 = 'Eji'; k4 = 'Eadv'; break;
+		case 4:
+			k1 = 'ET'; k2 = 'Eji'; k4 = 'Edisadv'; break;
+		default:
+			addTimeout(function() { ecomplete = true; }, 1); return;
+	}
+	var kg1 = getFromPool(k1,'assets/'+k1+'.png');
+	var kg2 = getFromPool(k2,'assets/'+k2+'.png');
+	var kg3 = getFromPool('Esen','assets/Esen.png');
+	var kg4 = null;
+	
+	kg1.position.set(215,240);
+	kg2.position.set(400,240);
+	kg3.position.set(585,240);
+	kg1.alpha = kg2.alpha = kg3.alpha = 0;
+	kg1.notpersistent = kg2.notpersistent = kg3.notpersistent = true;
+	kg1.pivot.set(64,70); kg2.pivot.set(64,70); kg3.pivot.set(64,70); 
+	kg1.scale.set(2); kg2.scale.set(2); kg3.scale.set(2); 
+	stage.addChild(kg1); stage.addChild(kg2); stage.addChild(kg3); 
+	
+	if (k4) {
+		kg4 = getFromPool(k4,'assets/'+k4+'.png');
+		kg1.y -= 25; kg2.y -= 25; kg3.y -= 25;
+		kg4.position.set(401,306);
+		kg4.pivot.set(128,33);
+		kg4.alpha = 0; kg4.scale.set(2); kg4.notpersistent = true;
+		stage.addChild(kg4);
+	}
+	
+	addTimeout(function() {
+		updates.push([engageAppear,[kg1]]);
+	}, 200);
+	addTimeout(function() {
+		updates.push([engageAppear,[kg2]]);
+	}, 450);
+	addTimeout(function() {
+		updates.push([engageAppear,[kg3]]);
+	}, 700);
+	if (kg4) addTimeout(function() {
+		updates.push([engageAppear,[kg4,true]]);
+	}, 950);
+	
+	var kgs = [kg1,kg2,kg3]; if (kg4) kgs.push(kg4);
+	addTimeout(function() {
+		updates.push([engageExit,[kgs]]);
+	}, 1600);
+	
+	addTimeout(function() { ecomplete = true; }, 2500);
+}
+
+function engageAppear(kg,nosound) {
+	kg.alpha += .2;
+	if (kg.alpha > 1) kg.alpha = 1;
+	kg.scale.set(kg.scale.x-.05);
+	if (kg.scale.x <= 1) {
+		if (!nosound) SM.play('text');
+		kg.scale.set(1);
+		return true;
+	}
+	return false;
+}
+
+function engageExit(kgs) {
+	for (var i=0; i<kgs.length; i++) {
+		kgs[i].x -= 25;
+	}
+	if (kgs[2].x <= -100) {
+		for (var i=0; i<kgs.length; i++) recycle(kgs[i]);
+		return true;
+	}
+	return false;
+}
+
 function standardHit(target,damage,move,protect,forcecrit) {
 	move = typeof move !== 'undefined' ? move : true;
 	if (damage <= 14) {
@@ -1316,12 +1429,18 @@ function standardHit(target,damage,move,protect,forcecrit) {
 		SM.play('crit');
 	}
 	if (target.mid > 500 && damage > 0) { if (target.hp-Math.max(0,damage) > 0) addTimeout(function() { SM.playVoice(target.mid,'damage',target.id); }, 100); }
-	else if (target.hp/target.hpmax > .5 && (target.hp-Math.max(0,damage))/target.hpmax <= .5)
+	else if (target.side==0 && target.hp/target.hpmax > .5 && (target.hp-Math.max(0,damage))/target.hpmax <= .5)
 		addTimeout(function() { SM.playVoice(target.mid,'damage3',target.id); }, 100);
-	else if (target.hp/target.hpmax > .75 && (target.hp-Math.max(0,damage))/target.hpmax <= .75)
+	else if (target.side==0 && target.hp/target.hpmax > .75 && (target.hp-Math.max(0,damage))/target.hpmax <= .75)
 		addTimeout(function() { SM.playVoice(target.mid,'damage'+((Math.random()<.5)? 1:2),target.id); }, 100);
 	
-	if (PVPMODE && target.side==1 && damage > target.hp-1) damage = target.hp-1;
+	if (bossbar.active && target.id == 10 && target.hp > 0) {
+		bossbar.nowhp = Math.max(0,bossbar.nowhp - Math.min(damage,target.hp));
+		updates.push([bossBarMove,[]]);
+		if (target.hp-damage <= 0 && bossbar.nowhp <= 0) addTimeout(function() { updates.push([bossBarExplode,[]]); }, 500);
+	}
+	
+	if (PVPMODE && damage > target.hp-1) damage = target.hp-1;
 	createNumber(target.xorigin+85,target.graphic.y+22,damage,forcecrit);
 	shipSetHP(target,target.hp-Math.max(0,damage));
 	if (protect) {
@@ -1937,6 +2056,7 @@ function GAirPhase(attackdata,targetdata,defenders,aaci1,aaci2,contact1,contact2
 			}, 500);
 		}
 		if (AS1!==false && AS2!==false) showAS(AS1,AS2);
+		if (!issupport && AS1!==false) createAirText(AS1);
 	}, 900);
 	
 	if (!issupport) addTimeout(function() {
@@ -2255,8 +2375,8 @@ function moveSmoke(smoke,fadeinspeed,fadeoutspeed,spinspeed,growspeed) {
 
 function createSearchlight(ship) {
 	var light = getFromPool('searchlight','assets/96.png'); light.notpersistent = true;
-	if (ship.side == 0) { light.position.set(ship.graphic.x+160,ship.graphic.y-15); light.scale.x = 1; }
-	else { light.position.set(ship.graphic.x+10,ship.graphic.y-15); light.scale.x = -1; }
+	if (ship.side == 0) { light.position.set(ship.graphic.x+160,ship.graphic.y-15); light.dir = 1; }
+	else { light.position.set(ship.graphic.x+10,ship.graphic.y-15); light.dir = -1; }
 	stage.addChild(light); light.alpha = 0; light.lifetime = 150; updates.push([moveSearchlight,[light]]);
 }
 function moveSearchlight(light) {
@@ -2264,6 +2384,7 @@ function moveSearchlight(light) {
 	if (light.lifetime < 20) light.alpha -= .05;
 	else light.alpha += .015;
 	if (light.alpha > 1) light.alpha = 0;
+	light.scale.x = light.dir - light.dir*.05*Math.cos(light.lifetime*.075);
 	if (light.lifetime <= 0) {
 		recycle(light);
 		return true;
@@ -2394,6 +2515,7 @@ function resetBattle() {
 	if (ENGAGEPIDS[1]) { clearTimeout(ENGAGEPIDS[1]); ENGAGEPIDS[1] = null; }
 	$('#plAS1').text('');
 	$('#plAS2').text('');
+	bossBarReset();
 }
 
 function shuttersNextBattle(battledata, newships) {
@@ -2539,6 +2661,7 @@ function reset(callback) {
 		$('#plEngageT').text('');
 		$('#plAS1').text('');
 		$('#plAS2').text('');
+		bossBarReset();
 		updates = [];
 		timeouts = [];
 		eventqueue = [];
@@ -2680,7 +2803,14 @@ function loadCode(fromOwn,callback) {
 		CANRESET = false;
 		$('#error').text('');
 		try { 
-			if (!fromOwn) API = JSON.parse(document.getElementById("code").value);
+			if (!fromOwn) {
+				var apitxt = document.getElementById("code").value;
+				if (apitxt[apitxt.length-1] != '}') {  //try clean random trailing characters
+					apitxt = apitxt.slice(0,apitxt.lastIndexOf('}')+1); 
+					$('#code').val(apitxt);
+				}
+				API = JSON.parse(apitxt);
+			}
 			processAPI(API);
 			if (callback) callback(API);
 		} catch(e) {
@@ -2696,4 +2826,85 @@ function loadCode(fromOwn,callback) {
 	HASLOADTEXT = true;
 	if (started) reset(f);
 	else f();
+}
+
+
+function bossBarReset() {
+	stage.removeChild(bossbar);
+	bossbar.alpha = 0;
+	bossbar.position.set(540,-4);
+	bossbarback.scale.x = 146;
+	bossbar.active = false;
+	bossbar.timer = 30;
+	bossbar.nowhp = API.now_maphp;
+}
+
+function bossBarAppear() {
+	if (bossbar.alpha < 1) bossbar.alpha += .05;
+	else bossbar.alpha = 1;
+	bossbar.y += 1;
+	if (bossbar.y >= 16) {
+		bossbar.y = 16;
+		updates.push([bossBarMove,[]]);
+		return true;
+	}
+	return false;
+}
+
+function bossBarMove() {
+	bossbarback.scale.x--;
+	var percentbar = bossbarback.scale.x/146;
+	var percenthp = bossbar.nowhp/bossbar.maxhp;
+	if (percentbar < percenthp) {
+		bossbarback.scale.x++;
+		return true;
+	}
+	return false;
+}
+
+function bossBarExplode() {
+	bossbar.timer--;
+	bossbar.alpha = bossbar.timer/30;
+	if (bossbar.timer == 29) { createExplosion(bossbar.x+100,Math.random()*35+31); SM.play('fire'); }
+	if (bossbar.timer == 19) { createExplosion(bossbar.x+160,Math.random()*35+31); SM.play('fire'); }
+	if (bossbar.timer == 14) { createExplosion(bossbar.x+220,Math.random()*35+31); SM.play('fire'); }
+	if (bossbar.timer <= 0) {
+		bossBarReset();
+		return true;
+	}
+	return false;
+}
+
+function createAirText(num) {
+	var text;
+	switch (num) {
+		case -2: text = getFromPool('AD','assets/387_res.battle.images.SeikuuTextSoushitsuImage.png'); break;
+		case 1: text = getFromPool('AS','assets/388_res.battle.images.SeikuuTextYuseiImage.png'); break;
+		case 2: text = getFromPool('AS+','assets/386_res.battle.images.SeikuuTextKakuhoImage.png'); break;
+		default: return;
+	}
+	text.position.set(301,369);
+	text.alpha = 0;
+	text.notpersistent = true;
+	stage.addChild(text);
+	
+	updates.push([function() {
+		text.alpha += .05;
+		if (text.alpha >= 1) {
+			text.alpha = 1;
+			return true;
+		}
+		return false;
+	},[]]);
+	
+	addTimeout(function() {
+		updates.push([function() {
+			text.alpha -= .05;
+			if (text.alpha <= 0) {
+				recycle(text);
+				return true;
+			}
+			return false;
+		},[]]);
+	}, 1500);
 }

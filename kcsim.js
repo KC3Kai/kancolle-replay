@@ -1,8 +1,8 @@
 var LINEAHEAD = {shellmod:1,torpmod:1,ASWmod:.6,AAmod:.77, shellacc:1,torpacc:3,NBacc:.8, FSprot:.5, id:1};
 var DOUBLELINE = {shellmod:.8,torpmod:.8,ASWmod:.8,AAmod:.91, shellacc:2,torpacc:1,NBacc:.75, FSprot:1, id:2};
-var DIAMOND = {shellmod:.7,torpmod:.7,ASWmod:1.2,AAmod:1.2, shellacc:1,torpacc:.1,NBacc:.7, FSprot:2, id:3};
-var ECHELON = {shellmod:.6,torpmod:.6,ASWmod:1,AAmod:.77, shellacc:1,torpacc:.2,NBacc:.7, FSprot:1, id:4};
-var LINEABREAST = {shellmod:.6,torpmod:.6,ASWmod:1.3,AAmod:.77, shellacc:2,torpacc:.1,NBacc:.75, FSprot:1, id:5};
+var DIAMOND = {shellmod:.7,torpmod:.7,ASWmod:1.2,AAmod:1.2, shellacc:1,torpacc:.2,NBacc:.7, FSprot:2, id:3};
+var ECHELON = {shellmod:.6,torpmod:.6,ASWmod:1,AAmod:.77, shellacc:1,torpacc:.3,NBacc:.7, FSprot:1, id:4};
+var LINEABREAST = {shellmod:.6,torpmod:.6,ASWmod:1.3,AAmod:.77, shellacc:2,torpacc:.2,NBacc:.75, FSprot:1, id:5};
 
 var CTFCOMBINED1M = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:.77, shellbonus:2, shellacc:.5,torpacc:.5,NBacc:.8, id:11};
 var CTFCOMBINED1E = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:.77, shellbonus:10, shellacc:.25,torpacc:.5,NBacc:.8, id:11};
@@ -145,16 +145,16 @@ function shell(ship,target,APIhou) {
 	}
 	
 	if (da) {
-		var res = rollHit(accuracyAndCrit(ship,target,evMod),(ship.CVshelltype)? ship.critdmgbonus:0);
+		var res1 = rollHit(accuracyAndCrit(ship,target,evMod),(ship.CVshelltype)? ship.critdmgbonus:0);
 		var dmg1 = Math.floor(target.HP*(.06+.08*Math.random())), realdmg1 = 0;
-		if (res) {
-			dmg1 = damage(ship,target,ship.shellPower(target),preMod,1.2*res*postMod);
+		if (res1) {
+			dmg1 = damage(ship,target,ship.shellPower(target),preMod,1.2*res1*postMod);
 			realdmg1 = takeDamage(target,dmg1);
 		} else { realdmg1 = takeDamage(target,dmg1) };
-		res = rollHit(accuracyAndCrit(ship,target,evMod),(ship.CVshelltype)? ship.critdmgbonus:0);
+		var res2 = rollHit(accuracyAndCrit(ship,target,evMod),(ship.CVshelltype)? ship.critdmgbonus:0);
 		var dmg2 = Math.floor(target.HP*(.06+.08*Math.random())), realdmg2 = 0;
-		if (res) {
-			dmg2 = damage(ship,target,ship.shellPower(target),preMod,1.2*res*postMod);
+		if (res2) {
+			dmg2 = damage(ship,target,ship.shellPower(target),preMod,1.2*res2*postMod);
 			realdmg2 = takeDamage(target,dmg2);
 		} else { realdmg2 = takeDamage(target,dmg2); }
 		ship.fleet.giveCredit(ship,dmg1+dmg2);
@@ -166,7 +166,7 @@ function shell(ship,target,APIhou) {
 			APIhou.api_df_list.push([target.apiID,target.apiID]);
 			APIhou.api_damage.push([realdmg1+DIDPROTECT*.1,realdmg2+DIDPROTECT*.1]);
 			APIhou.api_at_type.push(2);
-			APIhou.api_cl_list.push([1,1]);
+			APIhou.api_cl_list.push([((res1>1)?2:1),((res2>1)?2:1)]);
 		}
 	} else {
 		var res = rollHit(accuracyAndCrit(ship,target,evMod),(ship.CVshelltype)? ship.critdmgbonus:0);
@@ -185,7 +185,7 @@ function shell(ship,target,APIhou) {
 			APIhou.api_df_list.push([target.apiID]);
 			APIhou.api_damage.push([realdmg+DIDPROTECT*.1]);
 			APIhou.api_at_type.push((cutin)? 3 : 0);
-			APIhou.api_cl_list.push([1]);
+			APIhou.api_cl_list.push([((res>1)?2:1)]);
 		}
 	}
 	return (target.HP <= 0);
@@ -247,16 +247,16 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen) {
 	}
 	
 	if (da) {
-		var res = rollHit(accuracyAndCrit(ship,target,evMod),0);
+		var res1 = rollHit(accuracyAndCrit(ship,target,evMod),0);
 		var dmg1 = Math.floor(target.HP*(.06+.08*Math.random())), realdmg1 = 0;
-		if (res) {
-			dmg1 = damage(ship,target,ship.NBPower(target)+bonus,preMod,res*postMod,300);
+		if (res1) {
+			dmg1 = damage(ship,target,ship.NBPower(target)+bonus,preMod,res1*postMod,300);
 			realdmg1 = takeDamage(target,dmg1);
 		} else { realdmg1 = takeDamage(target,dmg1) };
-		res = rollHit(accuracyAndCrit(ship,target,evMod),0);
+		var res2 = rollHit(accuracyAndCrit(ship,target,evMod),0);
 		var dmg2 = Math.floor(target.HP*(.06+.08*Math.random())), realdmg2 = 0;
-		if (res) {
-			dmg2 = damage(ship,target,ship.NBPower(target)+bonus,preMod,res*postMod,300);
+		if (res2) {
+			dmg2 = damage(ship,target,ship.NBPower(target)+bonus,preMod,res2*postMod,300);
 			realdmg2 = takeDamage(target,dmg2);
 		} else { realdmg2 = takeDamage(target,dmg2); }
 		ship.fleet.giveCredit(ship,dmg1+dmg2);
@@ -269,7 +269,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen) {
 			APIyasen.api_df_list.push([target.apiID,target.apiID]);
 			APIyasen.api_damage.push([realdmg1+DIDPROTECT*.1,realdmg2+DIDPROTECT*.1]);
 			APIyasen.api_sp_list.push((da==2)? 1 : 2);
-			APIyasen.api_cl_list.push([1,1]);
+			APIyasen.api_cl_list.push([((res1>1)?2:1),((res2>1)?2:1)]);
 		}
 	} else {
 		var res = rollHit(accuracyAndCrit(ship,target,evMod),0);
@@ -289,7 +289,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen) {
 			APIyasen.api_df_list.push([target.apiID]);
 			APIyasen.api_damage.push([realdmg+DIDPROTECT*.1]);
 			APIyasen.api_sp_list.push((cutin==7)? 4 : 0);
-			APIyasen.api_cl_list.push([1]);
+			APIyasen.api_cl_list.push([((res>1)?2:1)]);
 		}
 	}
 	return (target.HP <= 0);
@@ -314,7 +314,7 @@ function ASW(ship,target,isnight,APIhou) {
 		APIhou.api_damage.push([realdmg+DIDPROTECT*.1]);
 		if(APIhou.api_at_type) APIhou.api_at_type.push(0);
 		else APIhou.api_sp_list.push(0);
-		APIhou.api_cl_list.push([1]);
+		APIhou.api_cl_list.push([((res>1)?2:1)]);
 	}
 	return (target.HP <= 0);
 }
@@ -336,7 +336,7 @@ function laser(ship,targets,APIhou) {
 			console.log(ship.name+' LASERS '+targets[i].name+' FOR '+dmg+' DAMAGE, '+targets[i].HP+'/'+targets[i].maxHP+' left');
 			targetids.push(targets[i].apiID);
 			damages.push(realdmg);
-			crits.push(1);
+			crits.push(((res>1)?2:1));
 		}
 	}
 	if (C) {
@@ -589,7 +589,13 @@ function damage(ship,target,base,preMod,postMod,cap) {
 	if (dmg > cap) dmg = cap + Math.sqrt(dmg-cap);
 	
 	dmg *= postMod;  //artillery spotting, contact, AP shell, critical
-	// if (Math.random() < CRITCHANCE) dmg*=1.5;  included in postMod now, calculated outside function
+	if (target.installtype == 3) { //supply depot type installations
+		if (ship.numWG >= 2) dmg *= 1.62;
+		else if (ship.numWG == 1) dmg *= 1.25;
+		if (ship.hasDH2 && ship.hasDH3) dmg *= 2.22;
+		else if (ship.hasDH3) dmg *= 2.1;
+		else if (ship.hasDH2) dmg *= 1.75;
+	}
 	if (C) console.log('	before def: '+dmg);
 	dmg -= target.AR*(.7+.6*Math.random());
 	if (C) console.log('	after def: '+dmg);
@@ -968,6 +974,27 @@ function sim(F1,F2,Fsupport,doNB,NBonly,aironly,landbomb,BAPI) {
 		}
 	}
 	
+	//opening asw
+	if (!NBonly && !aironly && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length > 0) {
+		var ranges = [[],[],[],[],[]]; //fleet 1
+		for (var i=0; i<alive1.length; i++) {
+			if (alive1[i].ASW >= 100 || (alive1[i].alwaysOpASW && alive1[i].equiptypes[B_SONAR]))
+				ranges[alive1[i].RNG].push(alive1[i]);
+		}
+		for (var i=0; i<ranges.length; i++) shuffle(ranges[i]);
+		var order1 = [];
+		for (var i=0; i<ranges[4].length; i++) order1.push(ranges[4][i]);
+		for (var i=0; i<ranges[3].length; i++) order1.push(ranges[3][i]);
+		for (var i=0; i<ranges[2].length; i++) order1.push(ranges[2][i]);
+		for (var i=0; i<ranges[1].length; i++) order1.push(ranges[1][i]);
+		for (var i=0; i<ranges[0].length; i++) order1.push(ranges[0][i]);
+		
+		if (order1.length) {
+			if (C) BAPI.data.api_opening_taisen = {api_at_list:[-1],api_at_type:[-1],api_damage:[-1],api_df_list:[-1],api_cl_list:[-1]};
+			shellPhase(order1,[],alive1,subsalive1,subsalive2,subsalive2,(C)? BAPI.data.api_opening_taisen:undefined);
+		}
+	}
+	
 	// opening torpedo
 	if (!NBonly && !aironly && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length > 0) {
 		if (C) BAPI.data.api_opening_atack = {api_edam:[-1,0,0,0,0,0,0],api_erai:[-1,0,0,0,0,0,0],api_eydam:[-1,0,0,0,0,0,0],api_fdam:[-1,0,0,0,0,0,0],api_frai:[-1,0,0,0,0,0,0],api_fydam:[-1,0,0,0,0,0,0]};
@@ -1054,6 +1081,7 @@ function sim(F1,F2,Fsupport,doNB,NBonly,aironly,landbomb,BAPI) {
 			for (var j=0; j<ships2.length; j++) if (ships2[j].type != 'SS') subonly = false;
 			ships1[i].fuelleft -= 2;
 			if (!subonly) ships1[i].ammoleft -= (didNB)? 3 : 2;
+			else if (didNB) ships1[i].ammoleft -= 1;
 			if (C) console.log('aaaaaaaaaaaaaaaaaaaaa'+ships1[i].fuelleft);
 		}
 	}

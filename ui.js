@@ -167,7 +167,7 @@ function dialogEquip(types) {
 			var equip = EQDATA[eqid];
 			if (types.indexOf(equip.type)==-1) continue;
 			var tr = $('<tr></tr>');
-			tr.append('<td class="left" onclick="dSetEquip('+eqid+')"><img src="assets/items/'+EQIMAGES[equip.type]+'.png"/></td>');
+			tr.append('<td class="left" onclick="dSetEquip('+eqid+')"><img src="assets/items/'+EQTDATA[equip.type].image+'.png"/></td>');
 			var td = $('<td onclick="dSetEquip('+eqid+')"></td>');
 			td.append('<span>'+equip.name+'</span><br>');
 			for (var j=0; j<STATS.length; j++) {
@@ -454,7 +454,7 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor) {
      
 	var EQSORTED = {};
 	for (equipid in EQDATA) {
-		var type = EQNAMES[EQDATA[equipid].type];
+		var type = (EQDATA[equipid].type)? EQTDATA[EQDATA[equipid].type].name : undefined;
 		if (!EQSORTED[type]) EQSORTED[type] = [];
 		EQSORTED[type].push(equipid);
 	}
@@ -656,7 +656,7 @@ function tableSetShip(fleet,slot,shipid,stats,equips,improves) {
 			$('#T'+fleet+'plane'+slot+i).val('');
 			
 		setImprove(fleet,slot,i,EQDATA[eqid].improveType,(improves)?improves[i]:0);
-		if (eqid!='0') $('#T'+fleet+'eqimg'+slot+i).attr('src','assets/items/'+EQIMAGES[EQDATA[eqid].type]+'.png');
+		if (eqid!='0') $('#T'+fleet+'eqimg'+slot+i).attr('src','assets/items/'+EQTDATA[EQDATA[eqid].type].image+'.png');
 		else $('#T'+fleet+'eqimg'+slot+i).attr('src','assets/items/empty.png');
 	}
 }
@@ -776,7 +776,7 @@ function changedEquip(fleet,slot,equipslot,nochangeimprov) {
 		}
 		// var previmprove = $('#T'+fleet+'imprv'+slot+equipslot).val();
 		if (!nochangeimprov) setImprove(fleet,slot,equipslot,equip.improveType,0);
-		if(equipid!='0') $('#T'+fleet+'eqimg'+slot+equipslot).attr('src','assets/items/'+EQIMAGES[equip.type]+'.png');
+		if(equipid!='0') $('#T'+fleet+'eqimg'+slot+equipslot).attr('src','assets/items/'+EQTDATA[equip.type].image+'.png');
 		else  $('#T'+fleet+'eqimg'+slot+equipslot).attr('src','assets/items/empty.png');
 	} else $('#T'+fleet+'e'+slot+equipslot+'_chosen').attr('title','');
 	var pequipid = PREVEQS[fleet][slot][equipslot];
@@ -823,7 +823,7 @@ function loadIntoSim(fleet,side,isescort) {
 				if (parseInt(PREVEQS[fleet][i][j])) { equips.push(parseInt(PREVEQS[fleet][i][j])); levels.push(parseInt($('#T'+fleet+'imprv'+i+j).val())); }
 			}
 			
-			console.log(levels);
+			//console.log(levels);
 			//do I want to do it like this?
 			var protect = (mid < 500 && side==0)? 0 : 1;
 			if (side == 0 && [901,902,903,1001].indexOf(mid) != -1) protect = 0;
