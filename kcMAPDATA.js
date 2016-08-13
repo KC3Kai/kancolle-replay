@@ -10,20 +10,6 @@ var MAPDATA = {
 				bgmDB: 2,
 				bgmNB: 2,
 				bossnode: 3,
-				nodes: {
-					1: {
-						//type: BATTLE,
-						route: ['B','C'],
-						//route: function(comp) { if (countShip(comp,'BB') > 2)
-						exp: 90,
-						bgm: 2,
-						bgmN: 3,
-						comps: {
-							1: { c: [501,501], f: 1, name: 'HQ100+' },
-							2: { c: [501,501], f: 1 }
-						}
-					}
-				}
 			},
 			2: {
 				name: '1-2',
@@ -60,6 +46,7 @@ var MAPDATA = {
 				bgmDB: 13,
 				bgmNB: 13,
 				bossnode: 9,
+				bossHP: 4,
 			},
 			6: {
 				name: '1-6',
@@ -119,6 +106,7 @@ var MAPDATA = {
 				bgmDB: 10,
 				bgmNB: 10,
 				bossnode: 12,
+				bossHP: 4,
 			}
 		}
 	},
@@ -169,6 +157,7 @@ var MAPDATA = {
 				bgmDB: 13,
 				bgmNB: 13,
 				bossnode: 11,
+				bossHP: 4,
 			},
 		}
 	},
@@ -210,6 +199,7 @@ var MAPDATA = {
 				bgmDB: 5,
 				bgmNB: 5,
 				bossnode: 8,
+				bossHP: 4,
 			},
 			5: {
 				name: '4-5',
@@ -219,6 +209,7 @@ var MAPDATA = {
 				bgmDB: 40,
 				bgmNB: 39,
 				bossnode: 13,
+				bossHP: 5,
 			},
 		}
 	},
@@ -242,6 +233,7 @@ var MAPDATA = {
 				bgmDB: 10,
 				bgmNB: 10,
 				bossnode: 4,
+				bossHP: 4,
 			},
 			3: {
 				name: '5-3',
@@ -251,6 +243,7 @@ var MAPDATA = {
 				bgmDB: 5,
 				bgmNB: 5,
 				bossnode: 11,
+				bossHP: 5,
 			},
 			4: {
 				name: '5-4',
@@ -259,7 +252,8 @@ var MAPDATA = {
 				bgmNN: 2,
 				bgmDB: 5,
 				bgmNB: 5,
-				bossnode: 12,
+				bossnode: 15,
+				bossHP: 5,
 			},
 			5: {
 				name: '5-5',
@@ -269,6 +263,7 @@ var MAPDATA = {
 				bgmDB: 6,
 				bgmNB: 6,
 				bossnode: 14,
+				bossHP: 5,
 			},
 		}
 	},
@@ -292,6 +287,7 @@ var MAPDATA = {
 				bgmDB: 3,
 				bgmNB: 3,
 				bossnode: 11,
+				bossHP: 3,
 			},
 			3: {
 				name: '6-3',
@@ -301,6 +297,7 @@ var MAPDATA = {
 				bgmDB: 4,
 				bgmNB: 5,
 				bossnode: 10,
+				bossHP: 4,
 			},
 			4: {
 				name: '6-4',
@@ -310,6 +307,7 @@ var MAPDATA = {
 				bgmDB: 49,
 				bgmNB: 41,
 				bossnode: 14,
+				bossHP: 5,
 			},
 		}
 	},
@@ -953,5 +951,46 @@ var MAPDATA = {
 				bossnode: 14,
 			},
 		}
-	}
+	},
+	35: {
+		name: 'Event Summer 2016',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmMap: 1,
+				bgmDN: 70,
+				bgmNN: 70,
+				bgmDB: 71,
+				bgmNB: 71,
+				bossnode: 9,
+			},
+			2: {
+				name: 'E2',
+				bgmMap: 1,
+				bgmDN: 70,
+				bgmNN: 70,
+				bgmDB: 71,
+				bgmNB: 71,
+				bossnode: 13,
+			},
+			3: {
+				name: 'E3',
+				bgmMap: 1,
+				bgmDN: 70,
+				bgmNN: 70,
+				bgmDB: 71,
+				bgmNB: 71,
+				bossnode: 10,
+			},
+			4: {
+				name: 'E4',
+				bgmMap: 1,
+				bgmDN: 70,
+				bgmNN: 70,
+				bgmDB: 71,
+				bgmNB: 71,
+				bossnode: 17,
+			}
+		}
+	},
 }

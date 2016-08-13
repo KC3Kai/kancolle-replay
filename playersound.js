@@ -67,7 +67,7 @@ SoundManager.prototype = {
 			volume:.4*this._volume,
 			buffer:true
 			});
-		if (this._voices[slot] && shipid < 500) {
+		if (this._voices[slot] && isPlayable(shipid)) {
 			this._voices[slot].stop();
 		}
 		this._voices[slot] = this._sounds['V'+type+shipid];
@@ -134,6 +134,8 @@ var BGMLIST = {
 	64: {url:'http://vignette4.wikia.nocookie.net/kancolle/images/3/3c/Sound_b_bgm_64.ogg'},
 	67: {url:'http://vignette1.wikia.nocookie.net/kancolle/images/2/20/Sound_b_bgm_67.ogg'},
 	68: {url:'http://vignette1.wikia.nocookie.net/kancolle/images/e/e1/Sound_b_bgm_68.ogg'},
+	70: {url:'https://dl.dropboxusercontent.com/u/79056688/1_res.sounds.battle.BGM_70.mp3'},
+	71: {url:'https://dl.dropboxusercontent.com/u/79056688/1_res.sounds.battle.BGM_71.mp3'},
 	107: {url:'http://vignette1.wikia.nocookie.net/kancolle/images/b/b2/107b.ogg'},
 	998: {url:'https://dl.dropboxusercontent.com/u/79056688/savior%20of%20song.mp3'},
 	999: {url:'https://dl.dropboxusercontent.com/u/79056688/Orel%20Cruising%20%26%20LSC%20Song%20%5BENG%20Sub%5D.mp3',voldef:.3},

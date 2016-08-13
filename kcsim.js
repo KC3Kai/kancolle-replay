@@ -328,7 +328,7 @@ function laser(ship,targets,APIhou) {
 		var res = rollHit(accuracyAndCrit(ship,targets[i],evMod),0);
 		var dmg = 0, realdmg = 0;
 		if (res) {
-			dmg = damage(ship,targets[i],ship.shellPower(targets[i].isInstall),preMod,res*postMod);
+			dmg = damage(ship,targets[i],ship.shellPower(targets[i]),preMod,res*postMod);
 			realdmg = takeDamage(targets[i],dmg);
 		} else { realdmg = takeDamage(targets[i],dmg); }
 		ship.fleet.giveCredit(ship,dmg);
@@ -410,11 +410,11 @@ function nightPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,NBonly,API
 	}
 	var scout1 = false;
 	for (var i=0; i<alive1.length; i++) {
-		if (alive1[i].hasNightScout && Math.random() < .5) { scout1 = true; break; }
+		if (alive1[i].hasNightScout && Math.random() < .5) { scout1 = true; if (C) APIyasen.api_touch_plane[0] = 102; break; }
 	}
 	var scout2 = false;
 	for (var i=0; i<alive2.length; i++) {
-		if (alive2[i].hasNightScout && Math.random() < .5) { scout2 = true; break; }
+		if (alive2[i].hasNightScout && Math.random() < .5) { scout2 = true; if (C) APIyasen.api_touch_plane[1] = 102; break; }
 	}
 	for (var i=0; i<6; i++) {
 		if (i < order1.length && order1[i].canNB()) {
@@ -755,6 +755,7 @@ function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku) {
 			if (contacter.ACC >= 3) contactMod = 1.2;
 			else if(contacter.ACC==2) contactMod = 1.17;
 			else contactMod = 1.12;
+			if (C) APIkouku.api_stage1.api_touch_plane[carriers[0].side] = contacter.mid;
 			break;
 		}
 	}
@@ -1068,6 +1069,7 @@ function sim(F1,F2,Fsupport,doNB,NBonly,aironly,landbomb,BAPI) {
 			if (!BAPI.yasen) BAPI.yasen = {};
 			BAPI.yasen.api_hougeki = {api_at_list:[-1],api_damage:[-1],api_df_list:[-1],api_sp_list:[-1],api_cl_list:[-1]};
 			BAPI.yasen.api_flare_pos = [-1,-1];
+			BAPI.yasen.api_touch_plane = [-1,-1];
 		}
 		nightPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,NBonly,(C)? BAPI.yasen:undefined);
 	}
@@ -1162,7 +1164,7 @@ function loadFleet(side,ships,formation,isescort) {
 function createDefaultShip(mid) {
 	var data = SHIPDATA[mid];
 	var ShipType = window[data.type];
-	var ship = new ShipType(mid,data.name,(mid>500)?1:0,(mid>500)?1:99,data.HP,data.FP,data.TP,data.AA,data.AR,data.EV,data.ASW,data.LOS,data.LUK,data.RNG,data.SLOTS);
+	var ship = new ShipType(mid,data.name,(isPlayable(mid))?0:1,(isPlayable(mid))?99:1,data.HP,data.FP,data.TP,data.AA,data.AR,data.EV,data.ASW,data.LOS,data.LUK,data.RNG,data.SLOTS);
 	if (ship.type == 'SS' && (ship.name.indexOf('Elite')>0 || ship.name.indexOf('Flagship')>0)) ship.LVL = 50;
 	if (data.EQUIPS) ship.loadEquips(data.EQUIPS,[0,0,0,0],true);
 	if (SHIPDATA[mid].isInstall) ship.isInstall = true;
