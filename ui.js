@@ -650,7 +650,7 @@ function tableSetShip(fleet,slot,shipid,stats,equips,improves) {
 		$('#T'+fleet+'e'+slot+i+'_chosen').attr('title',EQDATA[eqid].name);
 		$('#T'+fleet+'e'+slot+i).trigger("chosen:updated");
 		PREVEQS[fleet][slot][i] = eqid;
-		if (shipid!=0 && i<SHIPDATA[shipid].SLOTS.length)
+		if (shipid!=0 && SHIPDATA[shipid].SLOTS && i<SHIPDATA[shipid].SLOTS.length)
 			$('#T'+fleet+'plane'+slot+i).val(SHIPDATA[shipid].SLOTS[i]);
 		else
 			$('#T'+fleet+'plane'+slot+i).val('');
@@ -710,7 +710,7 @@ function changedShipForm(fleet,slot) {
 		var equipid = (i < equips.length)? equips[i] : 0;
 		$('#T'+fleet+'e'+slot+i).val(equipid);
 		$('#T'+fleet+'e'+slot+i).trigger("chosen:updated");
-		if (shipid!=0 && i<SHIPDATA[shipid].SLOTS.length)
+		if (shipid!=0 && SHIPDATA[shipid].SLOTS && i<SHIPDATA[shipid].SLOTS.length)
 			$('#T'+fleet+'plane'+slot+i).val(SHIPDATA[shipid].SLOTS[i]);
 		else
 			$('#T'+fleet+'plane'+slot+i).val('');

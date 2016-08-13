@@ -586,7 +586,6 @@ function CVN(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 }
 CVN.prototype = Object.create(CV.prototype);
 CVN.prototype.canNB = function() { return (this.HP/this.maxHP > .25); }
-CVN.prototype.NBtype = function() { return 1; }
 
 
 function SS(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {

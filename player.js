@@ -93,6 +93,12 @@ loader.add('BG1','assets/82_res.images.ImgBackgroundDay.jpg')
 	.add('airASP','assets/386_res.battle.images.SeikuuTextKakuhoImage.png')
 	.add('airAD','assets/387_res.battle.images.SeikuuTextSoushitsuImage.png')
 	.add('airAS','assets/388_res.battle.images.SeikuuTextYuseiImage.png')
+	.add('contact','assets/contact.png')
+	.add('contactnight','assets/contactnight.png')
+	.add('p54','assets/p54.png')
+	.add('p102','assets/p102.png')
+	.add('p516','assets/p516.png')
+	.add('p549','assets/p549.png')
 	.add('repairteam','assets/Emergency_Repair_Personnel_042_Card.png')
 	.add('repairgoddess','assets/Emergency_Repair_Goddess_043_Card.png')
 	.add('bossbar','assets/bossbar.png')
@@ -384,6 +390,19 @@ function processAPI(root) {
 	console.log(root);
 	COMBINED = root.combined;
 	PVPMODE = (root.world <= 0)? true : false;
+	
+	if (root.now_maphp && root.max_maphp) {
+		bossbar.maxhp = root.max_maphp;
+		bossbar.nowhp = root.now_maphp;
+		bossbar.mode = 2;
+		bossbar.show = true;
+	} else if (root.defeat_count && MAPDATA[root.world] && MAPDATA[root.world].maps[root.mapnum]) {
+		bossbar.maxhp = (MAPDATA[root.world].maps[root.mapnum].bossHP)? MAPDATA[root.world].maps[root.mapnum].bossHP : 5;
+		bossbar.nowhp = Math.max(1,bossbar.maxhp - root.defeat_count);
+		bossbar.mode = 1;
+		bossbar.show = true;
+	} else bossbar.show = false;
+	
 	var HPstate = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1];
 	var HPbeginstate = null, battlenumstate = 0;
 	var getState = function(newbattle) {
@@ -517,7 +536,7 @@ function processAPI(root) {
 			eventqueue.push([wait,[3000,(isboss||(NBonly && map.bgmDN!=map.bgmNN))]]);
 			eventqueue.push([shuttersNextBattle,[battledata,f2]]);
 		}
-		eventqueue.push([battleStart,[battledata,f2,escape,bgm,(isboss&&root.max_maphp&&root.now_maphp)],getState(true)]);
+		eventqueue.push([battleStart,[battledata,f2,escape,bgm,(isboss&&bossbar.show)],getState(true)]);
 		battlestarts.push(eventqueue.length-1);
 		allfleets2.push(f2);
 		
@@ -639,7 +658,9 @@ function processAPI(root) {
 					for (var i=0; i<fleet1.length; i++) if (!fleet1[i].issub) { show = true; break; }
 				if (targetdata.length || show) {
 					eventqueue.push([wait,[1000]]);
-					eventqueue.push([GAirPhase,[attackdata,targetdata,defenders,AACI1,undefined,undefined,undefined,AS1,AS2,false,isbombing],getState()]);  //remember AACI
+					var contact1 = kouku.api_stage1.api_touch_plane[0];
+					var contact2 = kouku.api_stage1.api_touch_plane[1];
+					eventqueue.push([GAirPhase,[attackdata,targetdata,defenders,AACI1,undefined,contact1,contact2,AS1,AS2,false,isbombing],getState()]);  //remember AACI
 				}
 				
 				// for (var i=0; i<6; i++) {
@@ -835,7 +856,7 @@ function processAPI(root) {
 				eventqueue.push([wait,[1000,(orel)?false:(isboss)?(map.bgmNB!=map.bgmDB):(map.bgmNN!=map.bgmDN)],null]);
 				eventqueue.push([shutters,[],null]);
 			}
-			eventqueue.push([NBstart,[yasen.api_flare_pos,(orel)?999:(isboss)? map.bgmNB : map.bgmNN]]);
+			eventqueue.push([NBstart,[yasen.api_flare_pos,yasen.api_touch_plane,(orel)?999:(isboss)? map.bgmNB : map.bgmNN]]);
 			var hou = yasen.api_hougeki;
 			for (var j=1; j<hou.api_at_list.length; j++) {
 				var d = [];
@@ -900,10 +921,6 @@ function processAPI(root) {
 	stage.addChild(shutterTop); stage.addChild(shutterBottom);
 	shutterTop.y = -246; shutterTop.alpha = 0;
 	shutterBottom.y = 456; shutterBottom.alpha = 0;
-	
-	if (root.now_maphp && root.max_maphp) {
-		bossbar.maxhp = root.max_maphp; bossbar.nowhp = root.now_maphp;
-	}
 	
 	if (!started) animate();
 	SM.stopBGM();
@@ -1428,15 +1445,20 @@ function standardHit(target,damage,move,protect,forcecrit) {
 		standardExplosion(target,3);
 		SM.play('crit');
 	}
-	if (target.mid > 500 && damage > 0) { if (target.hp-Math.max(0,damage) > 0) addTimeout(function() { SM.playVoice(target.mid,'damage',target.id); }, 100); }
+	if (!isPlayable(target.mid) && damage > 0) { if (target.hp-Math.max(0,damage) > 0) addTimeout(function() { SM.playVoice(target.mid,'damage',target.id); }, 100); }
 	else if (target.side==0 && target.hp/target.hpmax > .5 && (target.hp-Math.max(0,damage))/target.hpmax <= .5)
 		addTimeout(function() { SM.playVoice(target.mid,'damage3',target.id); }, 100);
 	else if (target.side==0 && target.hp/target.hpmax > .75 && (target.hp-Math.max(0,damage))/target.hpmax <= .75)
 		addTimeout(function() { SM.playVoice(target.mid,'damage'+((Math.random()<.5)? 1:2),target.id); }, 100);
 	
 	if (bossbar.active && target.id == 10 && target.hp > 0) {
-		bossbar.nowhp = Math.max(0,bossbar.nowhp - Math.min(damage,target.hp));
-		updates.push([bossBarMove,[]]);
+		if (bossbar.mode == 2) {
+			bossbar.nowhp = Math.max(0,bossbar.nowhp - Math.min(damage,target.hp));
+			updates.push([bossBarMove,[]]);
+		} else if (bossbar.mode == 1 && target.hp-damage <= 0) {
+			bossbar.nowhp--;
+			updates.push([bossBarMove,[]]);
+		}
 		if (target.hp-damage <= 0 && bossbar.nowhp <= 0) addTimeout(function() { updates.push([bossBarExplode,[]]); }, 500);
 	}
 	
@@ -1770,6 +1792,7 @@ function shootLaser(ship,targets,damages) {
 		updates.push([shipMoveTo,[fleet[i],fleet[i].xorigin+25-50*fleet[i].side,2]]);
 	}
 	SM.play('fire');
+	SM.playVoice(ship.mid,'attack',ship.id);
 	addTimeout(function(){
 		if (Math.random()<.5) createLaser(ship,fleet[0],fleet[fleet.length-1]);
 		else createLaser(ship,fleet[fleet.length-1],fleet[0]);
@@ -2009,6 +2032,9 @@ function GAirPhase(attackdata,targetdata,defenders,aaci1,aaci2,contact1,contact2
 			allplanes.push(planes2);
 		}, 250);
 	}
+	
+	if (contact1 > 0) addTimeout(function() { showContact(contact1,0); }, 250);
+	if (contact2 > 0) addTimeout(function() { showContact(contact2,1); }, 250);
 	
 	if (aaci1 > -1 || aaci2 > -1) {  //AACI freeze
 		addTimeout(function() {  
@@ -2392,7 +2418,7 @@ function moveSearchlight(light) {
 	return false;
 }
 
-function NBstart(flares,bgm) {
+function NBstart(flares,contact,bgm) {
 	if (COMBINED) {
 		for (var i=0; i<fleet1.length; i++) {
 			var j = 0;
@@ -2436,6 +2462,8 @@ function NBstart(flares,bgm) {
 			if (light2) createSearchlight(light2);
 		}, ((flares[0] != -1 || flares[1] != -1)? 2000 : 1) + ((COMBINED)? 1499:0));
 	}
+	if (contact[0] > 0) addTimeout(function() { showContact(contact[0],0,true); }, ((COMBINED)? 1499:0));
+	if (contact[1] > 0) addTimeout(function() { showContact(contact[1],1,true); }, ((COMBINED)? 1499:0));
 	
 	if (bgm != SM.BGMnum) {
 		SM.stopBGM();
@@ -2828,7 +2856,6 @@ function loadCode(fromOwn,callback) {
 	else f();
 }
 
-
 function bossBarReset() {
 	stage.removeChild(bossbar);
 	bossbar.alpha = 0;
@@ -2836,7 +2863,7 @@ function bossBarReset() {
 	bossbarback.scale.x = 146;
 	bossbar.active = false;
 	bossbar.timer = 30;
-	bossbar.nowhp = API.now_maphp;
+	bossbar.nowhp = (bossbar.mode==2)? API.now_maphp : Math.max(1,bossbar.maxhp - API.defeat_count);
 }
 
 function bossBarAppear() {
@@ -2907,4 +2934,61 @@ function createAirText(num) {
 			return false;
 		},[]]);
 	}, 1500);
+}
+
+function showContact(planeid,side,nightscout) {
+	var text;
+	if (nightscout) {
+		text = getFromPool('contactnight','assets/contactnight.png');
+		if (side==0) text.position.set(668,101);
+		else text.position.set(18,425);
+	} else {
+		text = getFromPool('contact','assets/contact.png');
+		if (side==0) text.position.set(689,101);
+		else text.position.set(39,425);
+	}
+	text.alpha = 0; text.counter = 0; text.notpersistent = true;
+	
+	var plane;
+	if (nightscout) {
+		plane = getFromPool('p102','assets/p102.png');
+	} else {
+		switch (EQDATA[planeid].b_image) {
+			case 3: case 4: case 5: plane = getFromPool('p516','assets/p516.png'); break;
+			case 6: case 7: case 8: case 9: case 10: plane = getFromPool('p549','assets/p549.png'); break;
+			default:
+				if (planeid < 500) plane = getFromPool('p54','assets/p54.png');
+				else plane = getFromPool('p516','assets/p516.png');
+				break;
+		}
+	}
+	plane.pivot.set(36,54);
+	if (nightscout) plane.rotation = (side==0)? -2*Math.PI/14.4 : 2*Math.PI/14.4;
+	if (side==0) { plane.position.set(725,80); plane.scale.x = -1; }
+	else { plane.position.set(75,404); plane.scale.x = 1; }
+	plane.alpha = 0; plane.notpersistent = true;
+	plane.yorig = plane.y;
+	
+	stage.addChild(plane);
+	stage.addChild(text);
+	
+	updates.push([function() {
+		if (text.counter%60 < 10) text.alpha += .1;
+		else if (text.counter%60 >= 40 && text.counter%60 < 50) text.alpha -= .1;
+		
+		plane.y = plane.yorig + 3*Math.sin(text.counter/15);
+		if (text.counter%4==0) plane.x += 1;
+		else if (text.counter%4==2) plane.x -= 1;
+		if (text.counter < 5) plane.alpha += .2;
+		// else if (text.counter == 20) plane.alpha = 0;
+		// else if (text.counter == 60) plane.alpha = 1;
+		else if (text.counter >= 220 && text.counter < 230) plane.alpha -= .1;
+		
+		text.counter++;
+		if (text.counter >= 240) {
+			recycle(text); recycle(plane);
+			return true;
+		}
+		return false;
+	},[]]);
 }
