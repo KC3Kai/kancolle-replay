@@ -1298,7 +1298,7 @@ function battleStart(battledata,newships,escape,bgm,showbosshp) {
 		}
 	}
 	
-	if (VOICES[fleet2[0].mid] && VOICES[fleet2[0].mid].start) SM.playVoice(fleet2[0].mid,'start',10);
+	if (VOICES[fleet2[0].mid] && VOICES[fleet2[0].mid].start && !isPlayable(fleet2[0].mid)) SM.playVoice(fleet2[0].mid,'start',10);
 	else SM.playVoice(fleet1[0].mid,'start',0);
 	var j = 0;
 	for (var i=0; i<fleet1.length; i++) {

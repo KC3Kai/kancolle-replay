@@ -59,6 +59,7 @@ SoundManager.prototype = {
 	playVoice: function(shipid,type,slot) {
 		if (!this._voiceON) return;
 		if (!VOICES[shipid]) return;
+		if (slot >= 10 && isPlayable(shipid)) return; //no PVP enemy voices
 		// if (slot > 10) return; //want non boss voices?
 		if (type=='nbattack' && !VOICES[shipid].nbattack) type = 'attack';
 		if (!VOICES[shipid][type]) return;
