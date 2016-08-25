@@ -343,7 +343,7 @@ function createShip(data,side,i,damaged) {
 		graphic.addChild(box);
 	} else graphic.addChild(PIXI.Sprite.fromImage('assets/'+((side==1)?'447':'440')+'.png'));
 	graphic.addChild(hptxt);
-	graphic.position.set((side==1)?FLEET2ORIGIN+220:-220,((side==1)?144:77)+45*i);
+	graphic.position.set((side==1)?FLEET2ORIGIN+240:-240,((side==1)?144:77)+45*i);
 	ship.graphic = graphic;
 	// var mask = PIXI.Sprite.fromImage('assets/mask.png');
 	// graphic.addChild(mask);
@@ -2069,7 +2069,7 @@ function GAirPhase(attackdata,targetdata,defenders,aaci1,aaci2,contact1,contact2
 	
 	addTimeout(function() {
 		for (var i=0; i<defenders.length; i++) {
-			if (defenders[i].hp <= 0) continue;
+			if (defenders[i].hp <= 0) { defenders.splice(i--,1); continue; }
 			var angle1 = Math.random()*Math.PI/12 + ((defenders[i].side==0)? Math.PI/6 : 4*Math.PI/6);
 			var angle2 = -Math.random()*Math.PI/12 + ((defenders[i].side==0)? Math.PI/3 : 5*Math.PI/6);
 			createAAfire(defenders[i].graphic.position.x+70,defenders[i].graphic.position.y+15,angle1);
@@ -2507,7 +2507,7 @@ function resetBattle() {
 		stage.addChildAt(bg,0);
 	}
 	for (var i=0; i<fleet1.length; i++) {
-		fleet1[i].graphic.x = -220;
+		fleet1[i].graphic.x = -240;
 		fleet1[i].shakepid = 0;
 		fleet1[i].graphic.pivot.x = 0;
 	}
@@ -2529,7 +2529,7 @@ function resetBattle() {
 		stage.removeChild(fleet2[i].graphic);
 		fleet2[i].shakepid = 0;
 		fleet2[i].graphic.pivot.x = 0;
-		fleet2[i].graphic.x = 851;
+		fleet2[i].graphic.x = 871;
 		if (fleet2[i].hp != fleet2[i].hpmax) shipSetHP(fleet2[i],fleet2[i].hpmax);
 	}
 	
