@@ -229,6 +229,7 @@ function simCombined(type,F1,F1C,F2,Fsupport,doNB,NBonly,aironly,landbomb,BAPI) 
 			if (!BAPI.yasen) BAPI.yasen = {};
 			BAPI.yasen.api_hougeki = {api_at_list:[-1],api_damage:[-1],api_df_list:[-1],api_sp_list:[-1],api_cl_list:[-1]};
 			BAPI.yasen.api_flare_pos = [-1,-1];
+			BAPI.yasen.api_touch_plane = [-1,-1];
 		}
 		nightPhase(order1,order2,alive1C,subsalive1C,alive2,subsalive2,NBonly,(C)? BAPI.yasen:undefined);
 	}
