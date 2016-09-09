@@ -340,7 +340,18 @@ EQTDATA[OTHER] = {
 	canequip: ['DD','CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','CVN','SS','SSV','AS','AV','AO','AR','LHA'],
 };
 
-
+//FITDATA[shipclass][eqclass]
+var FITDATA = {
+	1: { 1: 4, 2: -2, 3: -4, 4: -4, 5: -6, 6: -2, 7: 0 },
+	2: { 1: 2, 2: 0, 3: -4, 4: -4, 5: -6, 6: -2, 7: 0 },
+	3: { 1: 2, 2: 2, 3: -4, 4: -4, 5: -6, 6: -2, 7: 0 },
+	4: { 1: 1, 2: 0, 3: -4, 4: -4, 5: -6, 6: 0, 7: 0 },
+	5: { 1: 2, 2: 0, 3: 0, 4: -4, 5: -6, 6: 0, 7: 0 },
+	6: { 1: 2, 2: 2, 3: 0, 4: -4, 5: -4, 6: -2, 7: 0 },
+	7: { 1: 2, 2: 2, 3: 2, 4: -4, 5: -4, 6: 0, 7: 0 },
+	8: { 1: 1, 2: 1, 3: 1, 4: -4, 5: -2, 6: 0, 7: 0 },
+	9: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0 },
+}
 
 //artillery spot/night battle/other combat type
 const B_MAINGUN = 1;
@@ -440,7 +451,8 @@ var EQDATA = {
 		improveType: 1,
 		FP: 8,
 		AA: 3,
-		RNG: 2
+		RNG: 2,
+		CANBbonus: true,
 	},
 	7: {
 		name: '35.6cm Twin Cannon',
@@ -450,6 +462,7 @@ var EQDATA = {
 		btype: B_MAINGUN,
 		atype: A_GUN,
 		improveType: 1,
+		fitclass: 1,
 		FP: 15,
 		AA: 4,
 		RNG: 3
@@ -462,6 +475,7 @@ var EQDATA = {
 		btype: B_MAINGUN,
 		atype: A_GUN,
 		improveType: 1,
+		fitclass: 3,
 		FP: 20,
 		AA: 4,
 		RNG: 3
@@ -474,6 +488,7 @@ var EQDATA = {
 		btype: B_MAINGUN,
 		atype: A_GUN,
 		improveType: 1,
+		fitclass: 4,
 		FP: 26,
 		AA: 5,
 		RNG: 4
@@ -808,13 +823,13 @@ var EQDATA = {
 		name: 'Repair Team',
 		nameJP: '応急修理要員',
 		added: 20130417,
-		type: OTHER
+		type: REPAIR
 	},
 	43: {
 		name: 'Repair Goddess',
 		nameJP: '応急修理女神',
 		added: 20130417,
-		type: OTHER
+		type: REPAIR
 	},
 	44: {
 		name: 'Type 94 Depth Charge',
@@ -884,7 +899,8 @@ var EQDATA = {
 		improveType: 1,
 		FP: 10,
 		AA: 4,
-		RNG: 2
+		RNG: 2,
+		CANBbonus: true,
 	},
 	51: {
 		name: '12cm 30-tube Rocket Launcher',
@@ -1146,6 +1162,7 @@ var EQDATA = {
 		btype: B_MAINGUN,
 		atype: A_GUN,
 		improveType: 1,
+		fitclass: 1,
 		FP: 16,
 		AA: 1,
 		RNG: 3,
@@ -1462,6 +1479,7 @@ var EQDATA = {
 		type: MAINGUNL,
 		btype: B_MAINGUN,
 		atype: A_GUN,
+		fitclass: 1,
 		FP: 18,
 		AA: 5,
 		RNG: 3,
@@ -1474,6 +1492,7 @@ var EQDATA = {
 		type: MAINGUNL,
 		btype: B_MAINGUN,
 		atype: A_GUN,
+		fitclass: 1,
 		FP: 15,
 		AA: 5,
 		EV: 1,
@@ -1487,6 +1506,7 @@ var EQDATA = {
 		type: MAINGUNL,
 		btype: B_MAINGUN,
 		atype: A_GUN,
+		fitclass: 3,
 		FP: 22,
 		AA: 5,
 		RNG: 3,
@@ -1592,6 +1612,7 @@ var EQDATA = {
 		btype: B_MAINGUN,
 		atype: A_GUN,
 		improveType: 1,
+		fitclass: 1,
 		FP: 17,
 		AA: 2,
 		RNG: 3,
@@ -1628,6 +1649,7 @@ var EQDATA = {
 		btype: B_MAINGUN,
 		atype: A_GUN,
 		improveType: 1,
+		fitclass: 4,
 		FP: 23,
 		AA: 4,
 		RNG: 4,
@@ -1755,6 +1777,7 @@ var EQDATA = {
 		btype: B_MAINGUN,
 		atype: A_GUN,
 		improveType: 1,
+		fitclass: 7,
 		FP: 30,
 		AA: 5,
 		EV: -1,
@@ -1814,6 +1837,7 @@ var EQDATA = {
 		btype: B_MAINGUN,
 		atype: A_GUN,
 		improveType: 1,
+		fitclass: 2,
 		FP: 20,
 		AA: 2,
 		EV: -1,
@@ -1863,6 +1887,7 @@ var EQDATA = {
 		btype: B_MAINGUN,
 		atype: A_GUN,
 		improveType: 1,
+		fitclass: 2,
 		FP: 21,
 		AA: 4,
 		EV: -1,
@@ -2129,7 +2154,9 @@ var EQDATA = {
 		nameJP: '16inch三連装砲 Mk.7',
 		added: 20160122,
 		type: MAINGUNL,
+		btype: B_MAINGUN,
 		atype: A_GUN,
+		fitclass: 6,
 		FP: 24,
 		AA: 3,
 		AR: 1,
@@ -2381,7 +2408,9 @@ var EQDATA = {
 		nameJP: '16inch三連装砲 Mk.7+GFCS',
 		added: 20160630,
 		type: MAINGUNL,
+		btype: B_MAINGUN,
 		atype: A_GUN,
+		fitclass: 6,
 		FP: 24,
 		AA: 3,
 		AR: 1,
@@ -2440,6 +2469,7 @@ var EQDATA = {
 	188: {
 		name: 'Re.2001 G Kai',
 		nameJP: 'Re.2001 G改',
+		added: 20160812,
 		type: TORPBOMBER,
 		istorpbomber: true,
 		FP: 3,
@@ -2450,6 +2480,7 @@ var EQDATA = {
 	189: {
 		name: 'Re.2005 Kai',
 		nameJP: 'Re.2005 改',
+		added: 20160812,
 		type: FIGHTER,
 		isfighter: true,
 		FP: 1,
@@ -2459,9 +2490,11 @@ var EQDATA = {
 	190: {
 		name: '38.1cm Mk.I Twin Gun Mount',
 		nameJP: '38.1cm Mk.I連装砲',
+		added: 20160812,
 		type: MAINGUNL,
 		btype: B_MAINGUN,
 		atype: A_GUN,
+		fitclass: 2,
 		FP: 18,
 		AA: 1,
 		ACC: 1,
@@ -2470,6 +2503,7 @@ var EQDATA = {
 	191: {
 		name: 'QF 2-pounder Octuple Pom-pom Gun Mount',
 		nameJP: 'QF 2ポンド8連装ポンポン砲',
+		added: 20160812,
 		type: AAGUN,
 		atype: A_AAGUN,
 		FP: 1,

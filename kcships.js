@@ -154,6 +154,12 @@ Ship.prototype.loadEquips = function(equips,levels,addstats) {
 		if (eq.type == SEARCHLIGHTS || eq.type == SEARCHLIGHTL) this.hasSearchlight = true;
 		if (eq.type == NIGHTSCOUT) this.hasNightScout = true;
 		
+		if (eq.CANBbonus) this.CANBacc = .1;
+		if (this.fitclass && eq.fitclass) {
+			if (!this.ACCfit) this.ACCfit = 0;
+			this.ACCfit += FITDATA[this.fitclass][eq.fitclass];
+		}
+		
 		//add improvement stats
 		for (var key in eq) {
 			if (key.indexOf('bonus')==-1) continue;
@@ -232,6 +238,7 @@ Ship.prototype.NBtype = function() {
 	var mguns = (this.equiptypes[B_MAINGUN])? this.equiptypes[B_MAINGUN] : 0;
 	var sguns = (this.equiptypes[B_SECGUN])? this.equiptypes[B_SECGUN] : 0;
 	var torps = (this.equiptypes[B_TORPEDO])? this.equiptypes[B_TORPEDO] : 0;
+	console.log(mguns);
 	if (torps >= 2) this._nbtype = 6;  //torp cut-in
 	else if (mguns >= 3) this._nbtype = 5; //triple gun cut-in
 	else if (mguns >= 2 && sguns) this._nbtype = 4;  //gun cut-in
@@ -381,6 +388,7 @@ Ship.prototype.weightedAntiAir = function() {
 		aa += this.equips[i].AA * mod;
 	}
 	aa += (this.AAbonus)? this.AAbonus : 0;
+	// if (this.isescort) aa*=.5;
 	return aa;
 }
 
@@ -549,12 +557,13 @@ CV.prototype.canStillShell = function () {
 	return (this.HP > this.maxHP*.5 && this.canShell());
 }
 CV.prototype.CVshelltype = true;
-CV.prototype.shellPower = function() {
+CV.prototype.shellPower = function(target) {
 	var dp = 0;
 	for (var i=0; i<this.equips.length; i++) {
 		if(this.equips[i].DIVEBOMB) dp += this.equips[i].DIVEBOMB;
 	}
 	var bonus = (this.fleet && this.fleet.formation.shellbonus!==undefined)? this.fleet.formation.shellbonus : 5;
+	if (target.isInstall) return 50 + bonus + 1.5*this.FP + 2*dp;
 	return 50 + bonus + 1.5*this.FP + 1.5*this.TP + 2*dp;
 }
 

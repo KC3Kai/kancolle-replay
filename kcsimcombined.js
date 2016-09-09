@@ -88,7 +88,10 @@ function simCombined(type,F1,F1C,F2,Fsupport,doNB,NBonly,aironly,landbomb,BAPI) 
 	if (!NBonly && aironly && !bombing && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length > 0) {
 		if (C) BAPI.data.api_kouku2 = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null};
 		airPhase(alive1,subsalive1,alive2,subsalive2,(C)? BAPI.data.api_kouku2:undefined);
-		if (C && !BAPI.data.api_kouku2.api_stage1) delete BAPI.data.api_kouku2;
+		if (C) {
+			if (!BAPI.data.api_kouku2.api_stage1) delete BAPI.data.api_kouku2;
+			else BAPI.data.api_kouku2.api_stage1.api_disp_seiku = {4:1,3:2,2:0,1:3,0:4}[F1.AS+2];
+		}
 		
 		for (var i=0; i<alive1.length; i++) {   //remove dead things
 			if (alive1[i].HP <= 0) { alive1.splice(i,1); i--; }

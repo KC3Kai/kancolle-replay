@@ -389,7 +389,7 @@ function processAPI(root) {
 	}
 	console.log(root);
 	COMBINED = root.combined;
-	PVPMODE = (root.world <= 0)? true : false;
+	PVPMODE = (root.world <= 0);
 	
 	if (root.now_maphp && root.max_maphp) {
 		bossbar.maxhp = root.max_maphp;
@@ -542,7 +542,7 @@ function processAPI(root) {
 		
 		//for reading air phase
 		var processKouku = function(kouku,isbombing) {
-			if (kouku && (kouku.api_plane_from[0][0] != -1 || kouku.api_plane_from[1][0] != -1)) {
+			if (kouku && kouku.api_plane_from && (kouku.api_plane_from[0][0] != -1 || kouku.api_plane_from[1][0] != -1)) {
 				//air state
 				var AS1 = {0:0,1:2,2:1,3:-1,4:-2}[kouku.api_stage1.api_disp_seiku];
 				if (AS1 > 2) AS1 = -AS1+2;
@@ -795,8 +795,6 @@ function processAPI(root) {
 		
 		//air phase
 		if (data.api_kouku) processKouku(data.api_kouku);
-		//if air node, second air phase
-		if (data.api_kouku2) processKouku(data.api_kouku2);
 		
 		//support phase
 		if (data.api_support_info) {
@@ -832,6 +830,9 @@ function processAPI(root) {
 		
 		//engagement
 		if (data.hasOwnProperty('api_hougeki1')) eventqueue.push([battleEngageShow,[data.api_formation[2]]]);
+		
+		//if air node, second air phase
+		if (data.api_kouku2) processKouku(data.api_kouku2);
 		
 		//shelling 1, 2, 3
 		f = (COMBINED == 1 || COMBINED == 3)? fleet1C : fleet1;
@@ -1349,6 +1350,9 @@ function battleEnd() {
 		// console.log('end');
 		SM.fadeBGM();
 	}, 1000);
+	if (bossbar.show && bossbar.nowhp == -1) {
+		addTimeout(function() { SM.playVoice(fleet2[0].mid,'sunk',10); }, 2000);
+	}
 	addTimeout(function() { ecomplete = true; }, 2000);
 }
 
@@ -2896,7 +2900,8 @@ function bossBarExplode() {
 	if (bossbar.timer == 19) { createExplosion(bossbar.x+160,Math.random()*35+31); SM.play('fire'); }
 	if (bossbar.timer == 14) { createExplosion(bossbar.x+220,Math.random()*35+31); SM.play('fire'); }
 	if (bossbar.timer <= 0) {
-		bossBarReset();
+		//bossBarReset();
+		bossbar.nowhp = -1;
 		return true;
 	}
 	return false;
