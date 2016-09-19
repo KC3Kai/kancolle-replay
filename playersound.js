@@ -25,8 +25,10 @@ var SOUNDNAMES = {
 	'aaci': { path: 'assets/sounds/52_res.sounds.battle.SE_Bam.mp3' },
 	'text': { path: 'assets/sounds/44_res.sounds.battle.SE_battle_don.mp3' },
 	'mapradar': {  path: 'assets/sounds/3_res.sounds.SE_sally_ping.mp3',voldef:.5 },
-	'mapcompass': { path: 'assets/sounds/4_res.sounds.SE_sally_compass.mp3',voldef:.5 },
+	'mapcompass': { path: 'assets/sounds/4_res.sounds.SE_sally_compass.mp3',voldef:.25 },
 	'click': { path: 'assets/sounds/47_res.sounds.SE_battle_click.mp3',voldef: .5 },
+	'storm': { path: 'assets/sounds/2_res.sounds.SE_sally_storm.mp3',voldef: .5 },
+	'scout': { path: 'assets/sounds/19_res.sounds.map_kouku_teisatsu.mp3',voldef: .5 },
 }
 SoundManager.prototype = {
 	play: function(name,vol,loop) {
@@ -88,6 +90,8 @@ SoundManager.prototype = {
 var BGMLIST = {
 	1: {url:'http://vignette2.wikia.nocookie.net/kancolle/images/d/dd/Sound_b_bgm_1.ogg',voldef:.7},
 	2: {url:'http://vignette4.wikia.nocookie.net/kancolle/images/f/fd/Sound_b_bgm_2.ogg'},
+	1000: {url: 'https://dl.dropboxusercontent.com/u/79056688/%E3%80%90%E4%BD%9C%E6%A5%AD%E7%94%A8BGM%E3%80%91%E8%89%A6%E9%9A%8A%E3%81%93%E3%82%8C%E3%81%8F%E3%81%97%E3%82%87%E3%82%93%20%E6%97%A7%E5%A4%9C%E6%88%A6%E3%83%BB%E3%83%9C%E3%82%B9%E6%88%A6BGM%E3%80%90%E8%89%A6%E3%81%93%E3%82%8C%E3%80%91.mp3',voldef:.7},
+	1001: {url: 'https://dl.dropboxusercontent.com/u/79056688/%E3%80%90%E8%89%A6%E9%9A%8A%E3%81%93%E3%82%8C%E3%81%8F%E3%81%97%E3%82%87%E3%82%93%E3%80%91%E3%83%9C%E3%82%B9%E3%83%BB%E5%A4%9C%E6%88%A6%20BGM.mp3',voldef:.7},
 	1002: {url:'http://vignette4.wikia.nocookie.net/kancolle/images/6/66/Sound_bgm_iron02.ogg'},
 	3: {url:'http://vignette3.wikia.nocookie.net/kancolle/images/3/3a/Sound_b_bgm_3.ogg'},
 	4: {url:'http://vignette3.wikia.nocookie.net/kancolle/images/2/29/Sound_b_bgm_4.ogg'},
@@ -114,6 +118,11 @@ var BGMLIST = {
 	29: {url:'http://vignette1.wikia.nocookie.net/kancolle/images/c/c8/Sound_b_bgm_29.ogg'},
 	30: {url:'http://vignette1.wikia.nocookie.net/kancolle/images/9/94/Sound_b_bgm_30.ogg'},
 	31: {url:'http://vignette1.wikia.nocookie.net/kancolle/images/9/9c/Sound_b_bgm_31.ogg'},
+	32: {url:'http://vignette3.wikia.nocookie.net/kancolle/images/1/1c/Sound_b_bgm_32.ogg'},
+	33: {url:'http://vignette2.wikia.nocookie.net/kancolle/images/b/b2/Sound_b_bgm_33.ogg'},
+	34: {url:'http://vignette4.wikia.nocookie.net/kancolle/images/4/4b/Sound_b_bgm_34.ogg'},
+	35: {url:'http://vignette2.wikia.nocookie.net/kancolle/images/c/cd/Sound_b_bgm_35.ogg'},
+	36: {url:'http://vignette4.wikia.nocookie.net/kancolle/images/6/6b/Sound_b_bgm_36.ogg'},
 	37: {url:'http://vignette2.wikia.nocookie.net/kancolle/images/0/00/Sound_b_bgm_37.ogg',voldef:.4},
 	38: {url:'http://vignette4.wikia.nocookie.net/kancolle/images/f/fd/Sound_b_bgm_38.ogg'},
 	39: {url:'http://vignette2.wikia.nocookie.net/kancolle/images/c/c0/Sound_b_bgm_39.ogg'},
@@ -142,7 +151,7 @@ var BGMLIST = {
 	107: {url:'http://vignette1.wikia.nocookie.net/kancolle/images/b/b2/107b.ogg'},
 	998: {url:'https://dl.dropboxusercontent.com/u/79056688/savior%20of%20song.mp3'},
 	999: {url:'https://dl.dropboxusercontent.com/u/79056688/Orel%20Cruising%20%26%20LSC%20Song%20%5BENG%20Sub%5D.mp3',voldef:.3},
-	1001: {url:'http://vignette2.wikia.nocookie.net/kancolle/images/2/2f/103v.ogg'},
+	2001: {url:'http://vignette2.wikia.nocookie.net/kancolle/images/2/2f/103v.ogg', voldef:.7},
 	2027: {url:'http://vignette4.wikia.nocookie.net/kancolle/images/0/06/Sound_bgm_almi.ogg'},
 	2031: {url:'http://vignette4.wikia.nocookie.net/kancolle/images/b/b8/903y.ogg'},
 };

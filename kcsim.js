@@ -54,6 +54,8 @@ var DIDPROTECT = false;
 var MECHANICS = {
 	artillerySpotting: true,
 	OASW: true,
+	AACI: true,
+	fitGun: true,
 };
 
 function getRepairCost(ship) {
@@ -564,7 +566,7 @@ function accuracyAndCrit(ship,target,evademod,accmod,accflat) {
 	// console.log("	evade:"+evademod);
 	var acc = .95 + (Math.sqrt(ship.LVL)-1)/50 + ship.ACC*.01 + ship.LUK*.001;
 	if (ship.ACCbonus) acc += ship.ACCbonus*.01;
-	if (ship.ACCfit) acc += ship.ACCfit*.01;
+	if (MECHANICS.fitGun && ship.ACCfit) acc += ship.ACCfit*.01;
 	if (accflat) acc += accflat;
 	var evade = target.EV * evademod;
 	if (target.fuelleft < 5) evade *= target.fuelleft/5;
@@ -721,17 +723,19 @@ function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku) {
 	
 	//get AACI
 	var AACInum = 0;
-	var AACIs = [];
-	for (var i=0; i<defenders.length; i++) if (defenders[i].AACItype) AACIs.push(defenders[i]);
-	AACIs.sort(function(a,b) { return (a.AACItype >= b.AACItype)? -1: 1; });
-	var AACIid = -1;
-	for (var i=0; i<AACIs.length; i++) {
-		if (Math.random() < AACIDATA[AACIs[i].AACItype].rate) {
-			AACIid = AACIs[i].id;
-			AACInum = AACIDATA[AACIs[i].AACItype].num;
-			// if (C) code = code.replace('{aaci'+(parseInt(defenders[0].fleet.id)+1)+'}',AACIid.toString());
-			if (C) APIkouku.api_stage2[(AACIid<10)?'api_air_fire':'api_air_fire_e'] = {api_idx:AACIs[i].apiID-1+((AACIs[i].isescort)?6:0),api_kind:AACInum};
-			break;
+	if (MECHANICS.AACI) {
+		var AACIs = [];
+		for (var i=0; i<defenders.length; i++) if (defenders[i].AACItype) AACIs.push(defenders[i]);
+		AACIs.sort(function(a,b) { return (a.AACItype >= b.AACItype)? -1: 1; });
+		var AACIid = -1;
+		for (var i=0; i<AACIs.length; i++) {
+			if (Math.random() < AACIDATA[AACIs[i].AACItype].rate) {
+				AACIid = AACIs[i].id;
+				AACInum = AACIDATA[AACIs[i].AACItype].num;
+				// if (C) code = code.replace('{aaci'+(parseInt(defenders[0].fleet.id)+1)+'}',AACIid.toString());
+				if (C) APIkouku.api_stage2[(AACIid<10)?'api_air_fire':'api_air_fire_e'] = {api_idx:AACIs[i].apiID-1+((AACIs[i].isescort)?6:0),api_kind:AACInum};
+				break;
+			}
 		}
 	}
 	if (C) code = code.replace('{aaci'+(parseInt(defenders[0].fleet.id)+1)+'}','-1');

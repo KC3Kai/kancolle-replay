@@ -78,7 +78,7 @@ function dialogShip(types,side) {
 	for (var mid in SHIPDATA) {
 		var ship = SHIPDATA[mid];
 		if ((side==0&&mid>=500)||(side==1&&(mid<500||mid>800))||types.indexOf(ship.type)==-1) continue;
-		if (ship.prev && SHIPDATA[ship.prev].type==ship.type) continue;
+		if (ship.prev && types.indexOf(SHIPDATA[ship.prev].type)!=-1) continue;
 		if (done.indexOf(mid)==-1) {
 			var ships = [mid]; done.push(mid);
 			while (ship.next) {
@@ -116,7 +116,7 @@ function dialogShip(types,side) {
 }
 
 function dialogShipFog() {
-	$('#dialogselship').html('<table class="dialog2"><tr><td onclick="dSetShip(901)"><img src="assets/icons/AIona.png"><br><span>Iona</span><br></td><td onclick="dSetShip(902)"><img src="assets/icons/ATakao.png"><br><span>Takao</span><br></td><td onclick="dSetShip(903)"><img src="assets/icons/AHaruna.png"><br><span>Haruna</span><br></td></tr><tr><td onclick="dSetShip(904)"><img src="assets/icons/AKirishima.png"><br><span>Kirishima</span><br></td><td onclick="dSetShip(905)"><img src="assets/icons/AMaya.png"><br><span>Maya</span><br></td><td onclick="dSetShip(906)"><img src="assets/icons/AKongou.jpg"><br><span>Kongou</span><br></td><td onclick="dSetShip(907)"><img src="assets/icons/ANagara.png"><br><span>Nagara-Class</span><br></td></tr></table>');
+	$('#dialogselship').html('<table class="dialog2"><tr><td onclick="dSetShip(901)"><img src="assets/icons/AIona.png"><br><span>Iona</span><br></td><td onclick="dSetShip(902)"><img src="assets/icons/ATakao.png"><br><span>Takao</span><br></td><td onclick="dSetShip(903)"><img src="assets/icons/AHaruna.png"><br><span>Haruna</span><br></td></tr><tr><td onclick="dSetShip(915)"><img src="assets/icons/AKirishima.png"><br><span>Kirishima</span><br></td><td onclick="dSetShip(913)"><img src="assets/icons/AMaya.png"><br><span>Maya</span><br></td><td onclick="dSetShip(916)"><img src="assets/icons/AKongou.jpg"><br><span>Kongou</span><br></td><td onclick="dSetShip(911)"><img src="assets/icons/ANagara.png"><br><span>Nagara-Class</span><br></td></tr></table>');
 	$('#dialogselship').dialog("open");
 }
 

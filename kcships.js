@@ -630,8 +630,8 @@ function AO(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 };
 AO.prototype = Object.create(Ship.prototype);
 AO.prototype.canTorp = function() { return false; }
-AO.prototype.loadEquips = function(equips,addstats) {
-	Ship.prototype.loadEquips.call(this,equips,addstats);
+AO.prototype.loadEquips = function(equips,levels,addstats) {
+	Ship.prototype.loadEquips.call(this,equips,levels,addstats);
 	for (var i=0; i<equips.length; i++) {
 		if (equips[i] && (EQDATA[equips[i]].istorpbomber||EQDATA[equips[i]].isdivebomber)) {
 			this.iscarrier = true;
