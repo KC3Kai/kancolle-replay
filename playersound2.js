@@ -3347,6 +3347,22 @@ var VOICES = {
 		damage2: "http://vignette3.wikia.nocookie.net/kancolle/images/5/5d/I-26-Minor_Damage_2.ogg",
 		damage3: "http://vignette2.wikia.nocookie.net/kancolle/images/2/24/I-26-Major_Damage.ogg",
 	},
+	486: {
+		start: "http://vignette2.wikia.nocookie.net/kancolle/images/c/cb/Uranami-Battle_Start.ogg",
+		attack: "http://vignette2.wikia.nocookie.net/kancolle/images/0/09/Uranami-Attack.ogg",
+		nbattack: "http://vignette2.wikia.nocookie.net/kancolle/images/a/a0/Uranami-Night_Attack.ogg",
+		damage1: "http://vignette1.wikia.nocookie.net/kancolle/images/8/84/Uranami-Minor_Damage_1.ogg",
+		damage2: "http://vignette1.wikia.nocookie.net/kancolle/images/8/8e/Uranami-Minor_Damage_2.ogg",
+		damage3: "http://vignette2.wikia.nocookie.net/kancolle/images/8/88/Uranami-Major_Damage.ogg",
+	},
+	368: {
+		start: "http://vignette2.wikia.nocookie.net/kancolle/images/c/cb/Uranami-Battle_Start.ogg",
+		attack: "http://vignette2.wikia.nocookie.net/kancolle/images/0/09/Uranami-Attack.ogg",
+		nbattack: "http://vignette2.wikia.nocookie.net/kancolle/images/a/a0/Uranami-Night_Attack.ogg",
+		damage1: "http://vignette1.wikia.nocookie.net/kancolle/images/8/84/Uranami-Minor_Damage_1.ogg",
+		damage2: "http://vignette1.wikia.nocookie.net/kancolle/images/8/8e/Uranami-Minor_Damage_2.ogg",
+		damage3: "http://vignette2.wikia.nocookie.net/kancolle/images/8/88/Uranami-Major_Damage.ogg",
+	},
 	539: {
 		start: "http://vignette3.wikia.nocookie.net/kancolle/images/1/14/Anchorage_Oni_Intro.ogg",
 		attack: "http://vignette2.wikia.nocookie.net/kancolle/images/c/cb/Anchorage_Attack_1.ogg",
@@ -3936,15 +3952,45 @@ var VOICES = {
 		damage2: "http://vignette1.wikia.nocookie.net/kancolle/images/0/03/Haruna%28fog%29-Minor_Damage_2.ogg",
 		damage3: "http://vignette4.wikia.nocookie.net/kancolle/images/8/83/Haruna%28fog%29-Major_Damage.ogg",
 	},
-	904: {
+	912: {
+		attack: "http://vignette1.wikia.nocookie.net/kancolle/images/c/cf/Takao%28fog%29-Attack.ogg",
+		damage: "http://vignette3.wikia.nocookie.net/kancolle/images/9/90/Takao%28fog%29-Minor_Damage_1.ogg",
+	},
+	914: {
+		attack: "http://vignette4.wikia.nocookie.net/kancolle/images/9/9f/Haruna%28fog%29-Attack.ogg",
+		damage: "http://vignette1.wikia.nocookie.net/kancolle/images/9/9a/Haruna%28fog%29-Minor_Damage_1.ogg",
+	},
+	915: {
 		attack: "http://vignette3.wikia.nocookie.net/kancolle/images/d/d2/Kirishima%28fog%29Attack1.ogg",
 		damage: "http://vignette1.wikia.nocookie.net/kancolle/images/7/7a/Kirishima%28fog%29Damaged1.ogg",
 	},
-	905: {
+	913: {
 		attack: "http://vignette4.wikia.nocookie.net/kancolle/images/4/41/Maya%28fog%29Attack1.ogg",
 		damage: "http://vignette4.wikia.nocookie.net/kancolle/images/a/a9/Maya%28fog%29Damaged1.ogg",
 	},
-	906: {
+	916: {
+		start: "http://vignette1.wikia.nocookie.net/kancolle/images/3/3a/Kongou%28fog%29Intro.ogg",
+		attack: "http://vignette4.wikia.nocookie.net/kancolle/images/d/d7/Kongou%28fog%29Attack1.ogg",
+		damage: "http://vignette4.wikia.nocookie.net/kancolle/images/9/9e/Kongou%28fog%29Damaged1.ogg",
+		sunk: "http://vignette2.wikia.nocookie.net/kancolle/images/2/2d/Kongou%28fog%29Sunk.ogg",
+	},
+	918: {
+		attack: "http://vignette1.wikia.nocookie.net/kancolle/images/c/cf/Takao%28fog%29-Attack.ogg",
+		damage: "http://vignette3.wikia.nocookie.net/kancolle/images/9/90/Takao%28fog%29-Minor_Damage_1.ogg",
+	},
+	920: {
+		attack: "http://vignette4.wikia.nocookie.net/kancolle/images/9/9f/Haruna%28fog%29-Attack.ogg",
+		damage: "http://vignette1.wikia.nocookie.net/kancolle/images/9/9a/Haruna%28fog%29-Minor_Damage_1.ogg",
+	},
+	921: {
+		attack: "http://vignette3.wikia.nocookie.net/kancolle/images/d/d2/Kirishima%28fog%29Attack1.ogg",
+		damage: "http://vignette1.wikia.nocookie.net/kancolle/images/7/7a/Kirishima%28fog%29Damaged1.ogg",
+	},
+	919: {
+		attack: "http://vignette4.wikia.nocookie.net/kancolle/images/4/41/Maya%28fog%29Attack1.ogg",
+		damage: "http://vignette4.wikia.nocookie.net/kancolle/images/a/a9/Maya%28fog%29Damaged1.ogg",
+	},
+	922: {
 		start: "http://vignette1.wikia.nocookie.net/kancolle/images/3/3a/Kongou%28fog%29Intro.ogg",
 		attack: "http://vignette4.wikia.nocookie.net/kancolle/images/d/d7/Kongou%28fog%29Attack1.ogg",
 		damage: "http://vignette4.wikia.nocookie.net/kancolle/images/9/9e/Kongou%28fog%29Damaged1.ogg",
