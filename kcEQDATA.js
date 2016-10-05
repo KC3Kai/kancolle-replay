@@ -342,15 +342,16 @@ EQTDATA[OTHER] = {
 
 //FITDATA[shipclass][eqclass]
 var FITDATA = {
-	1: { 1: 4, 2: -2, 3: -4, 4: -4, 5: -6, 6: -2, 7: 0 },
-	2: { 1: 2, 2: 0, 3: -4, 4: -4, 5: -6, 6: -2, 7: 0 },
-	3: { 1: 2, 2: 2, 3: -4, 4: -4, 5: -6, 6: -2, 7: 0 },
-	4: { 1: 1, 2: 0, 3: -4, 4: -4, 5: -6, 6: 0, 7: 0 },
-	5: { 1: 2, 2: 0, 3: 0, 4: -4, 5: -6, 6: 0, 7: 0 },
-	6: { 1: 2, 2: 2, 3: 0, 4: -4, 5: -4, 6: -2, 7: 0 },
-	7: { 1: 2, 2: 2, 3: 2, 4: -4, 5: -4, 6: 0, 7: 0 },
-	8: { 1: 1, 2: 1, 3: 1, 4: -4, 5: -2, 6: 0, 7: 0 },
-	9: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0 },
+	// 35.6/38, 381,  41,    46P,   46,    16,    51
+	1: { 1: 4, 2: -2, 3: -4, 4: -4, 5: -6, 6: -2, 7: 0, 8: 2 }, //Kongou
+	2: { 1: 2, 2: 0, 3: -4, 4: -4, 5: -6, 6: -2, 7: 0, 8: 2 }, //Bismarck
+	3: { 1: 2, 2: 2, 3: -4, 4: -4, 5: -6, 6: -2, 7: 0, 8: 1 }, //Littorio
+	4: { 1: 1, 2: 0, 3: -4, 4: -4, 5: -6, 6: 0, 7: 0, 8: 1 }, //Iowa
+	5: { 1: 4, 2: 0, 3: 0, 4: -4, 5: -6, 6: 0, 7: 0, 8: 4 }, //Warspite
+	6: { 1: 2, 2: 2, 3: 0, 4: -4, 5: -4, 6: -2, 7: 0, 8: 2 }, //Ise/Fusou
+	7: { 1: 2, 2: 2, 3: 2, 4: -4, 5: -4, 6: 0, 7: 0, 8: 2 }, //Fusou Kai 2
+	8: { 1: 1, 2: 1, 3: 1, 4: -4, 5: -2, 6: 0, 7: 0, 8: 1 }, //Nagato
+	9: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 }, //Yamato
 }
 
 //artillery spot/night battle/other combat type
@@ -452,7 +453,7 @@ var EQDATA = {
 		FP: 8,
 		AA: 3,
 		RNG: 2,
-		CANBbonus: true,
+		CANBbonus: 10,
 	},
 	7: {
 		name: '35.6cm Twin Cannon',
@@ -488,7 +489,7 @@ var EQDATA = {
 		btype: B_MAINGUN,
 		atype: A_GUN,
 		improveType: 1,
-		fitclass: 4,
+		fitclass: 5,
 		FP: 26,
 		AA: 5,
 		RNG: 4
@@ -900,7 +901,7 @@ var EQDATA = {
 		FP: 10,
 		AA: 4,
 		RNG: 2,
-		CANBbonus: true,
+		CANBbonus: 15,
 	},
 	51: {
 		name: '12cm 30-tube Rocket Launcher',
@@ -2494,7 +2495,7 @@ var EQDATA = {
 		type: MAINGUNL,
 		btype: B_MAINGUN,
 		atype: A_GUN,
-		fitclass: 2,
+		fitclass: 8,
 		FP: 18,
 		AA: 1,
 		ACC: 1,
@@ -2508,6 +2509,19 @@ var EQDATA = {
 		atype: A_AAGUN,
 		FP: 1,
 		AA: 10,
+	},
+	192: {
+		name: '38.1cm Mk.I/N Twin Gun Mount Kai',
+		nameJP: '38.1cm Mk.I/N連装砲改',
+		added: 20160927,
+		type: MAINGUNL,
+		btype: B_MAINGUN,
+		atype: A_GUN,
+		fitclass: 8,
+		FP: 19,
+		AA: 3,
+		ACC: 2,
+		RNG: 3,
 	},
 	501: {
 		name: '5inch Single Cannon',
