@@ -566,8 +566,9 @@ function processAPI(root) {
 				}
 				if (kouku.api_plane_from[1][0] != -1) {
 					for (var i=0; i<kouku.api_plane_from[1].length; i++) {
-						attackdata.push([f2[kouku.api_plane_from[1][i]-7],[],[]]);
-						attackers.push(f2[kouku.api_plane_from[1][i]-7]);
+						var slot = kouku.api_plane_from[1][i]; if (slot > 6) slot -= 6;
+						attackdata.push([f2[slot-1],[],[]]);
+						attackers.push(f2[slot-1]);
 					}
 				}
 				//defenders
