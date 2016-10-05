@@ -554,6 +554,7 @@ function processAPI(root) {
 				if (kouku.api_plane_from[0][0] != -1) {
 					for (var i=0; i<kouku.api_plane_from[0].length; i++) {
 						var ship = (isbombing)? kouku.api_plane_from[0][i] : fleet1[kouku.api_plane_from[0][i]-1];
+						if (isbombing && kouku.api_squadron_plane.length <= i) continue;
 						attackdata.push([ship,[],[]]);
 						if (isbombing) {
 							var eqid = kouku.api_squadron_plane[i].api_mst_id;

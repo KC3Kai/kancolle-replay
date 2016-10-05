@@ -117,7 +117,7 @@ function simCombined(type,F1,F1C,F2,Fsupport,doNB,NBonly,aironly,landbomb,BAPI) 
 				var res = rollHit(accuracyAndCrit(ship,target,1,.5),(ship.CVshelltype)? ship.critdmgbonus:0);
 				var dmg = 0, realdmg = 0;
 				if (res) {
-					dmg = damage(ship,target,ship.shellPower(target.isInstall),1,res);
+					dmg = damage(ship,target,ship.shellPower(target),1,res);
 					realdmg = takeDamage(target,dmg);
 				} else { realdmg = 0; }
 				if (C) {
