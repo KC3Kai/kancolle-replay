@@ -22,7 +22,8 @@
 		<link rel="stylesheet" href="simulator.css"/>
 	</head>
 	<body>
-		<h1 title="Boat Cockfight Simulator">Kancolle Sortie Simulator</h1> <span style="color:red">v1.0 Beta 1.2 <span style="margin-left:20px;font-style:italic">(Last updated: 2016-04-16)</span></span>
+		<h1 title="Boat Cockfight Simulator">Kancolle Sortie Simulator</h1>
+		<span style="color:red">v1.0 Beta 2.0 <span style="margin-left:20px;font-style:italic">(Last updated: 2016-10-25)</span></span>
 		<br><br><br>
 		<input type="radio" id="radJP" name="lang" onchange="transNames('JP')"/><label for="radJP">JP</label>
 		<input type="radio" id="radEN" name="lang" onchange="transNames('EN')" checked /><label for="radEN">EN</label>
@@ -71,6 +72,13 @@
 			<label for="cbredretr">Retreat on <img src="assets/stats/taiha.png" style="vertical-align:middle"/>?</label>
 			<img src="assets/stats/kuso.png" id="redretrkuso" style="display:none;vertical-align:middle"/>
 			<br><br>
+			<span style="font-weight:bold">Mechanics:</span><br>
+			<input type="checkbox" checked id="mech1" onchange="MECHANICS.artillerySpotting=this.checked"/><label for="mech1">Artillery Spotting</label><br>
+			<input type="checkbox" checked id="mech2" onchange="MECHANICS.AACI=this.checked"/><label for="mech2">Anti-Air Cut-In</label><br>
+			<input type="checkbox" checked id="mech3" onchange="MECHANICS.fitGun=this.checked"/><label for="mech3">Fit Gun</label><br>
+			<input type="checkbox" checked id="mech4" onchange="MECHANICS.OASW=this.checked"/><label for="mech4">Opening ASW</label><br>
+			<input type="checkbox" checked id="mech5" onchange="MECHANICS.morale=this.checked"/><label for="mech5">Morale</label><br>
+			<br>
 			<table id="optionstable">
 			
 			</table>
@@ -293,9 +301,14 @@
 			4. On the Profile tab, click <span style="color:#337AB7">Export Quick Data to a file</span><br><br>
 			5. Select the fleet number you want and upload your file here.<br><br></p>
 		</div>
+		<div id="dialogadvstats" style="font-size:12px;background-color:#DDEEFF">
+		</div>
 		<br><hr><br>
 		<div style="font-size:14px">
-			<span>Sources: <span style="color:red">coming soon</span></span><br><br>
+			<span style="font-weight:bold">Change Log:</span><br>
+			<span>2016-10-25 - Major reworking and improving of calculations. Added calculations explanations.</span><br>
+			<br>
+			<span><a href="sources.html">See Calculations Used</a></span><br><br>
 			<span>Bug report, feature request, or game mechanic article you want to share? Leave an issue on <a href="https://github.com/KC3Kai/kancolle-replay/issues">Github</a> or post on my <a href="http://kancolle.wikia.com/wiki/Message_Wall:Fouryuu">wiki page<a>!</span>
 		</div>
 		<script>

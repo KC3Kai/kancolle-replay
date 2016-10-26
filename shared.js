@@ -65,7 +65,7 @@ for (var i=0; i<SHIPIDSORTED.length; i++) {
 // console.log(SHIPCLASSSORTED);
 
 var defaultEquips = {
-	'DD': [3,3,29],
+	'DD': [122,122,29],
 	'CL': [90,90,59],
 	'CLT': [90,90,41],
 	'CA': [50,90,59,31],
@@ -76,6 +76,8 @@ var defaultEquips = {
 	'SS': [15,15],
 	'SSV': [15,15],
 	'CV': [52,52,22,22],
+	'CVN': [52,52,22,22],
+	'CVB': [52,52,22,22],
 	'CVL': [52,52],
 	'AV': [12,12,41],
 	'LHA': [22,22],
@@ -120,7 +122,7 @@ function processFile(fleetnum,reader,fromfleet) {
 		
 		var equips = [],improves = [];
 		for (var j=0; j<4; j++) {  //get equip mids
-			console.log(ship.items[j]);
+			// console.log(ship.items[j]);
 			if (ship.items[j] == -1) { equips.push(0); improves.push(0); }
 			else {
 				var idata = kcdata.gears['x'+ship.items[j]];
@@ -214,4 +216,23 @@ function exportDeckbuilder(fleet) {
 
 function isPlayable(shipid) {
 	return (shipid < 500 || (shipid >= 901 && shipid <= 903));
+}
+
+function sameShip(mid1,mid2) {
+	if (mid1==mid2) return true;
+	var shipd1 = SHIPDATA[mid1];
+	var done = [];
+	while (shipd1.prev) {
+		if (shipd1.prev == mid2) return true;
+		done.push(shipd1.prev);
+		shipd1 = SHIPDATA[shipd1.prev];
+		if (done.indexOf(shipd1.prev) != -1) break;
+	}
+	while (shipd1.next) {
+		if (shipd1.next == mid2) return true;
+		done.push(shipd1.next);
+		shipd1 = SHIPDATA[shipd1.next];
+		if (done.indexOf(shipd1.next) != -1) break;
+	}
+	return false;
 }

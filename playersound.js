@@ -37,6 +37,7 @@ SoundManager.prototype = {
 		return this._sounds[name];
 	},
 	playBGM: function(num,vol) {
+		this.stopBGM();
 		if (!vol) vol = (BGMLIST[num].voldef)? BGMLIST[num].voldef : .3,
 		this._bgm = new Howl({
 			urls:[BGMLIST[num].url],
@@ -148,6 +149,7 @@ var BGMLIST = {
 	71: {url:'http://vignette1.wikia.nocookie.net/kancolle/images/5/56/Sound_b_bgm_71.ogg'},
 	72: {url:'http://vignette1.wikia.nocookie.net/kancolle/images/f/f0/Sound_b_bgm_72.ogg'},
 	73: {url:'http://vignette3.wikia.nocookie.net/kancolle/images/7/7a/Sound_b_bgm_73.ogg'},
+	75: {url:'http://vignette4.wikia.nocookie.net/kancolle/images/e/ec/Sound_b_bgm_75.ogg'},
 	107: {url:'http://vignette1.wikia.nocookie.net/kancolle/images/b/b2/107b.ogg'},
 	998: {url:'https://dl.dropboxusercontent.com/u/79056688/savior%20of%20song.mp3'},
 	999: {url:'https://dl.dropboxusercontent.com/u/79056688/Orel%20Cruising%20%26%20LSC%20Song%20%5BENG%20Sub%5D.mp3',voldef:.3},

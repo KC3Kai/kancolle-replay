@@ -309,6 +309,16 @@ var MAPDATA = {
 				bossnode: 14,
 				bossHP: 5,
 			},
+			5: {
+				name: '6-5',
+				bgmMap: 1,
+				bgmDN: 75,
+				bgmNN: 75,
+				bgmDB: 68,
+				bgmNB: 68,
+				bossnode: 13,
+				bossHP: 6,
+			},
 		}
 	},
 	22: {
