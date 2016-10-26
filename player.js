@@ -53,6 +53,7 @@ loader.add('BG1','assets/82_res.images.ImgBackgroundDay.jpg')
 	.add('469','assets/469.png')
 	.add('471','assets/471.png')
 	.add('473','assets/473.png')
+	.add('322','assets/322.png')
 	.add('flare1','assets/86.png')
 	.add('flaresmoke','assets/89.png')
 	.add('flare2','assets/92.png')
@@ -144,8 +145,8 @@ function ShipG(id,side,hpmax) {
 }
 
 // var code = '0.8,1,1~AkatsukiKai2,31|YuudachiKai2,31|AyanamiKai2,32|HatsushimoKai2,31|OoyodoKai,47|HaguroKai2,57~Nenohi,30|FusouKai,75|IseKai,77|HatsushimoKai2,31|WakabaKai,30|HatsuharuKai,30~T:~S:4,15,1,0|11,4,2,5,3|5,15,1,0|12,3,1,0|1,15,1,13|15,4,1,5|3,10,1,0|14,4,1,4|2,14,1,0|10,5,1,0|0,14,1,4|13,3,1,3~S:0,10,1,21|10,4,1,1|1,13,1,25|11,2,1,21|2,11,1,5|12,5,2,4,4|3,13,1,2|13,5,1,5|4,11,1,0|14,5,1,5|5,11,1,18|15,4,1,0~T:0,13,2|1,15,10|3,14,16|4,15,0|5,13,1|14,0,0|15,0,0~N:0,15,2,0,0|10,2,2,0,1|1,12,2,6,6|11,3,1,0|2,11,2,29,2|12,1,1,0|3,10,2,6,0|4,12,2,8,3|14,4,1,0|5,15,2,4,0~'
-var fleet1 = [], fleet2 = [];
-var allfleets2 = [];
+var fleet1 = [], fleet2 = [], fleet1C, fleet2C;
+var allfleets2 = [], allfleets2c = [];
 var GEngage = 0, GAP1 = 0, GAP2 = 0;
 
 
@@ -171,11 +172,16 @@ dots2.position.set(radar2.x,radar2.y);
 stage.addChild(dots2);
 
 function createDots(container,form,num,side) {
-	var name, path;
-	if (side) { name = 'dotRed'; path = 'assets/467.png'; } //change path
-	else { name = 'dotGreen'; path = 'assets/465.png'; }
-	var nameC = (COMBINED==1)? 'dotBlue' : (COMBINED==3)? 'dotOrange' : 'dotYellow';
-	var pathC = (COMBINED==1)? 'assets/471.png' : (COMBINED==3)? 'assets/dotOrange.png' : 'assets/469.png';
+	var name, path, nameM, pathM;
+	if (side) {
+		name = 'dotRed'; path = 'assets/467.png';
+		nameM = 'dotRedC'; pathM = 'assets/322.png';
+	} else {
+		name = 'dotGreen'; path = 'assets/465.png';
+		nameM = 'dotGreenC'; pathM = 'assets/473.png';
+	}
+	var nameC = (COMBINED==2)? 'dotYellow' : (COMBINED==3)? 'dotOrange' : 'dotBlue';
+	var pathC = (COMBINED==2)? 'assets/469.png' : (COMBINED==3)? 'assets/dotOrange.png' : 'assets/471.png';
 	form = parseInt(form);
 	switch(form) {
 		case 0:
@@ -191,11 +197,13 @@ function createDots(container,form,num,side) {
 			break;
 		case 2:
 			var c = 0;
-			for (var i=-16; i<=16; i+=16) {
+			var x = 8*Math.floor((num-1)/2);
+			for (var i=-x; i<=x; i+=16) {
 				for (var j=-8; j<=8; j+=16) {
 					if (++c > num) break;
 					var dot = getFromPool(name,path);
-					dot.position.set(i,j);
+					var ii = (side==0)? -i : i;
+					dot.position.set(ii,j);
 					dot.anchor.set(.5);
 					dot.scale.set(.67);
 					container.addChild(dot);
@@ -237,7 +245,7 @@ function createDots(container,form,num,side) {
 		case 11:
 			var coords = [[5,0],[10,30],[10,-30],[20,15],[20,-15],[30,0]];
 			for (var i=0; i<coords.length; i++) {
-				var dot = getFromPool('dotGreenC','assets/473.png');
+				var dot = getFromPool(nameM,pathM);
 				dot.position.set(coords[i][0],coords[i][1]);
 				dot.anchor.set(.5);
 				container.addChild(dot);
@@ -253,7 +261,7 @@ function createDots(container,form,num,side) {
 		case 12:
 			var coords = [[3,7],[3,-7],[16,0],[30,0],[30,17],[30,-17]];
 			for (var i=0; i<coords.length; i++) {
-				var dot = getFromPool('dotGreenC','assets/473.png');
+				var dot = getFromPool(nameM,pathM);
 				dot.position.set(coords[i][0],coords[i][1]);
 				dot.anchor.set(.5);
 				container.addChild(dot);
@@ -269,7 +277,7 @@ function createDots(container,form,num,side) {
 		case 13:
 			var coords = [[32,0],[-32,0],[14,30],[14,-30],[-14,30],[-14,-30]];
 			for (var i=0; i<coords.length; i++) {
-				var dot = getFromPool('dotGreenC','assets/473.png');
+				var dot = getFromPool(nameM,pathM);
 				dot.position.set(coords[i][0],coords[i][1]);
 				dot.anchor.set(.5);
 				container.addChild(dot);
@@ -285,7 +293,7 @@ function createDots(container,form,num,side) {
 		case 14:
 			var coords = [[12,7],[12,-7],[24,17],[24,0],[24,-17],[36,0]];
 			for (var i=0; i<coords.length; i++) {
-				var dot = getFromPool('dotGreenC','assets/473.png');
+				var dot = getFromPool(nameM,pathM);
 				dot.position.set(coords[i][0],coords[i][1]);
 				dot.anchor.set(.5);
 				container.addChild(dot);
@@ -345,9 +353,6 @@ function createShip(data,side,i,damaged) {
 	graphic.addChild(hptxt);
 	graphic.position.set((side==1)?FLEET2ORIGIN+240:-240,((side==1)?144:77)+45*i);
 	ship.graphic = graphic;
-	// var mask = PIXI.Sprite.fromImage('assets/mask.png');
-	// graphic.addChild(mask);
-	// mask.blendMode = PIXI.blendModes.ADD;
 
 	if (data.length > 2) shipSetHP(ship,data[2]);
 	var hasonlytorp;
@@ -403,7 +408,7 @@ function processAPI(root) {
 		bossbar.show = true;
 	} else bossbar.show = false;
 	
-	var HPstate = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1];
+	var HPstate = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1];
 	var HPbeginstate = null, battlenumstate = 0;
 	var getState = function(newbattle) {
 		if (newbattle) {
@@ -453,7 +458,7 @@ function processAPI(root) {
 			loader2.add('ship'+i+'C','assets/icons/'+SHIPDATA[root.fleet2[i].mst_id].image);
 		}
 	}
-	fleet1 = []; fleet2 = []; fleet1C = [];
+	fleet1 = []; fleet2 = []; fleet1C = []; fleet2C = [];
 	HPtotal1 = 0; HPtotal2 = 0;
 	if (root.combined) {
 		for (var i=0; i<fshipsC.length; i++) {  //create ship objects (combined)
@@ -493,7 +498,8 @@ function processAPI(root) {
 		data = root.battles[b].data;
 		if (Object.keys(data).length <= 0) data = root.battles[b].yasen;
 		if (Object.keys(data).length <= 0) continue;
-		var f2 = [];
+		
+		var f2 = [], f2c = [];
 		//load enemies
 		if (data.api_ship_ke[0] == -1) data.api_ship_ke = data.api_ship_ke.slice(1);
 		for (var i=0; i<data.api_ship_ke.length; i++) {
@@ -513,6 +519,36 @@ function processAPI(root) {
 			HPstate[i+6] = data.api_nowhps[i+7];
 			// stage.addChild(sh.graphic);
 		}
+		//load enemy combined
+		if (data.api_ship_ke_combined) {
+			if (data.api_ship_ke_combined[0] == -1) data.api_ship_ke_combined = data.api_ship_ke_combined.slice(1);
+			for (var i=0; i<data.api_ship_ke_combined.length; i++) {
+				if (!data.api_ship_ke_combined[i] || data.api_ship_ke_combined[i] == -1) continue;
+				if (SHIPDATA[data.api_ship_ke_combined[i]])
+					loader2.add('shipc'+b+i,'assets/icons/'+SHIPDATA[data.api_ship_ke_combined[i]].image);
+				else
+					loader2.add('shipc'+b+i,'assets/icons/K.png');
+				var d = [data.api_ship_ke_combined[i],data.api_maxhps_combined[i+7],data.api_nowhps_combined[i+7]];
+				if (data.api_eSlot_combined[0] == -1) data.api_eSlot_combined = data.api_eSlot_combined.slice(1);
+				for (var j=0; j<data.api_eSlot_combined[i].length; j++) {
+					if (data.api_eSlot_combined[i][j] == -1) break;
+					d.push(data.api_eSlot_combined[i][j]);
+				}
+				var sh = createShip(d,1,i,data.api_boss_damaged);
+				f2c.push(sh);
+				sh.xorigin = 465; sh.graphic.x = 465;
+				var mask = new PIXI.Sprite.fromImage('assets/mask.png');
+				mask.scale.x = -1;
+				mask.x = 175;
+				sh.graphic.mask = mask;
+				sh.mask = mask;
+				sh.graphic.addChild(mask);
+				sh.escorte = true;
+				sh.graphic.y += 480;
+				HPstate[i+18] = data.api_nowhps_combined[i+7];
+			}
+		}
+		
 		for (var i=0; i<fleet1.length; i++) HPstate[i] = data.api_nowhps[i+1];
 		if (COMBINED) for (var i=0; i<fleet1C.length; i++) HPstate[i+12] = data.api_nowhps_combined[i+1];
 		var NBonly = (!!data.api_hougeki || Object.keys(data).length <= 0);
@@ -536,9 +572,10 @@ function processAPI(root) {
 			eventqueue.push([wait,[3000,(isboss||(NBonly && map.bgmDN!=map.bgmNN))]]);
 			eventqueue.push([shuttersNextBattle,[battledata,f2]]);
 		}
-		eventqueue.push([battleStart,[battledata,f2,escape,bgm,(isboss&&bossbar.show)],getState(true)]);
+		eventqueue.push([battleStart,[battledata,f2,f2c,escape,bgm,(isboss&&bossbar.show)],getState(true)]);
 		battlestarts.push(eventqueue.length-1);
 		allfleets2.push(f2);
+		allfleets2c.push(f2c);
 		
 		//for reading air phase
 		var processKouku = function(kouku,isbombing) {
@@ -645,11 +682,19 @@ function processAPI(root) {
 							if (hit) targetdata.push([f2[i],(dam>0)? dam:0,(dam!=kouku.api_stage3.api_edam[i+1]),kouku.api_stage3.api_ecl_flag[i+1],kouku.api_stage3.api_erai_flag[i+1]]);
 						}
 						
-						if (COMBINED && kouku.api_stage3_combined) {
-							var dam = parseInt(kouku.api_stage3_combined.api_fdam[i+1]);  //remember later, .1 = protect
-							HPstate[i+12] -= Math.floor(dam);
-							var hit = (kouku.api_stage3_combined.api_frai_flag[i+1] || kouku.api_stage3_combined.api_fbak_flag[i+1]);
-							if (hit) targetdata.push([fleet1C[i],(dam>0)? dam:0,(dam!=kouku.api_stage3_combined.api_fdam[i+1]),kouku.api_stage3_combined.api_fcl_flag[i+1],kouku.api_stage3_combined.api_frai_flag[i+1]]);
+						if (kouku.api_stage3_combined) {
+							if (kouku.api_stage3_combined.api_fdam) {
+								var dam = parseInt(kouku.api_stage3_combined.api_fdam[i+1]);  //remember later, .1 = protect
+								HPstate[i+12] -= Math.floor(dam);
+								var hit = (kouku.api_stage3_combined.api_frai_flag[i+1] || kouku.api_stage3_combined.api_fbak_flag[i+1]);
+								if (hit) targetdata.push([fleet1C[i],(dam>0)? dam:0,(dam!=kouku.api_stage3_combined.api_fdam[i+1]),kouku.api_stage3_combined.api_fcl_flag[i+1],kouku.api_stage3_combined.api_frai_flag[i+1]]);
+							}
+							if (kouku.api_stage3_combined.api_edam) {
+								var dam = parseInt(kouku.api_stage3_combined.api_edam[i+1]);  //remember later, .1 = protect
+								HPstate[i+18] -= Math.floor(dam);
+								var hit = (kouku.api_stage3_combined.api_erai_flag[i+1] || kouku.api_stage3_combined.api_ebak_flag[i+1]);
+								if (hit) targetdata.push([f2c[i],(dam>0)? dam:0,(dam!=kouku.api_stage3_combined.api_edam[i+1]),kouku.api_stage3_combined.api_ecl_flag[i+1],kouku.api_stage3_combined.api_erai_flag[i+1]]);
+							}
 						}
 					}
 				}
@@ -684,17 +729,20 @@ function processAPI(root) {
 		};
 		
 		//for reading torpedo phase
-		var processRaigeki = function(rai,f1) {
+		var processRaigeki = function(rai,f1,ecombined) {
 			var shots = [];
-			for (var i=0; i<6; i++) {
+			var num = (ecombined)? 12 : 6;
+			for (var i=0; i<num; i++) {
 				if (rai.api_frai[i+1] > 0) {
-					var target = f2[rai.api_frai[i+1]-1];
+					var target;
+					if (ecombined && rai.api_frai[i+1] >= 7) target = f2c[rai.api_frai[i+1]-7];
+					else target = f2[rai.api_frai[i+1]-1];
 					var attacker = f1[i];
 					shots.push([attacker,target,rai.api_fydam[i+1]]);
 				}
 				if (rai.api_erai[i+1] > 0) {
 					var target = f1[rai.api_erai[i+1]-1];
-					var attacker = f2[i];
+					var attacker = (ecombined)? f2c[i-6] : f2[i];
 					shots.push([attacker,target,rai.api_eydam[i+1]]);
 				}
 				HPstate[i+6] -= Math.floor(rai.api_edam[i+1]);
@@ -723,11 +771,20 @@ function processAPI(root) {
 		};
 		
 		//for reading shelling phase
-		var processHougeki = function(hou,f1) {
+		var processHougeki = function(hou,f1,ecombined) {
 			for (var j=1; j<hou.api_at_list.length; j++) {
 				var d = [];
-				d.push( (hou.api_at_list[j]>6)? f2[hou.api_at_list[j]-7] : f1[hou.api_at_list[j]-1] ); //attacker
-				d.push( (hou.api_df_list[j][0]>6)? f2[hou.api_df_list[j][0]-7] : f1[hou.api_df_list[j][0]-1] ); //target
+				
+				var attacker;
+				if (ecombined && hou.api_at_eflag[j]) attacker = (hou.api_at_list[j]>6)? f2c[hou.api_at_list[j]-7] : f2[hou.api_at_list[j]-1];
+				else attacker = (hou.api_at_list[j]>6)? f2[hou.api_at_list[j]-7] : f1[hou.api_at_list[j]-1]
+				d.push(attacker); //attacker
+				
+				var defender;
+				if (ecombined && !hou.api_at_eflag[j]) defender = (hou.api_df_list[j][0]>6)? f2c[hou.api_df_list[j][0]-7] : f2[hou.api_df_list[j][0]-1];
+				else defender = (hou.api_df_list[j][0]>6)? f2[hou.api_df_list[j][0]-7] : f1[hou.api_df_list[j][0]-1];
+				d.push(defender); //target
+				
 				for (var k=0; k<hou.api_damage[j].length; k++) {
 					d.push(parseInt(hou.api_damage[j][k])); //damage
 					HPstate[hou.api_df_list[j][0]-1+((f1[0].escort && hou.api_df_list[j][0] < 7)?12:0)] -= Math.floor(hou.api_damage[j][k]);
@@ -824,11 +881,11 @@ function processAPI(root) {
 		
 		//opening asw
 		var f = (COMBINED)? fleet1C : fleet1;
-		if (data.api_opening_taisen) processHougeki(data.api_opening_taisen,f);
+		if (data.api_opening_taisen) processHougeki(data.api_opening_taisen,f,(data.api_ship_ke_combined));
 		
 		//opening torp
-		var f = (COMBINED)? fleet1C : fleet1;
-		if (data.api_opening_atack) processRaigeki(data.api_opening_atack,f);
+		f = (COMBINED)? fleet1C : fleet1;
+		if (data.api_opening_atack) processRaigeki(data.api_opening_atack,f,(data.api_ship_ke_combined));
 		
 		//engagement
 		if (data.hasOwnProperty('api_hougeki1')) eventqueue.push([battleEngageShow,[data.api_formation[2]]]);
@@ -838,33 +895,40 @@ function processAPI(root) {
 		
 		//shelling 1, 2, 3
 		f = (COMBINED == 1 || COMBINED == 3)? fleet1C : fleet1;
-		if (data.api_hougeki1) processHougeki(data.api_hougeki1,f);
+		if (data.api_hougeki1) processHougeki(data.api_hougeki1,f,data.api_ship_ke_combined);
 		//CTF does closing torpedo
-		if ((COMBINED == 1 || COMBINED == 3) && data.api_raigeki) processRaigeki(data.api_raigeki,f);
+		if ((COMBINED == 1 || COMBINED == 3 || data.api_ship_ke_combined) && data.api_raigeki)
+			processRaigeki(data.api_raigeki,f,(data.api_ship_ke_combined));
 		
-		if (data.api_hougeki2) processHougeki(data.api_hougeki2,fleet1); //always main fleet
-		f = (COMBINED == 1 || COMBINED == 3)? fleet1 : fleet1C;
-		if (COMBINED == 2) eventqueue.push([wait,[1000]]); //short pause between main and escort shelling if STF
-		if (data.api_hougeki3) processHougeki(data.api_hougeki3,f);
+		if (data.api_hougeki2) processHougeki(data.api_hougeki2,fleet1,data.api_ship_ke_combined); //always main fleet
+		if (data.api_hougeki3) {
+			f = (COMBINED == 2)? fleet1C : fleet1;
+			if (COMBINED == 2) eventqueue.push([wait,[1000]]); //short pause between main and escort shelling if STF
+			processHougeki(data.api_hougeki3,f,data.api_ship_ke_combined);
+		}
 		
 		//closing torp (if not CTF/TTF)
 		f = (COMBINED)? fleet1C : fleet1;
-		if (COMBINED != 1 && COMBINED != 3 && data.api_raigeki) processRaigeki(data.api_raigeki,f);
+		if (COMBINED != 1 && COMBINED != 3 && !data.api_ship_ke_combined && data.api_raigeki)
+			processRaigeki(data.api_raigeki,f,data.api_ship_ke_combined);
 		
 		//night battle
 		var f1 = (COMBINED)? fleet1C : fleet1;
+		var f2e = f2;
 		var yasen = (data.api_hougeki)? data : root.battles[b].yasen;
+		var combinedEType = (!yasen.api_ship_ke_combined)? 0 : (yasen.api_active_deck && yasen.api_active_deck[1] == 1)? 1 : 2;
+		if (combinedEType==2) f2e = f2c;
 		if (Object.keys(yasen).length) {
 			if (!data.api_hougeki) {
 				eventqueue.push([wait,[1000,(orel)?false:(isboss)?(map.bgmNB!=map.bgmDB):(map.bgmNN!=map.bgmDN)],null]);
 				eventqueue.push([shutters,[],null]);
 			}
-			eventqueue.push([NBstart,[yasen.api_flare_pos,yasen.api_touch_plane,(orel)?999:(isboss)? map.bgmNB : map.bgmNN]]);
+			eventqueue.push([NBstart,[yasen.api_flare_pos,yasen.api_touch_plane,(orel)?999:(isboss)? map.bgmNB : map.bgmNN, combinedEType]]);
 			var hou = yasen.api_hougeki;
 			for (var j=1; j<hou.api_at_list.length; j++) {
 				var d = [];
-				d.push( (hou.api_at_list[j]>6)? f2[hou.api_at_list[j]-7] : f1[hou.api_at_list[j]-1] ); //attacker
-				d.push( (hou.api_df_list[j][0]>6)? f2[hou.api_df_list[j][0]-7] : f1[hou.api_df_list[j][0]-1] ); //target
+				d.push( (hou.api_at_list[j]>6)? f2e[hou.api_at_list[j]-7] : f1[hou.api_at_list[j]-1] ); //attacker
+				d.push( (hou.api_df_list[j][0]>6)? f2e[hou.api_df_list[j][0]-7] : f1[hou.api_df_list[j][0]-1] ); //target
 				for (var k=0; k<hou.api_damage[j].length; k++) {
 					d.push(parseInt(hou.api_damage[j][k])); //damage
 					HPstate[hou.api_df_list[j][0]-1+((COMBINED && hou.api_df_list[j][0] < 7)?12:0)] -= Math.max(0,Math.floor(hou.api_damage[j][k]));
@@ -1100,14 +1164,17 @@ function moveNumber(numbers) {
 function createTorp(ship,target,speed,big) {
 	if (!speed) speed = 4;
 	var torp = (big)? getFromPool('torpedoBig','assets/493.png') : getFromPool('torpedo','assets/498.png');
-	torp.pivot.set(0,(big)? 13:8);//torp.pivot.set(281,8);
-	var x1 = (ship.side==1) ? 657 : (ship.escort||target.escort)? 295 : 143;
-	var x2 = (target.side==1) ? 657 : (ship.escort||target.escort)? 295 : 143;
+	torp.pivot.set(0,(big)? 13:8);
+	var x1 = (ship.side==1) ? ((ship.escorte)? 482:657) : (ship.escort||target.escort)? 295 : 143;
+	var x2 = (target.side==1) ? ((target.escorte)? 482:657) : (ship.escort||target.escort)? 295 : 143;
 	torp.position.set(x1,ship.graphic.y+22);
 	torp.rotation = Math.atan((ship.graphic.y - target.graphic.y)/(x1-x2))+Math.PI*ship.side;
 	var msk = new PIXI.Graphics();
 	msk.beginFill(0x000000);
-	msk.drawRect((ship.escort||target.escort)? 321 : 169, 0, (ship.escort||target.escort)? 310 : 462, 480);
+	var rx = (ship.escort||target.escort)? 321 : 169;
+	var rw = (ship.escort||target.escort)? 310 : 462;
+	if (ship.escorte||target.escorte) rw -= 166;
+	msk.drawRect(rx, 0, rw, 480);
 	torp.mask = msk;
 	torp.alpha = 0;
 	torp.notpersistent = true;
@@ -1255,12 +1322,13 @@ function dotAppear(dots) {
 }
 
 //--------------------
-function battleStart(battledata,newships,escape,bgm,showbosshp) {
+function battleStart(battledata,newships,newshipsC,escape,bgm,showbosshp) {
 	if (battledata[5] == '1' && !bg2.parent) {  //just in case background wasn't changed
 		stage.removeChild(bg);
 		stage.addChildAt(bg2,0);
 	}
 	fleet2 = newships;
+	if (newshipsC) for (var i=newshipsC.length-1; i>=0; i--) stage.addChildAt(newshipsC[i].graphic,5);
 	for (var i=newships.length-1; i>=0; i--) stage.addChildAt(newships[i].graphic,5/*ind*/);
 	createDots(dots1,battledata[1],fleet1.length,0);
 	createDots(dots2,battledata[2],fleet2.length,1);
@@ -1323,6 +1391,17 @@ function battleStart(battledata,newships,escape,bgm,showbosshp) {
 			addTimeout(function(){
 				updates.push([shipEscortEnter,[fleet1C[jj],77+45*jj]]);
 				jj++;
+			},1000+100*i);
+		}
+	}
+	
+	if (newshipsC) {
+		fleet2C = newshipsC;
+		var jj2 = 0;
+		for (var i=0; i<fleet2C.length; i++) {
+			addTimeout(function(){
+				updates.push([shipEscortEnter,[fleet2C[jj2],144+45*jj2]]);
+				jj2++;
 			},1000+100*i);
 		}
 	}
@@ -1457,7 +1536,7 @@ function standardHit(target,damage,move,protect,forcecrit) {
 	else if (target.side==0 && target.hp/target.hpmax > .75 && (target.hp-Math.max(0,damage))/target.hpmax <= .75)
 		addTimeout(function() { SM.playVoice(target.mid,'damage'+((Math.random()<.5)? 1:2),target.id); }, 100);
 	
-	if (bossbar.active && target.id == 10 && target.hp > 0) {
+	if (bossbar.active && target.id == 10 && target.hp > 0 && !target.escorte) {
 		if (bossbar.mode == 2) {
 			bossbar.nowhp = Math.max(0,bossbar.nowhp - Math.min(damage,target.hp));
 			updates.push([bossBarMove,[]]);
@@ -1535,13 +1614,13 @@ function shootPlane(ship,target,damage,forcecrit,protect) {
 	var planes = createPlane(ship.graphic.x+85,ship.graphic.y+22,ship.planetypes,null,null,ship.side);
 	
 	var angle = Math.atan((ship.graphic.y-target.graphic.y)/(ship.graphic.x-target.graphic.x));
-	updates.push([movePlane,[planes,angle,(ship.side==0) ? 5 : -5, (ship.escort||target.escort)]]);
+	updates.push([movePlane,[planes,angle,(ship.side==0) ? 5 : -5, (ship.escort||target.escort), (ship.escorte||target.escorte)]]);
 	SM.play('planelaunch');
 	SM.playVoice(ship.mid,'attack',ship.id);
 	
 	addTimeout(function() { SM.play('planeatk'); },(ship.escort||target.escort)? 1300 : 1900);
 	if (protect) addTimeout(function() { updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,3]]); }, (ship.escort||target.escort)? 1475 : 2075);
-	addTimeout(function(){ standardHit(target,damage,true,protect,forcecrit); }, (ship.escort||target.escort)? 1600 : 2200);
+	addTimeout(function(){ standardHit(target,damage,true,protect,forcecrit); }, (ship.escort||target.escort||ship.escorte||target.escorte)? 1600 : 2200);
 	
 	addTimeout(function(){stage.removeChild(planes); ecomplete=true;},3000);
 }
@@ -1907,14 +1986,17 @@ function createPlane(x,y,planetypes,shots,shots2,side) {
 	return planes;
 }
 
-function movePlane(planes,angle,speed,withescort) {
+function movePlane(planes,angle,speed,withescort,withescorte) {
 	planes.x += speed;
 	planes.y += speed*Math.tan(angle);
 	if (planes.scale.x < .8) planes.scale.set(planes.scale.x+.1);
 	var x1 = (withescort)? 237 : 85;
-	if (!withescort||planes.x > 120)
-		planes.pivot.y = 40-100*Math.sin(Math.PI*(planes.x-x1)/(715-x1));
-	else { planes.pivot.y += 2.5; } //so it doesn't start snaking
+	var x2 = (withescorte)? 549 : 715;
+	// if (!withescort||planes.x > 120)
+		// planes.pivot.y = 40-100*Math.sin(Math.PI*(planes.x-x1)/(x2-x1));
+	// else { planes.pivot.y += 2.5; } //so it doesn't start snaking
+	if ((withescort&&planes.x<=120)||(withescorte&&planes.x>=625)) planes.pivot.y += 2.5;
+	else planes.pivot.y = 40-100*Math.sin(Math.PI*(planes.x-x1)/(x2-x1));
 	var fire = false;
 	for (var i=0; i<planes.children.length; i++) {
 		var plane = planes.getChildAt(i);
@@ -1959,7 +2041,7 @@ function createTorpedoBomber2(x,y,target) {
 	stage.addChild(torp); var speed = (target.graphic.x+(1-target.side)*160 - torp.x)/40;
 	updates.push([function(torp,speed) {
 		torp.x += speed; torp.y += Math.tan(torp.rotation)*speed;
-		if (Math.abs(torp.x - target.graphic.x - (1-target.side)*160)<Math.abs(speed)) {
+		if (Math.abs(torp.x - target.graphic.x - (1-target.side)*160)<Math.max(Math.abs(speed),1.7)) {
 			recycle(torp);
 			return true;
 		}
@@ -1983,7 +2065,7 @@ function GTorpedoPhase(shots) {
 		}, 500);
 		addTimeout(function(){
 			updates.push([shipMoveTo,[shots[j][0],shots[j][0].xorigin,4]]);
-			createTorp(shots[j][0],shots[j][1],(COMBINED)? 3 : 4);
+			createTorp(shots[j][0],shots[j][1],(COMBINED||shots[j][0].escorte||shots[j][1].escorte)? 3 : 4);
 			j++;
 		}, 550);
 	}
@@ -2192,8 +2274,9 @@ function GSupportPhase(ships,damages,istorpedo) {
 			}, 100+i*50);
 		}
 	} else {
-		for (var i=0; i<6; i++) {
-			var targets = shuffle(fleet2.slice()), j=0;
+		var targets = shuffle(fleet2.slice());
+		for (var i=0; i<targets.length; i++) {
+			var j=0;
 			addTimeout(function() {
 				createSupportTorp(0,-200,Math.atan((targets[j].graphic.y+200)/(targets[j].graphic.x)));
 				j++;
@@ -2255,6 +2338,16 @@ function createSupportTorp(x,y,angle) {
 function escortFadeIn(ship) {
 	ship.graphic.mask.x -= 10;
 	if (ship.graphic.mask.x <= -110) {
+		ship.graphic.removeChild(ship.graphic.mask);
+		ship.graphic.mask = null;
+		return true;
+	}
+	return false;
+}
+
+function escortFadeInE(ship) {
+	ship.graphic.mask.x += 10;
+	if (ship.graphic.mask.x >= 300) {
 		ship.graphic.removeChild(ship.graphic.mask);
 		ship.graphic.mask = null;
 		return true;
@@ -2424,7 +2517,8 @@ function moveSearchlight(light) {
 	return false;
 }
 
-function NBstart(flares,contact,bgm) {
+function NBstart(flares,contact,bgm,combinedEType) {
+	var wait = false;
 	if (COMBINED) {
 		for (var i=0; i<fleet1.length; i++) {
 			var j = 0;
@@ -2447,14 +2541,56 @@ function NBstart(flares,contact,bgm) {
 				kk++;
 			}, 500+i*100);
 		}
-		// addTimeout(function() { ecomplete = true; }, 1500);
+		wait = true;
+	}
+	if (combinedEType==1) { //fight main fleet
+		var k2 = 0;
+		for (var i=0; i<3; i++) {
+			if (i >= fleet2C.length) break;
+			addTimeout(function() {
+				updates.push([shipMoveToV,[fleet2C[k2],-100,-10]]);
+				k2++;
+			}, 200+i*100);
+		}
+		var kk2 = fleet2C.length-1;
+		for (var i=5; i>=3; i--) {
+			if (i >= fleet2C.length) continue;
+			addTimeout(function() {
+				updates.push([shipMoveToV,[fleet2C[kk2],600,10]]);
+				kk2--;
+			}, 200+(5-i)*100);
+		}
+		wait = true;
+	} else if (combinedEType==2) { //fight escort
+		for (var i=0; i<fleet2.length; i++) {
+			var j2 = 0;
+			addTimeout(function() {
+				updates.push([shipMoveTo,[fleet2[j2],1020,10]]);
+				j2++;
+			}, 100+i*100);
+		}
+		for (var i=0; i<fleet2C.length; i++) {
+			var k2 = 0;
+			addTimeout(function() {
+				updates.push([shipMoveTo,[fleet2C[k2],631,10]]);
+				k2++;
+			}, 200+i*100);
+			var kk2 = 0;
+			addTimeout(function() {
+				updates.push([escortFadeInE,[fleet2C[kk2]]]);
+				fleet2C[kk2].xorigin = 631;
+				fleet2C[kk2].escorte = false;
+				kk2++;
+			}, 500+i*100);
+		}
+		wait = true;
 	}
 	var nbtimer = 0;
 	if (flares[0] != -1 || flares[1] != -1) {
 		nbtimer = 5000;
 		if (flares[0] != -1 || flares[1] != -1) { //star shell
 			var ship = (COMBINED)? fleet1C[flares[0]-1] : fleet1[flares[0]-1], shipE = fleet2[flares[1]-1];
-			addTimeout(function() { if (ship) shootFlare(ship); if (shipE) shootFlare(shipE,!!ship); }, (COMBINED)? 1600 : 1);
+			addTimeout(function() { if (ship) shootFlare(ship); if (shipE) shootFlare(shipE,!!ship); }, (wait)? 1600 : 1);
 		}
 	}
 	var f1 = (COMBINED)? fleet1C : fleet1;
@@ -2466,17 +2602,22 @@ function NBstart(flares,contact,bgm) {
 		addTimeout(function() {
 			if (light1) createSearchlight(light1);
 			if (light2) createSearchlight(light2);
-		}, ((flares[0] != -1 || flares[1] != -1)? 2000 : 1) + ((COMBINED)? 1499:0));
+		}, ((flares[0] != -1 || flares[1] != -1)? 2000 : 1) + ((wait)? 1499:0));
 	}
-	if (contact[0] > 0) addTimeout(function() { showContact(contact[0],0,true); }, ((COMBINED)? 1499:0));
-	if (contact[1] > 0) addTimeout(function() { showContact(contact[1],1,true); }, ((COMBINED)? 1499:0));
+	if (contact[0] > 0) addTimeout(function() { showContact(contact[0],0,true); }, ((wait)? 1499:0));
+	if (contact[1] > 0) addTimeout(function() { showContact(contact[1],1,true); }, ((wait)? 1499:0));
 	
 	if (bgm != SM.BGMnum) {
 		SM.stopBGM();
 		SM.playBGM(bgm);
 	}
 		
-	addTimeout(function() { ecomplete = true; }, 1+((COMBINED)? 1499:0)+nbtimer);
+	addTimeout(function() { ecomplete = true; }, 1+((wait)? 1499:0)+nbtimer);
+}
+
+function shipMoveToV(ship,target,speed) {
+	ship.graphic.y += speed;
+	return (speed < 0)? (ship.graphic.y < target) : (ship.graphic.y > target);
 }
 
 function repairTeam(ship,isgoddess) {
@@ -2537,6 +2678,20 @@ function resetBattle() {
 		fleet2[i].graphic.pivot.x = 0;
 		fleet2[i].graphic.x = 871;
 		if (fleet2[i].hp != fleet2[i].hpmax) shipSetHP(fleet2[i],fleet2[i].hpmax);
+	}
+	for (var i=0; i<fleet2C.length; i++) {
+		stage.removeChild(fleet2C[i].graphic);
+		fleet2C[i].shakepid = 0;
+		fleet2C[i].graphic.pivot.x = 0;
+		fleet2C[i].graphic.x = fleet2C[i].xorigin = 465;
+		fleet2C[i].graphic.y = 624+44*i;
+		fleet2C[i].escorte = true;
+		if (fleet2C[i].hp != fleet2C[i].hpmax) shipSetHP(fleet2C[i],fleet2C[i].hpmax);
+		if (!fleet2C[i].graphic.mask) {
+			fleet2C[i].graphic.mask = fleet2C[i].mask;
+			fleet2C[i].graphic.addChild(fleet2C[i].graphic.mask);
+		}
+		fleet2C[i].mask.x = 175;
 	}
 	
 	dots1.removeChildren(); dots2.removeChildren();
@@ -2649,23 +2804,15 @@ function reset(callback) {
 	// END = true;
 	CANRESET = false;
 	statechangefunc = function() {
-		// while(stage.children.length) {
-			// var child = stage.getChildAt(0);
-			// stage.removeChild(child);
-			// console.log(child);
-			// if ([bg,bg2,radar1,radar2,dots1,dots2,shutterTop,shutterBottom].indexOf(child) == -1) {
-				// if
-			// }
-		// }
 		PAUSE = true;
 		stage.removeChildren();
 		for (var i=0; i<fleet1.length; i++) {
-			fleet1[i].shakepid = 0; if (fleet1[i].graphic.pivot) fleet1[i].graphic.pivot.x = 0; // if (fleet1[i].shakepid) clearInterval(fleet1[i].shakepid);
+			fleet1[i].shakepid = 0; if (fleet1[i].graphic.pivot) fleet1[i].graphic.pivot.x = 0;
 			for (var j=0; j<fleet1[i].graphic.children.length; j++) fleet1[i].graphic.getChildAt(j).destroy();
 			fleet1[i].graphic.destroy();
 		}
 		for (var i=0; i<fleet1C.length; i++) {
-			fleet1C[i].shakepid = 0; if (fleet1C[i].graphic.pivot) fleet1C[i].graphic.pivot.x = 0;// if (fleet1C[i].shakepid) clearInterval(fleet1C[i].shakepid);
+			fleet1C[i].shakepid = 0; if (fleet1C[i].graphic.pivot) fleet1C[i].graphic.pivot.x = 0;
 			for (var j=0; j<fleet1C[i].graphic.children.length; j++) fleet1C[i].graphic.getChildAt(j).destroy();
 			fleet1C[i].graphic.destroy();
 		}
@@ -2673,12 +2820,21 @@ function reset(callback) {
 		for (var k=0; k<allfleets2.length; k++) {
 			for (var i=0; i<allfleets2[k].length; i++) {
 				var ship = allfleets2[k][i];
-				ship.shakepid = 0; if (ship.graphic.pivot) ship.graphic.pivot.x = 0;// if (ship.shakepid) clearInterval(ship.shakepid);
+				ship.shakepid = 0; if (ship.graphic.pivot) ship.graphic.pivot.x = 0;
 				for (var j=0; j<ship.graphic.children.length; j++) ship.graphic.getChildAt(j).destroy();
 				ship.graphic.destroy();
 			}
 		}
 		allfleets2 = [];
+		for (var k=0; k<allfleets2c.length; k++) {
+			for (var i=0; i<allfleets2c[k].length; i++) {
+				var ship = allfleets2c[k][i];
+				ship.shakepid = 0; if (ship.graphic.pivot) ship.graphic.pivot.x = 0;
+				for (var j=0; j<ship.graphic.children.length; j++) ship.graphic.getChildAt(j).destroy();
+				ship.graphic.destroy();
+			}
+		}
+		allfleets2c = [];
 		stage.addChild(bg);
 		radar1.scale.set(0); radar2.scale.set(0);
 		stage.addChild(radar1);

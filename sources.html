@@ -1,0 +1,607 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<style>
+	ul.list1 {
+		border: 1px solid black;
+		width: 240px;
+		padding: 10px 10px 10px 25px;
+	}
+	table.t1 {
+		border-collapse: collapse;
+	}
+	table.t1 td, table.t1 th {
+		border: 1px solid black;
+		width: 100px;
+		text-align: center;
+	}
+	table.t1 img {
+		vertical-align: middle;
+	}
+	
+	span.equation {
+		font-weight: bold;
+		font-size: 18px;
+	}
+	
+	.confHigh {
+		background-color: #d3f8d3;
+	}
+	.confMed {
+		background-color: #ffffd8;
+	}
+	.confLow {
+		background-color: #ffe0e0;
+	}
+	
+	span.source {
+		color: red;
+		font-weight: bold;
+	}
+	span.source a {
+		font-weight: normal;
+	}
+</style>
+</head>
+
+<body>
+<h1>Kancolle Sortie Simulator - Calculations</h1>
+<span style="color:red;font-style:italic">(Last updated: 2016-10-25)</span>
+<br><br>
+<span>This page describes calculations as used by the simulator, as well as sources suggesting their accuracy. It is intended to describe the simulator only; they MAY NOT reflect actual in-game calculations.</span>
+<br><br>
+<span>Confidence Ratings:</span><br>
+<span class="confHigh">Green: Backed by sources, and any changes are expected to be minor and not affect results much.</span><br>
+<span class="confMed">Yellow: Has a source, but not well verified.</span><br>
+<span class="confLow">Red: Likely to change as new information is found.</span><br>
+
+
+<ul class="list1">
+	<li><a href="#li1">Accuracy and Evasion</a>
+		<ul>
+			<li><a href="#li1a">Accuracy Term</a>
+				<ul>
+					<li><a href="#li1a1">Fit Gun</a></li>
+				</ul>
+			</li>
+			<li><a href="#li1b">Evasion Term</a></li>
+			<li><a href="#li1c">Determining Result</a>
+				<ul>
+					<li><a href="#li1c1">Critical Chance</a></li>
+					<li><a href="#li1c2">Aircraft Proficiency</a></li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+	<li><a href="#li2">Air Battle</a>
+		<ul>
+			<li><a href="#li2a">Fighter Combat</a></li>
+			<!--<li><a href="#li2b">Contact Chance</a></li>-->
+			<li><a href="#li2c">Anti-Air Cut-In</a></li>
+			<li><a href="#li2d">Fleet Anti-Air</a></li>
+		</ul>
+	</li>
+	<li><a href="#li3">Artillery Spotting Chance</a>
+	</li>
+	<li><a href="#li4">Night Battle Cut-In Chance</a>
+	</li>
+	<li><a href="#li5">Installation Damage</a>
+	</li>
+	<li><a href="#li6">Miscellaneous</a>
+		<ul>
+			<li><a href="#li6a">Flagship Protection</a></li>
+			<li><a href="#li6b">Searchlight Targeting</a></li>
+		</ul>
+	</li>
+	<li><a href="#li7">Combined Fleet</a>
+	</li>
+</ul>
+
+<h2 id="li1">Accuracy and Evasion</h2>
+<h3 id="li1a">Accuracy Term</h3>
+<div style="margin-left:16px;">
+	<div class="confHigh">
+	<span>Shelling: </span><span class="equation">((90 + sqrt(LUK*1.5) + sqrt(LVL)*2 + equipACC + improveBonus)*formationMod*moraleMod + fitBonus)*artillerySpotMod*APShellMod</span><br><br>
+	<span>Torpedo: </span><span class="equation">(85 + sqrt(LUK*1.5) + sqrt(LVL)*2 + equipACC + improveBonus + floor(torpedoPower/5) + shipTorpAcc)*formationMod*moraleMod</span><br><br>
+	<span>ASW: </span><span class="equation">(80 + sqrt(LUK*1.5) + sqrt(LVL)*2 + sonarASW*2 + improveBonus)*formationMod*moraleMod</span><br><br>
+	<span>Airstrike: </span><span class="equation">95</span><br><br>
+	<span>Night Battle: </span><span class="equation">((69 + starShellBonus)*scoutMod + sqrt(LUK*1.5) + sqrt(LVL)*2 + equipACC + improveBonus)*formationMod*specialAttackMod*moraleMod + CABonus + searchlightBonus + fitBonus</span><br><br>
+	</div>
+	<span class="source">Source: <a href="http://s.webry.info/sp/bs-arekore.at.webry.info/201502/article_4.html">http://s.webry.info/sp/bs-arekore.at.webry.info/201502/article_4.html</a></span>
+	
+	<div class="confHigh">
+	<h4>formationMod</h4>
+	<table class="t1">
+		<tr><th>Formation</th><th>Day Shelling</th><th>Torpedo</th><th>ASW</th><th>Night Battle</th></tr>
+		<tr><td><img src="assets/stats/form1.jpg" alt="Line Ahead"/></td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+		<tr><td><img src="assets/stats/form2.jpg" alt="Line Ahead"/></td><td>1.2</td><td>0.9</td><td>1.2</td><td>0.9</td></tr>
+		<tr><td><img src="assets/stats/form3.jpg" alt="Line Ahead"/></td><td>1</td><td>0.4</td><td>1</td><td>0.7</td></tr>
+		<tr><td><img src="assets/stats/form4.jpg" alt="Line Ahead"/></td><td>1.2</td><td>0.6</td><td>1.2</td><td>0.8</td></tr>
+		<tr><td><img src="assets/stats/form5.jpg" alt="Line Ahead"/></td><td>1.2</td><td>0.3</td><td>1.2</td><td>0.8</td></tr>
+	</table>
+	<br>
+	</div>
+	
+	<div class="confHigh">
+	<h4>moraleMod:</h4>
+	<table class="t1">
+		<tr><th>Morale</th><th>Shelling/ASW/NB</th><th>Torpedo</th></tr>
+		<tr><td>53 - 100</td><td>1.2</td><td>1.3</td></tr>
+		<tr><td>33 - 52</td><td>1</td><td>1</td></tr>
+		<tr><td>23 - 32</td><td>0.8</td><td>0.7</td></tr>
+		<tr><td>0 - 22</td><td>0.5</td><td>0.35</td></tr>
+	</table>
+	<br>
+	</div>
+	
+	<div class="confMed">
+	<h4>artillerySpotMod:</h4>
+	<table class="t1">
+		<tr><th style="width:135px">Attack Type</th><th>Modifier</th></tr>
+		<tr><td>Double Attack</td><td>1.1</td></tr>
+		<tr><td>Sec. Gun Cut-In</td><td>1.3</td></tr>
+		<tr><td>Sec. + Radar Cut-In</td><td>1.5</td></tr>
+		<tr><td>Sec. + AP Cut-In</td><td>1.3</td></tr>
+		<tr><td>AP Shell Cut-In</td><td>1.2</td></tr>
+	</table>
+	<br>
+	</div>
+	
+	<div class="confMed">
+	<h4>APShellMod:</h4>
+	<table class="t1">
+		<tr><th>Equips</th><th>Modifier</th></tr>
+		<tr><td style="width:150px">
+			<img src="assets/items/3.png" alt="Main"/>
+			<img src="assets/items/4.png" alt="Secondary"/>
+			<img src="assets/items/11.png" alt="Radar"/>
+			<img src="assets/items/13.png" alt="APshell"/>
+			</td>
+			<td>1.3</td></tr>
+		<tr><td>
+			<img src="assets/items/3.png" alt="Main"/>
+			<img src="assets/items/4.png" alt="Secondary"/>
+			<img src="assets/items/13.png" alt="APshell"/>
+			</td><td>1.2</td></tr>
+		<tr><td>
+			<img src="assets/items/3.png" alt="Main"/>
+			<img src="assets/items/11.png"/ alt="Radar">
+			<img src="assets/items/13.png" alt="APshell"/>
+			</td><td>1.25</td></tr>
+		<tr><td>
+			<img src="assets/items/3.png" alt="Main"/>
+			<img src="assets/items/13.png" alt="APshell"/>
+			</td><td>1.1</td></tr>
+	</table>
+	<br>
+	</div>
+	
+	<div class="confMed">
+	<h4>specialAttackMod:</h4>
+	<table class="t1">
+		<tr><th style="width:135px">NB Attack</th><th>Modifier</th></tr>
+		<tr><td>Double Attack</td><td>1.1</td></tr>
+		<tr><td>Mixed Cut-In</td><td>1.5</td></tr>
+		<tr><td>Torpedo Cut-In</td><td>1.65</td></tr>
+		<tr><td>Sec. Gun Cut-In</td><td>1.5</td></tr>
+		<tr><td>Main Gun Cut-In</td><td>2</td></tr>
+	</table>
+	<br>
+	</div>
+	<br>
+	
+	<div class="confHigh">
+		<span class="equation">starShellBonus = 5</span> if star shell activated
+	</div>
+	<br>
+	
+	<div class="confHigh">
+		<span class="equation">scoutMod = 1.1</span> if night scout activated
+	</div>
+	<br>
+	
+	<div class="confHigh">
+		<span class="equation">searchlightBonus = 7</span> if searchlight activated
+	</div>
+	<br>
+	
+	<div class="confMed">
+	<span class="equation">improveBonus = sqrt(&#9733;)*improveMod</span>
+	<h4>improveMod:</h4>
+	<table class="t1">
+		<tr><th>Equip Type</th><th>Day Shelling</th><th>Night Battle</th><th>Torpedo</th><th>ASW</th></tr>
+		<tr><td><img src="assets/items/1.png" alt="Main Gun (S)"/><img src="assets/items/16.png"/></td><td>1</td><td>1.3</td><td></td><td></td></tr>
+		<tr><td><img src="assets/items/2.png" alt="Main Gun (M)"/></td><td>1</td><td>1.3</td><td></td><td></td></tr>
+		<tr><td><img src="assets/items/3.png" alt="Main Gun (L)"/></td><td>1</td><td>1.3</td><td></td><td></td></tr>
+		<tr><td><img src="assets/items/4.png" alt="Secondary Gun"/><img src="assets/items/16.png"/></td><td>1</td><td>1.3</td><td></td><td></td></tr>
+		<tr><td><img src="assets/items/5.png" alt="Torpedo"/></td><td></td><td></td><td>2</td><td></td></tr>
+		<tr><td><img src="assets/items/11.png" alt="Radar"/><br>w/ ACC &le; 2</td><td>1.7</td><td>1.3</td><td></td><td></td></tr>
+		<tr><td><img src="assets/items/11.png" alt="Radar"/><br>w/ ACC &ge; 3</td><td>1.7</td><td>1.6</td><td></td><td></td></tr>
+		<tr><td><img src="assets/items/13.png" alt="AP Shell"/></td><td>1</td><td>1.3</td><td></td><td></td></tr>
+		<tr><td><img src="assets/items/15.png" alt="AA Gun"/></td><td></td><td></td><td>2</td><td></td></tr>
+		<tr><td><img src="assets/items/17.png" alt="Depth Charge"/></td><td></td><td></td><td></td><td>1.3</td></tr>
+		<tr><td><img src="assets/items/18.png" alt="Sonar"/></td><td>1</td><td></td><td></td><td>1.3</td></tr>
+		<tr><td><img src="assets/items/24.png" alt="Searchlight"/></td><td>1</td><td>1.3</td><td></td><td></td></tr>
+		<tr><td><img src="assets/items/30.png" alt="Fire Director"/></td><td>1</td><td>1.3</td><td></td><td></td></tr>
+		<tr><td><img src="assets/items/20.png" alt="Landing Craft"/></td><td>1</td><td>1.3</td><td></td><td></td></tr>
+		<tr><td><img src="assets/items/36.png" alt="Tank"/></td><td>1</td><td>1.3</td><td></td><td></td></tr>
+	</table>
+	<br>
+	<span class="source">Source: <a href="http://akashi-list.me/">http://akashi-list.me/</a></span>
+	</div>
+	
+	<!--shipTorpACC and torpedoPower here-->
+	
+	<h3 id="li1a1">Fit Bonus</h3>
+	<div class="confLow">
+	<span style="font-weight:bold">Fit Value:</span><br>
+	<table class="t1">
+	<tr><th></th><th>All 35.6cm, 38cm</th><th>All 381mm</th><th>All 41cm</th><th>Proto 46cm</th><th>46cm</th><th>All 16inch</th><th>51cm</th><th>All 38.1cm</th>
+	<tr><th>Kongou</th><td>6</td><td>-2</td><td>-5</td><td>-7</td><td>-10</td><td>-2</td><td>0</td><td>3</td></tr>
+	<tr><th>Bismarck</th><td>4</td><td>1</td><td>-5</td><td>-7</td><td>-10</td><td>-2</td><td>0</td><td>1</td></tr>
+	<tr><th>Vittorio-Veneto</th><td>4</td><td>-2</td><td>-5</td><td>-7</td><td>-10</td><td>-2</td><td>0</td><td>3</td></tr>
+	<tr><th>Iowa</th><td>4</td><td>1</td><td>-5</td><td>-7</td><td>-10</td><td>0</td><td>0</td><td>1</td></tr>
+	<tr><th>Warspite</th><td>6</td><td>2</td><td>2</td><td>-3</td><td>-7</td><td>0</td><td>0</td><td>6</td></tr>
+	<tr><th>Ise/Fusou</th><td>4</td><td>2</td><td>0</td><td>-3</td><td>-7</td><td>-2</td><td>0</td><td>4</td></tr>
+	<tr><th>Fusou Kai Ni</th><td>4</td><td>2</td><td>4</td><td>-3</td><td>-7</td><td>0</td><td>0</td><td>4</td></tr>
+	<tr><th>Nagato</th><td>2</td><td>2</td><td>0</td><td>-3</td><td>-3</td><td>0</td><td>0</td><td>2</td></tr>
+	<tr><th>Yamato</th><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+	</table><br>
+	<span class="equation">BB Fit Acc = sum Fit Value * sqrt(# of gun class equipped)</span><br>
+	<br>
+	<span class="equation">CL Fit FP = 1*(# 14cm/15.2cm single equipped) + 2*(# 14cm/15.2cm double equipped)</span><br>
+	<span class="equation">CL Fit Acc = 4*(# 14cm/15.2cm single equipped) + 3*(# 14cm/15.2cm double equipped)</span><br>
+	<br>
+	<span class="source">Source: <a href="http://i.imgur.com/ng7hl1P.png">http://i.imgur.com/ng7hl1P.png</a></span><br>
+	<span class="source">Source: <a href="http://ch.nicovideo.jp/pixy_for_ever/blomaga/ar994724">http://ch.nicovideo.jp/pixy_for_ever/blomaga/ar994724</a></span>
+	</div>
+	
+</div>
+
+<h3 id="li1b">Evasion Term</h3>
+<div style="margin-left:16px">
+	<div class="confHigh">
+		<span class="equation">precapEV = (EV + sqrt(LUK*2))*formationMod</span><br><br>
+		<span class="equation">postcapEV =</span><br>
+		<div style="margin-left:32px">
+			<table>
+			<tr><td><span class="equation">55 + 2*sqrt(precapEV - 65)</span></td><td style="width:50px"></td><td><span class="equation">if precapEV &ge; 65</td></tr>
+			<tr><td><span class="equation">40 + 3*sqrt(precapEV - 40)</span></td><td></td><td><span class="equation">if 40 &le; precapEV &lt; 65</span></td></tr>
+			<tr><td><span class="equation">precapEV</span></td><td></td><td><span class="equation">if precapEV &lt; 40</span></td></tr>
+			</table>
+		</div><br>
+		<span class="equation">Evasion Term = (postcapEV - fuelPenalty + sonarImproveBonus + CABonus)*searchlightPenalty</span><br>
+	</div>
+	<span class="source">Source: <a href="http://s.webry.info/sp/bs-arekore.at.webry.info/201502/article_4.html">http://s.webry.info/sp/bs-arekore.at.webry.info/201502/article_4.html</a></span>
+	
+	<div class="confHigh">
+	<h4>formationMod:</h4>
+	<table class="t1">
+		<tr><th>Formation</th><th>Day Shelling</th><th>Torpedo</th><th>ASW</th><th>Night Battle</th><th>Airstrike</th></tr>
+		<tr><td><img src="assets/stats/form1.jpg" alt="Line Ahead"/></td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+		<tr><td><img src="assets/stats/form2.jpg" alt="Double Line"/></td><td>1</td><td>1</td><td>1</td><td>1</td><td>1.2</td></tr>
+		<tr><td><img src="assets/stats/form3.jpg" alt="Diamond"/></td><td>1.1</td><td>1.1</td><td>1</td><td>1</td><td>1.6</td></tr>
+		<tr><td><img src="assets/stats/form4.jpg" alt="Echelon"/></td><td>1.2</td><td>1.3</td><td>1.3</td><td>1.1</td><td>1</td></tr>
+		<tr><td><img src="assets/stats/form5.jpg" alt="Line Abreast"/></td><td>1.3</td><td>1.4</td><td>1.1</td><td>1.2</td><td>1</td></tr>
+	</table><br>
+	</div>
+	<br>
+	
+	<div class="confHigh">
+	<span class="equation">fuelPenalty = 75 - &#37; Fuel Left</span><span class="equation" style="margin-left:30px">if &#37; Fuel Left &lt; 75</span>
+	</div>
+	<br>
+	
+	<div class="confHigh">
+	<span class="equation">sonarImproveBonus = sum( 1.5*sqrt(&#9733;) )</span> for each sonar if Torpedo Phase</span>
+	</div>
+	<br>
+	
+	<div class="confMed">
+	<span class="equation">CABonus = 5</span> if Night Battle and ship is a CA/CAV
+	</div>
+	<br>
+	
+	<div class="confMed">
+	<span class="equation">searchlightPenalty = 0.2</span> if Night Battle and ship has a Searchlight equipped
+	</div>
+	<br>
+</div>
+
+<h3 id="li1c">Determining Result</h3>
+<div style="margin-left:16px">
+	<div class="confHigh">
+	<span class="equation">Hit Rate = (Accuracy Term - Evasion Term)*targetMoraleMod + proficiencyAccBonus</span><br>
+	<span style="font-style:italic">*(Accuracy Term - Evasion Term) is max 96, min 10</span>
+	</div>
+
+	<div class="confHigh">
+	<h4>targetMoraleMod:</h4>
+	<table class="t1">
+		<tr><th>Morale</th><th>Modifier</th></tr>
+		<tr><td>53 - 100</td><td>0.7</td></tr>
+		<tr><td>33 - 52</td><td>1</td></tr>
+		<tr><td>23 - 32</td><td>1.2</td></tr>
+		<tr><td>0 - 22</td><td>1.4</td></tr>
+	</table>
+	<br>
+	</div>
+	
+	<h3 id="li1c1">Critical Chance</h3>
+	<div class="confHigh">
+	<span class="equation">Crit Rate = critMod*sqrt(Hit Rate) + nightScoutBonus + proficiencyCritBonus</span>
+	</div>
+	<div class="confHigh">
+	<h4>critMod</h4>
+	<table class="t1">
+		<tr><th>Phase</th><th>Modifier</th></tr>
+		<tr><td>Day Shelling</td><td>1.3</td></tr>
+		<tr><td>Torpedo</td><td>1.5</td></tr>
+		<tr><td>ASW</td><td>1.3</td></tr>
+		<tr><td>Airstrike</td><td>0.2</td></tr>
+		<tr><td>Night Battle</td><td>1.5</td></tr>
+		<tr><td>Support Shelling</td><td>1</td></tr>
+		<tr><td>Support Torpedo</td><td>1.2</td></tr>
+	</table>
+	</div>
+	<br>
+	
+	<div class="confMed">
+	<span class="equation">nightScoutBonus = 7</span> if Night Battle and activated
+	</div>
+	<br>
+	
+	<h3 id="li1c2">Aircraft Proficiency</h3>
+	<div class="confMed">
+	<span>Planes may have EXP values ranging from 0 to 120. The EXP range determines the rank.</span>
+	<table class="t1">
+		<tr><th>Rank</th><th>EXP Range</th><th>EXP used by simulator</th><th>accValue</th><th>critRateValue</th><th>critDamageValue</th></tr>
+		<tr><td>None</td><td>0 - 9</td><td>0</td><td>0</td><td>0</td><td>0</td>
+		<tr><td style="font-weight:bold;color:blue">|</td><td>10 - 24</td><td>10</td><td>0</td><td>0</td><td>0</td>
+		<tr><td style="font-weight:bold;color:blue">||</td><td>25 - 39</td><td>25</td><td>1</td><td>0</td><td>0</td>
+		<tr><td style="font-weight:bold;color:blue">|||</td><td>40 - 54</td><td>40</td><td>2</td><td>0</td><td>0</td>
+		<tr><td style="font-weight:bold;color:#AF8700">\</td><td>55 - 69</td><td>55</td><td>3</td><td>0</td><td>0</td>
+		<tr><td style="font-weight:bold;color:#AF8700">\\</td><td>70 - 79</td><td>70</td><td>4</td><td>0</td><td>0</td>
+		<tr><td style="font-weight:bold;color:#AF8700">\\\</td><td>80 - 99</td><td>80</td><td>6</td><td>4.2</td><td>5.6</td>
+		<tr><td style="font-weight:bold;color:#AF8700">&gt;&gt;</td><td>100 - 120</td><td>120</td><td>9</td><td>6</td><td>8</td>
+	</table>
+	<br>
+	<span class="equation">proficiencyAccBonus = sqrt(EXP) + accValue</span> <span style="font-style:italic">for the AVERAGE rank/EXP of all equipped planes</span><br>
+	<span class="equation">proficiencyCritBonus = SUM( critRateValue )</span> <span style="font-style:italic">of all equipped planes</span><br>
+	<span class="equation">proficiencyCritMultiplier = SUM( sqrt(EXP*1.2) + critDamageValue )</span> <span style="font-style:italic">of all equipped planes, doubled for plane in first slot</span><br>
+	<br>
+	<span class="source">Source: <a href="http://kankoregouchin.blog.fc2.com/blog-entry-54.html">http://kankoregouchin.blog.fc2.com/blog-entry-54.html</a></span>
+	</div>
+	<br><br>
+	<div class="confHigh">
+	<span style="font-weight:bold">To determine hit result:</span><br>
+	Roll a random integer r from 0 to 99 (inclusive).<br>
+	If r &le; Crit Rate, attack is a critical.<br>
+	Else if r &le; Hit Rate, attack is a normal hit.<br>
+	Else, attack misses.
+	
+	</div>
+</div>
+	
+<h2 id="li2">Air Battle</h2>
+
+<h3 id="li2a">Fighter Combat</h3>
+<div style="margin-left:16px">
+	In Air Phase Stage 1, fighter power is compared and planes on each side are shot down depending on result.<br>
+	This is applied to all fighters, torpedo bombers, dive bombers, seaplane bombers, and seaplane fighters.
+	
+	<div class="confHigh">
+	<h4>Player Plane Loss:</h4>
+	<table class="t1">
+		<tr><th>Air State</th><th style="width:150px">% Planes Lost (distributed linearly)</th></tr>
+		<tr><td style="color:green">AS+</td><td>2.5% - 5.83%</td></tr>
+		<tr><td style="color:green">AS</td><td>7.5% - 17.5%</td></tr>
+		<tr><td>AP</td><td>12.5% - 29.17%</td></tr>
+		<tr><td style="color:red">AI</td><td>17.5% - 40.83%</td></tr>
+		<tr><td style="color:red">AD</td><td>25% - 58.33%</td></tr>
+	</table><br>
+	<span class="source">Source: <a href="http://kancolle-calc.net/stage1losttable.html">http://kancolle-calc.net/stage1losttable.html</a></span>
+	</div>
+	
+	<div class="confHigh">
+	<h4>Enemy Plane Loss:</h4>
+	<table class="t1">
+		<tr><th>Air State</th><th>% Planes Lost</th><th style="width:300px">Calculation (randInt inclusive)</th></tr>
+		<tr><td style="color:green">AS+</td><td>0% - 10%</td><td>10*(.35*randInt(0,1) + .65*randInt(0,1))</td></tr>
+		<tr><td style="color:green">AS</td><td>0% - 40%</td><td>10*(.35*randInt(0,4) + .65*randInt(0,4))</td></tr>
+		<tr><td>AP</td><td>0% - 60%</td><td>10*(.35*randInt(0,6) + .65*randInt(0,6))</td></tr>
+		<tr><td style="color:red">AI</td><td>0% - 80%</td><td>10*(.35*randInt(0,8) + .65*randInt(0,8))</td></tr>
+		<tr><td style="color:red">AD</td><td>0% - 100%</td><td>10*(.35*randInt(0,10) + .65*randInt(0,10))</td></tr>
+	</table><br>
+	<span class="source">Source: <a href="http://ja.kancolle.wikia.com/wiki/%E3%82%B9%E3%83%AC%E3%83%83%E3%83%89:1542">http://ja.kancolle.wikia.com/wiki/%E3%82%B9%E3%83%AC%E3%83%83%E3%83%89:1542</a></span><br>
+	<span class="source">Source: <a href="https://cdn.discordapp.com/attachments/230559622711345152/234134364198273024/-4ada3Q2f-5czcK2sT3cS1gr-ib.jpg">https://cdn.discordapp.com/attachments/230559622711345152/234134364198273024/-4ada3Q2f-5czcK2sT3cS1gr-ib.jpg</a></span>
+	</div>
+	
+</div>
+
+<!--<h3 id="li2b">Contact Chance</h3>-->
+
+<h3 id="li2c">Anti-Air Cut-In</h3>
+<div class="confMed">
+Enemies cannot AACI.<br>
+<table class="t1">
+	<tr><th style="width:135px">ID</th><th># shot down</th><th>Activation Rate</th><th>AACImod</th></tr>
+	<tr><td>1</td><td>7</td><td>65%</td><td>1.75</td></tr>
+	<tr><td>2</td><td>6</td><td>58%</td><td>1.7</td></tr>
+	<tr><td>3</td><td>4</td><td>50%</td><td>1.6</td></tr>
+	<tr><td>4</td><td>6</td><td>52%</td><td>1.5</td></tr>
+	<tr><td>5</td><td>4</td><td>55%</td><td>1.55</td></tr>
+	<tr><td>6</td><td>4</td><td>40%</td><td>1.5</td></tr>
+	<tr><td>7</td><td>3</td><td>45%</td><td>1.35</td></tr>
+	<tr><td>8</td><td>4</td><td>50%</td><td>1.45</td></tr>
+	<tr><td>9</td><td>2</td><td>40%</td><td>1.3</td></tr>
+	<tr><td>10</td><td>8</td><td>60%</td><td>1.65</td></tr>
+	<tr><td>11</td><td>6</td><td>55%</td><td>1.5</td></tr>
+	<tr><td>12</td><td>3</td><td>45%</td><td>1.25</td></tr>
+	<tr class="confLow"><td>14</td><td>4</td><td>35%</td><td>1.35</td></tr>
+	<tr class="confLow"><td>15</td><td>3</td><td>35%</td><td>1.35</td></tr>
+	<tr class="confLow"><td>16</td><td>4</td><td>35%</td><td>1.35</td></tr>
+	<tr class="confLow"><td>17</td><td>2</td><td>35%</td><td>1.35</td></tr>
+	<tr class="confLow"><td>18</td><td>2</td><td>35%</td><td>1.35</td></tr>
+</table>
+<span class="source">Source: <a href="http://i.imgur.com/SDVf61K.png">http://i.imgur.com/SDVf61K.png</a></span><br>
+<span class="source">Source: AACImod <a href="http://ja.kancolle.wikia.com/wiki/%E5%AF%BE%E7%A9%BA%E3%82%AB%E3%83%83%E3%83%88%E3%82%A4%E3%83%B3#.E8.BF.BD.E5.8A.A0.E3.83.9C.E3.83.BC.E3.83.8A.E3.82.B9.E3.83.87.E3.83.BC.E3.82.BF">http://ja.kancolle.wikia.com/wiki/%E5%AF%BE%E7%A9%BA%E3%82%AB%E3%83%83%E3%83%88%E3%82%A4%E3%83%B3#.E8.BF.BD.E5.8A.A0.E3.83.9C.E3.83.BC.E3.83.8A.E3.82.B9.E3.83.87.E3.83.BC.E3.82.BF</a></span>
+</div>
+
+<h3 id="li2d">Ship Anti-Air</h3>
+<div style="margin-left:16px">
+	<div class="confHigh">
+		50% chance to shoot down Proportional AA.<br>
+		50% chance to shoot down Flat AA.<br>
+		100% chance to shoot down 1 if player side.<br>
+		<br>
+		<span class="equation">Proportional AA = floor(weightedAA*#inSlot*0.0025)</span><br>
+		<span class="equation">Flat AA (Player) = floor((weightedAA + fleetAA)*.1)*AACImod</span><br>
+		<span class="equation">Flat AA (Enemy) = floor((weightedAA + fleetAA)*0.09375)</span><br>
+	</div>
+	<br>
+	<div class="confHigh">
+		<span class="equation">weightedAA = baseAA + sum( AA*equipMod + improveBonus)</span> <span style="font-style:italic">of the ship's equips</span><br>
+		<br>
+		<table class="t1">
+			<tr><th>Equip Type</th><th>equipMod</th><th>improveMod</th></tr>
+			<tr><td>High-Angle Gun</td><td>4</td><td>2</td></tr>
+			<tr><td>High-Angle Gun + FD</td><td>4</td><td>3</td></tr>
+			<tr><td>Fire Director</td><td>4</td><td>2</td></tr>
+			<tr><td>Air Radar</td><td>3</td><td>0</td></tr>
+			<tr><td>Machine Gun</td><td>6</td><td>2</td></tr>
+			<tr><td>Other</td><td>0</td><td>0</td></tr>
+		</table>
+		improveBonus = improveMod * sqrt(&#9733;)
+	</div>
+	<br>
+	<div class="confHigh">
+	<span class="equation confMed">fleetAA (Player) = 1.54*formationMod*sum( equipMod*AA )</span> <span style="font-style:italic">for all equipment in the fleet</span><br>
+	<span class="equation">fleetAA (Enemy) = 2*formationMod*sum( equipMod*AA )</span> <span style="font-style:italic">for all equipment in the fleet</span><br>
+	<br>
+	<table class="t1">
+		<tr><th>Formation</th><th>formationMod</th></tr>
+		<tr><td><img src="assets/stats/form1.jpg" alt="Line Ahead"/></td><td>1</td></tr>
+		<tr><td><img src="assets/stats/form2.jpg" alt="Double Line"/></td><td>1.2</td></tr>
+		<tr><td><img src="assets/stats/form3.jpg" alt="Diamond"/></td><td>1.6</td></tr>
+		<tr><td><img src="assets/stats/form4.jpg" alt="Echelon"/></td><td>1</td></tr>
+		<tr><td><img src="assets/stats/form5.jpg" alt="Line Abreast"/></td><td>1</td></tr>
+	</table><br>
+	<table class="t1">
+		<tr><th>Equip Type</th><th>equipMod</th></tr>
+		<tr><td>High-Angle Gun</td><td>0.35</td></tr>
+		<tr><td>Fire Director</td><td>0.35</td></tr>
+		<tr><td>Air Radar</td><td>0.4</td></tr>
+		<tr><td>Type 3 Shell</td><td>0.6</td></tr>
+		<tr><td>46cm Gun</td><td>0.25</td></tr>
+		<tr><td>Other</td><td>0.2</td></tr>
+	</table>
+	</div>
+	<div class="confMed">
+		
+	</div>
+</div>
+
+
+<h2 id="li3">Artillery Spotting Chance</h2>
+<div class="confMed">
+<span class="equation">if <span style="color:green">AS+</span>: AS chance = floor(20 + 1.12*equipLOS + 0.7*fleetLOS + floor(sqrt(LUCK)))/typeMod</span><br>
+<span class="equation">if <span style="color:green">AS</span>: AS chance = floor(10 + 0.72*equipLOS + 0.6*fleetLOS + floor(sqrt(LUCK)))/typeMod</span><br>
+<br>
+<span class="equation">equipLOS = sum LOS from equipment</span><br>
+<span class="equation">fleetLOS = floor(sqrt(x) + x/10), where x = sum base LOS from all ships in fleet + sum LOS from all recon planes in fleet</span><br>
+<br>
+<table class="t1">
+<tr><th>AS Type</th><th>typeMod</th></tr>
+<tr><td>Double Attack</td><td>1.3</td></tr>
+<tr><td>Sec. Gun Cut-In</td><td>1.2</td></tr>
+<tr><td>Sec. + Radar Cut-In</td><td>1.3</td></tr>
+<tr><td>Sec. + AP Cut-In</td><td>1.4</td></tr>
+<tr><td>AP Shell Cut-In</td><td>1.5</td></tr>
+</table>
+</div>
+
+<h2 id="li4">Night Battle Cut-In Chance</h2>
+<div class="confMed">
+<span class="equation">if double attack: 99%</span><br>
+<span class="equation">if LUCK &lt; 50: NB chance = (15 + LUK + 0.75*sqrt(LVL) + flagshipBonus + chuuhaBonus + lookoutBonus)/typeMod</span><br>
+<span class="equation">if LUCK &ge; 50: NB chance = (65 + sqrt(LUK-50) + 0.8*sqrt(LVL) + flagshipBonus + chuuhaBonus + lookoutBonus)/typeMod</span><br>
+<br>
+<span class="equation">flagshipBonus = 15 if flagship</span><br>
+<span class="equation">chuuhaBonus = 18 if medium damaged</span><br>
+<span class="equation">lookoutBonus = 5 if lookout equipped</span><br>
+<span class="equation">searchlight: +7 if self, -5 if enemy</span><br>
+<span class="equation">star shell: +4 if self, -10 if enemy</span><br>
+<br>
+<table class="t1">
+	<tr><th style="width:135px">NB Attack</th><th>typeMod</th></tr>
+	<tr><td>Mixed Cut-In</td><td>1.15</td></tr>
+	<tr><td>Torpedo Cut-In</td><td>1.22</td></tr>
+	<tr><td>Sec. Gun Cut-In</td><td>1.3</td></tr>
+	<tr><td>Main Gun Cut-In</td><td>1.4</td></tr>
+</table>
+</div>
+
+
+<h2 id="li5">Installation Damage</h2>
+<div class="confLow">
+<br>
+<img src="https://cdn.discordapp.com/attachments/178613137430282240/228670833696964608/unknown.png"/>
+<br>
+</div>
+
+<h2 id="li6">Miscellaneous</h2>
+<div class="confHigh">
+<h3 id="li6a">Flagship Protection</h3>
+<table class="t1">
+	<tr><th>Formation</th><th>Protection Rate</th></tr>
+	<tr><td><img src="assets/stats/form1.jpg" alt="Line Ahead"/></td><td>0.45</td></tr>
+	<tr><td><img src="assets/stats/form2.jpg" alt="Double Line"/></td><td>0.6</td></tr>
+	<tr><td><img src="assets/stats/form3.jpg" alt="Diamond"/></td><td>0.75</td></tr>
+	<tr><td><img src="assets/stats/form4.jpg" alt="Echelon"/></td><td>0.6</td></tr>
+	<tr><td><img src="assets/stats/form5.jpg" alt="Line Abreast"/></td><td>0.6</td></tr>
+</table><br>
+<span class="source">Source: <a href="https://www.reddit.com/r/kancolle/comments/431uqp/discussion_flagship_protection_rates_calculated/">https://www.reddit.com/r/kancolle/comments/431uqp/discussion_flagship_protection_rates_calculated/</a></span>
+</div>
+
+<div class="confLow">
+<h3 id="li6b">Searchlight Targeting</h3>
+<p>Roll randomly for a target.<br>
+If small searchlight was activated and target is not holding a searchlight, reroll once for a new target. (With 6 ships, searchlight ship targeted chance = (1/6) + (5/6)*(1/6) = 30.56%.)<br>
+If large searchlight was activated and target is not holding a searchlight, reroll up to twice for a new target. (With 6 ships, searchlight ship targeted chance = (1/6) + (5/6)*(1/6) + (5/6)<sup>2</sup>*(1/6) = 42.13%.)<br>
+</p>
+<span class="source">Source: <a href="http://i.imgur.com/ElrJxcM.jpg">http://i.imgur.com/ElrJxcM.jpg</a></span>
+</div>
+
+<h2 id="li7">Combined Fleet</h2>
+<div class="confLow">
+Shelling power bonuses are applied to both player and enemy side.<br>
+Shelling uses same formula, but with different base value (instead of 90).<br>
+Carrier Task Force:<br>
+Player Main: 90<br>
+Player Escort: 55<br>
+Enemy vs Main: 90<br>
+Enemy vs Escort: 65<br>
+<br>
+Surface Task Force:<br>
+Player Main: 50<br>
+Player Escort: 75<br>
+Enemy vs Main: 65<br>
+Enemy vs Escort: 75<br>
+<br>
+Transport Task Force:<br>
+Player Main: 50<br>
+Player Escort: 75<br>
+Enemy vs Main: 65<br>
+Enemy vs Escort: 75<br>
+<br>
+<span class="source">Source: <a href="https://docs.google.com/spreadsheets/d/1Nw8ykFYlAPv2znhYy_hRBX3HRtEAB7oclEh3XaAYv5A/edit#gid=0">https://docs.google.com/spreadsheets/d/1Nw8ykFYlAPv2znhYy_hRBX3HRtEAB7oclEh3XaAYv5A/edit#gid=0</a></span>
+</div>
+
+<br><br>
+
+<a href="simulator.html">Back to Simulator</a>
+
+</body>
+</html>
