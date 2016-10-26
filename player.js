@@ -745,7 +745,7 @@ function processAPI(root) {
 					var attacker = (ecombined)? f2c[i-6] : f2[i];
 					shots.push([attacker,target,rai.api_eydam[i+1]]);
 				}
-				HPstate[i+6] -= Math.floor(rai.api_edam[i+1]);
+				HPstate[i+((i>=6)?12:6)] -= Math.floor(rai.api_edam[i+1]);
 				HPstate[i+((COMBINED)?12:0)] -= Math.floor(rai.api_fdam[i+1]);
 			}
 			if (shots.length) {
@@ -787,7 +787,14 @@ function processAPI(root) {
 				
 				for (var k=0; k<hou.api_damage[j].length; k++) {
 					d.push(parseInt(hou.api_damage[j][k])); //damage
-					HPstate[hou.api_df_list[j][0]-1+((f1[0].escort && hou.api_df_list[j][0] < 7)?12:0)] -= Math.floor(hou.api_damage[j][k]);
+					if (!ecombined) HPstate[hou.api_df_list[j][0]-1+((f1[0].escort && hou.api_df_list[j][0] < 7)?12:0)] -= Math.floor(hou.api_damage[j][k]);
+					else {
+						var ind = hou.api_df_list[j][0]-1;
+						if (hou.api_at_eflag[j] && ind >= 6) ind += 6; //player escort (not used currently)
+						else if (!hou.api_at_eflag[j] && ind < 6) ind += 6; //enemy main
+						else if (!hou.api_at_eflag[j] && ind >= 6) ind += 12; //enemy escort
+						HPstate[ind] -= Math.floor(hou.api_damage[j][k]);
+					}
 				}
 				for (var k=0; k<hou.api_cl_list[j].length; k++) d.push((hou.api_cl_list[j][k]==2));
 				d.push((hou.api_damage[j][0] != Math.floor(hou.api_damage[j][0])));
@@ -931,7 +938,12 @@ function processAPI(root) {
 				d.push( (hou.api_df_list[j][0]>6)? f2e[hou.api_df_list[j][0]-7] : f1[hou.api_df_list[j][0]-1] ); //target
 				for (var k=0; k<hou.api_damage[j].length; k++) {
 					d.push(parseInt(hou.api_damage[j][k])); //damage
-					HPstate[hou.api_df_list[j][0]-1+((COMBINED && hou.api_df_list[j][0] < 7)?12:0)] -= Math.max(0,Math.floor(hou.api_damage[j][k]));
+					if (!combinedEType) HPstate[hou.api_df_list[j][0]-1+((COMBINED && hou.api_df_list[j][0] < 7)?12:0)] -= Math.max(0,Math.floor(hou.api_damage[j][k]));
+					else {
+						var ind = hou.api_df_list[j][0]-1;
+						if (combinedEType == 2 && ind >= 6) ind += 12;
+						HPstate[ind] -= Math.max(0,Math.floor(hou.api_damage[j][k]));
+					}
 				}
 				for (var k=0; k<hou.api_cl_list[j].length; k++) d.push((hou.api_cl_list[j][k]==2));
 				d.push((hou.api_damage[j][0] != Math.floor(hou.api_damage[j][0])));
@@ -978,6 +990,7 @@ function processAPI(root) {
 			if (!isboss && map.bgmNN != map.bgmDN) eventqueue.push([wait,[1,true]]);
 		}
 		if (b==root.battles.length-1) eventqueue.push([battleEnd,[],getState()]);
+		console.log(HPstate);
 	}
 	
 	loader2.load(function() { SHIPSLOADED = true; });
