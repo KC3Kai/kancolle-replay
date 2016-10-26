@@ -78,10 +78,6 @@ var MECHANICS = {
 	morale: true,
 };
 
-var CUSTOM = {
-	hardcore: true,
-};
-
 function getRepairCost(ship) {
 	var base = (ship.maxHP - ship.HP)*SHIPDATA[ship.mid].fuel;
 	return [Math.floor(base*.032),Math.floor(base*.06)];
@@ -604,7 +600,7 @@ function takeDamage(ship,damage) {
 		else if (damage >= ship.HP) damage = Math.floor(ship.HP*(.5+.3*Math.random()));  //overkill protection
 	}
 	ship.HP -= damage;
-	if (CUSTOM.hardcore && !ship.isflagship && ship.HP/ship.maxHP <= .25) ship.protection = false;
+	
 	return damage;
 }
 
