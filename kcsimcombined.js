@@ -391,6 +391,7 @@ function simStatsCombined(numsims,type,doNB,NBonly,aironly,landbomb,forms) {
 				FLEETS1[0].formation = formdef;
 				FLEETS1[1].formation = formdefc;
 			}
+			FLEETS1[0].DMGTOTALS = [0,0,0,0,0,0]; FLEETS1[1].DMGTOTALS = [0,0,0,0,0,0]; 
 			var res = simCombined(type,FLEETS1[0],FLEETS1[1],FLEETS2[j],FLEETS1S[0],doNB[j],NBonly[j],aironly[j],landbomb[j]);//,BAPI);
 			totalResult.nodes[j].num++;
 			if (res.redded) totalResult.nodes[j].redded++;
