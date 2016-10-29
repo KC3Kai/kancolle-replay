@@ -2564,6 +2564,13 @@ var EQDATA = {
 		ACC: 2,
 		RNG: 3,
 	},
+	193: {
+		name: 'Toku Daihatsu Landing Craft',
+		nameJP: '特大発動艇',
+		added: 20161026,
+		type: LANDINGCRAFT,
+		btype: B_LC1,
+	},
 	501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',

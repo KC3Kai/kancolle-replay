@@ -502,7 +502,7 @@ Ship.prototype.getAACItype = function(atypes) {
 	for (var i=0; i<this.equips.length; i++) {
 		if (this.equips[i].isconcentrated) { concentrated = true; break; }
 	}
-	if (this.mid == 418 && isconcentrated) return 18; //Satsuki Kai Ni
+	if (this.mid == 418 && concentrated) return 18; //Satsuki Kai Ni
 	if (this.mid == 470 && atypes[A_HAGUN] && atypes[A_AAGUN]) { //Kasumi Kai 2 B
 		if (atypes[A_AIRRADAR]) return 16;
 		return 17;

@@ -22,14 +22,14 @@ var STFCOMBINED3E = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.6, shellbonus:-5,ac
 var STFCOMBINED4M = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:10,accbase:50, shellacc:1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:14};
 var STFCOMBINED4E = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:-5,accbase:75, shellacc:1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.15, id:14};
 
-var TTFCOMBINED1M = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1, shellbonus:-5,accbase:75, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:11};
-var TTFCOMBINED1E = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1, shellbonus:10,accbase:50, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:11};
-var TTFCOMBINED2M = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1.2, shellbonus:-5,accbase:75, shellacc:1.2,torpacc:.9,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:12};
-var TTFCOMBINED2E = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1.2, shellbonus:10,accbase:50, shellacc:1.2,torpacc:.9,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:12};
-var TTFCOMBINED3M = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.6, shellbonus:-5,accbase:75, shellacc:1,torpacc:.4,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:13};
-var TTFCOMBINED3E = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.6, shellbonus:10,accbase:50, shellacc:1,torpacc:.4,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:13};
-var TTFCOMBINED4M = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:-5,accbase:75, shellacc:1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:14};
-var TTFCOMBINED4E = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:10,accbase:50, shellacc:1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:14};
+var TTFCOMBINED1M = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1, shellbonus:-5,accbase:50, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:11};
+var TTFCOMBINED1E = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1, shellbonus:10,accbase:75, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:11};
+var TTFCOMBINED2M = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1.2, shellbonus:-5,accbase:50, shellacc:1.2,torpacc:.9,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:12};
+var TTFCOMBINED2E = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1.2, shellbonus:10,accbase:75, shellacc:1.2,torpacc:.9,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:12};
+var TTFCOMBINED3M = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.6, shellbonus:-5,accbase:50, shellacc:1,torpacc:.4,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:13};
+var TTFCOMBINED3E = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.6, shellbonus:10,accbase:75, shellacc:1,torpacc:.4,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:13};
+var TTFCOMBINED4M = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:-5,accbase:50, shellacc:1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:14};
+var TTFCOMBINED4E = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:10,accbase:75, shellacc:1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:14};
 
 var ALLFORMATIONS = {1:LINEAHEAD,2:DOUBLELINE,3:DIAMOND,4:ECHELON,5:LINEABREAST,
 	'111':CTFCOMBINED1M,'111E':CTFCOMBINED1E,'112':CTFCOMBINED2M,'112E':CTFCOMBINED2E,'113':CTFCOMBINED3M,'113E':CTFCOMBINED3E,'114':CTFCOMBINED4M,'114E':CTFCOMBINED4E,
@@ -355,7 +355,12 @@ function ASW(ship,target,isnight,APIhou) {
 	var sonarAcc = 0;
 	for (var i=0; i<ship.equips.length; i++) if (ship.equips[i].btype == B_SONAR) sonarAcc += 2*ship.equips[i].ASW;
 	if (ship.ACCaswImprv) sonarAcc += ship.ACCaswImprv;
-	var acc = hitRate(ship,80,sonarAcc,ship.fleet.formation.shellacc*ship.moraleMod());
+	var accMod = ship.moraleMod();
+	if (ship.fleet.formation.id==2&&target.fleet.formation.id==5) accMod *= 1; //formation countering
+	else if (ship.fleet.formation.id==4&&target.fleet.formation.id==1) accMod *= 1;
+	else if (ship.fleet.formation.id==5&&target.fleet.formation.id==4) accMod *= 1;
+	else accMod *= ship.fleet.formation.shellacc;
+	var acc = hitRate(ship,80,sonarAcc,accMod);
 	var res = rollHit(accuracyAndCrit(ship,target,acc,target.fleet.formation.ASWev,0,1.3,ship.planeasw),ship.critdmgbonus);
 	var dmg = 0, realdmg = 0;
 	var premod = (isnight)? 0 : ship.fleet.formation.ASWmod*ENGAGEMENT*ship.damageMod();
@@ -1296,6 +1301,7 @@ function simStats(numsims,doNB,NBonly,aironly,landbomb,forms) {
 	for (var i=0; i<numsims; i++) {
 		var totalDidNB = 0;
 		for (var j=0; j<FLEETS2.length; j++) {
+			FLEETS1[0].DMGTOTALS = [0,0,0,0,0,0];
 			if (forms[j] != '0') FLEETS1[0].formation = ALLFORMATIONS[forms[j]];
 			else FLEETS1[0].formation = formdef;
 			var res = sim(FLEETS1[0],FLEETS2[j],FLEETS1S[0],doNB[j],NBonly[j],aironly[j],landbomb[j]);//,BAPI);
