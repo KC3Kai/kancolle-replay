@@ -246,7 +246,7 @@ EQTDATA[LANDINGCRAFT] = {
 	image: 20,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['AV','LHA'],
-	canequipS: [352,200,147,464,470,418,199,434,435,469,468],
+	canequipS: [352,200,147,464,470,418,199,434,435,469,468,487],
 };
 EQTDATA[SEARCHLIGHTS] = {
 	name: 'Night Equip',
@@ -334,7 +334,7 @@ EQTDATA[LANDINGTANK] = {
 	image: 36,
 	improve: {FPD:1,FPN:1},
 	canequip: ['SS','SSV','AV','LHA'],
-	canequipS: [352,200,147,464,470,418,199,468],
+	canequipS: [352,200,147,464,470,418,199,468,487],
 };
 EQTDATA[OILDRUM] = {
 	name: 'Misc',

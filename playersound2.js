@@ -1969,6 +1969,14 @@ var VOICES = {
 		damage2: "http://vignette1.wikia.nocookie.net/kancolle/images/8/8c/Kinu-Minor_Damage_2.ogg",
 		damage3: "http://vignette1.wikia.nocookie.net/kancolle/images/f/ff/Kinu-Major_Damage.ogg",
 	},
+	487: {
+		start: "http://vignette2.wikia.nocookie.net/kancolle/images/f/f8/Kinu-Battle_Start.ogg",
+		attack: "http://vignette2.wikia.nocookie.net/kancolle/images/a/ad/Kinu-Attack.ogg",
+		nbattack: "http://vignette2.wikia.nocookie.net/kancolle/images/d/d5/Kinu-Night_Attack.ogg",
+		damage1: "http://vignette3.wikia.nocookie.net/kancolle/images/3/3f/Kinu-Minor_Damage_1.ogg",
+		damage2: "http://vignette1.wikia.nocookie.net/kancolle/images/8/8c/Kinu-Minor_Damage_2.ogg",
+		damage3: "http://vignette1.wikia.nocookie.net/kancolle/images/f/ff/Kinu-Major_Damage.ogg",
+	},
 	113: {
 		start: "http://vignette2.wikia.nocookie.net/kancolle/images/f/f8/Kinu-Battle_Start.ogg",
 		attack: "http://vignette2.wikia.nocookie.net/kancolle/images/a/ad/Kinu-Attack.ogg",
