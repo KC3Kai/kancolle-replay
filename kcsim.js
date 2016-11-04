@@ -105,16 +105,20 @@ function getRepairTime(ship) {
 	return (ship.maxHP - ship.HP)*base*mod+30;
 }
 
+function formationCountered(form1,form2) {
+	if (form1==2 && form2==5) return true;
+	if (form1==4 && form2==1) return true;
+	if (form1==5 && form2==4) return true;
+	return false;
+}
+
 function shell(ship,target,APIhou) {
 	var da = false, cutin = false;
 	var preMod = ship.fleet.formation.shellmod*ENGAGEMENT*ship.damageMod();
 	var postMod = ship.APmod(target);
 	
 	var accMod = ship.moraleMod();
-	if (ship.fleet.formation.id==2&&target.fleet.formation.id==5) accMod *= 1; //formation countering
-	else if (ship.fleet.formation.id==4&&target.fleet.formation.id==1) accMod *= 1;
-	else if (ship.fleet.formation.id==5&&target.fleet.formation.id==4) accMod *= 1;
-	else accMod *= ship.fleet.formation.shellacc;
+	if (!formationCountered(ship.fleet.formation.id,target.fleet.formation.id)) accMod *= ship.fleet.formation.shellacc;
 	
 	var accMod2 = ship.APacc(target);
 	var evMod = target.fleet.formation.shellev;
@@ -356,10 +360,7 @@ function ASW(ship,target,isnight,APIhou) {
 	for (var i=0; i<ship.equips.length; i++) if (ship.equips[i].btype == B_SONAR) sonarAcc += 2*ship.equips[i].ASW;
 	if (ship.ACCaswImprv) sonarAcc += ship.ACCaswImprv;
 	var accMod = ship.moraleMod();
-	if (ship.fleet.formation.id==2&&target.fleet.formation.id==5) accMod *= 1; //formation countering
-	else if (ship.fleet.formation.id==4&&target.fleet.formation.id==1) accMod *= 1;
-	else if (ship.fleet.formation.id==5&&target.fleet.formation.id==4) accMod *= 1;
-	else accMod *= ship.fleet.formation.shellacc;
+	if (!formationCountered(ship.fleet.formation.id,target.fleet.formation.id)) accMod *= ship.fleet.formation.shellacc;
 	var acc = hitRate(ship,80,sonarAcc,accMod);
 	var res = rollHit(accuracyAndCrit(ship,target,acc,target.fleet.formation.ASWev,0,1.3,ship.planeasw),ship.critdmgbonus);
 	var dmg = 0, realdmg = 0;
@@ -384,7 +385,9 @@ function ASW(ship,target,isnight,APIhou) {
 
 function laser(ship,targets,APIhou) {
 	var preMod = ship.fleet.formation.shellmod*ENGAGEMENT*ship.damageMod();
-	var acc = hitRate(ship,90,0,ship.fleet.formation.shellacc*ship.moraleMod());
+	var accMod = ship.moraleMod();
+	if (!formationCountered(ship.fleet.formation.id,targets[0].fleet.formation.id)) accMod *= ship.fleet.formation.shellacc;
+	var acc = hitRate(ship,90,0,accMod);
 	var evMod = ship.fleet.formation.shellev;
 	var targetids = [], damages = [], crits = [];
 	for (var i=0; i<targets.length; i++) {
@@ -542,19 +545,23 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai) {
 	for (var i=0; i<shots.length; i++) damageMods[shots[i][0].id] = shots[i][0].damageMod(true);
 	for (var i=0; i<shots.length; i++) {  //do the shots
 		var ship = shots[i][0]; var target = shots[i][1];
-		var power = (ship.TP+5)*ship.fleet.formation.torpmod*ENGAGEMENT*damageMods[ship.id];
-		if (power > 150) power = 150 + Math.sqrt(power);
+		
+		var power = (ship.isescort)? ship.TP : (ship.TP+5);
+		power *= ship.fleet.formation.torpmod*ENGAGEMENT*damageMods[ship.id];
+		if (power > 150) power = 150 + Math.sqrt(power-150);
+		
 		var accflat = (ship.ACC)? ship.ACC : 0;
 		if (ship.ACCtorpImprv) accflat += Math.floor(ship.ACCtorpImprv);
 		accflat += Math.floor(power/5);
 		if (ship.TACC) accflat += ship.TACC;
 		var acc = hitRate(ship,85,accflat,ship.fleet.formation.torpacc*ship.moraleMod(true));
+		
 		var evFlat = (target.EVtorpImprv)? ship.EVtorpImprv : 0;
 		var res = rollHit(accuracyAndCrit(ship,target,acc,target.fleet.formation.torpev,evFlat,1.5));
 		var realdmg = 0, dmg = 0;
 		if (res) {
 			var bonus = (ship.PtorpImprv)? ship.PtorpImprv : 0;
-			dmg = damage(ship,target,ship.TP+5+bonus,ship.fleet.formation.torpmod*ENGAGEMENT*damageMods[ship.id],res);
+			dmg = damage(ship,target,power,1,res,10000); //power already capped
 			realdmg = takeDamage(target,dmg);
 		}
 		ship.fleet.giveCredit(ship,dmg);
@@ -757,7 +764,7 @@ function AADefenceFighters(carriers,showplanes,APIkouku) {
 }
 
 function getAAShotProp(defender,slotsize) {
-	return Math.floor(slotsize*Math.floor(.9*defender.weightedAntiAir())/360);
+	return Math.floor(slotsize*defender.weightedAntiAir()/400);
 }
 
 function getAAShotFlat(defender) {
