@@ -1003,4 +1003,36 @@ var MAPDATA = {
 			}
 		}
 	},
+	36: {
+		name: 'Event Fall 2016',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmMap: 1,
+				bgmDN: 80,
+				bgmNN: 80,
+				bgmDB: 81,
+				bgmNB: 81,
+				bossnode: 0,
+			},
+			2: {
+				name: 'E2',
+				bgmMap: 1,
+				bgmDN: 80,
+				bgmNN: 80,
+				bgmDB: 81,
+				bgmNB: 81,
+				bossnode: 0,
+			},
+			3: {
+				name: 'E3',
+				bgmMap: 1,
+				bgmDN: 80,
+				bgmNN: 80,
+				bgmDB: 81,
+				bgmNB: 81,
+				bossnode: 0,
+			},
+		}
+	},
 }

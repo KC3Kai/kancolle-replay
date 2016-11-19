@@ -56,6 +56,8 @@ var AACIDATA = {
 	16:{num:4,rate:.35,mod:1.35}, //don't know rate/mod
 	17:{num:2,rate:.35,mod:1.35}, //don't know rate/mod
 	18:{num:2,rate:.35,mod:1.35}, //don't know rate/mod
+	19:{num:5,rate:.35,mod:1.35}, //don't know rate/mod
+	20:{num:3,rate:.5,mod:1.35}, //don't know rate/mod
 };
 
 var FLEETS1 = [];
@@ -792,21 +794,26 @@ function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupp
 	//get AACI
 	var AACInum = 0, AACImod = 1;
 	if (MECHANICS.AACI) {
-		var AACIs = [];
-		for (var i=0; i<defenders.length; i++) if (defenders[i].AACItype) AACIs.push(defenders[i]);
-		AACIs.sort(function(a,b) { return (a.AACItype >= b.AACItype)? -1: 1; });
-		var AACIid = -1;
-		for (var i=0; i<AACIs.length; i++) {
-			if (Math.random() < AACIDATA[AACIs[i].AACItype].rate) {
-				AACIid = AACIs[i].id;
-				AACInum = AACIDATA[AACIs[i].AACItype].num;
-				AACImod = AACIDATA[AACIs[i].AACItype].mod;
-				if (C) APIkouku.api_stage2[(AACIid<10)?'api_air_fire':'api_air_fire_e'] = {api_idx:AACIs[i].apiID-1+((AACIs[i].isescort)?6:0),api_kind:AACInum};
-				break;
+		var AACIship, AACItype = 0;
+		for (var i=0; i<defenders.length; i++) {
+			if (defenders[i].AACItype.length) {
+				var r = Math.random();
+				for (var j=0; j<defenders[i].AACItype.length; j++) {
+					var type = defenders[i].AACItype[j];
+					if (type > AACItype && r < AACIDATA[type].rate) {
+						AACItype = type;
+						AACIship = defenders[i];
+						break;
+					}
+				}
 			}
 		}
+		if (AACItype) {
+			AACInum = AACIDATA[AACItype].num;
+			AACImod = AACIDATA[AACItype].mod;
+			if (C) APIkouku.api_stage2[(AACIship.id<10)?'api_air_fire':'api_air_fire_e'] = {api_idx:AACIship.apiID-1+((AACIship.isescort)?6:0),api_kind:AACItype};
+		}
 	}
-	if (C) code = code.replace('{aaci'+(parseInt(defenders[0].fleet.id)+1)+'}','-1');
 	
 	//get contact
 	var contactMod = 1;

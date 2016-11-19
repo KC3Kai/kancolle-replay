@@ -54,6 +54,7 @@ loader.add('BG1','assets/82_res.images.ImgBackgroundDay.jpg')
 	.add('471','assets/471.png')
 	.add('473','assets/473.png')
 	.add('322','assets/322.png')
+	.add('324','assets/324.png')
 	.add('flare1','assets/86.png')
 	.add('flaresmoke','assets/89.png')
 	.add('flare2','assets/92.png')
@@ -182,6 +183,7 @@ function createDots(container,form,num,side) {
 	}
 	var nameC = (COMBINED==2)? 'dotYellow' : (COMBINED==3)? 'dotOrange' : 'dotBlue';
 	var pathC = (COMBINED==2)? 'assets/469.png' : (COMBINED==3)? 'assets/dotOrange.png' : 'assets/471.png';
+	if (side) { nameC = 'dotRedEC'; pathC = 'assets/324.png'; }
 	form = parseInt(form);
 	switch(form) {
 		case 0:
@@ -737,11 +739,13 @@ function processAPI(root) {
 					var target;
 					if (ecombined && rai.api_frai[i+1] >= 7) target = f2c[rai.api_frai[i+1]-7];
 					else target = f2[rai.api_frai[i+1]-1];
-					var attacker = f1[i];
+					var attacker = (i>=6)? f1[i-6] : f1[i];
 					shots.push([attacker,target,rai.api_fydam[i+1]]);
 				}
 				if (rai.api_erai[i+1] > 0) {
-					var target = f1[rai.api_erai[i+1]-1];
+					var target;
+					if (ecombined) target = (rai.api_erai[i+1]>=7)? f1[rai.api_erai[i+1]-7] : fleet1[rai.api_erai[i+1]-1];
+					else target = f1[rai.api_erai[i+1]-1];
 					var attacker = (ecombined)? f2c[i-6] : f2[i];
 					shots.push([attacker,target,rai.api_eydam[i+1]]);
 				}
@@ -776,13 +780,21 @@ function processAPI(root) {
 				var d = [];
 				
 				var attacker;
-				if (ecombined && hou.api_at_eflag[j]) attacker = (hou.api_at_list[j]>6)? f2c[hou.api_at_list[j]-7] : f2[hou.api_at_list[j]-1];
-				else attacker = (hou.api_at_list[j]>6)? f2[hou.api_at_list[j]-7] : f1[hou.api_at_list[j]-1]
+				if (ecombined) {
+					if (hou.api_at_eflag[j]) attacker = (hou.api_at_list[j]>6)? f2c[hou.api_at_list[j]-7] : f2[hou.api_at_list[j]-1];
+					else attacker = (hou.api_at_list[j]>6)? fleet1C[hou.api_at_list[j]-7] : fleet1[hou.api_at_list[j]-1];
+				} else {
+					attacker = (hou.api_at_list[j]>6)? f2[hou.api_at_list[j]-7] : f1[hou.api_at_list[j]-1]
+				}
 				d.push(attacker); //attacker
 				
 				var defender;
-				if (ecombined && !hou.api_at_eflag[j]) defender = (hou.api_df_list[j][0]>6)? f2c[hou.api_df_list[j][0]-7] : f2[hou.api_df_list[j][0]-1];
-				else defender = (hou.api_df_list[j][0]>6)? f2[hou.api_df_list[j][0]-7] : f1[hou.api_df_list[j][0]-1];
+				if (ecombined) {
+					if (!hou.api_at_eflag[j]) defender = (hou.api_df_list[j][0]>6)? f2c[hou.api_df_list[j][0]-7] : f2[hou.api_df_list[j][0]-1];
+					else defender = (hou.api_df_list[j][0]>6)? fleet1C[hou.api_df_list[j][0]-7] : fleet1[hou.api_df_list[j][0]-1];
+				} else {
+					defender = (hou.api_df_list[j][0]>6)? f2[hou.api_df_list[j][0]-7] : f1[hou.api_df_list[j][0]-1];
+				}
 				d.push(defender); //target
 				
 				for (var k=0; k<hou.api_damage[j].length; k++) {
@@ -900,24 +912,36 @@ function processAPI(root) {
 		//if air node, second air phase
 		if (data.api_kouku2) processKouku(data.api_kouku2);
 		
-		//shelling 1, 2, 3
-		f = (COMBINED == 1 || COMBINED == 3)? fleet1C : fleet1;
-		if (data.api_hougeki1) processHougeki(data.api_hougeki1,f,data.api_ship_ke_combined);
-		//CTF does closing torpedo
-		if ((COMBINED == 1 || COMBINED == 3 || data.api_ship_ke_combined) && data.api_raigeki)
-			processRaigeki(data.api_raigeki,f,(data.api_ship_ke_combined));
 		
-		if (data.api_hougeki2) processHougeki(data.api_hougeki2,fleet1,data.api_ship_ke_combined); //always main fleet
-		if (data.api_hougeki3) {
-			f = (COMBINED == 2)? fleet1C : fleet1;
-			if (COMBINED == 2) eventqueue.push([wait,[1000]]); //short pause between main and escort shelling if STF
-			processHougeki(data.api_hougeki3,f,data.api_ship_ke_combined);
+
+		//shelling 1, 2, 3
+		if (COMBINED && data.api_ship_ke_combined) { //12vs12
+			processHougeki(data.api_hougeki1,fleet1,true);
+			processHougeki(data.api_hougeki2,fleet1C,true);
+			processRaigeki(data.api_raigeki,f,true);
+			processHougeki(data.api_hougeki3,fleet1,true);
+		}
+		else {
+			f = (COMBINED == 1 || COMBINED == 3)? fleet1C : fleet1;
+			if (data.api_hougeki1) processHougeki(data.api_hougeki1,f,data.api_ship_ke_combined);
+			//CTF does closing torpedo
+			if ((COMBINED == 1 || COMBINED == 3 || data.api_ship_ke_combined) && data.api_raigeki)
+				processRaigeki(data.api_raigeki,f,(data.api_ship_ke_combined));
+			
+			if (data.api_hougeki2) processHougeki(data.api_hougeki2,fleet1,data.api_ship_ke_combined); //always main fleet
+			if (data.api_hougeki3) {
+				f = (COMBINED == 2)? fleet1C : fleet1;
+				if (COMBINED == 2) eventqueue.push([wait,[1000]]); //short pause between main and escort shelling if STF
+				processHougeki(data.api_hougeki3,f,data.api_ship_ke_combined);
+			}
+			
+			//closing torp (if not CTF/TTF)
+			f = (COMBINED)? fleet1C : fleet1;
+			if (COMBINED != 1 && COMBINED != 3 && !data.api_ship_ke_combined && data.api_raigeki)
+				processRaigeki(data.api_raigeki,f,data.api_ship_ke_combined);
 		}
 		
-		//closing torp (if not CTF/TTF)
-		f = (COMBINED)? fleet1C : fleet1;
-		if (COMBINED != 1 && COMBINED != 3 && !data.api_ship_ke_combined && data.api_raigeki)
-			processRaigeki(data.api_raigeki,f,data.api_ship_ke_combined);
+		
 		
 		//night battle
 		var f1 = (COMBINED)? fleet1C : fleet1;
