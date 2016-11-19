@@ -133,10 +133,15 @@ function showAdditionalStats(fleet) {
 		var td = $('<td></td>'); tr.append(td);
 		td.append('Anti-Air:<br>');
 		td.append('<div style="margin-left:16px">Proportional: '+getAAShotProp(ships[i],100)+'%<br>Flat: '+Math.floor(getAAShotFlat(ships[i]))+'</div>');
-		if (ships[i].AACItype) {
-			td.append('AACI: #'+ships[i].AACItype+'<br>');
-			var aacid = AACIDATA[ships[i].AACItype];
-			td.append('<div style="margin-left:16px">Planes: '+aacid.num+'<br>Rate: '+Math.round(aacid.rate*100)+'%<br>Multiplier: '+aacid.mod+'<br></div>');
+		if (ships[i].AACItype.length) {
+			var chanceused = 0;
+			for (var j=0; j<ships[i].AACItype.length; j++) {
+				var aacid = AACIDATA[ships[i].AACItype[j]];
+				if (chanceused > aacid.rate) continue;
+				td.append('AACI: #'+ships[i].AACItype[j]+'<br>');
+				td.append('<div style="margin-left:16px">Planes: '+aacid.num+'<br>Rate: '+Math.round((aacid.rate-chanceused)*100)+'%<br>Multiplier: '+aacid.mod+'<br></div>');
+				chanceused += aacid.rate;
+			}
 		}
 	}
 	table.append(tr); tr = $('<tr></tr>');

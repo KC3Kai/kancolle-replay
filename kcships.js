@@ -33,7 +33,10 @@ Fleet.prototype.loadShips = function(ships) {
 		this.FLoS += ships[i].LOS;
 		for (var j=0; j<ships[i].equips.length; j++) {
 			var equip = ships[i].equips[j];
-			if (equip.LOS && equip.btype == B_RECON) this.FLoS +=  equip.LOS*Math.floor(Math.sqrt(ships[i].planecount[j]));
+			if (equip.LOS) {
+				this.FLoS -= equip.LOS;
+				if (equip.btype == B_RECON) this.FLoS +=  equip.LOS*Math.floor(Math.sqrt(ships[i].planecount[j]));
+			}
 		}
 	}
 	this.ships[0].isflagship = true;
@@ -67,7 +70,7 @@ Fleet.prototype.fleetAntiAir = function(alreadyCombined) {
 			}
 			if (equip.AA) FAA += Math.floor(equip.AA * mod);
 		}
-		// if (this.ships[i].AAfleetImprv) FAA += this.ships[i].AAfleetImprv; //not sure if improves apply
+		if (this.ships[i].AAfleetImprv) FAA += this.ships[i].AAfleetImprv;
 	}
 	FAA *= 2*this.formation.AAmod;
 	if (this.side == 0) FAA *= .77; //player side fleetAA is lower?
@@ -126,7 +129,7 @@ function Ship(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	if (!planeslots) planeslots = [0,0,0,0];
 	this.PLANESLOTS = planeslots;
 	this.planecount = planeslots.slice();
-	this.AACItype = 0;
+	this.AACItype = [];
 	this.fuelleft = 10;
 	this.fuelDefault = 10;
 	this.ammoleft = 10;
@@ -497,42 +500,52 @@ Ship.prototype.weightedAntiAir = function() {
 }
 
 Ship.prototype.getAACItype = function(atypes) {
-	if (this.side == 1) return 0; //enemy can't do AACI?
+	var types = [];
+	if (this.side == 1) return types; //enemy can't do AACI?
+	
 	var concentrated = false;
 	for (var i=0; i<this.equips.length; i++) {
 		if (this.equips[i].isconcentrated) { concentrated = true; break; }
 	}
-	if (this.mid == 418 && concentrated) return 18; //Satsuki Kai Ni
-	if (this.mid == 470 && atypes[A_HAGUN] && atypes[A_AAGUN]) { //Kasumi Kai 2 B
-		if (atypes[A_AIRRADAR]) return 16;
-		return 17;
-	}
-	if (this.mid == 141 && atypes[A_HAGUN] && atypes[A_AAGUN]) { //Isuzu Kai Ni
-		if (atypes[A_AIRRADAR]) return 14;
-		return 15;
+	
+	if (this.hasBuiltInFD) {  //Akizuki-class
+		if (atypes[A_HAGUN] >= 2 && atypes[A_AIRRADAR]) types.push(1);
+		if (atypes[A_HAGUN] && atypes[A_AIRRADAR]) types.push(2);
+		if (atypes[A_HAGUN] >= 2) types.push(3);
 	}
 	if (this.mid == 428 && concentrated && (atypes[A_HAGUN]||atypes[A_HAFD])) {   //428 = Maya Kai Ni
-		if (atypes[A_AIRRADAR]) return 11; 
-		else return 10;
+		if (atypes[A_AIRRADAR]) types.push(10);
+		types.push(11);
 	}
-	if (this.hasBuiltInFD) {  //Akizuki-class
-		if (atypes[A_HAGUN] >= 2 && atypes[A_AIRRADAR]) return 1;
-		else if (atypes[A_HAGUN] && atypes[A_AIRRADAR]) return 2;
-		else if (atypes[A_HAGUN] >= 2) return 3;
+	if (this.mid == 141 && atypes[A_HAGUN] && atypes[A_AAGUN]) { //Isuzu Kai Ni
+		if (atypes[A_AIRRADAR]) types.push(14);
+		types.push(15);
 	}
+	if (this.mid == 470 && atypes[A_HAGUN] && atypes[A_AAGUN]) { //Kasumi Kai 2 B
+		if (atypes[A_AIRRADAR]) types.push(16);
+		types.push(17);
+	}
+	if (this.mid == 418 && concentrated) types.push(18); //Satsuki Kai Ni
+	if (this.mid == 487 && concentrated) { //Kinu Kai Ni
+		if (atypes[A_HAGUN]) types.push(19);
+		types.push(20);
+	}
+	
+	var add6 = false;
 	if (this.type=='BB'||this.type=='BBV'||this.type=='FBB') {  //is BB
 		if (atypes[A_GUN] && atypes[A_TYPE3SHELL] && atypes[A_AAFD]) {
-			if (atypes[A_AIRRADAR]) return 4;
-			else return 6;
+			if (atypes[A_AIRRADAR]) types.push(4);
+			add6 = true;
 		}
 	}
+	if (atypes[A_HAFD] >= 2 && atypes[A_AIRRADAR]) types.push(5);
+	if (add6) types.push(6);
+	if (atypes[A_HAGUN] && atypes[A_AAFD] && atypes[A_AIRRADAR]) types.push(7);
+	if (atypes[A_HAFD] && atypes[A_AIRRADAR]) types.push(8);
+	if (atypes[A_HAGUN] && atypes[A_AAFD]) types.push(9);
+	if (concentrated && atypes[A_AAGUN] >= 2 && atypes[A_AIRRADAR]) types.push(12);
 	// if (concentrated && atypes[A_HAFD] && atypes[A_AIRRADAR]) return 13;
-	if (concentrated && atypes[A_AAGUN] >= 2 && atypes[A_AIRRADAR]) return 12;
-	if (atypes[A_HAFD] >= 2 && atypes[A_AIRRADAR]) return 5;
-	if (atypes[A_HAFD] && atypes[A_AIRRADAR]) return 8;
-	if (atypes[A_HAGUN] && atypes[A_AAFD] && atypes[A_AIRRADAR]) return 7;
-	if (atypes[A_HAGUN] && atypes[A_AAFD]) return 9;
-	return 0;
+	return types;
 }
 
 Ship.prototype.moraleMod = function(isTorp) {
