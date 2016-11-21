@@ -15245,18 +15245,21 @@ var SHIPDATA = {
 		nameJP: '深海海月姫',
 		image: 'SJellyH.jpg',
 		type: 'CV',
+		nightgun: true,
 	},
 	712: {
 		name: 'Abyssal Jellyfish Princess 2',
 		nameJP: '深海海月姫',
 		image: 'SJellyH.jpg',
 		type: 'CV',
+		nightgun: true,
 	},
 	713: {
 		name: 'Abyssal Jellyfish Princess 3',
 		nameJP: '深海海月姫',
 		image: 'SJellyH.jpg',
 		type: 'CV',
+		nightgun: true,
 	},
 	714: {
 		name: 'CV Wo-Class Flagship Kai 5',
