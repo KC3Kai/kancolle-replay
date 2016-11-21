@@ -884,7 +884,8 @@ function processAPI(root) {
 				}
 				if (damages[0] == -1) damages = damages.slice(1);
 				for (var i=0; i<damages.length; i++) {
-					HPstate[i+6] -= Math.floor(damages[i]);
+					if (i<6) HPstate[i+6] -= Math.floor(damages[i]);
+					else HPstate[i+12] -= Math.floor(damages[i]);
 				}
 				eventqueue.push([GSupportPhase,[[],damages,(data.api_support_flag==3)]]);
 			} else if (data.api_support_info.api_support_airatack) {
@@ -916,10 +917,17 @@ function processAPI(root) {
 
 		//shelling 1, 2, 3
 		if (COMBINED && data.api_ship_ke_combined) { //12vs12
-			processHougeki(data.api_hougeki1,fleet1,true);
-			processHougeki(data.api_hougeki2,fleet1C,true);
-			processRaigeki(data.api_raigeki,f,true);
-			processHougeki(data.api_hougeki3,fleet1,true);
+			if (COMBINED == 2) {
+				processHougeki(data.api_hougeki1,fleet1,true);
+				processHougeki(data.api_hougeki2,fleet1,true);
+				processHougeki(data.api_hougeki3,fleet1C,true);
+				processRaigeki(data.api_raigeki,f,true);
+			} else {
+				processHougeki(data.api_hougeki1,fleet1,true);
+				processHougeki(data.api_hougeki2,fleet1C,true);
+				processRaigeki(data.api_raigeki,f,true);
+				processHougeki(data.api_hougeki3,fleet1,true);
+			}
 		}
 		else {
 			f = (COMBINED == 1 || COMBINED == 3)? fleet1C : fleet1;
@@ -2323,8 +2331,8 @@ function GSupportPhase(ships,damages,istorpedo) {
 	
 	addTimeout(function() {
 		for (var i=0; i<damages.length; i++) {
-			if (i >= fleet2.length) break;
-			standardHit(fleet2[i],damages[i]);
+			if (i<6) standardHit(fleet2[i],damages[i]);
+			else standardHit(fleet2C[i-6],damages[i]);
 		}
 	}, 1000);
 	
