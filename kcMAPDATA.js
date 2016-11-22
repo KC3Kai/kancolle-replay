@@ -1040,7 +1040,7 @@ var MAPDATA = {
 				bgmNN: 80,
 				bgmDB: 81,
 				bgmNB: 81,
-				bossnode: 22,
+				bossnode: [13,22],
 			},
 			5: {
 				name: 'E5',
