@@ -500,6 +500,7 @@ function processAPI(root) {
 		data = root.battles[b].data;
 		if (Object.keys(data).length <= 0) data = root.battles[b].yasen;
 		if (Object.keys(data).length <= 0) continue;
+		if (!data.api_formation) continue; //Fall 2016 battles didn't have some boss node data recorded, skip it. Later, add a way to play just NB if recorded?
 		
 		var f2 = [], f2c = [];
 		//load enemies
@@ -918,15 +919,15 @@ function processAPI(root) {
 		//shelling 1, 2, 3
 		if (COMBINED && data.api_ship_ke_combined) { //12vs12
 			if (COMBINED == 2) {
-				processHougeki(data.api_hougeki1,fleet1,true);
-				processHougeki(data.api_hougeki2,fleet1,true);
-				processHougeki(data.api_hougeki3,fleet1C,true);
-				processRaigeki(data.api_raigeki,f,true);
+				if (data.api_hougeki1) processHougeki(data.api_hougeki1,fleet1,true);
+				if (data.api_hougeki2) processHougeki(data.api_hougeki2,fleet1,true);
+				if (data.api_hougeki3) processHougeki(data.api_hougeki3,fleet1C,true);
+				if (data.api_raigeki) processRaigeki(data.api_raigeki,f,true);
 			} else {
-				processHougeki(data.api_hougeki1,fleet1,true);
-				processHougeki(data.api_hougeki2,fleet1C,true);
-				processRaigeki(data.api_raigeki,f,true);
-				processHougeki(data.api_hougeki3,fleet1,true);
+				if (data.api_hougeki1) processHougeki(data.api_hougeki1,fleet1,true);
+				if (data.api_hougeki2) processHougeki(data.api_hougeki2,fleet1C,true);
+				if (data.api_raigeki) processRaigeki(data.api_raigeki,f,true);
+				if (data.api_hougeki3) processHougeki(data.api_hougeki3,fleet1,true);
 			}
 		}
 		else {
