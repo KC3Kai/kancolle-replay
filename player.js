@@ -593,7 +593,7 @@ function processAPI(root) {
 				var attackers = [];
 				if (kouku.api_plane_from[0][0] != -1) {
 					for (var i=0; i<kouku.api_plane_from[0].length; i++) {
-						var ship = (isbombing)? kouku.api_plane_from[0][i] : fleet1[kouku.api_plane_from[0][i]-1];
+						var ship = (isbombing)? kouku.api_plane_from[0][i] : (kouku.api_plane_from[0][i]<7)? fleet1[kouku.api_plane_from[0][i]-1] : fleet1C[kouku.api_plane_from[0][i]-7];
 						if (isbombing && kouku.api_squadron_plane.length <= i) continue;
 						attackdata.push([ship,[],[]]);
 						if (isbombing) {
@@ -606,7 +606,8 @@ function processAPI(root) {
 				}
 				if (kouku.api_plane_from[1][0] != -1) {
 					for (var i=0; i<kouku.api_plane_from[1].length; i++) {
-						var slot = kouku.api_plane_from[1][i]; if (slot > 6) slot -= 6;
+						var slot = kouku.api_plane_from[1][i];
+						if (slot > 6) slot -= 6;
 						attackdata.push([f2[slot-1],[],[]]);
 						attackers.push(f2[slot-1]);
 					}
@@ -2144,7 +2145,7 @@ function GAirPhase(attackdata,targetdata,defenders,aaci1,aaci2,contact1,contact2
 			} else {
 				if (ship.hp <= 0) continue;
 				planes = createPlane(ship.graphic.x+85,ship.graphic.y+22,ship.planetypes,statuses,statuses2,ship.side);
-				updates.push([movePlane,[planes,-Math.PI/30-(28*Math.PI/30)*ship.side,(ship.side==0) ? 4 : -4]]);
+				updates.push([movePlane,[planes,-Math.PI/30-(28*Math.PI/30)*ship.side,(ship.side==0) ? 4 : -4, (ship.escort), (ship.escorte)]]);
 			}
 			// for (var j=0; j<statuses.length; j++) {  //remove graphics if plane completely shot down, may not need
 				// if (statuses[i][j] == 2) ship.planetypes.splice(i,1);
