@@ -12,6 +12,7 @@
 		<script src="howler.min.js"></script>
 		<script src="URI.js"></script>
 		<script type="text/javascript" src="reader/steganography.js"></script>
+		<script src="playertext.js"></script>
 		<script type="text/javascript">
 		function loadImage(file) {
 			var preview = document.getElementById('imgpreview');
@@ -42,7 +43,7 @@
 			}
 		}
 		function loadImgURL(url) {
-			if (url.indexOf('crossorigin')==-1) url = 'https://crossorigin.me/'+url;
+			if (url.indexOf('crossorigin')==-1) url = 'https://cors-anywhere.herokuapp.com/'+url;
 			var preview = document.getElementById('imgpreview');
 			var xhr = new XMLHttpRequest();
 			xhr.responseType = 'blob';
