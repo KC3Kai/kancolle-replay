@@ -73,9 +73,9 @@ Fleet.prototype.fleetAntiAir = function(alreadyCombined) {
 		if (this.ships[i].AAfleetImprv) FAA += this.ships[i].AAfleetImprv;
 	}
 	FAA *= 2*this.formation.AAmod;
-	if (this.side == 0) FAA *= .77; //player side fleetAA is lower?
+	if (this.side == 0) FAA /= 1.3; //player side fleetAA is lower?
 	if (this.combinedWith) {
-		FAA *= ((this.isescort)? .5 : .8);
+		FAA *= ((this.isescort)? .48 : .72);
 		if (!alreadyCombined) FAA += this.combinedWith.fleetAntiAir(true);
 	}
 	// console.log('FLEET ANTI-AIR: '+FAA);
@@ -495,7 +495,10 @@ Ship.prototype.weightedAntiAir = function() {
 		aa += this.equips[i].AA * mod;
 	}
 	aa += (this.AAselfImprv)? 2*this.AAselfImprv : 0;
-	// if (this.isescort) aa*=.5;
+	if (this.fleet.combinedWith) {
+		if (this.isescort) aa*=.48;
+		else aa*=.72;
+	}
 	return aa;
 }
 
