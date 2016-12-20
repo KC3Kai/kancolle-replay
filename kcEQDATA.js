@@ -2406,6 +2406,7 @@ var EQDATA = {
 		nameJP: '試製61cm六連装(酸素)魚雷',
 		added: 20160527,
 		type: TORPEDO,
+		btype: B_TORPEDO,
 		improveType: 1,
 		TP: 14,
 		ACC: 2,
