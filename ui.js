@@ -627,7 +627,7 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor) {
 			var imgid = tid+'eqimg'+j+i;
 			$(sp).append('<div style="float:left;width:24px;height:24px"><img src="assets/items/0.png" style="position:absolute;width:24;height:24px"/><img id="'+imgid+'" src="assets/items/empty.png" style="position:absolute;width:24px;height:24px"/></div>');
 			$(sp).append('<img class="searchbutton" style="float:right" src="assets/stats/search.png" onclick="dialogEquipType(this,'+fleetnum+','+j+','+i+')" />');
-			$(sp).append('<input type="number" id="'+plid+'" style="width:35px;float:left" disabled="true"/>');
+			$(sp).append('<input type="number" id="'+plid+'" style="width:35px;float:left" min="0" max="999" onchange="updateFleetCode('+fleetnum+')"/>');
 			$(sp).append('<span style="float:right;font-size:12px;color:#45A9A5">&#9733; <select id="'+nid+'" style="width:50px" onchange="updateFleetCode('+fleetnum+');changedImprove(this)"><option value="0"></option></select></span><br>');
 			td.appendChild(sp);
 			tr.appendChild(td);
@@ -759,20 +759,22 @@ function shipDragDropped(fleet,slot) {
 		stat = $('#T'+fleet+STATNAMES[j]+slot).val();
 		s2.push((stat)? stat : 0);
 	}
-	var equips1 = [], equips2 = [], improves1 = [], improves2 = [];
+	var equips1 = [], equips2 = [], improves1 = [], improves2 = [], slots1 = [], slots2 = [];
 	for (var j=0; j<4; j++) {
 		if (parseInt(PREVEQS[DRAGINFO[0]][DRAGINFO[1]][j])) equips1.push(parseInt(PREVEQS[DRAGINFO[0]][DRAGINFO[1]][j]));
 		if (parseInt(PREVEQS[fleet][slot][j])) equips2.push(parseInt(PREVEQS[fleet][slot][j]));
 		improves1.push($('#T'+DRAGINFO[0]+'imprv'+DRAGINFO[1]+j).val());
 		improves2.push($('#T'+fleet+'imprv'+slot+j).val());
+		slots1.push($('#T'+DRAGINFO[0]+'plane'+DRAGINFO[1]+j).val());
+		slots2.push($('#T'+fleet+'plane'+slot+j).val());
 	}
-	tableSetShip(DRAGINFO[0],DRAGINFO[1],id2,s2,equips2,improves2);
-	tableSetShip(fleet,slot,id1,s1,equips1,improves1);
+	tableSetShip(DRAGINFO[0],DRAGINFO[1],id2,s2,equips2,improves2,slots2);
+	tableSetShip(fleet,slot,id1,s1,equips1,improves1,slots1);
 	updateFleetCode(fleet);
 	if (fleet != DRAGINFO[0]) updateFleetCode(DRAGINFO[0]);
 }
 
-function tableSetShip(fleet,slot,shipid,stats,equips,improves) {
+function tableSetShip(fleet,slot,shipid,stats,equips,improves,slots) {
 	document.getElementById('T'+fleet+'n'+slot).value = shipid;
 	$('#T'+fleet+'n'+slot).trigger("chosen:updated");
 	var img = document.getElementById('T'+fleet+'i'+slot);
@@ -800,10 +802,14 @@ function tableSetShip(fleet,slot,shipid,stats,equips,improves) {
 		$('#T'+fleet+'e'+slot+i+'_chosen').attr('title',EQDATA[eqid].name);
 		$('#T'+fleet+'e'+slot+i).trigger("chosen:updated");
 		PREVEQS[fleet][slot][i] = eqid;
-		if (shipid!=0 && SHIPDATA[shipid].SLOTS && i<SHIPDATA[shipid].SLOTS.length)
-			$('#T'+fleet+'plane'+slot+i).val(SHIPDATA[shipid].SLOTS[i]);
-		else
-			$('#T'+fleet+'plane'+slot+i).val('');
+		if (slots) {
+			$('#T'+fleet+'plane'+slot+i).val(slots[i]);
+		} else { //backward compatibility
+			if (shipid!=0 && SHIPDATA[shipid].SLOTS && i<SHIPDATA[shipid].SLOTS.length)
+				$('#T'+fleet+'plane'+slot+i).val(SHIPDATA[shipid].SLOTS[i]);
+			else
+				$('#T'+fleet+'plane'+slot+i).val('');
+		}
 			
 		setImprove(fleet,slot,i,EQDATA[eqid].improveType,(improves)?improves[i]:0);
 		if (eqid!='0') $('#T'+fleet+'eqimg'+slot+i).attr('src','assets/items/'+EQTDATA[EQDATA[eqid].type].image+'.png');
@@ -971,15 +977,20 @@ function loadIntoSim(fleet,side,isescort,forStats) {
 				var stat = parseInt(document.getElementById('T'+fleet+STATNAMES[j]+i).value);
 				s[STATNAMES[j]] = (stat)? stat : 0;
 			}
-			var equips = [], levels = [];
+			var equips = [], levels = [], slots = [];
 			for (var j=0; j<4; j++) {
-				if (parseInt(PREVEQS[fleet][i][j])) { equips.push(parseInt(PREVEQS[fleet][i][j])); levels.push(parseInt($('#T'+fleet+'imprv'+i+j).val())); }
+				if (parseInt(PREVEQS[fleet][i][j])) {
+					equips.push(parseInt(PREVEQS[fleet][i][j]));
+					levels.push(parseInt($('#T'+fleet+'imprv'+i+j).val()));
+					var plane = parseInt($('#T'+fleet+'plane'+i+j).val()) || 0;
+					slots.push(plane);
+				}
 			}
 			
 			//do I want to do it like this?
 			var protect = (mid < 500 && side==0)? 0 : 1;
 			if (side == 0 && [901,902,903,1001].indexOf(mid) != -1) protect = 0;
-			var ship = new ShipType(mid,SHIPDATA[mid].name,protect,s.lvl,s.hp,s.fp,s.tp,s.aa,s.ar,s.ev,s.asw,s.los,s.luk,s.rng,SHIPDATA[mid].SLOTS);
+			var ship = new ShipType(mid,SHIPDATA[mid].name,protect,s.lvl,s.hp,s.fp,s.tp,s.aa,s.ar,s.ev,s.asw,s.los,s.luk,s.rng,slots);
 			ship.loadEquips(equips,levels);
 			if (SHIPDATA[mid].isInstall) ship.isInstall = true;
 			if ($('#T'+fleet+'morale'+i).val()) ship.moraleDefault = ship.morale = parseInt($('#T'+fleet+'morale'+i).val());
@@ -1425,9 +1436,14 @@ function updateFleetCode(fleet) {
 			if (d) c += d + ',';
 			else c += '100,';
 			d = $('#T'+fleet+'ammo'+i).val();
-			if (d) c += d + '|';
-			else c += '100|';
-			// c = c.substr(0,c.length-1) + '|';
+			if (d) c += d + ',';
+			else c += '100,';
+			for (var j=0; j<4; j++) {
+				var planes = document.getElementById('T'+fleet+'plane'+i+j).value;
+				if (parseInt(planes)) c += planes + ',';
+				else c += ',';
+			}
+			c = c.substr(0,c.length-1) + '|';
 		} else {
 			c += '0|'
 		}
@@ -1454,7 +1470,9 @@ function loadFleetFromCode(fleet,fcode) {
 	if(document.getElementById('T'+fleet+'t'+s[1])) document.getElementById('T'+fleet+'t'+s[1]).checked = true;
 	for (var i=0; i<6; i++) {
 		var s = parts[i+1].split(',');
-		tableSetShip(fleet,i,parseInt(s[0]),s.slice(1,13),s.slice(13,17),s.slice(17,21));
+		var slots = s.slice(24,28);
+		if (slots.length <= 0) slots = null;
+		tableSetShip(fleet,i,parseInt(s[0]),s.slice(1,13),s.slice(13,17),s.slice(17,21),slots);
 		if ($('#T'+fleet+'morale'+i)) $('#T'+fleet+'morale'+i).val((s[21]||49));
 		if ($('#T'+fleet+'fuel'+i)) $('#T'+fleet+'fuel'+i).val((s[22]||100));
 		if ($('#T'+fleet+'ammo'+i)) $('#T'+fleet+'ammo'+i).val((s[23]||100));

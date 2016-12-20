@@ -1679,7 +1679,7 @@ function shootPlane(ship,target,damage,forcecrit,protect) {
 	var planes = createPlane(ship.graphic.x+85,ship.graphic.y+22,ship.planetypes,null,null,ship.side);
 	
 	var angle = Math.atan((ship.graphic.y-target.graphic.y)/(ship.graphic.x-target.graphic.x));
-	updates.push([movePlane,[planes,angle,(ship.side==0) ? 5 : -5, (ship.escort||target.escort), (ship.escorte||target.escorte)]]);
+	updates.push([movePlane,[planes,angle,(ship.side==0) ? 5 : -5, planes.x, target.graphic.x+85]]);
 	SM.play('planelaunch');
 	SM.playVoice(ship.mid,'attack',ship.id);
 	
@@ -2016,7 +2016,7 @@ function createPlane(x,y,planetypes,shots,shots2,side) {
 			plane.x = i*25-25;
 			plane.y = (i==1) ? -15 : 15;
 			plane.scale.set(.8);
-			if (side && [11,12].indexOf(planetypes[2-i])!=-1) { plane.scale.x = -plane.scale.x; plane.pivot.x = 50; }
+			if (side && [11,12,14].indexOf(planetypes[2-i])!=-1) { plane.scale.x = -plane.scale.x; plane.pivot.x = 50; }
 			planes.addChild(plane);
 			if (shots) plane.shot = shots[i];
 			if (shots2) plane.shot2 = shots2[i];
@@ -2028,7 +2028,7 @@ function createPlane(x,y,planetypes,shots,shots2,side) {
 			plane.x = i*30-15;
 			plane.y = (i==1) ? -15 : 15;
 			plane.scale.set(.8);
-			if (side && [11,12].indexOf(planetypes[1-i])!=-1) { plane.scale.x = -plane.scale.x; plane.pivot.x = 50; }
+			if (side && [11,12,14].indexOf(planetypes[1-i])!=-1) { plane.scale.x = -plane.scale.x; plane.pivot.x = 50; }
 			planes.addChild(plane);
 			if (shots) plane.shot = shots[i];
 			if (shots2) plane.shot2 = shots2[i];
@@ -2037,7 +2037,7 @@ function createPlane(x,y,planetypes,shots,shots2,side) {
 	} else if (num == 1) {
 		var plane = PIXI.Sprite.fromImage('assets/'+PLANESPRITES[planetypes[0]-1]+'.png');
 		plane.scale.set(.8);
-		if (side && [11,12].indexOf(planetypes[0])!=-1) { plane.scale.x = -plane.scale.x; plane.pivot.x = 50; }
+		if (side && [11,12,14].indexOf(planetypes[0])!=-1) { plane.scale.x = -plane.scale.x; plane.pivot.x = 50; }
 		planes.addChild(plane);
 		if (shots) plane.shot = shots[0];
 		if (shots2) plane.shot2 = shots2[0];
@@ -2047,32 +2047,33 @@ function createPlane(x,y,planetypes,shots,shots2,side) {
 	planes.pivot.set(40);
 	planes.scale.set(0);
 	planes.notpersistent = true;
+	planes.timer = 0;
 	stage.addChild(planes);
 	return planes;
 }
 
-function movePlane(planes,angle,speed,withescort,withescorte) {
+function movePlane(planes,angle,speed,startX,targetX) {
+	planes.timer++;
 	planes.x += speed;
 	planes.y += speed*Math.tan(angle);
 	if (planes.scale.x < .8) planes.scale.set(planes.scale.x+.1);
-	var x1 = (withescort)? 237 : 85;
-	var x2 = (withescorte)? 549 : 715;
-	// if (!withescort||planes.x > 120)
-		// planes.pivot.y = 40-100*Math.sin(Math.PI*(planes.x-x1)/(x2-x1));
-	// else { planes.pivot.y += 2.5; } //so it doesn't start snaking
-	if ((withescort&&planes.x<=120)||(withescorte&&planes.x>=625)) planes.pivot.y += 2.5;
-	else planes.pivot.y = 40-100*Math.sin(Math.PI*(planes.x-x1)/(x2-x1));
+	// var x1 = (withescort)? 237 : 85;
+	// var x2 = (withescorte)? 549 : 715;
+	var mid = (targetX - startX)/2;
+	var halfX = mid + startX;
+	// planes.pivot.y = 40-100*Math.sin(Math.PI*(planes.x-x1)/(x2-x1));
+	planes.pivot.y = (planes.x-halfX)*(planes.x-halfX)/(mid*mid/100)-60;
 	var fire = false;
 	for (var i=0; i<planes.children.length; i++) {
 		var plane = planes.getChildAt(i);
 		plane.pivot.y = 3*Math.sin(planes.x/80+Math.PI*2*i/3);
-		if (plane.shot >= 1 && ((speed > 0)? (planes.x > 320):(planes.x <= 480))) {
+		if (plane.shot >= 1 && planes.timer==59) {
 			createExplosion(plane.x+30,-planes.pivot.y+plane.y-30,.5,planes); fire = true;
 			// var removeplane = plane;
 			// if (plane.shot==2) addTimeout(function() { planes.removeChild(removeplane); }, 200);
 			plane.shot = -plane.shot;
 		}
-		if (plane.shot2 >= 1 && ((speed > 0)? (planes.x > 380):(planes.x <= 420))) {
+		if (plane.shot2 >= 1 && planes.timer==74) {
 			createExplosion(plane.x+30,-planes.pivot.y+plane.y-30,.5,planes); fire = true;
 			var removeplane = plane;
 			if (plane.shot2==2||plane.shot==-2) addTimeout(function() { planes.removeChild(removeplane); }, 200);
@@ -2153,6 +2154,7 @@ function GTorpedoPhase(shots) {
 }
 
 function GAirPhase(attackdata,targetdata,defenders,aaci1,aaci2,contact1,contact2,AS1,AS2,issupport,isbombing,isjet) {
+	if (!isbombing) isbombing = 0;
 	if (!isjet) isjet = 0;
 	var allplanes = [];
 	if (!issupport) {
@@ -2162,19 +2164,20 @@ function GAirPhase(attackdata,targetdata,defenders,aaci1,aaci2,contact1,contact2
 			var planes;
 			if (isbombing&&(attackdata[i][0]-6)) {
 				//console.log(statuses);
-				planes = createPlane(-50,180+(attackdata[i][0]-7)*60,[attackdata[i][3],attackdata[i][3]],statuses,statuses2);
-				updates.push([movePlane,[planes,-Math.PI/30,5]]);
+				planes = createPlane(-100,180+(attackdata[i][0]-7)*60,[attackdata[i][3],attackdata[i][3]],statuses,statuses2);
+				updates.push([movePlane,[planes,-Math.PI/30,5,85,715]]);
 			} else if (isjet) {
 				if (ship.hp <= 0) continue;
 				var planetypes = [];
 				for (var j=0; j<ship.planetypes.length; j++) if (!isjet || ship.planetypes[j] == 14) planetypes.push(ship.planetypes[j]);
 				if (planetypes.length<=0) planetypes = ship.planetypes; //new jets, not updated yet, just show something
 				planes = createPlane(ship.graphic.x+85,ship.graphic.y+22,planetypes,statuses,statuses2,ship.side);
-				updates.push([movePlane,[planes,-Math.PI+2*Math.PI*ship.side,(ship.side==0) ? 8 : -8, (ship.escort), (ship.escorte)]]);
+				planes.timer = 30;
+				updates.push([movePlane,[planes,-Math.PI+2*Math.PI*ship.side,(ship.side==0) ? 8 : -8, planes.x, (ship.side==0)? 715:85]]);
 			} else {
 				if (ship.hp <= 0) continue;
 				planes = createPlane(ship.graphic.x+85,ship.graphic.y+22,ship.planetypes,statuses,statuses2,ship.side);
-				updates.push([movePlane,[planes,-Math.PI/30-(28*Math.PI/30)*ship.side,(ship.side==0) ? 4 : -4, (ship.escort), (ship.escorte)]]);
+				updates.push([movePlane,[planes,-Math.PI/30-(28*Math.PI/30)*ship.side,(ship.side==0) ? 4 : -4, planes.x, (ship.side==0)? 715:85]]);
 			}
 			// for (var j=0; j<statuses.length; j++) {  //remove graphics if plane completely shot down, may not need
 				// if (statuses[i][j] == 2) ship.planetypes.splice(i,1);
@@ -2187,12 +2190,12 @@ function GAirPhase(attackdata,targetdata,defenders,aaci1,aaci2,contact1,contact2
 		SM.play('airphase');
 		if (side1 && side2) addTimeout(function() { SM.play('planeatk'); }, 400);
 	} else {
-		var planes = createPlane(-200,-100,[1]);
-		updates.push([movePlane,[planes,Math.PI/8,6]]);
+		var planes = createPlane(-200,-120,[1]);
+		updates.push([movePlane,[planes,Math.PI/8,6,85,800]]);
 		allplanes.push(planes);
 		addTimeout(function() {
-			var planes2 = createPlane(-200,-100,[1,1,1]);
-			updates.push([movePlane,[planes2,Math.PI/8,6]]);
+			var planes2 = createPlane(-200,-120,[1,1,1]);
+			updates.push([movePlane,[planes2,Math.PI/8,6,85,800]]);
 			allplanes.push(planes2);
 		}, 250);
 	}
@@ -2258,7 +2261,7 @@ function GAirPhase(attackdata,targetdata,defenders,aaci1,aaci2,contact1,contact2
 		for (var i=0; i<targetdata.length; i++) {
 			var target = targetdata[i][0];
 			if (targetdata[i][4])
-				createTorpedoBomber1(380+40*target.side,pos[(1-target.side)][Math.floor(Math.random()*pos[(1-target.side)].length)],target);
+				createTorpedoBomber1(380+40*target.side-isbombing*70,pos[(1-target.side)][Math.floor(Math.random()*pos[(1-target.side)].length)],target);
 		}
 	}, 1400 - 700*isjet);
 	
