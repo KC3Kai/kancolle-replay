@@ -2669,6 +2669,18 @@ var EQDATA = {
 		EV: 1,
 		RNG: 3,
 	},
+	205: {
+		name: 'F6F-3',
+		nameJP: 'F6F-3',
+		added: 20161228,
+		type: FIGHTER,
+		isfighter: true,
+		FP: 1,
+		AA: 8,
+		ACC: 1,
+		EV: 2,
+		LOS: 1,
+	},
 	501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',

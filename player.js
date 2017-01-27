@@ -718,21 +718,20 @@ function processAPI(root) {
 					eventqueue.push([GAirPhase,[attackdata,targetdata,defenders,AACI1,undefined,contact1,contact2,AS1,AS2,false,isbombing,isjet],getState()]);  //remember AACI
 				}
 				
-				// for (var i=0; i<6; i++) {
-					// var ind = i;
-					// if (HPstate[ind] <= 0) {
-						// if (f1[i].hasrepairgoddess) {
-							// HPstate[ind] = f1[i].hpmax
-							// eventqueue.push([wait,[1000]]);
-							// eventqueue.push([repairTeam,[f1[i],true]]);
-						// } else if (f1[i].hasrepairteam) {
-							// HPstate[ind] = Math.floor(f1[i].hpmax/4);
-							// eventqueue.push([wait,[1000]]);
-							// eventqueue.push([repairTeam,[f1[i],false]]);
-						// }
-						// alert('sink '+i);
-					// }
-				// }
+				for (var i=0; i<fleet1.length; i++) {
+					var ind = i;
+					if (HPstate[ind] <= 0) {
+						if (fleet1[i].hasrepairgoddess) {
+							HPstate[ind] = fleet1[i].hpmax
+							eventqueue.push([wait,[1000]]);
+							eventqueue.push([repairTeam,[fleet1[i],true]]);
+						} else if (fleet1[i].hasrepairteam) {
+							HPstate[ind] = Math.floor(fleet1[i].hpmax/4);
+							eventqueue.push([wait,[1000]]);
+							eventqueue.push([repairTeam,[fleet1[i],false]]);
+						}
+					}
+				}
 			}
 		};
 		
@@ -1042,7 +1041,7 @@ function processAPI(root) {
 			if (!isboss && map.bgmNN != map.bgmDN) eventqueue.push([wait,[1,true]]);
 		}
 		if (b==root.battles.length-1) eventqueue.push([battleEnd,[],getState()]);
-		console.log(HPstate);
+		//console.log(HPstate);
 	}
 	
 	loader2.load(function() { SHIPSLOADED = true; });
@@ -2187,7 +2186,8 @@ function GAirPhase(attackdata,targetdata,defenders,aaci1,aaci2,contact1,contact2
 			if (ship.side==0) side1 = true;
 			if (ship.side==1) side2 = true;
 		}
-		SM.play('airphase');
+		if (isjet) SM.play('jet');
+		else SM.play('airphase');
 		if (side1 && side2) addTimeout(function() { SM.play('planeatk'); }, 400);
 	} else {
 		var planes = createPlane(-200,-120,[1]);

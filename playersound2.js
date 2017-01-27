@@ -1753,6 +1753,14 @@ var VOICES = {
 		damage2: "http://vignette1.wikia.nocookie.net/kancolle/images/3/3b/Arashio-Minor_Damage_2.ogg",
 		damage3: "http://vignette2.wikia.nocookie.net/kancolle/images/a/a6/Arashio-Major_Damage.ogg",
 	},
+	490: {
+		start: "http://vignette4.wikia.nocookie.net/kancolle/images/5/5d/ArashioKai2-Battle_Start.ogg",
+		attack: "http://vignette2.wikia.nocookie.net/kancolle/images/4/4b/Arashio-Attack.ogg",
+		nbattack: "http://vignette1.wikia.nocookie.net/kancolle/images/0/01/Arashio-Night_Attack.ogg",
+		damage1: "http://vignette2.wikia.nocookie.net/kancolle/images/3/36/Arashio-Minor_Damage_1.ogg",
+		damage2: "http://vignette1.wikia.nocookie.net/kancolle/images/3/3b/Arashio-Minor_Damage_2.ogg",
+		damage3: "http://vignette3.wikia.nocookie.net/kancolle/images/8/8e/ArashioKai2-Major_Damage.ogg",
+	},
 	99: {
 		start: "http://vignette2.wikia.nocookie.net/kancolle/images/5/51/Kuma-Battle_Start.ogg",
 		attack: "http://vignette3.wikia.nocookie.net/kancolle/images/5/5c/Kuma-Attack.ogg",
