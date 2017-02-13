@@ -4042,6 +4042,36 @@ var VOICES = {
 		damage: "http://vignette2.wikia.nocookie.net/kancolle/images/c/cf/Abyssal_jellyfish_Princess_Damaged.ogg",
 		sunk: "http://vignette3.wikia.nocookie.net/kancolle/images/8/8e/Abyssal_Jellyfish_Princess_Sunk.ogg",
 	},
+	716: {
+		start: "http://vignette1.wikia.nocookie.net/kancolle/images/6/6c/Abyssal_Twin_Princesses_Intro.ogg",
+		attack: "http://vignette3.wikia.nocookie.net/kancolle/images/d/de/Abyssal_Twin_Princesses_Attack.ogg",
+		damage: "http://vignette3.wikia.nocookie.net/kancolle/images/3/37/Abyssal_Twin_Princesses_Damaged.ogg",
+	},
+	717: {
+		start: "http://vignette1.wikia.nocookie.net/kancolle/images/6/6c/Abyssal_Twin_Princesses_Intro.ogg",
+		attack: "http://vignette3.wikia.nocookie.net/kancolle/images/d/de/Abyssal_Twin_Princesses_Attack.ogg",
+		damage: "http://vignette3.wikia.nocookie.net/kancolle/images/3/37/Abyssal_Twin_Princesses_Damaged.ogg",
+	},
+	718: {
+		start: "http://vignette1.wikia.nocookie.net/kancolle/images/6/6c/Abyssal_Twin_Princesses_Intro.ogg",
+		attack: "http://vignette3.wikia.nocookie.net/kancolle/images/d/de/Abyssal_Twin_Princesses_Attack.ogg",
+		damage: "http://vignette3.wikia.nocookie.net/kancolle/images/3/37/Abyssal_Twin_Princesses_Damaged.ogg",
+	},
+	719: {
+		start: "http://vignette1.wikia.nocookie.net/kancolle/images/6/6c/Abyssal_Twin_Princesses_Intro.ogg",
+		attack: "http://vignette3.wikia.nocookie.net/kancolle/images/d/de/Abyssal_Twin_Princesses_Attack.ogg",
+		damage: "http://vignette3.wikia.nocookie.net/kancolle/images/3/37/Abyssal_Twin_Princesses_Damaged.ogg",
+	},
+	720: {
+		start: "http://vignette1.wikia.nocookie.net/kancolle/images/6/6c/Abyssal_Twin_Princesses_Intro.ogg",
+		attack: "http://vignette3.wikia.nocookie.net/kancolle/images/d/de/Abyssal_Twin_Princesses_Attack.ogg",
+		damage: "http://vignette3.wikia.nocookie.net/kancolle/images/3/37/Abyssal_Twin_Princesses_Damaged.ogg",
+	},
+	721: {
+		start: "http://vignette1.wikia.nocookie.net/kancolle/images/6/6c/Abyssal_Twin_Princesses_Intro.ogg",
+		attack: "http://vignette3.wikia.nocookie.net/kancolle/images/d/de/Abyssal_Twin_Princesses_Attack.ogg",
+		damage: "http://vignette3.wikia.nocookie.net/kancolle/images/3/37/Abyssal_Twin_Princesses_Damaged.ogg",
+	},
 	901: {
 		start: "http://vignette3.wikia.nocookie.net/kancolle/images/b/ba/Iona%28fog%29-Battle_Start.ogg",
 		attack: "http://vignette2.wikia.nocookie.net/kancolle/images/5/5c/Iona%28fog%29-Attack.ogg",
