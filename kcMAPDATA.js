@@ -1053,4 +1053,36 @@ var MAPDATA = {
 			},
 		}
 	},
+	37: {
+		name: 'Event Winter 2017',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmMap: 1,
+				bgmDN: 87,
+				bgmNN: 87,
+				bgmDB: 88,
+				bgmNB: 88,
+				bossnode: 0,
+			},
+			2: {
+				name: 'E2',
+				bgmMap: 1,
+				bgmDN: 87,
+				bgmNN: 87,
+				bgmDB: 88,
+				bgmNB: 88,
+				bossnode: 13,
+			},
+			3: {
+				name: 'E3',
+				bgmMap: 1,
+				bgmDN: 88,
+				bgmNN: 88,
+				bgmDB: 89,
+				bgmNB: 89,
+				bossnode: [9,21],
+			},
+		}
+	},
 }

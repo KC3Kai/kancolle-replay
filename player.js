@@ -2365,8 +2365,11 @@ function GSupportPhase(ships,damages,istorpedo) {
 	
 	addTimeout(function() {
 		for (var i=0; i<damages.length; i++) {
-			if (i<6) standardHit(fleet2[i],damages[i]);
-			else standardHit(fleet2C[i-6],damages[i]);
+			if (i<6) {
+				if (i < fleet2.length) standardHit(fleet2[i],damages[i]);
+			} else {
+				if (i-6 < fleet2C.length) standardHit(fleet2C[i-6],damages[i]);
+			}
 		}
 	}, 1000);
 	
