@@ -21,7 +21,7 @@ var TEXTDATA = {
 		}
 	},
 	"FORMATION_SELECT": {
-		"text": "Select your fleet formation (<0>).",
+		"text": "Fleet engaging enemy in <0> formation.",
 		"values": {
 			0: {
 				1: "Line Ahead",
@@ -97,7 +97,16 @@ var TEXTDATA = {
 	
 	},
 	"AIR_SUPERIORITY": {
-	
+		"text": "Fleet has gained <0> against the enemy.",
+		"values": {
+			0: {
+				1: "Air Supremacy (AS+)",
+				2: "Air Superiority (AS)",
+				3: "Air Parity (AP)",
+				4: "Air Denial (AD)",
+				4: "Air Incapability (AI)"
+			}
+		}
 	},
 	"AIR_CONTACT_F": {
 	
@@ -147,9 +156,9 @@ var TEXTDATA = {
 		"text": "Fleet has a <0> against the enemy",
 		"values": {
 			0:{
-				1: "Parallel Engagement",
-				2: "T Advantage",
-				3: "Head-on Engagement",
+				1: "Head-on Engagement",
+				2: "Parallel Engagement",
+				3: "T Advantage",
 				4:"T Disadvantage"
 			}
 		}
@@ -321,7 +330,13 @@ function processText(API) {
 		}
 		
 		//air phase
-		if (data.api_kouku) {}
+		if (data.api_kouku) {
+			var phase1 = data.api_kouku.api_stage1;
+			var phase2 = data.api_kouku.api_stage2;
+			var phase3 = data.api_kouku.api_stage3;
+			
+			addText(getText("AIR_SUPERIORITY", [phase1.api_disp_seiku]));
+		}
 		
 		//support phase
 		if (data.api_support_info) {
@@ -332,7 +347,7 @@ function processText(API) {
 		if (data.api_opening_taisen){}
 		
 		//opening torp
-		if (data.api_opening_atack){
+		if (data.api_opening_flag){
 			var fleet = (combined) ? API.fleet2 : API['fleet'+API.fleetnum];
 			var ships = [];
 			
