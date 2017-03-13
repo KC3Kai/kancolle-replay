@@ -170,31 +170,52 @@ var TEXTDATA = {
 			}
 		},
 		"SHELL_START": {
-			"text": "<0> attacks <1>",
+			"text": "Beginning <0> Shelling Phase",
 			"values": {
-
+				0:{
+					1: "Main (Range)",
+					2: "Main (Line-up)",
+					3: "Escort"
+				}
 			}
 		},
 		"SHELL_NORMAL": {
-			"text": "<0> attacks <1>",
+			"text": "<0> attacks <1> with a <2> dealing <3> damage",
 			"values": {
-
+				2: {
+					1: "Normal Attack",
+					2: "Critical Attack"
+				}
 			}
 		},
 		"SHELL_DOUBLE": {
-			"text": "<0> attacks <1> twice",
+			"text": "<0> double attacks <1> with a <2> dealing <3> damage and <4> dealing <5> damage",
 			"values": {
-
+				2: {
+					1: "Normal Attack",
+					2: "Critical Attack"
+				},
+				4: {
+					1: "Normal Attack",
+					2: "Critical Attack"
+				}
 			}
 		},
 		"SHELL_CUTIN": {
-			"text": "<0> cut-in attacks <1>",
+			"text": "<0> <1><2> attacks <3> dealing <4> damage",
 			"values": {
-
+				1: {
+					1: "",
+					2: "critical "
+				},
+				2: {
+					1: "laser",
+					3: "cut-in",
+					4: "radar cut-in",
+					5: "AP cut-in",
+					6: ""
+				}
 			}
-		},
-		"SHELL DAMAGE": {
-
 		},
 		"TORP_ATTACK": {
 			"text": "<0> luanches torpedos",
@@ -215,6 +236,20 @@ var TEXTDATA = {
 			"text": "Entering Night Battle.",
 			"values": {}
 		},
+		"BATTLE_END": {
+			"text": "Battle Ending. Fleet has achieved <0> against the enemy.",
+			"values": {
+				0: {
+					SS: "Total Victory",
+					S: "Victory (S)",
+					A: "Victory (A)",
+					B: "Tactical Victory",
+					C: "Tactical Defeat",
+					D: "Defeat",
+					E: "Complete Defeat"
+				}
+			}
+		}
 }
 
 function getText(name, args) {
@@ -283,17 +318,42 @@ function showRaigeki(rai,fleet,efleet1, efleet2) {
 }
 
 function showHougeki(hou, fleet, efleet) {
+	var main = fleet.MAIN_FLEET;
+	var escort = fleet.ESCORT_FLEET;
+	var eMain = efleet.MAIN_FLEET;
+	var eEscort = efleet.ESCORT_FLEET;
+	
 	for (var j=1; j<hou.api_at_list.length; j++) {
 		var attacker;
 		var defender;
-		if (efleet2) {
-
+		
+		if (eEscort) {
+			if (hou.api_at_eflag[j]){
+				attacker = (hou.api_at_list[j]>6)? eEscort[hou.api_at_list[j]-7] : eMain[hou.api_at_list[j]-1];
+			} else {
+				attacker = (hou.api_at_list[j]>6)? escort[hou.api_at_list[j]-7] : main[hou.api_at_list[j]-1];
+			}
+			
+			if (!hou.api_at_eflag[j]) {
+				defender = (hou.api_df_list[j][0]>6)? eEscort[hou.api_df_list[j][0]-7] : eMain[hou.api_df_list[j][0]-1];
+			} else {
+				defender = (hou.api_df_list[j][0]>6)? escort[hou.api_df_list[j][0]-7] : main[hou.api_df_list[j][0]-1];
+			}
 		} else {
-			attacker = (hou.api_at_list[j]>6)? efleet1[hou.api_at_list[j]-7] : fleet[hou.api_at_list[j]-1]
-			defender = (hou.api_df_list[j][0]>6)? efleet1[hou.api_df_list[j][0]-7] : fleet[hou.api_df_list[j][0]-1];
+			attacker = (hou.api_at_list[j]>6)? eMain[hou.api_at_list[j]-7] : main[hou.api_at_list[j]-1]
+			defender = (hou.api_df_list[j][0]>6)? eMain[hou.api_df_list[j][0]-7] : main[hou.api_df_list[j][0]-1];
 		}
-
-
+		
+		if(hou.api_at_type[j] == 0) {
+			addText(getText("SHELL_NORMAL",[attacker.name, defender.name, hou.api_cl_list[j][0], hou.api_damage[j][0]]));
+		} else if(hou.api_at_type[j] == 2) {
+			addText(getText("SHELL_DOUBLE",[attacker.name, defender.name, hou.api_cl_list[j][0], 
+			                                hou.api_damage[j][0], hou.api_cl_list[j][1], hou.api_damage[j][1]]));
+		} else {
+			addText(getText("SHELL_CUTIN",[attacker.name, hou.api_cl_list[j][0], hou.api_at_type[j], defender.name, hou.api_damage[j][0]]));
+		}
+		
+		
 	}
 }
 
@@ -305,7 +365,10 @@ function processPVP(fleet, battle) {
 	var data = battle.data;
 	var yasen = battle.yasen;
 
-	var opponent = composeFleet(data.api_ship_ke, data.api_nowhps.slice(7));
+	var opponent = {
+			MAIN_FLEET : composeFleet(data.api_ship_ke, data.api_nowhps.slice(7)),
+			ESCORT_FLEET: null
+	}
 
 	addText(getText("PVP_START",[]));
 	addText(getText("FLEET_COMPOSITION",[getFleet(fleet)]));
@@ -320,8 +383,14 @@ function processPVP(fleet, battle) {
 	
 	if (data.api_formation) addText(getText("ENEMY_FORMATION",[0, data.api_formation[1]]));
 
-	//if(data.api_hourai_flag[0]) showHougeki(data.api_hougeki1,fleet,opponent,null);
-	//if(data.api_hourai_flag[1]) showHougeki(data.api_hougeki2,fleet,opponent,null);
+	if(data.api_hourai_flag[0]) {
+		addText(getText("SHELL_START",[1]));
+		showHougeki(data.api_hougeki1,fleet,opponent);
+	}
+	if(data.api_hourai_flag[1]){
+		addText(getText("SHELL_START",[2]));
+		showHougeki(data.api_hougeki2,fleet,opponent);
+	}
 	//if(data.api_hourai_flag[3]) showRaigeki(data.api_raigeki,fleet,opponent 	,null);
 
 
@@ -335,13 +404,13 @@ function processText(API) {
 	
 	var fleet = {
 			MAIN_FLEET: composeFleet(API['fleet'+API.fleetnum], startData.api_nowhps.slice(1,7)),
-			ESCORT_FLEET: (combined) ? composeFleet(API.fleet2, startData.api_nowhps_combined.slice(1,7)) : {},
-			NODE_SUPPORT: (API.support1 > 0)? composeFleet(API['fleet'+API.support1], [1,1,1,1,1,1]) : {},
-			BOSS_SUPPORT: (API.support2 > 0)? composeFleet(API['fleet'+API.support2], [1,1,1,1,1,1]) :{} 
+			ESCORT_FLEET: (combined) ? composeFleet(API.fleet2, startData.api_nowhps_combined.slice(1,7)) : null,
+			NODE_SUPPORT: (API.support1 > 0)? composeFleet(API['fleet'+API.support1], [1,1,1,1,1,1]) : null,
+			BOSS_SUPPORT: (API.support2 > 0)? composeFleet(API['fleet'+API.support2], [1,1,1,1,1,1]) :null 
 			
 	}
 	if(world == 0) {
-		processPVP(fleet.MAIN_FLEET ,API.battles[0]);
+		processPVP(fleet, API.battles[0]);
 	}
 	else {
 		
