@@ -179,41 +179,39 @@ var TEXTDATA = {
 				}
 			}
 		},
-		"SHELL_NORMAL": {
-			"text": "<0> attacks <1> with a <2> dealing <3> damage",
-			"values": {
-				2: {
-					1: "Normal Attack",
-					2: "Critical Attack"
-				}
-			}
-		},
-		"SHELL_DOUBLE": {
-			"text": "<0> double attacks <1> with a <2> dealing <3> damage and <4> dealing <5> damage",
-			"values": {
-				2: {
-					1: "Normal Attack",
-					2: "Critical Attack"
-				},
-				4: {
-					1: "Normal Attack",
-					2: "Critical Attack"
-				}
-			}
-		},
-		"SHELL_CUTIN": {
-			"text": "<0> <1><2> attacks <3> dealing <4> damage",
+		"SHELL_DAMAGE": {
+			"text": "<0> is hit with a <1> dealing <2> damagee",
 			"values": {
 				1: {
-					1: "",
-					2: "critical "
+					1: "Normal Attack",
+					2: "Critical Attack"
+				}
+			}
+		},
+		"SHELL_DAMAGE_DOUBLE": {
+			"text": "<0> is hit with a <1> dealing <2> damage and a <3> dealing <4> damage",
+			"values": {
+				1: {
+					1: "Normal Attack",
+					2: "Critical Attack"
 				},
-				2: {
-					1: "laser",
-					3: "cut-in",
-					4: "radar cut-in",
-					5: "AP cut-in",
-					6: ""
+				3: {
+					1: "Normal Attack",
+					2: "Critical Attack"
+				}
+			}
+		},
+		"SHELL_TARGET": {
+			"text": "<0> <1>attacks <2>",
+			"values": {
+				1: {
+					0: "",
+					1: "laser ",
+					2: "double ", 
+					3: "cut-in ",
+					4: "radar cut-in ",
+					5: "AP cut-in ",
+					6: "gun cut-in "
 				}
 			}
 		},
@@ -229,6 +227,15 @@ var TEXTDATA = {
 
 			}
 		},
+		"PROTECT_DAMAGE": {
+			"text": "<0> protects <1> from a <2> taking <3> damage",
+			"values": {
+				2: {
+					1: "Normal Attack",
+					2: "Critical Attack"
+				}
+			}
+		},
 		"DAY_END": {
 
 		},
@@ -236,17 +243,26 @@ var TEXTDATA = {
 			"text": "Entering Night Battle.",
 			"values": {}
 		},
+		"SHIP_END": {
+			"text": "<0> <1>.",
+			"values": {
+				1: {
+					1: "has been sunk",
+					2: "is no longer able to continue fighting."
+				}
+			}
+		},
 		"BATTLE_END": {
 			"text": "Battle Ending. Fleet has achieved <0> against the enemy.",
 			"values": {
 				0: {
-					SS: "Total Victory",
-					S: "Victory (S)",
-					A: "Victory (A)",
-					B: "Tactical Victory",
-					C: "Tactical Defeat",
-					D: "Defeat",
-					E: "Complete Defeat"
+					"S+": "Total Victory",
+					"S": "Victory (S)",
+					"A": "Victory (A)",
+					"B": "Tactical Victory",
+					"C": "Tactical Defeat",
+					"D": "Defeat",
+					"E": "Complete Defeat"
 				}
 			}
 		}
@@ -275,6 +291,7 @@ function composeFleet(fleet, hp) {
 
 function getFleet(fleet) {
 	var ships = "";
+	if(fleet.length == 1) return fleet[0].name;
 	
 	for(var i = 0; i < fleet.length; i++) {
 		if(i == (fleet.length-1)) {
@@ -313,8 +330,38 @@ function showKouku(kouku,isbombing,isjet) {
 
 }
 
-function showRaigeki(rai,fleet,efleet1, efleet2) {
-
+function showRaigeki(rai,fleet,efleet, opening) {
+	var main = fleet.MAIN_FLEET;
+	var escort = fleet.ESCORT_FLEET;
+	var eMain = efleet.MAIN_FLEET;
+	var eEscort = efleet.ESCORT_FLEET;
+	var fTropedos = [];
+	var fTargets = [];
+	var eTropedos = [];
+	var eTargets = [];
+	
+	var num = (eEscort)? 12 : 6;
+	
+	for (var i=0; i<num; i++) {
+		if (rai.api_frai[i+1] > 0) {
+			fTargets.push((eEscort && rai.api_frai[i+1] >= 7) ? eEscort[rai.api_frai[i+1]-7] : eMain[rai.api_frai[i+1]-1]);
+			fTropedos.push((i>=6)? main[i-6] : main[i]);
+		}
+		if (rai.api_erai[i+1] > 0) {
+			eTargets.push((eEscort && rai.api_erai[i+1] >= 7) ? escort[rai.api_erai[i+1]-7] : main[rai.api_erai[i+1]-1]);
+			eTropedos.push((ecombined) ? eEscort[i-6] : eMain[i]);
+		}
+	}
+	if(fTropedos.length > 0) addText(getText((opening) ? "OPTORP_ATTACK": "TORP_ATTACK",[getFleet(fTropedos)]));
+	if(eTropedos.length > 0) addText(getText((opening) ? "OPTORP_ATTACK": "TORP_ATTACK",[getFleet(eTropedos)]));
+/*	for(var j= 0; j = fTropedos.length; j++) {
+		
+	}
+	
+	for(var j= 0; j = eTropedos.length; j++) {
+		
+	}*/
+	
 }
 
 function showHougeki(hou, fleet, efleet) {
@@ -344,14 +391,15 @@ function showHougeki(hou, fleet, efleet) {
 			defender = (hou.api_df_list[j][0]>6)? eMain[hou.api_df_list[j][0]-7] : main[hou.api_df_list[j][0]-1];
 		}
 		
-		if(hou.api_at_type[j] == 0) {
+		addText(getText("SHELL_TARGET",[attacker.name, hou.api_at_type[j],defender.name]));
+		/*if(hou.api_at_type[j] == 0) {
 			addText(getText("SHELL_NORMAL",[attacker.name, defender.name, hou.api_cl_list[j][0], hou.api_damage[j][0]]));
 		} else if(hou.api_at_type[j] == 2) {
 			addText(getText("SHELL_DOUBLE",[attacker.name, defender.name, hou.api_cl_list[j][0], 
 			                                hou.api_damage[j][0], hou.api_cl_list[j][1], hou.api_damage[j][1]]));
 		} else {
 			addText(getText("SHELL_CUTIN",[attacker.name, hou.api_cl_list[j][0], hou.api_at_type[j], defender.name, hou.api_damage[j][0]]));
-		}
+		}*/
 		
 		
 	}
@@ -371,8 +419,8 @@ function processPVP(fleet, battle) {
 	}
 
 	addText(getText("PVP_START",[]));
-	addText(getText("FLEET_COMPOSITION",[getFleet(fleet)]));
-	addText(getText("ENEMY_COMPOSITION",[getFleet(opponent)]));
+	addText(getText("FLEET_COMPOSITION",[getFleet(fleet.MAIN_FLEET)]));
+	addText(getText("ENEMY_COMPOSITION",[getFleet(opponent.MAIN_FLEET)]));
 	addText("");
 
 	if (data.api_formation) addText(getText("FORMATION_SELECT",[data.api_formation[0]]));
@@ -382,16 +430,28 @@ function processPVP(fleet, battle) {
 	}
 	
 	if (data.api_formation) addText(getText("ENEMY_FORMATION",[0, data.api_formation[1]]));
-
+	addText("");
+	if(data.api_opening_taisen_flag) {
+		
+	}
+	addText("");
+	if(data.api_opening_flag) {
+		showRaigeki(data.api_opening_atack,fleet,opponent, true);
+		addText("");
+	}
+	
+	
 	if(data.api_hourai_flag[0]) {
 		addText(getText("SHELL_START",[1]));
 		showHougeki(data.api_hougeki1,fleet,opponent);
+		addText("");
 	}
 	if(data.api_hourai_flag[1]){
 		addText(getText("SHELL_START",[2]));
 		showHougeki(data.api_hougeki2,fleet,opponent);
+		addText("");
 	}
-	//if(data.api_hourai_flag[3]) showRaigeki(data.api_raigeki,fleet,opponent 	,null);
+	if(data.api_hourai_flag[3]) showRaigeki(data.api_raigeki,fleet,opponent, false);
 
 
 }
