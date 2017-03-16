@@ -1,3 +1,4 @@
+var fleet = {}, opponent = {};
 var TEXTDATA = {
 		"SORTIE_START": {
 			"text": "Sortied to <0>-<1> on <2>.",
@@ -12,7 +13,7 @@ var TEXTDATA = {
 			"values": {}
 		},
 		"COMBINDED_FLEET_COMPOSITION": {
-			"text": "Sortieing combined fleet consisting of <0> in the main fleet and <1> in the escort fleet.",
+			"text": "Sortieing combined fleet consisting of <0> in the fleet.MAIN_FLEET fleet and <1> in the fleet.ESCORT_FLEET fleet.",
 			"values": {}
 		},
 		"SUPPORT_FLEET_COMPOSITION": {
@@ -188,6 +189,10 @@ var TEXTDATA = {
 				}
 			}
 		},
+		"SHELL_MISS": {
+			"text": "<0> avoided the attack",
+			"values": {}
+		},
 		"SHELL_DAMAGE_DOUBLE": {
 			"text": "<0> is hit with a <1> dealing <2> damage and a <3> dealing <4> damage",
 			"values": {
@@ -236,6 +241,12 @@ var TEXTDATA = {
 				}
 			}
 		},
+		"PROTECT_MISS": {
+			"text": "<0> gets <1> out of the line of fire",
+			"values": {
+				
+			}
+		},
 		"DAY_END": {
 
 		},
@@ -248,7 +259,7 @@ var TEXTDATA = {
 			"values": {
 				1: {
 					1: "has been sunk",
-					2: "is no longer able to continue fighting."
+					2: "is no longer able to continue fighting"
 				}
 			}
 		},
@@ -330,78 +341,139 @@ function showKouku(kouku,isbombing,isjet) {
 
 }
 
-function showRaigeki(rai,fleet,efleet, opening) {
-	var main = fleet.MAIN_FLEET;
-	var escort = fleet.ESCORT_FLEET;
-	var eMain = efleet.MAIN_FLEET;
-	var eEscort = efleet.ESCORT_FLEET;
-	var fTropedos = [];
-	var fTargets = [];
-	var eTropedos = [];
-	var eTargets = [];
+function showRaigeki(rai, fleet, opening) {
+	var fTorpedos = [], fAttack = [], fTargets = [];
+	var eTorpedos = [], eAttack = [], eTargets = [];
 	
-	var num = (eEscort)? 12 : 6;
+	var num = (opponent.ESCORT_FLEET)? 12 : 6;
 	
 	for (var i=0; i<num; i++) {
 		if (rai.api_frai[i+1] > 0) {
-			fTargets.push((eEscort && rai.api_frai[i+1] >= 7) ? eEscort[rai.api_frai[i+1]-7] : eMain[rai.api_frai[i+1]-1]);
-			fTropedos.push((i>=6)? main[i-6] : main[i]);
+			fTorpedos.push((i>=6)? fleet.ESCORT_FLEET[i-6] : fleet.MAIN_FLEET[i]);
+			fAttack.push((i>=6) ? rai.api_fydam[i-6] : rai.api_fydam[i+1]);
+			
+			if((opponent.ESCORT_FLEET && rai.api_frai[i+1] >= 7)) {
+				opponent.ESCORT_FLEET[rai.api_frai[i+1]-7].curHP -= Math.floor(rai.api_fydam[i-6]);
+				fTargets.push(opponent.ESCORT_FLEET[rai.api_frai[i+1]-7]);
+			} else {
+				opponent.MAIN_FLEET[rai.api_frai[i+1]-1].curHP -= Math.floor(rai.api_fydam[i+1]);
+				fTargets.push(opponent.MAIN_FLEET[rai.api_frai[i+1]-1]);
+			}			
 		}
 		if (rai.api_erai[i+1] > 0) {
-			eTargets.push((eEscort && rai.api_erai[i+1] >= 7) ? escort[rai.api_erai[i+1]-7] : main[rai.api_erai[i+1]-1]);
-			eTropedos.push((ecombined) ? eEscort[i-6] : eMain[i]);
+			eTorpedos.push((opponent.ESCORT_FLEET) ? opponent.ESCORT_FLEET[i-6] : opponent.MAIN_FLEET[i]);
+			eAttack.push((opponent.ESCORT_FLEET) ? rai.api_eydam[i-6] : rai.api_eydam[i+1]);
+			
+			if((opponent.ESCORT_FLEET && rai.api_erai[i+1] >= 7)) {
+				fleet.ESCORT_FLEET[rai.api_erai[i+1]-7].curHP -= Math.floor(rai.api_eydam[i-6]);
+				eTargets.push(fleet.ESCORT_FLEET[rai.api_erai[i+1]-7]);
+			} else {
+				fleet.MAIN_FLEET[rai.api_erai[i+1]-1].curHP -= Math.floor(rai.api_eydam[i+1]);
+				eTargets.push(fleet.MAIN_FLEET[rai.api_erai[i+1]-1]);
+			}
+			
+			
 		}
 	}
-	if(fTropedos.length > 0) addText(getText((opening) ? "OPTORP_ATTACK": "TORP_ATTACK",[getFleet(fTropedos)]));
-	if(eTropedos.length > 0) addText(getText((opening) ? "OPTORP_ATTACK": "TORP_ATTACK",[getFleet(eTropedos)]));
-/*	for(var j= 0; j = fTropedos.length; j++) {
-		
+	if(fTorpedos.length > 0) addText(getText((opening) ? "OPTORP_ATTACK": "TORP_ATTACK",[getFleet(fTorpedos)]));
+	if(eTorpedos.length > 0) addText(getText((opening) ? "OPTORP_ATTACK": "TORP_ATTACK",[getFleet(eTorpedos)]));
+	for(var j= 0; j < fTorpedos.length; j++) {
+		addText(getText("TORP_DAMAGE", [fTorpedos[j].name, fTargets[j].name, fAttack[j]]))
 	}
 	
-	for(var j= 0; j = eTropedos.length; j++) {
+/*	for(var j= 0; j = eTorpedos.length; j++) {
 		
 	}*/
 	
 }
 
-function showHougeki(hou, fleet, efleet) {
-	var main = fleet.MAIN_FLEET;
-	var escort = fleet.ESCORT_FLEET;
-	var eMain = efleet.MAIN_FLEET;
-	var eEscort = efleet.ESCORT_FLEET;
+function showHougeki(hou, fleet) {
 	
 	for (var j=1; j<hou.api_at_list.length; j++) {
 		var attacker;
 		var defender;
 		
-		if (eEscort) {
+		if (opponent.ESCORT_FLEET) {
 			if (hou.api_at_eflag[j]){
-				attacker = (hou.api_at_list[j]>6)? eEscort[hou.api_at_list[j]-7] : eMain[hou.api_at_list[j]-1];
+				attacker = (hou.api_at_list[j]>6)? opponent.ESCORT_FLEET[hou.api_at_list[j]-7] : opponent.MAIN_FLEET[hou.api_at_list[j]-1];
 			} else {
-				attacker = (hou.api_at_list[j]>6)? escort[hou.api_at_list[j]-7] : main[hou.api_at_list[j]-1];
+				attacker = (hou.api_at_list[j]>6)? fleet.ESCORT_FLEET[hou.api_at_list[j]-7] : fleet.MAIN_FLEET[hou.api_at_list[j]-1];
 			}
 			
 			if (!hou.api_at_eflag[j]) {
-				defender = (hou.api_df_list[j][0]>6)? eEscort[hou.api_df_list[j][0]-7] : eMain[hou.api_df_list[j][0]-1];
+				if(hou.api_df_list[j][0]>6) {
+					opponent.ESCORT_FLEET[hou.api_df_list[j][0]-1].curHP =- (hou.api_damage[j].length == 2) ? (hou.api_damage[j][0] + hou.api_damage[j][1]) 
+							: hou.api_damage[j][0];
+					defender = opponent.ESCORT_FLEET[hou.api_df_list[j][0]-7];
+				} else {
+					opponent.MAIN_FLEET[hou.api_df_list[j][0]-1].curHP =- (hou.api_damage[j].length == 2) ? (hou.api_damage[j][0] + hou.api_damage[j][1]) 
+							: hou.api_damage[j][0];
+					defender = opponent.MAIN_FLEET[hou.api_df_list[j][0]-1];
+				}
+				
 			} else {
-				defender = (hou.api_df_list[j][0]>6)? escort[hou.api_df_list[j][0]-7] : main[hou.api_df_list[j][0]-1];
+				if(hou.api_df_list[j][0]>6) {
+					fleet.ESCORT_FLEET[hou.api_df_list[j][0]-7].curHP -= (hou.api_damage[j].length == 2) ? (hou.api_damage[j][0] + hou.api_damage[j][1]) 
+							: hou.api_df_list[j][0];
+					defender = fleet.ESCORT_FLEET[hou.api_df_list[j][0]-7];
+				} else {
+					fleet.MAIN_FLEET[hou.api_df_list[j][0]-1].curHP -= (hou.api_damage[j].length == 2) ? (hou.api_damage[j][0] + hou.api_damage[j][1]) 
+							: hou.api_damage[j][0];
+					defender = fleet.MAIN_FLEET[hou.api_df_list[j][0]-1];
+				}
 			}
 		} else {
-			attacker = (hou.api_at_list[j]>6)? eMain[hou.api_at_list[j]-7] : main[hou.api_at_list[j]-1]
-			defender = (hou.api_df_list[j][0]>6)? eMain[hou.api_df_list[j][0]-7] : main[hou.api_df_list[j][0]-1];
+			attacker = (hou.api_at_list[j]>6)? opponent.MAIN_FLEET[hou.api_at_list[j]-7] : fleet.MAIN_FLEET[hou.api_at_list[j]-1]
+			if((hou.api_df_list[j][0]>6)) {
+				opponent.MAIN_FLEET[hou.api_df_list[j][0]-7].curHP -= (hou.api_damage[j].length == 2) ? (hou.api_damage[j][0] + hou.api_damage[j][1]) 
+						: hou.api_damage[j][0];
+				defender = opponent.MAIN_FLEET[hou.api_df_list[j][0]-7];
+			} else {
+				fleet.MAIN_FLEET[hou.api_df_list[j][0]-1].curHP -= (hou.api_damage[j].length == 2) ? (hou.api_damage[j][0] + hou.api_damage[j][1]) 
+						: hou.api_damage[j][0];
+				defender = fleet.MAIN_FLEET[hou.api_df_list[j][0]-1];
+			}
+			
 		}
 		
 		addText(getText("SHELL_TARGET",[attacker.name, hou.api_at_type[j],defender.name]));
-		/*if(hou.api_at_type[j] == 0) {
-			addText(getText("SHELL_NORMAL",[attacker.name, defender.name, hou.api_cl_list[j][0], hou.api_damage[j][0]]));
-		} else if(hou.api_at_type[j] == 2) {
-			addText(getText("SHELL_DOUBLE",[attacker.name, defender.name, hou.api_cl_list[j][0], 
+		
+		if(hou.api_at_type[j] == 2) {
+			addText(getText("SHELL_DAMAGE_DOUBLE",[attacker.name, hou.api_cl_list[j][0], 
 			                                hou.api_damage[j][0], hou.api_cl_list[j][1], hou.api_damage[j][1]]));
 		} else {
-			addText(getText("SHELL_CUTIN",[attacker.name, hou.api_cl_list[j][0], hou.api_at_type[j], defender.name, hou.api_damage[j][0]]));
-		}*/
-		
-		
+			if(hou.api_damage[j][0] < 1) {
+				var damage = Math.floor(hou.api_damage[j][0])
+				if(hou.api_damage[j][0] > damage) {
+					var flagship;
+					if (!hou.api_at_eflag[j]) {
+						flagship = (hou.api_df_list[j][0]>6)? opponent.ESCORT_FLEET[0] : opponent.MAIN_FLEET[0];
+					} else {
+						flagship = (hou.api_df_list[j][0]>6)? fleet.ESCORT_FLEET[0] : fleet.MAIN_FLEET[0];
+					}
+					addText(getText("PROTECT_MISS",[defender.name, flagship]));
+				} else {
+					addText(getText("SHELL_MISS",[defender.name]));
+				}
+			} else {
+				var damage = Math.floor(hou.api_damage[j][0])
+				if(hou.api_damage[j][0] > damage) {
+					var flagship;
+					if (!hou.api_at_eflag[j]) {
+						flagship = (hou.api_df_list[j][0]>6)? opponent.ESCORT_FLEET[0] : opponent.MAIN_FLEET[0];
+					} else {
+						flagship = (hou.api_df_list[j][0]>6)? fleet.ESCORT_FLEET[0] : fleet.MAIN_FLEET[0];
+					}
+					addText(getText("SHELL_PROTECT",[defender.name, flagship, hou.api_cl_list[j][0], damage]));
+				} else {
+					addText(getText("SHELL_DAMAGE",[defender.name, hou.api_cl_list[j][0], damage]));
+				}
+				
+			}
+		}
+		if(defender.curHP <= 0) {
+			addText(getText("SHIP_END", [defender.name, 2]));
+		}
 	}
 }
 
@@ -413,7 +485,7 @@ function processPVP(fleet, battle) {
 	var data = battle.data;
 	var yasen = battle.yasen;
 
-	var opponent = {
+	opponent = {
 			MAIN_FLEET : composeFleet(data.api_ship_ke, data.api_nowhps.slice(7)),
 			ESCORT_FLEET: null
 	}
@@ -436,22 +508,22 @@ function processPVP(fleet, battle) {
 	}
 	addText("");
 	if(data.api_opening_flag) {
-		showRaigeki(data.api_opening_atack,fleet,opponent, true);
+		showRaigeki(data.api_opening_atack, fleet, true);
 		addText("");
 	}
 	
 	
 	if(data.api_hourai_flag[0]) {
 		addText(getText("SHELL_START",[1]));
-		showHougeki(data.api_hougeki1,fleet,opponent);
+		showHougeki(data.api_hougeki1,fleet);
 		addText("");
 	}
 	if(data.api_hourai_flag[1]){
 		addText(getText("SHELL_START",[2]));
-		showHougeki(data.api_hougeki2,fleet,opponent);
+		showHougeki(data.api_hougeki2,fleet);
 		addText("");
 	}
-	if(data.api_hourai_flag[3]) showRaigeki(data.api_raigeki,fleet,opponent, false);
+	if(data.api_hourai_flag[3]) showRaigeki(data.api_raigeki,fleet,false);
 
 
 }
@@ -462,7 +534,7 @@ function processText(API) {
 	var combined = API.combined
 	var startData = API.battles[0].data;
 	
-	var fleet = {
+	fleet = {
 			MAIN_FLEET: composeFleet(API['fleet'+API.fleetnum], startData.api_nowhps.slice(1,7)),
 			ESCORT_FLEET: (combined) ? composeFleet(API.fleet2, startData.api_nowhps_combined.slice(1,7)) : null,
 			NODE_SUPPORT: (API.support1 > 0)? composeFleet(API['fleet'+API.support1], [1,1,1,1,1,1]) : null,
