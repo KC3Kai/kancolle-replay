@@ -105,10 +105,10 @@ var TEXTDATA = {
 			"text": "Fleet has gained <0> against the enemy.",
 			"values": {
 				0: {
+					0: "Air Parity (AP)",
 					1: "Air Supremacy (AS+)",
 					2: "Air Superiority (AS)",
-					3: "Air Parity (AP)",
-					//4: "Air Denial (AD)",
+					3: "Air Denial (AD)",
 					4: "Air Incapability (AI)"
 				}
 			}
@@ -122,13 +122,47 @@ var TEXTDATA = {
 			"values": {}
 		},
 		"AIR_AACI": {
-
+			"text": "<0> uses <1> type AACI.",
+			"values": {
+				1: {
+					1: "H.H.R.",
+					2: "H.R.",
+					3: "H.H.",
+					4:	"M.S.A.R.",
+					5:	"B.B.R.",
+					6:	"M.S.A.",
+					7:	"H.A.R.",
+					8:	"B.R.",
+					9:	"H.A.",
+					10:	"H.C.R.",
+					11:	"H.C.",
+					12:	"C.G.R.",
+					14:	"H.G.R.",
+					15:	"H.G.",
+					16:	"H.G.R.",
+					17:	"H.G.",
+					18:	"C.",
+					19:	"H.C.",
+					20:	"C."
+				}
+			}
 		},
 		"AIR_STAGE2_LOSS": {
 
 		},
+		
 		"AIR_DAMAGE": {
-
+			"text": "<0> <1>hit <2> dealing <3> damage.",
+			"values": {
+				0: {
+					0: "Dive Bombers",
+					1: "Torpedo Bombers"
+				},
+				1: {
+					0: "",
+					1: "critically "
+				}
+			}
 		},
 		"SUPPORT_START": {
 			"text": "The <0> support fleet has arrived with <1>",
@@ -337,8 +371,74 @@ function getNodeLetter(world,map,num) {
 	return edge[1];
 }
 
-function showKouku(kouku,isbombing,isjet) {
-
+function showKouku(kouku, fleet, isbombing,isjet) {
+	var stage1 = kouku.api_stage1;
+	var stage2 = kouku.api_stage2;
+	var stage3 = kouku.api_stage3;
+	
+	if (kouku && kouku.api_plane_from && (kouku.api_plane_from[0][0] != -1 || kouku.api_plane_from[1][0] != -1)){
+		
+		
+		addText(getText("AIR_SUPERIORITY", [stage1.api_disp_seiku]));
+		if(stage1.api_touch_plane[0] > 0) addText(getText("AIR_CONTACT_F",[getItemName(stage1.api_touch_plane[0])]));
+		if(stage1.api_touch_plane[1] > 0) addText(getText("AIR_CONTACT_E",[getItemName(stage1.api_touch_plane[1])]));
+		
+		if(stage2 && stage2.api_air_fire) {
+			var AAShip = (stage2.api_air_fire.api_idx > 5) ? fleet.ESCORT_FLEET[stage2.api_air_fire.api_idx - 6] : fleet.MAIN_FLEET[stage2.api_air_fire.api_idx];
+			addText(getText("AIR_AACI", [AAShip.name, stage2.api_air_fire.api_kind]));
+		}
+		
+		if (stage3) {
+			var fTargets = [], fCTargets = [], eTargets = [], eCTargets = [];
+			
+			for (var i=0; i<6; i++) {
+				if (kouku.api_stage3.api_fdam) {
+					var dam = Math.floor(kouku.api_stage3.api_fdam[i+1]);  //remember later, .1 = protect
+					fleet.MAIN_FLEET[i].curHP -= dam;
+					if (kouku.api_stage3.api_frai_flag[i+1] || kouku.api_stage3.api_fbak_flag[i+1]) eTargets.push({
+						ship: fleet.MAIN_FLEET[i],
+						damage: (dam>0)? dam:0,
+						protect: (dam!=kouku.api_stage3.api_fdam[i+1]),
+						crit: kouku.api_stage3.api_fcl_flag[i+1],
+						rai: kouku.api_stage3.api_frai_flag[i+1]
+					});
+				}
+				
+				if (kouku.api_stage3.api_edam) {
+					var dam = Math.floor(kouku.api_stage3.api_edam[i+1]);  //remember later, .1 = protect
+					opponent.MAIN_FLEET[i].curHP -= dam;
+					if (stage3.api_erai_flag[i+1] || stage3.api_ebak_flag[i+1]) fTargets.push({
+						ship: opponent.MAIN_FLEET[i],
+						damage: (dam > 0)? dam : 0,
+						protect: (dam != stage3.api_edam[i+1]),
+						crit: stage3.api_ecl_flag[i+1],
+						rai: stage3.api_erai_flag[i+1]
+					});
+				}
+				
+				/*if (kouku.api_stage3_combined) {
+					if (kouku.api_stage3_combined.api_fdam) {
+						var dam = parseInt(kouku.api_stage3_combined.api_fdam[i+1]);  //remember later, .1 = protect
+						HPstate[i+12] -= Math.floor(dam);
+						var hit = (kouku.api_stage3_combined.api_frai_flag[i+1] || kouku.api_stage3_combined.api_fbak_flag[i+1]);
+						if (hit) targetdata.push([fleet1C[i],(dam>0)? dam:0,(dam!=kouku.api_stage3_combined.api_fdam[i+1]),kouku.api_stage3_combined.api_fcl_flag[i+1],kouku.api_stage3_combined.api_frai_flag[i+1]]);
+					}
+					if (kouku.api_stage3_combined.api_edam) {
+						var dam = parseInt(kouku.api_stage3_combined.api_edam[i+1]);  //remember later, .1 = protect
+						HPstate[i+18] -= Math.floor(dam);
+						var hit = (kouku.api_stage3_combined.api_erai_flag[i+1] || kouku.api_stage3_combined.api_ebak_flag[i+1]);
+						if (hit) targetdata.push([f2c[i],(dam>0)? dam:0,(dam!=kouku.api_stage3_combined.api_edam[i+1]),kouku.api_stage3_combined.api_ecl_flag[i+1],kouku.api_stage3_combined.api_erai_flag[i+1]]);
+					}
+				}*/
+			}
+			for(var f in fTargets){
+				addText(getText("AIR_DAMAGE", [fTargets[f].rai, fTargets[f].crit, fTargets[f].ship.name, fTargets[f].damage]));
+				if(fTargets[f].ship.curHP <= 0) {
+					addText(getText("SHIP_END", [fTargets[f].ship.name, 2]));
+				}
+			}
+		}
+	}
 }
 
 function showRaigeki(rai, fleet, opening) {
@@ -503,10 +603,17 @@ function processPVP(fleet, battle) {
 	
 	if (data.api_formation) addText(getText("ENEMY_FORMATION",[0, data.api_formation[1]]));
 	addText("");
+	
+	if(data.api_kouku) {
+		showKouku(data.api_kouku, fleet, false,false)
+		addText("");
+	}
+	
 	if(data.api_opening_taisen_flag) {
 		
+		addText("");
 	}
-	addText("");
+	
 	if(data.api_opening_flag) {
 		showRaigeki(data.api_opening_atack, fleet, true);
 		addText("");
@@ -524,7 +631,9 @@ function processPVP(fleet, battle) {
 		addText("");
 	}
 	if(data.api_hourai_flag[3]) showRaigeki(data.api_raigeki,fleet,false);
-
+	if(battle.api_midnight_flag && yasen.length > 0) {
+		
+	}
 
 }
 
@@ -549,17 +658,17 @@ function processText(API) {
 		addText(getText("SORTIE_START",[world, map, new Date(API.time*1000)]));
 		
 		if(!combined) {
-			addText(getText("FLEET_COMPOSITION",[composeFleet(API['fleet'+API.fleetnum])]));
+			addText(getText("FLEET_COMPOSITION",[getFleet(API['fleet'+API.fleetnum])]));
 		} else {
-			addText(getText("COMBINDED_FLEET_COMPOSITION",[composeFleet(API.fleet1), composeFleet(API.fleet2)]));
+			addText(getText("COMBINDED_FLEET_COMPOSITION",[getFleet(API.fleet1), composeFleet(API.fleet2)]));
 		}
 
 		if(API.support1 > 0) {
-			addText(getText("SUPPORT_FLEET_COMPOSITION", [composeFleet(API['fleet'+API.support1]), 1]));
+			addText(getText("SUPPORT_FLEET_COMPOSITION", [getFleet(API['fleet'+API.support1]), 1]));
 		}
 
 		if(API.support2 > 0) {
-			addText(getText("SUPPORT_FLEET_COMPOSITION", [composeFleet(API['fleet'+API.support2]), 2]));
+			addText(getText("SUPPORT_FLEET_COMPOSITION", [getFleet(API['fleet'+API.support2]), 2]));
 		}
 
 		addText("");
@@ -610,19 +719,9 @@ function processText(API) {
 
 			//air phase
 			if (data.api_kouku) {
-				var phase1 = data.api_kouku.api_stage1;
-				var phase2 = data.api_kouku.api_stage2;
-				var phase3 = data.api_kouku.api_stage3;
+				showKouku(data.api_kouku, fleet);
 
 
-				addText(getText("AIR_SUPERIORITY", [phase1.api_disp_seiku]));
-
-				if(phase1.api_touch_plane[0] > -1){
-					addText(getText("AIR_CONTACT_F", [getItemName(phase1.api_touch_plane[0])]));
-				}
-				if(phase1.api_touch_plane[1] > -1){
-					addText(getText("AIR_CONTACT_E", [getItemName(phase1.api_touch_plane[1])]));
-				}
 			}
 
 			//support phase
