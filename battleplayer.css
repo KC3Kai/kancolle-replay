@@ -12,11 +12,17 @@ body {
     margin: auto;
 }
 
-#bp-title {}
+#bp-title {
+	font-size: 16px;
+}
 
-#bp-title-ver {}
+#bp-title-ver {
+	color: red;
+}
 
-#bp-title-upd {}
+#bp-title-upd {
+	color: red;
+}
 
 #bp-comp-left {
     width: 340px;
@@ -88,4 +94,8 @@ body {
 
 #bp-fleet-comp button {
     margin-right: 25px;
+}
+
+#switchSound {
+	margin-bottom: 10px;
 }
