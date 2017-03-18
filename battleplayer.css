@@ -1,0 +1,101 @@
+body {
+    margin: 0;
+    background: #def;
+}
+
+.bp-label {
+    font-size: 17px;
+}
+
+#bp-container {
+    min-width: 1150px;
+    margin: auto;
+}
+
+#bp-title {
+	font-size: 16px;
+}
+
+#bp-title-ver {
+	color: red;
+}
+
+#bp-title-upd {
+	color: red;
+}
+
+#bp-comp-left {
+    width: 340px;
+}
+
+#bp-com-left-2 hr {
+    height: 12px;
+    margin: 0px;
+    border: none;
+}
+
+#bp-comp-right {
+    width: 800px;
+}
+
+#skipbuttonspace {
+    height: 36px;
+    padding-left: 7px;
+}
+
+#skipbuttonspace input[type="button"] {
+    min-width: 45px;
+    margin: 0 0 0 3px;
+}
+
+.bp-air-battle-text {}
+
+.bp-air-battle-value {
+    padding-left: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.bp-engagement {}
+
+.bt-engagement-value {
+    height: 20px;
+    font-size: 20px;
+}
+
+#plEngage {}
+
+#plEngageT {
+    font-weight: bold;
+}
+
+.bp-battle-bar canvas {
+    width: 240px;
+    height: 12px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+#bp-sound-1 {
+    padding: 0 25px;
+}
+
+#bp-sound-1 label {
+    margin-bottom: 1px;
+}
+
+#bp-sound-2 {}
+
+#bp-player-fps {
+    margin-left: 750px;
+    font-size: 12px;
+    font-style: italic;
+}
+
+#bp-fleet-comp button {
+    margin-right: 25px;
+}
+
+#switchSound {
+	margin-bottom: 10px;
+}

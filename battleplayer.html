@@ -1,288 +1,319 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
-		<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-		<script src="jquery-1.11.3.min.js"></script>
-		<script src="kcSHIPDATA.js"></script>
-		<script src="kcEQDATA.js"></script>
-		<script src="kcEDGES.js"></script>
-		<script src="kcMAPDATA.js"></script>
-		<script src="shared.js"></script>
-		<script src="pixi.js"></script>
-		<script src="howler.min.js"></script>
-		<script src="URI.js"></script>
-		<script type="text/javascript" src="reader/steganography.js"></script>
-		<script src="playertext.js"></script>
-		<script type="text/javascript">
-		function loadImage(file) {
-			var preview = document.getElementById('imgpreview');
-			var reader  = new FileReader();
-			$('#error').text('Loading');
 
-			preview.onload = function(){
-				//console.log(reader.result);
-				try { 
-					var msg = steganography.decode(reader.result);
-					document.getElementById('code').value = msg;
-				} catch(e) {
-					$('#error').text('Error, data may be corrupted');
-					return;
-				}
-				loadCode();
-				//$('#error').text('');
-			};
+<head>
 
-			reader.onloadend = function (e) {
-				preview.src = reader.result;
-			}
-			
-			if (file) {
-				reader.readAsDataURL(file);
-			} else {
-				preview.src = "";
-			}
-		}
-		function loadImgURL(url) {
-			if (url.indexOf('crossorigin')==-1) url = 'https://cors-anywhere.herokuapp.com/'+url;
-			var preview = document.getElementById('imgpreview');
-			var xhr = new XMLHttpRequest();
-			xhr.responseType = 'blob';
-			$('#error').text('Waiting for response...');
-			xhr.onload = function() {
-				loadImage(xhr.response);
-			}
-			xhr.onerror = function(e) {
-				$('#error').text('Invalid URL');
-				console.log(e);
-			}
-			xhr.open('GET',url);
-			xhr.send();
-		}
-		</script>
-		<style>
-			.infotable {
-				border-collapse: collapse;
-				font-size: 14px;
-			}
-			.infotable td {
-				border: 1px solid black;
-				padding: 0px;
-				width:50px;
-				height:10px;
-			}
-			.infotable img {
-				vertical-align: middle;
-			}
-		</style>
-	</head>
-	<body>
-		<span style="font-size:24px;font-weight:bold">KanColle Battle Replayer</span> <span style="color:red;margin-left:20px">v1.4.6 <span style="margin-left:20px;font-style:italic">(Last update: 2017-02-12)</span></span>
-		<br><br>
-		<div>
-			<div>
-				<div style="width:150px;float:left">
-					
-				</div>
-				<div style="float:left;width:400px">
-					<!--<input type="button" value="&lt; Back" onclick="clickedBack()" />-->
-					<input type="button" value="Pause" onclick="if(started) {PAUSE=!PAUSE;$(this).css('background-color',(PAUSE)?'grey':'');}" />
-					<!--<input type="button" value="Skip &gt;" onclick="clickedSkip()" />-->
-					<input type="button" value="Restart" onclick="if(started)reset(function(){processAPI(API);})" />
-					<input type="range" value="40" min="0" max="80" oninput="var num=parseInt(this.value);RATE=(num<40)?num/40:(num-40)/10+1;$('#speednum').text('x'+RATE)"/>
-					<span id="speednum">x1</span>
-				</div>
-				<div style="float:left;width:300px">
-					<span>Skip to Battle: </span>
-					<span id="skipbuttonspace"></span>
-				</div>
-				<div style="float:left;width:200px">
-					<input type="button" value="&#128266;" style="width:30px" onclick="if(!Howler._muted){Howler.mute();this.value='&#128263;'}else{Howler.unmute();this.value='&#128266;';Howler.volume(parseFloat($('#rngvol').val()))}" />
-					<input id="rngvol" type="range" value=".6" step=".01" min="0" max="1" style="width:100px" oninput="if(!Howler._muted)Howler.volume(parseFloat(this.value))" />
-					<br><span style="margin-left:45px">Voice <input id="chkvoice" type="checkbox" checked="checked" /></span>
-				</div>
-			</div>
-			<div style="width:800px;height:100px;padding-top:20px;clear:both">
-				<div style="float:left;width:240px">
-					<!--Detection: <span id="plDet1"></span>--><br><br>
-					Air Battle: <span id="plAS1" style="font-weight:bold;font-size:20px"></span><br><br>
-					<canvas id="plHP1" width="240px" height="10px" style="border:1px solid black;border-radius:5px"></canvas>
-				</div>
-				<div style="float:left;width:320px;text-align:center">
-					<br><br>
-					Engagement:<br>
-					<span id="plEngage" style="font-size:20px"></span> <span id="plEngageT" style="font-size:18px;font-weight:bold"></span>
-				</div>
-				<div style="float:right;width:240px;align:right">
-					<br><br>
-					Air Battle: <span id="plAS2" style="font-weight:bold;font-size:20px"></span><br><br>
-					<canvas id="plHP2" width="240px" height="10px" style="border:1px solid black;border-radius:5px"></canvas>
-				</div>
-			</div>
-		
-			<div id="battlespace"></div>
-			<script src="playersound.js"></script>
-			<script src="playersound2.js"></script>
-			<script src="player.js"></script>
-		</div>
-		<div>
-			<span style="font-size:12px;margin-left:750px">FPS: <span id="FPS"></span></span><br>
-			<div style="float:left;width:400px">
-				<div style="padding-bottom:8px"><span style="font-weight:bold">Upload image: </span><input type="file" onchange="loadImage(this.files[0])"></div>
-				<div style="padding-bottom:8px"><span style="font-weight:bold">Load from URL: </span><input id="textimgurl" type="text"><input type="button" value="Load" onclick="loadImgURL($('#textimgurl').val())"/></div>
-				<img src="" id="imgpreview" height="200" alt="Image preview..."><br>
-				<br>
-			</div>
-			<div style="float:left;width:400px">
-				<span style="font-weight:bold">Load from text:</span><br>
-				<textarea id="code" cols="40" rows="5"></textarea>
-				<br>
-				<input id="codeb" type="button" value="Load" onClick="loadCode()" />
-				<input type="button" value="Paste Sample Code 1" onclick="$('#code').val(APIsample);"/>
-				<input type="button" value="Paste Sample Code 2" onclick="$('#code').val(APIsample2);"/>
-				<br><span id="error" style="color:red;width:100px"></span>
-			</div>
-			
-		</div>
-		<br style="clear:both"><br>
-		<div>
-			<input type="button" value="Show Fleet Details" onclick="loadFleetInfo(API)"/>
-			<input id="radJP" type="radio" name="lang" onclick="translateTable()" /><label for="radJP">JP</label>
-			<input id="radEN" type="radio" name="lang" onclick="translateTable()" checked="checked" /><label for="radEN">EN</label>
-			<div id="fleetinfospace">
-				<div id="friendfleetspace"></div><br><br>
-				<div id="enemyfleetspace"></div>
-			</div>
-		</div>
-		<script type="text/javascript">
-			function makeTable(root,name,num) {
-				if (!num) num = 6;
-				var table = $('<table id="T'+name+'" class="infotable"></table>');
-				var tr = $('<tr></tr>');
-				for (var i=0; i<num; i++) tr.append($('<td colspan="4" id="name'+name+i+'"></td>'));
-				table.append(tr);
-				tr = $('<tr></tr>');
-				for (var i=0; i<num; i++) tr.append($('<td colspan="4" style="text-align:center"><img id="img'+name+i+'"/></td>'));
-				table.append(tr);
-				tr = $('<tr></tr>');
-				for (var i=0; i<num; i++) tr.append($('<td colspan="2"><img src="assets/stats/lv.png"/> <span id="lvl'+name+i+'"></span></td><td colspan="2"><img src="assets/stats/hp.png"/> <span id="hp'+name+i+'"></span></td>'));
-				table.append(tr);
-				tr = $('<tr></tr>');
-				for (var i=0; i<num; i++) tr.append($('<td><img src="assets/stats/fp.png"/> <span id="fp'+name+i+'"></span></td><td><img src="assets/stats/tp.png"/> <span id="tp'+name+i+'"></span></td><td><img src="assets/stats/aa.png"/> <span id="aa'+name+i+'"></span></td><td><img src="assets/stats/ar.png"/> <span id="ar'+name+i+'"></span></td>'));
-				table.append(tr);
-				for (var j=0; j<4; j++) {
-					tr = $('<tr></tr>');
-					for (var i=0; i<num; i++) tr.append($('<td colspan="4"><span id="eq'+j+name+i+'"></span></td>'));
-					table.append(tr);
-				}
-				$('#'+root).append(table);
-				$('#'+root).append($('<br>'));
-			}
+    <!--meta-->
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
 
-			function fillTableF(API,num,combined,translate) {
-				var fleet = API['fleet'+num];
-				for (var i=0; i<fleet.length; i++) {
-					var b = API.battles[0].data;
-					if (!Object.keys(b).length) b = API.battles[0].yasen;
-					if (SHIPDATA[fleet[i].mst_id]) {
-						if ($('#radJP').prop('checked')) $('#name'+num+i).text(fleet[i].mst_id+'. '+SHIPDATA[fleet[i].mst_id].nameJP);
-						else $('#name'+num+i).text(fleet[i].mst_id+'. '+SHIPDATA[fleet[i].mst_id].name);
-					} else $('#name'+num+i).text(fleet[i].mst_id+'.');
-					if (!translate) {
-						if (SHIPDATA[fleet[i].mst_id]) $('#img'+num+i).attr('src','assets/icons/'+SHIPDATA[fleet[i].mst_id].image);
-						var maxhps = (combined)? 'api_maxhps_combined' : 'api_maxhps';
-						var fparam = (combined)? 'api_fParam_combined' : 'api_fParam';
-						$('#lvl'+num+i).text(fleet[i].level); $('#hp'+num+i).text(b[maxhps][i+1]); 
-						$('#fp'+num+i).text(b[fparam][i][0]);$('#tp'+num+i).text(b[fparam][i][1]);$('#aa'+num+i).text(b[fparam][i][2]);$('#ar'+num+i).text(b[fparam][i][3]);
-					}
-					for (var j=0; j<4; j++) {
-						if (!fleet[i].equip[j]) continue;
-						if (EQDATA[fleet[i].equip[j]]) $('#eq'+j+num+i).text(EQDATA[fleet[i].equip[j]][$('#radJP').prop('checked')?'nameJP':'name']);
-						else $('#eq'+j+num+i).text(fleet[i].equip[j]);
-						$('#eq'+j+num+i).attr('title',fleet[i].equip[j]);
-					}
-				}
-			}
+    <!---->
+    <script src="jquery-3.1.1.min.js"></script>
+    <script src="kcSHIPDATA.js"></script>
+    <script src="kcEQDATA.js"></script>
+    <script src="kcEDGES.js"></script>
+    <script src="kcMAPDATA.js"></script>
+    <script src="shared.js"></script>
+    <script src="pixi.js"></script>
+    <script src="howler.min.js"></script>
+    <script src="URI.js"></script>
+    <script type="text/javascript" src="reader/steganography.js"></script>
+    <script src="playertext.js"></script>
+    <script type="text/javascript">
+        function loadImage(file) {
+            var preview = document.getElementById('imgpreview');
+            var reader = new FileReader();
+            $('#error').text('Loading');
 
-			function loadFleetInfo(API,translate) {
-				if (!started) return;
-				if (!translate) {
-					$('#friendfleetspace').html('');
-					$('#enemyfleetspace').html('');
-					makeTable('friendfleetspace',API.fleetnum,API['fleet'+API.fleetnum].length);
-					if (API.combined) makeTable('friendfleetspace',2,API.fleet2.length);
-				}
-				fillTableF(API,API.fleetnum,false,translate);
-				if (API.combined) fillTableF(API,2,true,translate);
-				
-				for (var k=0; k<API.battles.length; k++) {
-					var b = API.battles[k].data;
-					if (!b.api_ship_ke) b = API.battles[k].yasen;
-					if (!translate) {
-						var numships = 0; for (var i=0; i<b.api_ship_ke.length; i++) if (b.api_ship_ke[i] > 0) numships++;
-						makeTable('enemyfleetspace','2'+k,numships);
-					}
-					for (var i=0; i<b.api_ship_ke.length; i++) {
-						var mid = b.api_ship_ke[i];
-						if (mid <= 0) continue;
-						if (SHIPDATA[mid]) {
-							if ($('#radJP').prop('checked')) $('#name2'+k+i).text(mid+'. '+SHIPDATA[mid].nameJP);
-							else $('#name2'+k+i).text(mid+'. '+SHIPDATA[mid].name);
-						} else $('#name2'+k+i).text(mid+'.');
-						if (!translate) {
-							if (SHIPDATA[mid]) $('#img2'+k+i).attr('src','assets/icons/'+SHIPDATA[mid].image);
-							$('#lvl2'+k+i).text(b.api_ship_lv[i+1]); $('#hp2'+k+i).text(b.api_maxhps[i+7]); 
-							$('#fp2'+k+i).text(b.api_eParam[i][0]);$('#tp2'+k+i).text(b.api_eParam[i][1]);$('#aa2'+k+i).text(b.api_eParam[i][2]);$('#ar2'+k+i).text(b.api_eParam[i][3]);
-						}
-						for (var j=0; j<4; j++) {
-							if (b.api_eSlot[i][j] <= 0) continue;
-							if (EQDATA[b.api_eSlot[i][j]]) $('#eq'+j+'2'+k+i).text(EQDATA[b.api_eSlot[i][j]][$('#radJP').prop('checked')?'nameJP':'name']);
-							else $('#eq'+j+'2'+k+i).text(b.api_eSlot[i][j]);
-							$('#eq'+j+'2'+k+i).attr('title',b.api_eSlot[i][j]);
-						}
-					}
-					if (b.api_ship_ke_combined) {
-						if (!translate) {
-							$('#enemyfleetspace > br:last-child').remove();
-							var numships = 0; for (var i=0; i<b.api_ship_ke_combined.length; i++) if (b.api_ship_ke_combined[i] > 0) numships++;
-							makeTable('enemyfleetspace','2c'+k,numships);
-						}
-						for (var i=0; i<b.api_ship_ke_combined.length; i++) {
-							var mid = b.api_ship_ke_combined[i];
-							if (mid <= 0) continue;
-							if (SHIPDATA[mid]) {
-								if ($('#radJP').prop('checked')) $('#name2c'+k+i).text(mid+'. '+SHIPDATA[mid].nameJP);
-								else $('#name2c'+k+i).text(mid+'. '+SHIPDATA[mid].name);
-							} else $('#name2c'+k+i).text(mid+'.');
-							if (!translate) {
-								if (SHIPDATA[mid]) $('#img2c'+k+i).attr('src','assets/icons/'+SHIPDATA[mid].image);
-								$('#lvl2c'+k+i).text(b.api_ship_lv_combined[i+1]); $('#hp2c'+k+i).text(b.api_maxhps_combined[i+7]); 
-								$('#fp2c'+k+i).text(b.api_eParam_combined[i][0]);$('#tp2c'+k+i).text(b.api_eParam_combined[i][1]);$('#aa2c'+k+i).text(b.api_eParam_combined[i][2]);$('#ar2c'+k+i).text(b.api_eParam_combined[i][3]);
-							}
-							for (var j=0; j<4; j++) {
-								if (b.api_eSlot_combined[i][j] <= 0) continue;
-								if (EQDATA[b.api_eSlot_combined[i][j]]) $('#eq'+j+'2c'+k+i).text(EQDATA[b.api_eSlot_combined[i][j]][$('#radJP').prop('checked')?'nameJP':'name']);
-								else $('#eq'+j+'2c'+k+i).text(b.api_eSlot_combined[i][j]);
-								$('#eq'+j+'2c'+k+i).attr('title',b.api_eSlot_combined[i][j]);
-							}
-						}
-					}
-				}
-			}
+            preview.onload = function () {
+                //console.log(reader.result);
+                try {
+                    var msg = steganography.decode(reader.result);
+                    document.getElementById('code').value = msg;
+                } catch (e) {
+                    $('#error').text('Error, data may be corrupted');
+                    return;
+                }
+                loadCode();
+                //$('#error').text('');
+            };
 
-			function translateTable() {
-				loadFleetInfo(API,true);
-			}
-		
-			var uri = new URI(window.location.href);
-			var qs = uri.search( true );
-			if (qs.fromImg) {
-				loadImgURL(qs.fromImg);
-			}
-			
-			$('#textimgurl').on('keypress', function(e) {
-				if (e.keyCode === 13 && this.value) loadImgURL(this.value);
-			});
+            reader.onloadend = function (e) {
+                preview.src = reader.result;
+            }
 
-		</script>
-	</body>
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = "";
+            }
+        }
+        function loadImgURL(url) {
+            if (url.indexOf('crossorigin') == -1) url = 'https://cors-anywhere.herokuapp.com/' + url;
+            var preview = document.getElementById('imgpreview');
+            var xhr = new XMLHttpRequest();
+            xhr.responseType = 'blob';
+            $('#error').text('Waiting for response...');
+            xhr.onload = function () {
+                loadImage(xhr.response);
+            }
+            xhr.onerror = function (e) {
+                $('#error').text('Invalid URL');
+                console.log(e);
+            }
+            xhr.open('GET', url);
+            xhr.send();
+        }
+    </script>
+    <style>
+        .infotable {
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        
+        .infotable td {
+            border: 1px solid black;
+            padding: 0px;
+            width: 50px;
+            height: 10px;
+        }
+        
+        .infotable img {
+            vertical-align: middle;
+        }
+    </style>
+
+    <!--Bootstrap CDN-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+        crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+        crossorigin="anonymous"></script>
+
+    <!--Material Design Lite-->
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue-red.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+    <!--Custom-->
+    <link rel="stylesheet" href="./battleplayer.css" />
+
+</head>
+
+<body>
+
+    <div id="bp-container" class="d-flex flex-column">
+
+        <!--Title-->
+        <div class="d-flex flex-row align-items-center justify-content-center">
+            <div id="bp-title" class="p-1">
+                KanColle Battle Replayer
+            </div>
+            <div id="bp-title-ver" class="p-1">
+                v1.4.6
+            </div>
+            <div id="bp-title-upd" class="p-1">
+                (Last update: 2017-03-18)
+            </div>
+        </div>
+
+        <!--Main Component-->
+        <div class="d-flex flex-row justify-content-center align-items-start">
+
+            <!--Left-->
+            <div id="bp-comp-left" class="d-flex flex-column align-items-center">
+
+                <!--Part 1-->
+                <div class="d-flex flex-row">
+                    <div>
+                        <!--Pause/Reset-->
+                        <div class="d-flex flex-row justify-content-center align-items-center">
+                            <button id="btnPause" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">Pause</button>
+                            <button id="btnReset" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">Reset</button>
+                        </div>
+
+                        <!--Speed-->
+                        <div class="d-flex flex-row justify-content-between align-items-center" style="height: 36px">
+                            <input id="rangeSpeed" class="mdl-slider mdl-js-slider" data-toggle="tooltip" data-placement="bottom" title="Speed" type="range"
+                                min="0" max="80" value="40">
+                            <span id="speednum" style="width:50px;margin-left:-20px">x1</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <!--Sound/Voice-->
+                        <div id="bp-sound-1" class="d-flex flex-column justify-content-center">
+							<div style="margin-bottom:10px">
+                            <label for="switchSound" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+								<input type="checkbox" id="switchSound" class="mdl-switch__input" checked>
+								<span class="mdl-switch__label">Sound</span>
+							 </label>
+							 </div>
+							 <div>
+                            <label for="chkvoice" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+								<input type="checkbox" id="chkvoice" class="mdl-switch__input" checked>
+								<span class="mdl-switch__label">Voice</span>
+							</label>
+							</div>
+                        </div>
+
+                        <!--Volume-->
+                        <div id="bp-sound-2" class="d-flex flex-row justify-content-between align-items-center" style="height: 36px">
+                            <input id="rangeVolume" class="mdl-slider mdl-js-slider" data-toggle="tooltip" data-placement="bottom" title="Volume" type="range"
+                                min="0" max="100" value="60">
+                        </div>
+                    </div>
+                </div>
+
+                <!--Part 2-->
+                <div id="bp-com-left-2" class="d-flex flex-column" style="height: 60px;">
+                    <div>
+                        <div>
+                            <span style="font-weight:bold">Upload image</span>
+                        </div>
+                        <div>
+                            <input id="upload-image" type="file" onchange="loadImage(this.files[0])">
+                        </div>
+                        <hr>
+                        <div>
+                            <span style="font-weight:bold">Load from URL</span>
+                        </div>
+                        <div>
+                            <input id="textimgurl" type="text">
+                            <input type="button" value="Load" onclick="loadImgURL($('#textimgurl').val())" />
+                        </div>
+                        <hr>
+                        <div style="height:200px">
+                            <img src="" id="imgpreview" height="200" alt="Image preview...">
+                        </div>
+                    </div>
+
+                    <div>
+                        <hr>
+                        <div>
+                            <span style="font-weight:bold">Load from text</span>
+                            <textarea id="code" cols="38" rows="5"></textarea>
+                        </div>
+                        <div>
+                            <input id="codeb" type="button" value="Load" onClick="loadCode()" />
+                            <input type="button" value="Sample Code 1" onclick="$('#code').val(APIsample);" />
+                            <input type="button" value="Sample Code 2" onclick="$('#code').val(APIsample2);" />
+                        </div>
+                        <div style="height: 15px;">
+                            <span id="error" style="color:red; font-size: 10px;"></span>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <!--Right-->
+            <div id="bp-comp-right" class=" d-flex flex-column">
+
+                <!--Battle node-->
+                <div class="d-inline-flex flex-row align-items-center">
+                    <div class="bp-label">
+                        Skip to Battle
+                    </div>
+                    <div id="skipbuttonspace">
+                    </div>
+                </div>
+
+                <!--Battle info-->
+                <div class="d-inline-flex flex-row justify-content-between align-items-center" style="height: 50px">
+
+                    <!--Battle 1-->
+                    <div class="d-flex flex-column">
+                        <div class="d-flex flex-row">
+                            <div class="bp-label bp-air-battle-text">
+                                Air Battle
+                            </div>
+                            <div id="plAS1" class="bp-air-battle-value"></div>
+                        </div>
+                        <div class="bp-battle-bar">
+                            <!--<canvas id="plHP1" width="240px" height="10px" style="border:1px solid black;border-radius:5px"></canvas>-->
+                            <canvas id="plHP1"></canvas>
+                        </div>
+                    </div>
+
+                    <!--Engagement-->
+                    <div class="d-flex flex-column align-items-center">
+                        <div class="bp-label bp-engagement">
+                            Engagement
+                        </div>
+                        <div class="bt-engagement-value">
+                            <span id="plEngage"></span>
+                            <span id="plEngageT"></span>
+                        </div>
+                    </div>
+
+                    <!--Battle 2-->
+                    <div class="d-flex flex-column">
+                        <div class="d-flex flex-row">
+                            <div class="bp-label bp-air-battle-text">
+                                Air Battle
+                            </div>
+                            <div id="plAS2" class="bp-air-battle-value"></div>
+                        </div>
+                        <div class="bp-battle-bar">
+                            <!--<canvas id="plHP2" width="240px" height="10px" style="border:1px solid black;border-radius:5px"></canvas>-->
+                            <canvas id="plHP2"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!--Player-->
+                <div class="d-inline-flex flex-column">
+                    <div id="battlespace"></div>
+                    <span id="bp-player-fps">FPS: <span id="FPS"></span></span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <hr>
+
+        <!--Fleet-->
+        <div class="d-flex flex-column">
+
+            <div id="bp-fleet-comp" class="d-flex flex-row align-items-center">
+                <div>
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" onclick="loadFleetInfo(API)">Show Fleet Details</button>
+                </div>
+                <div>
+                    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="radJP" onclick="translateTable()">
+                        <input type="radio" id="radJP" class="mdl-radio__button" name="lang" value="1"/>
+                        <span class="mdl-radio__label">JP</span>
+                    </label>
+                    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="radEN" onclick="translateTable()">
+                        <input type="radio" id="radEN" class="mdl-radio__button" name="lang" value="2" checked/>
+                        <span class="mdl-radio__label">EN</span>
+                    </label>
+                </div>
+            </div>
+
+            <div id="fleetinfospace">
+                <div id="friendfleetspace"></div>
+                <div id="enemyfleetspace"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+    </div>
+
+    <script src="playersound.js"></script>
+    <script src="playersound2.js"></script>
+    <script src="player.js"></script>
+    <script src="battleplayer.js"></script>
+    <script src="battleplayer2.js"></script>
+
+</body>
+
 </html>

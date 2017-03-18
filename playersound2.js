@@ -3069,6 +3069,14 @@ var VOICES = {
 		damage2: "http://vignette2.wikia.nocookie.net/kancolle/images/0/07/Zara-Minor_Damage_2.ogg",
 		damage3: "http://vignette2.wikia.nocookie.net/kancolle/images/e/e8/Zara-Major_Damage.ogg",
 	},
+	496: {
+		start: "http://vignette3.wikia.nocookie.net/kancolle/images/7/7b/ZaraDue-Battle_Start.ogg",
+		attack: "http://vignette2.wikia.nocookie.net/kancolle/images/3/32/Zara-Attack.ogg",
+		nbattack: "http://vignette2.wikia.nocookie.net/kancolle/images/9/9c/Zara-Night_Attack.ogg",
+		damage1: "http://vignette3.wikia.nocookie.net/kancolle/images/f/f7/Zara-Minor_Damage_1.ogg",
+		damage2: "http://vignette2.wikia.nocookie.net/kancolle/images/0/07/Zara-Minor_Damage_2.ogg",
+		damage3: "http://vignette2.wikia.nocookie.net/kancolle/images/e/e8/Zara-Major_Damage.ogg",
+	},
 	449: {
 		start: "http://vignette1.wikia.nocookie.net/kancolle/images/c/c3/Pola-Battle_Start.ogg",
 		attack: "http://vignette2.wikia.nocookie.net/kancolle/images/c/c0/Pola-Attack.ogg",
