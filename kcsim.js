@@ -65,6 +65,7 @@ var FLEETS2 = [];
 var FLEETS1S = [null,null];
 var ENGAGEMENT = 1;
 const CRITMOD = 1.5;
+var SHELLDMGBASE = 180;
 
 var BUCKETPERCENT = 0;
 var BUCKETTIME = 99*3600;
@@ -197,13 +198,13 @@ function shell(ship,target,APIhou) {
 		var res1 = rollHit(accuracyAndCrit(ship,target,acc,evMod,0,1.3,ship.CVshelltype));
 		var dmg1 = Math.floor(target.HP*(.06+.08*Math.random())), realdmg1 = 0;
 		if (res1) {
-			dmg1 = damage(ship,target,ship.shellPower(target,ship.fleet.basepowshell)+FPfit,preMod,res1*postMod);
+			dmg1 = damage(ship,target,ship.shellPower(target,ship.fleet.basepowshell)+FPfit,preMod,res1*postMod,SHELLDMGBASE);
 			realdmg1 = takeDamage(target,dmg1);
 		} else { realdmg1 = takeDamage(target,dmg1) };
 		var res2 = rollHit(accuracyAndCrit(ship,target,acc,evMod,0,1.3,ship.CVshelltype));
 		var dmg2 = Math.floor(target.HP*(.06+.08*Math.random())), realdmg2 = 0;
 		if (res2) {
-			dmg2 = damage(ship,target,ship.shellPower(target,ship.fleet.basepowshell)+FPfit,preMod,res2*postMod);
+			dmg2 = damage(ship,target,ship.shellPower(target,ship.fleet.basepowshell)+FPfit,preMod,res2*postMod,SHELLDMGBASE);
 			realdmg2 = takeDamage(target,dmg2);
 		} else { realdmg2 = takeDamage(target,dmg2); }
 		ship.fleet.giveCredit(ship,dmg1+dmg2);
@@ -220,7 +221,7 @@ function shell(ship,target,APIhou) {
 		var res = rollHit(accuracyAndCrit(ship,target,acc,evMod,0,1.3,ship.CVshelltype),ship.critdmgbonus);
 		var dmg = (cutin)? Math.floor(target.HP*(.06+.08*Math.random())) : 0, realdmg = 0;
 		if (res) {
-			dmg = damage(ship,target,ship.shellPower(target,ship.fleet.basepowshell)+FPfit,preMod,res*postMod);
+			dmg = damage(ship,target,ship.shellPower(target,ship.fleet.basepowshell)+FPfit,preMod,res*postMod,SHELLDMGBASE);
 			realdmg = takeDamage(target,dmg);
 		} else { realdmg = takeDamage(target,dmg); }
 		ship.fleet.giveCredit(ship,dmg);
@@ -306,7 +307,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen) {
 	}
 	
 	var acc = hitRate(ship,accBase,accFlat,accMod);
-	if (ship.ACCfit) acc += ship.ACCfit*.01; //use NB specific fit calc? did it get updated?
+	if (MECHANICS.fitGun && ship.ACCfitN) acc += ship.ACCfitN*.01;
 	if (searchlights[0]) acc += .07;
 	if (ship.ACCnbca) acc += ship.ACCnbca*.01;
 	
@@ -397,7 +398,7 @@ function laser(ship,targets,APIhou) {
 		var res = rollHit(accuracyAndCrit(ship,targets[i],acc,evMod,0,1.3));
 		var dmg = 0, realdmg = 0;
 		if (res) {
-			dmg = damage(ship,targets[i],ship.shellPower(targets[i]),preMod,res*postMod);
+			dmg = damage(ship,targets[i],ship.shellPower(targets[i]),preMod,res*postMod,SHELLDMGBASE);
 			realdmg = takeDamage(targets[i],dmg);
 		} else { realdmg = takeDamage(targets[i],dmg); }
 		ship.fleet.giveCredit(ship,dmg);
@@ -924,7 +925,7 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI) {
 	if (C) {
 		BAPI.data.api_support_flag = suptype;
 		BAPI.data.api_support_info = { api_support_airatack:null, api_support_hourai:null };
-		if (suptype==2||suptype==3) BAPI.data.api_support_info.api_support_hourai = { api_cl_list:[0,0,0,0,0,0,0], api_damage:[0,0,0,0,0,0,0], api_deck_id:3};
+		if (suptype==2||suptype==3) BAPI.data.api_support_info.api_support_hourai = { api_cl_list:[-1,0,0,0,0,0,0], api_damage:[-1,0,0,0,0,0,0], api_deck_id:3};
 		else if (suptype==1) {
 			BAPI.data.api_support_info.api_support_airatack = {api_plane_from:[[-1]],api_stage1:null,api_stage2:null,api_stage3:null};
 			BAPI.data.api_support_info.api_support_airatack.api_stage1 = {api_e_count:0,api_e_lostcount:0,api_f_count:0,api_f_lostcount:0};
@@ -946,20 +947,20 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI) {
 				torpDmg += 8;
 				accCrit = accuracyAndCrit(ship,target,hitRate(ship,54,ship.ACC+torpDmg*.35,ship.moraleMod()),target.fleet.formation.torpev,0,1.2);
 			} else {
-				accCrit = accuracyAndCrit(ship,target,hitRate(ship,64,ship.ACC,ship.moraleMod(true)),target.fleet.formation.shellev,0,1,ship.CVshelltype);
+				accCrit = accuracyAndCrit(ship,target,hitRate(ship,90,ship.ACC,ship.moraleMod(true)),target.fleet.formation.shellev,0,1,ship.CVshelltype);
 			}
 			var res = rollHit(accCrit);
 			var dmg = 0, realdmg = 0;
 			if (res) {
 				var dmg;
-				if (suptype==3) dmg = damage(ship,target,torpDmg*.55,ENGAGEMENT,res);
-				else dmg = damage(ship,target,ship.shellPower(target)-1,ENGAGEMENT,res);
+				if (suptype==3) dmg = damage(ship,target,torpDmg*.55,ENGAGEMENT,res,150);
+				else dmg = damage(ship,target,ship.shellPower(target)-1,ENGAGEMENT,res,150);
 				realdmg = takeDamage(target,dmg);
 			} else { realdmg = 0; }
 			if (C) {
 				console.log(ship.name+' support attacks '+target.name+' for '+dmg+' damage');
 				hou.api_cl_list[i+1] = 1;
-				hou.api_damage[target.apiID-7] += realdmg;
+				hou.api_damage[target.apiID-6] += realdmg;
 			}
 		}
 		for (var i=0; i<alive2.length; i++) {
@@ -976,12 +977,13 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI) {
 }
 
 function orderByRange(ships,order) {
-	var ranges = [[],[],[],[],[]]; //fleet 1
+	var ranges = [[],[],[],[],[],[]]; //fleet 1
 	for (var i=0; i<ships.length; i++) {
 		if (!ships[i].canShell()) continue;
 		ranges[ships[i].RNG].push(ships[i]);
 	}
 	for (var i=0; i<ranges.length; i++) shuffle(ranges[i]);
+	for (var i=0; i<ranges[5].length; i++) order.push(ranges[5][i]); //make this scalable later
 	for (var i=0; i<ranges[4].length; i++) order.push(ranges[4][i]);
 	for (var i=0; i<ranges[3].length; i++) order.push(ranges[3][i]);
 	for (var i=0; i<ranges[2].length; i++) order.push(ranges[2][i]);
@@ -1021,7 +1023,7 @@ function sim(F1,F2,Fsupport,doNB,NBonly,aironly,landbomb,BAPI) {
 		console.log('ENGAGEMENT: '+ENGAGEMENT);
 		var dataroot = (NBonly)? BAPI.yasen : BAPI.data;
 		dataroot.api_formation = [F1.formation.id,F2.formation.id,{1:1,.8:2,1.2:3,.6:4}[ENGAGEMENT]];
-		dataroot.api_dock_id = 1;
+		dataroot.api_deck_id = 1;
 		dataroot.api_maxhps = [-1];
 		dataroot.api_nowhps = [-1];
 		for (var i=0; i<6; i++) {
@@ -1036,7 +1038,7 @@ function sim(F1,F2,Fsupport,doNB,NBonly,aironly,landbomb,BAPI) {
 			dataroot.api_maxhps.push((i<ships2.length)? ships2[i].maxHP : -1);
 			dataroot.api_eSlot.push([]);
 			for (var j=0; j<5; j++)
-				dataroot.api_eSlot[i].push((i<ships2.length && j<ships2[i].equips.length)? ships2[i].equips[j].mid : -1);
+				dataroot.api_eSlot[i].push((i<ships2.length && j<ships2[i].equips.length)? ships2[i].equips[j].mid : -1);	
 		}
 		
 	}

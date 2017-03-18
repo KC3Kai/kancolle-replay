@@ -66,7 +66,7 @@
 		<br>
 		<hr>
 		
-		<h2>Simulator</h2>
+		<h2>Settings</h2>
 		<div>
 			<input type="checkbox" id="cbredretr" checked="true" onchange="changedCBRedRetr(this.checked);raiseFleetChange()"/>
 			<label for="cbredretr">Retreat on <img src="assets/stats/taiha.png" style="vertical-align:middle"/>?</label>
@@ -78,6 +78,7 @@
 			<input type="checkbox" checked id="mech3" onchange="MECHANICS.fitGun=this.checked"/><label for="mech3">Fit Gun</label><br>
 			<input type="checkbox" checked id="mech4" onchange="MECHANICS.OASW=this.checked"/><label for="mech4">Opening ASW</label><br>
 			<input type="checkbox" checked id="mech5" onchange="MECHANICS.morale=this.checked"/><label for="mech5">Morale</label><br>
+			<label for="mechshelldmg">Day Shelling Soft-Cap: </label><input id="mechshelldmg" type="number" min="0" max="9999" value="180" style="width:50px" onchange="SHELLDMGBASE=parseInt(this.value);raiseFleetChange()" />
 			<br>
 			<table id="optionstable">
 			
