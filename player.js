@@ -431,7 +431,7 @@ function processAPI(root) {
 	var bspace = $('#skipbuttonspace');
 	if (bspace.length) {
 		bspace.html('');
-		for (var i = 0; i < root.battles.length; i++) {
+		for (let i = 0; i < root.battles.length; i++) {
 			if (Object.keys(root.battles[i].data).length == 0 && Object.keys(root.battles[i].yasen).length == 0) continue;
 			var letter, edges = EDGES['World ' + root.world + '-' + root.mapnum];
 			if (edges && edges[root.battles[i].node]) letter = edges[root.battles[i].node][1];
