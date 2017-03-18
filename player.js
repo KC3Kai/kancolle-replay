@@ -374,8 +374,8 @@ function createShip(data, side, i, damaged) {
 			if (data[j] == 167) ship.haslandingcraft2 = true;
 			if (eq.atype && eq.atype != A_GUN) ship.hasAAgear = true;
 			if (eq.type == SEARCHLIGHTS || eq.type == SEARCHLIGHTL) ship.hassearchlight = true;
-			if (data[j] == 42) ship.hasrepairteam = true;
-			if (data[j] == 43) ship.hasrepairgoddess = true;
+			if (data[j] == 42) ship.hasrepairteam = (ship.hasrepairteam) ? ship.hasrepairteam + 1 : 1;
+			if (data[j] == 43) ship.hasrepairgoddess = (ship.hasrepairgoddess) ? ship.hasrepairgoddess + 1 : 1;
 		}
 	}
 	ship.hasonlytorp = hasonlytorp;
@@ -734,10 +734,12 @@ function processAPI(root) {
 							HPstate[ind] = fleet1[i].hpmax
 							eventqueue.push([wait, [1000]]);
 							eventqueue.push([repairTeam, [fleet1[i], true]]);
+							fleet1[i].hasrepairgoddess--;
 						} else if (fleet1[i].hasrepairteam) {
 							HPstate[ind] = Math.floor(fleet1[i].hpmax / 4);
 							eventqueue.push([wait, [1000]]);
 							eventqueue.push([repairTeam, [fleet1[i], false]]);
+							fleet1[i].hasrepairteam--;
 						}
 					}
 				}
@@ -778,10 +780,12 @@ function processAPI(root) {
 						HPstate[ind] = f1[i].hpmax
 						eventqueue.push([wait, [1000]]);
 						eventqueue.push([repairTeam, [f1[i], true]]);
+						f1[i].hasrepairgoddess--;
 					} else if (f1[i].hasrepairteam) {
 						HPstate[ind] = Math.floor(f1[i].hpmax / 4);
 						eventqueue.push([wait, [1000]]);
 						eventqueue.push([repairTeam, [f1[i], false]]);
+						f1[i].hasrepairteam--;
 					}
 					// alert('sink '+i);
 				}
@@ -859,10 +863,12 @@ function processAPI(root) {
 							HPstate[ind] = f1[i].hpmax
 							eventqueue.push([wait, [1000]]);
 							eventqueue.push([repairTeam, [f1[i], true]]);
+							f1[i].hasrepairgoddess--;
 						} else if (f1[i].hasrepairteam) {
 							HPstate[ind] = Math.floor(f1[i].hpmax / 4);
 							eventqueue.push([wait, [1000]]);
 							eventqueue.push([repairTeam, [f1[i], false]]);
+							f1[i].hasrepairteam--;
 						}
 						// alert('sink '+i);
 					}
@@ -920,8 +926,10 @@ function processAPI(root) {
 				var stage3 = data.api_support_info.api_support_airatack.api_stage3;
 				var targetdata = [];
 				for (var i = 1; i < stage3.api_edam.length; i++) {
-					if (stage3.api_ebak_flag[i] || stage3.api_erai_flag[i])
-						targetdata.push([f2[i - 1], Math.floor(stage3.api_edam[i])]);
+					if (stage3.api_ebak_flag[i] || stage3.api_erai_flag[i]) {
+						if (i <= 6) targetdata.push([f2[i - 1], Math.floor(stage3.api_edam[i])]);
+						else targetdata.push([f2c[i - 7], Math.floor(stage3.api_edam[i])]);
+					}
 				}
 				eventqueue.push([GAirPhase, [[1, 1], targetdata, [], -1, -1, -1, -1, false, false, true]]);
 			}
@@ -1038,10 +1046,12 @@ function processAPI(root) {
 							HPstate[ind] = f1[i].hpmax
 							eventqueue.push([wait, [1000]]);
 							eventqueue.push([repairTeam, [f1[i], true]]);
+							f1[i].hasrepairgoddess--;
 						} else if (f1[i].hasrepairteam) {
 							HPstate[ind] = Math.floor(f1[i].hpmax / 4);
 							eventqueue.push([wait, [1000]]);
 							eventqueue.push([repairTeam, [f1[i], false]]);
+							f1[i].hasrepairteam--;
 						}
 						// alert('sink '+i);
 					}

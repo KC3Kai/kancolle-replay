@@ -9,7 +9,7 @@ function SoundManager() {
 	this._voiceON = true;
 	for (name in SOUNDNAMES) {
 		var vol = (SOUNDNAMES[name].voldef)? SOUNDNAMES[name].voldef : .6;
-		this._sounds[name] = new Howl({urls:[SOUNDNAMES[name].path],volume:vol*this._volume});
+		this._sounds[name] = new Howl({src:[SOUNDNAMES[name].path],volume:vol*this._volume});
 	}
 }
 var SOUNDNAMES = {
@@ -41,10 +41,10 @@ SoundManager.prototype = {
 		this.stopBGM();
 		if (!vol) vol = (BGMLIST[num].voldef)? BGMLIST[num].voldef : .3,
 		this._bgm = new Howl({
-			urls:[BGMLIST[num].url],
+			src:[BGMLIST[num].url],
 			volume:vol*this._volume,
 			loop:true,
-			buffer:true
+			html5:true
 		});
 		this._bgm.play();
 		this.BGMnum = num;
@@ -68,9 +68,9 @@ SoundManager.prototype = {
 		if (type=='nbattack' && !VOICES[shipid].nbattack) type = 'attack';
 		if (!VOICES[shipid][type]) return;
 		if (!this._sounds['V'+type+shipid]) this._sounds['V'+type+shipid] = new Howl({
-			urls:[VOICES[shipid][type]],
+			src:[VOICES[shipid][type]],
 			volume:.4*this._volume,
-			buffer:true
+			html5:true
 			});
 		if (this._voices[slot] && isPlayable(shipid)) {
 			this._voices[slot].stop();
