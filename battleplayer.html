@@ -7,7 +7,6 @@
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
 
     <!---->
-    <!--<script src="jquery-1.11.3.min.js"></script>-->
     <script src="jquery-3.1.1.min.js"></script>
     <script src="kcSHIPDATA.js"></script>
     <script src="kcEQDATA.js"></script>
@@ -116,7 +115,7 @@
                 v1.4.6
             </div>
             <div id="bp-title-upd" class="p-1">
-                (Last update: 2017-02-12)
+                (Last update: 2017-03-18)
             </div>
         </div>
 
@@ -139,21 +138,25 @@
                         <div class="d-flex flex-row justify-content-between align-items-center" style="height: 36px">
                             <input id="rangeSpeed" class="mdl-slider mdl-js-slider" data-toggle="tooltip" data-placement="bottom" title="Speed" type="range"
                                 min="0" max="80" value="40">
-                            <!--<span id="speednum">x1</span>-->
+                            <span id="speednum" style="width:50px;margin-left:-20px">x1</span>
                         </div>
                     </div>
 
                     <div>
                         <!--Sound/Voice-->
                         <div id="bp-sound-1" class="d-flex flex-column justify-content-center">
+							<div style="margin-bottom:10px">
                             <label for="switchSound" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-                            <input type="checkbox" id="switchSound" class="mdl-switch__input" checked>
-                            <span class="mdl-switch__label">Sound</span>
-                         </label>
+								<input type="checkbox" id="switchSound" class="mdl-switch__input" checked>
+								<span class="mdl-switch__label">Sound</span>
+							 </label>
+							 </div>
+							 <div>
                             <label for="chkvoice" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-                            <input type="checkbox" id="chkvoice" class="mdl-switch__input" checked>
-                            <span class="mdl-switch__label">Voice</span>
-                        </label>
+								<input type="checkbox" id="chkvoice" class="mdl-switch__input" checked>
+								<span class="mdl-switch__label">Voice</span>
+							</label>
+							</div>
                         </div>
 
                         <!--Volume-->
@@ -182,7 +185,7 @@
                             <input type="button" value="Load" onclick="loadImgURL($('#textimgurl').val())" />
                         </div>
                         <hr>
-                        <div>
+                        <div style="height:200px">
                             <img src="" id="imgpreview" height="200" alt="Image preview...">
                         </div>
                     </div>

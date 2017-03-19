@@ -1,5 +1,5 @@
 $(document).ready(() => {
-    console.log('battleplayer2')
+    // console.log('battleplayer2')
 
     $('[data-toggle="tooltip"]').tooltip()
 
@@ -32,16 +32,12 @@ $(document).ready(() => {
     $('#switchSound').change(function () {
         if (!Howler._muted) {
             $(this).attr('checked', false)
-            Howler.mute();
+            Howler.mute(true);
         } else {
             $(this).attr('checked', true)
-            Howler.unmute();
+            Howler.mute(false);
             Howler.volume($('#rangeVolume').val() / 100)
         }
-    })
-
-    $('#switchVoice').change(function () {
-        console.log($(this).is(':checked'))
     })
 
     $('#rangeVolume').on('input', function () {
