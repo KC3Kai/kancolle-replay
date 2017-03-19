@@ -1,3 +1,75 @@
+$(document).ready(() => {
+    var uri = new URI(window.location.href);
+    var qs = uri.search(true);
+
+    // console.log(uri)
+    // console.log(qs)
+
+    if (qs.fromImg) {
+        loadImgURL(qs.fromImg);
+    } else
+        if (qs.fromJson) {
+            let json = decodeURI(qs.fromJson);
+            $('#code').val(json);
+
+            // wait a bit before loadCode or it wont load assets
+            setTimeout(function () {
+                loadCode();
+            }, 500);
+        }
+
+    $('#textimgurl').on('keypress', function (e) {
+        if (e.keyCode === 13 && this.value)
+            loadImgURL(this.value);
+    });
+})
+
+function loadImage(file) {
+    var preview = document.getElementById('imgpreview');
+    var reader = new FileReader();
+    $('#error').text('Loading');
+
+    preview.onload = function () {
+        //console.log(reader.result);
+        try {
+            var msg = steganography.decode(reader.result);
+            document.getElementById('code').value = msg;
+        } catch (e) {
+            $('#error').text('Error, data may be corrupted');
+            return;
+        }
+        loadCode();
+        //$('#error').text('');
+    };
+
+    reader.onloadend = function (e) {
+        preview.src = reader.result;
+    }
+
+    if (file) {
+        reader.readAsDataURL(file);
+    } else {
+        preview.src = "";
+    }
+}
+
+function loadImgURL(url) {
+    if (url.indexOf('crossorigin') == -1) url = 'https://cors-anywhere.herokuapp.com/' + url;
+    var preview = document.getElementById('imgpreview');
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'blob';
+    $('#error').text('Waiting for response...');
+    xhr.onload = function () {
+        loadImage(xhr.response);
+    }
+    xhr.onerror = function (e) {
+        $('#error').text('Invalid URL');
+        console.log(e);
+    }
+    xhr.open('GET', url);
+    xhr.send();
+}
+
 function makeTable(root, name, num) {
     if (!num) num = 6;
     var table = $('<table id="T' + name + '" class="infotable"></table>');
@@ -128,12 +200,3 @@ function translateTable() {
     loadFleetInfo(API, true);
 }
 
-var uri = new URI(window.location.href);
-var qs = uri.search(true);
-if (qs.fromImg) {
-    loadImgURL(qs.fromImg);
-}
-
-$('#textimgurl').on('keypress', function (e) {
-    if (e.keyCode === 13 && this.value) loadImgURL(this.value);
-});

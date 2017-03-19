@@ -13,15 +13,17 @@ body {
 }
 
 #bp-title {
-	font-size: 16px;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 #bp-title-ver {
-	color: red;
+    color: red;
 }
 
 #bp-title-upd {
-	color: red;
+    color: red;
+    font-style: italic;
 }
 
 #bp-comp-left {
@@ -36,6 +38,11 @@ body {
 
 #bp-comp-right {
     width: 800px;
+}
+
+#bp-speed-comp {
+    height: 30px;
+    margin-top: 10px;
 }
 
 #skipbuttonspace {
@@ -97,5 +104,10 @@ body {
 }
 
 #switchSound {
-	margin-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+#speednum {
+    width: 50px;
+    margin-left: -15px;
 }

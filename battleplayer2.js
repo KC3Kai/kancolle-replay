@@ -1,7 +1,7 @@
 $(document).ready(() => {
     // console.log('battleplayer2')
 
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip();
 
     $('#btnPause').click(function () {
         if (started) {
@@ -36,7 +36,7 @@ $(document).ready(() => {
         } else {
             $(this).attr('checked', true)
             Howler.mute(false);
-            Howler.volume($('#rangeVolume').val() / 100)
+            Howler.volume($('#rangeVolume').val() / 100);
         }
     })
 
@@ -44,7 +44,7 @@ $(document).ready(() => {
         var num = $(this).val();
         num = num / 100;
         if (!Howler._muted)
-            Howler.volume(num)
+            Howler.volume(num);
     })
 
 })
