@@ -7,7 +7,9 @@
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
 
     <!---->
-    <script src="jquery-3.1.1.min.js"></script>
+    <title>KanColle Battle Replayer</title>
+
+    <!---->
     <script src="kcSHIPDATA.js"></script>
     <script src="kcEQDATA.js"></script>
     <script src="kcEDGES.js"></script>
@@ -18,52 +20,7 @@
     <script src="URI.js"></script>
     <script type="text/javascript" src="reader/steganography.js"></script>
     <script src="playertext.js"></script>
-    <script type="text/javascript">
-        function loadImage(file) {
-            var preview = document.getElementById('imgpreview');
-            var reader = new FileReader();
-            $('#error').text('Loading');
 
-            preview.onload = function () {
-                //console.log(reader.result);
-                try {
-                    var msg = steganography.decode(reader.result);
-                    document.getElementById('code').value = msg;
-                } catch (e) {
-                    $('#error').text('Error, data may be corrupted');
-                    return;
-                }
-                loadCode();
-                //$('#error').text('');
-            };
-
-            reader.onloadend = function (e) {
-                preview.src = reader.result;
-            }
-
-            if (file) {
-                reader.readAsDataURL(file);
-            } else {
-                preview.src = "";
-            }
-        }
-        function loadImgURL(url) {
-            if (url.indexOf('crossorigin') == -1) url = 'https://cors-anywhere.herokuapp.com/' + url;
-            var preview = document.getElementById('imgpreview');
-            var xhr = new XMLHttpRequest();
-            xhr.responseType = 'blob';
-            $('#error').text('Waiting for response...');
-            xhr.onload = function () {
-                loadImage(xhr.response);
-            }
-            xhr.onerror = function (e) {
-                $('#error').text('Invalid URL');
-                console.log(e);
-            }
-            xhr.open('GET', url);
-            xhr.send();
-        }
-    </script>
     <style>
         .infotable {
             border-collapse: collapse;
@@ -92,12 +49,17 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
         crossorigin="anonymous"></script>
 
+    <!--jQuery-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>-->
+
     <!--Material Design Lite-->
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue-red.min.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 
     <!--Custom-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-sheetrock/1.1.4/dist/sheetrock.min.js"></script>
+    <script src="js/googlehelper.js"></script>
     <link rel="stylesheet" href="./battleplayer.css" />
 
 </head>
@@ -135,28 +97,28 @@
                         </div>
 
                         <!--Speed-->
-                        <div class="d-flex flex-row justify-content-between align-items-center" style="height: 36px">
+                        <div id="bp-speed-comp" class="d-flex flex-row justify-content-between align-items-center">
                             <input id="rangeSpeed" class="mdl-slider mdl-js-slider" data-toggle="tooltip" data-placement="bottom" title="Speed" type="range"
                                 min="0" max="80" value="40">
-                            <span id="speednum" style="width:50px;margin-left:-20px">x1</span>
+                            <span id="speednum">x1</span>
                         </div>
                     </div>
 
                     <div>
                         <!--Sound/Voice-->
                         <div id="bp-sound-1" class="d-flex flex-column justify-content-center">
-							<div style="margin-bottom:10px">
-                            <label for="switchSound" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                            <div style="margin-bottom:10px">
+                                <label for="switchSound" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
 								<input type="checkbox" id="switchSound" class="mdl-switch__input" checked>
 								<span class="mdl-switch__label">Sound</span>
 							 </label>
-							 </div>
-							 <div>
-                            <label for="chkvoice" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                            </div>
+                            <div>
+                                <label for="chkvoice" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
 								<input type="checkbox" id="chkvoice" class="mdl-switch__input" checked>
 								<span class="mdl-switch__label">Voice</span>
 							</label>
-							</div>
+                            </div>
                         </div>
 
                         <!--Volume-->
