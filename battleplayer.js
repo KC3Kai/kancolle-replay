@@ -8,14 +8,15 @@ $(document).ready(() => {
     if (qs.fromImg) {
         loadImgURL(qs.fromImg);
     } else
-        if (qs.fromJson) {
-            let json = decodeURI(qs.fromJson);
-            $('#code').val(json);
+        if (qs.pid && qs.bid) {
+            getBattleData(qs.pid, qs.bid, (data) => {
+                $('#code').val(data);
 
-            // wait a bit before loadCode or it wont load assets
-            setTimeout(function () {
-                loadCode();
-            }, 500);
+                // wait a bit before loadCode or it wont load assets
+                setTimeout(function () {
+                    loadCode();
+                }, 100);
+            })
         }
 
     $('#textimgurl').on('keypress', function (e) {
