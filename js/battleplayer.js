@@ -132,6 +132,10 @@ var uri = new URI(window.location.href);
 var qs = uri.search(true);
 if (qs.fromImg) {
     loadImgURL(qs.fromImg);
+} else if (window.location.hash.length > 5) {
+    document.getElementById('code').value = decodeURIComponent(window.location.hash.substr(1));
+    loadCode();
+    window.location.hash = '';
 }
 
 $('#textimgurl').on('keypress', function (e) {
