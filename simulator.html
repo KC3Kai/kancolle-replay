@@ -3,27 +3,27 @@
 	<head>
 		<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 		<meta content="utf-8" http-equiv="encoding">
-		<script src="jquery-1.11.3.min.js"></script>
-		<script src="chosen.jquery.js"></script>
-		<link rel="stylesheet" href="chosen.css"/>
+		<script src="js/jquery-1.11.3.min.js"></script>
+		<script src="js/chosen.jquery.js"></script>
+		<link rel="stylesheet" href="css/chosen.css"/>
 		<script src="jquery-ui/jquery-ui.min.js"></script>
 		<link rel="stylesheet" href="jquery-ui/jquery-ui.css">
-		<script src="kcships.js"></script>
-		<script src="kcSHIPDATA.js"></script>
-		<script src="kcEQDATA.js"></script>
-		<script src="kcENEMYCOMP.js"></script>
-		<script src="shared.js"></script>
-		<script src="kcsim.js"></script>
-		<script src="kcsimcombined.js"></script>
-		<script src="pixi.js"></script>
-		<script src="howler.min.js"></script>
-		<script src="playersound.js"></script>
-		<script src="playersound2.js"></script>
-		<link rel="stylesheet" href="simulator.css"/>
+		<script src="js/kcships.js"></script>
+		<script src="js/kcSHIPDATA.js"></script>
+		<script src="js/kcEQDATA.js"></script>
+		<script src="js/kcENEMYCOMP.js"></script>
+		<script src="js/shared.js"></script>
+		<script src="js/kcsim.js"></script>
+		<script src="js/kcsimcombined.js"></script>
+		<script src="js/pixi.min.js"></script>
+		<script src="js/howler.min.js"></script>
+		<script src="js/playersound.js"></script>
+		<script src="js/playersound2.js"></script>
+		<link rel="stylesheet" href="css/simulator.css"/>
 	</head>
 	<body>
 		<h1 title="Boat Cockfight Simulator">Kancolle Sortie Simulator</h1>
-		<span style="color:red">v1.0 Beta 2.0 <span style="margin-left:20px;font-style:italic">(Last updated: 2016-10-25)</span></span>
+		<span style="color:red">v1.0 Beta 2.1 <span style="margin-left:20px;font-style:italic">(Last updated: 2017-03-23)</span></span>
 		<br><br><br>
 		<input type="radio" id="radJP" name="lang" onchange="transNames('JP')"/><label for="radJP">JP</label>
 		<input type="radio" id="radEN" name="lang" onchange="transNames('EN')" checked /><label for="radEN">EN</label>
@@ -79,7 +79,7 @@
 			<input type="checkbox" checked id="mech4" onchange="MECHANICS.OASW=this.checked"/><label for="mech4">Opening ASW</label><br>
 			<input type="checkbox" checked id="mech5" onchange="MECHANICS.morale=this.checked"/><label for="mech5">Morale</label><br>
 			<label for="mechshelldmg">Day Shelling Soft-Cap: </label><input id="mechshelldmg" type="number" min="0" max="9999" value="180" style="width:50px" onchange="SHELLDMGBASE=parseInt(this.value);raiseFleetChange()" />
-			<br>
+			<br><br>
 			<table id="optionstable">
 			
 			</table>
@@ -250,7 +250,7 @@
 			</div>
 			<!--<input type="button" id="startb" value="Start" onClick="startPlayer()" />
 			<input type="button" id="hideb" value="Show" onClick="hidePlayer()" />-->
-			<div id="movie"><div id="battlespace"></div><script src="player.js"></script></div>
+			<div id="movie"><div id="battlespace"></div><script src="js/player.js"></script></div>
 			
 		</div>
 		<div>
@@ -307,6 +307,7 @@
 		<br><hr><br>
 		<div style="font-size:14px">
 			<span style="font-weight:bold">Change Log:</span><br>
+			<span>2017-03-23 - Fifth slot, separate plane improvement and proficiency, changed save/load code, day soft-cap option</span><br>
 			<span>2016-10-25 - Major reworking and improving of calculations. Added calculations explanations.</span><br>
 			<br>
 			<span><a href="sources.html">See Calculations Used</a></span><br><br>
@@ -335,6 +336,6 @@
 			}
 			$('#dialogselequiptype').append(table);
 		</script>
-		<script src='ui.js'></script>
+		<script src='js/ui.js'></script>
 	</body>
 </html>
