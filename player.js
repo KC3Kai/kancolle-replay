@@ -1,6 +1,8 @@
 var renderer = PIXI.autoDetectRenderer(800, 480,{backgroundColor : 0x000000});
-document.getElementById('battlespace').appendChild(renderer.view);
 
+document.getElementById('battlespace').appendChild(renderer.view);
+document.getElementById('battlespace').appendChild(createTextView());
+$('#textView').tabs();
 // create the root of the scene graph
 var stage = new PIXI.Container();
 var SPRITEPOOL = {};
@@ -388,8 +390,22 @@ function createShip(data,side,i,damaged) {
 	return ship;
 }
 
+function createTextView() {
+	var textView = document.createElement("div");
+	var nodeTab = document.createElement("ul");
+	
+	nodeTab.id = "textNodes";
+	nodeTab.style.listStyle = "none"; 
+	textView.id = "textView";
+	textView.style.display = "inline-block";
+	textView.style.verticalAlign = "top";
+	textView.appendChild(nodeTab);
+	return textView;
+}
+
 function processAPI(root) {
 	var data = root.battles[0].data; //get first battle for initial hp values
+	var battleText = new PLAYERTEXT(root);
 	if (Object.keys(data).length <= 0) {  //night only nodes
 		data = root.battles[0].yasen;
 		stage.removeChild(bg);
@@ -429,16 +445,37 @@ function processAPI(root) {
 	battlestarts = [];
 	//create skip buttons
 	var bspace = $('#skipbuttonspace');
+	var bnode = $('#textView');
+	
 	if (bspace.length) {
 		bspace.html('');
 		for (var i=0; i<root.battles.length; i++) {
 			if (Object.keys(root.battles[i].data).length==0 && Object.keys(root.battles[i].yasen).length==0) continue;
 			var letter, edges = EDGES['World '+root.world+'-'+root.mapnum];
 			if (edges && edges[root.battles[i].node]) letter = edges[root.battles[i].node][1];
-			else letter = (root.battles[i].node <= 26)? String.fromCharCode(64+root.battles[i].node) : '-';
+			else letter = (root.battles[i].node <= 26)? String.fromCharCode(64+root.battles[i].node) : 'PVP';
 			bspace.append('<input type="button" style="width:32px" value="'+letter+'" onclick="skipToBattle('+(i+1)+')"/>');
 		}
+		if(bnode.length) {
+			
+			bnode.find( "#textNodes" ).html('');
+			bnode.find(".ui-tabs-panel").remove();
+			for (var i=0; i<root.battles.length; i++) {
+				if (Object.keys(root.battles[i].data).length==0 && Object.keys(root.battles[i].yasen).length==0) continue;
+				var letter, edges = EDGES['World '+root.world+'-'+root.mapnum];
+				if (edges && edges[root.battles[i].node]) letter = edges[root.battles[i].node][1];
+				else letter = (root.battles[i].node <= 26)? String.fromCharCode(64+root.battles[i].node) : 'PVP';
+				bnode.find( ".ui-tabs-nav" ).append('<li style="float:none;display:inline-block"><a href="#tab-'+ letter +'">'+ letter +'</a></li>');
+				//bnode.append('<li><a href="#tab-'+ letter +'">'+ letter +'</a></li>');
+				bnode.append('<div id="tab-'+ letter +'" style="float:left;overflow:auto;height:380px"><table margin=0 width=600 border="1" style="float:left;vertical-align:top"></table></div>');
+				bnode.tabs("refresh");
+			}
+			bnode.tabs({ active: 0 });
+		}
 	}
+	
+	battleText.processText();
+
 	
 	loader2.reset();
 	if (PRELOADSHIPS) SHIPSLOADED = false;

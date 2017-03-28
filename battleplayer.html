@@ -3,16 +3,19 @@
 	<head>
 		<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 		<script src="jquery-1.11.3.min.js"></script>
+		<link href="jquery-ui/jquery-ui.css" rel="stylesheet" type="text/css"/>
+		<script src="jquery-ui/jquery-ui.min.js"></script>
 		<script src="kcSHIPDATA.js"></script>
 		<script src="kcEQDATA.js"></script>
 		<script src="kcEDGES.js"></script>
 		<script src="kcMAPDATA.js"></script>
+		<script src="kcTEXTDATA.js"></script>
 		<script src="shared.js"></script>
 		<script src="pixi.js"></script>
 		<script src="howler.min.js"></script>
 		<script src="URI.js"></script>
 		<script type="text/javascript" src="reader/steganography.js"></script>
-		<script src="playertext.js"></script>
+		<script src="playertext-table.js"></script>
 		<script type="text/javascript">
 		function loadImage(file) {
 			var preview = document.getElementById('imgpreview');
@@ -119,10 +122,13 @@
 				</div>
 			</div>
 		
-			<div id="battlespace"></div>
+			<div id="battlespace">
+			
+			</div>
 			<script src="playersound.js"></script>
 			<script src="playersound2.js"></script>
 			<script src="player.js"></script>
+			
 		</div>
 		<div>
 			<span style="font-size:12px;margin-left:750px">FPS: <span id="FPS"></span></span><br>
