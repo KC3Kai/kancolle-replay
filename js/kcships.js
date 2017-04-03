@@ -177,7 +177,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (eq.type == STARSHELL) this.hasStarShell = true;
 		if (eq.type == SEARCHLIGHTS) this.hasSearchlight = 1;
 		if (eq.type == SEARCHLIGHTL) this.hasSearchlight = 2;
-		if (eq.type == NIGHTSCOUT) this.hasNightScout = true;
+		if (eq.isnightscout) this.hasNightScout = true;
 		if (eq.type == PICKET) this.hasLookout = true;
 		if (eq.type == DIVEBOMBER) this.hasDivebomber = true;
 		if (eq.type == FCF) this.hasFCF = true;
@@ -305,6 +305,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	else if (installeqs.DH2 == 1) this.supplyPostMult*=1.3;
 	if (installeqs.DH3) this.supplyPostMult*=1.7;
 	
+	if (this.repairs) this.repairsOrig = this.repairs.slice();
 }
 
 Ship.prototype.canShell = function() { return (this.HP > 0); }
@@ -584,6 +585,7 @@ Ship.prototype.reset = function() {
 	this.fuelleft = this.fuelDefault;
 	this.ammoleft = this.ammoDefault;
 	this.morale = this.moraleDefault;
+	if (this.repairsOrig) this.repairs = this.repairsOrig.slice();
 	if (this.side==0) this.protection = true;
 }
 //-----------------

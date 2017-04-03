@@ -404,7 +404,7 @@ function processAPI(root) {
 		bossbar.nowhp = root.now_maphp;
 		bossbar.mode = 2;
 		bossbar.show = true;
-	} else if (root.defeat_count && MAPDATA[root.world] && MAPDATA[root.world].maps[root.mapnum]) {
+	} else if (root.defeat_count != undefined && MAPDATA[root.world] && MAPDATA[root.world].maps[root.mapnum]) {
 		bossbar.maxhp = (MAPDATA[root.world].maps[root.mapnum].bossHP)? MAPDATA[root.world].maps[root.mapnum].bossHP : 5;
 		bossbar.nowhp = Math.max(1,bossbar.maxhp - root.defeat_count);
 		bossbar.mode = 1;
@@ -1673,6 +1673,8 @@ function shoot(ship,target,damage,forcecrit,protect) {
 		// addTimeout(function(){updates.push([shipMoveTo,[flag,flag.xorigin,2]]);},1000);
 		addTimeout(function() { updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,3]]); }, 675);
 	}
+	// addTimeout(function() { shipShake(ship,25,1,20,20); }, 500);
+	// addTimeout(function() { SM.play('fire'); }, 400);
 	addTimeout(function() { SM.play('fire'); }, 200);
 	addTimeout(function() { SM.playVoice(ship.mid,'attack',ship.id); }, 200);
 	addTimeout(function(){
