@@ -313,29 +313,6 @@
 			<span><a href="sources.html">See Calculations Used</a></span><br><br>
 			<span>Bug report, feature request, or game mechanic article you want to share? Leave an issue on <a href="https://github.com/KC3Kai/kancolle-replay/issues">Github</a> or post on my <a href="http://kancolle.wikia.com/wiki/Message_Wall:Fouryuu">wiki page<a>!</span>
 		</div>
-		<script>
-			var edata = [['Main Gun (S)',[1,51],[1]],['Main Gun (M)',[2],[2]],['Main Gun (L)',[3,4],[3]],['Secondary Gun',[5,55],[5]],
-							['Anti-Air Gun',[6],[6]],['AA Fire Director',[7],[7]],['Torpedo',[8,9],[8]],['Midget Sub',[10],[10]],
-							['Fighter',[11],[11]],['Torpedo Bomber',[12],[12]],['Dive Bomber',[13],[13]],['Other Aircraft',[16,17,18],[16,17,18]],
-							['Seaplane',[14,40,41,44],[14]],['Seaplane Bomber',[15],[15]],['RADAR',[19,20,21],[19]],['SONAR',[22,23],[22]],
-							['Depth Charge',[24],[24]],['Engine',[25],[25]],['Shells',[26,27],[26,27]],['Bulge',[28,29],[28]],
-							['Night Battle',[31,32,33,34,41],[31,33,34]],['Misc',[30,35,36,37,38,39,42,43,45,46,47,48,99],[]]];
-			var table = $('<table class="dialog4"></table>'), c = 0;
-			while (c < edata.length) {
-				var tr = $('<tr></tr>');
-				for (var i=0; i<4; i++) {
-					var td = $('<td onclick="dialogEquip(['+edata[c][1]+'])"></td>');
-					for (var j=0; j<edata[c][2].length; j++) {
-						td.append('<img src="assets/items/'+EQTDATA[edata[c][2][j]].image+'.png"/>');
-					}
-					td.append('<br><span>'+edata[c][0]+'</span>');
-					tr.append(td);
-					if (++c >= edata.length) break;
-				}
-				table.append(tr);
-			}
-			$('#dialogselequiptype').append(table);
-		</script>
 		<script src='js/ui.js'></script>
 	</body>
 </html>

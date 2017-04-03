@@ -205,6 +205,14 @@ function simCombined(type,F1,F1C,F2,Fsupport,doNB,NBonly,aironly,landbomb,noammo
 		results.rankDay = getRankC(ships1,ships1C,ships2);
 		results.mvpDay = F1.getMVP();
 		results.mvpDayC = F1C.getMVP();
+		results.repairsDay = {};
+		for (var i=0; i<ships1.length; i++) {
+			if (ships1[i].repairs) results.repairsDay[i] = ships1[i].repairs.slice();
+		}
+		results.repairsDayC = {};
+		for (var i=0; i<ships1C.length; i++) {
+			if (ships1C[i].repairs) results.repairsDayC[i] = ships1C[i].repairs.slice();
+		}
 	}
 	
 	//night battle

@@ -2,6 +2,28 @@
 // o.setAttribute('value',options[i][1]);
 // o.appendChild(document.createTextNode(options[i][0]));
 // document.getElementById('Sh'+s+'F'+f).appendChild(o);
+var edata = [['Main Gun (S)',[MAINGUNS,MAINGUNSAA],[MAINGUNS]],['Main Gun (M)',[MAINGUNM],[MAINGUNM]],['Main Gun (L)',[MAINGUNL,MAINGUNXL],[MAINGUNL]],['Secondary Gun',[SECGUN,SECGUNAA],[SECGUN]],
+				['Anti-Air Gun',[AAGUN],[AAGUN]],['AA Fire Director',[AAFD],[AAFD]],['Torpedo',[TORPEDO,TORPEDOSS],[TORPEDO]],['Midget Sub',[MIDGETSUB],[MIDGETSUB]],
+				['Fighter',[FIGHTER],[FIGHTER]],['Torpedo Bomber',[TORPBOMBER],[TORPBOMBER]],['Dive Bomber',[DIVEBOMBER],[DIVEBOMBER]],['Other Aircraft',[CARRIERSCOUT,AUTOGYRO,ASWPLANE],[CARRIERSCOUT,AUTOGYRO,ASWPLANE]],
+				['Seaplane',[SEAPLANE,FLYINGBOAT],[SEAPLANE]],['Seaplane Bomber',[SEAPLANEBOMBER],[SEAPLANEBOMBER]],['Seaplane Fighter',[SEAPLANEFIGHTER],[SEAPLANEFIGHTER]],['RADAR',[RADARS,RADARL,RADARXL],[RADARS]],
+				['SONAR',[SONARS,SONARL],[SONARS]],['Depth Charge',[DEPTHCHARGE],[DEPTHCHARGE]],['Engine',[ENGINE],[ENGINE]],['Shells',[APSHELL,TYPE3SHELL],[APSHELL,TYPE3SHELL]],
+				['Bulge',[BULGEM,BULGEL],[BULGEM]],['Night Battle',[SEARCHLIGHTS,STARSHELL,PICKET,SEARCHLIGHTL],[SEARCHLIGHTS,STARSHELL,PICKET]],['Jet',[JETBOMBER],[JETBOMBER]],['Misc',[LANDINGCRAFT,WG42,SRF,FCF,DRUM,SCAMP,REPAIR,RATION,LANDINGTANK,OILDRUM,TRANSPORTITEM,SUBRADAR,OTHER],[]]];
+var table = $('<table class="dialog4"></table>'), c = 0;
+while (c < edata.length) {
+	var tr = $('<tr></tr>');
+	for (var i=0; i<4; i++) {
+		var td = $('<td onclick="dialogEquip(['+edata[c][1]+'])"></td>');
+		for (var j=0; j<edata[c][2].length; j++) {
+			td.append('<img src="assets/items/'+EQTDATA[edata[c][2][j]].image+'.png"/>');
+		}
+		td.append('<br><span>'+edata[c][0]+'</span>');
+		tr.append(td);
+		if (++c >= edata.length) break;
+	}
+	table.append(tr);
+}
+$('#dialogselequiptype').append(table);
+
 var STATNAMES = ['lvl','hp','fp','tp','aa','ar','ev','asw','los','luk','rng','spd'];
 var PREVEQS = {};
 var WROTESTATS = false;
