@@ -3,6 +3,15 @@ $(document).ready(() => {
 
     $('[data-toggle="tooltip"]').tooltip()
 
+	$('#btnBattle').click(function () {
+		if(started) {
+			var battleText = new PLAYERTEXT(API);
+			prog_window = window.open("", "Battle Data", "width=600,height=600,scrollbars=yes");
+			prog_window.document.write("<html><body><div id='table'></div></body></html>");
+			prog_window.document.getElementById('#table').innerHTML = "yay";
+		}
+	});
+	
     $('#btnPause').click(function () {
         if (started) {
             PAUSE = !PAUSE;
