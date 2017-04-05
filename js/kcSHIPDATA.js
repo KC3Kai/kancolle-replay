@@ -3136,9 +3136,9 @@ var SHIPDATA = {
 		SLOTS: [5, 6, 5, 6],
 		fuel: 50,
 		ammo: 55,
-		next: 0,
+		next: 503,
 		prev: 124,
-		nextlvl: 0,
+		nextlvl: 84,
 	},
 	130: {
 		name: 'Kumano Kai',
@@ -11182,7 +11182,57 @@ var SHIPDATA = {
 		prev: 358,
 		nextlvl: 0,
 	},
-	501: {
+	503: {
+		name: 'Suzuya Kai 2',
+		nameJP: '鈴谷改二',
+		image: 'KSuzuyaKai2.png',
+		type: 'CA',
+		nid: 503,
+		added: '20170405',
+		HP: 61, HPmax: 73,
+		FP: 76, FPbase: 30,
+		TP: 88, TPbase: 40,
+		AA: 85, AAbase: 30,
+		AR: 74, ARbase: 42,
+		EV: 0, EVbase: 0,   //need EV, EVbase values
+		ASW: 0, ASWbase: 0, //need ASW, ASWbase values
+		LOS: 0, LOSbase: 0, //need LOS, LOSbase values
+		LUK: 14, LUKmax: 74,
+		RNG: 2,
+		SPD: 10,
+		SLOTS: [3, 3, 7, 11],
+		fuel: 55,
+		ammo: 60,
+		next: 508,
+		prev: 129,
+		nextlvl: 88
+	},
+	508: {
+		name: 'SuzuyaCVL Kai 2',
+		nameJP: '鈴谷航改二',
+		image: 'KSuzuyaCVLKai2.png',
+		type: 'CVL',
+		nid: 508,
+		added: '20170405',
+		HP: 61, HPmax: 73,
+		FP: 56, FPbase: 0,
+		TP: 0, TPbase: 0,
+		AA: 87, AAbase: 33,
+		AR: 74, ARbase: 42,
+		EV: 83, EVbase: 0, //need EVbase values
+		ASW: 0, ASWbase: 0,
+		LOS: 0, LOSbase: 0,	//need LOS, LOSbase values
+		LUK: 13, LUKmax: 74,
+		RNG: 2,
+		SPD: 10,
+		SLOTS: [15, 12, 12, 8],
+		fuel: 60,
+		ammo: 55,
+		next: 0,
+		prev: 508,
+		nextlvl: 0
+	},
+	1501: {
 		name: 'DD I-Class',
 		nameJP: '駆逐イ級',
 		image: 'SI.jpg',
@@ -11203,7 +11253,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	502: {
+	1502: {
 		name: 'DD Ro-Class',
 		nameJP: '駆逐ロ級',
 		image: 'SRo.jpg',
@@ -11224,7 +11274,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	503: {
+	1503: {
 		name: 'DD Ha-Class',
 		nameJP: '駆逐ハ級',
 		image: 'SHa.jpg',
@@ -11245,7 +11295,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	504: {
+	1504: {
 		name: 'DD Ni-Class',
 		nameJP: '駆逐ニ級',
 		image: 'SNi.jpg',
@@ -11266,7 +11316,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	505: {
+	1505: {
 		name: 'CL Ho-Class',
 		nameJP: '軽巡ホ級',
 		image: 'SHo.jpg',
@@ -11287,7 +11337,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	506: {
+	1506: {
 		name: 'CL He-Class',
 		nameJP: '軽巡ヘ級',
 		image: 'SHe.jpg',
@@ -11308,7 +11358,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	507: {
+	1507: {
 		name: 'CL To-Class',
 		nameJP: '軽巡ト級',
 		image: 'STo.jpg',
@@ -11329,7 +11379,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	508: {
+	1508: {
 		name: 'CLT Chi-Class',
 		nameJP: '雷巡チ級',
 		image: 'SChi.jpg',
@@ -11351,7 +11401,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	509: {
+	1509: {
 		name: 'CA Ri-Class',
 		nameJP: '重巡リ級',
 		image: 'SRi.png',
@@ -11372,7 +11422,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	510: {
+	1510: {
 		name: 'CVL Nu-Class',
 		nameJP: '軽母ヌ級',
 		image: 'SNu.jpg',
@@ -11394,7 +11444,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	511: {
+	1511: {
 		name: 'BB Ru-Class',
 		nameJP: '戦艦ル級',
 		image: 'SRu.png',
@@ -11415,7 +11465,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	512: {
+	1512: {
 		name: 'CV Wo-Class',
 		nameJP: '空母ヲ級',
 		image: 'SWo.png',
@@ -11436,7 +11486,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	513: {
+	1513: {
 		name: 'Transport Wa-Class',
 		nameJP: '輸送ワ級',
 		image: 'SWa.jpg',
@@ -11459,7 +11509,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	514: {
+	1514: {
 		name: 'DD I-Class Elite',
 		nameJP: '駆逐イ級elite',
 		image: 'SIE.png',
@@ -11480,7 +11530,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	515: {
+	1515: {
 		name: 'DD Ro-Class Elite',
 		nameJP: '駆逐ロ級elite',
 		image: 'SRoE.png',
@@ -11501,7 +11551,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	516: {
+	1516: {
 		name: 'DD Ha-Class Elite',
 		nameJP: '駆逐ハ級elite',
 		image: 'SHaE.png',
@@ -11522,7 +11572,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	517: {
+	1517: {
 		name: 'DD Ni-Class Elite',
 		nameJP: '駆逐ニ級elite',
 		image: 'SNiE.png',
@@ -11543,7 +11593,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	518: {
+	1518: {
 		name: 'CL Ho-Class Elite',
 		nameJP: '軽巡ホ級elite',
 		image: 'SHoE.jpg',
@@ -11564,7 +11614,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	519: {
+	1519: {
 		name: 'CL He-Class Elite',
 		nameJP: '軽巡ヘ級elite',
 		image: 'SHeE.jpg',
@@ -11585,7 +11635,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	520: {
+	1520: {
 		name: 'CL To-Class Elite',
 		nameJP: '軽巡ト級elite',
 		image: 'SToE.jpg',
@@ -11606,7 +11656,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	521: {
+	1521: {
 		name: 'CLT Chi-Class Elite',
 		nameJP: '雷巡チ級elite',
 		image: 'SChiE.png',
@@ -11628,7 +11678,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	522: {
+	1522: {
 		name: 'CA Ri-Class Elite',
 		nameJP: '重巡リ級elite',
 		image: 'SRiE.png',
@@ -11649,7 +11699,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	523: {
+	1523: {
 		name: 'CVL Nu-Class Elite',
 		nameJP: '軽母ヌ級elite',
 		image: 'SNuE.jpg',
@@ -11671,7 +11721,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	524: {
+	1524: {
 		name: 'BB Ru-Class Elite',
 		nameJP: '戦艦ル級elite',
 		image: 'SRuE.png',
@@ -11692,7 +11742,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	525: {
+	1525: {
 		name: 'CV Wo-Class Elite',
 		nameJP: '空母ヲ級elite',
 		image: 'SWoE.png',
@@ -11713,7 +11763,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	526: {
+	1526: {
 		name: 'Transport Wa-Class Elite',
 		nameJP: '輸送ワ級elite',
 		image: 'SWaE.png',
@@ -11734,7 +11784,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	527: {
+	1527: {
 		name: 'CA Ri-Class Flagship',
 		nameJP: '重巡リ級flagship',
 		image: 'SRiF.png',
@@ -11755,7 +11805,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	528: {
+	1528: {
 		name: 'CV Wo-Class Flagship',
 		nameJP: '空母ヲ級flagship',
 		image: 'SWoF.jpg',
@@ -11776,7 +11826,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	529: {
+	1529: {
 		name: 'BB Ru-Class Flagship',
 		nameJP: '戦艦ル級flagship',
 		image: 'SRuF.png',
@@ -11797,7 +11847,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	530: {
+	1530: {
 		name: 'SS Ka-Class',
 		nameJP: '潜水カ級',
 		image: 'SKa.jpg',
@@ -11820,7 +11870,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	531: {
+	1531: {
 		name: 'SS Yo-Class',
 		nameJP: '潜水ヨ級',
 		image: 'SYo.jpg',
@@ -11843,7 +11893,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	532: {
+	1532: {
 		name: 'SS Ka-Class Elite',
 		nameJP: '潜水カ級elite',
 		image: 'SKaE.jpg',
@@ -11865,7 +11915,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	533: {
+	1533: {
 		name: 'SS Yo-Class Elite',
 		nameJP: '潜水ヨ級elite',
 		image: 'SYoE.jpg',
@@ -11887,7 +11937,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	534: {
+	1534: {
 		name: 'SS Ka-Class Flagship',
 		nameJP: '潜水カ級flagship',
 		image: 'SKaF.png',
@@ -11909,7 +11959,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	535: {
+	1535: {
 		name: 'SS Yo-Class Flagship',
 		nameJP: '潜水ヨ級flagship',
 		image: 'SYoF.png',
@@ -11931,7 +11981,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	536: {
+	1536: {
 		name: 'Floating Fortress A',
 		nameJP: '浮遊要塞',
 		image: 'SFFA.jpg',
@@ -11952,7 +12002,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	537: {
+	1537: {
 		name: 'Floating Fortress B',
 		nameJP: '浮遊要塞',
 		image: 'SFFB.jpg',
@@ -11973,7 +12023,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	538: {
+	1538: {
 		name: 'Floating Fortress C',
 		nameJP: '浮遊要塞',
 		image: 'SFFC.jpg',
@@ -11994,7 +12044,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	539: {
+	1539: {
 		name: 'Anchorage Demon',
 		nameJP: '泊地棲鬼',
 		image: 'SAnchO.jpg',
@@ -12015,7 +12065,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	540: {
+	1540: {
 		name: 'Anchorage Princess',
 		nameJP: '泊地棲姫',
 		image: 'SAnchH.jpg',
@@ -12036,7 +12086,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	541: {
+	1541: {
 		name: 'FBB Ta-Class',
 		nameJP: '戦艦タ級',
 		image: 'STa.jpg',
@@ -12057,7 +12107,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	542: {
+	1542: {
 		name: 'FBB Ta-Class Elite',
 		nameJP: '戦艦タ級elite',
 		image: 'STaE.jpg',
@@ -12078,7 +12128,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	543: {
+	1543: {
 		name: 'FBB Ta-Class Flagship',
 		nameJP: '戦艦タ級flagship',
 		image: 'STaF.jpg',
@@ -12099,7 +12149,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	544: {
+	1544: {
 		name: 'Armoured Carrier Demon',
 		nameJP: '装甲空母鬼',
 		image: 'SACD.jpg',
@@ -12120,7 +12170,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	545: {
+	1545: {
 		name: 'Armoured Carrier Princess',
 		nameJP: '装甲空母姫',
 		image: 'SACH.jpg',
@@ -12141,7 +12191,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	546: {
+	1546: {
 		name: 'Southern Demon',
 		nameJP: '南方棲鬼',
 		image: 'SSouthD.jpg',
@@ -12163,7 +12213,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	547: {
+	1547: {
 		name: 'Southern War Demon',
 		nameJP: '南方棲戦鬼',
 		image: 'SSouthWD.jpg',
@@ -12185,7 +12235,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	548: {
+	1548: {
 		name: 'Southern War Princess',
 		nameJP: '南方棲戦姫',
 		image: 'SSouthWH.jpg',
@@ -12207,7 +12257,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	549: {
+	1549: {
 		name: 'Escort Fortress A (Dive)',
 		nameJP: '護衛要塞',
 		image: 'SFFA.jpg',
@@ -12229,7 +12279,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	550: {
+	1550: {
 		name: 'Escort Fortress B (Torpedo)',
 		nameJP: '護衛要塞',
 		image: 'SFFB.jpg',
@@ -12251,7 +12301,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	551: {
+	1551: {
 		name: 'Escort Fortress C (Torpedo)',
 		nameJP: '護衛要塞',
 		image: 'SFFC.jpg',
@@ -12273,7 +12323,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	552: {
+	1552: {
 		name: 'DD Ro-Class Flagship',
 		nameJP: '駆逐ロ級flagship',
 		image: 'SRoF.jpg',
@@ -12295,7 +12345,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	553: {
+	1553: {
 		name: 'DD Ha-Class Flagship',
 		nameJP: '駆逐ハ級flagship',
 		image: 'SHaF.png',
@@ -12317,7 +12367,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	554: {
+	1554: {
 		name: 'CL Ho-Class Flagship',
 		nameJP: '軽巡ホ級flagship',
 		image: 'SHoF.jpg',
@@ -12339,7 +12389,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	555: {
+	1555: {
 		name: 'CL He-Class Flagship',
 		nameJP: '軽巡ヘ級flagship',
 		image: 'SHeF.jpg',
@@ -12361,7 +12411,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	556: {
+	1556: {
 		name: 'Airfield Princess',
 		nameJP: '飛行場姫',
 		image: 'SAirH.jpg',
@@ -12383,7 +12433,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	557: {
+	1557: {
 		name: 'Battleship Princess',
 		nameJP: '戦艦棲姫',
 		image: 'SBBH.jpg',
@@ -12405,7 +12455,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	558: {
+	1558: {
 		name: 'Transport Wa-Class Flagship',
 		nameJP: '輸送ワ級flagship',
 		image: 'SWaF.jpg',
@@ -12426,7 +12476,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	559: {
+	1559: {
 		name: 'CLT Chi-Class Flagship',
 		nameJP: '雷巡チ級flagship',
 		image: 'SChiF.png',
@@ -12448,7 +12498,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	560: {
+	1560: {
 		name: 'CVL Nu-Class Flagship',
 		nameJP: '軽母ヌ級flagship',
 		image: 'SNuF.jpg',
@@ -12471,7 +12521,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	561: {
+	1561: {
 		name: 'BBV Re-Class',
 		nameJP: '戦艦レ級',
 		image: 'SRe.jpg',
@@ -12494,7 +12544,7 @@ var SHIPDATA = {
 		ammo: 0,
 		canTorp: function() { return (this.HP/this.maxHP > .5); }
 	},
-	562: {
+	1562: {
 		name: 'BBV Re-Class Elite',
 		nameJP: '戦艦レ級elite',
 		image: 'SReE.jpg',
@@ -12517,7 +12567,7 @@ var SHIPDATA = {
 		ammo: 0,
 		canTorp: function() { return (this.HP/this.maxHP > .5); }
 	},
-	564: {
+	1564: {
 		name: 'DD I-Class Flagship',
 		nameJP: '駆逐イ級flagship',
 		image: 'SIF.jpg',
@@ -12539,7 +12589,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	565: {
+	1565: {
 		name: 'CV Wo-Class Flagship Kai',
 		nameJP: '空母ヲ級改flagship',
 		image: 'SWoFKai.jpg',
@@ -12560,7 +12610,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	566: {
+	1566: {
 		name: 'CA Ri-Class Flagship Kai',
 		nameJP: '重巡リ級改flagship',
 		image: 'SRiFKai.jpg',
@@ -12582,7 +12632,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	567: {
+	1567: {
 		name: 'BB Ru-Class Flagship Kai',
 		nameJP: '戦艦ル級改flagship',
 		image: 'SRuFKai.jpg',
@@ -12603,7 +12653,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	570: {
+	1570: {
 		name: 'SS So-Class',
 		nameJP: '潜水ソ級',
 		image: 'SSo.jpg',
@@ -12626,7 +12676,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	571: {
+	1571: {
 		name: 'SS So-Class Elite',
 		nameJP: '潜水ソ級elite',
 		image: 'SSoE.jpg',
@@ -12648,7 +12698,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	572: {
+	1572: {
 		name: 'SS So-Class Flagship',
 		nameJP: '潜水ソ級flagship',
 		image: 'SSoF.jpg',
@@ -12670,7 +12720,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	573: {
+	1573: {
 		name: 'Harbour Princess',
 		nameJP: '港湾棲姫',
 		image: 'SHarbourH.jpg',
@@ -12692,7 +12742,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	574: {
+	1574: {
 		name: 'Isolated Island Demon',
 		nameJP: '離島棲鬼',
 		image: 'SIID.jpg',
@@ -12714,7 +12764,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	575: {
+	1575: {
 		name: 'DD I-Class Late Model',
 		nameJP: '駆逐イ級後期型',
 		image: 'SIL.jpg',
@@ -12736,7 +12786,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	576: {
+	1576: {
 		name: 'DD Ro-Class Late Model',
 		nameJP: '駆逐ロ級後期型',
 		image: 'SRoL.jpg',
@@ -12758,7 +12808,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	577: {
+	1577: {
 		name: 'DD Ha-Class Late Model',
 		nameJP: '駆逐ハ級後期型',
 		image: 'SHaL.jpg',
@@ -12780,7 +12830,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	578: {
+	1578: {
 		name: 'DD Ni-Class Late Model',
 		nameJP: '駆逐ニ級後期型',
 		image: 'SNiL.jpg',
@@ -12802,7 +12852,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	579: {
+	1579: {
 		name: 'CV Wo-Class Flagship 2',
 		nameJP: '空母ヲ級flagship',
 		image: 'SWoF.jpg',
@@ -12824,7 +12874,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	581: {
+	1581: {
 		name: 'Northern Princess (Event)',
 		nameJP: '北方棲姫',
 		image: 'SHoppo.jpg',
@@ -12846,7 +12896,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	582: {
+	1582: {
 		name: 'Northern Princess 2 (Event)',
 		nameJP: '北方棲姫',
 		image: 'SHoppo2.jpg',
@@ -12868,7 +12918,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	583: {
+	1583: {
 		name: 'Midway Princess',
 		nameJP: '中間棲姫',
 		image: 'SMWH.jpg',
@@ -12890,7 +12940,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	584: {
+	1584: {
 		name: 'Midway Princess 2',
 		nameJP: '中間棲姫',
 		image: 'SMWH2.jpg',
@@ -12912,7 +12962,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	585: {
+	1585: {
 		name: 'Aircraft Carrier Demon',
 		nameJP: '空母棲鬼',
 		image: 'SCVD.jpg',
@@ -12934,7 +12984,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	586: {
+	1586: {
 		name: 'Aircraft Carrier Princess',
 		nameJP: '空母棲姫',
 		image: 'SCVH.jpg',
@@ -12956,7 +13006,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	587: {
+	1587: {
 		name: 'Northern Princess (3-5)',
 		nameJP: '北方棲姫',
 		image: 'SHoppo3.jpg',
@@ -12978,7 +13028,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	588: {
+	1588: {
 		name: 'Northern Princess 2 (3-5)',
 		nameJP: '北方棲姫',
 		image: 'SHoppo2.jpg',
@@ -13000,7 +13050,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	589: {
+	1589: {
 		name: 'Northern Princess 3 (3-5)',
 		nameJP: '北方棲姫',
 		image: 'SHoppo3.jpg',
@@ -13022,7 +13072,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	590: {
+	1590: {
 		name: 'Northern Princess 4 (3-5)',
 		nameJP: '北方棲姫',
 		image: 'SHoppo2.jpg',
@@ -13044,7 +13094,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	591: {
+	1591: {
 		name: 'CL Tsu-Class',
 		nameJP: '軽巡ツ級',
 		image: 'STsu.jpg',
@@ -13067,7 +13117,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	592: {
+	1592: {
 		name: 'CL Tsu-Class Elite',
 		nameJP: '軽巡ツ級elite',
 		image: 'STsuE.jpg',
@@ -13090,7 +13140,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	594: {
+	1594: {
 		name: 'CA Ne-Class',
 		nameJP: '重巡ネ級',
 		image: 'SNe.jpg',
@@ -13112,7 +13162,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	595: {
+	1595: {
 		name: 'CA Ne-Class Elite',
 		nameJP: '重巡ネ級elite',
 		image: 'SNeE.jpg',
@@ -13134,7 +13184,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	597: {
+	1597: {
 		name: 'Destroyer Princess',
 		nameJP: '駆逐棲姫',
 		image: 'SDDH.jpg',
@@ -13156,7 +13206,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	598: {
+	1598: {
 		name: 'Destroyer Princess 2',
 		nameJP: '駆逐棲姫',
 		image: 'SDDH.jpg',
@@ -13178,7 +13228,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	599: {
+	1599: {
 		name: 'Aircraft Carrier Water Demon',
 		nameJP: '空母水鬼',
 		image: 'SCVWD.jpg',
@@ -13200,7 +13250,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	600: {
+	1600: {
 		name: 'Aircraft Carrier Water Demon 2',
 		nameJP: '空母水鬼',
 		image: 'SCVWD.jpg',
@@ -13222,7 +13272,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	601: {
+	1601: {
 		name: 'Light Cruiser Demon',
 		nameJP: '軽巡棲鬼',
 		image: 'SCLD.jpg',
@@ -13244,7 +13294,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	602: {
+	1602: {
 		name: 'Light Cruiser Demon 2',
 		nameJP: '軽巡棲鬼',
 		image: 'SCLD2.jpg',
@@ -13266,7 +13316,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	603: {
+	1603: {
 		name: 'Battleship Water Demon',
 		nameJP: '戦艦水鬼',
 		image: 'SBBWD.jpg',
@@ -13288,7 +13338,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	604: {
+	1604: {
 		name: 'Battleship Water Demon 2',
 		nameJP: '戦艦水鬼',
 		image: 'SBBWD2.jpg',
@@ -13310,7 +13360,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	605: {
+	1605: {
 		name: 'Harbour Water Demon',
 		nameJP: '港湾水鬼',
 		image: 'SHarbourWD.jpg',
@@ -13332,7 +13382,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	606: {
+	1606: {
 		name: 'Harbour Water Demon (Hard)',
 		nameJP: '港湾水鬼',
 		image: 'SHarbourWD.jpg',
@@ -13354,7 +13404,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	607: {
+	1607: {
 		name: 'Harbour Water Demon 2',
 		nameJP: '港湾水鬼',
 		image: 'SHarbourWD.jpg',
@@ -13376,7 +13426,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	608: {
+	1608: {
 		name: 'Harbour Water Demon 2 (Hard)',
 		nameJP: '港湾水鬼',
 		image: 'SHarbourWD.jpg',
@@ -13398,7 +13448,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	609: {
+	1609: {
 		name: 'Anchorage Water Demon',
 		nameJP: '泊地水鬼',
 		image: 'SAnchWD.jpg',
@@ -13420,7 +13470,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	610: {
+	1610: {
 		name: 'Anchorage Water Demon (Hard)',
 		nameJP: '泊地水鬼',
 		image: 'SAnchWD.jpg',
@@ -13442,7 +13492,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	611: {
+	1611: {
 		name: 'Anchorage Water Demon 2',
 		nameJP: '泊地水鬼',
 		image: 'SAnchWD2.jpg',
@@ -13464,7 +13514,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	612: {
+	1612: {
 		name: 'Anchorage Water Demon 2 (Hard)',
 		nameJP: '泊地水鬼',
 		image: 'SAnchWD2.jpg',
@@ -13486,7 +13536,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	613: {
+	1613: {
 		name: 'Harbour Princess 2',
 		nameJP: '港湾棲姫',
 		image: 'SHarbourH2.jpg',
@@ -13508,7 +13558,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	614: {
+	1614: {
 		name: 'CV Wo-Class Flagship 3',
 		nameJP: '空母ヲ級flagship',
 		image: 'SWoF.jpg',
@@ -13530,7 +13580,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	615: {
+	1615: {
 		name: 'CV Wo-Class Flagship 4',
 		nameJP: '空母ヲ級flagship',
 		image: 'SWoF.jpg',
@@ -13552,7 +13602,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	616: {
+	1616: {
 		name: 'CV Wo-Class Flagship Kai 2',
 		nameJP: '空母ヲ級改flagship',
 		image: 'SWoFKai.jpg',
@@ -13574,7 +13624,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	617: {
+	1617: {
 		name: 'CV Wo-Class Flagship Kai 3',
 		nameJP: '空母ヲ級改flagship',
 		image: 'SWoFKai.jpg',
@@ -13596,7 +13646,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	618: {
+	1618: {
 		name: 'CV Wo-Class Flagship Kai 4',
 		nameJP: '空母ヲ級改flagship',
 		image: 'SWoFKai.jpg',
@@ -13618,7 +13668,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	619: {
+	1619: {
 		name: 'Aircraft Carrier Demon 2',
 		nameJP: '空母棲鬼',
 		image: 'SCVD.jpg',
@@ -13640,7 +13690,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	620: {
+	1620: {
 		name: 'Aircraft Carrier Princess 2',
 		nameJP: '空母棲姫',
 		image: 'SCVH.jpg',
@@ -13662,7 +13712,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	621: {
+	1621: {
 		name: 'DD I-Class Late Model Elite',
 		nameJP: '駆逐イ級後期型elite',
 		image: 'SILE.jpg',
@@ -13684,7 +13734,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	622: {
+	1622: {
 		name: 'DD Ro-Class Late Model Elite',
 		nameJP: '駆逐ロ級後期型elite',
 		image: 'SRoLE.jpg',
@@ -13706,7 +13756,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	623: {
+	1623: {
 		name: 'DD Ha-Class Late Model Elite',
 		nameJP: '駆逐ハ級後期型elite',
 		image: 'SHaLE.jpg',
@@ -13728,7 +13778,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	624: {
+	1624: {
 		name: 'DD Ni-Class Late Model Elite',
 		nameJP: '駆逐ニ級後期型elite',
 		image: 'SNiLE.jpg',
@@ -13750,7 +13800,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	625: {
+	1625: {
 		name: 'Seaplane Tender Princess A',
 		nameJP: '水母棲姫',
 		image: 'SAVH.jpg',
@@ -13772,7 +13822,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	626: {
+	1626: {
 		name: 'Seaplane Tender Princess B',
 		nameJP: '水母棲姫',
 		image: 'SAVH.jpg',
@@ -13794,7 +13844,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	627: {
+	1627: {
 		name: 'Seaplane Tender Princess C',
 		nameJP: '水母棲姫',
 		image: 'SAVH.jpg',
@@ -13816,7 +13866,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	628: {
+	1628: {
 		name: 'Air Defence Princess A',
 		nameJP: '防空棲姫',
 		image: 'SAAH.jpg',
@@ -13839,7 +13889,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	629: {
+	1629: {
 		name: 'Air Defence Princess B',
 		nameJP: '防空棲姫',
 		image: 'SAAH.jpg',
@@ -13862,7 +13912,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	630: {
+	1630: {
 		name: 'Air Defence Princess C',
 		nameJP: '防空棲姫',
 		image: 'SAAH.jpg',
@@ -13885,7 +13935,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	631: {
+	1631: {
 		name: 'Airfield Princess 2',
 		nameJP: '飛行場姫',
 		image: 'SAirH2.jpg',
@@ -13907,7 +13957,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	632: {
+	1632: {
 		name: 'Airfield Princess 3',
 		nameJP: '飛行場姫',
 		image: 'SAirH2.jpg',
@@ -13929,7 +13979,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	633: {
+	1633: {
 		name: 'Airfield Princess 4',
 		nameJP: '飛行場姫',
 		image: 'SAirH2.jpg',
@@ -13951,7 +14001,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	634: {
+	1634: {
 		name: 'Isolated Island Demon A',
 		nameJP: '離島棲鬼',
 		image: 'SIID.jpg',
@@ -13973,7 +14023,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	635: {
+	1635: {
 		name: 'Isolated Island Demon B',
 		nameJP: '離島棲鬼',
 		image: 'SIID.jpg',
@@ -13995,7 +14045,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	636: {
+	1636: {
 		name: 'Isolated Island Demon C',
 		nameJP: '離島棲鬼',
 		image: 'SIID.jpg',
@@ -14017,7 +14067,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	637: {
+	1637: {
 		name: 'PT Imp Pack',
 		nameJP: 'PT小鬼群',
 		image: 'SPTPack.jpg',
@@ -14041,7 +14091,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	638: {
+	1638: {
 		name: 'PT Imp Pack 2',
 		nameJP: 'PT小鬼群',
 		image: 'SPTPack.jpg',
@@ -14065,7 +14115,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	639: {
+	1639: {
 		name: 'PT Imp Pack 3',
 		nameJP: 'PT小鬼群',
 		image: 'SPTPack.jpg',
@@ -14089,7 +14139,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	640: {
+	1640: {
 		name: 'PT Imp Pack 4',
 		nameJP: 'PT小鬼群',
 		image: 'SPTPack.jpg',
@@ -14113,7 +14163,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	641: {
+	1641: {
 		name: 'Light Cruiser Princess',
 		nameJP: '軽巡棲姫',
 		image: 'SCLH.jpg',
@@ -14136,7 +14186,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	642: {
+	1642: {
 		name: 'Light Cruiser Princess 2',
 		nameJP: '軽巡棲姫',
 		image: 'SCLH.jpg',
@@ -14159,7 +14209,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	643: {
+	1643: {
 		name: 'Light Cruiser Princess 3',
 		nameJP: '軽巡棲姫',
 		image: 'SCLH.jpg',
@@ -14182,7 +14232,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	644: {
+	1644: {
 		name: 'Submarine Princess',
 		nameJP: '潜水棲姫',
 		image: 'SSSH.jpg',
@@ -14207,7 +14257,7 @@ var SHIPDATA = {
 		ammo: 0,
 		canOpTorp: function() { return false; }
 	},
-	645: {
+	1645: {
 		name: 'Submarine Princess 2',
 		nameJP: '潜水棲姫',
 		image: 'SSSH.jpg',
@@ -14232,7 +14282,7 @@ var SHIPDATA = {
 		ammo: 0,
 		canOpTorp: function() { return false; }
 	},
-	646: {
+	1646: {
 		name: 'Submarine Princess 3',
 		nameJP: '潜水棲姫',
 		image: 'SSSH.jpg',
@@ -14257,7 +14307,7 @@ var SHIPDATA = {
 		ammo: 0,
 		canOpTorp: function() { return false; }
 	},
-	647: {
+	1647: {
 		name: 'Destroyer Water Demon',
 		nameJP: '駆逐水鬼',
 		image: 'SDDWD.jpg',
@@ -14281,7 +14331,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	648: {
+	1648: {
 		name: 'Destroyer Water Demon 2',
 		nameJP: '駆逐水鬼',
 		image: 'SDDWD.jpg',
@@ -14305,7 +14355,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	649: {
+	1649: {
 		name: 'Destroyer Water Demon 3',
 		nameJP: '駆逐水鬼',
 		image: 'SDDWD.jpg',
@@ -14329,7 +14379,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	650: {
+	1650: {
 		name: 'Airfield Princess 5',
 		nameJP: '飛行場姫',
 		image: 'SAirH.jpg',
@@ -14352,7 +14402,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	651: {
+	1651: {
 		name: 'Airfield Princess 6',
 		nameJP: '飛行場姫',
 		image: 'SAirH.jpg',
@@ -14375,7 +14425,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	652: {
+	1652: {
 		name: 'Airfield Princess 7',
 		nameJP: '飛行場姫',
 		image: 'SAirH.jpg',
@@ -14398,7 +14448,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	653: {
+	1653: {
 		name: 'Supply Depot Princess 1',
 		nameJP: '集積地棲姫',
 		image: 'SArchH.jpg',
@@ -14423,7 +14473,7 @@ var SHIPDATA = {
 		ammo: 0,
 		canTorp: function() { return (this.HP/this.maxHP > .5); },
 	},
-	654: {
+	1654: {
 		name: 'Supply Depot Princess 2',
 		nameJP: '集積地棲姫',
 		image: 'SArchH.jpg',
@@ -14448,7 +14498,7 @@ var SHIPDATA = {
 		ammo: 0,
 		canTorp: function() { return (this.HP/this.maxHP > .5); },
 	},
-	655: {
+	1655: {
 		name: 'Supply Depot Princess 3',
 		nameJP: '集積地棲姫',
 		image: 'SArchH.jpg',
@@ -14473,7 +14523,7 @@ var SHIPDATA = {
 		ammo: 0,
 		canTorp: function() { return (this.HP/this.maxHP > .5); },
 	},
-	656: {
+	1656: {
 		name: 'Supply Depot Princess Damaged 1',
 		nameJP: '集積地棲姫-壊',
 		image: 'SArchHdam.jpg',
@@ -14498,7 +14548,7 @@ var SHIPDATA = {
 		ammo: 0,
 		canTorp: function() { return (this.HP/this.maxHP > .5); },
 	},
-	657: {
+	1657: {
 		name: 'Supply Depot Princess Damaged 2',
 		nameJP: '集積地棲姫-壊',
 		image: 'SArchHdam.jpg',
@@ -14523,7 +14573,7 @@ var SHIPDATA = {
 		ammo: 0,
 		canTorp: function() { return (this.HP/this.maxHP > .5); },
 	},
-	658: {
+	1658: {
 		name: 'Supply Depot Princess Damaged 3',
 		nameJP: '集積地棲姫-壊',
 		image: 'SArchHdam.jpg',
@@ -14548,7 +14598,7 @@ var SHIPDATA = {
 		ammo: 0,
 		canTorp: function() { return (this.HP/this.maxHP > .5); },
 	},
-	659: {
+	1659: {
 		name: 'Heavy Cruiser Princess 1',
 		nameJP: '重巡棲姫',
 		image: 'SCAH.jpg',
@@ -14571,7 +14621,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	660: {
+	1660: {
 		name: 'Heavy Cruiser Princess 2',
 		nameJP: '重巡棲姫',
 		image: 'SCAH.jpg',
@@ -14594,7 +14644,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	661: {
+	1661: {
 		name: 'Heavy Cruiser Princess 3',
 		nameJP: '重巡棲姫',
 		image: 'SCAH.jpg',
@@ -14617,7 +14667,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	662: {
+	1662: {
 		name: 'Heavy Cruiser Princess 4',
 		nameJP: '重巡棲姫',
 		image: 'SCAHdam.jpg',
@@ -14640,7 +14690,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	663: {
+	1663: {
 		name: 'Heavy Cruiser Princess 5',
 		nameJP: '重巡棲姫',
 		image: 'SCAHdam.jpg',
@@ -14663,7 +14713,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	664: {
+	1664: {
 		name: 'Heavy Cruiser Princess 6',
 		nameJP: '重巡棲姫',
 		image: 'SCAHdam.jpg',
@@ -14686,7 +14736,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	665: {
+	1665: {
 		name: 'Artillery Imp 1',
 		nameJP: '砲台小鬼',
 		image: 'SArtImp.jpg',
@@ -14710,7 +14760,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	666: {
+	1666: {
 		name: 'Artillery Imp 2',
 		nameJP: '砲台小鬼',
 		image: 'SArtImp.jpg',
@@ -14734,7 +14784,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	667: {
+	1667: {
 		name: 'Artillery Imp 3',
 		nameJP: '砲台小鬼',
 		image: 'SArtImp.jpg',
@@ -14758,7 +14808,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	668: {
+	1668: {
 		name: 'Isolated Island Princess 1',
 		nameJP: '離島棲姫',
 		image: 'SIIH.jpg',
@@ -14783,7 +14833,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	669: {
+	1669: {
 		name: 'Isolated Island Princess 2',
 		nameJP: '離島棲姫',
 		image: 'SIIH.jpg',
@@ -14807,7 +14857,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	670: {
+	1670: {
 		name: 'Isolated Island Princess 3',
 		nameJP: '離島棲姫',
 		image: 'SIIH.jpg',
@@ -14832,7 +14882,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	671: {
+	1671: {
 		name: 'Isolated Island Princess 4',
 		nameJP: '離島棲姫',
 		image: 'SIIH.jpg',
@@ -14856,7 +14906,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	672: {
+	1672: {
 		name: 'Isolated Island Princess 5',
 		nameJP: '離島棲姫',
 		image: 'SIIH.jpg',
@@ -14880,7 +14930,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	673: {
+	1673: {
 		name: 'Destroyer Ancient Demon',
 		nameJP: '駆逐古鬼',
 		image: 'SDDAD.jpg',
@@ -14903,7 +14953,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	674: {
+	1674: {
 		name: 'Destroyer Ancient Demon 2',
 		nameJP: '駆逐古鬼',
 		image: 'SDDAD.jpg',
@@ -14926,7 +14976,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	675: {
+	1675: {
 		name: 'Destroyer Ancient Demon 3',
 		nameJP: '駆逐古鬼',
 		image: 'SDDAD.jpg',
@@ -14949,7 +14999,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	676: {
+	1676: {
 		name: 'Destroyer Water Demon 4',
 		nameJP: '駆逐水鬼',
 		image: 'SDDWDdam.jpg',
@@ -14972,7 +15022,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	677: {
+	1677: {
 		name: 'Destroyer Water Demon 5',
 		nameJP: '駆逐水鬼',
 		image: 'SDDWDdam.jpg',
@@ -14995,7 +15045,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	678: {
+	1678: {
 		name: 'Destroyer Water Demon 6',
 		nameJP: '駆逐水鬼',
 		image: 'SDDWDdam.jpg',
@@ -15018,7 +15068,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	679: {
+	1679: {
 		name: 'Lycoris Princess',
 		nameJP: 'リコリス棲姫',
 		image: 'SLycH.jpg',
@@ -15043,7 +15093,7 @@ var SHIPDATA = {
 		ammo: 0,
 		nightgun: true,
 	},
-	680: {
+	1680: {
 		name: 'Lycoris Princess 2',
 		nameJP: 'リコリス棲姫',
 		image: 'SLycH.jpg',
@@ -15068,7 +15118,7 @@ var SHIPDATA = {
 		ammo: 0,
 		nightgun: true,
 	},
-	681: {
+	1681: {
 		name: 'Lycoris Princess 3',
 		nameJP: 'リコリス棲姫',
 		image: 'SLycH.jpg',
@@ -15093,7 +15143,7 @@ var SHIPDATA = {
 		ammo: 0,
 		nightgun: true,
 	},
-	682: {
+	1682: {
 		name: 'Lycoris Princess 4',
 		nameJP: 'リコリス棲姫',
 		image: 'SLycH.jpg',
@@ -15118,7 +15168,7 @@ var SHIPDATA = {
 		ammo: 0,
 		nightgun: true,
 	},
-	683: {
+	1683: {
 		name: 'Lycoris Princess 5',
 		nameJP: 'リコリス棲姫',
 		image: 'SLycH.jpg',
@@ -15143,7 +15193,7 @@ var SHIPDATA = {
 		ammo: 0,
 		nightgun: true,
 	},
-	684: {
+	1684: {
 		name: 'Central Princess',
 		nameJP: '中枢棲姫',
 		image: 'SCentralH.jpg',
@@ -15167,7 +15217,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	685: {
+	1685: {
 		name: 'Central Princess 2',
 		nameJP: '中枢棲姫',
 		image: 'SCentralH.jpg',
@@ -15191,7 +15241,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	686: {
+	1686: {
 		name: 'Central Princess 3',
 		nameJP: '中枢棲姫',
 		image: 'SCentralH.jpg',
@@ -15215,7 +15265,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	687: {
+	1687: {
 		name: 'Central Princess - Damaged',
 		nameJP: '中枢棲姫-壊',
 		image: 'SCentralHdam.jpg',
@@ -15239,7 +15289,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	688: {
+	1688: {
 		name: 'Central Princess - Damaged 2',
 		nameJP: '中枢棲姫-壊',
 		image: 'SCentralHdam.jpg',
@@ -15263,7 +15313,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	689: {
+	1689: {
 		name: 'Central Princess - Damaged 3',
 		nameJP: '中枢棲姫-壊',
 		image: 'SCentralHdam.jpg',
@@ -15287,7 +15337,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	690: {
+	1690: {
 		name: 'Destroyer Ancient Princess',
 		nameJP: '駆逐古姫',
 		image: 'SDDAH.jpg',
@@ -15310,7 +15360,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	691: {
+	1691: {
 		name: 'Destroyer Ancient Demon 2',
 		nameJP: '駆逐古姫',
 		image: 'SDDAH.jpg',
@@ -15333,7 +15383,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	692: {
+	1692: {
 		name: 'Destroyer Ancient Princess 3',
 		nameJP: '駆逐古姫',
 		image: 'SDDAH.jpg',
@@ -15356,7 +15406,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	693: {
+	1693: {
 		name: 'Submarine Summer Princess Flagship',
 		nameJP: '潜水夏姫',
 		image: 'SSSHn.jpg',
@@ -15371,7 +15421,7 @@ var SHIPDATA = {
 		RNG: 1,
 		SPD: 5,
 	},
-	694: {
+	1694: {
 		name: 'Submarine Summer Princess Flagship 2',
 		nameJP: '潜水夏姫',
 		image: 'SSSHn.jpg',
@@ -15386,7 +15436,7 @@ var SHIPDATA = {
 		RNG: 1,
 		SPD: 5,
 	},
-	695: {
+	1695: {
 		name: 'Submarine Summer Princess Flagship 3',
 		nameJP: '潜水夏姫',
 		image: 'SSSHn.jpg',
@@ -15401,7 +15451,7 @@ var SHIPDATA = {
 		RNG: 1,
 		SPD: 5,
 	},
-	696: {
+	1696: {
 		name: 'Battleship Summer Princess',
 		nameJP: '戦艦夏姫',
 		image: 'SBBHn.jpg',
@@ -15416,7 +15466,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 5,
 	},
-	697: {
+	1697: {
 		name: 'Battleship Summer Princess 2',
 		nameJP: '戦艦夏姫',
 		image: 'SBBHn.jpg',
@@ -15431,7 +15481,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 5,
 	},
-	698: {
+	1698: {
 		name: 'Battleship Summer Princess 3',
 		nameJP: '戦艦夏姫',
 		image: 'SBBHn.jpg',
@@ -15446,7 +15496,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 5,
 	},
-	699: {
+	1699: {
 		name: 'Harbour Summer Princess',
 		nameJP: '港湾夏姫',
 		image: 'SHarbHn.jpg',
@@ -15462,7 +15512,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 0,
 	},
-	700: {
+	1700: {
 		name: 'Harbour Summer Princess 2',
 		nameJP: '港湾夏姫',
 		image: 'SHarbHn.jpg',
@@ -15478,7 +15528,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 0,
 	},
-	701: {
+	1701: {
 		name: 'Harbour Summer Princess 3',
 		nameJP: '港湾夏姫',
 		image: 'SHarbHn.jpg',
@@ -15494,7 +15544,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 0,
 	},
-	702: {
+	1702: {
 		name: 'Harbour Summer Princess - Damaged',
 		nameJP: '港湾夏姫-壊',
 		image: 'SHarbHn2.jpg',
@@ -15510,7 +15560,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 0,
 	},
-	703: {
+	1703: {
 		name: 'Harbour Summer Princess - Damaged 2',
 		nameJP: '港湾夏姫-壊',
 		image: 'SHarbHn2.jpg',
@@ -15526,7 +15576,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 0,
 	},
-	704: {
+	1704: {
 		name: 'Harbour Summer Princess - Damaged 3',
 		nameJP: '港湾夏姫-壊',
 		image: 'SHarbHn2.jpg',
@@ -15542,7 +15592,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 0,
 	},
-	705: {
+	1705: {
 		name: 'Heavy Cruiser Summer Princess',
 		nameJP: '重巡夏姫',
 		image: 'SCAHn.jpg',
@@ -15557,7 +15607,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 10,
 	},
-	706: {
+	1706: {
 		name: 'Heavy Cruiser Summer Princess 2',
 		nameJP: '重巡夏姫',
 		image: 'SCAHn.jpg',
@@ -15572,7 +15622,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 10,
 	},
-	707: {
+	1707: {
 		name: 'Heavy Cruiser Summer Princess 3',
 		nameJP: '重巡夏姫',
 		image: 'SCAHn.jpg',
@@ -15587,7 +15637,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 10,
 	},
-	708: {
+	1708: {
 		name: 'Seaplane Tender Water Princess',
 		nameJP: '水母水姫',
 		image: 'SAVWH.jpg',
@@ -15603,7 +15653,7 @@ var SHIPDATA = {
 		RNG: 4,
 		SPD: 5,
 	},
-	709: {
+	1709: {
 		name: 'Seaplane Tender Water Princess 2',
 		nameJP: '水母水姫',
 		image: 'SAVWH.jpg',
@@ -15619,7 +15669,7 @@ var SHIPDATA = {
 		RNG: 4,
 		SPD: 5,
 	},
-	710: {
+	1710: {
 		name: 'Seaplane Tender Water Princess 3',
 		nameJP: '水母水姫',
 		image: 'SAVWH.jpg',
@@ -15635,7 +15685,7 @@ var SHIPDATA = {
 		RNG: 4,
 		SPD: 5,
 	},
-	711: {
+	1711: {
 		name: 'Abyssal Jellyfish Princess',
 		nameJP: '深海海月姫',
 		image: 'SJellyH.jpg',
@@ -15652,7 +15702,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 10,
 	},
-	712: {
+	1712: {
 		name: 'Abyssal Jellyfish Princess 2',
 		nameJP: '深海海月姫',
 		image: 'SJellyH.jpg',
@@ -15669,7 +15719,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 10,
 	},
-	713: {
+	1713: {
 		name: 'Abyssal Jellyfish Princess 3',
 		nameJP: '深海海月姫',
 		image: 'SJellyH.jpg',
@@ -15686,7 +15736,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 10,
 	},
-	714: {
+	1714: {
 		name: 'CV Wo-Class Flagship Kai 5',
 		nameJP: '空母ヲ級改flagship',
 		image: 'SWoFKai.jpg',
@@ -15708,7 +15758,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	715: {
+	1715: {
 		name: 'CV Wo-Class Flagship Kai 6',
 		nameJP: '空母ヲ級改flagship',
 		image: 'SWoFKai.jpg',
@@ -15730,37 +15780,39 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	716: {
+	1716: {
 		name: 'Abyssal Twin Princesses',
 		nameJP: '深海双子棲姫',
 		image: 'SSSTH.jpg',
 		type: 'BBVT',
+		
 	},
-	717: {
+	1717: {
 		name: 'Abyssal Twin Princesses 2',
 		nameJP: '深海双子棲姫',
 		image: 'SSSTH.jpg',
 		type: 'BBVT',
+		
 	},
-	718: {
+	1718: {
 		name: 'Abyssal Twin Princesses 3',
 		nameJP: '深海双子棲姫',
 		image: 'SSSTH.jpg',
 		type: 'BBVT',
 	},
-	719: {
+	1719: {
 		name: 'Abyssal Twin Princesses - Damaged',
 		nameJP: '深海双子棲姫-壊',
 		image: 'SSSTH2.jpg',
 		type: 'BBVT',
 	},
-	720: {
+	1720: {
 		name: 'Abyssal Twin Princesses 2 - Damaged',
 		nameJP: '深海双子棲姫-壊',
 		image: 'SSSTH2.jpg',
 		type: 'BBVT',
 	},
-	721: {
+	1721: {
 		name: 'Abyssal Twin Princesses 3 - Damaged',
 		nameJP: '深海双子棲姫-壊',
 		image: 'SSSTH2.jpg',
