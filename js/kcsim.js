@@ -614,7 +614,7 @@ function takeDamage(ship,damage) {
 	if (ship.HP <= 0 && ship.repairs && ship.repairs.length) {
 		var repair = ship.repairs.shift();
 		if (repair == 42) ship.HP = Math.floor(.2*ship.maxHP);
-		else if (repair == 43) ship.HP = ship.maxHP;
+		else if (repair == 43) { ship.HP = ship.maxHP; ship.fuelleft = ship.ammoleft = 10; }
 		if (ship.side==0) ship.protection = true;
 	}
 	
@@ -1151,6 +1151,10 @@ function sim(F1,F2,Fsupport,doNB,NBonly,aironly,landbomb,noammo,BAPI,noupdate) {
 	if (noupdate) {
 		results.rankDay = getRank(ships1,ships2);
 		results.mvpDay = F1.getMVP();
+		results.repairsDay = {};
+		for (var i=0; i<ships1.length; i++) {
+			if (ships1[i].repairs) results.repairsDay[i] = ships1[i].repairs.slice();
+		}
 	}
 		
 	//night battle
