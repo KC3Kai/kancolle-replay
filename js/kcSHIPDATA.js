@@ -9,7 +9,7 @@ var SHIPDATA = {
 		image: 'KMutsuki.png',
 		type: 'DD',
 		nid: 31,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 13, HPmax: 24,
 		FP: 29, FPbase: 6,
 		TP: 59, TPbase: 18,
@@ -34,7 +34,7 @@ var SHIPDATA = {
 		image: 'KKisaragi.png',
 		type: 'DD',
 		nid: 32,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 13, HPmax: 24,
 		FP: 29, FPbase: 6,
 		TP: 49, TPbase: 18,
@@ -59,7 +59,7 @@ var SHIPDATA = {
 		image: 'KNagatsuki.png',
 		type: 'DD',
 		nid: 35,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 13, HPmax: 24,
 		FP: 29, FPbase: 6,
 		TP: 49, TPbase: 18,
@@ -84,7 +84,7 @@ var SHIPDATA = {
 		image: 'KMikazuki.png',
 		type: 'DD',
 		nid: 37,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 13, HPmax: 24,
 		FP: 29, FPbase: 6,
 		TP: 49, TPbase: 18,
@@ -109,7 +109,7 @@ var SHIPDATA = {
 		image: 'KFubuki.jpg',
 		type: 'DD',
 		nid: 11,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 15, HPmax: 29,
 		FP: 29, FPbase: 10,
 		TP: 79, TPbase: 27,
@@ -134,7 +134,7 @@ var SHIPDATA = {
 		image: 'KShirayuki.png',
 		type: 'DD',
 		nid: 12,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 15, HPmax: 29,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 27,
@@ -159,7 +159,7 @@ var SHIPDATA = {
 		image: 'KMiyuki.jpg',
 		type: 'DD',
 		nid: 14,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 15, HPmax: 29,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 27,
@@ -184,7 +184,7 @@ var SHIPDATA = {
 		image: 'KIsonami.png',
 		type: 'DD',
 		nid: 16,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 15, HPmax: 29,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 27,
@@ -209,7 +209,7 @@ var SHIPDATA = {
 		image: 'KAyanami.jpg',
 		type: 'DD',
 		nid: 17,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 15, HPmax: 29,
 		FP: 29, FPbase: 10,
 		TP: 79, TPbase: 27,
@@ -234,7 +234,7 @@ var SHIPDATA = {
 		image: 'KShikinami.jpg',
 		type: 'DD',
 		nid: 18,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 15, HPmax: 29,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 27,
@@ -259,7 +259,7 @@ var SHIPDATA = {
 		image: 'KAkebono.jpg',
 		type: 'DD',
 		nid: 68,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 15, HPmax: 29,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 27,
@@ -284,7 +284,7 @@ var SHIPDATA = {
 		image: 'KUshio.jpg',
 		type: 'DD',
 		nid: 70,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 15, HPmax: 29,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 27,
@@ -309,7 +309,7 @@ var SHIPDATA = {
 		image: 'KKagerou.jpg',
 		type: 'DD',
 		nid: 91,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 16, HPmax: 34,
 		FP: 29, FPbase: 10,
 		TP: 79, TPbase: 24,
@@ -334,7 +334,7 @@ var SHIPDATA = {
 		image: 'KShiranui.jpg',
 		type: 'DD',
 		nid: 92,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 16, HPmax: 34,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -359,7 +359,7 @@ var SHIPDATA = {
 		image: 'KKuroshio.jpg',
 		type: 'DD',
 		nid: 93,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 16, HPmax: 34,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -384,7 +384,7 @@ var SHIPDATA = {
 		image: 'KYukikaze.png',
 		type: 'DD',
 		nid: 5,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 16, HPmax: 39,
 		FP: 29, FPbase: 10,
 		TP: 79, TPbase: 24,
@@ -409,7 +409,7 @@ var SHIPDATA = {
 		image: 'KNagara.png',
 		type: 'CL',
 		nid: 42,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 26, HPmax: 39,
 		FP: 49, FPbase: 14,
 		TP: 89, TPbase: 24,
@@ -434,7 +434,7 @@ var SHIPDATA = {
 		image: 'KIsuzu.jpg',
 		type: 'CL',
 		nid: 43,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 26, HPmax: 39,
 		FP: 39, FPbase: 14,
 		TP: 79, TPbase: 24,
@@ -459,7 +459,7 @@ var SHIPDATA = {
 		image: 'KYura.jpg',
 		type: 'CL',
 		nid: 45,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 26, HPmax: 39,
 		FP: 39, FPbase: 14,
 		TP: 79, TPbase: 24,
@@ -484,7 +484,7 @@ var SHIPDATA = {
 		image: 'KOoi.jpg',
 		type: 'CL',
 		nid: 19,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 25, HPmax: 39,
 		FP: 49, FPbase: 14,
 		TP: 89, TPbase: 24,
@@ -509,7 +509,7 @@ var SHIPDATA = {
 		image: 'KKitakami.jpg',
 		type: 'CL',
 		nid: 20,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 25, HPmax: 39,
 		FP: 39, FPbase: 14,
 		TP: 79, TPbase: 24,
@@ -534,7 +534,7 @@ var SHIPDATA = {
 		image: 'KFusou.jpg',
 		type: 'BB',
 		nid: 26,
-		added: 20130417,
+		added: '2013-04-17',
 		fitclass: 6,
 		HP: 67, HPmax: 89,
 		FP: 94, FPbase: 74,
@@ -560,7 +560,7 @@ var SHIPDATA = {
 		image: 'KYamashiro.jpg',
 		type: 'BB',
 		nid: 27,
-		added: 20130417,
+		added: '2013-04-17',
 		fitclass: 6,
 		HP: 67, HPmax: 89,
 		FP: 94, FPbase: 74,
@@ -586,7 +586,7 @@ var SHIPDATA = {
 		image: 'KSatsuki.jpg',
 		type: 'DD',
 		nid: 33,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 13, HPmax: 24,
 		FP: 29, FPbase: 6,
 		TP: 49, TPbase: 18,
@@ -611,7 +611,7 @@ var SHIPDATA = {
 		image: 'KFumizuki.png',
 		type: 'DD',
 		nid: 34,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 13, HPmax: 24,
 		FP: 29, FPbase: 6,
 		TP: 49, TPbase: 18,
@@ -636,7 +636,7 @@ var SHIPDATA = {
 		image: 'KKikuzuki.png',
 		type: 'DD',
 		nid: 36,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 13, HPmax: 24,
 		FP: 29, FPbase: 6,
 		TP: 49, TPbase: 18,
@@ -661,7 +661,7 @@ var SHIPDATA = {
 		image: 'KMochizuki.png',
 		type: 'DD',
 		nid: 38,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 13, HPmax: 24,
 		FP: 29, FPbase: 6,
 		TP: 49, TPbase: 18,
@@ -686,7 +686,7 @@ var SHIPDATA = {
 		image: 'KHatsuyuki.jpg',
 		type: 'DD',
 		nid: 13,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 15, HPmax: 29,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 27,
@@ -711,7 +711,7 @@ var SHIPDATA = {
 		image: 'KMurakumo.jpg',
 		type: 'DD',
 		nid: 15,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 15, HPmax: 29,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 27,
@@ -736,7 +736,7 @@ var SHIPDATA = {
 		image: 'KAkatsuki.jpg',
 		type: 'DD',
 		nid: 71,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 15, HPmax: 30,
 		FP: 29, FPbase: 10,
 		TP: 79, TPbase: 27,
@@ -761,7 +761,7 @@ var SHIPDATA = {
 		image: 'KHibiki.png',
 		type: 'DD',
 		nid: 72,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 15, HPmax: 30,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 27,
@@ -786,7 +786,7 @@ var SHIPDATA = {
 		image: 'KIkazuchi.jpg',
 		type: 'DD',
 		nid: 73,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 15, HPmax: 30,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 27,
@@ -811,7 +811,7 @@ var SHIPDATA = {
 		image: 'KInazuma.png',
 		type: 'DD',
 		nid: 74,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 15, HPmax: 30,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 27,
@@ -836,7 +836,7 @@ var SHIPDATA = {
 		image: 'KHatsuharu.jpg',
 		type: 'DD',
 		nid: 75,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 16, HPmax: 31,
 		FP: 29, FPbase: 10,
 		TP: 79, TPbase: 27,
@@ -861,7 +861,7 @@ var SHIPDATA = {
 		image: 'KNenohi.png',
 		type: 'DD',
 		nid: 76,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 16, HPmax: 31,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 27,
@@ -886,7 +886,7 @@ var SHIPDATA = {
 		image: 'KWakaba.jpg',
 		type: 'DD',
 		nid: 77,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 16, HPmax: 31,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 27,
@@ -911,7 +911,7 @@ var SHIPDATA = {
 		image: 'KHatsushimo.png',
 		type: 'DD',
 		nid: 78,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 16, HPmax: 31,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 27,
@@ -936,7 +936,7 @@ var SHIPDATA = {
 		image: 'KShiratsuyu.jpg',
 		type: 'DD',
 		nid: 79,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 16, HPmax: 32,
 		FP: 29, FPbase: 10,
 		TP: 79, TPbase: 24,
@@ -961,7 +961,7 @@ var SHIPDATA = {
 		image: 'KShigure.jpg',
 		type: 'DD',
 		nid: 80,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 16, HPmax: 32,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -986,7 +986,7 @@ var SHIPDATA = {
 		image: 'KMurasame.jpg',
 		type: 'DD',
 		nid: 81,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 16, HPmax: 32,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -1011,7 +1011,7 @@ var SHIPDATA = {
 		image: 'KYuudachi.jpg',
 		type: 'DD',
 		nid: 82,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 16, HPmax: 32,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -1036,7 +1036,7 @@ var SHIPDATA = {
 		image: 'KSamidare.jpg',
 		type: 'DD',
 		nid: 83,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 16, HPmax: 32,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -1061,7 +1061,7 @@ var SHIPDATA = {
 		image: 'KSuzukaze.jpg',
 		type: 'DD',
 		nid: 84,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 16, HPmax: 32,
 		FP: 29, FPbase: 10,
 		TP: 79, TPbase: 24,
@@ -1086,7 +1086,7 @@ var SHIPDATA = {
 		image: 'KArare.png',
 		type: 'DD',
 		nid: 89,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 16, HPmax: 33,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -1111,7 +1111,7 @@ var SHIPDATA = {
 		image: 'KKasumi.jpg',
 		type: 'DD',
 		nid: 90,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 16, HPmax: 33,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -1136,7 +1136,7 @@ var SHIPDATA = {
 		image: 'KShimakaze.png',
 		type: 'DD',
 		nid: 10,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 19, HPmax: 39,
 		FP: 29, FPbase: 12,
 		TP: 89, TPbase: 45,
@@ -1161,7 +1161,7 @@ var SHIPDATA = {
 		image: 'KTenryuu.jpg',
 		type: 'CL',
 		nid: 28,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 23, HPmax: 35,
 		FP: 39, FPbase: 11,
 		TP: 59, TPbase: 18,
@@ -1186,7 +1186,7 @@ var SHIPDATA = {
 		image: 'KTatsuta.jpg',
 		type: 'CL',
 		nid: 29,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 23, HPmax: 35,
 		FP: 39, FPbase: 11,
 		TP: 59, TPbase: 18,
@@ -1211,7 +1211,7 @@ var SHIPDATA = {
 		image: 'KNatori.png',
 		type: 'CL',
 		nid: 44,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 26, HPmax: 39,
 		FP: 39, FPbase: 14,
 		TP: 79, TPbase: 24,
@@ -1236,7 +1236,7 @@ var SHIPDATA = {
 		image: 'KSendai.png',
 		type: 'CL',
 		nid: 46,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 26, HPmax: 39,
 		FP: 49, FPbase: 14,
 		TP: 89, TPbase: 24,
@@ -1261,7 +1261,7 @@ var SHIPDATA = {
 		image: 'KJintsuu.jpg',
 		type: 'CL',
 		nid: 47,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 26, HPmax: 39,
 		FP: 39, FPbase: 14,
 		TP: 79, TPbase: 24,
@@ -1286,7 +1286,7 @@ var SHIPDATA = {
 		image: 'KNaka.png',
 		type: 'CL',
 		nid: 48,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 26, HPmax: 39,
 		FP: 39, FPbase: 14,
 		TP: 79, TPbase: 24,
@@ -1311,7 +1311,7 @@ var SHIPDATA = {
 		image: 'KOoiKai.png',
 		type: 'CLT',
 		nid: 97,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 32, HPmax: 49,
 		FP: 39, FPbase: 8,
 		TP: 99, TPbase: 80,
@@ -1336,7 +1336,7 @@ var SHIPDATA = {
 		image: 'KKitakamiKai.png',
 		type: 'CLT',
 		nid: 98,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 32, HPmax: 49,
 		FP: 39, FPbase: 8,
 		TP: 99, TPbase: 80,
@@ -1361,7 +1361,7 @@ var SHIPDATA = {
 		image: 'KFurutaka.jpg',
 		type: 'CA',
 		nid: 52,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 36, HPmax: 49,
 		FP: 54, FPbase: 30,
 		TP: 59, TPbase: 12,
@@ -1386,7 +1386,7 @@ var SHIPDATA = {
 		image: 'KKako.jpg',
 		type: 'CA',
 		nid: 53,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 36, HPmax: 49,
 		FP: 49, FPbase: 30,
 		TP: 49, TPbase: 12,
@@ -1411,7 +1411,7 @@ var SHIPDATA = {
 		image: 'KAoba.jpg',
 		type: 'CA',
 		nid: 54,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 37, HPmax: 49,
 		FP: 54, FPbase: 30,
 		TP: 59, TPbase: 12,
@@ -1436,7 +1436,7 @@ var SHIPDATA = {
 		image: 'KMyoukou.jpg',
 		type: 'CA',
 		nid: 55,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 44, HPmax: 60,
 		FP: 59, FPbase: 40,
 		TP: 59, TPbase: 24,
@@ -1461,7 +1461,7 @@ var SHIPDATA = {
 		image: 'KNachi.jpg',
 		type: 'CA',
 		nid: 56,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 44, HPmax: 56,
 		FP: 54, FPbase: 40,
 		TP: 49, TPbase: 24,
@@ -1486,7 +1486,7 @@ var SHIPDATA = {
 		image: 'KAshigara.jpg',
 		type: 'CA',
 		nid: 57,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 44, HPmax: 56,
 		FP: 54, FPbase: 40,
 		TP: 49, TPbase: 24,
@@ -1511,7 +1511,7 @@ var SHIPDATA = {
 		image: 'KHaguro.png',
 		type: 'CA',
 		nid: 58,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 44, HPmax: 56,
 		FP: 54, FPbase: 40,
 		TP: 49, TPbase: 24,
@@ -1536,7 +1536,7 @@ var SHIPDATA = {
 		image: 'KTakao.jpg',
 		type: 'CA',
 		nid: 59,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 45, HPmax: 60,
 		FP: 59, FPbase: 40,
 		TP: 59, TPbase: 24,
@@ -1561,7 +1561,7 @@ var SHIPDATA = {
 		image: 'KAtago.jpg',
 		type: 'CA',
 		nid: 60,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 45, HPmax: 60,
 		FP: 54, FPbase: 40,
 		TP: 59, TPbase: 24,
@@ -1586,7 +1586,7 @@ var SHIPDATA = {
 		image: 'KMaya.jpg',
 		type: 'CA',
 		nid: 61,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 45, HPmax: 57,
 		FP: 54, FPbase: 40,
 		TP: 49, TPbase: 24,
@@ -1611,7 +1611,7 @@ var SHIPDATA = {
 		image: 'KChoukai.jpg',
 		type: 'CA',
 		nid: 62,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 45, HPmax: 57,
 		FP: 54, FPbase: 40,
 		TP: 49, TPbase: 24,
@@ -1636,7 +1636,7 @@ var SHIPDATA = {
 		image: 'KMogami.jpg',
 		type: 'CA',
 		nid: 51,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 41, HPmax: 59,
 		FP: 59, FPbase: 40,
 		TP: 69, TPbase: 18,
@@ -1661,7 +1661,7 @@ var SHIPDATA = {
 		image: 'KTone.jpg',
 		type: 'CA',
 		nid: 63,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 44, HPmax: 62,
 		FP: 59, FPbase: 32,
 		TP: 59, TPbase: 24,
@@ -1686,7 +1686,7 @@ var SHIPDATA = {
 		image: 'KChikuma.jpg',
 		type: 'CA',
 		nid: 64,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 44, HPmax: 62,
 		FP: 59, FPbase: 32,
 		TP: 59, TPbase: 24,
@@ -1711,7 +1711,7 @@ var SHIPDATA = {
 		image: 'KMogamiKai.png',
 		type: 'CAV',
 		nid: 101,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 50, HPmax: 67,
 		FP: 75, FPbase: 24,
 		TP: 69, TPbase: 18,
@@ -1736,7 +1736,7 @@ var SHIPDATA = {
 		image: 'KShouhou.jpg',
 		type: 'CVL',
 		nid: 94,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 32, HPmax: 55,
 		FP: 19, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -1761,7 +1761,7 @@ var SHIPDATA = {
 		image: 'KHiyou.jpg',
 		type: 'CVL',
 		nid: 65,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 40, HPmax: 64,
 		FP: 19, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -1786,7 +1786,7 @@ var SHIPDATA = {
 		image: 'KRyuujou.jpg',
 		type: 'CVL',
 		nid: 30,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 31, HPmax: 54,
 		FP: 19, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -1811,7 +1811,7 @@ var SHIPDATA = {
 		image: 'KIse.jpg',
 		type: 'BB',
 		nid: 3,
-		added: 20130417,
+		added: '2013-04-17',
 		fitclass: 6,
 		HP: 74, HPmax: 89,
 		FP: 89, FPbase: 74,
@@ -1837,7 +1837,7 @@ var SHIPDATA = {
 		image: 'KKongou.png',
 		type: 'FBB',
 		nid: 21,
-		added: 20130417,
+		added: '2013-04-17',
 		fitclass: 1,
 		HP: 63, HPmax: 79,
 		FP: 89, FPbase: 63,
@@ -1863,7 +1863,7 @@ var SHIPDATA = {
 		image: 'KHaruna.jpg',
 		type: 'FBB',
 		nid: 23,
-		added: 20130417,
+		added: '2013-04-17',
 		fitclass: 1,
 		HP: 63, HPmax: 79,
 		FP: 89, FPbase: 63,
@@ -1889,7 +1889,7 @@ var SHIPDATA = {
 		image: 'KNagato.png',
 		type: 'BB',
 		nid: 1,
-		added: 20130417,
+		added: '2013-04-17',
 		fitclass: 8,
 		HP: 80, HPmax: 94,
 		FP: 99, FPbase: 82,
@@ -1915,7 +1915,7 @@ var SHIPDATA = {
 		image: 'KMutsu.png',
 		type: 'BB',
 		nid: 2,
-		added: 20130417,
+		added: '2013-04-17',
 		fitclass: 8,
 		HP: 80, HPmax: 94,
 		FP: 99, FPbase: 82,
@@ -1941,7 +1941,7 @@ var SHIPDATA = {
 		image: 'KIseKai.jpg',
 		type: 'BBV',
 		nid: 102,
-		added: 20130417,
+		added: '2013-04-17',
 		fitclass: 6,
 		HP: 77, HPmax: 89,
 		FP: 83, FPbase: 63,
@@ -1967,7 +1967,7 @@ var SHIPDATA = {
 		image: 'KAkagi.png',
 		type: 'CV',
 		nid: 6,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 69, HPmax: 79,
 		FP: 39, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -1992,7 +1992,7 @@ var SHIPDATA = {
 		image: 'KKaga.jpg',
 		type: 'CV',
 		nid: 7,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 71, HPmax: 89,
 		FP: 39, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -2017,7 +2017,7 @@ var SHIPDATA = {
 		image: 'KKirishima.jpg',
 		type: 'FBB',
 		nid: 24,
-		added: 20130417,
+		added: '2013-04-17',
 		fitclass: 1,
 		HP: 63, HPmax: 79,
 		FP: 89, FPbase: 63,
@@ -2043,7 +2043,7 @@ var SHIPDATA = {
 		image: 'KHiei.jpg',
 		type: 'FBB',
 		nid: 22,
-		added: 20130417,
+		added: '2013-04-17',
 		fitclass: 1,
 		HP: 63, HPmax: 79,
 		FP: 89, FPbase: 63,
@@ -2069,7 +2069,7 @@ var SHIPDATA = {
 		image: 'KHyuuga.jpg',
 		type: 'BB',
 		nid: 4,
-		added: 20130417,
+		added: '2013-04-17',
 		fitclass: 6,
 		HP: 74, HPmax: 89,
 		FP: 94, FPbase: 74,
@@ -2095,7 +2095,7 @@ var SHIPDATA = {
 		image: 'KHyuugaKai.jpg',
 		type: 'BBV',
 		nid: 103,
-		added: 20130417,
+		added: '2013-04-17',
 		fitclass: 6,
 		HP: 77, HPmax: 89,
 		FP: 83, FPbase: 63,
@@ -2121,7 +2121,7 @@ var SHIPDATA = {
 		image: 'KHoushou.jpg',
 		type: 'CVL',
 		nid: 25,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 30, HPmax: 49,
 		FP: 19, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -2146,7 +2146,7 @@ var SHIPDATA = {
 		image: 'KSouryuu.jpg',
 		type: 'CV',
 		nid: 8,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 50, HPmax: 79,
 		FP: 29, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -2171,7 +2171,7 @@ var SHIPDATA = {
 		image: 'KHiryuu.png',
 		type: 'CV',
 		nid: 9,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 50, HPmax: 79,
 		FP: 29, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -2196,7 +2196,7 @@ var SHIPDATA = {
 		image: 'KJunyou.png',
 		type: 'CVL',
 		nid: 66,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 40, HPmax: 64,
 		FP: 19, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -2221,7 +2221,7 @@ var SHIPDATA = {
 		image: 'KOboro.jpg',
 		type: 'DD',
 		nid: 67,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 15, HPmax: 29,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 27,
@@ -2246,7 +2246,7 @@ var SHIPDATA = {
 		image: 'KSazanami.jpg',
 		type: 'DD',
 		nid: 69,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 15, HPmax: 29,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 27,
@@ -2271,7 +2271,7 @@ var SHIPDATA = {
 		image: 'KAsashio.jpg',
 		type: 'DD',
 		nid: 85,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 16, HPmax: 33,
 		FP: 29, FPbase: 10,
 		TP: 79, TPbase: 24,
@@ -2296,7 +2296,7 @@ var SHIPDATA = {
 		image: 'KOoshio.jpg',
 		type: 'DD',
 		nid: 86,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 16, HPmax: 33,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -2321,7 +2321,7 @@ var SHIPDATA = {
 		image: 'KMichishio.jpg',
 		type: 'DD',
 		nid: 87,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 16, HPmax: 33,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -2346,7 +2346,7 @@ var SHIPDATA = {
 		image: 'KArashio.jpg',
 		type: 'DD',
 		nid: 88,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 16, HPmax: 33,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -2371,7 +2371,7 @@ var SHIPDATA = {
 		image: 'KKuma.jpg',
 		type: 'CL',
 		nid: 39,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 25, HPmax: 39,
 		FP: 49, FPbase: 14,
 		TP: 89, TPbase: 24,
@@ -2396,7 +2396,7 @@ var SHIPDATA = {
 		image: 'KTama.jpg',
 		type: 'CL',
 		nid: 40,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 25, HPmax: 39,
 		FP: 39, FPbase: 14,
 		TP: 79, TPbase: 24,
@@ -2421,7 +2421,7 @@ var SHIPDATA = {
 		image: 'KKiso.png',
 		type: 'CL',
 		nid: 41,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 25, HPmax: 39,
 		FP: 39, FPbase: 14,
 		TP: 79, TPbase: 24,
@@ -2446,7 +2446,7 @@ var SHIPDATA = {
 		image: 'KChitose.jpg',
 		type: 'AV',
 		nid: 49,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 40, HPmax: 59,
 		FP: 29, FPbase: 9,
 		TP: 0, TPbase: 0,
@@ -2471,7 +2471,7 @@ var SHIPDATA = {
 		image: 'KChiyoda.jpg',
 		type: 'AV',
 		nid: 50,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 40, HPmax: 59,
 		FP: 29, FPbase: 9,
 		TP: 0, TPbase: 0,
@@ -2496,7 +2496,7 @@ var SHIPDATA = {
 		image: 'KChitoseKai.png',
 		type: 'AV',
 		nid: 95,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 41, HPmax: 59,
 		FP: 29, FPbase: 9,
 		TP: 29, TPbase: 0,
@@ -2521,7 +2521,7 @@ var SHIPDATA = {
 		image: 'KChiyodaKai.png',
 		type: 'AV',
 		nid: 96,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 41, HPmax: 59,
 		FP: 29, FPbase: 9,
 		TP: 29, TPbase: 0,
@@ -2546,7 +2546,7 @@ var SHIPDATA = {
 		image: 'KChitoseA.jpg',
 		type: 'AV',
 		nid: 99,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 42, HPmax: 59,
 		FP: 29, FPbase: 9,
 		TP: 72, TPbase: 15,
@@ -2571,7 +2571,7 @@ var SHIPDATA = {
 		image: 'KChiyodaA.jpg',
 		type: 'AV',
 		nid: 100,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 42, HPmax: 59,
 		FP: 29, FPbase: 9,
 		TP: 72, TPbase: 15,
@@ -2596,7 +2596,7 @@ var SHIPDATA = {
 		image: 'KChitoseCVL.png',
 		type: 'CVL',
 		nid: 104,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 47, HPmax: 59,
 		FP: 19, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -2621,7 +2621,7 @@ var SHIPDATA = {
 		image: 'KChiyodaCVL.png',
 		type: 'CVL',
 		nid: 105,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 47, HPmax: 59,
 		FP: 19, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -2646,7 +2646,7 @@ var SHIPDATA = {
 		image: 'KShoukaku.jpg',
 		type: 'CV',
 		nid: 106,
-		added: 20130517,
+		added: '2013-05-17',
 		HP: 62, HPmax: 79,
 		FP: 39, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -2671,7 +2671,7 @@ var SHIPDATA = {
 		image: 'KZuikaku.jpg',
 		type: 'CV',
 		nid: 107,
-		added: 20130517,
+		added: '2013-05-17',
 		HP: 62, HPmax: 79,
 		FP: 39, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -2696,7 +2696,7 @@ var SHIPDATA = {
 		image: 'KZuikakuKai.jpg',
 		type: 'CV',
 		nid: 108,
-		added: 20130517,
+		added: '2013-05-17',
 		HP: 75, HPmax: 90,
 		FP: 39, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -2721,7 +2721,7 @@ var SHIPDATA = {
 		image: 'KKinu.jpg',
 		type: 'CL',
 		nid: 109,
-		added: 20130517,
+		added: '2013-05-17',
 		HP: 26, HPmax: 39,
 		FP: 39, FPbase: 14,
 		TP: 79, TPbase: 24,
@@ -2746,7 +2746,7 @@ var SHIPDATA = {
 		image: 'KAbukuma.jpg',
 		type: 'CL',
 		nid: 110,
-		added: 20130517,
+		added: '2013-05-17',
 		HP: 27, HPmax: 39,
 		FP: 39, FPbase: 14,
 		TP: 79, TPbase: 24,
@@ -2771,7 +2771,7 @@ var SHIPDATA = {
 		image: 'KYuubari.jpg',
 		type: 'CL',
 		nid: 111,
-		added: 20130605,
+		added: '2013-06-05',
 		HP: 19, HPmax: 33,
 		FP: 42, FPbase: 17,
 		TP: 69, TPbase: 20,
@@ -2796,7 +2796,7 @@ var SHIPDATA = {
 		image: 'KZuihou.jpg',
 		type: 'CVL',
 		nid: 112,
-		added: 20130605,
+		added: '2013-06-05',
 		HP: 32, HPmax: 55,
 		FP: 19, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -2821,7 +2821,7 @@ var SHIPDATA = {
 		image: 'KZuihouKai.jpg',
 		type: 'CVL',
 		nid: 113,
-		added: 20130605,
+		added: '2013-06-05',
 		HP: 45, HPmax: 69,
 		FP: 29, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -2846,7 +2846,7 @@ var SHIPDATA = {
 		image: 'KOoiKai2.jpg',
 		type: 'CLT',
 		nid: 114,
-		added: 20130619,
+		added: '2013-06-19',
 		HP: 43, HPmax: 59,
 		FP: 63, FPbase: 17,
 		TP: 139, TPbase: 90,
@@ -2871,7 +2871,7 @@ var SHIPDATA = {
 		image: 'KKitakamiKai2.jpg',
 		type: 'CLT',
 		nid: 115,
-		added: 20130619,
+		added: '2013-06-19',
 		HP: 43, HPmax: 59,
 		FP: 63, FPbase: 17,
 		TP: 139, TPbase: 90,
@@ -2896,7 +2896,7 @@ var SHIPDATA = {
 		image: 'KMikuma.jpg',
 		type: 'CA',
 		nid: 116,
-		added: 20130626,
+		added: '2013-06-26',
 		HP: 40, HPmax: 59,
 		FP: 59, FPbase: 40,
 		TP: 69, TPbase: 18,
@@ -2921,7 +2921,7 @@ var SHIPDATA = {
 		image: 'KMikumaKai.jpg',
 		type: 'CAV',
 		nid: 117,
-		added: 20130626,
+		added: '2013-06-26',
 		HP: 50, HPmax: 67,
 		FP: 76, FPbase: 24,
 		TP: 69, TPbase: 18,
@@ -2946,7 +2946,7 @@ var SHIPDATA = {
 		image: 'KMaikaze.jpg',
 		type: 'DD',
 		nid: 119,
-		added: 20130710,
+		added: '2013-07-10',
 		HP: 16, HPmax: 34,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -2971,7 +2971,7 @@ var SHIPDATA = {
 		image: 'KKinugasa.jpg',
 		type: 'CA',
 		nid: 120,
-		added: 20130724,
+		added: '2013-07-24',
 		HP: 37, HPmax: 49,
 		FP: 54, FPbase: 30,
 		TP: 59, TPbase: 12,
@@ -2996,7 +2996,7 @@ var SHIPDATA = {
 		image: 'KSuzuya.jpg',
 		type: 'CA',
 		nid: 124,
-		added: 20130801,
+		added: '2013-08-01',
 		HP: 40, HPmax: 59,
 		FP: 59, FPbase: 40,
 		TP: 69, TPbase: 18,
@@ -3021,7 +3021,7 @@ var SHIPDATA = {
 		image: 'KKumano.jpg',
 		type: 'CA',
 		nid: 125,
-		added: 20130801,
+		added: '2013-08-01',
 		HP: 40, HPmax: 59,
 		FP: 59, FPbase: 40,
 		TP: 69, TPbase: 18,
@@ -3046,7 +3046,7 @@ var SHIPDATA = {
 		image: 'KI-168.jpg',
 		type: 'SS',
 		nid: 126,
-		added: 20130801,
+		added: '2013-08-01',
 		HP: 10, HPmax: 17,
 		FP: 7, FPbase: 2,
 		TP: 59, TPbase: 24,
@@ -3071,7 +3071,7 @@ var SHIPDATA = {
 		image: 'KI-58.jpg',
 		type: 'SS',
 		nid: 127,
-		added: 20130801,
+		added: '2013-08-01',
 		HP: 14, HPmax: 19,
 		FP: 9, FPbase: 2,
 		TP: 69, TPbase: 30,
@@ -3096,7 +3096,7 @@ var SHIPDATA = {
 		image: 'KI-8.jpg',
 		type: 'SS',
 		nid: 128,
-		added: 20131101,
+		added: '2013-11-01',
 		HP: 15, HPmax: 19,
 		FP: 9, FPbase: 2,
 		TP: 69, TPbase: 30,
@@ -3121,7 +3121,7 @@ var SHIPDATA = {
 		image: 'KSuzuyaKai.jpg',
 		type: 'CAV',
 		nid: 129,
-		added: 20130801,
+		added: '2013-08-01',
 		HP: 50, HPmax: 67,
 		FP: 75, FPbase: 24,
 		TP: 69, TPbase: 18,
@@ -3136,9 +3136,9 @@ var SHIPDATA = {
 		SLOTS: [5, 6, 5, 6],
 		fuel: 50,
 		ammo: 55,
-		next: 0,
+		next: 503,
 		prev: 124,
-		nextlvl: 0,
+		nextlvl: 84,
 	},
 	130: {
 		name: 'Kumano Kai',
@@ -3146,7 +3146,7 @@ var SHIPDATA = {
 		image: 'KKumanoKai.jpg',
 		type: 'CAV',
 		nid: 130,
-		added: 20130801,
+		added: '2013-08-01',
 		HP: 50, HPmax: 67,
 		FP: 75, FPbase: 24,
 		TP: 69, TPbase: 18,
@@ -3171,7 +3171,7 @@ var SHIPDATA = {
 		image: 'KYamato.jpg',
 		type: 'BB',
 		nid: 131,
-		added: 20130801,
+		added: '2013-08-01',
 		fitclass: 9,
 		HP: 93, HPmax: 98,
 		FP: 129, FPbase: 96,
@@ -3197,7 +3197,7 @@ var SHIPDATA = {
 		image: 'KAkigumo.jpg',
 		type: 'DD',
 		nid: 132,
-		added: 20130918,
+		added: '2013-09-18',
 		HP: 16, HPmax: 34,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -3222,7 +3222,7 @@ var SHIPDATA = {
 		image: 'KYuugumo.png',
 		type: 'DD',
 		nid: 133,
-		added: 20130918,
+		added: '2013-09-18',
 		HP: 16, HPmax: 34,
 		FP: 30, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -3247,7 +3247,7 @@ var SHIPDATA = {
 		image: 'KMakigumo.jpg',
 		type: 'DD',
 		nid: 134,
-		added: 20131016,
+		added: '2013-10-16',
 		HP: 16, HPmax: 34,
 		FP: 30, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -3272,7 +3272,7 @@ var SHIPDATA = {
 		image: 'KNaganami.jpg',
 		type: 'DD',
 		nid: 135,
-		added: 20131016,
+		added: '2013-10-16',
 		HP: 16, HPmax: 34,
 		FP: 30, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -3297,7 +3297,7 @@ var SHIPDATA = {
 		image: 'KYamatoKai.jpg',
 		type: 'BB',
 		nid: 136,
-		added: 20130801,
+		added: '2013-08-01',
 		fitclass: 9,
 		HP: 96, HPmax: 108,
 		FP: 139, FPbase: 92,
@@ -3323,7 +3323,7 @@ var SHIPDATA = {
 		image: 'KAgano.jpg',
 		type: 'CL',
 		nid: 137,
-		added: 20131101,
+		added: '2013-11-01',
 		HP: 30, HPmax: 45,
 		FP: 42, FPbase: 20,
 		TP: 72, TPbase: 24,
@@ -3348,7 +3348,7 @@ var SHIPDATA = {
 		image: 'KNoshiro.jpg',
 		type: 'CL',
 		nid: 138,
-		added: 20131101,
+		added: '2013-11-01',
 		HP: 30, HPmax: 45,
 		FP: 42, FPbase: 20,
 		TP: 72, TPbase: 24,
@@ -3373,7 +3373,7 @@ var SHIPDATA = {
 		image: 'KYahagi.jpg',
 		type: 'CL',
 		nid: 139,
-		added: 20131120,
+		added: '2013-11-20',
 		HP: 31, HPmax: 45,
 		FP: 42, FPbase: 20,
 		TP: 72, TPbase: 24,
@@ -3398,7 +3398,7 @@ var SHIPDATA = {
 		image: 'KSakawa.jpg',
 		type: 'CL',
 		nid: 140,
-		added: 20140423,
+		added: '2014-04-23',
 		HP: 31, HPmax: 45,
 		FP: 41, FPbase: 19,
 		TP: 71, TPbase: 23,
@@ -3423,7 +3423,7 @@ var SHIPDATA = {
 		image: 'KIsuzuKai2.jpg',
 		type: 'CL',
 		nid: 141,
-		added: 20130925,
+		added: '2013-09-25',
 		HP: 44, HPmax: 59,
 		FP: 59, FPbase: 18,
 		TP: 79, TPbase: 24,
@@ -3450,7 +3450,7 @@ var SHIPDATA = {
 		image: 'KKinugasaKai2.jpg',
 		type: 'CA',
 		nid: 142,
-		added: 20131113,
+		added: '2013-11-13',
 		HP: 53, HPmax: 65,
 		FP: 78, FPbase: 38,
 		TP: 74, TPbase: 24,
@@ -3475,7 +3475,7 @@ var SHIPDATA = {
 		image: 'KMusashi.jpg',
 		type: 'BB',
 		nid: 143,
-		added: 20131101,
+		added: '2013-11-01',
 		fitclass: 9,
 		HP: 94, HPmax: 98,
 		FP: 129, FPbase: 96,
@@ -3501,7 +3501,7 @@ var SHIPDATA = {
 		image: 'KYuudachiKai2.jpg',
 		type: 'DD',
 		nid: 144,
-		added: 20131004,
+		added: '2013-10-04',
 		HP: 31, HPmax: 58,
 		FP: 73, FPbase: 17,
 		TP: 93, TPbase: 37,
@@ -3526,7 +3526,7 @@ var SHIPDATA = {
 		image: 'KShigureKai2.jpg',
 		type: 'DD',
 		nid: 145,
-		added: 20131023,
+		added: '2013-10-23',
 		HP: 31, HPmax: 49,
 		FP: 59, FPbase: 13,
 		TP: 84, TPbase: 28,
@@ -3551,7 +3551,7 @@ var SHIPDATA = {
 		image: 'KKisoKai2.jpg',
 		type: 'CLT',
 		nid: 146,
-		added: 20131211,
+		added: '2013-12-11',
 		HP: 44, HPmax: 59,
 		FP: 64, FPbase: 18,
 		TP: 110, TPbase: 80,
@@ -3576,7 +3576,7 @@ var SHIPDATA = {
 		image: 'KVerniy.jpg',
 		type: 'DD',
 		nid: 147,
-		added: 20130911,
+		added: '2013-09-11',
 		HP: 37, HPmax: 49,
 		FP: 54, FPbase: 13,
 		TP: 89, TPbase: 30,
@@ -3601,7 +3601,7 @@ var SHIPDATA = {
 		image: 'KMusashiKai.jpg',
 		type: 'BB',
 		nid: 148,
-		added: 20131101,
+		added: '2013-11-01',
 		fitclass: 9,
 		HP: 97, HPmax: 108,
 		FP: 139, FPbase: 92,
@@ -3627,7 +3627,7 @@ var SHIPDATA = {
 		image: 'KKongouKai2.jpg',
 		type: 'FBB',
 		nid: 149,
-		added: 20131101,
+		added: '2013-11-01',
 		fitclass: 1,
 		HP: 82, HPmax: 99,
 		FP: 98, FPbase: 76,
@@ -3653,7 +3653,7 @@ var SHIPDATA = {
 		image: 'KHieiKai2.jpg',
 		type: 'FBB',
 		nid: 150,
-		added: 20131120,
+		added: '2013-11-20',
 		fitclass: 1,
 		HP: 83, HPmax: 99,
 		FP: 98, FPbase: 76,
@@ -3679,7 +3679,7 @@ var SHIPDATA = {
 		image: 'KHarunaKai2.jpg',
 		type: 'FBB',
 		nid: 151,
-		added: 20140728,
+		added: '2014-07-28',
 		fitclass: 1,
 		HP: 81, HPmax: 99,
 		FP: 96, FPbase: 75,
@@ -3705,7 +3705,7 @@ var SHIPDATA = {
 		image: 'KKirishimaKai2.jpg',
 		type: 'FBB',
 		nid: 152,
-		added: 20140328,
+		added: '2014-03-28',
 		fitclass: 1,
 		HP: 82, HPmax: 99,
 		FP: 104, FPbase: 78,
@@ -3731,7 +3731,7 @@ var SHIPDATA = {
 		image: 'KTaihou.jpg',
 		type: 'CVB',
 		nid: 153,
-		added: 20131224,
+		added: '2013-12-24',
 		HP: 67, HPmax: 87,
 		FP: 49, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -3756,7 +3756,7 @@ var SHIPDATA = {
 		image: 'KKatori.png',
 		type: 'CT',
 		nid: 154,
-		added: 20150206,
+		added: '2015-02-06',
 		HP: 36, HPmax: 48,
 		FP: 28, FPbase: 14,
 		TP: 28, TPbase: 12,
@@ -3781,7 +3781,7 @@ var SHIPDATA = {
 		image: 'KI-401.jpg',
 		type: 'SSV',
 		nid: 155,
-		added: 20131224,
+		added: '2013-12-24',
 		HP: 20, HPmax: 24,
 		FP: 9, FPbase: 2,
 		TP: 72, TPbase: 36,
@@ -3806,7 +3806,7 @@ var SHIPDATA = {
 		image: 'KTaihouKai.jpg',
 		type: 'CVB',
 		nid: 156,
-		added: 20131224,
+		added: '2013-12-24',
 		HP: 70, HPmax: 90,
 		FP: 59, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -3831,7 +3831,7 @@ var SHIPDATA = {
 		image: 'KRyuujouKai2.jpg',
 		type: 'CVL',
 		nid: 157,
-		added: 20140523,
+		added: '2014-05-23',
 		HP: 50, HPmax: 72,
 		FP: 40, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -3856,7 +3856,7 @@ var SHIPDATA = {
 		image: 'KSendaiKai2.jpg',
 		type: 'CL',
 		nid: 158,
-		added: 20140620,
+		added: '2014-06-20',
 		HP: 48, HPmax: 64,
 		FP: 67, FPbase: 24,
 		TP: 88, TPbase: 26,
@@ -3881,7 +3881,7 @@ var SHIPDATA = {
 		image: 'KJintsuuKai2.jpg',
 		type: 'CL',
 		nid: 159,
-		added: 20140226,
+		added: '2014-02-26',
 		HP: 50, HPmax: 63,
 		FP: 70, FPbase: 27,
 		TP: 98, TPbase: 38,
@@ -3906,7 +3906,7 @@ var SHIPDATA = {
 		image: 'KNakaKai2.jpg',
 		type: 'CL',
 		nid: 160,
-		added: 20140115,
+		added: '2014-01-15',
 		HP: 48, HPmax: 62,
 		FP: 68, FPbase: 22,
 		TP: 84, TPbase: 28,
@@ -3931,7 +3931,7 @@ var SHIPDATA = {
 		image: 'KAkitsuMaru.jpg',
 		type: 'LHA',
 		nid: 161,
-		added: 20131224,
+		added: '2013-12-24',
 		HP: 38, HPmax: 49,
 		FP: 19, FPbase: 6,
 		TP: 0, TPbase: 0,
@@ -3956,7 +3956,7 @@ var SHIPDATA = {
 		image: 'KMaruyu.jpg',
 		type: 'SS',
 		nid: 163,
-		added: 20131224,
+		added: '2013-12-24',
 		HP: 6, HPmax: 9,
 		FP: 3, FPbase: 1,
 		TP: 9, TPbase: 0,
@@ -3981,7 +3981,7 @@ var SHIPDATA = {
 		image: 'KYayoi.jpg',
 		type: 'DD',
 		nid: 164,
-		added: 20140129,
+		added: '2014-01-29',
 		HP: 13, HPmax: 24,
 		FP: 29, FPbase: 6,
 		TP: 49, TPbase: 18,
@@ -4006,7 +4006,7 @@ var SHIPDATA = {
 		image: 'KUzuki.jpg',
 		type: 'DD',
 		nid: 165,
-		added: 20140129,
+		added: '2014-01-29',
 		HP: 13, HPmax: 24,
 		FP: 29, FPbase: 6,
 		TP: 49, TPbase: 18,
@@ -4031,7 +4031,7 @@ var SHIPDATA = {
 		image: 'KAkitsuMaruKai.jpg',
 		type: 'LHA',
 		nid: 166,
-		added: 20131224,
+		added: '2013-12-24',
 		HP: 40, HPmax: 59,
 		FP: 33, FPbase: 8,
 		TP: 0, TPbase: 0,
@@ -4056,7 +4056,7 @@ var SHIPDATA = {
 		image: 'KIsokaze.png',
 		type: 'DD',
 		nid: 167,
-		added: 20140808,
+		added: '2014-08-08',
 		HP: 16, HPmax: 34,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -4081,7 +4081,7 @@ var SHIPDATA = {
 		image: 'KUrakaze.jpg',
 		type: 'DD',
 		nid: 168,
-		added: 20140523,
+		added: '2014-05-23',
 		HP: 16, HPmax: 34,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -4106,7 +4106,7 @@ var SHIPDATA = {
 		image: 'KTanikaze.jpg',
 		type: 'DD',
 		nid: 169,
-		added: 20140423,
+		added: '2014-04-23',
 		HP: 16, HPmax: 34,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -4131,7 +4131,7 @@ var SHIPDATA = {
 		image: 'KHamakaze.jpg',
 		type: 'DD',
 		nid: 170,
-		added: 20140328,
+		added: '2014-03-28',
 		HP: 16, HPmax: 34,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -4156,7 +4156,7 @@ var SHIPDATA = {
 		image: 'KBismarck.jpg',
 		type: 'FBB',
 		nid: 171,
-		added: 20140314,
+		added: '2014-03-14',
 		fitclass: 2,
 		HP: 90, HPmax: 96,
 		FP: 88, FPbase: 64,
@@ -4182,7 +4182,7 @@ var SHIPDATA = {
 		image: 'KBismarckKai.jpg',
 		type: 'FBB',
 		nid: 172,
-		added: 20140314,
+		added: '2014-03-14',
 		fitclass: 2,
 		HP: 94, HPmax: 99,
 		FP: 93, FPbase: 70,
@@ -4208,7 +4208,7 @@ var SHIPDATA = {
 		image: 'KBismarckZwei.png',
 		type: 'FBB',
 		nid: 173,
-		added: 20140423,
+		added: '2014-04-23',
 		fitclass: 2,
 		HP: 96, HPmax: 99,
 		FP: 97, FPbase: 70,
@@ -4234,7 +4234,7 @@ var SHIPDATA = {
 		image: 'KZ1.jpg',
 		type: 'DD',
 		nid: 174,
-		added: 20140314,
+		added: '2014-03-14',
 		HP: 18, HPmax: 29,
 		FP: 26, FPbase: 8,
 		TP: 60, TPbase: 24,
@@ -4259,7 +4259,7 @@ var SHIPDATA = {
 		image: 'KZ3.jpg',
 		type: 'DD',
 		nid: 175,
-		added: 20140314,
+		added: '2014-03-14',
 		HP: 18, HPmax: 29,
 		FP: 26, FPbase: 8,
 		TP: 60, TPbase: 24,
@@ -4284,7 +4284,7 @@ var SHIPDATA = {
 		image: 'KPrinzEugen.jpg',
 		type: 'CA',
 		nid: 176,
-		added: 20141114,
+		added: '2014-11-14',
 		HP: 50, HPmax: 72,
 		FP: 56, FPbase: 38,
 		TP: 64, TPbase: 32,
@@ -4309,7 +4309,7 @@ var SHIPDATA = {
 		image: 'KPrinzEugenKai.jpg',
 		type: 'CA',
 		nid: 177,
-		added: 20141114,
+		added: '2014-11-14',
 		HP: 63, HPmax: 79,
 		FP: 75, FPbase: 48,
 		TP: 84, TPbase: 40,
@@ -4334,7 +4334,7 @@ var SHIPDATA = {
 		image: 'KBismarckDrei.jpg',
 		type: 'FBB',
 		nid: 178,
-		added: 20140926,
+		added: '2014-09-26',
 		fitclass: 2,
 		HP: 96, HPmax: 99,
 		FP: 99, FPbase: 74,
@@ -4361,7 +4361,7 @@ var SHIPDATA = {
 		image: 'KZ1Zwei.jpg',
 		type: 'DD',
 		nid: 179,
-		added: 20140314,
+		added: '2014-03-14',
 		HP: 35, HPmax: 59,
 		FP: 49, FPbase: 12,
 		TP: 71, TPbase: 27,
@@ -4386,7 +4386,7 @@ var SHIPDATA = {
 		image: 'KZ3Zwei.jpg',
 		type: 'DD',
 		nid: 180,
-		added: 20140314,
+		added: '2014-03-14',
 		HP: 35, HPmax: 59,
 		FP: 47, FPbase: 10,
 		TP: 71, TPbase: 27,
@@ -4411,7 +4411,7 @@ var SHIPDATA = {
 		image: 'KAmatsukaze.jpg',
 		type: 'DD',
 		nid: 181,
-		added: 20140423,
+		added: '2014-04-23',
 		HP: 18, HPmax: 37,
 		FP: 29, FPbase: 10,
 		TP: 79, TPbase: 28,
@@ -4436,7 +4436,7 @@ var SHIPDATA = {
 		image: 'KAkashi.jpg',
 		type: 'AR',
 		nid: 182,
-		added: 20140423,
+		added: '2014-04-23',
 		HP: 39, HPmax: 48,
 		FP: 14, FPbase: 4,
 		TP: 0, TPbase: 0,
@@ -4461,7 +4461,7 @@ var SHIPDATA = {
 		image: 'KOoyodo.jpg',
 		type: 'CL',
 		nid: 183,
-		added: 20140808,
+		added: '2014-08-08',
 		HP: 34, HPmax: 47,
 		FP: 48, FPbase: 24,
 		TP: 39, TPbase: 0,
@@ -4486,7 +4486,7 @@ var SHIPDATA = {
 		image: 'KTaigei.jpg',
 		type: 'AS',
 		nid: 184,
-		added: 20140606,
+		added: '2014-06-06',
 		HP: 39, HPmax: 55,
 		FP: 15, FPbase: 5,
 		TP: 0, TPbase: 0,
@@ -4511,7 +4511,7 @@ var SHIPDATA = {
 		image: 'KRyuuhou.png',
 		type: 'CVL',
 		nid: 185,
-		added: 20140606,
+		added: '2014-06-06',
 		HP: 39, HPmax: 57,
 		FP: 20, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -4536,7 +4536,7 @@ var SHIPDATA = {
 		image: 'KTokitsukaze.jpg',
 		type: 'DD',
 		nid: 186,
-		added: 20140808,
+		added: '2014-08-08',
 		HP: 16, HPmax: 34,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -4561,7 +4561,7 @@ var SHIPDATA = {
 		image: 'KAkashiKai.jpg',
 		type: 'AR',
 		nid: 187,
-		added: 20140423,
+		added: '2014-04-23',
 		HP: 45, HPmax: 58,
 		FP: 24, FPbase: 6,
 		TP: 0, TPbase: 0,
@@ -4586,7 +4586,7 @@ var SHIPDATA = {
 		image: 'KToneKai2.jpg',
 		type: 'CAV',
 		nid: 188,
-		added: 20140423,
+		added: '2014-04-23',
 		HP: 59, HPmax: 72,
 		FP: 77, FPbase: 46,
 		TP: 82, TPbase: 32,
@@ -4611,7 +4611,7 @@ var SHIPDATA = {
 		image: 'KChikumaKai2.jpg',
 		type: 'CAV',
 		nid: 189,
-		added: 20140423,
+		added: '2014-04-23',
 		HP: 58, HPmax: 72,
 		FP: 77, FPbase: 46,
 		TP: 83, TPbase: 33,
@@ -4636,7 +4636,7 @@ var SHIPDATA = {
 		image: 'KHatsukaze.jpg',
 		type: 'DD',
 		nid: 118,
-		added: 20130826,
+		added: '2013-08-26',
 		HP: 16, HPmax: 34,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -4661,7 +4661,7 @@ var SHIPDATA = {
 		image: 'KI-19.jpg',
 		type: 'SS',
 		nid: 123,
-		added: 20131101,
+		added: '2013-11-01',
 		HP: 14, HPmax: 19,
 		FP: 9, FPbase: 2,
 		TP: 79, TPbase: 36,
@@ -4686,7 +4686,7 @@ var SHIPDATA = {
 		image: 'KNachiKai2.jpg',
 		type: 'CA',
 		nid: 192,
-		added: 20150123,
+		added: '2015-01-23',
 		HP: 56, HPmax: 71,
 		FP: 80, FPbase: 50,
 		TP: 84, TPbase: 34,
@@ -4711,7 +4711,7 @@ var SHIPDATA = {
 		image: 'KAshigaraKai2.jpg',
 		type: 'CA',
 		nid: 193,
-		added: 20141226,
+		added: '2014-12-26',
 		HP: 56, HPmax: 71,
 		FP: 82, FPbase: 53,
 		TP: 84, TPbase: 34,
@@ -4736,7 +4736,7 @@ var SHIPDATA = {
 		image: 'KHaguroKai2.jpg',
 		type: 'CA',
 		nid: 194,
-		added: 20140523,
+		added: '2014-05-23',
 		HP: 57, HPmax: 71,
 		FP: 84, FPbase: 52,
 		TP: 84, TPbase: 34,
@@ -4761,7 +4761,7 @@ var SHIPDATA = {
 		image: 'KAyanamiKai2.jpg',
 		type: 'DD',
 		nid: 195,
-		added: 20140620,
+		added: '2014-06-20',
 		HP: 32, HPmax: 54,
 		FP: 72, FPbase: 17,
 		TP: 87, TPbase: 30,
@@ -4786,7 +4786,7 @@ var SHIPDATA = {
 		image: 'KHiryuuKai2.jpg',
 		type: 'CV',
 		nid: 196,
-		added: 20140606,
+		added: '2014-06-06',
 		HP: 67, HPmax: 89,
 		FP: 64, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -4811,7 +4811,7 @@ var SHIPDATA = {
 		image: 'KSouryuuKai2.jpg',
 		type: 'CV',
 		nid: 197,
-		added: 20140718,
+		added: '2014-07-18',
 		HP: 67, HPmax: 89,
 		FP: 57, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -4836,7 +4836,7 @@ var SHIPDATA = {
 		image: 'KOoshioKai2.jpg',
 		type: 'DD',
 		nid: 199,
-		added: 20160401,
+		added: '2016-04-01',
 		HP: 31, HPmax: 53,
 		FP: 67, FPbase: 17,
 		TP: 90, TPbase: 33,
@@ -4861,7 +4861,7 @@ var SHIPDATA = {
 		image: 'KAbukumaKai2.jpg',
 		type: 'CL',
 		nid: 200,
-		added: 20150717,
+		added: '2015-07-17',
 		HP: 45, HPmax: 61,
 		FP: 56, FPbase: 16,
 		TP: 94, TPbase: 34,
@@ -4886,7 +4886,7 @@ var SHIPDATA = {
 		image: 'KFubukiKai.png',
 		type: 'DD',
 		nid: 1301,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 30, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -4911,7 +4911,7 @@ var SHIPDATA = {
 		image: 'KShirayukiKai.jpg',
 		type: 'DD',
 		nid: 1302,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 30, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -4936,7 +4936,7 @@ var SHIPDATA = {
 		image: 'KHatsuyukiKai.png',
 		type: 'DD',
 		nid: 1303,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 30, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -4961,7 +4961,7 @@ var SHIPDATA = {
 		image: 'KMiyukiKai.jpg',
 		type: 'DD',
 		nid: 1304,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 30, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -4986,7 +4986,7 @@ var SHIPDATA = {
 		image: 'KMurakumoKai.png',
 		type: 'DD',
 		nid: 1305,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 30, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -5011,7 +5011,7 @@ var SHIPDATA = {
 		image: 'KIsonamiKai.png',
 		type: 'DD',
 		nid: 1306,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 30, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -5036,7 +5036,7 @@ var SHIPDATA = {
 		image: 'KAyanamiKai.png',
 		type: 'DD',
 		nid: 1307,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 30, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -5061,7 +5061,7 @@ var SHIPDATA = {
 		image: 'KShikinamiKai.jpg',
 		type: 'DD',
 		nid: 1308,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 30, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -5086,7 +5086,7 @@ var SHIPDATA = {
 		image: 'KKongouKai.png',
 		type: 'FBB',
 		nid: 1309,
-		added: 20130417,
+		added: '2013-04-17',
 		fitclass: 1,
 		HP: 75, HPmax: 89,
 		FP: 94, FPbase: 72,
@@ -5112,7 +5112,7 @@ var SHIPDATA = {
 		image: 'KHieiKai.png',
 		type: 'FBB',
 		nid: 1310,
-		added: 20130417,
+		added: '2013-04-17',
 		fitclass: 1,
 		HP: 75, HPmax: 89,
 		FP: 94, FPbase: 72,
@@ -5138,7 +5138,7 @@ var SHIPDATA = {
 		image: 'KHarunaKai.png',
 		type: 'FBB',
 		nid: 1311,
-		added: 20130417,
+		added: '2013-04-17',
 		fitclass: 1,
 		HP: 75, HPmax: 89,
 		FP: 94, FPbase: 72,
@@ -5164,7 +5164,7 @@ var SHIPDATA = {
 		image: 'KKirishimaKai.png',
 		type: 'FBB',
 		nid: 1312,
-		added: 20130417,
+		added: '2013-04-17',
 		fitclass: 1,
 		HP: 75, HPmax: 89,
 		FP: 94, FPbase: 72,
@@ -5190,7 +5190,7 @@ var SHIPDATA = {
 		image: 'KTenryuuKai.jpg',
 		type: 'CL',
 		nid: 1313,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 40, HPmax: 54,
 		FP: 59, FPbase: 20,
 		TP: 79, TPbase: 24,
@@ -5215,7 +5215,7 @@ var SHIPDATA = {
 		image: 'KTatsutaKai.jpg',
 		type: 'CL',
 		nid: 1314,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 40, HPmax: 54,
 		FP: 59, FPbase: 20,
 		TP: 79, TPbase: 24,
@@ -5240,7 +5240,7 @@ var SHIPDATA = {
 		image: 'KKumaKai.jpg',
 		type: 'CL',
 		nid: 1315,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 42, HPmax: 59,
 		FP: 69, FPbase: 20,
 		TP: 89, TPbase: 24,
@@ -5265,7 +5265,7 @@ var SHIPDATA = {
 		image: 'KTamaKai.jpg',
 		type: 'CL',
 		nid: 1316,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 42, HPmax: 59,
 		FP: 59, FPbase: 20,
 		TP: 79, TPbase: 24,
@@ -5290,7 +5290,7 @@ var SHIPDATA = {
 		image: 'KKisoKai.jpg',
 		type: 'CL',
 		nid: 1317,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 42, HPmax: 59,
 		FP: 59, FPbase: 20,
 		TP: 79, TPbase: 24,
@@ -5315,7 +5315,7 @@ var SHIPDATA = {
 		image: 'KNagaraKai.jpg',
 		type: 'CL',
 		nid: 1318,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 43, HPmax: 59,
 		FP: 69, FPbase: 20,
 		TP: 89, TPbase: 24,
@@ -5340,7 +5340,7 @@ var SHIPDATA = {
 		image: 'KIsuzuKai.jpg',
 		type: 'CL',
 		nid: 1319,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 37, HPmax: 59,
 		FP: 59, FPbase: 18,
 		TP: 79, TPbase: 24,
@@ -5365,7 +5365,7 @@ var SHIPDATA = {
 		image: 'KYuraKai.jpg',
 		type: 'CL',
 		nid: 1320,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 43, HPmax: 59,
 		FP: 59, FPbase: 20,
 		TP: 79, TPbase: 24,
@@ -5390,7 +5390,7 @@ var SHIPDATA = {
 		image: 'KNatoriKai.jpg',
 		type: 'CL',
 		nid: 1321,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 43, HPmax: 59,
 		FP: 69, FPbase: 20,
 		TP: 89, TPbase: 24,
@@ -5415,7 +5415,7 @@ var SHIPDATA = {
 		image: 'KSendaiKai.jpg',
 		type: 'CL',
 		nid: 1322,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 44, HPmax: 59,
 		FP: 59, FPbase: 20,
 		TP: 79, TPbase: 24,
@@ -5440,7 +5440,7 @@ var SHIPDATA = {
 		image: 'KJintsuuKai.jpg',
 		type: 'CL',
 		nid: 1323,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 44, HPmax: 59,
 		FP: 59, FPbase: 20,
 		TP: 79, TPbase: 24,
@@ -5465,7 +5465,7 @@ var SHIPDATA = {
 		image: 'KNakaKai.png',
 		type: 'CL',
 		nid: 1324,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 44, HPmax: 59,
 		FP: 59, FPbase: 20,
 		TP: 79, TPbase: 24,
@@ -5490,7 +5490,7 @@ var SHIPDATA = {
 		image: 'KKagerouKai.jpg',
 		type: 'DD',
 		nid: 1325,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 32, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -5515,7 +5515,7 @@ var SHIPDATA = {
 		image: 'KShiranuiKai.jpg',
 		type: 'DD',
 		nid: 1326,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 32, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -5540,7 +5540,7 @@ var SHIPDATA = {
 		image: 'KKuroshioKai.jpg',
 		type: 'DD',
 		nid: 1327,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 32, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -5565,7 +5565,7 @@ var SHIPDATA = {
 		image: 'KYukikazeKai.png',
 		type: 'DD',
 		nid: 1328,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 32, HPmax: 49,
 		FP: 59, FPbase: 12,
 		TP: 89, TPbase: 28,
@@ -5590,7 +5590,7 @@ var SHIPDATA = {
 		image: 'KShimakazeKai.png',
 		type: 'DD',
 		nid: 1329,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 36, HPmax: 59,
 		FP: 59, FPbase: 14,
 		TP: 99, TPbase: 48,
@@ -5615,7 +5615,7 @@ var SHIPDATA = {
 		image: 'KOboroKai.jpg',
 		type: 'DD',
 		nid: 1330,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 30, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -5640,7 +5640,7 @@ var SHIPDATA = {
 		image: 'KAkebonoKai.png',
 		type: 'DD',
 		nid: 1331,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 30, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -5665,7 +5665,7 @@ var SHIPDATA = {
 		image: 'KSazanamiKai.png',
 		type: 'DD',
 		nid: 1332,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 30, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -5690,7 +5690,7 @@ var SHIPDATA = {
 		image: 'KUshioKai.png',
 		type: 'DD',
 		nid: 1333,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 30, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -5715,7 +5715,7 @@ var SHIPDATA = {
 		image: 'KAkatsukiKai.png',
 		type: 'DD',
 		nid: 1334,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 30, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -5740,7 +5740,7 @@ var SHIPDATA = {
 		image: 'KHibikiKai.png',
 		type: 'DD',
 		nid: 1335,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 30, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -5765,7 +5765,7 @@ var SHIPDATA = {
 		image: 'KIkazuchiKai.png',
 		type: 'DD',
 		nid: 1336,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 30, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -5790,7 +5790,7 @@ var SHIPDATA = {
 		image: 'KInazumaKai.png',
 		type: 'DD',
 		nid: 1337,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 30, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -5815,7 +5815,7 @@ var SHIPDATA = {
 		image: 'KHatsuharuKai.png',
 		type: 'DD',
 		nid: 1338,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 30, HPmax: 48,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -5840,7 +5840,7 @@ var SHIPDATA = {
 		image: 'KNenohiKai.jpg',
 		type: 'DD',
 		nid: 1339,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 30, HPmax: 48,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -5865,7 +5865,7 @@ var SHIPDATA = {
 		image: 'KWakabaKai.png',
 		type: 'DD',
 		nid: 1340,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 30, HPmax: 48,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -5890,7 +5890,7 @@ var SHIPDATA = {
 		image: 'KHatsushimoKai.png',
 		type: 'DD',
 		nid: 1341,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 30, HPmax: 48,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -5915,7 +5915,7 @@ var SHIPDATA = {
 		image: 'KShiratsuyuKai.jpg',
 		type: 'DD',
 		nid: 1342,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 30, HPmax: 48,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -5940,7 +5940,7 @@ var SHIPDATA = {
 		image: 'KShigureKai.jpg',
 		type: 'DD',
 		nid: 1343,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 30, HPmax: 48,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -5965,7 +5965,7 @@ var SHIPDATA = {
 		image: 'KMurasameKai.jpg',
 		type: 'DD',
 		nid: 1344,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 30, HPmax: 48,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -5990,7 +5990,7 @@ var SHIPDATA = {
 		image: 'KYuudachiKai.png',
 		type: 'DD',
 		nid: 1345,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 30, HPmax: 48,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -6015,7 +6015,7 @@ var SHIPDATA = {
 		image: 'KSamidareKai.jpg',
 		type: 'DD',
 		nid: 1346,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 30, HPmax: 48,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -6040,7 +6040,7 @@ var SHIPDATA = {
 		image: 'KSuzukazeKai.jpg',
 		type: 'DD',
 		nid: 1347,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 30, HPmax: 48,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -6065,7 +6065,7 @@ var SHIPDATA = {
 		image: 'KAsashioKai.jpg',
 		type: 'DD',
 		nid: 1348,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 31, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -6090,7 +6090,7 @@ var SHIPDATA = {
 		image: 'KOoshioKai.png',
 		type: 'DD',
 		nid: 1349,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 31, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -6115,7 +6115,7 @@ var SHIPDATA = {
 		image: 'KMichishioKai.jpg',
 		type: 'DD',
 		nid: 1350,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 31, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -6140,7 +6140,7 @@ var SHIPDATA = {
 		image: 'KArashioKai.jpg',
 		type: 'DD',
 		nid: 1351,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 31, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -6165,7 +6165,7 @@ var SHIPDATA = {
 		image: 'KArareKai.jpg',
 		type: 'DD',
 		nid: 1352,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 31, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -6190,7 +6190,7 @@ var SHIPDATA = {
 		image: 'KKasumiKai.jpg',
 		type: 'DD',
 		nid: 1353,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 31, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -6215,7 +6215,7 @@ var SHIPDATA = {
 		image: 'KMutsukiKai.png',
 		type: 'DD',
 		nid: 1354,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 24, HPmax: 39,
 		FP: 39, FPbase: 9,
 		TP: 69, TPbase: 18,
@@ -6240,7 +6240,7 @@ var SHIPDATA = {
 		image: 'KKisaragiKai.png',
 		type: 'DD',
 		nid: 1355,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 24, HPmax: 39,
 		FP: 39, FPbase: 9,
 		TP: 69, TPbase: 18,
@@ -6265,7 +6265,7 @@ var SHIPDATA = {
 		image: 'KSatsukiKai.png',
 		type: 'DD',
 		nid: 1356,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 24, HPmax: 39,
 		FP: 39, FPbase: 9,
 		TP: 69, TPbase: 18,
@@ -6290,7 +6290,7 @@ var SHIPDATA = {
 		image: 'KFumizukiKai.png',
 		type: 'DD',
 		nid: 1357,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 24, HPmax: 39,
 		FP: 39, FPbase: 9,
 		TP: 69, TPbase: 18,
@@ -6315,7 +6315,7 @@ var SHIPDATA = {
 		image: 'KNagatsukiKai.png',
 		type: 'DD',
 		nid: 1358,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 24, HPmax: 39,
 		FP: 39, FPbase: 9,
 		TP: 69, TPbase: 18,
@@ -6340,7 +6340,7 @@ var SHIPDATA = {
 		image: 'KKikuzukiKai.png',
 		type: 'DD',
 		nid: 1359,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 24, HPmax: 39,
 		FP: 39, FPbase: 9,
 		TP: 69, TPbase: 18,
@@ -6365,7 +6365,7 @@ var SHIPDATA = {
 		image: 'KMikazukiKai.png',
 		type: 'DD',
 		nid: 1360,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 24, HPmax: 39,
 		FP: 39, FPbase: 9,
 		TP: 69, TPbase: 18,
@@ -6390,7 +6390,7 @@ var SHIPDATA = {
 		image: 'KMochizukiKai.png',
 		type: 'DD',
 		nid: 1361,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 24, HPmax: 39,
 		FP: 39, FPbase: 9,
 		TP: 69, TPbase: 18,
@@ -6415,7 +6415,7 @@ var SHIPDATA = {
 		image: 'KFurutakaKai.png',
 		type: 'CA',
 		nid: 1362,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 48, HPmax: 65,
 		FP: 70, FPbase: 36,
 		TP: 59, TPbase: 18,
@@ -6440,7 +6440,7 @@ var SHIPDATA = {
 		image: 'KKakoKai.png',
 		type: 'CA',
 		nid: 1363,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 48, HPmax: 65,
 		FP: 70, FPbase: 36,
 		TP: 59, TPbase: 18,
@@ -6465,7 +6465,7 @@ var SHIPDATA = {
 		image: 'KAobaKai.png',
 		type: 'CA',
 		nid: 1364,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 49, HPmax: 65,
 		FP: 72, FPbase: 36,
 		TP: 59, TPbase: 18,
@@ -6490,7 +6490,7 @@ var SHIPDATA = {
 		image: 'KMyoukouKai.png',
 		type: 'CA',
 		nid: 1365,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 55, HPmax: 69,
 		FP: 76, FPbase: 48,
 		TP: 79, TPbase: 24,
@@ -6515,7 +6515,7 @@ var SHIPDATA = {
 		image: 'KNachiKai.png',
 		type: 'CA',
 		nid: 1366,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 55, HPmax: 69,
 		FP: 76, FPbase: 48,
 		TP: 69, TPbase: 24,
@@ -6540,7 +6540,7 @@ var SHIPDATA = {
 		image: 'KAshigaraKai.png',
 		type: 'CA',
 		nid: 1367,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 55, HPmax: 69,
 		FP: 77, FPbase: 48,
 		TP: 69, TPbase: 24,
@@ -6565,7 +6565,7 @@ var SHIPDATA = {
 		image: 'KHaguroKai.png',
 		type: 'CA',
 		nid: 1368,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 55, HPmax: 69,
 		FP: 77, FPbase: 48,
 		TP: 69, TPbase: 24,
@@ -6590,7 +6590,7 @@ var SHIPDATA = {
 		image: 'KTakaoKai.png',
 		type: 'CA',
 		nid: 1369,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 57, HPmax: 69,
 		FP: 77, FPbase: 48,
 		TP: 79, TPbase: 24,
@@ -6615,7 +6615,7 @@ var SHIPDATA = {
 		image: 'KAtagoKai.png',
 		type: 'CA',
 		nid: 1370,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 57, HPmax: 69,
 		FP: 77, FPbase: 48,
 		TP: 79, TPbase: 24,
@@ -6640,7 +6640,7 @@ var SHIPDATA = {
 		image: 'KMayaKai.png',
 		type: 'CA',
 		nid: 1371,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 55, HPmax: 69,
 		FP: 78, FPbase: 43,
 		TP: 69, TPbase: 24,
@@ -6665,7 +6665,7 @@ var SHIPDATA = {
 		image: 'KChoukaiKai.png',
 		type: 'CA',
 		nid: 1372,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 57, HPmax: 69,
 		FP: 78, FPbase: 48,
 		TP: 69, TPbase: 24,
@@ -6690,7 +6690,7 @@ var SHIPDATA = {
 		image: 'KToneKai.png',
 		type: 'CA',
 		nid: 1373,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 56, HPmax: 69,
 		FP: 76, FPbase: 42,
 		TP: 79, TPbase: 24,
@@ -6715,7 +6715,7 @@ var SHIPDATA = {
 		image: 'KChikumaKai.jpg',
 		type: 'CA',
 		nid: 1374,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 56, HPmax: 69,
 		FP: 76, FPbase: 42,
 		TP: 79, TPbase: 24,
@@ -6740,7 +6740,7 @@ var SHIPDATA = {
 		image: 'KNagatoKai.png',
 		type: 'BB',
 		nid: 1375,
-		added: 20130417,
+		added: '2013-04-17',
 		fitclass: 8,
 		HP: 90, HPmax: 98,
 		FP: 99, FPbase: 90,
@@ -6766,7 +6766,7 @@ var SHIPDATA = {
 		image: 'KMutsuKai.png',
 		type: 'BB',
 		nid: 1376,
-		added: 20130417,
+		added: '2013-04-17',
 		fitclass: 8,
 		HP: 90, HPmax: 98,
 		FP: 99, FPbase: 90,
@@ -6792,7 +6792,7 @@ var SHIPDATA = {
 		image: 'KAkagiKai.png',
 		type: 'CV',
 		nid: 1377,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 77, HPmax: 92,
 		FP: 54, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -6817,7 +6817,7 @@ var SHIPDATA = {
 		image: 'KKagaKai.png',
 		type: 'CV',
 		nid: 1378,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 79, HPmax: 92,
 		FP: 49, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -6842,7 +6842,7 @@ var SHIPDATA = {
 		image: 'KSouryuuKai.png',
 		type: 'CV',
 		nid: 1379,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 65, HPmax: 89,
 		FP: 39, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -6867,7 +6867,7 @@ var SHIPDATA = {
 		image: 'KHiryuuKai.jpg',
 		type: 'CV',
 		nid: 1380,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 65, HPmax: 89,
 		FP: 39, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -6892,7 +6892,7 @@ var SHIPDATA = {
 		image: 'KRyuujouKai.jpg',
 		type: 'CVL',
 		nid: 1381,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 45, HPmax: 69,
 		FP: 29, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -6917,7 +6917,7 @@ var SHIPDATA = {
 		image: 'KShouhouKai.jpg',
 		type: 'CVL',
 		nid: 1382,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 45, HPmax: 69,
 		FP: 29, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -6942,7 +6942,7 @@ var SHIPDATA = {
 		image: 'KHiyouKai.jpg',
 		type: 'CVL',
 		nid: 1383,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 50, HPmax: 79,
 		FP: 29, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -6967,7 +6967,7 @@ var SHIPDATA = {
 		image: 'KJunyouKai.jpg',
 		type: 'CVL',
 		nid: 1384,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 50, HPmax: 79,
 		FP: 29, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -6992,7 +6992,7 @@ var SHIPDATA = {
 		image: 'KHoushouKai.png',
 		type: 'CVL',
 		nid: 1385,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 40, HPmax: 59,
 		FP: 29, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -7017,7 +7017,7 @@ var SHIPDATA = {
 		image: 'KFusouKai.jpg',
 		type: 'BBV',
 		nid: 1386,
-		added: 20130417,
+		added: '2013-04-17',
 		fitclass: 6,
 		HP: 75, HPmax: 89,
 		FP: 79, FPbase: 63,
@@ -7043,7 +7043,7 @@ var SHIPDATA = {
 		image: 'KYamashiroKai.jpg',
 		type: 'BBV',
 		nid: 1387,
-		added: 20130417,
+		added: '2013-04-17',
 		fitclass: 6,
 		HP: 75, HPmax: 89,
 		FP: 79, FPbase: 63,
@@ -7069,7 +7069,7 @@ var SHIPDATA = {
 		image: 'KShoukakuKai.jpg',
 		type: 'CV',
 		nid: 1388,
-		added: 20130517,
+		added: '2013-05-17',
 		HP: 75, HPmax: 90,
 		FP: 39, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -7094,7 +7094,7 @@ var SHIPDATA = {
 		image: 'KKinuKai.jpg',
 		type: 'CL',
 		nid: 1389,
-		added: 20130517,
+		added: '2013-05-17',
 		HP: 41, HPmax: 59,
 		FP: 59, FPbase: 20,
 		TP: 79, TPbase: 24,
@@ -7119,7 +7119,7 @@ var SHIPDATA = {
 		image: 'KAbukumaKai.jpg',
 		type: 'CL',
 		nid: 1390,
-		added: 20130517,
+		added: '2013-05-17',
 		HP: 42, HPmax: 59,
 		FP: 59, FPbase: 20,
 		TP: 79, TPbase: 24,
@@ -7144,7 +7144,7 @@ var SHIPDATA = {
 		image: 'KChitoseCVLKai.png',
 		type: 'CVL',
 		nid: 1391,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 57, HPmax: 79,
 		FP: 34, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -7169,7 +7169,7 @@ var SHIPDATA = {
 		image: 'KChiyodaCVLKai.png',
 		type: 'CVL',
 		nid: 1392,
-		added: 20130417,
+		added: '2013-04-17',
 		HP: 57, HPmax: 79,
 		FP: 34, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -7194,7 +7194,7 @@ var SHIPDATA = {
 		image: 'KYuubariKai.jpg',
 		type: 'CL',
 		nid: 1393,
-		added: 20130605,
+		added: '2013-06-05',
 		HP: 36, HPmax: 49,
 		FP: 63, FPbase: 23,
 		TP: 79, TPbase: 24,
@@ -7219,7 +7219,7 @@ var SHIPDATA = {
 		image: 'KMaikazeKai.jpg',
 		type: 'DD',
 		nid: 1394,
-		added: 20130710,
+		added: '2013-07-10',
 		HP: 32, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -7244,7 +7244,7 @@ var SHIPDATA = {
 		image: 'KKinugasaKai.jpg',
 		type: 'CA',
 		nid: 1395,
-		added: 20130710,
+		added: '2013-07-10',
 		HP: 49, HPmax: 65,
 		FP: 66, FPbase: 36,
 		TP: 59, TPbase: 18,
@@ -7268,7 +7268,7 @@ var SHIPDATA = {
 		nameJP: '千歳航改二',
 		image: 'KChitoseCVLKai2.jpg',
 		type: 'CVL',
-		added: 20130724,
+		added: '2013-07-24',
 		nid: 121,
 		HP: 58, HPmax: 79,
 		FP: 34, FPbase: 0,
@@ -7294,7 +7294,7 @@ var SHIPDATA = {
 		image: 'KChiyodaCVLKai2.jpg',
 		type: 'CVL',
 		nid: 122,
-		added: 20130724,
+		added: '2013-07-24',
 		HP: 58, HPmax: 79,
 		FP: 34, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -7319,7 +7319,7 @@ var SHIPDATA = {
 		image: 'KHatsukazeKai.jpg',
 		type: 'DD',
 		nid: 1396,
-		added: 20130826,
+		added: '2013-08-26',
 		HP: 32, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -7344,7 +7344,7 @@ var SHIPDATA = {
 		image: 'KAkigumoKai.jpg',
 		type: 'DD',
 		nid: 1397,
-		added: 20130918,
+		added: '2013-09-18',
 		HP: 32, HPmax: 49,
 		FP: 44, FPbase: 8,
 		TP: 79, TPbase: 28,
@@ -7369,7 +7369,7 @@ var SHIPDATA = {
 		image: 'KYuugumoKai.jpg',
 		type: 'DD',
 		nid: 1398,
-		added: 20130918,
+		added: '2013-09-18',
 		HP: 32, HPmax: 49,
 		FP: 50, FPbase: 12,
 		TP: 80, TPbase: 28,
@@ -7394,7 +7394,7 @@ var SHIPDATA = {
 		image: 'KMakigumoKai.jpg',
 		type: 'DD',
 		nid: 1399,
-		added: 20131016,
+		added: '2013-10-16',
 		HP: 32, HPmax: 49,
 		FP: 50, FPbase: 12,
 		TP: 80, TPbase: 28,
@@ -7419,7 +7419,7 @@ var SHIPDATA = {
 		image: 'KNaganamiKai.jpg',
 		type: 'DD',
 		nid: 1400,
-		added: 20131016,
+		added: '2013-10-16',
 		HP: 32, HPmax: 49,
 		FP: 50, FPbase: 12,
 		TP: 80, TPbase: 28,
@@ -7444,7 +7444,7 @@ var SHIPDATA = {
 		image: 'KAganoKai.jpg',
 		type: 'CL',
 		nid: 1401,
-		added: 20131101,
+		added: '2013-11-01',
 		HP: 45, HPmax: 62,
 		FP: 66, FPbase: 28,
 		TP: 79, TPbase: 24,
@@ -7469,7 +7469,7 @@ var SHIPDATA = {
 		image: 'KNoshiroKai.jpg',
 		type: 'CL',
 		nid: 1402,
-		added: 20131101,
+		added: '2013-11-01',
 		HP: 45, HPmax: 62,
 		FP: 66, FPbase: 28,
 		TP: 79, TPbase: 24,
@@ -7494,7 +7494,7 @@ var SHIPDATA = {
 		image: 'KYahagiKai.jpg',
 		type: 'CL',
 		nid: 1403,
-		added: 20131120,
+		added: '2013-11-20',
 		HP: 47, HPmax: 63,
 		FP: 68, FPbase: 28,
 		TP: 79, TPbase: 24,
@@ -7519,7 +7519,7 @@ var SHIPDATA = {
 		image: 'KYayoiKai.jpg',
 		type: 'DD',
 		nid: 1404,
-		added: 20140129,
+		added: '2014-01-29',
 		HP: 24, HPmax: 39,
 		FP: 39, FPbase: 9,
 		TP: 69, TPbase: 18,
@@ -7544,7 +7544,7 @@ var SHIPDATA = {
 		image: 'KUzukiKai.jpg',
 		type: 'DD',
 		nid: 1405,
-		added: 20140129,
+		added: '2014-01-29',
 		HP: 24, HPmax: 39,
 		FP: 34, FPbase: 7,
 		TP: 69, TPbase: 18,
@@ -7569,7 +7569,7 @@ var SHIPDATA = {
 		image: 'KZ1Kai.jpg',
 		type: 'DD',
 		nid: 1406,
-		added: 20140314,
+		added: '2014-03-14',
 		HP: 33, HPmax: 59,
 		FP: 45, FPbase: 11,
 		TP: 70, TPbase: 25,
@@ -7594,7 +7594,7 @@ var SHIPDATA = {
 		image: 'KZ3Kai.jpg',
 		type: 'DD',
 		nid: 1407,
-		added: 20140314,
+		added: '2014-03-14',
 		HP: 33, HPmax: 59,
 		FP: 45, FPbase: 11,
 		TP: 70, TPbase: 25,
@@ -7619,7 +7619,7 @@ var SHIPDATA = {
 		image: 'KHamakazeKai.jpg',
 		type: 'DD',
 		nid: 1408,
-		added: 20140328,
+		added: '2014-03-28',
 		HP: 32, HPmax: 49,
 		FP: 48, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -7644,7 +7644,7 @@ var SHIPDATA = {
 		image: 'KTanikazeKai.jpg',
 		type: 'DD',
 		nid: 1409,
-		added: 20140423,
+		added: '2014-04-23',
 		HP: 32, HPmax: 49,
 		FP: 48, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -7669,7 +7669,7 @@ var SHIPDATA = {
 		image: 'KSakawaKai.jpg',
 		type: 'CL',
 		nid: 1410,
-		added: 20140423,
+		added: '2014-04-23',
 		HP: 46, HPmax: 62,
 		FP: 64, FPbase: 27,
 		TP: 78, TPbase: 23,
@@ -7694,7 +7694,7 @@ var SHIPDATA = {
 		image: 'KAmatsukazeKai.jpg',
 		type: 'DD',
 		nid: 1411,
-		added: 20140423,
+		added: '2014-04-23',
 		HP: 34, HPmax: 54,
 		FP: 49, FPbase: 12,
 		TP: 84, TPbase: 32,
@@ -7719,7 +7719,7 @@ var SHIPDATA = {
 		image: 'KUrakazeKai.jpg',
 		type: 'DD',
 		nid: 1412,
-		added: 20140523,
+		added: '2014-05-23',
 		HP: 32, HPmax: 49,
 		FP: 48, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -7744,7 +7744,7 @@ var SHIPDATA = {
 		image: 'KRyuuhouKai.jpg',
 		type: 'CVL',
 		nid: 190,
-		added: 20140606,
+		added: '2014-06-06',
 		HP: 48, HPmax: 70,
 		FP: 32, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -7769,7 +7769,7 @@ var SHIPDATA = {
 		image: 'KMyoukouKai2.jpg',
 		type: 'CA',
 		nid: 191,
-		added: 20140704,
+		added: '2014-07-04',
 		HP: 56, HPmax: 71,
 		FP: 80, FPbase: 50,
 		TP: 88, TPbase: 36,
@@ -7794,7 +7794,7 @@ var SHIPDATA = {
 		image: 'KIsokazeKai.jpg',
 		type: 'DD',
 		nid: 1413,
-		added: 20140808,
+		added: '2014-08-08',
 		HP: 33, HPmax: 49,
 		FP: 48, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -7819,7 +7819,7 @@ var SHIPDATA = {
 		image: 'KOoyodoKai.jpg',
 		type: 'CL',
 		nid: 1414,
-		added: 20140808,
+		added: '2014-08-08',
 		HP: 47, HPmax: 64,
 		FP: 63, FPbase: 32,
 		TP: 49, TPbase: 0,
@@ -7844,7 +7844,7 @@ var SHIPDATA = {
 		image: 'KTokitsukazeKai.jpg',
 		type: 'DD',
 		nid: 1415,
-		added: 20140808,
+		added: '2014-08-08',
 		HP: 32, HPmax: 49,
 		FP: 48, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -7869,7 +7869,7 @@ var SHIPDATA = {
 		image: 'KHarusameKai.jpg',
 		type: 'DD',
 		nid: 1416,
-		added: 20140808,
+		added: '2014-08-08',
 		HP: 30, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -7894,7 +7894,7 @@ var SHIPDATA = {
 		image: 'KHayashimoKai.jpg',
 		type: 'DD',
 		nid: 1417,
-		added: 20140808,
+		added: '2014-08-08',
 		HP: 32, HPmax: 49,
 		FP: 50, FPbase: 12,
 		TP: 80, TPbase: 28,
@@ -7919,7 +7919,7 @@ var SHIPDATA = {
 		image: 'KKiyoshimoKai.jpg',
 		type: 'DD',
 		nid: 1418,
-		added: 20140808,
+		added: '2014-08-08',
 		HP: 32, HPmax: 49,
 		FP: 50, FPbase: 12,
 		TP: 80, TPbase: 28,
@@ -7944,7 +7944,7 @@ var SHIPDATA = {
 		image: 'KHatsuharuKai2.jpg',
 		type: 'DD',
 		nid: 204,
-		added: 20141010,
+		added: '2014-10-10',
 		HP: 31, HPmax: 52,
 		FP: 54, FPbase: 13,
 		TP: 90, TPbase: 32,
@@ -7969,7 +7969,7 @@ var SHIPDATA = {
 		image: 'KAsagumoKai.jpg',
 		type: 'DD',
 		nid: 1419,
-		added: 20141114,
+		added: '2014-11-14',
 		HP: 31, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -7994,7 +7994,7 @@ var SHIPDATA = {
 		image: 'KYamagumoKai.jpg',
 		type: 'DD',
 		nid: 1420,
-		added: 20141226,
+		added: '2014-12-26',
 		HP: 31, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -8019,7 +8019,7 @@ var SHIPDATA = {
 		image: 'KNowakiKai.jpg',
 		type: 'DD',
 		nid: 1421,
-		added: 20141114,
+		added: '2014-11-14',
 		HP: 32, HPmax: 49,
 		FP: 48, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -8044,7 +8044,7 @@ var SHIPDATA = {
 		image: 'KAkizukiKai.jpg',
 		type: 'DD',
 		nid: 1422,
-		added: 20141114,
+		added: '2014-11-14',
 		HP: 37, HPmax: 57,
 		FP: 57, FPbase: 24,
 		TP: 54, TPbase: 24,
@@ -8070,7 +8070,7 @@ var SHIPDATA = {
 		image: 'KAmagi.png',
 		type: 'CV',
 		nid: 202,
-		added: 20141114,
+		added: '2014-11-14',
 		HP: 48, HPmax: 79,
 		FP: 25, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -8095,7 +8095,7 @@ var SHIPDATA = {
 		image: 'KKatsuragi.jpg',
 		type: 'CV',
 		nid: 203,
-		added: 20150428,
+		added: '2015-04-28',
 		HP: 48, HPmax: 79,
 		FP: 25, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -8120,7 +8120,7 @@ var SHIPDATA = {
 		image: 'KU-511Kai.jpg',
 		type: 'SS',
 		nid: 1504,
-		added: 20150206,
+		added: '2015-02-06',
 		HP: 13, HPmax: 18,
 		FP: 12, FPbase: 3,
 		TP: 64, TPbase: 27,
@@ -8145,7 +8145,7 @@ var SHIPDATA = {
 		image: 'KKatoriKai.jpg',
 		type: 'CT',
 		nid: 1423,
-		added: 20150206,
+		added: '2015-02-06',
 		HP: 40, HPmax: 54,
 		FP: 36, FPbase: 16,
 		TP: 40, TPbase: 14,
@@ -8170,7 +8170,7 @@ var SHIPDATA = {
 		image: 'KAsashimoKai.jpg',
 		type: 'DD',
 		nid: 1424,
-		added: 20150206,
+		added: '2015-02-06',
 		HP: 33, HPmax: 49,
 		FP: 47, FPbase: 12,
 		TP: 78, TPbase: 28,
@@ -8195,7 +8195,7 @@ var SHIPDATA = {
 		image: 'KTakanamiKai.jpg',
 		type: 'DD',
 		nid: 1425,
-		added: 20150428,
+		added: '2015-04-28',
 		HP: 32, HPmax: 49,
 		FP: 50, FPbase: 12,
 		TP: 80, TPbase: 28,
@@ -8220,7 +8220,7 @@ var SHIPDATA = {
 		image: 'KTeruzukiKai.jpg',
 		type: 'DD',
 		nid: 1426,
-		added: 20150810,
+		added: '2015-08-10',
 		HP: 37, HPmax: 57,
 		FP: 58, FPbase: 24,
 		TP: 56, TPbase: 25,
@@ -8246,7 +8246,7 @@ var SHIPDATA = {
 		image: 'KLibeccioKai.jpg',
 		type: 'DD',
 		nid: 1427,
-		added: 20150810,
+		added: '2015-08-10',
 		HP: 29, HPmax: 46,
 		FP: 48, FPbase: 11,
 		TP: 72, TPbase: 27,
@@ -8271,7 +8271,7 @@ var SHIPDATA = {
 		image: 'KMizuhoKai.jpg',
 		type: 'AV',
 		nid: 1428,
-		added: 20150810,
+		added: '2015-08-10',
 		HP: 42, HPmax: 62,
 		FP: 45, FPbase: 18,
 		TP: 72, TPbase: 15,
@@ -8296,7 +8296,7 @@ var SHIPDATA = {
 		image: 'KKazagumoKai.jpg',
 		type: 'DD',
 		nid: 1429,
-		added: 20150810,
+		added: '2015-08-10',
 		HP: 32, HPmax: 49,
 		FP: 50, FPbase: 12,
 		TP: 81, TPbase: 29,
@@ -8321,7 +8321,7 @@ var SHIPDATA = {
 		image: 'KUmikazeKai.jpg',
 		type: 'DD',
 		nid: 1430,
-		added: 20150810,
+		added: '2015-08-10',
 		HP: 30, HPmax: 48,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -8346,7 +8346,7 @@ var SHIPDATA = {
 		image: 'KKawakazeKai.jpg',
 		type: 'DD',
 		nid: 1431,
-		added: 20150810,
+		added: '2015-08-10',
 		HP: 30, HPmax: 48,
 		FP: 49, FPbase: 12,
 		TP: 80, TPbase: 29,
@@ -8371,7 +8371,7 @@ var SHIPDATA = {
 		image: 'KHayasuiKai.jpg',
 		type: 'AO',
 		nid: 1432,
-		added: 20150810,
+		added: '2015-08-10',
 		HP: 48, HPmax: 50,
 		FP: 36, FPbase: 8,
 		TP: 0, TPbase: 0,
@@ -8397,7 +8397,7 @@ var SHIPDATA = {
 		image: 'KGrafZeppelinKai.jpg',
 		type: 'CVN',
 		nid: 1433,
-		added: 20151118,
+		added: '2015-11-18',
 		HP: 78, HPmax: 92,
 		FP: 50, FPbase: 15,
 		TP: 0, TPbase: 0,
@@ -8423,7 +8423,7 @@ var SHIPDATA = {
 		image: 'KArashiKai.jpg',
 		type: 'DD',
 		nid: 1434,
-		added: 20151118,
+		added: '2015-11-18',
 		HP: 32, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -8448,7 +8448,7 @@ var SHIPDATA = {
 		image: 'KHagikazeKai.jpg',
 		type: 'DD',
 		nid: 1435,
-		added: 20151118,
+		added: '2015-11-18',
 		HP: 32, HPmax: 49,
 		FP: 49, FPbase: 13,
 		TP: 79, TPbase: 28,
@@ -8473,7 +8473,7 @@ var SHIPDATA = {
 		image: 'KKashimaKai.jpg',
 		type: 'CT',
 		nid: 1436,
-		added: 20151118,
+		added: '2015-11-18',
 		HP: 40, HPmax: 54,
 		FP: 37, FPbase: 14,
 		TP: 39, TPbase: 13,
@@ -8498,7 +8498,7 @@ var SHIPDATA = {
 		image: 'KHatsuzukiKai.jpg',
 		type: 'DD',
 		nid: 1437,
-		added: 20160210,
+		added: '2016-02-10',
 		HP: 37, HPmax: 57,
 		FP: 60, FPbase: 25,
 		TP: 54, TPbase: 24,
@@ -8524,7 +8524,7 @@ var SHIPDATA = {
 		image: 'KZaraKai.jpg',
 		type: 'CA',
 		nid: 1438,
-		added: 20160210,
+		added: '2016-02-10',
 		HP: 56, HPmax: 68,
 		FP: 75, FPbase: 42,
 		TP: 40, TPbase: 0,
@@ -8549,7 +8549,7 @@ var SHIPDATA = {
 		image: 'KOkinamiKai.jpg',
 		type: 'DD',
 		nid: 1439,
-		added: 20160210,
+		added: '2016-02-10',
 		HP: 32, HPmax: 49,
 		FP: 50, FPbase: 12,
 		TP: 81, TPbase: 29,
@@ -8574,7 +8574,7 @@ var SHIPDATA = {
 		image: 'KIowaKai.jpg',
 		type: 'FBB',
 		nid: 1440,
-		added: 20160502,
+		added: '2016-05-02',
 		fitclass: 4,
 		HP: 92, HPmax: 103,
 		FP: 115, FPbase: 90,
@@ -8600,7 +8600,7 @@ var SHIPDATA = {
 		image: 'KPolaKai.jpg',
 		type: 'CA',
 		nid: 1441,
-		added: 20160502,
+		added: '2016-05-02',
 		HP: 56, HPmax: 68,
 		FP: 77, FPbase: 41,
 		TP: 44, TPbase: 0,
@@ -8625,7 +8625,7 @@ var SHIPDATA = {
 		image: 'KOyashioKai.jpg',
 		type: 'DD',
 		nid: 1442,
-		added: 20160502,
+		added: '2016-05-02',
 		HP: 32, HPmax: 49,
 		FP: 50, FPbase: 13,
 		TP: 78, TPbase: 28,
@@ -8649,8 +8649,8 @@ var SHIPDATA = {
 		nameJP: '春風改',
 		image: 'KHarukazeKai.jpg',
 		type: 'DD',
-		nid: 363,
-		added: 20160502,
+		nid: 1443,
+		added: '2016-05-02',
 		HP: 23, HPmax: 38,
 		FP: 38, FPbase: 7,
 		TP: 68, TPbase: 14,
@@ -8675,7 +8675,7 @@ var SHIPDATA = {
 		image: 'KWarspiteKai.jpg',
 		type: 'BB',
 		nid: 1444,
-		added: 20150812,
+		added: '2015-08-12',
 		fitclass: 5,
 		HP: 82, HPmax: 92,
 		FP: 106, FPbase: 86,
@@ -8701,7 +8701,7 @@ var SHIPDATA = {
 		image: 'KAquilaKai.jpg',
 		type: 'CV',
 		nid: 1445,
-		added: 201505812,
+		added: '2015-08-12',
 		HP: 48, HPmax: 78,
 		FP: 24, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -8726,7 +8726,7 @@ var SHIPDATA = {
 		image: 'KMinazukiKai.jpg',
 		type: 'DD',
 		nid: 1446,
-		added: 201505812,
+		added: '2015-08-12',
 		HP: 24, HPmax: 39,
 		FP: 39, FPbase: 9,
 		TP: 69, TPbase: 18,
@@ -8751,7 +8751,7 @@ var SHIPDATA = {
 		image: 'KI-26Kai.jpg',
 		type: 'SSV',
 		nid: 1447,
-		added: 201505812,
+		added: '2015-08-12',
 		HP: 18, HPmax: 24,
 		FP: 12, FPbase: 3,
 		TP: 86, TPbase: 39,
@@ -8776,7 +8776,7 @@ var SHIPDATA = {
 		image: 'KUranamiKai.jpg',
 		type: 'DD',
 		nid: 1448,
-		added: '20160916',
+		added: '2016-09-16',
 		HP: 30, HPmax: 49,
 		FP: 49, FPbase: 12,
 		TP: 79, TPbase: 28,
@@ -8801,7 +8801,7 @@ var SHIPDATA = {
 		image: 'KYamakazeKai.jpg',
 		type: 'DD',
 		nid: 1449,
-		added: 20161118,
+		added: '2016-11-18',
 		HP: 30, HPmax: 48,
 		FP: 51, FPbase: 13,
 		TP: 82, TPbase: 28,
@@ -8825,7 +8825,7 @@ var SHIPDATA = {
 		image: 'KAsakazeKai.jpg',
 		type: 'DD',
 		nid: 1450,
-		added: 20161118,
+		added: '2016-11-18',
 		HP: 23, HPmax: 38,
 		FP: 42, FPbase: 8,
 		TP: 69, TPbase: 14,
@@ -8849,7 +8849,7 @@ var SHIPDATA = {
 		image: 'KMatsukazeKai.jpg',
 		type: 'DD',
 		nid: 1451,
-		added: '20170211',
+		added: '2017-02-11',
 		HP: 23, HPmax: 38,
 		FP: 39, FPbase: 7,
 		TP: 68, TPbase: 14,
@@ -8874,7 +8874,7 @@ var SHIPDATA = {
 		image: 'KCommandantTesteKai.jpg',
 		type: 'AV',
 		nid: 1452,
-		added: '20161118',
+		added: '2016-11-18',
 		HP: 43, HPmax: 64,
 		FP: 58, FPbase: 32,
 		TP: 0, TPbase: 0,
@@ -8898,7 +8898,7 @@ var SHIPDATA = {
 		image: 'KFujinamiKai.jpg',
 		type: 'DD',
 		nid: 1453,
-		added: '20170211',
+		added: '2017-02-11',
 		HP: 32, HPmax: 49,
 		FP: 52, FPbase: 12,
 		TP: 79, TPbase: 27,
@@ -8923,7 +8923,7 @@ var SHIPDATA = {
 		image: 'KI-13Kai.jpg',
 		type: 'SSV',
 		nid: 1454,
-		added: '20170212',
+		added: '2017-02-12',
 		HP: 21, HPmax: 36,
 		FP: 16, FPbase: 5,
 		TP: 72, TPbase: 32,
@@ -8948,7 +8948,7 @@ var SHIPDATA = {
 		image: 'KI-14Kai.jpg',
 		type: 'SSV',
 		nid: 1455,
-		added: '20170212',
+		added: '2017-02-12',
 		HP: 22, HPmax: 37,
 		FP: 12, FPbase: 4,
 		TP: 68, TPbase: 32,
@@ -8973,7 +8973,7 @@ var SHIPDATA = {
 		image: 'KI-168Kai.jpg',
 		type: 'SS',
 		nid: 1498,
-		added: 20130801,
+		added: '2013-08-01',
 		HP: 15, HPmax: 19,
 		FP: 11, FPbase: 3,
 		TP: 69, TPbase: 30,
@@ -8998,7 +8998,7 @@ var SHIPDATA = {
 		image: 'KI-58Kai.jpg',
 		type: 'SSV',
 		nid: 1499,
-		added: 20130801,
+		added: '2013-08-01',
 		HP: 18, HPmax: 24,
 		FP: 12, FPbase: 3,
 		TP: 84, TPbase: 36,
@@ -9023,7 +9023,7 @@ var SHIPDATA = {
 		image: 'KI-8Kai.jpg',
 		type: 'SSV',
 		nid: 1500,
-		added: 20131101,
+		added: '2013-11-01',
 		HP: 19, HPmax: 25,
 		FP: 14, FPbase: 4,
 		TP: 84, TPbase: 36,
@@ -9048,7 +9048,7 @@ var SHIPDATA = {
 		image: 'KI-19Kai.jpg',
 		type: 'SSV',
 		nid: 1501,
-		added: 20131101,
+		added: '2013-11-01',
 		HP: 18, HPmax: 24,
 		FP: 12, FPbase: 3,
 		TP: 89, TPbase: 42,
@@ -9073,7 +9073,7 @@ var SHIPDATA = {
 		image: 'KMaruyuKai.jpg',
 		type: 'SS',
 		nid: 1502,
-		added: 20131224,
+		added: '2013-12-24',
 		HP: 7, HPmax: 13,
 		FP: 5, FPbase: 1,
 		TP: 19, TPbase: 0,
@@ -9098,7 +9098,7 @@ var SHIPDATA = {
 		image: 'KI-401Kai.jpg',
 		type: 'SSV',
 		nid: 1503,
-		added: 20131224,
+		added: '2013-12-24',
 		HP: 24, HPmax: 39,
 		FP: 19, FPbase: 6,
 		TP: 80, TPbase: 40,
@@ -9123,7 +9123,7 @@ var SHIPDATA = {
 		image: 'KUnryuu.jpg',
 		type: 'CV',
 		nid: 201,
-		added: 20140808,
+		added: '2014-08-08',
 		HP: 48, HPmax: 79,
 		FP: 27, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -9148,7 +9148,7 @@ var SHIPDATA = {
 		image: 'KHarusame.png',
 		type: 'DD',
 		nid: 205,
-		added: 20140808,
+		added: '2014-08-08',
 		HP: 16, HPmax: 32,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -9173,7 +9173,7 @@ var SHIPDATA = {
 		image: 'KUnryuuKai.jpg',
 		type: 'CV',
 		nid: 206,
-		added: 20140808,
+		added: '2014-08-08',
 		HP: 60, HPmax: 84,
 		FP: 48, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -9198,7 +9198,7 @@ var SHIPDATA = {
 		image: 'KUshioKai2.jpg',
 		type: 'DD',
 		nid: 207,
-		added: 20141114,
+		added: '2014-11-14',
 		HP: 33, HPmax: 53,
 		FP: 52, FPbase: 10,
 		TP: 80, TPbase: 25,
@@ -9223,7 +9223,7 @@ var SHIPDATA = {
 		image: 'KJunyouKai2.jpg',
 		type: 'CVL',
 		nid: 208,
-		added: 20140829,
+		added: '2014-08-29',
 		HP: 55, HPmax: 82,
 		FP: 40, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -9248,7 +9248,7 @@ var SHIPDATA = {
 		image: 'KHayashimo.jpg',
 		type: 'DD',
 		nid: 209,
-		added: 20140808,
+		added: '2014-08-08',
 		HP: 16, HPmax: 34,
 		FP: 30, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -9273,7 +9273,7 @@ var SHIPDATA = {
 		image: 'KKiyoshimo.jpg',
 		type: 'DD',
 		nid: 210,
-		added: 20140808,
+		added: '2014-08-08',
 		HP: 16, HPmax: 34,
 		FP: 30, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -9298,7 +9298,7 @@ var SHIPDATA = {
 		image: 'KFusouKai2.jpg',
 		type: 'BBV',
 		nid: 211,
-		added: 20141024,
+		added: '2014-10-24',
 		fitclass: 7,
 		HP: 77, HPmax: 94,
 		FP: 99, FPbase: 80,
@@ -9324,7 +9324,7 @@ var SHIPDATA = {
 		image: 'KYamashiroKai2.jpg',
 		type: 'BBV',
 		nid: 212,
-		added: 20141120,
+		added: '2014-11-20',
 		fitclass: 7,
 		HP: 77, HPmax: 94,
 		FP: 98, FPbase: 80,
@@ -9350,7 +9350,7 @@ var SHIPDATA = {
 		image: 'KAsagumo.jpg',
 		type: 'DD',
 		nid: 213,
-		added: 20141114,
+		added: '2014-11-14',
 		HP: 16, HPmax: 33,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -9375,7 +9375,7 @@ var SHIPDATA = {
 		image: 'KYamagumo.jpg',
 		type: 'DD',
 		nid: 214,
-		added: 20141226,
+		added: '2014-12-26',
 		HP: 16, HPmax: 33,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -9400,7 +9400,7 @@ var SHIPDATA = {
 		image: 'KNowaki.jpg',
 		type: 'DD',
 		nid: 215,
-		added: 20141114,
+		added: '2014-11-14',
 		HP: 16, HPmax: 34,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -9425,7 +9425,7 @@ var SHIPDATA = {
 		image: 'KFurutakaKai2.jpg',
 		type: 'CA',
 		nid: 216,
-		added: 20141201,
+		added: '2014-12-01',
 		HP: 53, HPmax: 65,
 		FP: 77, FPbase: 39,
 		TP: 75, TPbase: 24,
@@ -9450,7 +9450,7 @@ var SHIPDATA = {
 		image: 'KKakoKai2.jpg',
 		type: 'CA',
 		nid: 217,
-		added: 20150612,
+		added: '2015-06-12',
 		HP: 52, HPmax: 64,
 		FP: 78, FPbase: 40,
 		TP: 77, TPbase: 25,
@@ -9475,7 +9475,7 @@ var SHIPDATA = {
 		image: 'KSatsukiKai2.png',
 		type: 'DD',
 		nid: 218,
-		added: 20160229,
+		added: '2016-02-29',
 		HP: 28, HPmax: 44,
 		FP: 42, FPbase: 8,
 		TP: 78, TPbase: 27,
@@ -9500,7 +9500,7 @@ var SHIPDATA = {
 		image: 'KHatsushimoKai2.jpg',
 		type: 'DD',
 		nid: 219,
-		added: 20150123,
+		added: '2015-01-23',
 		HP: 31, HPmax: 52,
 		FP: 53, FPbase: 12,
 		TP: 84, TPbase: 28,
@@ -9525,7 +9525,7 @@ var SHIPDATA = {
 		image: 'KMurakumoKai2.jpg',
 		type: 'DD',
 		nid: 220,
-		added: 20150410,
+		added: '2015-04-10',
 		HP: 31, HPmax: 49,
 		FP: 57, FPbase: 14,
 		TP: 89, TPbase: 32,
@@ -9550,7 +9550,7 @@ var SHIPDATA = {
 		image: 'KAkizuki.jpg',
 		type: 'DD',
 		nid: 221,
-		added: 20141114,
+		added: '2014-11-14',
 		HP: 20, HPmax: 40,
 		FP: 48, FPbase: 16,
 		TP: 48, TPbase: 16,
@@ -9576,7 +9576,7 @@ var SHIPDATA = {
 		image: 'KTeruzuki.jpg',
 		type: 'DD',
 		nid: 222,
-		added: 20150810,
+		added: '2015-08-10',
 		HP: 20, HPmax: 40,
 		FP: 49, FPbase: 16,
 		TP: 49, TPbase: 16,
@@ -9602,7 +9602,7 @@ var SHIPDATA = {
 		image: 'KHatsuzuki.jpg',
 		type: 'DD',
 		nid: 223,
-		added: 20160210,
+		added: '2016-02-10',
 		HP: 20, HPmax: 40,
 		FP: 50, FPbase: 18,
 		TP: 47, TPbase: 15,
@@ -9628,7 +9628,7 @@ var SHIPDATA = {
 		image: 'KTakanami.jpg',
 		type: 'DD',
 		nid: 224,
-		added: 20150428,
+		added: '2015-04-28',
 		HP: 16, HPmax: 34,
 		FP: 30, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -9653,7 +9653,7 @@ var SHIPDATA = {
 		image: 'KAsashimo.png',
 		type: 'DD',
 		nid: 225,
-		added: 20150206,
+		added: '2015-02-06',
 		HP: 16, HPmax: 34,
 		FP: 29, FPbase: 10,
 		TP: 68, TPbase: 24,
@@ -9678,7 +9678,7 @@ var SHIPDATA = {
 		image: 'KFubukiKai2.jpg',
 		type: 'DD',
 		nid: 226,
-		added: 20150109,
+		added: '2015-01-09',
 		HP: 31, HPmax: 49,
 		FP: 59, FPbase: 15,
 		TP: 88, TPbase: 30,
@@ -9703,7 +9703,7 @@ var SHIPDATA = {
 		image: 'KChoukaiKai2.jpg',
 		type: 'CA',
 		nid: 227,
-		added: 20150327,
+		added: '2015-03-27',
 		HP: 57, HPmax: 72,
 		FP: 85, FPbase: 55,
 		TP: 86, TPbase: 35,
@@ -9728,7 +9728,7 @@ var SHIPDATA = {
 		image: 'KMayaKai2.jpg',
 		type: 'CA',
 		nid: 228,
-		added: 20150313,
+		added: '2015-03-13',
 		HP: 57, HPmax: 71,
 		FP: 77, FPbase: 42,
 		TP: 84, TPbase: 34,
@@ -9753,7 +9753,7 @@ var SHIPDATA = {
 		image: 'KAmagiKai.jpg',
 		type: 'CV',
 		nid: 229,
-		added: 20141114,
+		added: '2014-11-14',
 		HP: 60, HPmax: 84,
 		FP: 45, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -9778,7 +9778,7 @@ var SHIPDATA = {
 		image: 'KKatsuragiKai.jpg',
 		type: 'CV',
 		nid: 230,
-		added: 20150428,
+		added: '2015-04-28',
 		HP: 60, HPmax: 84,
 		FP: 45, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -9803,7 +9803,7 @@ var SHIPDATA = {
 		image: 'KU-511.png',
 		type: 'SS',
 		nid: 231,
-		added: 20150206,
+		added: '2015-02-06',
 		HP: 8, HPmax: 16,
 		FP: 8, FPbase: 2,
 		TP: 58, TPbase: 22,
@@ -9828,7 +9828,7 @@ var SHIPDATA = {
 		image: 'KGrafZeppelin.jpg',
 		type: 'CVN',
 		nid: 232,
-		added: 20151118,
+		added: '2015-11-18',
 		HP: 70, HPmax: 89,
 		FP: 40, FPbase: 10,
 		TP: 0, TPbase: 0,
@@ -9854,7 +9854,7 @@ var SHIPDATA = {
 		image: 'KSaratoga.jpg',
 		type: 'CV',
 		nid: 233,
-		added: 20161118,
+		added: '2016-11-18',
 		HP: 83, HPmax: 93,
 		FP: 45, FPbase: 30,
 		TP: 0, TPbase: 0,
@@ -9879,7 +9879,7 @@ var SHIPDATA = {
 		image: 'KMutsukiKai2.jpg',
 		type: 'DD',
 		nid: 234,
-		added: 20150423,
+		added: '2015-04-23',
 		HP: 27, HPmax: 43,
 		FP: 45, FPbase: 10,
 		TP: 79, TPbase: 28,
@@ -9904,7 +9904,7 @@ var SHIPDATA = {
 		image: 'KKisaragiKai2.jpg',
 		type: 'DD',
 		nid: 235,
-		added: 20150423,
+		added: '2015-04-23',
 		HP: 27, HPmax: 43,
 		FP: 46, FPbase: 10,
 		TP: 80, TPbase: 28,
@@ -9929,7 +9929,7 @@ var SHIPDATA = {
 		image: 'KRo-500.jpg',
 		type: 'SS',
 		nid: 236,
-		added: 20150206,
+		added: '2015-02-06',
 		HP: 13, HPmax: 19,
 		FP: 13, FPbase: 4,
 		TP: 69, TPbase: 30,
@@ -9954,7 +9954,7 @@ var SHIPDATA = {
 		image: 'KAkatsukiKai2.jpg',
 		type: 'DD',
 		nid: 237,
-		added: 20150529,
+		added: '2015-05-29',
 		HP: 31, HPmax: 50,
 		FP: 62, FPbase: 14,
 		TP: 90, TPbase: 32,
@@ -9979,7 +9979,7 @@ var SHIPDATA = {
 		image: 'KSaratogaKai.jpg',
 		type: 'CV',
 		nid: 238,
-		added: 20161118,
+		added: '2016-11-18',
 		HP: 88, HPmax: 98,
 		FP: 53, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -10002,7 +10002,7 @@ var SHIPDATA = {
 		nameJP: 'Warspite',
 		image: 'KWarspite.jpg',
 		type: 'BB',
-		added: 20150812,
+		added: '2015-08-12',
 		fitclass: 5,
 		HP: 72, HPmax: 87,
 		FP: 92, FPbase: 72,
@@ -10027,8 +10027,8 @@ var SHIPDATA = {
 		nameJP: 'Iowa',
 		image: 'KIowa.jpg',
 		type: 'FBB',
-		nid: 440,
-		added: 20160502,
+		nid: 240,
+		added: '2016-05-02',
 		fitclass: 4,
 		HP: 84, HPmax: 95,
 		FP: 105, FPbase: 85,
@@ -10054,7 +10054,7 @@ var SHIPDATA = {
 		image: 'KLittorio.jpg',
 		type: 'FBB',
 		nid: 241,
-		added: 20150428,
+		added: '2015-04-28',
 		fitclass: 3,
 		HP: 88, HPmax: 94,
 		FP: 97, FPbase: 78,
@@ -10080,7 +10080,7 @@ var SHIPDATA = {
 		image: 'KRoma.jpg',
 		type: 'FBB',
 		nid: 242,
-		added: 20150428,
+		added: '2015-04-28',
 		fitclass: 3,
 		HP: 88, HPmax: 94,
 		FP: 98, FPbase: 79,
@@ -10106,7 +10106,7 @@ var SHIPDATA = {
 		image: 'KLibeccio.jpg',
 		type: 'DD',
 		nid: 243,
-		added: 20150810,
+		added: '2015-08-10',
 		HP: 15, HPmax: 30,
 		FP: 27, FPbase: 9,
 		TP: 58, TPbase: 22,
@@ -10130,8 +10130,8 @@ var SHIPDATA = {
 		nameJP: 'Aquila',
 		image: 'KAquila.jpg',
 		type: 'CV',
-		nid: 444,
-		added: 201505812,
+		nid: 244,
+		added: '2015-08-12',
 		HP: 38, HPmax: 60,
 		FP: 14, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -10156,7 +10156,7 @@ var SHIPDATA = {
 		image: 'KAkitsushima.jpg',
 		type: 'AV',
 		nid: 245,
-		added: 20150428,
+		added: '2015-04-28',
 		HP: 32, HPmax: 44,
 		FP: 18, FPbase: 6,
 		TP: 0, TPbase: 0,
@@ -10182,7 +10182,7 @@ var SHIPDATA = {
 		image: 'KItalia.jpg',
 		type: 'FBB',
 		nid: 246,
-		added: 20150428,
+		added: '2015-04-28',
 		fitclass: 3,
 		HP: 92, HPmax: 98,
 		FP: 102, FPbase: 81,
@@ -10209,7 +10209,7 @@ var SHIPDATA = {
 		image: 'KRomaKai.jpg',
 		type: 'FBB',
 		nid: 247,
-		added: 20150428,
+		added: '2015-04-28',
 		fitclass: 3,
 		HP: 92, HPmax: 98,
 		FP: 105, FPbase: 82,
@@ -10236,7 +10236,7 @@ var SHIPDATA = {
 		image: 'KZara.jpg',
 		type: 'CA',
 		nid: 248,
-		added: 20160210,
+		added: '2016-02-10',
 		HP: 42, HPmax: 55,
 		FP: 58, FPbase: 36,
 		TP: 28, TPbase: 0,
@@ -10260,8 +10260,8 @@ var SHIPDATA = {
 		nameJP: 'Pola',
 		image: 'KPola.jpg',
 		type: 'CA',
-		nid: 449,
-		added: 20160502,
+		nid: 249,
+		added: '2016-05-02',
 		HP: 42, HPmax: 55,
 		FP: 59, FPbase: 35,
 		TP: 32, TPbase: 0,
@@ -10286,7 +10286,7 @@ var SHIPDATA = {
 		image: 'KAkitsushimaKai.jpg',
 		type: 'AV',
 		nid: 250,
-		added: 20150428,
+		added: '2015-04-28',
 		HP: 36, HPmax: 48,
 		FP: 28, FPbase: 8,
 		TP: 0, TPbase: 0,
@@ -10312,7 +10312,7 @@ var SHIPDATA = {
 		image: 'KMizuho.jpg',
 		type: 'AV',
 		nid: 251,
-		added: 20150810,
+		added: '2015-08-10',
 		HP: 41, HPmax: 59,
 		FP: 36, FPbase: 12,
 		TP: 32, TPbase: 0,
@@ -10337,7 +10337,7 @@ var SHIPDATA = {
 		image: 'KOkinami.jpg',
 		type: 'DD',
 		nid: 252,
-		added: 20160210,
+		added: '2016-02-10',
 		HP: 16, HPmax: 34,
 		FP: 30, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -10362,7 +10362,7 @@ var SHIPDATA = {
 		image: 'KKazagumo.jpg',
 		type: 'DD',
 		nid: 253,
-		added: 20150810,
+		added: '2015-08-10',
 		HP: 16, HPmax: 34,
 		FP: 30, FPbase: 10,
 		TP: 70, TPbase: 25,
@@ -10387,7 +10387,7 @@ var SHIPDATA = {
 		image: 'KArashi.jpg',
 		type: 'DD',
 		nid: 254,
-		added: 20151118,
+		added: '2015-11-18',
 		HP: 16, HPmax: 34,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -10412,7 +10412,7 @@ var SHIPDATA = {
 		image: 'KHagikaze.jpg',
 		type: 'DD',
 		nid: 255,
-		added: 20151118,
+		added: '2015-11-18',
 		HP: 16, HPmax: 34,
 		FP: 29, FPbase: 11,
 		TP: 69, TPbase: 24,
@@ -10436,8 +10436,8 @@ var SHIPDATA = {
 		nameJP: '親潮',
 		image: 'KOyashio.jpg',
 		type: 'DD',
-		nid: 456,
-		added: 20160502,
+		nid: 256,
+		added: '2016-05-02',
 		HP: 16, HPmax: 34,
 		FP: 30, FPbase: 10,
 		TP: 68, TPbase: 24,
@@ -10462,7 +10462,7 @@ var SHIPDATA = {
 		image: 'KYamakaze.jpg',
 		type: 'DD',
 		nid: 257,
-		added: 20161118,
+		added: '2016-11-18',
 		HP: 16, HPmax: 32,
 		FP: 31, FPbase: 11,
 		TP: 69, TPbase: 24,
@@ -10487,7 +10487,7 @@ var SHIPDATA = {
 		image: 'KUmikaze.jpg',
 		type: 'DD',
 		nid: 258,
-		added: 20150810,
+		added: '2015-08-10',
 		HP: 16, HPmax: 32,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -10512,7 +10512,7 @@ var SHIPDATA = {
 		image: 'KKawakaze.jpg',
 		type: 'DD',
 		nid: 259,
-		added: 20150810,
+		added: '2015-08-10',
 		HP: 16, HPmax: 32,
 		FP: 29, FPbase: 10,
 		TP: 70, TPbase: 25,
@@ -10537,7 +10537,7 @@ var SHIPDATA = {
 		image: 'KHayasui.jpg',
 		type: 'AO',
 		nid: 260,
-		added: 20150810,
+		added: '2015-08-10',
 		HP: 43, HPmax: 50,
 		FP: 22, FPbase: 4,
 		TP: 0, TPbase: 0,
@@ -10563,7 +10563,7 @@ var SHIPDATA = {
 		image: 'KShoukakuKai2A.jpg',
 		type: 'CV',
 		nid: 261,
-		added: 20150925,
+		added: '2015-09-25',
 		HP: 77, HPmax: 93,
 		FP: 63, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -10588,7 +10588,7 @@ var SHIPDATA = {
 		image: 'KZuikakuKai2A.jpg',
 		type: 'CV',
 		nid: 262,
-		added: 20151030,
+		added: '2015-10-30',
 		HP: 78, HPmax: 93,
 		FP: 56, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -10607,13 +10607,13 @@ var SHIPDATA = {
 		prev: 112,
 		nextlvl: 90,
 	},
-		463: {
+	463: {
 		name: 'Asashio Kai 2',
 		nameJP: '朝潮改二',
 		image: 'KAsashioKai2.jpg',
 		type: 'DD',
-		nid: 463,
-		added: '20160630',
+		nid: 263,
+		added: '2016-06-30',
 		HP: 31, HPmax: 53,
 		FP: 68, FPbase: 18,
 		TP: 92, TPbase: 36,
@@ -10638,7 +10638,7 @@ var SHIPDATA = {
 		image: 'KKasumiKai2.jpg',
 		type: 'DD',
 		nid: 264,
-		added: 20160119,
+		added: '2016-01-19',
 		HP: 31, HPmax: 53,
 		FP: 63, FPbase: 16,
 		TP: 92, TPbase: 33,
@@ -10663,7 +10663,7 @@ var SHIPDATA = {
 		image: 'KKashima.jpg',
 		type: 'CT',
 		nid: 265,
-		added: 20151118,
+		added: '2015-11-18',
 		HP: 36, HPmax: 48,
 		FP: 27, FPbase: 13,
 		TP: 24, TPbase: 11,
@@ -10688,7 +10688,7 @@ var SHIPDATA = {
 		image: 'KShoukakuKai2A.jpg',
 		type: 'CVB',
 		nid: 266,
-		added: 20150925,
+		added: '2015-09-25',
 		HP: 78, HPmax: 94,
 		FP: 70, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -10713,7 +10713,7 @@ var SHIPDATA = {
 		image: 'KZuikakuKai2A.jpg',
 		type: 'CVB',
 		nid: 267,
-		added: 20151030,
+		added: '2015-10-30',
 		HP: 79, HPmax: 94,
 		FP: 65, FPbase: 0,
 		TP: 0, TPbase: 0,
@@ -10737,8 +10737,8 @@ var SHIPDATA = {
 		nameJP: '朝潮改二丁',
 		image: 'KAsashioKai2D.jpg',
 		type: 'DD',
-		nid: 468,
-		added: '20160630',
+		nid: 268,
+		added: '2016-06-30',
 		HP: 34, HPmax: 59,
 		FP: 52, FPbase: 12,
 		TP: 86, TPbase: 36,
@@ -10763,7 +10763,7 @@ var SHIPDATA = {
 		image: 'KKawakazeKai2.jpg',
 		type: 'DD',
 		nid: 269,
-		added: 20160422,
+		added: '2016-04-22',
 		HP: 31, HPmax: 54,
 		FP: 62, FPbase: 16,
 		TP: 96, TPbase: 38,
@@ -10788,7 +10788,7 @@ var SHIPDATA = {
 		image: 'KKasumiKai2B.jpg',
 		type: 'DD',
 		nid: 270,
-		added: 20160119,
+		added: '2016-01-19',
 		HP: 31, HPmax: 53,
 		FP: 59, FPbase: 12,
 		TP: 83, TPbase: 30,
@@ -10812,8 +10812,8 @@ var SHIPDATA = {
 		nameJP: '神風',
 		image: 'KKamikaze.jpg',
 		type: 'DD',
-		nid: 471,
-		added: 20160502,
+		nid: 271,
+		added: '2016-05-02',
 		HP: 12, HPmax: 23,
 		FP: 28, FPbase: 5,
 		TP: 36, TPbase: 12,
@@ -10838,7 +10838,7 @@ var SHIPDATA = {
 		image: 'KAsakaze.jpg',
 		type: 'DD',
 		nid: 272,
-		added: 20161118,
+		added: '2016-11-18',
 		HP: 12, HPmax: 23,
 		FP: 29, FPbase: 5,
 		TP: 37, TPbase: 12,
@@ -10862,8 +10862,8 @@ var SHIPDATA = {
 		nameJP: '春風',
 		image: 'KHarukaze.jpg',
 		type: 'DD',
-		nid: 473,
-		added: 20160502,
+		nid: 273,
+		added: '2016-05-02',
 		HP: 12, HPmax: 23,
 		FP: 27, FPbase: 5,
 		TP: 36, TPbase: 12,
@@ -10887,8 +10887,8 @@ var SHIPDATA = {
 		nameJP: '松風',
 		image: 'KMatsukaze.jpg',
 		type: 'DD',
-		nid: 474,
-		added: '20170211',
+		nid: 274,
+		added: '2017-02-11',
 		HP: 12, HPmax: 23,
 		FP: 28, FPbase: 5,
 		TP: 38, TPbase: 12,
@@ -10912,8 +10912,8 @@ var SHIPDATA = {
 		nameJP: '神風改',
 		image: 'KKamikazeKai.jpg',
 		type: 'DD',
-		nid: 476,
-		added: 20160502,
+		nid: 276,
+		added: '2016-05-02',
 		HP: 23, HPmax: 38,
 		FP: 41, FPbase: 8,
 		TP: 68, TPbase: 14,
@@ -10937,8 +10937,8 @@ var SHIPDATA = {
 		nameJP: '水無月',
 		image: 'KMinazuki.jpg',
 		type: 'DD',
-		nid: 481,
-		added: 201505812,
+		nid: 281,
+		added: '2015-08-12',
 		HP: 13, HPmax: 24,
 		FP: 29, FPbase: 6,
 		TP: 49, TPbase: 18,
@@ -10962,8 +10962,8 @@ var SHIPDATA = {
 		nameJP: '伊26',
 		image: 'KI-26.jpg',
 		type: 'SS',
-		nid: 483,
-		added: 201505812,
+		nid: 283,
+		added: '2015-08-12',
 		HP: 14, HPmax: 19,
 		FP: 9, FPbase: 2,
 		TP: 75, TPbase: 32,
@@ -10987,8 +10987,8 @@ var SHIPDATA = {
 		nameJP: '藤波',
 		image: 'KFujinami.jpg',
 		type: 'DD',
-		nid: 485,
-		added: '20170211',
+		nid: 285,
+		added: '2017-02-11',
 		HP: 16, HPmax: 34,
 		FP: 31, FPbase: 10,
 		TP: 69, TPbase: 24,
@@ -11012,8 +11012,8 @@ var SHIPDATA = {
 		nameJP: '浦波',
 		image: 'KUranami.jpg',
 		type: 'DD',
-		nid: 486,
-		added: '20160916',
+		nid: 286,
+		added: '2016-09-16',
 		HP: 15, HPmax: 29,
 		FP: 29, FPbase: 10,
 		TP: 69, TPbase: 27,
@@ -11038,7 +11038,7 @@ var SHIPDATA = {
 		image: 'KKinuKai2.jpg',
 		type: 'CL',
 		nid: 287,
-		added: '20161104',
+		added: '2016-11-04',
 		HP: 45, HPmax: 61,
 		FP: 55, FPbase: 15,
 		TP: 82, TPbase: 28,
@@ -11063,7 +11063,7 @@ var SHIPDATA = {
 		image: 'KArashioKai2.jpg',
 		type: 'DD',
 		nid: 290,
-		added: '20170125',
+		added: '2017-01-25',
 		HP: 31, HPmax: 54,
 		FP: 69, FPbase: 19,
 		TP: 88, TPbase: 33,
@@ -11088,7 +11088,7 @@ var SHIPDATA = {
 		image: 'KCommandantTeste.jpg',
 		type: 'AV',
 		nid: 291,
-		added: '20161118',
+		added: '2016-11-18',
 		HP: 42, HPmax: 63,
 		FP: 48, FPbase: 28,
 		TP: 0, TPbase: 0,
@@ -11112,8 +11112,8 @@ var SHIPDATA = {
 		nameJP: '伊13',
 		image: 'KI-13.jpg',
 		type: 'SSV',
-		nid: 494,
-		added: '20170212',
+		nid: 294,
+		added: '2017-02-12',
 		HP: 18, HPmax: 23,
 		FP: 9, FPbase: 2,
 		TP: 68, TPbase: 27,
@@ -11137,8 +11137,8 @@ var SHIPDATA = {
 		nameJP: '伊14',
 		image: 'KI-14.jpg',
 		type: 'SSV',
-		nid: 495,
-		added: '20170212',
+		nid: 295,
+		added: '2017-02-12',
 		HP: 18, HPmax: 23,
 		FP: 9, FPbase: 2,
 		TP: 66, TPbase: 27,
@@ -11162,8 +11162,8 @@ var SHIPDATA = {
 		nameJP: 'Zara due',
 		image: 'KZaraDue.jpg',
 		type: 'CA',
-		nid: 496,
-		added: '20170228',
+		nid: 296,
+		added: '2017-02-28',
 		HP: 62, HPmax: 74,
 		FP: 87, FPbase: 57,
 		TP: 48, TPbase: 0,
@@ -11182,7 +11182,58 @@ var SHIPDATA = {
 		prev: 358,
 		nextlvl: 0,
 	},
-	501: {
+	503: {
+		name: 'Suzuya Kai 2',
+		nameJP: '鈴谷改二',
+		image: 'KSuzuyaKai2.png',
+		type: 'CAV',
+		nid: 303,
+		added: '2017-04-05',
+		HP: 61, HPmax: 73,
+		FP: 76, FPbase: 30,
+		TP: 88, TPbase: 40,
+		AA: 85, AAbase: 30,
+		AR: 74, ARbase: 42,
+		EV: 82, EVbase: 41,
+		ASW: 0, ASWbase: 0,
+		LOS: 83, LOSbase: 24,
+		LUK: 14, LUKmax: 74,
+		RNG: 2,
+		SPD: 10,
+		SLOTS: [3, 3, 7, 11],
+		fuel: 55,
+		ammo: 60,
+		next: 508,
+		prev: 129,
+		nextlvl: 88
+	},
+	508: {
+		name: 'Suzuya Kai 2 Kou',
+		nameJP: '鈴谷航改二',
+		image: 'KSuzuyaCVLKai2.png',
+		type: 'CVL',
+		nid: 308,
+		added: '2017-04-05',
+		isASWlast: true,
+		HP: 61, HPmax: 73,
+		FP: 56, FPbase: 0,
+		TP: 0, TPbase: 0,
+		AA: 87, AAbase: 33,
+		AR: 74, ARbase: 42,
+		EV: 83, EVbase: 42,
+		ASW: 0, ASWbase: 0,
+		LOS: 85, LOSbase: 24,
+		LUK: 13, LUKmax: 74,
+		RNG: 2,
+		SPD: 10,
+		SLOTS: [15, 12, 12, 8],
+		fuel: 60,
+		ammo: 55,
+		next: 0,
+		prev: 503,
+		nextlvl: 0
+	},
+	1501: {
 		name: 'DD I-Class',
 		nameJP: '駆逐イ級',
 		image: 'SI.jpg',
@@ -11203,7 +11254,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	502: {
+	1502: {
 		name: 'DD Ro-Class',
 		nameJP: '駆逐ロ級',
 		image: 'SRo.jpg',
@@ -11224,7 +11275,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	503: {
+	1503: {
 		name: 'DD Ha-Class',
 		nameJP: '駆逐ハ級',
 		image: 'SHa.jpg',
@@ -11245,7 +11296,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	504: {
+	1504: {
 		name: 'DD Ni-Class',
 		nameJP: '駆逐ニ級',
 		image: 'SNi.jpg',
@@ -11266,7 +11317,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	505: {
+	1505: {
 		name: 'CL Ho-Class',
 		nameJP: '軽巡ホ級',
 		image: 'SHo.jpg',
@@ -11287,7 +11338,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	506: {
+	1506: {
 		name: 'CL He-Class',
 		nameJP: '軽巡ヘ級',
 		image: 'SHe.jpg',
@@ -11308,7 +11359,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	507: {
+	1507: {
 		name: 'CL To-Class',
 		nameJP: '軽巡ト級',
 		image: 'STo.jpg',
@@ -11329,7 +11380,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	508: {
+	1508: {
 		name: 'CLT Chi-Class',
 		nameJP: '雷巡チ級',
 		image: 'SChi.jpg',
@@ -11351,7 +11402,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	509: {
+	1509: {
 		name: 'CA Ri-Class',
 		nameJP: '重巡リ級',
 		image: 'SRi.png',
@@ -11372,7 +11423,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	510: {
+	1510: {
 		name: 'CVL Nu-Class',
 		nameJP: '軽母ヌ級',
 		image: 'SNu.jpg',
@@ -11394,7 +11445,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	511: {
+	1511: {
 		name: 'BB Ru-Class',
 		nameJP: '戦艦ル級',
 		image: 'SRu.png',
@@ -11415,7 +11466,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	512: {
+	1512: {
 		name: 'CV Wo-Class',
 		nameJP: '空母ヲ級',
 		image: 'SWo.png',
@@ -11436,7 +11487,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	513: {
+	1513: {
 		name: 'Transport Wa-Class',
 		nameJP: '輸送ワ級',
 		image: 'SWa.jpg',
@@ -11459,7 +11510,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	514: {
+	1514: {
 		name: 'DD I-Class Elite',
 		nameJP: '駆逐イ級elite',
 		image: 'SIE.png',
@@ -11480,7 +11531,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	515: {
+	1515: {
 		name: 'DD Ro-Class Elite',
 		nameJP: '駆逐ロ級elite',
 		image: 'SRoE.png',
@@ -11501,7 +11552,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	516: {
+	1516: {
 		name: 'DD Ha-Class Elite',
 		nameJP: '駆逐ハ級elite',
 		image: 'SHaE.png',
@@ -11522,7 +11573,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	517: {
+	1517: {
 		name: 'DD Ni-Class Elite',
 		nameJP: '駆逐ニ級elite',
 		image: 'SNiE.png',
@@ -11543,7 +11594,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	518: {
+	1518: {
 		name: 'CL Ho-Class Elite',
 		nameJP: '軽巡ホ級elite',
 		image: 'SHoE.jpg',
@@ -11564,7 +11615,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	519: {
+	1519: {
 		name: 'CL He-Class Elite',
 		nameJP: '軽巡ヘ級elite',
 		image: 'SHeE.jpg',
@@ -11585,7 +11636,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	520: {
+	1520: {
 		name: 'CL To-Class Elite',
 		nameJP: '軽巡ト級elite',
 		image: 'SToE.jpg',
@@ -11606,7 +11657,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	521: {
+	1521: {
 		name: 'CLT Chi-Class Elite',
 		nameJP: '雷巡チ級elite',
 		image: 'SChiE.png',
@@ -11628,7 +11679,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	522: {
+	1522: {
 		name: 'CA Ri-Class Elite',
 		nameJP: '重巡リ級elite',
 		image: 'SRiE.png',
@@ -11649,7 +11700,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	523: {
+	1523: {
 		name: 'CVL Nu-Class Elite',
 		nameJP: '軽母ヌ級elite',
 		image: 'SNuE.jpg',
@@ -11671,7 +11722,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	524: {
+	1524: {
 		name: 'BB Ru-Class Elite',
 		nameJP: '戦艦ル級elite',
 		image: 'SRuE.png',
@@ -11692,7 +11743,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	525: {
+	1525: {
 		name: 'CV Wo-Class Elite',
 		nameJP: '空母ヲ級elite',
 		image: 'SWoE.png',
@@ -11713,7 +11764,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	526: {
+	1526: {
 		name: 'Transport Wa-Class Elite',
 		nameJP: '輸送ワ級elite',
 		image: 'SWaE.png',
@@ -11734,7 +11785,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	527: {
+	1527: {
 		name: 'CA Ri-Class Flagship',
 		nameJP: '重巡リ級flagship',
 		image: 'SRiF.png',
@@ -11755,7 +11806,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	528: {
+	1528: {
 		name: 'CV Wo-Class Flagship',
 		nameJP: '空母ヲ級flagship',
 		image: 'SWoF.jpg',
@@ -11776,7 +11827,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	529: {
+	1529: {
 		name: 'BB Ru-Class Flagship',
 		nameJP: '戦艦ル級flagship',
 		image: 'SRuF.png',
@@ -11797,7 +11848,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	530: {
+	1530: {
 		name: 'SS Ka-Class',
 		nameJP: '潜水カ級',
 		image: 'SKa.jpg',
@@ -11820,7 +11871,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	531: {
+	1531: {
 		name: 'SS Yo-Class',
 		nameJP: '潜水ヨ級',
 		image: 'SYo.jpg',
@@ -11843,7 +11894,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	532: {
+	1532: {
 		name: 'SS Ka-Class Elite',
 		nameJP: '潜水カ級elite',
 		image: 'SKaE.jpg',
@@ -11865,7 +11916,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	533: {
+	1533: {
 		name: 'SS Yo-Class Elite',
 		nameJP: '潜水ヨ級elite',
 		image: 'SYoE.jpg',
@@ -11887,7 +11938,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	534: {
+	1534: {
 		name: 'SS Ka-Class Flagship',
 		nameJP: '潜水カ級flagship',
 		image: 'SKaF.png',
@@ -11909,7 +11960,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	535: {
+	1535: {
 		name: 'SS Yo-Class Flagship',
 		nameJP: '潜水ヨ級flagship',
 		image: 'SYoF.png',
@@ -11931,7 +11982,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	536: {
+	1536: {
 		name: 'Floating Fortress A',
 		nameJP: '浮遊要塞',
 		image: 'SFFA.jpg',
@@ -11952,7 +12003,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	537: {
+	1537: {
 		name: 'Floating Fortress B',
 		nameJP: '浮遊要塞',
 		image: 'SFFB.jpg',
@@ -11973,7 +12024,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	538: {
+	1538: {
 		name: 'Floating Fortress C',
 		nameJP: '浮遊要塞',
 		image: 'SFFC.jpg',
@@ -11994,7 +12045,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	539: {
+	1539: {
 		name: 'Anchorage Demon',
 		nameJP: '泊地棲鬼',
 		image: 'SAnchO.jpg',
@@ -12015,7 +12066,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	540: {
+	1540: {
 		name: 'Anchorage Princess',
 		nameJP: '泊地棲姫',
 		image: 'SAnchH.jpg',
@@ -12036,7 +12087,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	541: {
+	1541: {
 		name: 'FBB Ta-Class',
 		nameJP: '戦艦タ級',
 		image: 'STa.jpg',
@@ -12057,7 +12108,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	542: {
+	1542: {
 		name: 'FBB Ta-Class Elite',
 		nameJP: '戦艦タ級elite',
 		image: 'STaE.jpg',
@@ -12078,7 +12129,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	543: {
+	1543: {
 		name: 'FBB Ta-Class Flagship',
 		nameJP: '戦艦タ級flagship',
 		image: 'STaF.jpg',
@@ -12099,7 +12150,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	544: {
+	1544: {
 		name: 'Armoured Carrier Demon',
 		nameJP: '装甲空母鬼',
 		image: 'SACD.jpg',
@@ -12120,7 +12171,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	545: {
+	1545: {
 		name: 'Armoured Carrier Princess',
 		nameJP: '装甲空母姫',
 		image: 'SACH.jpg',
@@ -12141,7 +12192,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	546: {
+	1546: {
 		name: 'Southern Demon',
 		nameJP: '南方棲鬼',
 		image: 'SSouthD.jpg',
@@ -12163,7 +12214,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	547: {
+	1547: {
 		name: 'Southern War Demon',
 		nameJP: '南方棲戦鬼',
 		image: 'SSouthWD.jpg',
@@ -12185,7 +12236,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	548: {
+	1548: {
 		name: 'Southern War Princess',
 		nameJP: '南方棲戦姫',
 		image: 'SSouthWH.jpg',
@@ -12207,7 +12258,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	549: {
+	1549: {
 		name: 'Escort Fortress A (Dive)',
 		nameJP: '護衛要塞',
 		image: 'SFFA.jpg',
@@ -12229,7 +12280,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	550: {
+	1550: {
 		name: 'Escort Fortress B (Torpedo)',
 		nameJP: '護衛要塞',
 		image: 'SFFB.jpg',
@@ -12251,7 +12302,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	551: {
+	1551: {
 		name: 'Escort Fortress C (Torpedo)',
 		nameJP: '護衛要塞',
 		image: 'SFFC.jpg',
@@ -12273,7 +12324,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	552: {
+	1552: {
 		name: 'DD Ro-Class Flagship',
 		nameJP: '駆逐ロ級flagship',
 		image: 'SRoF.jpg',
@@ -12295,7 +12346,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	553: {
+	1553: {
 		name: 'DD Ha-Class Flagship',
 		nameJP: '駆逐ハ級flagship',
 		image: 'SHaF.png',
@@ -12317,7 +12368,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	554: {
+	1554: {
 		name: 'CL Ho-Class Flagship',
 		nameJP: '軽巡ホ級flagship',
 		image: 'SHoF.jpg',
@@ -12339,7 +12390,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	555: {
+	1555: {
 		name: 'CL He-Class Flagship',
 		nameJP: '軽巡ヘ級flagship',
 		image: 'SHeF.jpg',
@@ -12361,7 +12412,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	556: {
+	1556: {
 		name: 'Airfield Princess',
 		nameJP: '飛行場姫',
 		image: 'SAirH.jpg',
@@ -12383,7 +12434,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	557: {
+	1557: {
 		name: 'Battleship Princess',
 		nameJP: '戦艦棲姫',
 		image: 'SBBH.jpg',
@@ -12405,7 +12456,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	558: {
+	1558: {
 		name: 'Transport Wa-Class Flagship',
 		nameJP: '輸送ワ級flagship',
 		image: 'SWaF.jpg',
@@ -12426,7 +12477,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	559: {
+	1559: {
 		name: 'CLT Chi-Class Flagship',
 		nameJP: '雷巡チ級flagship',
 		image: 'SChiF.png',
@@ -12448,7 +12499,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	560: {
+	1560: {
 		name: 'CVL Nu-Class Flagship',
 		nameJP: '軽母ヌ級flagship',
 		image: 'SNuF.jpg',
@@ -12471,7 +12522,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	561: {
+	1561: {
 		name: 'BBV Re-Class',
 		nameJP: '戦艦レ級',
 		image: 'SRe.jpg',
@@ -12494,7 +12545,7 @@ var SHIPDATA = {
 		ammo: 0,
 		canTorp: function() { return (this.HP/this.maxHP > .5); }
 	},
-	562: {
+	1562: {
 		name: 'BBV Re-Class Elite',
 		nameJP: '戦艦レ級elite',
 		image: 'SReE.jpg',
@@ -12517,7 +12568,7 @@ var SHIPDATA = {
 		ammo: 0,
 		canTorp: function() { return (this.HP/this.maxHP > .5); }
 	},
-	564: {
+	1564: {
 		name: 'DD I-Class Flagship',
 		nameJP: '駆逐イ級flagship',
 		image: 'SIF.jpg',
@@ -12539,7 +12590,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	565: {
+	1565: {
 		name: 'CV Wo-Class Flagship Kai',
 		nameJP: '空母ヲ級改flagship',
 		image: 'SWoFKai.jpg',
@@ -12560,7 +12611,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	566: {
+	1566: {
 		name: 'CA Ri-Class Flagship Kai',
 		nameJP: '重巡リ級改flagship',
 		image: 'SRiFKai.jpg',
@@ -12582,7 +12633,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	567: {
+	1567: {
 		name: 'BB Ru-Class Flagship Kai',
 		nameJP: '戦艦ル級改flagship',
 		image: 'SRuFKai.jpg',
@@ -12603,7 +12654,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	570: {
+	1570: {
 		name: 'SS So-Class',
 		nameJP: '潜水ソ級',
 		image: 'SSo.jpg',
@@ -12626,7 +12677,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	571: {
+	1571: {
 		name: 'SS So-Class Elite',
 		nameJP: '潜水ソ級elite',
 		image: 'SSoE.jpg',
@@ -12648,7 +12699,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	572: {
+	1572: {
 		name: 'SS So-Class Flagship',
 		nameJP: '潜水ソ級flagship',
 		image: 'SSoF.jpg',
@@ -12670,7 +12721,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	573: {
+	1573: {
 		name: 'Harbour Princess',
 		nameJP: '港湾棲姫',
 		image: 'SHarbourH.jpg',
@@ -12692,7 +12743,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	574: {
+	1574: {
 		name: 'Isolated Island Demon',
 		nameJP: '離島棲鬼',
 		image: 'SIID.jpg',
@@ -12714,7 +12765,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	575: {
+	1575: {
 		name: 'DD I-Class Late Model',
 		nameJP: '駆逐イ級後期型',
 		image: 'SIL.jpg',
@@ -12736,7 +12787,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	576: {
+	1576: {
 		name: 'DD Ro-Class Late Model',
 		nameJP: '駆逐ロ級後期型',
 		image: 'SRoL.jpg',
@@ -12758,7 +12809,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	577: {
+	1577: {
 		name: 'DD Ha-Class Late Model',
 		nameJP: '駆逐ハ級後期型',
 		image: 'SHaL.jpg',
@@ -12780,7 +12831,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	578: {
+	1578: {
 		name: 'DD Ni-Class Late Model',
 		nameJP: '駆逐ニ級後期型',
 		image: 'SNiL.jpg',
@@ -12802,7 +12853,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	579: {
+	1579: {
 		name: 'CV Wo-Class Flagship 2',
 		nameJP: '空母ヲ級flagship',
 		image: 'SWoF.jpg',
@@ -12824,7 +12875,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	581: {
+	1581: {
 		name: 'Northern Princess (Event)',
 		nameJP: '北方棲姫',
 		image: 'SHoppo.jpg',
@@ -12846,7 +12897,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	582: {
+	1582: {
 		name: 'Northern Princess 2 (Event)',
 		nameJP: '北方棲姫',
 		image: 'SHoppo2.jpg',
@@ -12868,7 +12919,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	583: {
+	1583: {
 		name: 'Midway Princess',
 		nameJP: '中間棲姫',
 		image: 'SMWH.jpg',
@@ -12890,7 +12941,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	584: {
+	1584: {
 		name: 'Midway Princess 2',
 		nameJP: '中間棲姫',
 		image: 'SMWH2.jpg',
@@ -12912,7 +12963,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	585: {
+	1585: {
 		name: 'Aircraft Carrier Demon',
 		nameJP: '空母棲鬼',
 		image: 'SCVD.jpg',
@@ -12934,7 +12985,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	586: {
+	1586: {
 		name: 'Aircraft Carrier Princess',
 		nameJP: '空母棲姫',
 		image: 'SCVH.jpg',
@@ -12956,7 +13007,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	587: {
+	1587: {
 		name: 'Northern Princess (3-5)',
 		nameJP: '北方棲姫',
 		image: 'SHoppo3.jpg',
@@ -12978,7 +13029,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	588: {
+	1588: {
 		name: 'Northern Princess 2 (3-5)',
 		nameJP: '北方棲姫',
 		image: 'SHoppo2.jpg',
@@ -13000,7 +13051,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	589: {
+	1589: {
 		name: 'Northern Princess 3 (3-5)',
 		nameJP: '北方棲姫',
 		image: 'SHoppo3.jpg',
@@ -13022,7 +13073,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	590: {
+	1590: {
 		name: 'Northern Princess 4 (3-5)',
 		nameJP: '北方棲姫',
 		image: 'SHoppo2.jpg',
@@ -13044,7 +13095,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	591: {
+	1591: {
 		name: 'CL Tsu-Class',
 		nameJP: '軽巡ツ級',
 		image: 'STsu.jpg',
@@ -13067,7 +13118,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	592: {
+	1592: {
 		name: 'CL Tsu-Class Elite',
 		nameJP: '軽巡ツ級elite',
 		image: 'STsuE.jpg',
@@ -13090,7 +13141,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	594: {
+	1594: {
 		name: 'CA Ne-Class',
 		nameJP: '重巡ネ級',
 		image: 'SNe.jpg',
@@ -13112,7 +13163,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	595: {
+	1595: {
 		name: 'CA Ne-Class Elite',
 		nameJP: '重巡ネ級elite',
 		image: 'SNeE.jpg',
@@ -13134,7 +13185,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	597: {
+	1597: {
 		name: 'Destroyer Princess',
 		nameJP: '駆逐棲姫',
 		image: 'SDDH.jpg',
@@ -13156,7 +13207,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	598: {
+	1598: {
 		name: 'Destroyer Princess 2',
 		nameJP: '駆逐棲姫',
 		image: 'SDDH.jpg',
@@ -13178,7 +13229,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	599: {
+	1599: {
 		name: 'Aircraft Carrier Water Demon',
 		nameJP: '空母水鬼',
 		image: 'SCVWD.jpg',
@@ -13200,7 +13251,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	600: {
+	1600: {
 		name: 'Aircraft Carrier Water Demon 2',
 		nameJP: '空母水鬼',
 		image: 'SCVWD.jpg',
@@ -13222,7 +13273,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	601: {
+	1601: {
 		name: 'Light Cruiser Demon',
 		nameJP: '軽巡棲鬼',
 		image: 'SCLD.jpg',
@@ -13244,7 +13295,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	602: {
+	1602: {
 		name: 'Light Cruiser Demon 2',
 		nameJP: '軽巡棲鬼',
 		image: 'SCLD2.jpg',
@@ -13266,7 +13317,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	603: {
+	1603: {
 		name: 'Battleship Water Demon',
 		nameJP: '戦艦水鬼',
 		image: 'SBBWD.jpg',
@@ -13288,7 +13339,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	604: {
+	1604: {
 		name: 'Battleship Water Demon 2',
 		nameJP: '戦艦水鬼',
 		image: 'SBBWD2.jpg',
@@ -13310,7 +13361,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	605: {
+	1605: {
 		name: 'Harbour Water Demon',
 		nameJP: '港湾水鬼',
 		image: 'SHarbourWD.jpg',
@@ -13332,7 +13383,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	606: {
+	1606: {
 		name: 'Harbour Water Demon (Hard)',
 		nameJP: '港湾水鬼',
 		image: 'SHarbourWD.jpg',
@@ -13354,7 +13405,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	607: {
+	1607: {
 		name: 'Harbour Water Demon 2',
 		nameJP: '港湾水鬼',
 		image: 'SHarbourWD.jpg',
@@ -13376,7 +13427,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	608: {
+	1608: {
 		name: 'Harbour Water Demon 2 (Hard)',
 		nameJP: '港湾水鬼',
 		image: 'SHarbourWD.jpg',
@@ -13398,7 +13449,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	609: {
+	1609: {
 		name: 'Anchorage Water Demon',
 		nameJP: '泊地水鬼',
 		image: 'SAnchWD.jpg',
@@ -13420,7 +13471,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	610: {
+	1610: {
 		name: 'Anchorage Water Demon (Hard)',
 		nameJP: '泊地水鬼',
 		image: 'SAnchWD.jpg',
@@ -13442,7 +13493,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	611: {
+	1611: {
 		name: 'Anchorage Water Demon 2',
 		nameJP: '泊地水鬼',
 		image: 'SAnchWD2.jpg',
@@ -13464,7 +13515,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	612: {
+	1612: {
 		name: 'Anchorage Water Demon 2 (Hard)',
 		nameJP: '泊地水鬼',
 		image: 'SAnchWD2.jpg',
@@ -13486,7 +13537,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	613: {
+	1613: {
 		name: 'Harbour Princess 2',
 		nameJP: '港湾棲姫',
 		image: 'SHarbourH2.jpg',
@@ -13508,7 +13559,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	614: {
+	1614: {
 		name: 'CV Wo-Class Flagship 3',
 		nameJP: '空母ヲ級flagship',
 		image: 'SWoF.jpg',
@@ -13530,7 +13581,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	615: {
+	1615: {
 		name: 'CV Wo-Class Flagship 4',
 		nameJP: '空母ヲ級flagship',
 		image: 'SWoF.jpg',
@@ -13552,7 +13603,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	616: {
+	1616: {
 		name: 'CV Wo-Class Flagship Kai 2',
 		nameJP: '空母ヲ級改flagship',
 		image: 'SWoFKai.jpg',
@@ -13574,7 +13625,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	617: {
+	1617: {
 		name: 'CV Wo-Class Flagship Kai 3',
 		nameJP: '空母ヲ級改flagship',
 		image: 'SWoFKai.jpg',
@@ -13596,7 +13647,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	618: {
+	1618: {
 		name: 'CV Wo-Class Flagship Kai 4',
 		nameJP: '空母ヲ級改flagship',
 		image: 'SWoFKai.jpg',
@@ -13618,7 +13669,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	619: {
+	1619: {
 		name: 'Aircraft Carrier Demon 2',
 		nameJP: '空母棲鬼',
 		image: 'SCVD.jpg',
@@ -13640,7 +13691,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	620: {
+	1620: {
 		name: 'Aircraft Carrier Princess 2',
 		nameJP: '空母棲姫',
 		image: 'SCVH.jpg',
@@ -13662,7 +13713,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	621: {
+	1621: {
 		name: 'DD I-Class Late Model Elite',
 		nameJP: '駆逐イ級後期型elite',
 		image: 'SILE.jpg',
@@ -13684,7 +13735,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	622: {
+	1622: {
 		name: 'DD Ro-Class Late Model Elite',
 		nameJP: '駆逐ロ級後期型elite',
 		image: 'SRoLE.jpg',
@@ -13706,7 +13757,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	623: {
+	1623: {
 		name: 'DD Ha-Class Late Model Elite',
 		nameJP: '駆逐ハ級後期型elite',
 		image: 'SHaLE.jpg',
@@ -13728,7 +13779,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	624: {
+	1624: {
 		name: 'DD Ni-Class Late Model Elite',
 		nameJP: '駆逐ニ級後期型elite',
 		image: 'SNiLE.jpg',
@@ -13750,7 +13801,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	625: {
+	1625: {
 		name: 'Seaplane Tender Princess A',
 		nameJP: '水母棲姫',
 		image: 'SAVH.jpg',
@@ -13772,7 +13823,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	626: {
+	1626: {
 		name: 'Seaplane Tender Princess B',
 		nameJP: '水母棲姫',
 		image: 'SAVH.jpg',
@@ -13794,7 +13845,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	627: {
+	1627: {
 		name: 'Seaplane Tender Princess C',
 		nameJP: '水母棲姫',
 		image: 'SAVH.jpg',
@@ -13816,7 +13867,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	628: {
+	1628: {
 		name: 'Air Defence Princess A',
 		nameJP: '防空棲姫',
 		image: 'SAAH.jpg',
@@ -13839,7 +13890,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	629: {
+	1629: {
 		name: 'Air Defence Princess B',
 		nameJP: '防空棲姫',
 		image: 'SAAH.jpg',
@@ -13862,7 +13913,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	630: {
+	1630: {
 		name: 'Air Defence Princess C',
 		nameJP: '防空棲姫',
 		image: 'SAAH.jpg',
@@ -13885,7 +13936,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	631: {
+	1631: {
 		name: 'Airfield Princess 2',
 		nameJP: '飛行場姫',
 		image: 'SAirH2.jpg',
@@ -13907,7 +13958,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	632: {
+	1632: {
 		name: 'Airfield Princess 3',
 		nameJP: '飛行場姫',
 		image: 'SAirH2.jpg',
@@ -13929,7 +13980,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	633: {
+	1633: {
 		name: 'Airfield Princess 4',
 		nameJP: '飛行場姫',
 		image: 'SAirH2.jpg',
@@ -13951,7 +14002,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	634: {
+	1634: {
 		name: 'Isolated Island Demon A',
 		nameJP: '離島棲鬼',
 		image: 'SIID.jpg',
@@ -13973,7 +14024,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	635: {
+	1635: {
 		name: 'Isolated Island Demon B',
 		nameJP: '離島棲鬼',
 		image: 'SIID.jpg',
@@ -13995,7 +14046,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	636: {
+	1636: {
 		name: 'Isolated Island Demon C',
 		nameJP: '離島棲鬼',
 		image: 'SIID.jpg',
@@ -14017,7 +14068,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	637: {
+	1637: {
 		name: 'PT Imp Pack',
 		nameJP: 'PT小鬼群',
 		image: 'SPTPack.jpg',
@@ -14041,7 +14092,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	638: {
+	1638: {
 		name: 'PT Imp Pack 2',
 		nameJP: 'PT小鬼群',
 		image: 'SPTPack.jpg',
@@ -14065,7 +14116,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	639: {
+	1639: {
 		name: 'PT Imp Pack 3',
 		nameJP: 'PT小鬼群',
 		image: 'SPTPack.jpg',
@@ -14089,7 +14140,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	640: {
+	1640: {
 		name: 'PT Imp Pack 4',
 		nameJP: 'PT小鬼群',
 		image: 'SPTPack.jpg',
@@ -14113,7 +14164,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	641: {
+	1641: {
 		name: 'Light Cruiser Princess',
 		nameJP: '軽巡棲姫',
 		image: 'SCLH.jpg',
@@ -14136,7 +14187,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	642: {
+	1642: {
 		name: 'Light Cruiser Princess 2',
 		nameJP: '軽巡棲姫',
 		image: 'SCLH.jpg',
@@ -14159,7 +14210,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	643: {
+	1643: {
 		name: 'Light Cruiser Princess 3',
 		nameJP: '軽巡棲姫',
 		image: 'SCLH.jpg',
@@ -14182,7 +14233,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	644: {
+	1644: {
 		name: 'Submarine Princess',
 		nameJP: '潜水棲姫',
 		image: 'SSSH.jpg',
@@ -14192,7 +14243,7 @@ var SHIPDATA = {
 		FP: 50,
 		TP: 140,
 		AA: 0,
-		AR: 53,
+		AR: 53, //49 now, how to handle?
 		EV: 20,
 		ASW: 0,
 		LOS: 15,
@@ -14207,7 +14258,7 @@ var SHIPDATA = {
 		ammo: 0,
 		canOpTorp: function() { return false; }
 	},
-	645: {
+	1645: {
 		name: 'Submarine Princess 2',
 		nameJP: '潜水棲姫',
 		image: 'SSSH.jpg',
@@ -14217,7 +14268,7 @@ var SHIPDATA = {
 		FP: 70,
 		TP: 155,
 		AA: 0,
-		AR: 73,
+		AR: 73, //69 now
 		EV: 25,
 		ASW: 0,
 		LOS: 15,
@@ -14232,7 +14283,7 @@ var SHIPDATA = {
 		ammo: 0,
 		canOpTorp: function() { return false; }
 	},
-	646: {
+	1646: {
 		name: 'Submarine Princess 3',
 		nameJP: '潜水棲姫',
 		image: 'SSSH.jpg',
@@ -14242,7 +14293,7 @@ var SHIPDATA = {
 		FP: 90,
 		TP: 170,
 		AA: 0,
-		AR: 93,
+		AR: 93, //89 now
 		EV: 28,
 		ASW: 0,
 		LOS: 18,
@@ -14257,7 +14308,7 @@ var SHIPDATA = {
 		ammo: 0,
 		canOpTorp: function() { return false; }
 	},
-	647: {
+	1647: {
 		name: 'Destroyer Water Demon',
 		nameJP: '駆逐水鬼',
 		image: 'SDDWD.jpg',
@@ -14281,7 +14332,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	648: {
+	1648: {
 		name: 'Destroyer Water Demon 2',
 		nameJP: '駆逐水鬼',
 		image: 'SDDWD.jpg',
@@ -14305,7 +14356,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	649: {
+	1649: {
 		name: 'Destroyer Water Demon 3',
 		nameJP: '駆逐水鬼',
 		image: 'SDDWD.jpg',
@@ -14329,7 +14380,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	650: {
+	1650: {
 		name: 'Airfield Princess 5',
 		nameJP: '飛行場姫',
 		image: 'SAirH.jpg',
@@ -14352,7 +14403,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	651: {
+	1651: {
 		name: 'Airfield Princess 6',
 		nameJP: '飛行場姫',
 		image: 'SAirH.jpg',
@@ -14375,7 +14426,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	652: {
+	1652: {
 		name: 'Airfield Princess 7',
 		nameJP: '飛行場姫',
 		image: 'SAirH.jpg',
@@ -14398,7 +14449,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	653: {
+	1653: {
 		name: 'Supply Depot Princess 1',
 		nameJP: '集積地棲姫',
 		image: 'SArchH.jpg',
@@ -14423,7 +14474,7 @@ var SHIPDATA = {
 		ammo: 0,
 		canTorp: function() { return (this.HP/this.maxHP > .5); },
 	},
-	654: {
+	1654: {
 		name: 'Supply Depot Princess 2',
 		nameJP: '集積地棲姫',
 		image: 'SArchH.jpg',
@@ -14448,7 +14499,7 @@ var SHIPDATA = {
 		ammo: 0,
 		canTorp: function() { return (this.HP/this.maxHP > .5); },
 	},
-	655: {
+	1655: {
 		name: 'Supply Depot Princess 3',
 		nameJP: '集積地棲姫',
 		image: 'SArchH.jpg',
@@ -14473,7 +14524,7 @@ var SHIPDATA = {
 		ammo: 0,
 		canTorp: function() { return (this.HP/this.maxHP > .5); },
 	},
-	656: {
+	1656: {
 		name: 'Supply Depot Princess Damaged 1',
 		nameJP: '集積地棲姫-壊',
 		image: 'SArchHdam.jpg',
@@ -14498,7 +14549,7 @@ var SHIPDATA = {
 		ammo: 0,
 		canTorp: function() { return (this.HP/this.maxHP > .5); },
 	},
-	657: {
+	1657: {
 		name: 'Supply Depot Princess Damaged 2',
 		nameJP: '集積地棲姫-壊',
 		image: 'SArchHdam.jpg',
@@ -14523,7 +14574,7 @@ var SHIPDATA = {
 		ammo: 0,
 		canTorp: function() { return (this.HP/this.maxHP > .5); },
 	},
-	658: {
+	1658: {
 		name: 'Supply Depot Princess Damaged 3',
 		nameJP: '集積地棲姫-壊',
 		image: 'SArchHdam.jpg',
@@ -14548,7 +14599,7 @@ var SHIPDATA = {
 		ammo: 0,
 		canTorp: function() { return (this.HP/this.maxHP > .5); },
 	},
-	659: {
+	1659: {
 		name: 'Heavy Cruiser Princess 1',
 		nameJP: '重巡棲姫',
 		image: 'SCAH.jpg',
@@ -14571,7 +14622,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	660: {
+	1660: {
 		name: 'Heavy Cruiser Princess 2',
 		nameJP: '重巡棲姫',
 		image: 'SCAH.jpg',
@@ -14594,7 +14645,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	661: {
+	1661: {
 		name: 'Heavy Cruiser Princess 3',
 		nameJP: '重巡棲姫',
 		image: 'SCAH.jpg',
@@ -14617,7 +14668,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	662: {
+	1662: {
 		name: 'Heavy Cruiser Princess 4',
 		nameJP: '重巡棲姫',
 		image: 'SCAHdam.jpg',
@@ -14640,7 +14691,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	663: {
+	1663: {
 		name: 'Heavy Cruiser Princess 5',
 		nameJP: '重巡棲姫',
 		image: 'SCAHdam.jpg',
@@ -14663,7 +14714,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	664: {
+	1664: {
 		name: 'Heavy Cruiser Princess 6',
 		nameJP: '重巡棲姫',
 		image: 'SCAHdam.jpg',
@@ -14686,7 +14737,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	665: {
+	1665: {
 		name: 'Artillery Imp 1',
 		nameJP: '砲台小鬼',
 		image: 'SArtImp.jpg',
@@ -14710,7 +14761,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	666: {
+	1666: {
 		name: 'Artillery Imp 2',
 		nameJP: '砲台小鬼',
 		image: 'SArtImp.jpg',
@@ -14730,11 +14781,11 @@ var SHIPDATA = {
 		SPD: 0,
 		TACC: 50,
 		SLOTS: [0, 0, 0, 0],
-		EQUIPS: [565, 540, 540, 567],
+		EQUIPS: [565, 540, 539, 567],
 		fuel: 0,
 		ammo: 0
 	},
-	667: {
+	1667: {
 		name: 'Artillery Imp 3',
 		nameJP: '砲台小鬼',
 		image: 'SArtImp.jpg',
@@ -14743,7 +14794,7 @@ var SHIPDATA = {
 		HP: 130,
 		FP: 100,
 		TP: 0,
-		AA: 65,
+		AA: 85,
 		AR: 100,
 		EV: 40,
 		ASW: 0,
@@ -14754,22 +14805,22 @@ var SHIPDATA = {
 		SPD: 0,
 		TACC: 50,
 		SLOTS: [0, 0, 0, 0],
-		EQUIPS: [565, 553, 540, 567],
+		EQUIPS: [565, 553, 539, 567],
 		fuel: 0,
 		ammo: 0
 	},
-	668: {
+	1668: {
 		name: 'Isolated Island Princess 1',
 		nameJP: '離島棲姫',
 		image: 'SIIH.jpg',
 		type: 'CVN',
 		installtype: 4,
 		nightgun: true,
-		HP: 450,
+		HP: 480,
 		FP: 150,
 		TP: 0,
-		AA: 100,
-		AR: 150,
+		AA: 120,
+		AR: 190,
 		EV: 10,
 		ASW: 0,
 		LOS: 80,
@@ -14783,18 +14834,18 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	669: {
+	1669: {
 		name: 'Isolated Island Princess 2',
 		nameJP: '離島棲姫',
 		image: 'SIIH.jpg',
 		type: 'CVN',
 		installtype: 4,
 		nightgun: true,
-		HP: 450,
+		HP: 480,
 		FP: 150,
 		TP: 0,
-		AA: 100,
-		AR: 150,
+		AA: 120,
+		AR: 190,
 		EV: 10,
 		ASW: 0,
 		LOS: 80,
@@ -14807,18 +14858,18 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	670: {
+	1670: {
 		name: 'Isolated Island Princess 3',
 		nameJP: '離島棲姫',
 		image: 'SIIH.jpg',
 		type: 'CVN',
 		installtype: 4,
 		nightgun: true,
-		HP: 450,
+		HP: 480,
 		FP: 150,
 		TP: 0,
-		AA: 100,
-		AR: 150,
+		AA: 120,
+		AR: 190,
 		EV: 10,
 		ASW: 0,
 		LOS: 80,
@@ -14832,7 +14883,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	671: {
+	1671: {
 		name: 'Isolated Island Princess 4',
 		nameJP: '離島棲姫',
 		image: 'SIIH.jpg',
@@ -14856,7 +14907,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	672: {
+	1672: {
 		name: 'Isolated Island Princess 5',
 		nameJP: '離島棲姫',
 		image: 'SIIH.jpg',
@@ -14880,7 +14931,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	673: {
+	1673: {
 		name: 'Destroyer Ancient Demon',
 		nameJP: '駆逐古鬼',
 		image: 'SDDAD.jpg',
@@ -14903,7 +14954,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	674: {
+	1674: {
 		name: 'Destroyer Ancient Demon 2',
 		nameJP: '駆逐古鬼',
 		image: 'SDDAD.jpg',
@@ -14926,7 +14977,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	675: {
+	1675: {
 		name: 'Destroyer Ancient Demon 3',
 		nameJP: '駆逐古鬼',
 		image: 'SDDAD.jpg',
@@ -14949,7 +15000,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	676: {
+	1676: {
 		name: 'Destroyer Water Demon 4',
 		nameJP: '駆逐水鬼',
 		image: 'SDDWDdam.jpg',
@@ -14972,7 +15023,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	677: {
+	1677: {
 		name: 'Destroyer Water Demon 5',
 		nameJP: '駆逐水鬼',
 		image: 'SDDWDdam.jpg',
@@ -14995,7 +15046,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	678: {
+	1678: {
 		name: 'Destroyer Water Demon 6',
 		nameJP: '駆逐水鬼',
 		image: 'SDDWDdam.jpg',
@@ -15018,7 +15069,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	679: {
+	1679: {
 		name: 'Lycoris Princess',
 		nameJP: 'リコリス棲姫',
 		image: 'SLycH.jpg',
@@ -15043,7 +15094,7 @@ var SHIPDATA = {
 		ammo: 0,
 		nightgun: true,
 	},
-	680: {
+	1680: {
 		name: 'Lycoris Princess 2',
 		nameJP: 'リコリス棲姫',
 		image: 'SLycH.jpg',
@@ -15068,7 +15119,7 @@ var SHIPDATA = {
 		ammo: 0,
 		nightgun: true,
 	},
-	681: {
+	1681: {
 		name: 'Lycoris Princess 3',
 		nameJP: 'リコリス棲姫',
 		image: 'SLycH.jpg',
@@ -15093,7 +15144,7 @@ var SHIPDATA = {
 		ammo: 0,
 		nightgun: true,
 	},
-	682: {
+	1682: {
 		name: 'Lycoris Princess 4',
 		nameJP: 'リコリス棲姫',
 		image: 'SLycH.jpg',
@@ -15118,7 +15169,7 @@ var SHIPDATA = {
 		ammo: 0,
 		nightgun: true,
 	},
-	683: {
+	1683: {
 		name: 'Lycoris Princess 5',
 		nameJP: 'リコリス棲姫',
 		image: 'SLycH.jpg',
@@ -15143,7 +15194,7 @@ var SHIPDATA = {
 		ammo: 0,
 		nightgun: true,
 	},
-	684: {
+	1684: {
 		name: 'Central Princess',
 		nameJP: '中枢棲姫',
 		image: 'SCentralH.jpg',
@@ -15167,7 +15218,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	685: {
+	1685: {
 		name: 'Central Princess 2',
 		nameJP: '中枢棲姫',
 		image: 'SCentralH.jpg',
@@ -15191,7 +15242,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	686: {
+	1686: {
 		name: 'Central Princess 3',
 		nameJP: '中枢棲姫',
 		image: 'SCentralH.jpg',
@@ -15215,7 +15266,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	687: {
+	1687: {
 		name: 'Central Princess - Damaged',
 		nameJP: '中枢棲姫-壊',
 		image: 'SCentralHdam.jpg',
@@ -15239,7 +15290,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	688: {
+	1688: {
 		name: 'Central Princess - Damaged 2',
 		nameJP: '中枢棲姫-壊',
 		image: 'SCentralHdam.jpg',
@@ -15263,7 +15314,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	689: {
+	1689: {
 		name: 'Central Princess - Damaged 3',
 		nameJP: '中枢棲姫-壊',
 		image: 'SCentralHdam.jpg',
@@ -15287,16 +15338,16 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	690: {
+	1690: {
 		name: 'Destroyer Ancient Princess',
 		nameJP: '駆逐古姫',
 		image: 'SDDAH.jpg',
 		type: 'DD',
-		HP: 190,
-		FP: 96,
+		HP: 185,
+		FP: 90,
 		TP: 120,
-		AA: 81,
-		AR: 167,
+		AA: 70,
+		AR: 149,
 		EV: 50,
 		ASW: 50,
 		LOS: 50,
@@ -15306,20 +15357,20 @@ var SHIPDATA = {
 		SPD: 10,
 		TACC: 50,
 		SLOTS: [0,0,0,0],
-		EQUIPS: [501,501,541,531],
+		EQUIPS: [502,502,541,559],
 		fuel: 0,
 		ammo: 0
 	},
-	691: {
-		name: 'Destroyer Ancient Demon 2',
+	1691: {
+		name: 'Destroyer Ancient Princess 2',
 		nameJP: '駆逐古姫',
 		image: 'SDDAH.jpg',
 		type: 'DD',
 		HP: 190,
-		FP: 96,
-		TP: 120,
-		AA: 81,
-		AR: 167,
+		FP: 110,
+		TP: 130,
+		AA: 80,
+		AR: 158,
 		EV: 50,
 		ASW: 50,
 		LOS: 50,
@@ -15329,11 +15380,11 @@ var SHIPDATA = {
 		SPD: 10,
 		TACC: 50,
 		SLOTS: [0,0,0,0],
-		EQUIPS: [501,501,541,531],
+		EQUIPS: [502,502,541,559],
 		fuel: 0,
 		ammo: 0
 	},
-	692: {
+	1692: {
 		name: 'Destroyer Ancient Princess 3',
 		nameJP: '駆逐古姫',
 		image: 'SDDAH.jpg',
@@ -15356,7 +15407,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	693: {
+	1693: {
 		name: 'Submarine Summer Princess Flagship',
 		nameJP: '潜水夏姫',
 		image: 'SSSHn.jpg',
@@ -15371,7 +15422,7 @@ var SHIPDATA = {
 		RNG: 1,
 		SPD: 5,
 	},
-	694: {
+	1694: {
 		name: 'Submarine Summer Princess Flagship 2',
 		nameJP: '潜水夏姫',
 		image: 'SSSHn.jpg',
@@ -15386,7 +15437,7 @@ var SHIPDATA = {
 		RNG: 1,
 		SPD: 5,
 	},
-	695: {
+	1695: {
 		name: 'Submarine Summer Princess Flagship 3',
 		nameJP: '潜水夏姫',
 		image: 'SSSHn.jpg',
@@ -15401,7 +15452,7 @@ var SHIPDATA = {
 		RNG: 1,
 		SPD: 5,
 	},
-	696: {
+	1696: {
 		name: 'Battleship Summer Princess',
 		nameJP: '戦艦夏姫',
 		image: 'SBBHn.jpg',
@@ -15416,7 +15467,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 5,
 	},
-	697: {
+	1697: {
 		name: 'Battleship Summer Princess 2',
 		nameJP: '戦艦夏姫',
 		image: 'SBBHn.jpg',
@@ -15431,7 +15482,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 5,
 	},
-	698: {
+	1698: {
 		name: 'Battleship Summer Princess 3',
 		nameJP: '戦艦夏姫',
 		image: 'SBBHn.jpg',
@@ -15446,7 +15497,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 5,
 	},
-	699: {
+	1699: {
 		name: 'Harbour Summer Princess',
 		nameJP: '港湾夏姫',
 		image: 'SHarbHn.jpg',
@@ -15462,7 +15513,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 0,
 	},
-	700: {
+	1700: {
 		name: 'Harbour Summer Princess 2',
 		nameJP: '港湾夏姫',
 		image: 'SHarbHn.jpg',
@@ -15478,7 +15529,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 0,
 	},
-	701: {
+	1701: {
 		name: 'Harbour Summer Princess 3',
 		nameJP: '港湾夏姫',
 		image: 'SHarbHn.jpg',
@@ -15494,7 +15545,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 0,
 	},
-	702: {
+	1702: {
 		name: 'Harbour Summer Princess - Damaged',
 		nameJP: '港湾夏姫-壊',
 		image: 'SHarbHn2.jpg',
@@ -15510,7 +15561,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 0,
 	},
-	703: {
+	1703: {
 		name: 'Harbour Summer Princess - Damaged 2',
 		nameJP: '港湾夏姫-壊',
 		image: 'SHarbHn2.jpg',
@@ -15526,7 +15577,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 0,
 	},
-	704: {
+	1704: {
 		name: 'Harbour Summer Princess - Damaged 3',
 		nameJP: '港湾夏姫-壊',
 		image: 'SHarbHn2.jpg',
@@ -15542,7 +15593,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 0,
 	},
-	705: {
+	1705: {
 		name: 'Heavy Cruiser Summer Princess',
 		nameJP: '重巡夏姫',
 		image: 'SCAHn.jpg',
@@ -15557,7 +15608,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 10,
 	},
-	706: {
+	1706: {
 		name: 'Heavy Cruiser Summer Princess 2',
 		nameJP: '重巡夏姫',
 		image: 'SCAHn.jpg',
@@ -15572,7 +15623,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 10,
 	},
-	707: {
+	1707: {
 		name: 'Heavy Cruiser Summer Princess 3',
 		nameJP: '重巡夏姫',
 		image: 'SCAHn.jpg',
@@ -15587,7 +15638,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 10,
 	},
-	708: {
+	1708: {
 		name: 'Seaplane Tender Water Princess',
 		nameJP: '水母水姫',
 		image: 'SAVWH.jpg',
@@ -15603,7 +15654,7 @@ var SHIPDATA = {
 		RNG: 4,
 		SPD: 5,
 	},
-	709: {
+	1709: {
 		name: 'Seaplane Tender Water Princess 2',
 		nameJP: '水母水姫',
 		image: 'SAVWH.jpg',
@@ -15619,7 +15670,7 @@ var SHIPDATA = {
 		RNG: 4,
 		SPD: 5,
 	},
-	710: {
+	1710: {
 		name: 'Seaplane Tender Water Princess 3',
 		nameJP: '水母水姫',
 		image: 'SAVWH.jpg',
@@ -15635,7 +15686,7 @@ var SHIPDATA = {
 		RNG: 4,
 		SPD: 5,
 	},
-	711: {
+	1711: {
 		name: 'Abyssal Jellyfish Princess',
 		nameJP: '深海海月姫',
 		image: 'SJellyH.jpg',
@@ -15648,11 +15699,11 @@ var SHIPDATA = {
 		AR: 140,
 		unknownstats: true,
 		SLOTS: [23,22,22,23],
-		EQUIPS: [547,557,558,547],
+		EQUIPS: [556,557,558,556],
 		RNG: 3,
 		SPD: 10,
 	},
-	712: {
+	1712: {
 		name: 'Abyssal Jellyfish Princess 2',
 		nameJP: '深海海月姫',
 		image: 'SJellyH.jpg',
@@ -15669,7 +15720,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 10,
 	},
-	713: {
+	1713: {
 		name: 'Abyssal Jellyfish Princess 3',
 		nameJP: '深海海月姫',
 		image: 'SJellyH.jpg',
@@ -15686,7 +15737,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 10,
 	},
-	714: {
+	1714: {
 		name: 'CV Wo-Class Flagship Kai 5',
 		nameJP: '空母ヲ級改flagship',
 		image: 'SWoFKai.jpg',
@@ -15708,7 +15759,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	715: {
+	1715: {
 		name: 'CV Wo-Class Flagship Kai 6',
 		nameJP: '空母ヲ級改flagship',
 		image: 'SWoFKai.jpg',
@@ -15730,43 +15781,115 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	716: {
+	1716: {
 		name: 'Abyssal Twin Princesses',
 		nameJP: '深海双子棲姫',
 		image: 'SSSTH.jpg',
 		type: 'BBVT',
+		
+		FP: 200,
+		TP: 130,
+		AA: 120,
+		AR: 168,
+		unknownstats: true,
+		RNG: 4,
+		SPD: 5,
+		SLOTS: [0,0,0,128],
+		EQUIPS: [509,509,570,573],
+		fuel: 0,
+		ammo: 0
 	},
-	717: {
+	1717: {
 		name: 'Abyssal Twin Princesses 2',
 		nameJP: '深海双子棲姫',
 		image: 'SSSTH.jpg',
 		type: 'BBVT',
+		
+		FP: 210,
+		TP: 160,
+		AA: 140,
+		AR: 188,
+		unknownstats: true,
+		RNG: 4,
+		SPD: 5,
+		SLOTS: [0,0,0,160],
+		EQUIPS: [509,509,570,573],
+		fuel: 0,
+		ammo: 0
 	},
-	718: {
+	1718: {
 		name: 'Abyssal Twin Princesses 3',
 		nameJP: '深海双子棲姫',
 		image: 'SSSTH.jpg',
 		type: 'BBVT',
+		HP: 800,
+		FP: 220,
+		TP: 190,
+		AA: 160,
+		AR: 218,
+		unknownstats: true,
+		RNG: 4,
+		SPD: 5,
+		SLOTS: [0,0,0,192],
+		EQUIPS: [509,509,570,573],
+		fuel: 0,
+		ammo: 0
 	},
-	719: {
+	1719: {
 		name: 'Abyssal Twin Princesses - Damaged',
 		nameJP: '深海双子棲姫-壊',
 		image: 'SSSTH2.jpg',
 		type: 'BBVT',
+		HP: 660,
+		FP: 220,
+		TP: 120,
+		AA: 110,
+		AR: 189,
+		unknownstats: true,
+		RNG: 4,
+		SPD: 5,
+		SLOTS: [0,0,0,144],
+		EQUIPS: [509,509,570,573],
+		fuel: 0,
+		ammo: 0
 	},
-	720: {
+	1720: {
 		name: 'Abyssal Twin Princesses 2 - Damaged',
 		nameJP: '深海双子棲姫-壊',
 		image: 'SSSTH2.jpg',
 		type: 'BBVT',
+		HP: 660,
+		FP: 230,
+		TP: 150,
+		AA: 130,
+		AR: 209,
+		unknownstats: true,
+		RNG: 4,
+		SPD: 5,
+		SLOTS: [0,0,0,176],
+		EQUIPS: [509,509,570,573],
+		fuel: 0,
+		ammo: 0
 	},
-	721: {
+	1721: {
 		name: 'Abyssal Twin Princesses 3 - Damaged',
 		nameJP: '深海双子棲姫-壊',
 		image: 'SSSTH2.jpg',
 		type: 'BBVT',
+		HP: 660,
+		FP: 240,
+		TP: 180,
+		AA: 150,
+		AR: 239,
+		unknownstats: true,
+		RNG: 4,
+		SPD: 5,
+		SLOTS: [0,0,0,208],
+		EQUIPS: [509,509,570,573],
+		fuel: 0,
+		ammo: 0
 	},
-	901: {
+	2001: {
 		name: 'Iona',
 		nameJP: 'イオナ',
 		image: 'AIona.png',
@@ -15786,7 +15909,7 @@ var SHIPDATA = {
 		fuel: 150,
 		ammo: 150
 	},
-	902: {
+	2002: {
 		name: 'Takao (Fog)',
 		nameJP: 'タカオ',
 		image: 'ATakao.png',
@@ -15807,7 +15930,7 @@ var SHIPDATA = {
 		fuel: 175,
 		ammo: 200
 	},
-	903: {
+	2003: {
 		name: 'Haruna (Fog)',
 		nameJP: 'ハルナ',
 		image: 'AHaruna.png',
@@ -15828,7 +15951,7 @@ var SHIPDATA = {
 		fuel: 200,
 		ammo: 275
 	},
-	911: {
+	2011: {
 		name: 'Nagara-Class mist',
 		nameJP: 'ナガラ級mist',
 		image: 'ANagara.png',
@@ -15850,7 +15973,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	912: {
+	2012: {
 		name: 'Takao mist',
 		nameJP: 'タカオmist',
 		image: 'ATakao2.png',
@@ -15872,7 +15995,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	913: {
+	2013: {
 		name: 'Maya mist',
 		nameJP: 'マヤmist',
 		image: 'AMaya.png',
@@ -15894,7 +16017,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	914: {
+	2014: {
 		name: 'Haruna mist',
 		nameJP: 'ハルナmist',
 		image: 'AHaruna2.jpg',
@@ -15916,7 +16039,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	915: {
+	2015: {
 		name: 'Kirishima mist',
 		nameJP: 'キリシマmist',
 		image: 'AKirishima.png',
@@ -15938,7 +16061,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	916: {
+	2016: {
 		name: 'Kongou mist',
 		nameJP: 'コンゴウmist',
 		image: 'AKongou.jpg',
@@ -15960,7 +16083,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	917: {
+	2017: {
 		name: 'Nagara-Class *mist*',
 		nameJP: 'ナガラ級*mist*',
 		image: 'ANagara.png',
@@ -15982,7 +16105,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	918: {
+	2018: {
 		name: 'Takao *mist*',
 		nameJP: 'タカオ*mist*',
 		image: 'ATakao2.png',
@@ -16004,7 +16127,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	919: {
+	2019: {
 		name: 'Maya *mist*',
 		nameJP: 'マヤ*mist*',
 		image: 'AMaya.png',
@@ -16026,7 +16149,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	920: {
+	2020: {
 		name: 'Haruna *mist*',
 		nameJP: 'ハルナ*mist*',
 		image: 'AHaruna2.jpg',
@@ -16048,7 +16171,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	921: {
+	2021: {
 		name: 'Kirishima *mist*',
 		nameJP: 'キリシマ*mist*',
 		image: 'AKirishima.png',
@@ -16070,7 +16193,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	922: {
+	2022: {
 		name: 'Kongou *mist*',
 		nameJP: 'コンゴウ*mist*',
 		image: 'AKongou.jpg',
@@ -16092,7 +16215,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	1001: {
+	3001: {
 		name: '???????',
 		image: 'KShinano.png',
 		type: 'CVB',
@@ -16111,7 +16234,7 @@ var SHIPDATA = {
 		fuel: 250,
 		ammo: 220
 	},
-	1002: {
+	3002: {
 		name: '????? ?????????? ??????',
 		image: 'SBYamato.png',
 		type: 'BBVT',
@@ -16135,5 +16258,124 @@ var SHIPDATA = {
 		ASWPower: function() { return 2000000; },
 		ACCbonus: 40
 	},
-	
+	3003: {
+		name: 'Canal Princess 1 (Vita)',
+		image: 'SCanalH.png',
+		type: 'Installation',
+		HP: 250,
+		FP: 70,
+		TP: 0,
+		AA: 50,
+		AR: 15,
+		EV: 1,
+		ASW: 0,
+		LOS: 30,
+		LUK: 15,
+		RNG: 1,
+		SPD: 0,
+		SLOTS: [0,0,0,0],
+		EQUIPS: [550,511,511,560],
+		fuel: 0,
+		ammo: 0
+	},
+	3004: {
+		name: 'Canal Princess 2 (Vita)',
+		image: 'SCanalH.png',
+		type: 'Installation',
+		HP: 300,
+		FP: 90,
+		TP: 0,
+		AA: 75,
+		AR: 35,
+		EV: 1,
+		ASW: 0,
+		LOS: 35,
+		LUK: 25,
+		RNG: 1,
+		SPD: 0,
+		SLOTS: [0,0,0,0],
+		EQUIPS: [550,511,511,560],
+		fuel: 0,
+		ammo: 0
+	},
+	3005: {
+		name: 'Canal Princess 3 (Vita)',
+		image: 'SCanalH.png',
+		type: 'Installation',
+		HP: 390,
+		FP: 110,
+		TP: 0,
+		AA: 85,
+		AR: 70,
+		EV: 1,
+		ASW: 0,
+		LOS: 40,
+		LUK: 35,
+		RNG: 1,
+		SPD: 0,
+		SLOTS: [0,0,0,0],
+		EQUIPS: [550,553,553,560],
+		fuel: 0,
+		ammo: 0
+	},
+	3006: {
+		name: 'Central Princess 1 (Vita)',
+		image: 'SCentralH.jpg',
+		type: 'Installation',
+		HP: 600,
+		FP: 100,
+		TP: 0,
+		AA: 100,
+		AR: 90,
+		ASW: 0,
+		EV: 1,
+		LOS: 100,
+		LUK: 50,
+		RNG: 3,
+		SPD: 0,
+		SLOTS: [0,0,60,60],
+		EQUIPS: [568,568,556,558],
+		fuel: 0,
+		ammo: 0
+	},
+	3007: {
+		name: 'Central Princess 2 (Vita)',
+		image: 'SCentralH.jpg',
+		type: 'Installation',
+		HP: 800,
+		FP: 160,
+		TP: 0,
+		AA: 140,
+		AR: 150,
+		ASW: 0,
+		EV: 20,
+		LOS: 120,
+		LUK: 70,
+		RNG: 3,
+		SPD: 0,
+		SLOTS: [0,0,75,75],
+		EQUIPS: [568,568,556,558],
+		fuel: 0,
+		ammo: 0
+	},
+	3008: {
+		name: 'Central Princess 3 (Vita)',
+		image: 'SCentralH.jpg',
+		type: 'Installation',
+		HP: 900,
+		FP: 200,
+		TP: 0,
+		AA: 180,
+		AR: 190,
+		ASW: 0,
+		EV: 40,
+		LOS: 150,
+		LUK: 90,
+		RNG: 3,
+		SPD: 0,
+		SLOTS: [0,0,95,95],
+		EQUIPS: [568,568,556,558],
+		fuel: 0,
+		ammo: 0
+	},
 };

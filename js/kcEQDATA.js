@@ -1,54 +1,58 @@
 //equip type (can equip)
 const MAINGUNS = 1;
-const MAINGUNSAA = 51;
+const MAINGUNSAA = 101;
 const MAINGUNM = 2;
 const MAINGUNL = 3;
-const MAINGUNXL = 4;
-const SECGUN = 5;
-const SECGUNAA = 55;
-const AAGUN = 6;
-const AAFD = 7;
-const TORPEDO = 8;
-const TORPEDOSS = 9;
-const MIDGETSUB = 10;
-const FIGHTER = 11;
-const TORPBOMBER = 12;
-const DIVEBOMBER = 13;
-const SEAPLANE = 14;
-const SEAPLANEBOMBER = 15;
-const CARRIERSCOUT = 16;
-const AUTOGYRO = 17;
-const ASWPLANE = 18;
-const RADARS = 19;
-const RADARL = 20;
-const RADARXL = 21;
-const SONARS = 22;
-const SONARL = 23;
-const DEPTHCHARGE = 24;
-const ENGINE = 25;
-const APSHELL = 26;
-const TYPE3SHELL = 27;
-const BULGEM = 28;
-const BULGEL = 29;
-const LANDINGCRAFT = 30;
-const SEARCHLIGHTS = 31;
-const SEARCHLIGHTL = 32;
+const SECGUN = 4;
+const SECGUNAA = 104;
+const TORPEDO = 5;
+const FIGHTER = 6;
+const DIVEBOMBER = 7;
+const TORPBOMBER = 8;
+const CARRIERSCOUT = 9;
+const SEAPLANE = 10;
+const SEAPLANEBOMBER = 11;
+const RADARS = 12;
+const RADARL = 13;
+const SONARS = 14;
+const DEPTHCHARGE = 15;
+const ENGINE = 17;
+const TYPE3SHELL = 18;
+const APSHELL = 19;
+const AAGUN = 21;
+const MIDGETSUB = 22;
+const REPAIR = 23;
+const LANDINGCRAFT = 24;
+const AUTOGYRO = 25;
+const ASWPLANE = 26;
+const BULGEM = 27;
+const BULGEL = 28;
+const SEARCHLIGHTS = 29;
+const DRUM = 30;
+const SRF = 31;
+const TORPEDOSS = 32;
 const STARSHELL = 33;
-const PICKET = 34;
-const WG42 = 35;
-const SRF = 36;
-const FCF = 37;
-const DRUM = 38;
-const SCAMP = 39;
-const FLYINGBOAT = 40;
-const NIGHTSCOUT = 41;
-const REPAIR = 42;
+const FCF = 34;
+const SCAMP = 35;
+const AAFD = 36;
+const WG42 = 37;
+const MAINGUNXL = 38;
+const PICKET = 39;
+const SONARL = 40;
+const FLYINGBOAT = 41;
+const SEARCHLIGHTL = 42;
 const RATION = 43;
-const SEAPLANEFIGHTER = 44;
-const LANDINGTANK = 45;
-const OILDRUM = 46;
+const OILDRUM = 44;
+const SEAPLANEFIGHTER = 45;
+const LANDINGTANK = 46;
 const LANDBOMBER = 47;
 const INTERCEPTOR = 48;
+const TRANSPORTITEM = 50;
+const SUBRADAR = 51;
+const JETBOMBER = 57;
+const JETSCOUT = 59;
+const RADARXL = 93;
+const CARRIERSCOUT2 = 94;
 const OTHER = 99;
 
 var EQTDATA = {};
@@ -154,6 +158,7 @@ EQTDATA[FIGHTER] = {
 	image: 6,
 	canequip: ['CVL','CV','CVB','CVN','LHA'],
 	isPlane: true,
+	isfighter: true,
 };
 EQTDATA[TORPBOMBER] = {
 	name: 'Torpedo Bomber',
@@ -162,12 +167,16 @@ EQTDATA[TORPBOMBER] = {
 	canequipS: [352],
 	isPlane: true,
 	canContact: true,
+	isfighter: true,
+	istorpbomber: true,
 };
 EQTDATA[DIVEBOMBER] = {
 	name: 'Dive Bomber',
 	image: 7,
 	canequip: ['CVL','CV','CVB','CVN'],
 	isPlane: true,
+	isfighter: true,
+	isdivebomber: true,
 };
 EQTDATA[SEAPLANE] = {
 	name: 'Recon Seaplane',
@@ -182,11 +191,20 @@ EQTDATA[SEAPLANEBOMBER] = {
 	canequip: ['CAV','BBV','SSV','AV','AO'],
 	canequipS: [358,361,446,447],
 	isPlane: true,
+	isfighter: true,
+	isdivebomber: true,
 };
 EQTDATA[CARRIERSCOUT] = {
 	name: 'Scout Plane',
 	image: 9,
 	canequip: ['CVL','CV','CVB','CVN'],
+	isPlane: true,
+	canContact: true,
+};
+EQTDATA[CARRIERSCOUT2] = {
+	name: 'Scout Plane',
+	image: 9,
+	canequip: ['CVB'],
 	isPlane: true,
 	canContact: true,
 };
@@ -306,12 +324,6 @@ EQTDATA[FLYINGBOAT] = {
 	isPlane: true,
 	canContact: true,
 };
-EQTDATA[NIGHTSCOUT] = {
-	name: 'Recon Seaplane',
-	image: 10,
-	canequip: ['CL','CT','CA','CAV','FBB','BB','BBV','SSV','AS','AV','AO'],
-	isPlane: true,
-};
 EQTDATA[REPAIR] = {
 	name: 'Misc',
 	image: 14,
@@ -324,10 +336,11 @@ EQTDATA[RATION] = {
 };
 EQTDATA[SEAPLANEFIGHTER] = {
 	name: 'Seaplane Fighter',
-	image: 10,
+	image: 43,
 	canequip: ['CAV','BBV','SSV','AS','AV','AO'],
 	canequipS: [358,361,446,447,136,148,275,276],
 	isPlane: true,
+	isfighter: true,
 };
 EQTDATA[LANDINGTANK] = {
 	name: 'Misc',
@@ -346,12 +359,34 @@ EQTDATA[LANDBOMBER] = {
 	image: 37,
 	canequip: [],
 	isPlane: true,
+	isfighter: true,
+	isdivebomber: true,
+	istorpbomber: true,
 };
 EQTDATA[INTERCEPTOR] = {
 	name: 'Misc',
 	image: 38,
 	canequip: [],
 	isPlane: true,
+	isfighter: true,
+};
+EQTDATA[TRANSPORTITEM] = {
+	name: 'Transportation Material',
+	image: 41,
+	canequip: ['CAV','BBV','CVL','CV','CVB','CVN','SSV','AV','AR','LHA'],
+};
+EQTDATA[SUBRADAR] = {
+	name: 'Submarine Equipment',
+	image: 42,
+	canequip: ['SS','SSV'],
+};
+EQTDATA[JETBOMBER] = {
+	name: 'Jet Fighter-Bomber',
+	image: 39,
+	canequip: ['CVB'],
+	isPlane: true,
+	isfighter: true,
+	isdivebomber: true,
 };
 EQTDATA[OTHER] = {
 	name: 'Misc',
@@ -413,13 +448,13 @@ const A_GUN = 8;
 const A_XLGUN = 9;
 
 var EQDATA = {
-    0: {
+	0: {
         name: ''
     },
     1: {
 		name: '12cm Single Cannon',
 		nameJP: '12cm単装砲',
-		added: 20130417,
+		added: '2013-04-17',
 		type: MAINGUNS,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -430,7 +465,7 @@ var EQDATA = {
 	2: {
 		name: '12.7cm Twin Cannon',
 		nameJP: '12.7cm連装砲',
-		added: 20130417,
+		added: '2013-04-17',
 		type: MAINGUNS,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -442,7 +477,7 @@ var EQDATA = {
 	3: {
 		name: '10cm Twin High-Angle Cannon',
 		nameJP: '10cm連装高角砲',
-		added: 20130417,
+		added: '2013-04-17',
 		type: MAINGUNSAA,
 		btype: B_MAINGUN,
 		atype: A_HAGUN,
@@ -453,7 +488,7 @@ var EQDATA = {
 	4: {
 		name: '14cm Single Cannon',
 		nameJP: '14cm単装砲',
-		added: 20130417,
+		added: '2013-04-17',
 		type: MAINGUNM,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -466,7 +501,7 @@ var EQDATA = {
 	5: {
 		name: '15.5cm Triple Cannon',
 		nameJP: '15.5cm三連装砲',
-		added: 20130417,
+		added: '2013-04-17',
 		type: MAINGUNM,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -479,7 +514,7 @@ var EQDATA = {
 	6: {
 		name: '20.3cm Twin Cannon',
 		nameJP: '20.3cm連装砲',
-		added: 20130417,
+		added: '2013-04-17',
 		type: MAINGUNM,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -492,7 +527,7 @@ var EQDATA = {
 	7: {
 		name: '35.6cm Twin Cannon',
 		nameJP: '35.6cm連装砲',
-		added: 20130417,
+		added: '2013-04-17',
 		type: MAINGUNL,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -505,7 +540,7 @@ var EQDATA = {
 	8: {
 		name: '41cm Twin Cannon',
 		nameJP: '41cm連装砲',
-		added: 20130417,
+		added: '2013-04-17',
 		type: MAINGUNL,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -518,7 +553,7 @@ var EQDATA = {
 	9: {
 		name: '46cm Triple Cannon',
 		nameJP: '46cm三連装砲',
-		added: 20130417,
+		added: '2013-04-17',
 		type: MAINGUNL,
 		btype: B_MAINGUN,
 		atype: A_XLGUN,
@@ -531,7 +566,7 @@ var EQDATA = {
 	10: {
 		name: '12.7cm Twin High-Angle Cannon',
 		nameJP: '12.7cm連装高角砲',
-		added: 20130417,
+		added: '2013-04-17',
 		type: SECGUNAA,
 		btype: B_SECGUN,
 		atype: A_HAGUN,
@@ -543,7 +578,7 @@ var EQDATA = {
 	11: {
 		name: '15.2cm Single Cannon',
 		nameJP: '15.2cm単装砲',
-		added: 20130417,
+		added: '2013-04-17',
 		type: SECGUN,
 		btype: B_SECGUN,
 		atype: A_GUN,
@@ -556,7 +591,7 @@ var EQDATA = {
 	12: {
 		name: '15.5cm Triple Secondary Cannon',
 		nameJP: '15.5cm三連装副砲',
-		added: 20130417,
+		added: '2013-04-17',
 		type: SECGUN,
 		btype: B_SECGUN,
 		atype: A_GUN,
@@ -568,7 +603,7 @@ var EQDATA = {
 	13: {
 		name: '61cm Triple Torpedo',
 		nameJP: '61cm三連装魚雷',
-		added: 20130417,
+		added: '2013-04-17',
 		type: TORPEDO,
 		btype: B_TORPEDO,
 		improveType: 1,
@@ -578,7 +613,7 @@ var EQDATA = {
 	14: {
 		name: '61cm Quad Torpedo',
 		nameJP: '61cm四連装魚雷',
-		added: 20130417,
+		added: '2013-04-17',
 		type: TORPEDO,
 		btype: B_TORPEDO,
 		improveType: 1,
@@ -588,7 +623,7 @@ var EQDATA = {
 	15: {
 		name: '61cm Quad (Oxygen) Torpedo',
 		nameJP: '61cm四連装(酸素)魚雷',
-		added: 20130417,
+		added: '2013-04-17',
 		type: TORPEDO,
 		btype: B_TORPEDO,
 		improveType: 1,
@@ -598,9 +633,8 @@ var EQDATA = {
 	16: {
 		name: 'Type 97 Torpedo Bomber',
 		nameJP: '九七式艦攻',
-		added: 20130417,
+		added: '2013-04-17',
 		type: TORPBOMBER,
-		istorpbomber: true,
 		improveType: 2,
 		TP: 5,
 		ASW: 4,
@@ -609,9 +643,8 @@ var EQDATA = {
 	17: {
 		name: 'Tenzan',
 		nameJP: '天山',
-		added: 20130417,
+		added: '2013-04-17',
 		type: TORPBOMBER,
-		istorpbomber: true,
 		improveType: 2,
 		TP: 7,
 		ASW: 3,
@@ -620,9 +653,8 @@ var EQDATA = {
 	18: {
 		name: 'Ryuusei',
 		nameJP: '流星',
-		added: 20130417,
+		added: '2013-04-17',
 		type: TORPBOMBER,
-		istorpbomber: true,
 		improveType: 2,
 		TP: 10,
 		ASW: 4,
@@ -631,45 +663,40 @@ var EQDATA = {
 	19: {
 		name: 'Type 96 Fighter',
 		nameJP: '九六式艦戦',
-		added: 20130417,
+		added: '2013-04-17',
 		type: FIGHTER,
-		isfighter: true,
 		improveType: 2,
 		AA: 2
 	},
 	20: {
 		name: 'Type 21 Zero Fighter',
 		nameJP: '零式艦戦21型',
-		added: 20130417,
+		added: '2013-04-17',
 		type: FIGHTER,
-		isfighter: true,
 		improveType: 2,
 		AA: 5
 	},
 	21: {
 		name: 'Type 52 Zero Fighter',
 		nameJP: '零式艦戦52型',
-		added: 20130417,
+		added: '2013-04-17',
 		type: FIGHTER,
-		isfighter: true,
 		improveType: 2,
 		AA: 6
 	},
 	22: {
 		name: 'Reppuu',
 		nameJP: '烈風',
-		added: 20130417,
+		added: '2013-04-17',
 		type: FIGHTER,
-		isfighter: true,
 		improveType: 2,
 		AA: 10
 	},
 	23: {
 		name: 'Type 99 Bomber',
 		nameJP: '九九式艦爆',
-		added: 20130417,
+		added: '2013-04-17',
 		type: DIVEBOMBER,
-		isdivebomber: true,
 		improveType: 2,
 		ASW: 3,
 		DIVEBOMB: 5
@@ -677,9 +704,8 @@ var EQDATA = {
 	24: {
 		name: 'Suisei',
 		nameJP: '彗星',
-		added: 20130417,
+		added: '2013-04-17',
 		type: DIVEBOMBER,
-		isdivebomber: true,
 		improveType: 2,
 		ASW: 3,
 		DIVEBOMB: 8
@@ -687,7 +713,7 @@ var EQDATA = {
 	25: {
 		name: 'Type 0 Recon Seaplane',
 		nameJP: '零式水上偵察機',
-		added: 20130417,
+		added: '2013-04-17',
 		type: SEAPLANE,
 		btype: B_RECON,
 		improveType: 2,
@@ -700,12 +726,10 @@ var EQDATA = {
 	26: {
 		name: 'Zuiun',
 		nameJP: '瑞雲',
-		added: 20130417,
+		added: '2013-04-17',
 		b_image: 11,
 		type: SEAPLANEBOMBER,
 		btype: B_RECON,
-		isfighter: true,
-		isdivebomber: true,
 		improveType: 2,
 		AA: 2,
 		ASW: 4,
@@ -716,7 +740,7 @@ var EQDATA = {
 	27: {
 		name: 'Type 13 Air RADAR',
 		nameJP: '13号対空電探',
-		added: 20130417,
+		added: '2013-04-17',
 		type: RADARS,
 		btype: B_RADAR,
 		atype: A_AIRRADAR,
@@ -728,7 +752,7 @@ var EQDATA = {
 	28: {
 		name: 'Type 22 Surface RADAR',
 		nameJP: '22号対水上電探',
-		added: 20130417,
+		added: '2013-04-17',
 		type: RADARS,
 		btype: B_RADAR,
 		improveType: 1,
@@ -739,7 +763,7 @@ var EQDATA = {
 	29: {
 		name: 'Type 33 Surface RADAR',
 		nameJP: '33号対水上電探',
-		added: 20130417,
+		added: '2013-04-17',
 		type: RADARS,
 		btype: B_RADAR,
 		LOS: 7,
@@ -748,7 +772,7 @@ var EQDATA = {
 	30: {
 		name: 'Type 21 Air RADAR',
 		nameJP: '21号対空電探',
-		added: 20130417,
+		added: '2013-04-17',
 		type: RADARL,
 		btype: B_RADAR,
 		atype: A_AIRRADAR,
@@ -760,7 +784,7 @@ var EQDATA = {
 	31: {
 		name: 'Type 32 Surface RADAR',
 		nameJP: '32号対水上電探',
-		added: 20130417,
+		added: '2013-04-17',
 		type: RADARL,
 		btype: B_RADAR,
 		improveType: 1,
@@ -770,7 +794,7 @@ var EQDATA = {
 	32: {
 		name: 'Type 14 Air RADAR',
 		nameJP: '14号対空電探',
-		added: 20130417,
+		added: '2013-04-17',
 		type: RADARL,
 		btype: B_RADAR,
 		atype: A_AIRRADAR,
@@ -781,21 +805,21 @@ var EQDATA = {
 	33: {
 		name: 'Improved Steam Turbine',
 		nameJP: '改良型艦本式タービン',
-		added: 20130417,
+		added: '2013-04-17',
 		type: ENGINE,
 		EV: 6
 	},
 	34: {
 		name: 'Enhanced Steam Turbine',
 		nameJP: '強化型艦本式缶',
-		added: 20130417,
+		added: '2013-04-17',
 		type: ENGINE,
 		EV: 10
 	},
 	35: {
 		name: 'Type 3 Shell',
 		nameJP: '三式弾',
-		added: 20130417,
+		added: '2013-04-17',
 		type: TYPE3SHELL,
 		btype: B_TYPE3SHELL,
 		atype: A_TYPE3SHELL,
@@ -804,7 +828,7 @@ var EQDATA = {
 	36: {
 		name: 'Type 91 AP Shell',
 		nameJP: '九一式徹甲弾',
-		added: 20130417,
+		added: '2013-04-17',
 		type: APSHELL,
 		btype: B_APSHELL,
 		improveType: 1,
@@ -814,7 +838,7 @@ var EQDATA = {
 	37: {
 		name: '7.7mm Gun',
 		nameJP: '7.7mm機銃',
-		added: 20130417,
+		added: '2013-04-17',
 		type: AAGUN,
 		atype: A_AAGUN,
 		AA: 2,
@@ -823,7 +847,7 @@ var EQDATA = {
 	38: {
 		name: '12.7mm Gun',
 		nameJP: '12.7mm単装機銃',
-		added: 20130417,
+		added: '2013-04-17',
 		type: AAGUN,
 		atype: A_AAGUN,
 		AA: 3,
@@ -832,7 +856,7 @@ var EQDATA = {
 	39: {
 		name: '25mm Dual Gun',
 		nameJP: '25mm連装機銃',
-		added: 20130417,
+		added: '2013-04-17',
 		type: AAGUN,
 		atype: A_AAGUN,
 		improveType: 1,
@@ -842,7 +866,7 @@ var EQDATA = {
 	40: {
 		name: '25mm Triple Gun',
 		nameJP: '25mm三連装機銃',
-		added: 20130417,
+		added: '2013-04-17',
 		type: AAGUN,
 		atype: A_AAGUN,
 		improveType: 1,
@@ -852,26 +876,26 @@ var EQDATA = {
 	41: {
 		name: 'Type A Ko-hyoteki',
 		nameJP: '甲標的',
-		added: 20130417,
+		added: '2013-04-17',
 		type: MIDGETSUB,
 		TP: 12
 	},
 	42: {
 		name: 'Repair Team',
 		nameJP: '応急修理要員',
-		added: 20130417,
+		added: '2013-04-17',
 		type: REPAIR
 	},
 	43: {
 		name: 'Repair Goddess',
 		nameJP: '応急修理女神',
-		added: 20130417,
+		added: '2013-04-17',
 		type: REPAIR
 	},
 	44: {
 		name: 'Type 94 Depth Charge',
 		nameJP: '九四式爆雷投射機',
-		added: 20130417,
+		added: '2013-04-17',
 		type: DEPTHCHARGE,
 		btype: B_DEPTHCHARGE,
 		improveType: 1,
@@ -880,7 +904,7 @@ var EQDATA = {
 	45: {
 		name: 'Type 3 Depth Charge',
 		nameJP: '三式爆雷投射機',
-		added: 20130417,
+		added: '2013-04-17',
 		type: DEPTHCHARGE,
 		btype: B_DEPTHCHARGE,
 		improveType: 1,
@@ -889,7 +913,7 @@ var EQDATA = {
 	46: {
 		name: 'Type 93 SONAR',
 		nameJP: '九三式水中聴音機',
-		added: 20130417,
+		added: '2013-04-17',
 		type: SONARS,
 		btype: B_SONAR,
 		improveType: 1,
@@ -899,7 +923,7 @@ var EQDATA = {
 	47: {
 		name: 'Type 3 SONAR',
 		nameJP: '三式水中探信儀',
-		added: 20130417,
+		added: '2013-04-17',
 		type: SONARS,
 		btype: B_SONAR,
 		improveType: 1,
@@ -909,7 +933,7 @@ var EQDATA = {
 	48: {
 		name: '12.7 cm Single High-Angle Cannon',
 		nameJP: '12.7cm単装高角砲',
-		added: 20130605,
+		added: '2013-06-05',
 		type: SECGUNAA,
 		btype: B_SECGUN,
 		atype: A_HAGUN,
@@ -920,7 +944,7 @@ var EQDATA = {
 	49: {
 		name: '25mm Single Gun',
 		nameJP: '25mm単装機銃',
-		added: 20160311,
+		added: '2016-03-11',
 		type: AAGUN,
 		atype: A_AAGUN,
 		improveType: 1,
@@ -930,7 +954,7 @@ var EQDATA = {
 	50: {
 		name: '20.3cm(no.3) Dual Cannon',
 		nameJP: '20.3cm(3号)連装砲',
-		added: 20130502,
+		added: '2013-05-02',
 		type: MAINGUNM,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -943,7 +967,7 @@ var EQDATA = {
 	51: {
 		name: '12cm 30-tube Rocket Launcher',
 		nameJP: '12cm30連装噴進砲',
-		added: 20130517,
+		added: '2013-05-17',
 		type: AAGUN,
 		atype: A_AAGUN,
 		AA: 8
@@ -951,9 +975,8 @@ var EQDATA = {
 	52: {
 		name: 'Ryuusei Kai',
 		nameJP: '流星改',
-		added: 20130517,
+		added: '2013-05-17',
 		type: TORPBOMBER,
-		istorpbomber: true,
 		improveType: 2,
 		TP: 13,
 		ASW: 3,
@@ -962,16 +985,15 @@ var EQDATA = {
 	53: {
 		name: 'Reppuu Kai',
 		nameJP: '烈風改',
-		added: 20130517,
+		added: '2013-05-17',
 		type: FIGHTER,
-		isfighter: true,
 		improveType: 2,
 		AA: 12
 	},
 	54: {
 		name: 'Saiun',
 		nameJP: '彩雲',
-		added: 20130517,
+		added: '2013-05-17',
 		type: CARRIERSCOUT,
 		improveType: 2,
 		noRedT: true,
@@ -981,9 +1003,8 @@ var EQDATA = {
 	55: {
 		name: 'Shiden Kai 2',
 		nameJP: '紫電改二',
-		added: 20130517,
+		added: '2013-05-17',
 		type: FIGHTER,
-		isfighter: true,
 		improveType: 2,
 		AA: 9,
 		EV: 3
@@ -991,18 +1012,16 @@ var EQDATA = {
 	56: {
 		name: 'Shinden Kai',
 		nameJP: '震電改',
-		added: 20130517,
+		added: '2013-05-17',
 		type: FIGHTER,
-		isfighter: true,
 		improveType: 2,
 		AA: 15
 	},
 	57: {
 		name: 'Suisei Model 12A',
 		nameJP: '彗星一二型甲',
-		added: 20130517,
+		added: '2013-05-17',
 		type: DIVEBOMBER,
-		isdivebomber: true,
 		improveType: 2,
 		ASW: 3,
 		LOS: 1,
@@ -1011,7 +1030,7 @@ var EQDATA = {
 	58: {
 		name: '61cm Quintuple (Oxygen) Torpedo',
 		nameJP: '61cm五連装(酸素)魚雷',
-		added: 20130601,
+		added: '2013-06-01',
 		type: TORPEDO,
 		btype: B_TORPEDO,
 		improveType: 1,
@@ -1022,7 +1041,7 @@ var EQDATA = {
 	59: {
 		name: 'Type 0 Observation Seaplane',
 		nameJP: '零式水上観測機',
-		added: 20130703,
+		added: '2013-07-03',
 		type: SEAPLANE,
 		btype: B_RECON,
 		improveType: 2,
@@ -1035,10 +1054,8 @@ var EQDATA = {
 	60: {
 		name: 'Type 62 Zero Fighter-Bomber',
 		nameJP: '零式艦戦62型(爆戦)',
-		added: 20130814,
+		added: '2013-08-14',
 		type: DIVEBOMBER,
-		isfighter: true,
-		isdivebomber: true,
 		improveType: 2,
 		AA: 4,
 		ASW: 3,
@@ -1047,7 +1064,7 @@ var EQDATA = {
 	61: {
 		name: 'Type 2 Recon Plane',
 		nameJP: '二式艦上偵察機',
-		added: 20130916,
+		added: '2013-09-16',
 		type: CARRIERSCOUT,
 		improveType: 2,
 		AA: 1,
@@ -1057,11 +1074,10 @@ var EQDATA = {
 	62: {
 		name: 'Prototype Seiran',
 		nameJP: '試製晴嵐',
-		added: 20130916,
+		added: '2013-09-16',
 		b_image: 11,
 		type: SEAPLANEBOMBER,
 		btype: B_RECON,
-		isdivebomber: true,
 		improveType: 2,
 		ASW: 6,
 		LOS: 6,
@@ -1071,7 +1087,7 @@ var EQDATA = {
 	63: {
 		name: '12.7cm Twin Cannon B',
 		nameJP: '12.7cm連装砲B型改二',
-		added: 20131004,
+		added: '2013-10-04',
 		type: MAINGUNS,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -1083,9 +1099,8 @@ var EQDATA = {
 	64: {
 		name: 'Ju 87C Kai',
 		nameJP: 'Ju87C改',
-		added: 20131113,
+		added: '2013-11-13',
 		type: DIVEBOMBER,
-		isdivebomber: true,
 		improveType: 2,
 		ASW: 5,
 		DIVEBOMB: 9,
@@ -1094,7 +1109,7 @@ var EQDATA = {
 	65: {
 		name: '15.2cm Twin Cannon',
 		nameJP: '15.2cm連装砲',
-		added: 20131101,
+		added: '2013-11-01',
 		type: MAINGUNM,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -1108,7 +1123,7 @@ var EQDATA = {
 	66: {
 		name: '8cm High-Angle Cannon',
 		nameJP: '8cm高角砲',
-		added: 20131101,
+		added: '2013-11-01',
 		type: SECGUNAA,
 		btype: B_SECGUN,
 		atype: A_HAGUN,
@@ -1120,7 +1135,7 @@ var EQDATA = {
 	67: {
 		name: '53cm Hull-mount (Oxygen) Torpedo',
 		nameJP: '53cm艦首(酸素)魚雷',
-		added: 20131101,
+		added: '2013-11-01',
 		type: TORPEDO,
 		btype: B_TORPEDO,
 		TP: 15,
@@ -1130,7 +1145,7 @@ var EQDATA = {
 	68: {
 		name: 'Daihatsu-Class Landing Craft',
 		nameJP: '大発動艇',
-		added: 20131224,
+		added: '2013-12-24',
 		type: LANDINGCRAFT,
 		btype: B_LC1,
 		improveType: 1,
@@ -1138,7 +1153,7 @@ var EQDATA = {
 	69: {
 		name: 'Type Ka Liaison Aircraft',
 		nameJP: 'カ号観測機',
-		added: 20131224,
+		added: '2013-12-24',
 		type: AUTOGYRO,
 		ASW: 9,
 		ACC: 1
@@ -1146,7 +1161,7 @@ var EQDATA = {
 	70: {
 		name: 'Type 3 Liaison Aircraft',
 		nameJP: '三式指揮連絡機(対潜)',
-		added: 20131224,
+		added: '2013-12-24',
 		type: ASWPLANE,
 		ASW: 7,
 		LOS: 1,
@@ -1155,7 +1170,7 @@ var EQDATA = {
 	71: {
 		name: '10cm Twin High-Angle Cannon(Late Model)',
 		nameJP: '10cm連装高角砲(砲架)',
-		added: 20131224,
+		added: '2013-12-24',
 		type: MAINGUNSAA,
 		btype: B_MAINGUN,
 		atype: A_HAGUN,
@@ -1167,7 +1182,7 @@ var EQDATA = {
 	72: {
 		name: 'Anti-Torpedo Bulge (M)',
 		nameJP: '増設バルジ(中型艦)',
-		added: 20140115,
+		added: '2014-01-15',
 		type: BULGEM,
 		AR: 7,
 		EV: -2
@@ -1175,7 +1190,7 @@ var EQDATA = {
 	73: {
 		name: 'Anti-Torpedo Bulge (L)',
 		nameJP: '増設バルジ(大型艦)',
-		added: 20140115,
+		added: '2014-01-15',
 		type: BULGEL,
 		AR: 9,
 		EV: -3
@@ -1183,7 +1198,7 @@ var EQDATA = {
 	74: {
 		name: 'Searchlight',
 		nameJP: '探照灯',
-		added: 20140226,
+		added: '2014-02-26',
 		type: SEARCHLIGHTS,
 		improveType: 1,
 		LOS: 2
@@ -1191,13 +1206,13 @@ var EQDATA = {
 	75: {
 		name: 'Drum (Transport)',
 		nameJP: 'ドラム缶(輸送用)',
-		added: 20140226,
+		added: '2014-02-26',
 		type: DRUM
 	},
 	76: {
 		name: '38cm Twin Gun Mount',
 		nameJP: '38cm連装砲',
-		added: 20140314,
+		added: '2014-03-14',
 		type: MAINGUNL,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -1211,7 +1226,7 @@ var EQDATA = {
 	77: {
 		name: '15cm Twin Gun Mount',
 		nameJP: '15cm連装副砲',
-		added: 20140314,
+		added: '2014-03-14',
 		type: SECGUN,
 		btype: B_SECGUN,
 		atype: A_GUN,
@@ -1223,7 +1238,7 @@ var EQDATA = {
 	78: {
 		name: '12.7cm Naval Gun',
 		nameJP: '12.7cm単装砲',
-		added: 20140314,
+		added: '2014-03-14',
 		type: MAINGUNS,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -1234,12 +1249,10 @@ var EQDATA = {
 	79: {
 		name: 'Zuiun(634)',
 		nameJP: '瑞雲(六三四空)',
-		added: 20140423,
+		added: '2014-04-23',
 		b_image: 11,
 		type: SEAPLANEBOMBER,
 		btype: B_RECON,
-		isfighter: true,
-		isdivebomber: true,
 		improveType: 2,
 		AA: 2,
 		ASW: 5,
@@ -1250,12 +1263,10 @@ var EQDATA = {
 	80: {
 		name: 'Zuiun Model 12',
 		nameJP: '瑞雲12型',
-		added: 20140315,
+		added: '2014-03-15',
 		b_image: 11,
 		type: SEAPLANEBOMBER,
 		btype: B_RECON,
-		isfighter: true,
-		isdivebomber: true,
 		improveType: 2,
 		AA: 3,
 		ASW: 5,
@@ -1266,12 +1277,10 @@ var EQDATA = {
 	81: {
 		name: 'Zuiun Model 12(634)',
 		nameJP: '瑞雲12型(六三四空)',
-		added: 20140421,
+		added: '2014-04-21',
 		b_image: 11,
 		type: SEAPLANEBOMBER,
 		btype: B_RECON,
-		isfighter: true,
-		isdivebomber: true,
 		improveType: 2,
 		AA: 3,
 		ASW: 6,
@@ -1282,9 +1291,8 @@ var EQDATA = {
 	82: {
 		name: 'Type 97 Torpedo Bomber(931)',
 		nameJP: '九七式艦攻(九三一空)',
-		added: 20140315,
+		added: '2014-03-15',
 		type: TORPBOMBER,
-		istorpbomber: true,
 		improveType: 2,
 		TP: 6,
 		ASW: 7,
@@ -1293,9 +1301,8 @@ var EQDATA = {
 	83: {
 		name: 'Tenzan(931)',
 		nameJP: '天山(九三一空)',
-		added: 20140315,
+		added: '2014-03-15',
 		type: TORPBOMBER,
-		istorpbomber: true,
 		improveType: 2,
 		TP: 9,
 		ASW: 8,
@@ -1304,7 +1311,7 @@ var EQDATA = {
 	84: {
 		name: '2cm Flakvierling 38',
 		nameJP: '2cm 四連装FlaK 38',
-		added: 20140314,
+		added: '2014-03-14',
 		type: AAGUN,
 		atype: A_AAGUN,
 		AA: 7,
@@ -1313,7 +1320,7 @@ var EQDATA = {
 	85: {
 		name: '3.7cm FlaK M42',
 		nameJP: '3.7cm FlaK M42',
-		added: 20140314,
+		added: '2014-03-14',
 		type: AAGUN,
 		atype: A_AAGUN,
 		FP: 1,
@@ -1323,20 +1330,20 @@ var EQDATA = {
 	86: {
 		name: 'Ship Repair Facility',
 		nameJP: '艦艇修理施設',
-		added: 20140423,
+		added: '2014-04-23',
 		type: SRF
 	},
 	87: {
 		name: 'New High Pressure-Temperature Steam Boiler',
 		nameJP: '新型高温高圧缶',
-		added: 20140423,
+		added: '2014-04-23',
 		type: ENGINE,
 		EV: 13
 	},
 	88: {
 		name: 'Type 22 Surface RADAR Kai 4',
 		nameJP: '22号対水上電探改四',
-		added: 20140514,
+		added: '2014-05-14',
 		type: RADARS,
 		btype: B_RADAR,
 		improveType: 1,
@@ -1348,7 +1355,7 @@ var EQDATA = {
 	89: {
 		name: 'Type 21 Air RADAR Kai',
 		nameJP: '21号対空電探改',
-		added: 20140514,
+		added: '2014-05-14',
 		type: RADARL,
 		btype: B_RADAR,
 		atype: A_AIRRADAR,
@@ -1361,7 +1368,7 @@ var EQDATA = {
 	90: {
 		name: '20.3cm(no.2) Twin Gun Mount',
 		nameJP: '20.3cm(2号)連装砲',
-		added: 20140523,
+		added: '2014-05-23',
 		type: MAINGUNM,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -1374,7 +1381,7 @@ var EQDATA = {
 	91: {
 		name: '12.7cm Twin High-Angle Mount (Late Model)',
 		nameJP: '12.7cm連装高角砲(後期型)',
-		added: 20140523,
+		added: '2014-05-23',
 		type: MAINGUNSAA,
 		btype: B_MAINGUN,
 		atype: A_HAGUN,
@@ -1388,7 +1395,7 @@ var EQDATA = {
 	92: {
 		name: 'HI-type 40mm Twin Machine Gun',
 		nameJP: '毘式40mm連装機銃',
-		added: 20140606,
+		added: '2014-06-06',
 		type: AAGUN,
 		atype: A_AAGUN,
 		AA: 6,
@@ -1397,10 +1404,8 @@ var EQDATA = {
 	93: {
 		name: 'Type 97 Torpedo Bomber(Tomonaga)',
 		nameJP: '九七式艦攻(友永隊)',
-		added: 20140606,
+		added: '2014-06-06',
 		type: TORPBOMBER,
-		isfighter: true,
-		istorpbomber: true,
 		improveType: 2,
 		TP: 11,
 		AA: 1,
@@ -1411,10 +1416,8 @@ var EQDATA = {
 	94: {
 		name: 'Tenzan Model 12(Tomonaga)',
 		nameJP: '天山一二型(友永隊)',
-		added: 20140606,
+		added: '2014-06-06',
 		type: TORPBOMBER,
-		isfighter: true,
-		istorpbomber: true,
 		improveType: 2,
 		TP: 14,
 		AA: 1,
@@ -1425,7 +1428,7 @@ var EQDATA = {
 	95: {
 		name: '53cm Submarine Bow Torpedo Mount (8 tubes)',
 		nameJP: '潜水艦53cm艦首魚雷(8門)',
-		added: 20140606,
+		added: '2014-06-06',
 		type: TORPEDOSS,
 		btype: B_TORPEDO,
 		TP: 16,
@@ -1435,10 +1438,9 @@ var EQDATA = {
 	96: {
 		name: 'Type 21 Zero Fighter (Skilled)',
 		nameJP: '零式艦戦21型(熟練)',
-		added: 20140606,
+		added: '2014-06-06',
 		type: FIGHTER,
 		improveType: 2,
-		isfighter: true,
 		AA: 8,
 		LOS: 1,
 		EV: 2,
@@ -1447,10 +1449,8 @@ var EQDATA = {
 	97: {
 		name: 'Type 99 Bomber(Skilled)',
 		nameJP: '九九式艦爆(熟練)',
-		added: 20140606,
+		added: '2014-06-06',
 		type: DIVEBOMBER,
-		isfighter: true,
-		isdivebomber: true,
 		improveType: 2,
 		AA: 1,
 		ASW: 4,
@@ -1461,9 +1461,8 @@ var EQDATA = {
 	98: {
 		name: 'Type 97 Torpedo Bomber(Skilled)',
 		nameJP: '九七式艦攻(熟練)',
-		added: 20140718,
+		added: '2014-07-18',
 		type: TORPBOMBER,
-		istorpbomber: true,
 		improveType: 2,
 		TP: 8,
 		ASW: 5,
@@ -1473,9 +1472,8 @@ var EQDATA = {
 	99: {
 		name: 'Type 99 Bomber(Egusa)',
 		nameJP: '九九式艦爆(江草隊)',
-		added: 20140718,
+		added: '2014-07-18',
 		type: DIVEBOMBER,
-		isdivebomber: true,
 		improveType: 2,
 		ASW: 5,
 		LOS: 3,
@@ -1485,10 +1483,8 @@ var EQDATA = {
 	100: {
 		name: 'Suisei(Egusa)',
 		nameJP: '彗星(江草隊)',
-		added: 20140718,
+		added: '2014-07-18',
 		type: DIVEBOMBER,
-		isfighter: true,
-		isdivebomber: true,
 		improveType: 2,
 		AA: 1,
 		ASW: 5,
@@ -1499,14 +1495,15 @@ var EQDATA = {
 	101: {
 		name: 'Star Shell',
 		nameJP: '照明弾',
-		added: 20140606,
+		added: '2014-06-06',
 		type: STARSHELL
 	},
 	102: {
 		name: 'Type 98 Recon Seaplane (Night Scout)',
 		nameJP: '九八式水上偵察機(夜偵)',
-		added: 20140606,
-		type: NIGHTSCOUT,
+		added: '2014-06-06',
+		type: SEAPLANE,
+		btype: B_RECON,
 		isnightscout: true,
 		improveType: 2,
 		ASW: 1,
@@ -1516,7 +1513,7 @@ var EQDATA = {
 	103: {
 		name: 'Prototype 35.6cm Triple Gun Mount',
 		nameJP: '試製35.6cm三連装砲',
-		added: 20140719,
+		added: '2014-07-19',
 		type: MAINGUNL,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -1530,7 +1527,7 @@ var EQDATA = {
 	104: {
 		name: '35.6cm Twin Gun Mount (Dazzle Camouflage)',
 		nameJP: '35.6cm連装砲(ダズル迷彩)',
-		added: 20140728,
+		added: '2014-07-28',
 		type: MAINGUNL,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -1545,7 +1542,7 @@ var EQDATA = {
 	105: {
 		name: 'Prototype 41cm Triple Cannon',
 		nameJP: '試製41cm三連装砲',
-		added: 20140808,
+		added: '2014-08-08',
 		type: MAINGUNL,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -1559,7 +1556,7 @@ var EQDATA = {
 	106: {
 		name: 'Type 13 Air RADAR Kai',
 		nameJP: '13号対空電探改',
-		added: 20140808,
+		added: '2014-08-08',
 		type: RADARS,
 		btype: B_RADAR,
 		atype: A_AIRRADAR,
@@ -1572,7 +1569,7 @@ var EQDATA = {
 	107: {
 		name: 'Fleet Command Facility',
 		nameJP: '艦隊司令部施設',
-		added: 20140808,
+		added: '2014-08-08',
 		type: FCF,
 		AA: 1,
 		LOS: 1,
@@ -1582,7 +1579,7 @@ var EQDATA = {
 	108: {
 		name: 'Skilled Carrier-based Aircraft Maintenance Personnel',
 		nameJP: '熟練艦載機整備員',
-		added: 20140808,
+		added: '2014-08-08',
 		type: SCAMP,
 		FP: 10,
 		AA: 1,
@@ -1593,9 +1590,8 @@ var EQDATA = {
 	109: {
 		name: 'Zero Fighter Type 52 Type C (601 Air Group)',
 		nameJP: '零戦52型丙(六〇一空)',
-		added: 20140808,
+		added: '2014-08-08',
 		type: FIGHTER,
-		isfighter: true,
 		improveType: 2,
 		AA: 9,
 		EV: 1,
@@ -1604,9 +1600,8 @@ var EQDATA = {
 	110: {
 		name: 'Reppuu(601)',
 		nameJP: '烈風(六〇一空)',
-		added: 20140808,
+		added: '2014-08-08',
 		type: FIGHTER,
-		isfighter: true,
 		improveType: 2,
 		AA: 11,
 		EV: 2,
@@ -1615,9 +1610,8 @@ var EQDATA = {
 	111: {
 		name: 'Suisei (601 Air Group)',
 		nameJP: '彗星(六〇一空)',
-		added: 20140808,
+		added: '2014-08-08',
 		type: DIVEBOMBER,
-		isdivebomber: true,
 		improveType: 2,
 		ASW: 4,
 		LOS: 1,
@@ -1627,9 +1621,8 @@ var EQDATA = {
 	112: {
 		name: 'Tenzan(601)',
 		nameJP: '天山(六〇一空)',
-		added: 20140808,
+		added: '2014-08-08',
 		type: TORPBOMBER,
-		istorpbomber: true,
 		improveType: 2,
 		TP: 10,
 		ASW: 4,
@@ -1639,9 +1632,8 @@ var EQDATA = {
 	113: {
 		name: 'Ryuusei(601)',
 		nameJP: '流星(六〇一空)',
-		added: 20140808,
+		added: '2014-08-08',
 		type: TORPBOMBER,
-		istorpbomber: true,
 		improveType: 2,
 		TP: 13,
 		ASW: 5,
@@ -1651,7 +1643,7 @@ var EQDATA = {
 	114: {
 		name: '38cm Twin Gun Mount Kai',
 		nameJP: '38cm連装砲改',
-		added: 20140926,
+		added: '2014-09-26',
 		type: MAINGUNL,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -1665,7 +1657,7 @@ var EQDATA = {
 	115: {
 		name: 'Ar196 Kai',
 		nameJP: 'Ar196改',
-		added: 20140926,
+		added: '2014-09-26',
 		type: SEAPLANE,
 		btype: B_RECON,
 		improveType: 2,
@@ -1678,7 +1670,7 @@ var EQDATA = {
 	116: {
 		name: 'Type 1 AP Shell',
 		nameJP: '一式徹甲弾',
-		added: 20141010,
+		added: '2014-10-10',
 		type: APSHELL,
 		btype: B_APSHELL,
 		improveType: 1,
@@ -1688,7 +1680,7 @@ var EQDATA = {
 	117: {
 		name: 'Prototype 46cm Twin Gun Mount',
 		nameJP: '試製46cm連装砲',
-		added: 20141013,
+		added: '2014-10-13',
 		type: MAINGUNL,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -1702,7 +1694,7 @@ var EQDATA = {
 	118: {
 		name: 'Shiun',
 		nameJP: '紫雲',
-		added: 20141013,
+		added: '2014-10-13',
 		type: SEAPLANE,
 		btype: B_RECON,
 		improveType: 2,
@@ -1714,7 +1706,7 @@ var EQDATA = {
 	119: {
 		name: '14cm Twin Gun Mount',
 		nameJP: '14cm連装砲',
-		added: 20141024,
+		added: '2014-10-24',
 		type: MAINGUNM,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -1727,7 +1719,7 @@ var EQDATA = {
 	120: {
 		name: 'Type 91 Anti-Aircraft Fire Director',
 		nameJP: '91式高射装置',
-		added: 20141114,
+		added: '2014-11-14',
 		type: AAFD,
 		atype: A_AAFD,
 		improveType: 1,
@@ -1737,7 +1729,7 @@ var EQDATA = {
 	121: {
 		name: 'Type 94 Anti-Aircraft Fire Director',
 		nameJP: '94式高射装置',
-		added: 20141114,
+		added: '2014-11-14',
 		type: AAFD,
 		atype: A_AAFD,
 		improveType: 1,
@@ -1747,7 +1739,7 @@ var EQDATA = {
 	122: {
 		name: '10cm Twin High-Angle Cannon+FD',
 		nameJP: '10cm連装高角砲+高射装置',
-		added: 20141114,
+		added: '2014-11-14',
 		type: MAINGUNSAA,
 		btype: B_MAINGUN,
 		atype: A_HAFD,
@@ -1762,7 +1754,7 @@ var EQDATA = {
 	123: {
 		name: 'SKC34 20.3cm Twin Cannon',
 		nameJP: 'SKC34 20.3cm連装砲',
-		added: 20141114,
+		added: '2014-11-14',
 		type: MAINGUNM,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -1774,7 +1766,7 @@ var EQDATA = {
 	124: {
 		name: 'FuMO25 Radar',
 		nameJP: 'FuMO25 レーダー',
-		added: 20141114,
+		added: '2014-11-14',
 		type: RADARL,
 		btype: B_RADAR,
 		atype: A_AIRRADAR,
@@ -1786,7 +1778,7 @@ var EQDATA = {
 	125: {
 		name: '61cm Triple (Oxygen) Torpedo Mount',
 		nameJP: '61cm三連装(酸素)魚雷',
-		added: 20150109,
+		added: '2015-01-09',
 		type: TORPEDO,
 		btype: B_TORPEDO,
 		improveType: 1,
@@ -1798,7 +1790,7 @@ var EQDATA = {
 	126: {
 		name: 'WG42 (Wurfgerat 42)',
 		nameJP: 'WG42 (Wurfgerät 42)',
-		added: 20150206,
+		added: '2015-02-06',
 		type: WG42,
 		FP: 1,
 		AR: -1,
@@ -1807,7 +1799,7 @@ var EQDATA = {
 	127: {
 		name: 'Prototype FaT Type 95 Oxygen Torpedo Kai',
 		nameJP: '試製FaT仕様九五式酸素魚雷改',
-		added: 20150206,
+		added: '2015-02-06',
 		type: TORPEDOSS,
 		btype: B_TORPEDO,
 		TP: 14,
@@ -1818,7 +1810,7 @@ var EQDATA = {
 	128: {
 		name: 'Prototype 51cm Twin Cannon',
 		nameJP: '試製51cm連装砲',
-		added: 20150206,
+		added: '2015-02-06',
 		type: MAINGUNXL,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -1833,7 +1825,7 @@ var EQDATA = {
 	129: {
 		name: 'Skilled Lookouts',
 		nameJP: '熟練見張員',
-		added: 20150217,
+		added: '2015-02-17',
 		type: PICKET,
 		AA: 1,
 		LOS: 2,
@@ -1844,7 +1836,7 @@ var EQDATA = {
 	130: {
 		name: '12.7cm Twin High-angle Mount + Type 94 Anti-Aircraft Fire Director',
 		nameJP: '12.7cm高角砲+高射装置',
-		added: 20150313,
+		added: '2015-03-13',
 		type: SECGUNAA,
 		btype: B_SECGUN,
 		atype: A_HAFD,
@@ -1857,7 +1849,7 @@ var EQDATA = {
 	131: {
 		name: '25mm Triple Autocannon Mount (Concentrated Deployment)',
 		nameJP: '25mm三連装機銃 集中配備',
-		added: 20150313,
+		added: '2015-03-13',
 		type: AAGUN,
 		atype: A_AAGUN,
 		isconcentrated: true,
@@ -1867,7 +1859,7 @@ var EQDATA = {
 	132: {
 		name: 'Type 0 Passive Sonar',
 		nameJP: '零式水中聴音機',
-		added: 20150315,
+		added: '2015-03-15',
 		type: SONARL,
 		btype: B_SONAR,
 		ASW: 11,
@@ -1878,7 +1870,7 @@ var EQDATA = {
 	133: {
 		name: '381mm / 50 Triple Gun Mount',
 		nameJP: '381mm/50 三連装砲',
-		added: 20150428,
+		added: '2015-04-28',
 		type: MAINGUNL,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -1893,7 +1885,7 @@ var EQDATA = {
 	134: {
 		name: 'OTO 152mm Triple Rapid Fire Gun Mount',
 		nameJP: 'OTO 152mm三連装速射砲',
-		added: 20150428,
+		added: '2015-04-28',
 		type: SECGUN,
 		btype: B_SECGUN,
 		atype: A_GUN,
@@ -1907,7 +1899,7 @@ var EQDATA = {
 	135: {
 		name: '90mm Single High-angle Gun Mount',
 		nameJP: '90mm単装高角砲',
-		added: 20150428,
+		added: '2015-04-28',
 		type: SECGUNAA,
 		btype: B_SECGUN,
 		atype: A_HAFD,
@@ -1921,7 +1913,7 @@ var EQDATA = {
 	136: {
 		name: 'Pugliese Underwater Protection Bulkhead',
 		nameJP: 'プリエーゼ式水中防御隔壁',
-		added: 20150428,
+		added: '2015-04-28',
 		type: BULGEL,
 		AR: 7,
 		EV: -1
@@ -1929,7 +1921,7 @@ var EQDATA = {
 	137: {
 		name: '381mm/50 Triple Gun Mount Kai',
 		nameJP: '381mm/50 三連装砲改',
-		added: 20150428,
+		added: '2015-04-28',
 		type: MAINGUNL,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -1944,7 +1936,7 @@ var EQDATA = {
 	138: {
 		name: 'Type 2 Large-sized Flying Boat',
 		nameJP: '二式大艇',
-		added: 20150428,
+		added: '2015-04-28',
 		type: FLYINGBOAT,
 		btype: B_RECON,
 		improveType: 2,
@@ -1955,7 +1947,7 @@ var EQDATA = {
 	139: {
 		name: '15.2cm Twin Cannon Kai',
 		nameJP: '15.2cm連装砲改',
-		added: 20150519,
+		added: '2015-05-19',
 		type: MAINGUNM,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -1969,7 +1961,7 @@ var EQDATA = {
 	140: {
 		name: 'Type 96 150cm Searchlight',
 		nameJP: '96式150cm探照灯',
-		added: 20150529,
+		added: '2015-05-29',
 		type: SEARCHLIGHTL,
 		improveType: 1,
 		AA: 1,
@@ -1978,7 +1970,7 @@ var EQDATA = {
 	141: {
 		name: 'Type 32 Surface RADAR Kai',
 		nameJP: '32号対水上電探改',
-		added: 20150619,
+		added: '2015-06-19',
 		type: RADARL,
 		btype: B_RADAR,
 		improveType: 1,
@@ -1988,7 +1980,7 @@ var EQDATA = {
 	142: {
 		name: '15m Duplex Rangefinder + Type 21 Air Radar Kai2',
 		nameJP: '15m二重測距儀+21号電探改二',
-		added: 20150721,
+		added: '2015-07-21',
 		type: RADARXL,
 		btype: B_RADAR,
 		FP: 1,
@@ -2001,10 +1993,8 @@ var EQDATA = {
 	143: {
 		name: 'Type 97 Torpedo Bomber(Murata)',
 		nameJP: '九七式艦攻(村田隊)',
-		added: 20150810,
+		added: '2015-08-10',
 		type: TORPBOMBER,
-		isfighter: true,
-		istorpbomber: true,
 		improveType: 2,
 		TP: 12,
 		AA: 1,
@@ -2015,10 +2005,8 @@ var EQDATA = {
 	144: {
 		name: 'Tenzan Model 12(Murata)',
 		nameJP: '天山一二型(村田隊)',
-		added: 20150810,
+		added: '2015-08-10',
 		type: TORPBOMBER,
-		isfighter: true,
-		istorpbomber: true,
 		improveType: 2,
 		TP: 15,
 		AA: 1,
@@ -2029,20 +2017,20 @@ var EQDATA = {
 	145: {
 		name: 'Combat Provisions',
 		nameJP: '戦闘糧食',
-		added: 20150810,
+		added: '2015-08-10',
 		type: RATION
 	},
 	146: {
 		name: 'Underway Replenishment',
 		nameJP: '洋上補給',
-		added: 20150810,
+		added: '2015-08-10',
 		type: OILDRUM,
 		AR: -2
 	},
 	147: {
 		name: '120mm Twin Gun Mount',
 		nameJP: '120mm連装砲',
-		added: 20150810,
+		added: '2015-08-10',
 		type: MAINGUNS,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -2054,10 +2042,8 @@ var EQDATA = {
 	148: {
 		name: 'Prototype Nanzan',
 		nameJP: '試製南山',
-		added: 20150821,
+		added: '2015-08-21',
 		type: DIVEBOMBER,
-		isfighter: true,
-		isdivebomber: true,
 		improveType: 2,
 		AA: 1,
 		ASW: 4,
@@ -2067,7 +2053,7 @@ var EQDATA = {
 	149: {
 		name: 'Type 4 Passive Sonar',
 		nameJP: '四式水中聴音機',
-		added: 20150822,
+		added: '2015-08-22',
 		type: SONARS,
 		btype: B_SONAR,
 		improveType: 1,
@@ -2077,14 +2063,14 @@ var EQDATA = {
 	150: {
 		name: 'Canned Saury',
 		nameJP: '秋刀魚の缶詰',
-		added: 20151009,
+		added: '2015-10-09',
 		type: RATION
 	},
 	151: {
 		name: 'Prototype Keiun',
 		nameJP: '試製景雲(艦偵型)',
-		added: 20151021,
-		type: CARRIERSCOUT,
+		added: '2015-10-21',
+		type: CARRIERSCOUT2,
 		FP: 2,
 		ACC: 2,
 		LOS: 11
@@ -2092,9 +2078,8 @@ var EQDATA = {
 	152: {
 		name: 'Type 52 Zero Fighter (Skilled)',
 		nameJP: '零式艦戦52型(熟練)',
-		added: 20151030,
+		added: '2015-10-30',
 		type: FIGHTER,
-		isfighter: true,
 		improveType: 2,
 		AA: 9,
 		ACC: 1,
@@ -2104,9 +2089,8 @@ var EQDATA = {
 	153: {
 		name: 'Type 52 Model C (Iwai Squadron)',
 		nameJP: '零戦52型丙(付岩井小隊)',
-		added: 20151030,
+		added: '2015-10-30',
 		type: FIGHTER,
-		isfighter: true,
 		improveType: 2,
 		AA: 10,
 		ACC: 1,
@@ -2116,10 +2100,8 @@ var EQDATA = {
 	154: {
 		name: 'Type 62 Zero Fighter-Bomber (Iwai Corps)',
 		nameJP: '零戦62型(爆戦/岩井隊)',
-		added: 20151030,
+		added: '2015-10-30',
 		type: DIVEBOMBER,
-		isfighter: true,
-		isdivebomber: true,
 		improveType: 2,
 		DIVEBOMB: 4,
 		AA: 7,
@@ -2130,9 +2112,8 @@ var EQDATA = {
 	155: {
 		name: 'Type 21 Zero Fighter (Iwamoto Squadron)',
 		nameJP: '零戦21型(付岩本小隊)',
-		added: 20151030,
+		added: '2015-10-30',
 		type: FIGHTER,
-		isfighter: true,
 		improveType: 2,
 		AA: 9,
 		ACC: 1,
@@ -2142,9 +2123,8 @@ var EQDATA = {
 	156: {
 		name: 'Type 52 Model A (Iwamoto Squadron)',
 		nameJP: '零戦52型甲(付岩本小隊)',
-		added: 20151030,
+		added: '2015-10-30',
 		type: FIGHTER,
-		isfighter: true,
 		improveType: 2,
 		AA: 11,
 		ACC: 1,
@@ -2154,9 +2134,8 @@ var EQDATA = {
 	157: {
 		name: 'Type 53 Zero Fighter (Iwamoto Corps)',
 		nameJP: '零式艦戦53型(岩本隊)',
-		added: 20151030,
+		added: '2015-10-30',
 		type: FIGHTER,
-		isfighter: true,
 		improveType: 2,
 		AA: 12,
 		ACC: 2,
@@ -2166,9 +2145,8 @@ var EQDATA = {
 	158: {
 		name: 'Bf 109T Kai',
 		nameJP: 'Bf109T改',
-		added: 20151118,
+		added: '2015-11-18',
 		type: FIGHTER,
-		isfighter: true,
 		improveType: 2,
 		AA: 8,
 		FP: 1,
@@ -2177,9 +2155,8 @@ var EQDATA = {
 	159: {
 		name: 'Fw 190T Kai',
 		nameJP: 'Fw190T改',
-		added: 20151118,
+		added: '2015-11-18',
 		type: FIGHTER,
-		isfighter: true,
 		improveType: 2,
 		AA: 10,
 		FP: 2,
@@ -2188,7 +2165,7 @@ var EQDATA = {
 	160: {
 		name: '10.5cm Twin Gun Mount',
 		nameJP: '10.5cm連装砲',
-		added: 20151118,
+		added: '2015-11-18',
 		type: SECGUN,
 		atype: A_HAGUN,
 		FP: 3,
@@ -2200,7 +2177,7 @@ var EQDATA = {
 	161: {
 		name: '16inch Triple Gun Mount Mk.7',
 		nameJP: '16inch三連装砲 Mk.7',
-		added: 20160122,
+		added: '2016-01-22',
 		type: MAINGUNL,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -2215,7 +2192,7 @@ var EQDATA = {
 	162: {
 		name: '203mm/53 Twin Gun Mount',
 		nameJP: '203mm/53 連装砲',
-		added: 20160210,
+		added: '2016-02-10',
 		type: MAINGUNM,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -2227,7 +2204,7 @@ var EQDATA = {
 	163: {
 		name: 'Ro.43 Recon Seaplane',
 		nameJP: 'Ro.43水偵',
-		added: 20160210,
+		added: '2016-02-10',
 		type: SEAPLANE,
 		btype: B_RECON,
 		FP: 1,
@@ -2240,10 +2217,9 @@ var EQDATA = {
 	164: {
 		name: 'Ro.44 Seaplane Fighter',
 		nameJP: 'Ro.44水上戦闘機',
-		added: 20160210,
+		added: '2016-02-10',
 		b_image: 12,
 		type: SEAPLANEFIGHTER,
-		isfighter: true,
 		improveType: 2,
 		DIVEBOMB: 1,
 		AA: 2,
@@ -2255,10 +2231,9 @@ var EQDATA = {
 	165: {
 		name: 'Type 2 Seaplane Fighter Kai',
 		nameJP: '二式水戦改',
-		added: 20160311,
+		added: '2016-03-11',
 		b_image: 12,
 		type: SEAPLANEFIGHTER,
-		isfighter: true,
 		improveType: 2,
 		AA: 3,
 		ASW: 1,
@@ -2269,7 +2244,7 @@ var EQDATA = {
 	166: {
 		name: 'Daihatsu Landing Craft (Type 89 Medium Tank & Landing Force)',
 		nameJP: '大発動艇(八九式中戦車&陸戦隊)',
-		added: 20160319,
+		added: '2016-03-19',
 		type: LANDINGCRAFT,
 		btype: B_LC2,
 		improveType: 1,
@@ -2277,7 +2252,7 @@ var EQDATA = {
 	167: {
 		name: 'Special Type 2 Amphibious Landing Craft',
 		nameJP: '特二式内火艇',
-		added: 20160319,
+		added: '2016-03-19',
 		type: LANDINGTANK,
 		btype: B_LC3,
 		improveType: 1,
@@ -2285,10 +2260,9 @@ var EQDATA = {
 	168: {
 		name: 'Type 96 Land-based Attack Aircraft',
 		nameJP: '九六式陸攻',
-		added: 20160425,
+		added: '2016-04-25',
 		b_image: 13,
 		type: LANDBOMBER,
-		isdivebomber: true,
 		DIVEBOMB: 10,
 		TP: 8,
 		AA: 1,
@@ -2298,10 +2272,9 @@ var EQDATA = {
 	169: {
 		name: 'Type 1 Land-based Attack Aircraft',
 		nameJP: '一式陸攻',
-		added: 20160425,
+		added: '2016-04-25',
 		b_image: 13,
 		type: LANDBOMBER,
-		isdivebomber: true,
 		DIVEBOMB: 12,
 		TP: 10,
 		AA: 2,
@@ -2311,10 +2284,9 @@ var EQDATA = {
 	170: {
 		name: 'Type 1 Land-based Attack Aircraft (Nonaka Squadron)',
 		nameJP: '一式陸攻(野中隊)',
-		added: 20160502,
+		added: '2016-05-02',
 		b_image: 13,
 		type: LANDBOMBER,
-		isdivebomber: true,
 		DIVEBOMB: 13,
 		TP: 12,
 		AA: 3,
@@ -2325,7 +2297,7 @@ var EQDATA = {
 	171: {
 		name: 'OS2U',
 		nameJP: 'OS2U',
-		added: 20160502,
+		added: '2016-05-02',
 		type: SEAPLANE,
 		btype: B_RECON,
 		DIVEBOMB: 1,
@@ -2338,7 +2310,7 @@ var EQDATA = {
 	172: {
 		name: '5inch Twin Gun Mount Mk.28 mod.2',
 		nameJP: '5inch連装砲 Mk.28 mod.2',
-		added: 20160502,
+		added: '2016-05-02',
 		type: SECGUNAA,
 		btype: B_SECGUN,
 		atype: A_HAFD,
@@ -2352,7 +2324,7 @@ var EQDATA = {
 	173: {
 		name: 'Bofors 40mm Quadruple Autocannon Mount',
 		nameJP: 'Bofors 40mm四連装機関砲',
-		added: 20160425,
+		added: '2016-04-25',
 		type: AAGUN,
 		atype: A_AAGUN,
 		isconcentrated: true,
@@ -2365,7 +2337,7 @@ var EQDATA = {
 	174: {
 		name: '53cm Twin Torpedo Mount',
 		nameJP: '53cm連装魚雷',
-		added: 20160502,
+		added: '2016-05-02',
 		type: TORPEDO,
 		TP: 3,
 		EV: 2,
@@ -2374,10 +2346,9 @@ var EQDATA = {
 	175: {
 		name: 'Raiden',
 		nameJP: '雷電',
-		added: 20160502,
+		added: '2016-05-02',
 		b_image: 13,
 		type: INTERCEPTOR,
-		isfighter: true,
 		AA: 6,
 		ACC: 5,
 		EV: 2
@@ -2385,10 +2356,9 @@ var EQDATA = {
 	176: {
 		name: 'Type 3 Fighter Hien',
 		nameJP: '三式戦 飛燕',
-		added: 20160502,
+		added: '2016-05-02',
 		b_image: 13,
 		type: INTERCEPTOR,
-		isfighter: true,
 		AA: 8,
 		ACC: 1,
 		EV: 3
@@ -2396,10 +2366,9 @@ var EQDATA = {
 	177: {
 		name: 'Type 3 Fighter Hien (244th Air Combat Group)',
 		nameJP: '三式戦 飛燕(飛行第244戦隊)',
-		added: 20160502,
+		added: '2016-05-02',
 		b_image: 13,
 		type: INTERCEPTOR,
-		isfighter: true,
 		AA: 9,
 		ACC: 3,
 		EV: 4
@@ -2407,7 +2376,7 @@ var EQDATA = {
 	178: {
 		name: 'PBY-5A Catalina',
 		nameJP: 'PBY-5A Catalina',
-		added: 20160502,
+		added: '2016-05-02',
 		type: FLYINGBOAT,
 		btype: B_RECON,
 		ASW: 2,
@@ -2417,7 +2386,7 @@ var EQDATA = {
 	179: {
 		name: 'Prototype 61cm Sextuple (Oxygen) Torpedo Mount',
 		nameJP: '試製61cm六連装(酸素)魚雷',
-		added: 20160527,
+		added: '2016-05-27',
 		type: TORPEDO,
 		btype: B_TORPEDO,
 		improveType: 1,
@@ -2428,10 +2397,9 @@ var EQDATA = {
 	180: {
 		name: 'Type 1 Land-based Attack Aircraft Model 22A',
 		nameJP: '一式陸攻 二二型甲',
-		added: 20160505,
+		added: '2016-05-05',
 		b_image: 13,
 		type: LANDBOMBER,
-		isdivebomber: true,
 		TP: 11,
 		DIVEBOMB: 12,
 		AA: 3,
@@ -2441,7 +2409,7 @@ var EQDATA = {
 	181: {
 		name: 'Type 0 Fighter Model 32',
 		nameJP: '零式艦戦32型',
-		added: 20160630,
+		added: '2016-06-30',
 		type: FIGHTER,
 		AA: 5,
 		EV: 2,
@@ -2449,7 +2417,7 @@ var EQDATA = {
 	182: {
 		name: 'Type 0 Fighter Model 32 (Skilled)',
 		nameJP: '零式艦戦32型(熟練)',
-		added: 20160630,
+		added: '2016-06-30',
 		type: FIGHTER,
 		AA: 8,
 		ACC: 1,
@@ -2458,7 +2426,7 @@ var EQDATA = {
 	183: {
 		name: '16inch Triple Gun Mount Mk.7 + GFCS',
 		nameJP: '16inch三連装砲 Mk.7+GFCS',
-		added: 20160630,
+		added: '2016-06-30',
 		type: MAINGUNL,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -2474,9 +2442,8 @@ var EQDATA = {
 	184: {
 		name: 'Re.2001 OR Kai',
 		nameJP: 'Re.2001 OR改',
-		added: 20160727,
+		added: '2016-07-27',
 		type: FIGHTER,
-		isfighter: true,
 		improveType: 2,
 		FP: 3,
 		AA: 6,
@@ -2485,7 +2452,7 @@ var EQDATA = {
 	185: {
 		name: 'Type 3 Fighter Hien Model 1D',
 		nameJP: '三式戦 飛燕１型丁',
-		added: 20160812,
+		added: '2016-08-12',
 		type: INTERCEPTOR,
 		AA: 9,
 		ACC: 2,
@@ -2494,10 +2461,9 @@ var EQDATA = {
 	186: {
 		name: 'Type 1 Land-based Attack Aircraft Model 34',
 		nameJP: '一式陸攻 三四型',
-		added: 20160812,
+		added: '2016-08-12',
 		b_image: 13,
 		type: LANDBOMBER,
-		isdivebomber: true,
 		DIVEBOMB: 12,
 		TP: 11,
 		AA: 4,
@@ -2508,10 +2474,9 @@ var EQDATA = {
 	187: {
 		name: 'Ginga',
 		nameJP: '銀河',
-		added: 20160812,
+		added: '2016-08-12',
 		b_image: 13,
 		type: LANDBOMBER,
-		isdivebomber: true,
 		DIVEBOMB: 14,
 		TP: 14,
 		AA: 3,
@@ -2522,9 +2487,8 @@ var EQDATA = {
 	188: {
 		name: 'Re.2001 G Kai',
 		nameJP: 'Re.2001 G改',
-		added: 20160812,
+		added: '2016-08-12',
 		type: TORPBOMBER,
-		istorpbomber: true,
 		FP: 3,
 		TP: 4,
 		AA: 4,
@@ -2533,9 +2497,8 @@ var EQDATA = {
 	189: {
 		name: 'Re.2005 Kai',
 		nameJP: 'Re.2005 改',
-		added: 20160812,
+		added: '2016-08-12',
 		type: FIGHTER,
-		isfighter: true,
 		FP: 1,
 		AA: 11,
 		EV: 3,
@@ -2543,7 +2506,7 @@ var EQDATA = {
 	190: {
 		name: '38.1cm Mk.I Twin Gun Mount',
 		nameJP: '38.1cm Mk.I連装砲',
-		added: 20160812,
+		added: '2016-08-12',
 		type: MAINGUNL,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -2557,7 +2520,7 @@ var EQDATA = {
 	191: {
 		name: 'QF 2-pounder Octuple Pom-pom Gun Mount',
 		nameJP: 'QF 2ポンド8連装ポンポン砲',
-		added: 20160812,
+		added: '2016-08-12',
 		type: AAGUN,
 		atype: A_AAGUN,
 		isconcentrated: true,
@@ -2567,7 +2530,7 @@ var EQDATA = {
 	192: {
 		name: '38.1cm Mk.I/N Twin Gun Mount Kai',
 		nameJP: '38.1cm Mk.I/N連装砲改',
-		added: 20160927,
+		added: '2016-09-27',
 		type: MAINGUNL,
 		btype: B_MAINGUN,
 		atype: A_GUN,
@@ -2581,19 +2544,17 @@ var EQDATA = {
 	193: {
 		name: 'Toku Daihatsu Landing Craft',
 		nameJP: '特大発動艇',
-		added: 20161026,
+		added: '2016-10-26',
 		type: LANDINGCRAFT,
 		btype: B_LC1,
 	},
 	194: {
 		name: 'Laté 298B',
 		nameJP: 'Laté 298B',
-		added: 20161118,
+		added: '2016-11-18',
 		b_image: 11,
 		type: SEAPLANEBOMBER,
 		btype: B_RECON,
-		isfighter: true,
-		isdivebomber: true,
 		FP: 2,
 		DIVEBOMB: 5,
 		TP: 4,
@@ -2605,9 +2566,8 @@ var EQDATA = {
 	195: {
 		name: 'SBD',
 		nameJP: 'SBD',
-		added: 20161118,
+		added: '2016-11-18',
 		type: DIVEBOMBER,
-		isdivebomber: true,
 		FP: 1,
 		DIVEBOMB: 6,
 		AA: 2,
@@ -2619,9 +2579,8 @@ var EQDATA = {
 	196: {
 		name: 'TBD',
 		nameJP: 'TBD',
-		added: 20161118,
+		added: '2016-11-18',
 		type: TORPBOMBER,
-		istorpbomber: true,
 		FP: 1,
 		TP: 5,
 		ASW: 4,
@@ -2630,9 +2589,8 @@ var EQDATA = {
 	197: {
 		name: 'F4F-3',
 		nameJP: 'F4F-3',
-		added: 20161118,
+		added: '2016-11-18',
 		type: FIGHTER,
-		isfighter: true,
 		FP: 1,
 		AA: 4,
 		EV: 2,
@@ -2640,9 +2598,8 @@ var EQDATA = {
 	198: {
 		name: 'F4F-4',
 		nameJP: 'F4F-4',
-		added: 20161118,
+		added: '2016-11-18',
 		type: FIGHTER,
-		isfighter: true,
 		FP: 1,
 		AA: 5,
 		ACC: 1,
@@ -2652,17 +2609,15 @@ var EQDATA = {
 	999: { //was 199
 		name: 'SB2U',
 		nameJP: 'SB2U',
-		added: 20161118,
+		added: '2016-11-18',
 		type: DIVEBOMBER,
-		isdivebomber: true,
 	},
 	199: {
 		name: 'Jet Keiun Kai',
 		nameJP: '噴式景雲改',
-		added: 20161209,
+		added: '2016-12-09',
 		b_image: 14,
-		type: DIVEBOMBER,
-		isdivebomber: true,
+		type: JETBOMBER,
 		isjet: true,
 		DIVEBOMB: 15,
 		AA: 6,
@@ -2673,10 +2628,9 @@ var EQDATA = {
 	200: {
 		name: 'Kikka Kai',
 		nameJP: '橘花改',
-		added: 20161209,
+		added: '2016-12-09',
 		b_image: 14,
-		type: DIVEBOMBER,
-		isdivebomber: true,
+		type: JETBOMBER,
 		isjet: true,
 		DIVEBOMB: 11,
 		AA: 12,
@@ -2686,7 +2640,7 @@ var EQDATA = {
 	204: {
 		name: 'New Kanhon Design Anti-Torpedo Bulge (L)',
 		nameJP: '艦本新設計 増設バルジ(大型艦)',
-		added: 20161222,
+		added: '2016-12-22',
 		type: BULGEL,
 		AR: 10,
 		EV: -2,
@@ -2694,9 +2648,8 @@ var EQDATA = {
 	205: {
 		name: 'F6F-3',
 		nameJP: 'F6F-3',
-		added: 20161228,
+		added: '2016-12-28',
 		type: FIGHTER,
-		isfighter: true,
 		FP: 1,
 		AA: 8,
 		ACC: 1,
@@ -2706,12 +2659,10 @@ var EQDATA = {
 	207: {
 		name: 'Zuiun (631 Air Group)',
 		nameJP: '瑞雲(六三一空)',
-		added: 20170127,
+		added: '2017-01-27',
 		b_image: 11,
 		type: SEAPLANEBOMBER,
 		btype: B_RECON,
-		isfighter: true,
-		isdivebomber: true,
 		improveType: 2,
 		DIVEBOMB: 7,
 		AA: 1,
@@ -2722,14 +2673,14 @@ var EQDATA = {
 	209: {
 		name: 'Saiun (Disassembled for Transport)',
 		nameJP: '彩雲(輸送用分解済)',
-		added: 20170212,
-		type: OTHER,
+		added: '2017-02-12',
+		type: TRANSPORTITEM,
 	},
 	210: {
 		name: 'Submarine Radar & Waterproof Telescope',
 		nameJP: '潜水艦搭載電探&水防式望遠鏡',
-		added: 20170211,
-		type: OTHER,
+		added: '2017-02-11',
+		type: SUBRADAR,
 		FP: 1,
 		AA: 1,
 		ACC: 2,
@@ -2739,8 +2690,8 @@ var EQDATA = {
 	211: {
 		name: 'Submarine Radar & Passive Radiolocator (E27)',
 		nameJP: '潜水艦搭載電探&逆探(E27)',
-		added: 20170212,
-		type: OTHER,
+		added: '2017-02-12',
+		type: SUBRADAR,
 		FP: 1,
 		AA: 1,
 		ACC: 3,
@@ -2750,7 +2701,7 @@ var EQDATA = {
 	212: {
 		name: 'Saiun (Eastern Caroline Air Group)',
 		nameJP: '彩雲(東カロリン空)',
-		added: 20170212,
+		added: '2017-02-12',
 		type: CARRIERSCOUT,
 		FP: 1,
 		ACC: 2,
@@ -2759,7 +2710,7 @@ var EQDATA = {
 	213: {
 		name: 'Late Model Bow Torpedo Mount (6 tubes)',
 		nameJP: '後期型艦首魚雷(6門)',
-		added: '20170225',
+		added: '2017-02-25',
 		type: TORPEDOSS,
 		btype: B_TORPEDO,
 		TP: 15,
@@ -2770,7 +2721,7 @@ var EQDATA = {
 	214: {
 		name: 'Skilled Sonar Personnel + Late Model Bow Torpedo Mount (6 tubes)',
 		nameJP: '熟練聴音員+後期型艦首魚雷(6門)',
-		added: '20170225',
+		added: '2017-02-25',
 		type: TORPEDOSS,
 		btype: B_TORPEDO,
 		TP: 15,
@@ -2782,9 +2733,8 @@ var EQDATA = {
 	215: {
 		name: 'Ro.44 Seaplane Fighter bis',
 		nameJP: 'Ro.44水上戦闘機bis',
-		added: '20170317',
+		added: '2017-03-17',
 		type: SEAPLANEFIGHTER,
-		isfighter: true,
 		AA: 3,
 		ASW: 1,
 		ACC: 2,
@@ -2794,14 +2744,44 @@ var EQDATA = {
 	216: {
 		name: 'Type 2 Seaplane Fighter Kai (Skilled)',
 		nameJP: '二式水戦改(熟練)',
-		added: '20170317',
+		added: '2017-03-17',
 		type: SEAPLANEFIGHTER,
-		isfighter: true,
 		AA: 5,
 		ASW: 1,
 		ACC: 1,
 		EV: 2,
 		LOS: 1,
+	},
+	217: {
+		name: 'Kyoufuu Kai',
+		nameJP: '強風改',
+		added: '2017-03-27',
+		type: SEAPLANEFIGHTER,
+		AA: 5,
+		EV: 3,
+		LOS: 1,
+	},
+	219: {
+		name: 'Type 0 Fighter Model 63 (Fighter-bomber)',
+		nameJP: '零式艦戦63型(爆戦)',
+		added: '2017-03-27',
+		type: DIVEBOMBER,
+		DIVEBOMB: 5,
+		AA: 5,
+		ASW: 2,
+	},
+	220: {
+		name: '8cm High-angle Gun Kai + Extra Machine Guns',
+		nameJP: '8cm高角砲改+増設機銃',
+		added: '2017-04-05',
+		type: SECGUNAA,
+		btype: B_SECGUN,
+		atype: A_HAGUN,
+		FP: 1,
+		AA: 7,
+		ACC: 2,
+		EV: 1,
+		RNG: 1,
 	},
 	501: {
 		name: '5inch Single Cannon',
@@ -2948,7 +2928,6 @@ var EQDATA = {
 		nameJP: '深海棲艦攻',
 		b_image: 3,
 		type: TORPBOMBER,
-		istorpbomber: true,
 		TP: 4,
 		ASW: 2,
 		LOS: 5,
@@ -2958,7 +2937,6 @@ var EQDATA = {
 		nameJP: '深海棲艦攻 Mark.II',
 		b_image: 4,
 		type: TORPBOMBER,
-		istorpbomber: true,
 		TP: 6,
 		ASW: 4,
 		LOS: 5,
@@ -2968,8 +2946,6 @@ var EQDATA = {
 		nameJP: '深海棲艦攻 Mark.III',
 		b_image: 5,
 		type: TORPBOMBER,
-		isfighter: true,
-		istorpbomber: true,
 		TP: 11,
 		AA: 4,
 		ASW: 7,
@@ -2980,7 +2956,6 @@ var EQDATA = {
 		nameJP: '深海棲艦戦',
 		b_image: 3,
 		type: FIGHTER,
-		isfighter: true,
 		AA: 2,
 	},
 	520: {
@@ -2988,7 +2963,6 @@ var EQDATA = {
 		nameJP: '深海棲艦戦 Mark.II',
 		b_image: 4,
 		type: FIGHTER,
-		isfighter: true,
 		AA: 5,
 	},
 	521: {
@@ -2996,7 +2970,6 @@ var EQDATA = {
 		nameJP: '深海棲艦戦 Mark.III',
 		b_image: 5,
 		type: FIGHTER,
-		isfighter: true,
 		AA: 9,
 	},
 	522: {
@@ -3004,7 +2977,6 @@ var EQDATA = {
 		nameJP: '飛び魚艦戦',
 		b_image: 5,
 		type: FIGHTER,
-		isfighter: true,
 		AA: 13,
 	},
 	523: {
@@ -3012,7 +2984,6 @@ var EQDATA = {
 		nameJP: '深海棲艦爆',
 		b_image: 3,
 		type: DIVEBOMBER,
-		isdivebomber: true,
 		DIVEBOMB: 3,
 		ASW: 1,
 	},
@@ -3021,7 +2992,6 @@ var EQDATA = {
 		nameJP: '深海棲艦爆 Mark.II',
 		b_image: 4,
 		type: DIVEBOMBER,
-		isdivebomber: true,
 		DIVEBOMB: 6,
 		ASW: 2,
 	},
@@ -3072,7 +3042,7 @@ var EQDATA = {
 	530: {
 		name: 'Air Radar Mark.II',
 		nameJP: '対空レーダ― Mark.II',
-		type: RADARS,
+		type: RADARL,
 		btype: B_RADAR,
 		atype: A_AIRRADAR,
 		AA: 10,
@@ -3082,7 +3052,7 @@ var EQDATA = {
 	531: {
 		name: 'Abyssal Surface Radar',
 		nameJP: '深海水上レーダー',
-		type: RADARS,
+		type: RADARL,
 		btype: B_RADAR,
 		atype: A_AIRRADAR,
 		AA: 5,
@@ -3094,7 +3064,7 @@ var EQDATA = {
 	532: {
 		name: 'Abyssal Air Radar',
 		nameJP: '深海対空レーダ―',
-		type: RADARS,
+		type: RADARL,
 		btype: B_RADAR,
 		atype: A_AIRRADAR,
 		AA: 18,
@@ -3198,8 +3168,6 @@ var EQDATA = {
 		nameJP: '飛び魚艦爆',
 		b_image: 5,
 		type: DIVEBOMBER,
-		isfighter: true,
-		isdivebomber: true,
 		DIVEBOMB: 10,
 		AA: 8,
 		ASW: 7,
@@ -3209,7 +3177,6 @@ var EQDATA = {
 		nameJP: '深海猫艦戦',
 		b_image: 6,
 		type: FIGHTER,
-		isfighter: true,
 		AA: 10,
 		ACC: 1,
 	},
@@ -3218,7 +3185,6 @@ var EQDATA = {
 		nameJP: '深海地獄艦爆',
 		b_image: 7,
 		type: DIVEBOMBER,
-		isdivebomber: true,
 		DIVEBOMB: 11,
 		ASW: 4,
 		LOS: 3,
@@ -3229,8 +3195,6 @@ var EQDATA = {
 		nameJP: '深海復讐艦攻',
 		b_image: 8,
 		type: TORPBOMBER,
-		isfighter: true,
-		istorpbomber: true,
 		TP: 13,
 		AA: 4,
 		ASW: 5,
@@ -3240,7 +3204,7 @@ var EQDATA = {
 	550: {
 		name: '5inch Twin Dual-Purpose Cannon',
 		nameJP: '5inch連装両用莢砲',
-		type: MAINGUNM,
+		type: MAINGUNSAA,
 		btype: B_MAINGUN,
 		atype: A_HAFD,
 		FP: 2,
@@ -3273,7 +3237,7 @@ var EQDATA = {
 	553: {
 		name: '4inch Dual-Purpose+CIC',
 		nameJP: '4inch連装両用砲+CIC',
-		type: MAINGUNM,
+		type: MAINGUNSAA,
 		btype: B_MAINGUN,
 		atype: A_HAFD,
 		FP: 5,
@@ -3287,8 +3251,6 @@ var EQDATA = {
 		b_image: 7,
 		type: SEAPLANEBOMBER,
 		btype: B_RECON,
-		isfighter: true,
-		isdivebomber: true,
 		DIVEBOMB: 8,
 		AA: 4,
 		ASW: 8,
@@ -3301,8 +3263,6 @@ var EQDATA = {
 		b_image: 7,
 		type: SEAPLANEBOMBER,
 		btype: B_RECON,
-		isfighter: true,
-		isdivebomber: true,
 		DIVEBOMB: 13,
 		AA: 9,
 		ASW: 10,
@@ -3314,7 +3274,6 @@ var EQDATA = {
 		nameJP: '深海猫艦戦改',
 		b_image: 6,
 		type: FIGHTER,
-		isfighter: true,
 		AA: 12,
 		EV: 2,
 		ACC: 2,
@@ -3324,7 +3283,6 @@ var EQDATA = {
 		nameJP: '深海地獄艦爆改',
 		b_image: 7,
 		type: DIVEBOMBER,
-		isdivebomber: true,
 		DIVEBOMB: 15,
 		ASW: 8,
 		LOS: 5,
@@ -3335,8 +3293,6 @@ var EQDATA = {
 		nameJP: '深海復讐艦攻改',
 		b_image: 8,
 		type: TORPBOMBER,
-		istorpbomber: true,
-		isfighter: true,
 		TP: 16,
 		AA: 5,
 		ASW: 9,
@@ -3367,8 +3323,6 @@ var EQDATA = {
 		nameJP: '深海解放陸爆',
 		b_image: 9,
 		type: DIVEBOMBER,
-		isdivebomber: true,
-		isfighter: true,
 		DIVEBOMB: 11,
 		AA: 3,
 		ASW: 5,
@@ -3380,8 +3334,6 @@ var EQDATA = {
 		nameJP: '深海解放陸爆Ace',
 		b_image: 10,
 		type: DIVEBOMBER,
-		isdivebomber: true,
-		isfighter: true,
 		DIVEBOMB: 16,
 		AA: 5,
 		ASW: 7,
@@ -3425,8 +3377,6 @@ var EQDATA = {
 		nameJP: '深海猫艦戦(爆装)',
 		b_image: 6,
 		type: DIVEBOMBER,
-		isdivebomber: true,
-		isfighter: true,
 		DIVEBOMB: 8,
 		AA: 7,
 		ASW: 2,
@@ -3479,8 +3429,6 @@ var EQDATA = {
 		b_image: 7,
 		type: SEAPLANEBOMBER,
 		btype: B_RECON,
-		isfighter: true,
-		isdivebomber: true,
 		FP: 4,
 		DIVEBOMB: 15,
 		AA: 11,
@@ -3495,7 +3443,6 @@ var EQDATA = {
 		nameJP: '深海熊猫艦戦',
 		b_image: 7,
 		type: FIGHTER,
-		isfighter: true,
 		FP: 8,
 		AA: 18,
 		AR: 8,
@@ -3507,8 +3454,6 @@ var EQDATA = {
 		nameJP: '深海潜水下駄履き',
 		b_image: 7,
 		type: SEAPLANEBOMBER,
-		isfighter: true,
-		isdivebomber: true,
 		FP: 6,
 		DIVEBOMB: 18,
 		AA: 6,
