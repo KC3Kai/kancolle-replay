@@ -1,4 +1,13 @@
 var TEXTDATA = {
+	"SORTIE_TITLE": {
+			"text": "Battle at <0> on <1>",
+			"values": {}
+		},
+		"PVP_TITLE": {
+			"text": "Fleet Practice",
+			"values": {}
+		},
+	
 		"SORTIE_START": {
 			"text": "Sortied to <0>-<1> on <2>.",
 			"values": {}
