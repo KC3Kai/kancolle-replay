@@ -2119,6 +2119,22 @@ var VOICES = {
 		damage2: "assets/voice/Suzuya-Minor_Damage_1.ogg",
 		damage3: "assets/voice/Suzuya-Major_Damage.ogg",
 	},
+	503: {
+		start: "assets/voice/SuzuyaKai2-Battle_Start.ogg",
+		attack: "assets/voice/Suzuya-Attack.ogg",
+		nbattack: "assets/voice/Suzuya-Night_Attack.ogg",
+		damage1: "assets/voice/Suzuya-Minor_Damage_2.ogg",
+		damage2: "assets/voice/Suzuya-Minor_Damage_1.ogg",
+		damage3: "assets/voice/Suzuya-Major_Damage.ogg",
+	},
+	508: {
+		start: "assets/voice/SuzuyaKai2-Battle_Start.ogg",
+		attack: "assets/voice/SuzuyaCarrierKai2-Attack.ogg",
+		nbattack: "assets/voice/SuzuyaCarrierKai2-Air_Battle.ogg",
+		damage1: "assets/voice/Suzuya-Minor_Damage_2.ogg",
+		damage2: "assets/voice/Suzuya-Minor_Damage_1.ogg",
+		damage3: "assets/voice/Suzuya-Major_Damage.ogg",
+	},
 	130: {
 		start: "assets/voice/Kumano-Battle_Start.ogg",
 		attack: "assets/voice/Kumano-Attack.ogg",
@@ -3449,21 +3465,69 @@ var VOICES = {
 		damage2: "assets/voice/Asakaze-Minor_Damage_2.ogg",
 		damage3: "assets/voice/Asakaze-Major_Damage.ogg"
 	},
-	503: {
-		start: "",
-		attack: "",
-		nbattack: "",
-		damage1: "",
-		damage2: "",
-		damage3: ""
+	474: {
+		start: "assets/voice/Matsukaze-Battle_Start.ogg",
+		attack: "assets/voice/Matsukaze-Attack.ogg",
+		nbattack: "assets/voice/Matsukaze-Night_Attack.ogg",
+		damage1: "assets/voice/Matsukaze-Minor_Damage_1.ogg",
+		damage2: "assets/voice/Matsukaze-Minor_Damage_2.ogg",
+		damage3: "assets/voice/Matsukaze-Major_Damage.ogg",
 	},
-	508: {
-		start: "",
-		attack: "",
-		nbattack: "",
-		damage1: "",
-		damage2: "",
-		damage3: ""
+	371: {
+		start: "assets/voice/Matsukaze-Battle_Start.ogg",
+		attack: "assets/voice/Matsukaze-Attack.ogg",
+		nbattack: "assets/voice/Matsukaze-Night_Attack.ogg",
+		damage1: "assets/voice/Matsukaze-Minor_Damage_1.ogg",
+		damage2: "assets/voice/Matsukaze-Minor_Damage_2.ogg",
+		damage3: "assets/voice/Matsukaze-Major_Damage.ogg",
+	},
+	485: {
+		start: "assets/voice/Fujinami-Battle_Start.ogg",
+		attack: "assets/voice/Fujinami-Attack.ogg",
+		nbattack: "assets/voice/Fujinami-Night_Attack.ogg",
+		damage1: "assets/voice/Fujinami-Minor_Damage_1.ogg",
+		damage2: "assets/voice/Fujinami-Minor_Damage_2.ogg",
+		damage3: "assets/voice/Fujinami-Major_Damage.ogg",
+	},
+	373: {
+		start: "assets/voice/Fujinami-Battle_Start.ogg",
+		attack: "assets/voice/Fujinami-Attack.ogg",
+		nbattack: "assets/voice/Fujinami-Night_Attack.ogg",
+		damage1: "assets/voice/Fujinami-Minor_Damage_1.ogg",
+		damage2: "assets/voice/Fujinami-Minor_Damage_2.ogg",
+		damage3: "assets/voice/Fujinami-Major_Damage.ogg",
+	},
+	494: {
+		start: "assets/voice/I-13-Battle_Start.ogg",
+		attack: "assets/voice/I-13-Attack.ogg",
+		nbattack: "assets/voice/I-13-Night_Attack.ogg",
+		damage1: "assets/voice/I-13-Minor_Damage_1.ogg",
+		damage2: "assets/voice/I-13-Minor_Damage_2.ogg",
+		damage3: "assets/voice/I-13-Major_Damage.ogg",
+	},
+	374: {
+		start: "assets/voice/I-13Kai-Battle_Start.ogg",
+		attack: "assets/voice/I-13-Attack.ogg",
+		nbattack: "assets/voice/I-13-Night_Attack.ogg",
+		damage1: "assets/voice/I-13-Minor_Damage_1.ogg",
+		damage2: "assets/voice/I-13-Minor_Damage_2.ogg",
+		damage3: "assets/voice/I-13-Major_Damage.ogg",
+	},
+	495: {
+		start: "assets/voice/I-14-Battle_Start.ogg",
+		attack: "assets/voice/I-14-Attack.ogg",
+		nbattack: "assets/voice/I-14-Night_Attack.ogg",
+		damage1: "assets/voice/I-14-Minor_Damage_1.ogg",
+		damage2: "assets/voice/I-14-Minor_Damage_2.ogg",
+		damage3: "assets/voice/I-14-Major_Damage.ogg",
+	},
+	375: {
+		start: "assets/voice/I-14-Battle_Start.ogg",
+		attack: "assets/voice/I-14-Attack.ogg",
+		nbattack: "assets/voice/I-14-Night_Attack.ogg",
+		damage1: "assets/voice/I-14-Minor_Damage_1.ogg",
+		damage2: "assets/voice/I-14-Minor_Damage_2.ogg",
+		damage3: "assets/voice/I-14-Major_Damage.ogg",
 	},
 	1539: {
 		start: "assets/voice/Anchorage_Oni_Intro.ogg",
@@ -3891,6 +3955,24 @@ var VOICES = {
 		attack: "assets/voice/Isolated_Island_Princess_Attack.ogg",
 		damage: "assets/voice/Isolated_Island_Princess_Damaged.ogg",
 	},
+	1673: {
+		start: "assets/voice/Destroyer_Ancient_Demon_Intro.ogg",
+		attack: "assets/voice/Destroyer_Ancient_Demon_Attack.ogg",
+		damage: "assets/voice/Destroyer_Ancient_Demon_Damaged.ogg",
+		sunk: "assets/voice/Destroyer_Ancient_Demon_Destroyed.ogg",
+	},
+	1674: {
+		start: "assets/voice/Destroyer_Ancient_Demon_Intro.ogg",
+		attack: "assets/voice/Destroyer_Ancient_Demon_Attack.ogg",
+		damage: "assets/voice/Destroyer_Ancient_Demon_Damaged.ogg",
+		sunk: "assets/voice/Destroyer_Ancient_Demon_Destroyed.ogg",
+	},
+	1675: {
+		start: "assets/voice/Destroyer_Ancient_Demon_Intro.ogg",
+		attack: "assets/voice/Destroyer_Ancient_Demon_Attack.ogg",
+		damage: "assets/voice/Destroyer_Ancient_Demon_Damaged.ogg",
+		sunk: "assets/voice/Destroyer_Ancient_Demon_Destroyed.ogg",
+	},
 	1679: {
 		start: "assets/voice/Lycoris_Princess_Intro.ogg",
 		attack: "assets/voice/Lycoris_Princess_Attack.ogg",
@@ -3944,6 +4026,14 @@ var VOICES = {
 		attack: "assets/voice/Central_Princess_Broken_Form_Attack.ogg",
 		damage: "assets/voice/Central_Princess_Broken_Form_Damaged.ogg",
 		sunk: "assets/voice/Central_Princess_Broken_Form_Destroyed.ogg",
+	},
+	1690: {
+		attack: "assets/voice/Destroyer_Ancient_Princess_Attack.ogg",
+		damage: "assets/voice/Destroyer_Ancient_Princess_Damaged.ogg",
+	},
+	1691: {
+		attack: "assets/voice/Destroyer_Ancient_Princess_Attack.ogg",
+		damage: "assets/voice/Destroyer_Ancient_Princess_Damaged.ogg",
 	},
 	1692: {
 		attack: "assets/voice/Destroyer_Ancient_Princess_Attack.ogg",
@@ -4102,7 +4192,7 @@ var VOICES = {
 		damage: "assets/voice/Abyssal_Twin_Princesses_Broken_Form_Damaged_2.ogg",
 		sunk: "assets/voice/Abyssal_Twin_Princesses_Broken_Form_Sunk.ogg",
 	},
-	901: {
+	2001: {
 		start: "assets/voice/Iona_fog_-Battle_Start.ogg",
 		attack: "assets/voice/Iona_fog_-Attack.ogg",
 		nbattack: "assets/voice/Iona_fog_-Night_Attack.ogg",
@@ -4110,7 +4200,7 @@ var VOICES = {
 		damage2: "assets/voice/Iona_fog_-Minor_Damage_2.ogg",
 		damage3: "assets/voice/Iona_fog_-Major_Damage.ogg",
 	},
-	902: {
+	2002: {
 		start: "assets/voice/Takao_fog_-Battle_Start.ogg",
 		attack: "assets/voice/Takao_fog_-Attack.ogg",
 		nbattack: "assets/voice/Takao_fog_-Night_Attack.ogg",
@@ -4118,7 +4208,7 @@ var VOICES = {
 		damage2: "assets/voice/Takao_fog_-Minor_Damage_2.ogg",
 		damage3: "assets/voice/Takao_fog_-Major_Damage.ogg",
 	},
-	903: {
+	2003: {
 		start: "assets/voice/Haruna_fog_-Battle_Start.ogg",
 		attack: "assets/voice/Haruna_fog_-Attack.ogg",
 		nbattack: "assets/voice/Haruna_fog_-Night_Attack.ogg",
@@ -4126,45 +4216,45 @@ var VOICES = {
 		damage2: "assets/voice/Haruna_fog_-Minor_Damage_2.ogg",
 		damage3: "assets/voice/Haruna_fog_-Major_Damage.ogg",
 	},
-	912: {
+	2012: {
 		attack: "assets/voice/Takao_fog_-Attack.ogg",
 		damage: "assets/voice/Takao_fog_-Minor_Damage_1.ogg",
 	},
-	914: {
+	2014: {
 		attack: "assets/voice/Haruna_fog_-Attack.ogg",
 		damage: "assets/voice/Haruna_fog_-Minor_Damage_1.ogg",
 	},
-	915: {
+	2015: {
 		attack: "assets/voice/Kirishima_fog_Attack1.ogg",
 		damage: "assets/voice/Kirishima_fog_Damaged1.ogg",
 	},
-	913: {
+	2013: {
 		attack: "assets/voice/Maya_fog_Attack1.ogg",
 		damage: "assets/voice/Maya_fog_Damaged1.ogg",
 	},
-	916: {
+	2016: {
 		start: "assets/voice/Kongou_fog_Intro.ogg",
 		attack: "assets/voice/Kongou_fog_Attack1.ogg",
 		damage: "assets/voice/Kongou_fog_Damaged1.ogg",
 		sunk: "assets/voice/Kongou_fog_Sunk.ogg",
 	},
-	918: {
+	2018: {
 		attack: "assets/voice/Takao_fog_-Attack.ogg",
 		damage: "assets/voice/Takao_fog_-Minor_Damage_1.ogg",
 	},
-	920: {
+	2020: {
 		attack: "assets/voice/Haruna_fog_-Attack.ogg",
 		damage: "assets/voice/Haruna_fog_-Minor_Damage_1.ogg",
 	},
-	921: {
+	2021: {
 		attack: "assets/voice/Kirishima_fog_Attack1.ogg",
 		damage: "assets/voice/Kirishima_fog_Damaged1.ogg",
 	},
-	919: {
+	2019: {
 		attack: "assets/voice/Maya_fog_Attack1.ogg",
 		damage: "assets/voice/Maya_fog_Damaged1.ogg",
 	},
-	922: {
+	2022: {
 		start: "assets/voice/Kongou_fog_Intro.ogg",
 		attack: "assets/voice/Kongou_fog_Attack1.ogg",
 		damage: "assets/voice/Kongou_fog_Damaged1.ogg",

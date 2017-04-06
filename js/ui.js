@@ -241,7 +241,7 @@ function dialogShip(types,side) {
 	var c=0, tr = $('<tr></tr>'), baseships = [], done = [];
 	for (var mid in SHIPDATA) {
 		var ship = SHIPDATA[mid];
-		if ((side==0&&mid>=500)||(side==1&&(mid<500||mid>800))||types.indexOf(ship.type)==-1) continue;
+		if ((side==0&&mid>=1000)||(side==1&&(mid<1000||mid>2000))||types.indexOf(ship.type)==-1) continue;
 		if (ship.prev && types.indexOf(SHIPDATA[ship.prev].type)!=-1) continue;
 		if (done.indexOf(mid)==-1) {
 			var ships = [mid]; done.push(mid);
@@ -280,12 +280,12 @@ function dialogShip(types,side) {
 }
 
 function dialogShipFog() {
-	$('#dialogselship').html('<table class="dialog2"><tr><td onclick="dSetShip(901)"><img src="assets/icons/AIona.png"><br><span>Iona</span><br></td><td onclick="dSetShip(902)"><img src="assets/icons/ATakao.png"><br><span>Takao</span><br></td><td onclick="dSetShip(903)"><img src="assets/icons/AHaruna.png"><br><span>Haruna</span><br></td></tr><tr><td onclick="dSetShip(915)"><img src="assets/icons/AKirishima.png"><br><span>Kirishima</span><br></td><td onclick="dSetShip(913)"><img src="assets/icons/AMaya.png"><br><span>Maya</span><br></td><td onclick="dSetShip(916)"><img src="assets/icons/AKongou.jpg"><br><span>Kongou</span><br></td><td onclick="dSetShip(911)"><img src="assets/icons/ANagara.png"><br><span>Nagara-Class</span><br></td></tr></table>');
+	$('#dialogselship').html('<table class="dialog2"><tr><td onclick="dSetShip(2001)"><img src="assets/icons/AIona.png"><br><span>Iona</span><br></td><td onclick="dSetShip(2002)"><img src="assets/icons/ATakao.png"><br><span>Takao</span><br></td><td onclick="dSetShip(2003)"><img src="assets/icons/AHaruna.png"><br><span>Haruna</span><br></td></tr><tr><td onclick="dSetShip(2015)"><img src="assets/icons/AKirishima.png"><br><span>Kirishima</span><br></td><td onclick="dSetShip(2013)"><img src="assets/icons/AMaya.png"><br><span>Maya</span><br></td><td onclick="dSetShip(2016)"><img src="assets/icons/AKongou.jpg"><br><span>Kongou</span><br></td><td onclick="dSetShip(2011)"><img src="assets/icons/ANagara.png"><br><span>Nagara-Class</span><br></td></tr></table>');
 	$('#dialogselship').dialog("open");
 }
 
 function dialogShipSecret() {
-	$('#dialogselship').html('<table class="dialog2"><tr><td onclick="dSetShip(1001)"><img src="assets/icons/KShinano.png"><br><span>???????</span><br></td></tr></table><br><br><table class="dialog2"><tr><td onclick="dSetShip(1002)"><img src="assets/icons/SBYamato.png"><br><span>????? ?????????? ??????</span><br></td></tr></table>');
+	$('#dialogselship').html('<table class="dialog2"><tr><td onclick="dSetShip(3001)"><img src="assets/icons/KShinano.png"><br><span>???????</span><br></td></tr></table><br><br><table class="dialog2"><tr><td onclick="dSetShip(3002)"><img src="assets/icons/SBYamato.png"><br><span>????? ?????????? ??????</span><br></td></tr></table>');
 	$('#dialogselship').dialog("open");
 }
 
@@ -533,12 +533,12 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor) {
 		var g3 = document.createElement('optgroup');
 		g3.setAttribute('label','Fleet of Fog');
 		for (shipid in SHIPDATA) {  //enemies
-			if (shipid < 500) continue;
+			if (shipid < 1000) continue;
 			var o = document.createElement('option');
 			o.appendChild(document.createTextNode(SHIPDATA[shipid].name));
 			o.setAttribute('value',shipid);
-			if (shipid < 900) g1.appendChild(o);
-			else if (shipid < 1000) g3.appendChild(o);
+			if (shipid < 2000) g1.appendChild(o);
+			else if (shipid < 3000) g3.appendChild(o);
 			else g2.appendChild(o);
 		}
 		sel.appendChild(g1);
@@ -940,7 +940,7 @@ function changedShipForm(fleet,slot) {
 		$('#T'+fleet+'n'+slot+'_chosen').attr('title','');
 	}
 	document.getElementById('T'+fleet+'i'+slot+'alt').src = 'assets/icons/'+SHIPDATA[shipid].image;
-	document.getElementById('T'+fleet+'lvl'+slot).value = (shipid=='0')? '' : (parseInt(shipid)<500)? 99 : (SHIPDATA[shipid].type == 'SS')? 50 : 1;
+	document.getElementById('T'+fleet+'lvl'+slot).value = (shipid=='0')? '' : (parseInt(shipid)<1000)? 99 : (SHIPDATA[shipid].type == 'SS')? 50 : 1;
 	for (var i=1; i<STATNAMES.length; i++) {
 		document.getElementById('T'+fleet+STATNAMES[i]+slot).value = SHIPDATA[shipid][STATNAMES[i].toUpperCase()];
 		if (SHIPDATA[shipid].unknownstats && ['ev','asw','los','luk'].indexOf(STATNAMES[i])!=-1) { $('#T'+fleet+STATNAMES[i]+slot).css('background-color','yellow'); $('#T'+fleet+STATNAMES[i]+slot).attr('title',"This stat's true value is currently unknown."); }
@@ -1091,7 +1091,7 @@ function loadIntoSim(fleet,side,isescort,forStats) {
 			}
 			
 			//do I want to do it like this?
-			var protect = (mid < 500 && side==0)? 0 : 1;
+			var protect = (mid < 1000 && side==0)? 0 : 1;
 			if (side == 0 && [901,902,903,1001].indexOf(mid) != -1) protect = 0;
 			var ship = new ShipType(mid,SHIPDATA[mid].name,protect,s.lvl,s.hp,s.fp,s.tp,s.aa,s.ar,s.ev,s.asw,s.los,s.luk,s.rng,slots);
 			ship.loadEquips(equips,levels,profs);
@@ -1603,6 +1603,10 @@ function loadFleetFromCode(fleet,fcode) {
 			clickedClear(fleet,i);
 			continue;
 		}
+		//fix abyssal mid shift
+		if (!SHIPDATA[ship.id]) ship.id = parseInt(ship.id)+1000;
+		if (!SHIPDATA[ship.id]) continue;
+		
 		var shipd = SHIPDATA[ship.id];
 		if (ship.lv) ship.lvl = ship.lv;
 		if (ship.luck) ship.luk = ship.luck;

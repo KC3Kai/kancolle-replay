@@ -11186,17 +11186,17 @@ var SHIPDATA = {
 		name: 'Suzuya Kai 2',
 		nameJP: '鈴谷改二',
 		image: 'KSuzuyaKai2.png',
-		type: 'CA',
-		nid: 503,
+		type: 'CAV',
+		nid: 303,
 		added: '2017-04-05',
 		HP: 61, HPmax: 73,
 		FP: 76, FPbase: 30,
 		TP: 88, TPbase: 40,
 		AA: 85, AAbase: 30,
 		AR: 74, ARbase: 42,
-		EV: 0, EVbase: 0,   //need EV, EVbase values
-		ASW: 0, ASWbase: 0, //need ASW, ASWbase values
-		LOS: 0, LOSbase: 0, //need LOS, LOSbase values
+		EV: 82, EVbase: 41,
+		ASW: 0, ASWbase: 0,
+		LOS: 83, LOSbase: 24,
 		LUK: 14, LUKmax: 74,
 		RNG: 2,
 		SPD: 10,
@@ -11208,20 +11208,21 @@ var SHIPDATA = {
 		nextlvl: 88
 	},
 	508: {
-		name: 'SuzuyaCVL Kai 2',
+		name: 'Suzuya Kai 2 Kou',
 		nameJP: '鈴谷航改二',
 		image: 'KSuzuyaCVLKai2.png',
 		type: 'CVL',
-		nid: 508,
+		nid: 308,
 		added: '2017-04-05',
+		isASWlast: true,
 		HP: 61, HPmax: 73,
 		FP: 56, FPbase: 0,
 		TP: 0, TPbase: 0,
 		AA: 87, AAbase: 33,
 		AR: 74, ARbase: 42,
-		EV: 83, EVbase: 0, //need EVbase values
+		EV: 83, EVbase: 42,
 		ASW: 0, ASWbase: 0,
-		LOS: 0, LOSbase: 0,	//need LOS, LOSbase values
+		LOS: 85, LOSbase: 24,
 		LUK: 13, LUKmax: 74,
 		RNG: 2,
 		SPD: 10,
@@ -11229,7 +11230,7 @@ var SHIPDATA = {
 		fuel: 60,
 		ammo: 55,
 		next: 0,
-		prev: 508,
+		prev: 503,
 		nextlvl: 0
 	},
 	1501: {
@@ -15888,7 +15889,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	901: {
+	2001: {
 		name: 'Iona',
 		nameJP: 'イオナ',
 		image: 'AIona.png',
@@ -15908,7 +15909,7 @@ var SHIPDATA = {
 		fuel: 150,
 		ammo: 150
 	},
-	902: {
+	2002: {
 		name: 'Takao (Fog)',
 		nameJP: 'タカオ',
 		image: 'ATakao.png',
@@ -15929,7 +15930,7 @@ var SHIPDATA = {
 		fuel: 175,
 		ammo: 200
 	},
-	903: {
+	2003: {
 		name: 'Haruna (Fog)',
 		nameJP: 'ハルナ',
 		image: 'AHaruna.png',
@@ -15950,7 +15951,7 @@ var SHIPDATA = {
 		fuel: 200,
 		ammo: 275
 	},
-	911: {
+	2011: {
 		name: 'Nagara-Class mist',
 		nameJP: 'ナガラ級mist',
 		image: 'ANagara.png',
@@ -15972,7 +15973,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	912: {
+	2012: {
 		name: 'Takao mist',
 		nameJP: 'タカオmist',
 		image: 'ATakao2.png',
@@ -15994,7 +15995,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	913: {
+	2013: {
 		name: 'Maya mist',
 		nameJP: 'マヤmist',
 		image: 'AMaya.png',
@@ -16016,7 +16017,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	914: {
+	2014: {
 		name: 'Haruna mist',
 		nameJP: 'ハルナmist',
 		image: 'AHaruna2.jpg',
@@ -16038,7 +16039,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	915: {
+	2015: {
 		name: 'Kirishima mist',
 		nameJP: 'キリシマmist',
 		image: 'AKirishima.png',
@@ -16060,7 +16061,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	916: {
+	2016: {
 		name: 'Kongou mist',
 		nameJP: 'コンゴウmist',
 		image: 'AKongou.jpg',
@@ -16082,7 +16083,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	917: {
+	2017: {
 		name: 'Nagara-Class *mist*',
 		nameJP: 'ナガラ級*mist*',
 		image: 'ANagara.png',
@@ -16104,7 +16105,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	918: {
+	2018: {
 		name: 'Takao *mist*',
 		nameJP: 'タカオ*mist*',
 		image: 'ATakao2.png',
@@ -16126,7 +16127,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	919: {
+	2019: {
 		name: 'Maya *mist*',
 		nameJP: 'マヤ*mist*',
 		image: 'AMaya.png',
@@ -16148,7 +16149,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	920: {
+	2020: {
 		name: 'Haruna *mist*',
 		nameJP: 'ハルナ*mist*',
 		image: 'AHaruna2.jpg',
@@ -16170,7 +16171,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	921: {
+	2021: {
 		name: 'Kirishima *mist*',
 		nameJP: 'キリシマ*mist*',
 		image: 'AKirishima.png',
@@ -16192,7 +16193,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	922: {
+	2022: {
 		name: 'Kongou *mist*',
 		nameJP: 'コンゴウ*mist*',
 		image: 'AKongou.jpg',
@@ -16214,7 +16215,7 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	1001: {
+	3001: {
 		name: '???????',
 		image: 'KShinano.png',
 		type: 'CVB',
@@ -16233,7 +16234,7 @@ var SHIPDATA = {
 		fuel: 250,
 		ammo: 220
 	},
-	1002: {
+	3002: {
 		name: '????? ?????????? ??????',
 		image: 'SBYamato.png',
 		type: 'BBVT',
@@ -16257,5 +16258,124 @@ var SHIPDATA = {
 		ASWPower: function() { return 2000000; },
 		ACCbonus: 40
 	},
-	
+	3003: {
+		name: 'Canal Princess 1 (Vita)',
+		image: 'SCanalH.png',
+		type: 'Installation',
+		HP: 250,
+		FP: 70,
+		TP: 0,
+		AA: 50,
+		AR: 15,
+		EV: 1,
+		ASW: 0,
+		LOS: 30,
+		LUK: 15,
+		RNG: 1,
+		SPD: 0,
+		SLOTS: [0,0,0,0],
+		EQUIPS: [550,511,511,560],
+		fuel: 0,
+		ammo: 0
+	},
+	3004: {
+		name: 'Canal Princess 2 (Vita)',
+		image: 'SCanalH.png',
+		type: 'Installation',
+		HP: 300,
+		FP: 90,
+		TP: 0,
+		AA: 75,
+		AR: 35,
+		EV: 1,
+		ASW: 0,
+		LOS: 35,
+		LUK: 25,
+		RNG: 1,
+		SPD: 0,
+		SLOTS: [0,0,0,0],
+		EQUIPS: [550,511,511,560],
+		fuel: 0,
+		ammo: 0
+	},
+	3005: {
+		name: 'Canal Princess 3 (Vita)',
+		image: 'SCanalH.png',
+		type: 'Installation',
+		HP: 390,
+		FP: 110,
+		TP: 0,
+		AA: 85,
+		AR: 70,
+		EV: 1,
+		ASW: 0,
+		LOS: 40,
+		LUK: 35,
+		RNG: 1,
+		SPD: 0,
+		SLOTS: [0,0,0,0],
+		EQUIPS: [550,553,553,560],
+		fuel: 0,
+		ammo: 0
+	},
+	3006: {
+		name: 'Central Princess 1 (Vita)',
+		image: 'SCentralH.jpg',
+		type: 'Installation',
+		HP: 600,
+		FP: 100,
+		TP: 0,
+		AA: 100,
+		AR: 90,
+		ASW: 0,
+		EV: 1,
+		LOS: 100,
+		LUK: 50,
+		RNG: 3,
+		SPD: 0,
+		SLOTS: [0,0,60,60],
+		EQUIPS: [568,568,556,558],
+		fuel: 0,
+		ammo: 0
+	},
+	3007: {
+		name: 'Central Princess 2 (Vita)',
+		image: 'SCentralH.jpg',
+		type: 'Installation',
+		HP: 800,
+		FP: 160,
+		TP: 0,
+		AA: 140,
+		AR: 150,
+		ASW: 0,
+		EV: 20,
+		LOS: 120,
+		LUK: 70,
+		RNG: 3,
+		SPD: 0,
+		SLOTS: [0,0,75,75],
+		EQUIPS: [568,568,556,558],
+		fuel: 0,
+		ammo: 0
+	},
+	3008: {
+		name: 'Central Princess 3 (Vita)',
+		image: 'SCentralH.jpg',
+		type: 'Installation',
+		HP: 900,
+		FP: 200,
+		TP: 0,
+		AA: 180,
+		AR: 190,
+		ASW: 0,
+		EV: 40,
+		LOS: 150,
+		LUK: 90,
+		RNG: 3,
+		SPD: 0,
+		SLOTS: [0,0,95,95],
+		EQUIPS: [568,568,556,558],
+		fuel: 0,
+		ammo: 0
+	},
 };

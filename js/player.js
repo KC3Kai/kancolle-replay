@@ -360,13 +360,15 @@ function createShip(data,side,i,damaged) {
 	if (data.length > 2) shipSetHP(ship,data[2]);
 	var hasonlytorp;
 	for (var j=3; j<=7; j++) {
+		if (!data[j]) continue;
 		var eq = EQDATA[data[j]];
 		if (eq) {
+			var eqt = EQTDATA[eq.type];
 			if (eq.b_image) ship.planetypes.push(eq.b_image);
-			else if (eq.isfighter||eq.istorpbomber||eq.isdivebomber||eq.type==AUTOGYRO||eq.type==ASWPLANE) ship.planetypes.push(1+side);
+			else if (eqt.isfighter||eqt.istorpbomber||eqt.isdivebomber||eq.type==AUTOGYRO||eq.type==ASWPLANE) ship.planetypes.push(1+side);
 			//else if (eq.type==SEAPLANE||eq.type==FLYINGBOAT) ship.planetypes.push(11);
-			if (eq.istorpbomber||eq.isdivebomber||eq.type==AUTOGYRO||eq.type==ASWPLANE) ship.hasbomber = true;
-			if (eq.istorpbomber) ship.hastorpbomber = true;
+			if (eqt.istorpbomber||eqt.isdivebomber||eq.type==AUTOGYRO||eq.type==ASWPLANE) ship.hasbomber = true;
+			if (eqt.istorpbomber) ship.hastorpbomber = true;
 			if (hasonlytorp == undefined && eq.type == TORPEDO) hasonlytorp = true;
 			if ([MAINGUNS,MAINGUNM,MAINGUNL].indexOf(eq.type) != -1) hasonlytorp = false;
 			if (eq.type == WG42) ship.hasWG = true;
@@ -514,6 +516,13 @@ function processAPI(root) {
 		var f2 = [], f2c = [];
 		//load enemies
 		if (data.api_ship_ke[0] == -1) data.api_ship_ke = data.api_ship_ke.slice(1);
+		//2017-04-05 abyssal MIDs incremented by 1000, handle old replays (skip PVP and from simulator)
+		if (!PVPMODE && !root.source) {
+			for (var i=0; i<data.api_ship_ke.length; i++) {
+				if (data.api_ship_ke[i] == -1) continue;
+				if (data.api_ship_ke[i] < 1000) data.api_ship_ke[i] += 1000;
+			}
+		}
 		for (var i=0; i<data.api_ship_ke.length; i++) {
 			if (!data.api_ship_ke[i] || data.api_ship_ke[i] == -1) continue;
 			if (SHIPDATA[data.api_ship_ke[i]])
@@ -534,6 +543,12 @@ function processAPI(root) {
 		//load enemy combined
 		if (data.api_ship_ke_combined) {
 			if (data.api_ship_ke_combined[0] == -1) data.api_ship_ke_combined = data.api_ship_ke_combined.slice(1);
+			if (!PVPMODE && !root.source) {
+				for (var i=0; i<data.api_ship_ke_combined.length; i++) {
+					if (data.api_ship_ke_combined[i] == -1) continue;
+					if (data.api_ship_ke_combined[i] < 1000) data.api_ship_ke_combined[i] += 1000;
+				}
+			}
 			for (var i=0; i<data.api_ship_ke_combined.length; i++) {
 				if (!data.api_ship_ke_combined[i] || data.api_ship_ke_combined[i] == -1) continue;
 				if (SHIPDATA[data.api_ship_ke_combined[i]])
