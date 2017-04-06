@@ -61,8 +61,6 @@ function fillTableF(API, num, combined, translate) {
 function loadFleetInfo(API, translate) {
     if (!started) return;
     if (!translate) {
-        $('#friendfleetspace').html('');
-        $('#enemyfleetspace').html('');
         makeTable('friendfleetspace', API.fleetnum, API['fleet' + API.fleetnum].length);
         if (API.combined) makeTable('friendfleetspace', 2, API.fleet2.length);
     }
@@ -128,6 +126,17 @@ function translateTable() {
     loadFleetInfo(API, true);
 }
 
+function clearTables() {
+  $('#friendfleetspace').html('');
+  $('#enemyfleetspace').html('');
+}
+
+function showBattleText() {
+  var popup = window.open("battleText.html", "battle", "width=640,height=480,resizeable,scrollbars");
+  popup.document.close();
+  if (window.focus) 
+    popup.focus();
+}
 var uri = new URI(window.location.href);
 var qs = uri.search(true);
 if (qs.fromImg) {

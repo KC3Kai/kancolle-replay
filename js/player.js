@@ -1090,6 +1090,7 @@ var e = 0;
 var ecomplete = true;
 var PAUSE = false;
 var END = false;
+var SHOW = false;
 var statechangefunc = null;
 var STEPBYFRAME = false;
 var RATE = 1, RCOUNTER = 0;
