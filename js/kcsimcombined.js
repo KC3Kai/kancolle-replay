@@ -159,7 +159,7 @@ function simCombined(type,F1,F1C,F2,Fsupport,doNB,NBonly,aironly,bombing,noammo,
 		
 		if (order1.length) {
 			if (C) BAPI.data.api_opening_taisen = {api_at_list:[-1],api_at_type:[-1],api_damage:[-1],api_df_list:[-1],api_cl_list:[-1]};
-			shellPhase(order1,[],alive1,subsalive1,alive2,subsalive2,(C)? BAPI.data.api_opening_taisen:undefined);
+			shellPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,(C)? BAPI.data.api_opening_taisen:undefined,true);
 		}
 	}
 	

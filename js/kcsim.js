@@ -419,14 +419,14 @@ function laser(ship,targets,APIhou) {
 	}
 }
 
-function shellPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,APIhou) {
+function shellPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,APIhou,isOASW) {
 	if (C) code += 'S:';
 	for (var i=0; i<6; i++) {
 		if (i < order1.length && order1[i].canStillShell()) {
 			if (subsalive2.length && order1[i].canASW() && (!order1[i].isASWlast||!alive2.length)) {
 				var target = choiceWProtect(subsalive2);
 				if (ASW(order1[i],target,false,APIhou)) subsalive2.splice(subsalive2.indexOf(target),1);
-			} else if (alive2.length) {
+			} else if (alive2.length && !isOASW) {
 				if (order1[i].canlaser && Math.random() < .5) {
 					var targets = shuffle(alive2.slice()).slice(0,1+Math.max(0,Math.floor((alive2.length-1)*Math.random())));
 					laser(order1[i],targets,APIhou);
@@ -449,7 +449,7 @@ function shellPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,APIhou) {
 			if (subsalive1.length && order2[i].canASW() && (!order2[i].isASWlast||!alive1.length)) {
 				var target = choiceWProtect(subsalive1);
 				if (ASW(order2[i],target,false,APIhou)) subsalive1.splice(subsalive1.indexOf(target),1);
-			} else if (alive1.length) {
+			} else if (alive1.length && !isOASW) {
 				if (order2[i].canlaser && Math.random() < .5) {
 					var targets = shuffle(alive1.slice()).slice(0,1+Math.max(0,Math.floor((alive1.length-1)*Math.random())));
 					laser(order2[i],targets,APIhou);
@@ -1132,7 +1132,7 @@ function sim(F1,F2,Fsupport,doNB,NBonly,aironly,bombing,noammo,BAPI,noupdate) {
 		
 		if (order1.length+order2.length) {
 			if (C) BAPI.data.api_opening_taisen = {api_at_list:[-1],api_at_type:[-1],api_damage:[-1],api_df_list:[-1],api_cl_list:[-1]};
-			shellPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,(C)? BAPI.data.api_opening_taisen:undefined);
+			shellPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,(C)? BAPI.data.api_opening_taisen:undefined,true);
 		}
 	}
 	
