@@ -383,8 +383,8 @@ function createShip(data,side,i,damaged) {
 	ship.hasonlytorp = hasonlytorp;
 	ship.issub = (sdata.type == 'SS' || sdata.type == 'SSV');
 	ship.isinstall = (sdata.type == 'Installation' || sdata.installtype > 0);
-	ship.isCV = (sdata.type == 'CV' || sdata.type == 'CVL' || sdata.type == 'CVN' || sdata.type == 'CVB' || (sdata.type=='AO'&&ship.hasbomber) || [679,680,681,682,683].indexOf(data[0])!=-1);
-	if (sdata.nightgun) ship.nightgun = true;
+	ship.isCV = (sdata.type == 'CV' || sdata.type == 'CVL' || sdata.type == 'CVB' || (sdata.type=='AO'&&ship.hasbomber));
+	if (sdata.nightattack==2) ship.nightgun = true;
 	ship.shakepid = 0;
 	ship.mid = data[0];
 	return ship;
