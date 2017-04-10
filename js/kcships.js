@@ -81,6 +81,12 @@ Fleet.prototype.fleetAntiAir = function(alreadyCombined) {
 	// console.log('FLEET ANTI-AIR: '+FAA);
 	return FAA;
 }
+Fleet.prototype.supportChance = function(isboss) {
+	var c = (isboss)? .85 : .5;
+	if (this.ships[0].morale > 49) c += .15;
+	for (var i=1; i<this.ships.length; i++) if (this.ships[i].morale > 49) c += .05;
+	return c;
+}
 Fleet.prototype.reset = function(notShips) {
 	if (!notShips) { for (var i=0; i<this.ships.length; i++) this.ships[i].reset();}
 	this.AS = 0;
@@ -707,7 +713,7 @@ function CV(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 }
 CV.prototype = Object.create(Carrier.prototype);
 CV.prototype.canTorp = function() { return false; }
-CV.prototype.canNB = function() { return false; }
+CV.prototype.canNB = function() { return (this.nightattack && this.HP/this.maxHP > .25); }
 CV.prototype.canAS = function() { return false; }
 CV.prototype.APweak = true;
 CV.prototype.canShell = function() {
@@ -753,13 +759,6 @@ CVB.prototype = Object.create(CV.prototype);
 CVB.prototype.canStillShell = function() {
 	return (this.HP > this.maxHP*.25 && this.canShell());
 }
-
-function CVN(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
-	CV.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
-	this.type = 'CV';
-}
-CVN.prototype = Object.create(CV.prototype);
-CVN.prototype.canNB = function() { return (this.HP/this.maxHP > .25); }
 
 
 function SS(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {

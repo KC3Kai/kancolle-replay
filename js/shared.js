@@ -33,7 +33,6 @@ for (var i=0; i<SHIPIDSORTED.length; i++) {
 				SHIPCLASSSORTED['Battleships'].push(SHIPIDSORTED[i]);
 				break;
 			case 'CV':
-			case 'CVN':
 			case 'CVB':
 				SHIPCLASSSORTED['Carriers'].push(SHIPIDSORTED[i]);
 				break;
@@ -76,7 +75,6 @@ var defaultEquips = {
 	'SS': [15,15,15,15],
 	'SSV': [15,15,15,15],
 	'CV': [52,52,22,22],
-	'CVN': [52,52,22,22],
 	'CVB': [52,52,22,22],
 	'CVL': [52,52,22,22],
 	'AV': [12,12,12,12],
@@ -113,9 +111,9 @@ function processFile(fleetnum,reader,fromfleet) {
 		if (!name) name = '';
 		
 		var equips = [],improves = [], profs = [];
-		for (var j=0; j<5; j++) {  //get equip mids
+		for (var j=0; j<4; j++) {  //get equip mids
 			// console.log(ship.items[j]);
-			if (ship.items[j] == -1) { equips.push(0); improves.push(0); }
+			if (ship.items[j] == -1) { equips.push(0); improves.push(0); profs.push(0); }
 			else {
 				var idata = kcdata.gears['x'+ship.items[j]];
 				var eq = EQDATA[idata.masterId];
@@ -124,6 +122,18 @@ function processFile(fleetnum,reader,fromfleet) {
 				improves.push((idata.stars>=0)? idata.stars : 0);
 				profs.push((idata.ace>=0)? idata.ace : 0);
 			}
+		}
+		if (ship.ex_item) {
+			var idata = kcdata.gears['x'+ship.ex_item];
+			if (EQDATA[idata.masterId]) {
+				equips.push(idata.masterId);
+				improves.push((idata.stars>=0)? idata.stars : 0);
+				profs.push((idata.ace>=0)? idata.ace : 0);
+			}
+		} else {
+			equips.push(0);
+			improves.push(0);
+			profs.push(0);
 		}
 		
 		tableSetShip(fleetnum,i,mid,[ship.level,ship.hp[1],ship.fp[0],ship.tp[0],ship.aa[0],ship.ar[0],ship.ev[0],ship.as[0],ship.ls[0],ship.lk[0],ship.range,SHIPDATA[mid].SPD],equips,improves,profs);  

@@ -88,7 +88,7 @@ function showKC3QDpopup() {
 }
 function showAdditionalStats(fleet) {
 	var side = (fleet.toString()[0]=='1')? 0 : 1;
-	var d = loadIntoSim(fleet,side,(fleet==12),true);
+	var d = loadIntoSim(fleet,side,(fleet==11),true);
 	var ships = d[0], formation = d[1];
 	console.log(ships);
 	var fleettemp = new Fleet();
@@ -702,9 +702,9 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor) {
 		$(d).append('<br style="clear:both">');
 	} else if (fleetnum == 12 || fleetnum == 13) {
 		var f = $('<div></div>');
-		f.append('<input type="radio" id="T12t2" name="T12type" value="2" onchange="updateFleetCode(12)" checked/><label for="T12t2">Shelling</label>');
-		f.append('<input type="radio" id="T12t1" name="T12type" value="1" onchange="updateFleetCode(12)"/><label for="T12t1">Airstrike</label>');
-		f.append('<input type="radio" id="T12t3" name="T12type" value="3" onchange="updateFleetCode(12)"/><label for="T12t3">Torpedo</label>');
+		f.append('<input type="radio" id="T'+fleetnum+'t2" name="T'+fleetnum+'type" value="2" onchange="updateFleetCode('+fleetnum+')" checked/><label for="T'+fleetnum+'t2">Shelling</label>');
+		f.append('<input type="radio" id="T'+fleetnum+'t1" name="T'+fleetnum+'type" value="1" onchange="updateFleetCode('+fleetnum+')"/><label for="T'+fleetnum+'t1">Airstrike</label>');
+		f.append('<input type="radio" id="T'+fleetnum+'t3" name="T'+fleetnum+'type" value="3" onchange="updateFleetCode('+fleetnum+')"/><label for="T'+fleetnum+'t3">Torpedo</label>');
 		// f.append('<span style="color:red;margin-left:20px">In progress</span>');
 		$(d).append(f);
 	} else {  //normal formation select
@@ -819,7 +819,7 @@ function loadOptions(num,options) {
 	$('#landbomb'+num).prop('checked',options.landbomb);
 	$('#noammo'+num).prop('checked',options.noammo);
 	
-	if (ADDEDCOMBINED) $('#o'+options.formation+'form'+num).prop('checked',true);
+	if (options.formation) $('#o'+options.formation+'form'+num).prop('checked',true);
 	else $('#oformdef'+num).prop('checked',true);
 }
 
@@ -1219,7 +1219,7 @@ function clickedDelComb() {
 var ADDEDSUPPORTN = false;
 function clickedAddSupportN(update) {
 	if (ADDEDSUPPORTN) return;
-	if (!document.getElementById('T12')) genFleetHTML('fleetspace1SN', 12, 'Support Fleet', '#AACCEE');
+	if (!document.getElementById('T12')) genFleetHTML('fleetspace1SN', 12, 'Support Fleet (Normal)', '#AACCEE');
 	else $('#T12').css('display','block');
 	ADDEDSUPPORTN = true;
 	if (update) updateFleetCode('12');
@@ -1231,7 +1231,6 @@ function clickedAddSupportN(update) {
 function clickedDelSupportN() {
 	if (!ADDEDSUPPORTN) return;
 	$('#T12').css('display','none');
-	//document.cookie = 'fleet12=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 	saveFleet('12','');
 	ADDEDSUPPORTN = false;
 	$('#btnDelSupN').css('display','none');
@@ -1239,12 +1238,26 @@ function clickedDelSupportN() {
 	raiseFleetChange();
 }
 
-function clickedAddSupportB() {
-
+var ADDEDSUPPORTB = false;
+function clickedAddSupportB(update) {
+	if (ADDEDSUPPORTB) return;
+	if (!document.getElementById('T13')) genFleetHTML('fleetspace1SB', 13, 'Support Fleet (Boss)', '#AACCEE');
+	else $('#T13').css('display','block');
+	ADDEDSUPPORTB = true;
+	if (update) updateFleetCode('13');
+	$('#btnDelSupB').css('display','');
+	$('#btnAddSupB').css('display','none');
+	raiseFleetChange();
 }
 
 function clickedDelSupportB() {
-
+	if (!ADDEDSUPPORTB) return;
+	$('#T13').css('display','none');
+	saveFleet('13','');
+	ADDEDSUPPORTB = false;
+	$('#btnDelSupB').css('display','none');
+	$('#btnAddSupB').css('display','');
+	raiseFleetChange();
 }
 
 // tableSetShip(1,2,1,[50,32,59,89,51,59,91,60,1,50,1,60]);
@@ -1516,7 +1529,7 @@ function updateFleetCode(fleet) {
 	var fdata = data.f1 = {};
 	var formation = $('input[name=T'+fleet+'formation]:checked').val();
 	fdata.form = (formation||0);
-	if (fleet==11||fleet==12) {
+	if (fleet==11||fleet==12||fleet==13) {
 		var type = $('input[name=T'+fleet+'type]:checked').val();
 		fdata.type = (type||0);
 	}
@@ -1715,8 +1728,13 @@ function extractForSim() {
 	FLEETS1S = [null,null];
 	if (ADDEDSUPPORTN) {
 		var error = loadIntoSim(12,2);
-		FLEETS1S[0].supportType = parseInt($('input[name="T12type"]:checked').val());
 		if (error) FLEETS1S[0] = null;
+		else FLEETS1S[0].supportType = parseInt($('input[name="T12type"]:checked').val());
+	}
+	if (ADDEDSUPPORTB) {
+		var error = loadIntoSim(13,3);
+		if (error) FLEETS1S[1] = null;
+		else { FLEETS1S[1].supportType = parseInt($('input[name="T13type"]:checked').val()); FLEETS1S[1].supportBoss = true; }
 	}
 	
 	var foptions = [];
@@ -1760,6 +1778,7 @@ function clickedWatchBattle() {
 	}
 	
 	var supportN = (ADDEDSUPPORTN)? FLEETS1S[0] : null;
+	var supportB = (ADDEDSUPPORTB)? FLEETS1S[1] : null;
 	
 	var formdef = FLEETS1[0].formation;
 	for (var j=0; j<FLEETS2.length; j++) {
@@ -1773,11 +1792,14 @@ function clickedWatchBattle() {
 			if (ADDEDCOMBINED) FLEETS1[1].formation = formdefc;
 		}
 		
+		var supportF = (j==FLEETS2.length-1)? supportB : supportN;
+		console.log(supportF);
+		
 		var res;
 		if (ADDEDCOMBINED)
-			res = simCombined(API.combined,FLEETS1[0],FLEETS1[1],FLEETS2[j],supportN,options.NB,options.NBonly,options.aironly,options.landbomb,options.noammo,BAPI);
+			res = simCombined(API.combined,FLEETS1[0],FLEETS1[1],FLEETS2[j],supportF,options.NB,options.NBonly,options.aironly,options.landbomb,options.noammo,BAPI);
 		else
-			res = sim(FLEETS1[0],FLEETS2[j],supportN,options.NB,options.NBonly,options.aironly,options.landbomb,options.noammo,BAPI);
+			res = sim(FLEETS1[0],FLEETS2[j],supportF,options.NB,options.NBonly,options.aironly,options.landbomb,options.noammo,BAPI);
 		API.battles.push(BAPI);
 		//if ((res.redded && DORETREAT) || res.flagredded) break;
 		if (!ADDEDCOMBINED) {
@@ -1808,6 +1830,7 @@ function loadLocalStorage() {
 	}
 	if (localStorage.simulator_fleet11) clickedAddComb();
 	if (localStorage.simulator_fleet12) clickedAddSupportN();
+	if (localStorage.simulator_fleet13) clickedAddSupportB();
 	
 	for (var key in localStorage) {
 		if (key.indexOf('simulator_fleet') == -1) continue;
