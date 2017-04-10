@@ -1191,7 +1191,11 @@ function clickedAddComb(update) {
 	$('#btnAddComb').css('display','none');
 	$('.ofcombined').each(function(){ $(this).show(); });
 	$('.ofsingle').each(function(){ $(this).hide(); });
-	for (var i=1; i<=NUMFLEETS2; i++) { var fl = '2'+((i!=1)? i:''); $('#oformdef'+fl).prop('checked',true); }
+	for (var i=1; i<=NUMFLEETS2; i++) {
+		var fl = '2'+((i!=1)? i:'');
+		$('#oformdef'+fl).prop('checked',true);
+		updateOptionsCookies(fl);
+	}
 	
 	$('input[name=T1formation]').each(function() { $(this).prop('disabled',true); });
 	raiseFleetChange();
@@ -1210,7 +1214,11 @@ function clickedDelComb() {
 	$('#btnAddComb').css('display','');
 	$('.ofcombined').each(function(){ $(this).hide(); });
 	$('.ofsingle').each(function(){ $(this).show(); });
-	for (var i=1; i<=NUMFLEETS2; i++) { var fl = '2'+((i!=1)? i:''); $('#oformdef'+fl).prop('checked',true); }
+	for (var i=1; i<=NUMFLEETS2; i++) {
+		var fl = '2'+((i!=1)? i:'');
+		$('#oformdef'+fl).prop('checked',true);
+		updateOptionsCookies(fl);
+	}
 	
 	$('input[name=T1formation]').each(function() { $(this).prop('disabled',false); });
 	raiseFleetChange();
@@ -1793,7 +1801,6 @@ function clickedWatchBattle() {
 		}
 		
 		var supportF = (j==FLEETS2.length-1)? supportB : supportN;
-		console.log(supportF);
 		
 		var res;
 		if (ADDEDCOMBINED)
