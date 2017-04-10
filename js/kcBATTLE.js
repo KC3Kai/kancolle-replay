@@ -1,6 +1,6 @@
 function BATTLE(playerFleet, battle, node, isPVP){ 
 	opponent = new FLEET();
-	tab = $('#tab-'+node+' table');
+	tab = $('#battle-'+node+' table');
 	dbattle = battle.data;
 	nightBattle = battle.yasen;
 	combinedE = (dbattle.api_ship_ke_combined)? 1 : 0;
@@ -8,16 +8,23 @@ function BATTLE(playerFleet, battle, node, isPVP){
 	
 	start = function() {
 		var body = document.createElement('tbody');
-		if(combinedE) opponent.addCombinedFleet(dbattle.api_ship_ke, dbattle.api_nowhps.slice(7), dbattle.api_ship_ke_combined, dbattle.api_nowhps_combined.slice(7));
+		if(combinedE) opponent.addCombinedFleet(dbattle.api_ship_ke, dbattle.api_ship_ke_combined, dbattle.api_nowhps.slice(7), dbattle.api_nowhps_combined.slice(7));
 		else opponent.addFleet(dbattle.api_ship_ke, dbattle.api_nowhps.slice(7));
 		
-		appendPhase("FLEET PRACTICE");
-		body.append(getTextRow("FLEET_COMPOSITION",[fleet.formatFleet(fleet.mainFleet)]));
+		/*
+		if()
+					appendPhase("FLEET PRACTICE");
+				else
+					appendPhase("BEGIN SORTIE");*/
+		
+		
+		
+		//body.append(getTextRow("FLEET_COMPOSITION",[fleet.formatFleet(fleet.mainFleet)]));
 		body.append(getTextRow("ENEMY_COMPOSITION",[opponent.formatFleet(opponent.mainFleet)]));
 		
 
 		tab.append(body);
-	}
+	};
 	
 	formation = function() {
 		var body = document.createElement('tbody');
@@ -283,5 +290,5 @@ function BATTLE(playerFleet, battle, node, isPVP){
 BATTLE.prototype.startBattle = function(playerFleet) {
 	start();
 	formation();
-	if(dbattle.api_opening_flag) opTorp();
+	//if(dbattle.api_opening_flag) opTorp();
 };

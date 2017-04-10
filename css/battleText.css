@@ -1,0 +1,23 @@
+body {
+    margin: 0;
+    background: #def;
+}
+
+#tabNodes {
+	width: 100%;
+}
+
+div[id^="battle-"] table, th, td {
+	border: 1px solid black;
+}
+
+div[id^="battle-"] table{
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+
+}
+
+th {
+	text-align: center;
+};
