@@ -39,7 +39,7 @@ processSortie = function(battles) {
 processText = function() {
 
 	if (combined)
-		player.addCombinedFleet(API.fleet1, API.fleet2, startData.api_nowhps.slice(1, 7), startData.api_nowhps_combined.slice(1, 7));
+		player.addCombinedFleet(API.fleet1, API.fleet2, startData.api_nowhps.slice(1, 7), startData.api_nowhps_combined.slice(1, 7), API.combined);
 	else
 		player.addFleet(API['fleet' + API.fleetnum], startData.api_nowhps.slice(1, 7));
 	if (API.support1 && API.support1 > 0)
