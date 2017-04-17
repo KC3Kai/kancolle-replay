@@ -1,27 +1,19 @@
 function BATTLE(playerFleet, battle, node, isPVP){ 
+	fleet = playerFleet;
 	opponent = new FLEET();
 	tab = $('#battle-'+node+' table');
 	dbattle = battle.data;
 	nightBattle = battle.yasen;
 	combinedE = (dbattle.api_ship_ke_combined)? 1 : 0;
-	fleet = playerFleet;
+	
 	
 	start = function() {
 		var body = document.createElement('tbody');
 		if(combinedE) opponent.addCombinedFleet(dbattle.api_ship_ke, dbattle.api_ship_ke_combined, dbattle.api_nowhps.slice(7), dbattle.api_nowhps_combined.slice(7));
 		else opponent.addFleet(dbattle.api_ship_ke, dbattle.api_nowhps.slice(7));
 		
-		/*
-		if()
-					appendPhase("FLEET PRACTICE");
-				else
-					appendPhase("BEGIN SORTIE");*/
-		
-		
-		
 		//body.append(getTextRow("FLEET_COMPOSITION",[fleet.formatFleet(fleet.mainFleet)]));
 		body.append(getTextRow("ENEMY_COMPOSITION",[opponent.formatFleet(opponent.mainFleet)]));
-		
 
 		tab.append(body);
 	};
@@ -30,44 +22,91 @@ function BATTLE(playerFleet, battle, node, isPVP){
 		var body = document.createElement('tbody');
 		appendPhase("FORMATION");
 		if (dbattle.api_formation) body.append(getTextRow("FORMATION_SELECT",[dbattle.api_formation[0]]));
+		if (dbattle.api_formation) body.append(getTextRow("ENEMY_FORMATION",[combinedE, dbattle.api_formation[1]]));
+		tab.append(body);
+		
+	};
+	
+	detection = function() {
+		var body = document.createElement('tbody');
+		appendPhase("DETECTION");
 		if (dbattle.api_search) {
 			body.append(getTextRow("DETECTION_F", [dbattle.api_search[0]]));
 			body.append(getTextRow("DETECTION_E", [dbattle.api_search[1]]));
 		}
-
-		if (dbattle.api_formation) body.append(getTextRow("ENEMY_FORMATION",[0, dbattle.api_formation[1]]));
 		tab.append(body);
+	};
+	
+	jetAttack = function(){
+		var body = document.createElement('tbody');
+		appendPhase("JET BATTLE");
 		
-	}
+		tab.append(body);
+	};
+	
+	airAttack = function(){
+		var body = document.createElement('tbody');
+		appendPhase("AIR BATTLE");
+		
+		tab.append(body);
+	};
+	
+	support = function(){
+		var body = document.createElement('tbody');
+		appendPhase("SUPPORTING FIRE");
+		
+		tab.append(body);
+	};
+	
 	oasw = function() {
+		var body = document.createElement('tbody');
+		appendPhase("OPENING ASW");
 		
-	}
+		tab.append(body);
+	};
+	
 	opTorp = function() {
 		var body = document.createElement('tbody');
 		appendPhase("OPENING TORPEDOS");
 		
 		showRaigeki(dbattle.api_opening_atack, body, true);
 		tab.append(body);
-	}
+	};
 	
-	/*hourai = function() {
+	engagement = function(){
+		var body = document.createElement('tbody');
+		appendPhase("ENGAGEMENT");
+		
+		tab.append(body);
+	};
+	
+	hourai = function() {
+		/*
 		if(isPVP) {
-			if(data.api_hourai_flag[0]) {
-				getTextRow("SHELL_START",[1]);
-				showHougeki(data.api_hougeki1,fleet);
-				addText("");
-			}
-			if(data.api_hourai_flag[1]){
-				getTextRow("SHELL_START",[2]));
-				showHougeki(data.api_hougeki2,fleet);
-				addText("");
-			}
-			if(data.api_hourai_flag[3]) showRaigeki(data.api_raigeki,fleet,false);
-			if(battle.api_midnight_flag && yasen.length > 0) {
-				
-			}
-		}
-	}*/
+					if(data.api_hourai_flag[0]) {
+						getTextRow("SHELL_START",[1]);
+						showHougeki(data.api_hougeki1,fleet);
+						addText("");
+					}
+					if(data.api_hourai_flag[1]){
+						getTextRow("SHELL_START",[2]);
+						showHougeki(data.api_hougeki2,fleet);
+						addText("");
+					}
+					if(data.api_hourai_flag[3]) showRaigeki(data.api_raigeki,fleet,false);
+					if(battle.api_midnight_flag && yasen.length > 0) {
+						
+					}
+				}*/
+		
+	};
+	
+	yasen = function(){
+		var body = document.createElement('tbody');
+		appendPhase("NIGHT BATTLE");
+		
+		tab.append(body);
+	};
 /*	kouku = function(kouku, fleet, isbombing,isjet) {
 		var stage1 = kouku.api_stage1;
 		var stage2 = kouku.api_stage2;
@@ -182,7 +221,7 @@ function BATTLE(playerFleet, battle, node, isPVP){
 
 		}
 
-	}
+	};
 	/*hougeki = function(hou, fleet) {
 
 		for (var j=1; j<hou.api_at_list.length; j++) {
@@ -289,6 +328,14 @@ function BATTLE(playerFleet, battle, node, isPVP){
 
 BATTLE.prototype.startBattle = function(playerFleet) {
 	start();
-	formation();
-	//if(dbattle.api_opening_flag) opTorp();
+	if(dbattle.api_formation) formation();
+	if(dbattle.api_search) detection();
+	if(dbattle.api_injection_kouku) jetAttack();
+	if(dbattle.api_stage_flag) airAttack();
+	if(dbattle.api_support_flag && dbattle.api_support_flag > 0) support();
+	if(dbattle.api_opening_taisen_flag) oasw();
+	if(dbattle.api_opening_flag) opTorp();
+	if(dbattle.api_formation) engagement();
+	if(dbattle.api_hourai_flag) hourai();
+	if(dbattle.api_midnight_flag && nightBattle)yasen();
 };
