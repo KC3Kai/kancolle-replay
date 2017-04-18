@@ -151,6 +151,34 @@ function BATTLE(playerFleet, battle, node, isPVP) {
 		var body = document.createElement('tbody');
 		appendPhase("NIGHT BATTLE");
 
+		
+		var f1 = (player.isCombined)? player.escortFleet : player.mainFleet;
+		var f2 = (yasen.api_active_deck && yasen.api_active_deck[1] == 2)? opponent.escortFleet : opponent.mainFleet;
+		var hou = nightBattle.api_hougeki;
+		
+		for (var j=1; j<hou.api_at_list.length; j++) {
+			var attacker, defender, dam;
+			
+			attacker = (hou.api_at_list[j]>6)? f2[hou.api_at_list[j]-7] : f1[hou.api_at_list[j]-1];
+			defender = (hou.api_df_list[j][0]>6)? f2[hou.api_df_list[j][0]-7] : f1[hou.api_df_list[j][0]-1];
+			dam = (hou.api_damage[j].length == 2) ? hou.api_damage[j][0]+hou.api_damage[j][1] : hou.api_damage[j][0];
+			body.append(getTextRow("NIGHT_TARGET", [attacker.name, defender.name, hou.api_sp_list[j]]));
+			
+			if((hou.api_damage[j][0] != Math.floor(hou.api_damage[j][0]))){} //protect
+			else {
+				if(dam > 1) {
+					body.append(getTextRow("SHELL_MISS",[defender.name]));
+				}
+				else if(hou.api_sp_list[j] == 1) {
+					body.append(getTextRow("SHELL_DAMAGE_DOUBLE", [defender.name, hou.api_cl_list[j][0], Math.floor(hou.api_damage[j][0]),
+					hou.api_cl_list[j][1], Math.floor(hou.api_damage[j][1])]));
+				} else {
+					body.append(getTextRow("SHELL_DAMAGE", [defender.name, hou.api_cl_list[j][0], Math.floor(hou.api_damage[j][0])]));
+				}
+			}
+			defender.damage(dam);
+		}
+		
 		tab.append(body);
 	};
 	/*	kouku = function(kouku, player, isbombing,isjet) {

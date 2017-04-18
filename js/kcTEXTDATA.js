@@ -223,7 +223,7 @@ var TEXTDATA = {
 			}
 		},
 		"SHELL_DAMAGE": {
-			"text": "<0> is hit with a <1> dealing <2> damagee",
+			"text": "<0> is hit with a <1> dealing <2> damage",
 			"values": {
 				1: {
 					1: "Normal Attack",
@@ -295,6 +295,28 @@ var TEXTDATA = {
 		"NIGHT_START": {
 			"text": "Entering Night Battle.",
 			"values": {}
+		},
+		"NIGHT_COMBINED_START": {
+			"text": "Escort fleet Entering night battle agasinst enemy {0} fleet.",
+			"values": {
+				0: {
+					0: "Main",
+					1: "Escort"
+				}
+			}
+		},
+		"NIGHT_TARGET": {
+			"text": "<0> attacks <1> with a <2>.",
+			"values": {
+				2: {
+					0: "normal attack",
+					1: "double attack",
+					2: "mixed cut-in", 
+					3: "topedo cut-in",
+					4: "gun cut-in (secondary)",
+					5: "gun cut-in (main)"
+				}
+			}
 		},
 		"SHIP_END": {
 			"text": "<0> <1>.",
