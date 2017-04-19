@@ -311,6 +311,8 @@ function simCombined(type,F1,F1C,F2,Fsupport,doNB,NBonly,aironly,bombing,noammo,
 		// var subonly = true;
 		// for (var j=0; j<ships2.length; j++) if (ships2[j].type != 'SS') subonly = false;
 		for (var i=0; i<ships1.length; i++) {
+			if (ships1[i].HP <= 0) continue;
+			if (ships1[i].retreated) continue;
 			if (bombing) {
 				ships1[i].fuelleft -= .5;
 				ships1[i].ammoleft -= .5;
@@ -323,6 +325,8 @@ function simCombined(type,F1,F1C,F2,Fsupport,doNB,NBonly,aironly,bombing,noammo,
 			if (C) console.log('FUEL LEFT: '+ships1[i].fuelleft);
 		}
 		for (var i=0; i<ships1C.length; i++) {
+			if (ships1C[i].HP <= 0) continue;
+			if (ships1C[i].retreated) continue;
 			if (bombing) {
 				ships1C[i].fuelleft -= .5;
 				ships1C[i].ammoleft -= .5;

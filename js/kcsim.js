@@ -1217,6 +1217,8 @@ function sim(F1,F2,Fsupport,doNB,NBonly,aironly,bombing,noammo,BAPI,noupdate) {
 		// var subonly = true;
 		// for (var j=0; j<ships2.length; j++) if (ships2[j].type != 'SS') subonly = false;
 		for (var i=0; i<ships1.length; i++) {
+			if (ships1[i].HP <= 0) continue;
+			if (ships1[i].retreated) continue;
 			if (bombing) {
 				ships1[i].fuelleft -= .5;
 				ships1[i].ammoleft -= .5;
@@ -1346,13 +1348,13 @@ function getFCFShips(ships1,ships1C) {
 	var retreater = null, escorter = null;
 	for (var i=1; i<ships1.length; i++) {
 		if (ships1[i].retreated) continue;
-		if (ships1[i].HP/ships1[i].maxHP <= .25) {
+		if (ships1[i].HP/ships1[i].maxHP <= .25 && ships1[i].HP > 0) {
 			if (!retreater) retreater = ships1[i];
 		}
 	}
 	for (var i=1; i<ships1C.length; i++) {
 		if (ships1C[i].retreated) continue;
-		if (ships1C[i].HP/ships1C[i].maxHP <= .25) {
+		if (ships1C[i].HP/ships1C[i].maxHP <= .25 && ships1C[i].HP > 0) {
 			if (!retreater) retreater = ships1C[i];
 		} else if (ships1C[i].type == 'DD' && ships1C[i].HP/ships1C[i].maxHP > .75) {
 			if (!escorter) escorter = ships1C[i];
@@ -1379,7 +1381,10 @@ function canContinue(ships1,ships1C) {
 			}
 		}
 	}
-	if (retreater && escorter) { retreater.retreated = escorter.retreated = true; }
+	if (retreater && escorter) {
+		retreater.retreated = escorter.retreated = true;
+		retreater.fuelleft = escorter.fuelleft = 0;
+	}
 	return true;
 }
 
