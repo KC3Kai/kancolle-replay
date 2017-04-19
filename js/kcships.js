@@ -334,7 +334,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 
 Ship.prototype.canShell = function() { return (this.HP > 0); }
 Ship.prototype.canStillShell = function() { return this.canShell(); }
-Ship.prototype.canNB = function() { return (this.HP/this.maxHP > .25); }
+Ship.prototype.canNB = function() { return (this.HP/this.maxHP > .25 && !this.retreated); }
 Ship.prototype.canTorp = function() { return (this.HP/this.maxHP > .5); }
 Ship.prototype.canOpTorp = function() { return this.hasMidgetSub; }
 Ship.prototype.canASW = function() { return false; }
@@ -716,7 +716,7 @@ function CV(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 }
 CV.prototype = Object.create(Ship.prototype);
 CV.prototype.canTorp = function() { return false; }
-CV.prototype.canNB = function() { return (this.nightattack && this.HP/this.maxHP > .25); }
+CV.prototype.canNB = function() { return (this.nightattack && this.HP/this.maxHP > .25 && !this.retreated); }
 CV.prototype.canAS = function() { return false; }
 CV.prototype.APweak = true;
 CV.prototype.canShell = function() {
