@@ -40,6 +40,9 @@ body {
 	width: 100%;
 }
 
+.blank_row {
+	height: 14px !important; 
+}
 div[id^="battle-"] table, th, td {
 	border: 1px solid black;
 }

@@ -106,6 +106,10 @@ var TEXTDATA = {
 		"AIR_START": {
 
 		},
+		"AIR_NONE": {
+			"text" : "No Air Battle",
+			"values": {}
+		},
 		"AIR_STAGE1_LOSS": {
 
 		},
@@ -322,8 +326,8 @@ var TEXTDATA = {
 			"text": "<0> <1>.",
 			"values": {
 				1: {
-					1: "has been sunk",
-					2: "is no longer able to continue fighting"
+					0: "has been sunk",
+					1: "is no longer able to continue fighting"
 				}
 			}
 		},

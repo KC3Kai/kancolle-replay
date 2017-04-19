@@ -43,8 +43,14 @@ function BATTLE(playerFleet, battle, node, isPVP) {
 	};
 
 	airAttack = function() {
+		var kou = dbattle.api_kouku;
 		var body = document.createElement('tbody');
 		appendPhase("AIR BATTLE");
+		if(kou && kou.api_plane_from && (kou.api_plane_from[0][0] != -1 || kou.api_plane_from[1][0] != -1)) {
+			kouku(kou, body);
+		} else {
+			body.append(getTextRow("AIR_NONE", []));
+		}
 
 		tab.append(body);
 	};
@@ -102,44 +108,68 @@ function BATTLE(playerFleet, battle, node, isPVP) {
 		} else {
 			if (player.combined && combinedE) {//12vs12
 				if (player.combined == 2) {
-					if (dbattle.api_hourai_flag[0])
+					if (dbattle.api_hourai_flag[0]){
+						body.append(getTextRow("",[]));
 						hougeki(dbattle.api_hougeki1, player.mainFleet, body);
-					if (dbattle.api_hourai_flag[1])
+						body.append(getTextRow("",[]));
+					}
+					if (dbattle.api_hourai_flag[1]){
 						hougeki(dbattle.api_hougeki2, player.mainFleet, body);
-					if (dbattle.api_hourai_flag[2])
+						body.append(getTextRow("",[]));
+					}
+					if (dbattle.api_hourai_flag[2]){
 						hougeki(dbattle.api_hougeki3, player.escortFleet, body);
-					if (dbattle.api_hourai_flag[3])
+						body.append(getTextRow("",[]));
+					}
+					if (dbattle.api_hourai_flag[3]){
 						raigeki(dbattle.api_raigeki, body, player.escortFleet);
+					}
 				} else {
-					if (dbattle.api_hourai_flag[1])
+					if (dbattle.api_hourai_flag[0]) {
 						hougeki(dbattle.api_hougeki1, player.mainFleet, body);
-					if (dbattle.api_hourai_flag[2])
+						body.append(getTextRow("",[]));
+					}
+					if (dbattle.api_hourai_flag[1]) {
 						hougeki(dbattle.api_hougeki2, player.escortFleet, body);
-					if (dbattle.api_hourai_flag[3])
+						body.append(getTextRow("",[]));
+					}
+					if (dbattle.api_hourai_flag[2]){
 						raigeki(dbattle.api_raigeki, body, player.escortFleet);
-					if (dbattle.api_hourai_flag[3])
+						body.append(getTextRow("",[]));
+					}
+					if (dbattle.api_hourai_flag[3]){
 						hougeki(dbattle.api_hougeki3, player.mainFleet, body);
+					}
 				}
 			} else {
 				f = (player.combined == 1 || player.combined == 3) ? player.escortFleet : player.mainFleet;
-				if (dbattle.api_hougeki1)
+				if (dbattle.api_hougeki1) {
 					hougeki(dbattle.api_hougeki1, f, body);
+					body.append(getTextRow("",[]));
+				}
 				//CTF does closing torpedo
-				if ((player.combined == 1 || player.combined == 3 || combinedE) && dbattle.api_raigeki)
+				if ((player.combined == 1 || player.combined == 3 || combinedE) && dbattle.api_raigeki) {
 					raigeki(dbattle.api_raigeki, body, f);
-
-				if (dbattle.api_hougeki2)
+					body.append(getTextRow("",[]));
+				}
+					
+				if (dbattle.api_hougeki2) {
 					hougeki(dbattle.api_hougeki2, player.mainFleet, body);
+					body.append(getTextRow("",[]));
+				}
 				//always main player
 				if (dbattle.api_hougeki3) {
 					f = (player.combined == 2) ? player.escortFleet : player.mainFleet;
 					hougeki(dbattle.api_hougeki3, f, body);
+					body.append(getTextRow("",[]));
 				}
 
 				//closing torp (if not CTF/TTF)
 				f = (player.combined) ? player.escortFleet : player.mainFleet;
-				if (player.combined != 1 && player.combined != 3 && !dbattle.api_ship_ke_combined && dbattle.api_raigeki)
+				if (player.combined != 1 && player.combined != 3 && !dbattle.api_ship_ke_combined && dbattle.api_raigeki) {
 					raigeki(dbattle.api_raigeki, body, f);
+					body.append(getTextRow("",[]));
+				}
 			}
 		}
 
@@ -180,16 +210,51 @@ function BATTLE(playerFleet, battle, node, isPVP) {
 
 		tab.append(body);
 	};
+	
+	kouku = function(kouku, table, isbombing, isjet) {
+		var stage1 = kouku.api_stage1;
+	 	var stage2 = kouku.api_stage2;
+	 	var stage3 = kouku.api_stage3;
+	 	
+		var attackers = [];
+			if (kouku.api_plane_from[0][0] != -1) {
+					for (var i=0; i<kouku.api_plane_from[0].length; i++) {
+						var ship = (isbombing)? kouku.api_plane_from[0][i] : (kouku.api_plane_from[0][i]<7)? player.mainFleet[kouku.api_plane_from[0][i]-1] : player.escortFleet[kouku.api_plane_from[0][i]-7];
+						if (isbombing && kouku.api_squadron_plane.length <= i) continue;
+/*
+						if (isbombing) {
+							var eqid = kouku.api_squadron_plane[i].api_mst_id;
+							if (EQDATA[eqid]) attackdata[i].push((EQDATA[eqid].b_image)? EQDATA[eqid].b_image : 1);
+							else attackdata[i].push(13);
+						}*/
+
+						attackers.push(ship);
+					}
+				}
+/*
+				if (kouku.api_plane_from[1][0] != -1) {
+					for (var i=0; i<kouku.api_plane_from[1].length; i++) {
+						var slot = kouku.api_plane_from[1][i];
+						if (slot > 6) slot -= 6;
+						attackdata.push([f2[slot-1],[],[]]);
+						attackers.push(f2[slot-1]);
+					}
+				}*/
+
+	 	
+	 	table.append(getTextRow("AIR_SUPERIORITY", [stage1.api_disp_seiku]));
+	 	
+	 	if(stage1.api_touch_plane[0] > 0) table.append(getTextRow("AIR_CONTACT_F",[getItem(stage1.api_touch_plane[0])]));
+	 	if(stage1.api_touch_plane[1] > 0) table.append(getTextRow("AIR_CONTACT_E",[getItem(stage1.api_touch_plane[1])]));
+	};
+	
 	/*	kouku = function(kouku, player, isbombing,isjet) {
-	 var stage1 = kouku.api_stage1;
-	 var stage2 = kouku.api_stage2;
-	 var stage3 = kouku.api_stage3;
+	 
 
 	 if (kouku && kouku.api_plane_from && (kouku.api_plane_from[0][0] != -1 || kouku.api_plane_from[1][0] != -1)){
 
-	 getTextRow("AIR_SUPERIORITY", [stage1.api_disp_seiku]));
-	 if(stage1.api_touch_plane[0] > 0) getTextRow("AIR_CONTACT_F",[getItemName(stage1.api_touch_plane[0])]));
-	 if(stage1.api_touch_plane[1] > 0) getTextRow("AIR_CONTACT_E",[getItemName(stage1.api_touch_plane[1])]));
+	 
+	 
 
 	 if(stage2 && stage2.api_air_fire) {
 	 var AAShip = (stage2.api_air_fire.api_idx > 5) ? player.ESCORT_FLEET[stage2.api_air_fire.api_idx - 6] : player.MAIN_FLEET[stage2.api_air_fire.api_idx];
@@ -249,9 +314,7 @@ function BATTLE(playerFleet, battle, node, isPVP) {
 	 }
 	 },*/
 
-	kouku = function(kouku, player, isbombing, isjet) {
-
-	};
+	
 
 	raigeki = function(rai, table, fleet, opening) {
 
@@ -312,7 +375,7 @@ function BATTLE(playerFleet, battle, node, isPVP) {
 	hougeki = function(hou, fleet, body) {
 		for (var j = 1; j < hou.api_at_list.length; j++) {
 			var attacker,
-			    defender;
+			    defender, damage;
 
 			if (combinedE) {
 				if (hou.api_at_eflag[j])
@@ -334,133 +397,34 @@ function BATTLE(playerFleet, battle, node, isPVP) {
 
 			body.append(getTextRow("SHELL_TARGET", [attacker.name, hou.api_at_type[j], defender.name]));
 
+			for(var k in hou.api_damage[j]) {
+				defender.damage(Math.floor(hou.api_damage[j][k]));
+			}
 			if (hou.api_at_type[j] == 2) {
-				body.append(getTextRow("SHELL_DAMAGE_DOUBLE", [attacker.name, hou.api_cl_list[j][0], hou.api_damage[j][0], hou.api_cl_list[j][1], hou.api_damage[j][1]]));
+				body.append(getTextRow("SHELL_DAMAGE_DOUBLE", [defender.name, hou.api_cl_list[j][0], hou.api_damage[j][0], hou.api_cl_list[j][1], hou.api_damage[j][1]]));
 			} else {
-				if (hou.api_damage[j][0] < 1) {//protect
+				
+				if (hou.api_damage[j][0] < 1) {// need protect
 					var damage = Math.floor(hou.api_damage[j][0]);
 					if (hou.api_damage[j][0] > damage) {
-						var flagship;
-						if (!hou.api_at_eflag[j]) {
-							flagship = (hou.api_df_list[j][0] > 6) ? opponent.ESCORT_FLEET[0] : opponent.MAIN_FLEET[0];
-						} else {
-							flagship = (hou.api_df_list[j][0] > 6) ? player.ESCORT_FLEET[0] : player.MAIN_FLEET[0];
-						}
-						body.append(getTextRow("PROTECT_MISS", [defender.name, flagship]));
+						body.append(getTextRow("SHELL_MISS", [defender.name]));
 					} else {
 						body.append(getTextRow("SHELL_MISS", [defender.name]));
 					}
 				} else {
 					var damage = Math.floor(hou.api_damage[j][0]);
-					if (hou.api_damage[j][0] > damage) {
-						var flagship;
-						if (!hou.api_at_eflag[j]) {
-							flagship = (hou.api_df_list[j][0] > 6) ? opponent.ESCORT_FLEET[0] : opponent.MAIN_FLEET[0];
-						} else {
-							flagship = (hou.api_df_list[j][0] > 6) ? player.ESCORT_FLEET[0] : player.MAIN_FLEET[0];
-						}
-						body.append(getTextRow("SHELL_PROTECT", [defender.name, flagship, hou.api_cl_list[j][0], damage]));
+					if (hou.api_damage[j][0] > damage) { //protect
+						body.append(getTextRow("SHELL_DAMAGE", [defender.name, hou.api_cl_list[j][0], damage]));
 					} else {
 						body.append(getTextRow("SHELL_DAMAGE", [defender.name, hou.api_cl_list[j][0], damage]));
 					}
-
 				}
 			}
-			if (defender.curHP <= 0) {
-				body.append(getTextRow("SHIP_END", [defender.name, 2]));
+			if (defender.isSunk()) {
+				body.append(getTextRow("SHIP_END", [defender.name, 0]));
 			}
 		}
 	};
-
-	/*hougeki = function(hou, player) {
-
-	 for (var j=1; j<hou.api_at_list.length; j++) {
-	 var attacker;
-	 var defender;
-
-	 if (opponent.ESCORT_FLEET) {
-	 if (hou.api_at_eflag[j]){
-	 attacker = (hou.api_at_list[j]>6)? opponent.ESCORT_FLEET[hou.api_at_list[j]-7] : opponent.MAIN_FLEET[hou.api_at_list[j]-1];
-	 } else {
-	 attacker = (hou.api_at_list[j]>6)? player.ESCORT_FLEET[hou.api_at_list[j]-7] : player.MAIN_FLEET[hou.api_at_list[j]-1];
-	 }
-
-	 if (!hou.api_at_eflag[j]) {
-	 if(hou.api_df_list[j][0]>6) {
-	 opponent.ESCORT_FLEET[hou.api_df_list[j][0]-1].curHP =- (hou.api_damage[j].length == 2) ? (hou.api_damage[j][0] + hou.api_damage[j][1])
-	 : hou.api_damage[j][0];
-	 defender = opponent.ESCORT_FLEET[hou.api_df_list[j][0]-7];
-	 } else {
-	 opponent.MAIN_FLEET[hou.api_df_list[j][0]-1].curHP =- (hou.api_damage[j].length == 2) ? (hou.api_damage[j][0] + hou.api_damage[j][1])
-	 : hou.api_damage[j][0];
-	 defender = opponent.MAIN_FLEET[hou.api_df_list[j][0]-1];
-	 }
-
-	 } else {
-	 if(hou.api_df_list[j][0]>6) {
-	 player.ESCORT_FLEET[hou.api_df_list[j][0]-7].curHP -= (hou.api_damage[j].length == 2) ? (hou.api_damage[j][0] + hou.api_damage[j][1])
-	 : hou.api_df_list[j][0];
-	 defender = player.ESCORT_FLEET[hou.api_df_list[j][0]-7];
-	 } else {
-	 player.MAIN_FLEET[hou.api_df_list[j][0]-1].curHP -= (hou.api_damage[j].length == 2) ? (hou.api_damage[j][0] + hou.api_damage[j][1])
-	 : hou.api_damage[j][0];
-	 defender = player.MAIN_FLEET[hou.api_df_list[j][0]-1];
-	 }
-	 }
-	 } else {
-	 attacker = (hou.api_at_list[j]>6)? opponent.MAIN_FLEET[hou.api_at_list[j]-7] : player.MAIN_FLEET[hou.api_at_list[j]-1]
-	 if((hou.api_df_list[j][0]>6)) {
-	 opponent.MAIN_FLEET[hou.api_df_list[j][0]-7].curHP -= (hou.api_damage[j].length == 2) ? (hou.api_damage[j][0] + hou.api_damage[j][1])
-	 : hou.api_damage[j][0];
-	 defender = opponent.MAIN_FLEET[hou.api_df_list[j][0]-7];
-	 } else {
-	 player.MAIN_FLEET[hou.api_df_list[j][0]-1].curHP -= (hou.api_damage[j].length == 2) ? (hou.api_damage[j][0] + hou.api_damage[j][1])
-	 : hou.api_damage[j][0];
-	 defender = player.MAIN_FLEET[hou.api_df_list[j][0]-1];
-	 }
-
-	 }
-
-	 getTextRow("SHELL_TARGET",[attacker.name, hou.api_at_type[j],defender.name]));
-
-	 if(hou.api_at_type[j] == 2) {
-	 getTextRow("SHELL_DAMAGE_DOUBLE",[attacker.name, hou.api_cl_list[j][0],
-	 hou.api_damage[j][0], hou.api_cl_list[j][1], hou.api_damage[j][1]]));
-	 } else {
-	 if(hou.api_damage[j][0] < 1) {
-	 var damage = Math.floor(hou.api_damage[j][0])
-	 if(hou.api_damage[j][0] > damage) {
-	 var flagship;
-	 if (!hou.api_at_eflag[j]) {
-	 flagship = (hou.api_df_list[j][0]>6)? opponent.ESCORT_FLEET[0] : opponent.MAIN_FLEET[0];
-	 } else {
-	 flagship = (hou.api_df_list[j][0]>6)? player.ESCORT_FLEET[0] : player.MAIN_FLEET[0];
-	 }
-	 getTextRow("PROTECT_MISS",[defender.name, flagship]));
-	 } else {
-	 getTextRow("SHELL_MISS",[defender.name]));
-	 }
-	 } else {
-	 var damage = Math.floor(hou.api_damage[j][0])
-	 if(hou.api_damage[j][0] > damage) {
-	 var flagship;
-	 if (!hou.api_at_eflag[j]) {
-	 flagship = (hou.api_df_list[j][0]>6)? opponent.ESCORT_FLEET[0] : opponent.MAIN_FLEET[0];
-	 } else {
-	 flagship = (hou.api_df_list[j][0]>6)? player.ESCORT_FLEET[0] : player.MAIN_FLEET[0];
-	 }
-	 getTextRow("SHELL_PROTECT",[defender.name, flagship, hou.api_cl_list[j][0], damage]));
-	 } else {
-	 getTextRow("SHELL_DAMAGE",[defender.name, hou.api_cl_list[j][0], damage]));
-	 }
-
-	 }
-	 }
-	 if(defender.curHP <= 0) {
-	 getTextRow("SHIP_END", [defender.name, 2]));
-	 }
-	 }
-	 }*/
 
 	function appendPhase(phase) {
 		$("<thead><tr></tr></thead>").find("tr").html('<th>' + phase + '</th>').end().appendTo(tab);
@@ -469,6 +433,7 @@ function BATTLE(playerFleet, battle, node, isPVP) {
 	function getTextRow(name, args) {
 		var row = document.createElement('tr');
 		if (name.length === 0) {
+			row.className = 'blank_row';
 			row.innerHTML = '<td> </td>';
 		} else {
 			row.innerHTML = '<td>' + getText(name, args) + '</td>';
