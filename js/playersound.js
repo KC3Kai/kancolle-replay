@@ -165,5 +165,6 @@ var BGMLIST = {
 	2001: {url:'assets/music/103v.ogg', voldef:.7},
 	2027: {url:'assets/music/Sound_bgm_almi.ogg'},
 	2031: {url:'assets/music/903y.ogg'},
+	2131: {url:'assets/music/904wNeo.ogg'},
 };
 

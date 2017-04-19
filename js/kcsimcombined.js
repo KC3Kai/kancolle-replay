@@ -2,16 +2,28 @@ function simCombined(type,F1,F1C,F2,Fsupport,doNB,NBonly,aironly,bombing,noammo,
 	var ships1 = F1.ships, ships2 = F2.ships, ships1C = F1C.ships;
 	var alive1 = [], alive1C = [], alive2 = [], subsalive1 = [], subsalive1C = [], subsalive2 = [];
 	for (var i=0; i<ships1.length; i++) {
-		if(ships1[i].type == 'SS') subsalive1.push(ships1[i]);
+		if (ships1[i].HP <= 0) continue;
+		if (ships1[i].retreated) continue;
+		if(ships1[i].isSub) subsalive1.push(ships1[i]);
 		else alive1.push(ships1[i]);
+		ships1[i].HPprev = ships1[i].HP;
+		if (!MECHANICS.morale) ships1[i].morale = 49;
 	}
 	for (var i=0; i<ships1C.length; i++) {
-		if(ships1C[i].type == 'SS') subsalive1C.push(ships1C[i]);
+		if (ships1C[i].HP <= 0) continue;
+		if (ships1C[i].retreated) continue;
+		if(ships1C[i].isSub) subsalive1C.push(ships1C[i]);
 		else alive1C.push(ships1C[i]);
+		ships1C[i].HPprev = ships1C[i].HP;
+		if (!MECHANICS.morale) ships1C[i].morale = 49;
 	}
 	for (var i=0; i<ships2.length; i++) {
-		if(ships2[i].type == 'SS') subsalive2.push(ships2[i]);
+		if (ships2[i].HP <= 0) continue;
+		if (ships2[i].retreated) continue;
+		if(ships2[i].isSub) subsalive2.push(ships2[i]);
 		else alive2.push(ships2[i]);
+		ships2[i].HPprev = ships2[i].HP;
+		if (!MECHANICS.morale) ships2[i].morale = 49;
 	}
 	
 	var r = Math.random();
@@ -33,6 +45,12 @@ function simCombined(type,F1,F1C,F2,Fsupport,doNB,NBonly,aironly,bombing,noammo,
 		dataroot.api_dock_id = 1;
 		dataroot.api_maxhps = [-1];
 		dataroot.api_nowhps = [-1];
+		var retreatlist = [];
+		for (var i=0; i<ships1.length; i++) if (ships1[i].retreated) retreatlist.push(i+1);
+		if (retreatlist.length) dataroot.api_escape_idx = retreatlist;
+		var retreatlistC = [];
+		for (var i=0; i<ships1C.length; i++) if (ships1C[i].retreated) retreatlistC.push(i+1);
+		if (retreatlistC.length) dataroot.api_escape_idx_combined = retreatlistC;
 		for (var i=0; i<6; i++) {
 			dataroot.api_nowhps.push((i<ships1.length)? ships1[i].HP : -1);
 			dataroot.api_maxhps.push((i<ships1.length)? ships1[i].maxHP : -1);
@@ -68,10 +86,10 @@ function simCombined(type,F1,F1C,F2,Fsupport,doNB,NBonly,aironly,bombing,noammo,
 	
 	var doShell2 = false;
 	for (var i=0; i<ships1.length; i++) {
-		if (ships1[i].type == 'BB' || ships1[i].type == 'BBV') doShell2 = true;
+		if (ships1[i].enableSecondShelling) doShell2 = true;
 	}
 	for (var i=0; i<ships2.length; i++) {
-		if (ships2[i].type == 'BB' || ships2[i].type == 'BBV') doShell2 = true;
+		if (ships2[i].enableSecondShelling) doShell2 = true;
 	}
 	
 	//jet airstrike
@@ -194,6 +212,11 @@ function simCombined(type,F1,F1C,F2,Fsupport,doNB,NBonly,aironly,bombing,noammo,
 		}
 	}
 	
+	//recalculate fLoS before shelling because recon may have been shot down
+	F1.clearFleetLoS();
+	F1C.clearFleetLoS();
+	F2.clearFleetLoS();
+	
 	//shelling 1
 	if (!NBonly) {
 		if (C) BAPI.data.api_hougeki1 = {api_at_list:[-1],api_at_type:[-1],api_damage:[-1],api_df_list:[-1],api_cl_list:[-1]};
@@ -243,7 +266,7 @@ function simCombined(type,F1,F1C,F2,Fsupport,doNB,NBonly,aironly,bombing,noammo,
 	
 	// closing torpedo for STF
 	if (type==2 && !NBonly && !aironly && alive1C.length+subsalive1C.length > 0 && alive2.length+subsalive2.length > 0) {
-		if (C) BAPI.data.api_raigeki = {api_edam:[-1,0,0,0,0,0,0],api_erai:[-1,0,0,0,0,0,0],api_eydam:[-1,0,0,0,0,0,0],api_fdam:[-1,0,0,0,0,0,0],api_frai:[-1,0,0,0,0,0,0],api_fydam:[-1,0,0,0,0,0,0]};
+		if (C) BAPI.data.api_raigeki = {api_edam:[-1,0,0,0,0,0,0],api_erai:[-1,0,0,0,0,0,0],api_eydam:[-1,0,0,0,0,0,0],api_fdam:[-1,0,0,0,0,0,0],api_frai:[-1,0,0,0,0,0,0],api_fydam:[-1,0,0,0,0,0,0],api_ecl:[-1,0,0,0,0,0,0],api_fcl:[-1,0,0,0,0,0,0]};
 		torpedoPhase(alive1C,subsalive1C,alive2,subsalive2,false,(C)? BAPI.data.api_raigeki:undefined);
 	}
 	
@@ -363,13 +386,13 @@ function getRankC(ships1,ships1C,ships2) {
 	}
 	for (var i=0; i<ships1.length; i++) {
 		if (ships1[i].HP <= 0) sunk1++;
-		dmg1 += ships1[i].maxHP - Math.max(0,ships1[i].HP);
-		dtotal1 += ships1[i].maxHP;
+		dmg1 += ships1[i].HPprev - Math.max(0,ships1[i].HP);
+		dtotal1 += ships1[i].HPprev;
 	}
 	for (var i=0; i<ships1C.length; i++) {
 		if (ships1C[i].HP <= 0) sunk1++;
-		dmg1 += ships1C[i].maxHP - Math.max(0,ships1C[i].HP);
-		dtotal1 += ships1C[i].maxHP;
+		dmg1 += ships1C[i].HPprev - Math.max(0,ships1C[i].HP);
+		dtotal1 += ships1C[i].HPprev;
 	}
 	dmg1 /= dtotal1; dmg2 /= dtotal2;
 	if (!sunk1) {
