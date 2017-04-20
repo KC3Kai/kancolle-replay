@@ -8,7 +8,7 @@ var startData = API.battles[0].data;
 var isPvP = (world == 0);
 var tabs = $('#tabNodes');
 var tabPanel = $('.mdl-tabs');
-
+var exportList = $('#export ul'); 
 addTab = function(node, first) {
 	var battleLink = 'battle-' + node;
 	tabs.append(() => {
@@ -16,7 +16,17 @@ addTab = function(node, first) {
 	});
 
 	tabPanel.append(() => {
-		return $('<div>').attr('id', battleLink).html('<table></table>').addClass('mdl-tabs__panel');
+		return $('<div>').attr('id', battleLink).html('<table data-tableexport-display="always"></table>').addClass('mdl-tabs__panel');
+	});
+	
+	exportList.append(() => {
+		return $('<li>').append(() => {
+			return $('<a>')
+			.click(() => {
+				exportBattle(battleLink);
+				})
+			.html('Battle ' + node);
+		});
 	});
 };
 
@@ -115,6 +125,15 @@ getItem = function(mid) {
 	if (!EQDATA[mid])
 		return mid;
 	return EQDATA[mid].name + ' (' + mid + ')';
+};
+
+exportBattle = function(battle) {
+	var table = $('#'+battle); 
+	table.tableExport(
+		{
+			type:'txt',
+			fileName: battle
+		});
 };
 
 setTitle();
