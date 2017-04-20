@@ -103,15 +103,23 @@ var TEXTDATA = {
 			"text": "The enemy fleet consists of <0>.",
 			"values": {}
 		},
-		"AIR_START": {
-
-		},
 		"AIR_NONE": {
 			"text" : "No Air Battle",
 			"values": {}
 		},
-		"AIR_STAGE1_LOSS": {
+		"AIR_START": {
+			"text" : "<0> send <1> figthers and <2> bombers to battle.",
+			"values": {}
+		},
 
+		"AIR_STAGE1_LOSS": {
+			"text" : "<0> fleet lost <1> fighters in the dogfight.",
+			"values": {
+				0: {
+					0: "Ally",
+					1: "Enemy"
+				}
+			}
 		},
 		"AIR_SUPERIORITY": {
 			"text": "Fleet has gained <0> against the enemy.",
@@ -160,9 +168,18 @@ var TEXTDATA = {
 			}
 		},
 		"AIR_STAGE2_LOSS": {
-
-		},
-		
+			"text" : "<0> fleet shot down <1> <2> bombers.",
+			"values": {
+				0: {
+					0: "Allied",
+					1: "Enemy"
+				},
+				2: {
+					0: "allied",
+					1: "enemy"
+				}
+			}
+		},		
 		"AIR_DAMAGE": {
 			"text": "<0> <1>hit <2> dealing <3> damage.",
 			"values": {

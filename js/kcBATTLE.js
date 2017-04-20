@@ -7,7 +7,7 @@ function BATTLE(playerFleet, battle, node, isPVP) {
 
 	combinedE = (dbattle.api_ship_ke_combined) ? 1 : 0;
 
-	start = function() {
+	start = function() {//possible armor break state - api_xal01
 		if (combinedE)
 			opponent.addCombinedFleet(dbattle.api_ship_ke, dbattle.api_ship_ke_combined, dbattle.api_nowhps.slice(7), dbattle.api_nowhps_combined.slice(7));
 		else
@@ -46,7 +46,7 @@ function BATTLE(playerFleet, battle, node, isPVP) {
 		var kou = dbattle.api_kouku;
 		var body = document.createElement('tbody');
 		appendPhase("AIR BATTLE");
-		if(kou && kou.api_plane_from && (kou.api_plane_from[0][0] != -1 || kou.api_plane_from[1][0] != -1)) {
+		if (kou && kou.api_plane_from && (kou.api_plane_from[0][0] != -1 || kou.api_plane_from[1][0] != -1)) {
 			kouku(kou, body);
 		} else {
 			body.append(getTextRow("AIR_NONE", []));
@@ -108,36 +108,36 @@ function BATTLE(playerFleet, battle, node, isPVP) {
 		} else {
 			if (player.combined && combinedE) {//12vs12
 				if (player.combined == 2) {
-					if (dbattle.api_hourai_flag[0]){
-						body.append(getTextRow("",[]));
+					if (dbattle.api_hourai_flag[0]) {
+						body.append(getTextRow("", []));
 						hougeki(dbattle.api_hougeki1, player.mainFleet, body);
-						body.append(getTextRow("",[]));
+						body.append(getTextRow("", []));
 					}
-					if (dbattle.api_hourai_flag[1]){
+					if (dbattle.api_hourai_flag[1]) {
 						hougeki(dbattle.api_hougeki2, player.mainFleet, body);
-						body.append(getTextRow("",[]));
+						body.append(getTextRow("", []));
 					}
-					if (dbattle.api_hourai_flag[2]){
+					if (dbattle.api_hourai_flag[2]) {
 						hougeki(dbattle.api_hougeki3, player.escortFleet, body);
-						body.append(getTextRow("",[]));
+						body.append(getTextRow("", []));
 					}
-					if (dbattle.api_hourai_flag[3]){
+					if (dbattle.api_hourai_flag[3]) {
 						raigeki(dbattle.api_raigeki, body, player.escortFleet);
 					}
 				} else {
 					if (dbattle.api_hourai_flag[0]) {
 						hougeki(dbattle.api_hougeki1, player.mainFleet, body);
-						body.append(getTextRow("",[]));
+						body.append(getTextRow("", []));
 					}
 					if (dbattle.api_hourai_flag[1]) {
 						hougeki(dbattle.api_hougeki2, player.escortFleet, body);
-						body.append(getTextRow("",[]));
+						body.append(getTextRow("", []));
 					}
-					if (dbattle.api_hourai_flag[2]){
+					if (dbattle.api_hourai_flag[2]) {
 						raigeki(dbattle.api_raigeki, body, player.escortFleet);
-						body.append(getTextRow("",[]));
+						body.append(getTextRow("", []));
 					}
-					if (dbattle.api_hourai_flag[3]){
+					if (dbattle.api_hourai_flag[3]) {
 						hougeki(dbattle.api_hougeki3, player.mainFleet, body);
 					}
 				}
@@ -145,30 +145,30 @@ function BATTLE(playerFleet, battle, node, isPVP) {
 				f = (player.combined == 1 || player.combined == 3) ? player.escortFleet : player.mainFleet;
 				if (dbattle.api_hougeki1) {
 					hougeki(dbattle.api_hougeki1, f, body);
-					body.append(getTextRow("",[]));
+					body.append(getTextRow("", []));
 				}
 				//CTF does closing torpedo
 				if ((player.combined == 1 || player.combined == 3 || combinedE) && dbattle.api_raigeki) {
 					raigeki(dbattle.api_raigeki, body, f);
-					body.append(getTextRow("",[]));
+					body.append(getTextRow("", []));
 				}
-					
+
 				if (dbattle.api_hougeki2) {
 					hougeki(dbattle.api_hougeki2, player.mainFleet, body);
-					body.append(getTextRow("",[]));
+					body.append(getTextRow("", []));
 				}
 				//always main player
 				if (dbattle.api_hougeki3) {
 					f = (player.combined == 2) ? player.escortFleet : player.mainFleet;
 					hougeki(dbattle.api_hougeki3, f, body);
-					body.append(getTextRow("",[]));
+					body.append(getTextRow("", []));
 				}
 
 				//closing torp (if not CTF/TTF)
 				f = (player.combined) ? player.escortFleet : player.mainFleet;
 				if (player.combined != 1 && player.combined != 3 && !dbattle.api_ship_ke_combined && dbattle.api_raigeki) {
 					raigeki(dbattle.api_raigeki, body, f);
-					body.append(getTextRow("",[]));
+					body.append(getTextRow("", []));
 				}
 			}
 		}
@@ -210,56 +210,68 @@ function BATTLE(playerFleet, battle, node, isPVP) {
 
 		tab.append(body);
 	};
-	
+
 	kouku = function(kouku, table, isbombing, isjet) {
 		var stage1 = kouku.api_stage1;
-	 	var stage2 = kouku.api_stage2;
-	 	var stage3 = kouku.api_stage3;
-	 	
-		var attackers = [];
-			if (kouku.api_plane_from[0][0] != -1) {
-					for (var i=0; i<kouku.api_plane_from[0].length; i++) {
-						var ship = (isbombing)? kouku.api_plane_from[0][i] : (kouku.api_plane_from[0][i]<7)? player.mainFleet[kouku.api_plane_from[0][i]-1] : player.escortFleet[kouku.api_plane_from[0][i]-7];
-						if (isbombing && kouku.api_squadron_plane.length <= i) continue;
-/*
-						if (isbombing) {
-							var eqid = kouku.api_squadron_plane[i].api_mst_id;
-							if (EQDATA[eqid]) attackdata[i].push((EQDATA[eqid].b_image)? EQDATA[eqid].b_image : 1);
-							else attackdata[i].push(13);
-						}*/
+		var stage2 = kouku.api_stage2;
+		var stage3 = kouku.api_stage3;
 
-						attackers.push(ship);
-					}
-				}
-/*
-				if (kouku.api_plane_from[1][0] != -1) {
-					for (var i=0; i<kouku.api_plane_from[1].length; i++) {
-						var slot = kouku.api_plane_from[1][i];
-						if (slot > 6) slot -= 6;
-						attackdata.push([f2[slot-1],[],[]]);
-						attackers.push(f2[slot-1]);
-					}
-				}*/
+		var fAttackers = [],
+		    eAttackers = [];
+		if (kouku.api_plane_from[0][0] != -1) {
+			for (var i = 0; i < kouku.api_plane_from[0].length; i++) {
+				var ship = (isbombing) ? kouku.api_plane_from[0][i] : (kouku.api_plane_from[0][i] < 7) ? player.mainFleet[kouku.api_plane_from[0][i] - 1] : player.escortFleet[kouku.api_plane_from[0][i] - 7];
+				if (isbombing && kouku.api_squadron_plane.length <= i)
+					continue;
+				/*
+				 if (isbombing) {
+				 var eqid = kouku.api_squadron_plane[i].api_mst_id;
+				 if (EQDATA[eqid]) attackdata[i].push((EQDATA[eqid].b_image)? EQDATA[eqid].b_image : 1);
+				 else attackdata[i].push(13);
+				 }*/
 
-	 	
-	 	table.append(getTextRow("AIR_SUPERIORITY", [stage1.api_disp_seiku]));
-	 	
-	 	if(stage1.api_touch_plane[0] > 0) table.append(getTextRow("AIR_CONTACT_F",[getItem(stage1.api_touch_plane[0])]));
-	 	if(stage1.api_touch_plane[1] > 0) table.append(getTextRow("AIR_CONTACT_E",[getItem(stage1.api_touch_plane[1])]));
+				fAttackers.push(ship);
+			}
+			table.append(getTextRow("AIR_START", [arrayToString(fAttackers), stage1.api_f_count, stage2.api_f_count]));
+		}
+
+		if (kouku.api_plane_from[1][0] != -1) {
+			for (var i = 0; i < kouku.api_plane_from[1].length; i++) {
+				var slot = kouku.api_plane_from[1][i];
+				if (slot > 6)
+					slot -= 6;
+				eAttackers.push(opponent.mainFleet[slot - 1]);
+			}
+			table.append(getTextRow("AIR_START", [arrayToString(eAttackers), stage1.api_e_count, stage2.api_e_count]));
+		}
+		
+		if(stage1.api_f_count > 0) table.append(getTextRow("AIR_STAGE1_LOSS", [0, stage1.api_f_lostcount, 1]));
+		if(stage1.api_e_count > 0) table.append(getTextRow("AIR_STAGE1_LOSS", [1, stage1.api_e_lostcount, 0]));
+		
+		if(!isbombing && !isjet) {
+		table.append(getTextRow("AIR_SUPERIORITY", [stage1.api_disp_seiku]));
+
+		if (stage1.api_touch_plane[0] > 0)
+			table.append(getTextRow("AIR_CONTACT_F", [getItem(stage1.api_touch_plane[0])]));
+		if (stage1.api_touch_plane[1] > 0)
+			table.append(getTextRow("AIR_CONTACT_E", [getItem(stage1.api_touch_plane[1])]));
+		}
+		table.append(getTextRow("", []));
+		
+		
+		if (stage2 && stage2.api_air_fire) {
+			var AAShip = (stage2.api_air_fire.api_idx > 5) ? player.escortFleet[stage2.api_air_fire.api_idx - 6] : player.mainFleet[stage2.api_air_fire.api_idx];
+			table.append(getTextRow("AIR_AACI", [AAShip.name, stage2.api_air_fire.api_kind]));
+		}
+		
+		if(stage2.api_f_count > 0) table.append(getTextRow("AIR_STAGE2_LOSS", [1, stage2.api_f_lostcount, 0]));
+		if(stage2.api_e_count > 0) table.append(getTextRow("AIR_STAGE2_LOSS", [0, stage2.api_e_lostcount, 1]));
+		table.append(getTextRow("", []));
 	};
-	
+
 	/*	kouku = function(kouku, player, isbombing,isjet) {
-	 
 
 	 if (kouku && kouku.api_plane_from && (kouku.api_plane_from[0][0] != -1 || kouku.api_plane_from[1][0] != -1)){
-
-	 
-	 
-
-	 if(stage2 && stage2.api_air_fire) {
-	 var AAShip = (stage2.api_air_fire.api_idx > 5) ? player.ESCORT_FLEET[stage2.api_air_fire.api_idx - 6] : player.MAIN_FLEET[stage2.api_air_fire.api_idx];
-	 getTextRow("AIR_AACI", [AAShip.name, stage2.api_air_fire.api_kind]));
-	 }
 
 	 if (stage3) {
 	 var fTargets = [], fCTargets = [], eTargets = [], eCTargets = [];
@@ -313,8 +325,6 @@ function BATTLE(playerFleet, battle, node, isPVP) {
 	 }
 	 }
 	 },*/
-
-	
 
 	raigeki = function(rai, table, fleet, opening) {
 
@@ -375,7 +385,8 @@ function BATTLE(playerFleet, battle, node, isPVP) {
 	hougeki = function(hou, fleet, body) {
 		for (var j = 1; j < hou.api_at_list.length; j++) {
 			var attacker,
-			    defender, damage;
+			    defender,
+			    damage;
 
 			if (combinedE) {
 				if (hou.api_at_eflag[j])
@@ -397,13 +408,13 @@ function BATTLE(playerFleet, battle, node, isPVP) {
 
 			body.append(getTextRow("SHELL_TARGET", [attacker.name, hou.api_at_type[j], defender.name]));
 
-			for(var k in hou.api_damage[j]) {
+			for (var k in hou.api_damage[j]) {
 				defender.damage(Math.floor(hou.api_damage[j][k]));
 			}
 			if (hou.api_at_type[j] == 2) {
 				body.append(getTextRow("SHELL_DAMAGE_DOUBLE", [defender.name, hou.api_cl_list[j][0], hou.api_damage[j][0], hou.api_cl_list[j][1], hou.api_damage[j][1]]));
 			} else {
-				
+
 				if (hou.api_damage[j][0] < 1) {// need protect
 					var damage = Math.floor(hou.api_damage[j][0]);
 					if (hou.api_damage[j][0] > damage) {
@@ -413,7 +424,7 @@ function BATTLE(playerFleet, battle, node, isPVP) {
 					}
 				} else {
 					var damage = Math.floor(hou.api_damage[j][0]);
-					if (hou.api_damage[j][0] > damage) { //protect
+					if (hou.api_damage[j][0] > damage) {//protect
 						body.append(getTextRow("SHELL_DAMAGE", [defender.name, hou.api_cl_list[j][0], damage]));
 					} else {
 						body.append(getTextRow("SHELL_DAMAGE", [defender.name, hou.api_cl_list[j][0], damage]));
