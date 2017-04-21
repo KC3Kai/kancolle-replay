@@ -16,6 +16,7 @@ body {
 	position: relative;
 	width: 150px;
 	list-style: none;
+	cursor: pointer;
 }
 
 #export ul {

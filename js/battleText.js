@@ -23,9 +23,9 @@ addTab = function(node, first) {
 		return $('<li>').append(() => {
 			return $('<a>')
 			.click(() => {
-				exportBattle(battleLink);
+				exportBattle(node);
 				})
-			.html('Battle ' + node);
+			.html('Battle Node ' + node);
 		});
 	});
 };
@@ -65,6 +65,9 @@ processText = function() {
 		}
 		$(".mdl-tabs__tab:first").addClass('is-active');
 		$(".mdl-tabs__panel:first").addClass('is-active');
+		$("#saveAll a").click(() => {
+			exportBattle('all');
+		});
 	}
 
 	/*
@@ -96,7 +99,7 @@ function getText(name, args) {
 
 setTitle = function() {
 	var title = document.createElement('title');
-	title.innerText = (isPvP) ? getText("PVP_TITLE", []) : getText("SORTIE_TITLE", [getMapName(world, map), new Date(API.time * 1000)]);
+	title.innerText = (isPvP) ? getText("PVP_TITLE", [API.id]) : getText("SORTIE_TITLE", [API.id, getMapName(world, map)]);
 	document.head.appendChild(title);
 };
 
@@ -128,11 +131,16 @@ getItem = function(mid) {
 };
 
 exportBattle = function(battle) {
-	var table = $('#'+battle); 
+	var table = (battle == 'all') ? $('table') : $('#battle-' + battle); 
+	var name = [];
+	name.push(document.title);
+	if(!isPvP && battle != 'all') {
+		name.push("Node " + battle);
+	}
 	table.tableExport(
 		{
 			type:'txt',
-			fileName: battle
+			fileName: name.join(" ")
 		});
 };
 

@@ -8,10 +8,18 @@ function BATTLE(playerFleet, battle, node, isPVP) {
 	combinedE = (dbattle.api_ship_ke_combined) ? 1 : 0;
 
 	start = function() {//possible armor break state - api_xal01
+		var body = document.createElement('tbody');
+		appendPhase("BATTLE START");
 		if (combinedE)
 			opponent.addCombinedFleet(dbattle.api_ship_ke, dbattle.api_ship_ke_combined, dbattle.api_nowhps.slice(7), dbattle.api_nowhps_combined.slice(7));
 		else
 			opponent.addFleet(dbattle.api_ship_ke, dbattle.api_nowhps.slice(7));
+			
+		if(isPVP)
+			body.append(getTextRow("PVP_START",[]));
+		else 
+			body.append(getTextRow("NODE_START",[node]));
+		tab.append(body);
 	};
 
 	formation = function() {

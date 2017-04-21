@@ -1,10 +1,10 @@
 var TEXTDATA = {
 	"SORTIE_TITLE": {
-			"text": "Battle at <0> on <1>",
+			"text": "Sortie #<0> - Battle at <1>",
 			"values": {}
 		},
 		"PVP_TITLE": {
-			"text": "Fleet Practice",
+			"text": "PVP #<0> - Fleet Practice",
 			"values": {}
 		},
 	
@@ -14,6 +14,10 @@ var TEXTDATA = {
 		},
 		"PVP_START": {
 			"text": "Beginning Fleet Practice.",
+			"values": {}
+		},
+		"NODE_START": {
+			"text": "--Fleet Approching Node <0>--",
 			"values": {}
 		},
 		"FLEET_COMPOSITION": {
