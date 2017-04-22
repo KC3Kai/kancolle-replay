@@ -10,7 +10,7 @@ var BATTLE = (function() {
 	function BATTLE(playerFleet, battle, battleNode, PVP) {
 		player = playerFleet;
 		opponent = new FLEET();
-		tab = $('#battle-' + node + ' table');
+		tab = $('#battle-' + battleNode + ' table');
 		dbattle = battle.data;
 		nightBattle = battle.yasen;
 		combinedE = (dbattle.api_ship_ke_combined) ? 1 : 0;
