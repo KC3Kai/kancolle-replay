@@ -53,7 +53,7 @@ FLEET.prototype.addSupport = function(fleet, boss) {
 	} else {
 		this.supportNode = [];
 		for (var i = 0; i < fleet.length; i++) {
-			tthis.supportNode.push(new SHIP(getShipName((fleet[i].mst_id) ? fleet[i].mst_id : fleet[i])));
+			this.supportNode.push(new SHIP(getShipName((fleet[i].mst_id) ? fleet[i].mst_id : fleet[i])));
 		}
 	}
 };

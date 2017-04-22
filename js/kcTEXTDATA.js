@@ -21,11 +21,11 @@ var TEXTDATA = {
 			"values": {}
 		},
 		"FLEET_COMPOSITION": {
-			"text": "Sortieing fleet consisting of <0>",
+			"text": "Sortieing fleet consisting of <0>.",
 			"values": {}
 		},
-		"COMBINDED_FLEET_COMPOSITION": {
-			"text": "Sortieing combined fleet consisting of <0> in the fleet.MAIN_FLEET fleet and <1> in the fleet.ESCORT_FLEET fleet.",
+		"COMBINED_FLEET_COMPOSITION": {
+			"text": "Sortieing combined fleet consisting of <0> in the Main fleet and <1> in the Escort fleet.",
 			"values": {}
 		},
 		"SUPPORT_FLEET_COMPOSITION": {
@@ -112,7 +112,7 @@ var TEXTDATA = {
 			"values": {}
 		},
 		"AIR_START": {
-			"text" : "<0> send <1> figthers and <2> bombers to battle.",
+			"text" : "<0> send <1> fighters and <2> bombers to battle.",
 			"values": {}
 		},
 
@@ -198,7 +198,7 @@ var TEXTDATA = {
 			}
 		},
 		"SUPPORT_START": {
-			"text": "The <0> support fleet has arrived with <1>",
+			"text": "The <0> support fleet has arrived with <1>.",
 			"values": {
 				0 : {
 					1: "Node",
@@ -227,7 +227,7 @@ var TEXTDATA = {
 			}
 		},
 		"ENGAGEMENT": {
-			"text": "Fleet has a <0> against the enemy",
+			"text": "Fleet has a <0> against the enemy.",
 			"values": {
 				0:{
 					1: "Parallel Engagement",
@@ -238,7 +238,7 @@ var TEXTDATA = {
 			}
 		},
 		"SHELL_START": {
-			"text": "Beginning <0> Shelling Phase",
+			"text": "Beginning <0> Shelling Phase.",
 			"values": {
 				0:{
 					1: "Main (Range)",
@@ -248,7 +248,7 @@ var TEXTDATA = {
 			}
 		},
 		"SHELL_DAMAGE": {
-			"text": "<0> is hit with a <1> dealing <2> damage",
+			"text": "<0> is hit with a <1> dealing <2> damage.",
 			"values": {
 				1: {
 					1: "Normal Attack",
@@ -257,11 +257,11 @@ var TEXTDATA = {
 			}
 		},
 		"SHELL_MISS": {
-			"text": "<0> avoided the attack",
+			"text": "<0> avoided the attack.",
 			"values": {}
 		},
 		"SHELL_DAMAGE_DOUBLE": {
-			"text": "<0> is hit with a <1> dealing <2> damage and a <3> dealing <4> damage",
+			"text": "<0> is hit with a <1> dealing <2> damage and a <3> dealing <4> damage.",
 			"values": {
 				1: {
 					1: "Normal Attack",
@@ -274,7 +274,7 @@ var TEXTDATA = {
 			}
 		},
 		"SHELL_TARGET": {
-			"text": "<0> <1>attacks <2>",
+			"text": "<0> <1>attacks <2>.",
 			"values": {
 				1: {
 					0: "",
@@ -288,19 +288,19 @@ var TEXTDATA = {
 			}
 		},
 		"TORP_ATTACK": {
-			"text": "<0> luanches torpedos",
+			"text": "<0> launches torpedoes.",
 			"values": {
 
 			}
 		},
 		"TORP_DAMAGE": {
-			"text": "<0>'s torpedoes hit <1> dealing <2> damage",
+			"text": "<0>'s torpedoes hit <1> dealing <2> damage.",
 			"values": {
 
 			}
 		},
 		"PROTECT_DAMAGE": {
-			"text": "<0> protects <1> from a <2> taking <3> damage",
+			"text": "<0> protects <1> from a <2> taking <3> damage.",
 			"values": {
 				2: {
 					1: "Normal Attack",
@@ -309,7 +309,7 @@ var TEXTDATA = {
 			}
 		},
 		"PROTECT_MISS": {
-			"text": "<0> gets <1> out of the line of fire",
+			"text": "<0> gets <1> out of the line of fire.",
 			"values": {
 				
 			}
@@ -322,7 +322,7 @@ var TEXTDATA = {
 			"values": {}
 		},
 		"NIGHT_COMBINED_START": {
-			"text": "Escort fleet Entering night battle agasinst enemy {0} fleet.",
+			"text": "Escort fleet Entering night battle against enemy {0} fleet.",
 			"values": {
 				0: {
 					0: "Main",
@@ -337,7 +337,7 @@ var TEXTDATA = {
 					0: "normal attack",
 					1: "double attack",
 					2: "mixed cut-in", 
-					3: "topedo cut-in",
+					3: "torpedo cut-in",
 					4: "gun cut-in (secondary)",
 					5: "gun cut-in (main)"
 				}
