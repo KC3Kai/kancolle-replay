@@ -1315,7 +1315,7 @@ function shipSetHP(ship,hp) {
 	if (ship.side==0) { HPnow1 -= ship.hp-hp; setHPBar(1,1-HPnow1/HPtotal1); } //update HP bars
 	else { HPnow2 -= ship.hp-hp; setHPBar(0,1-HPnow2/HPtotal2); }
 	ship.escaped = false;
-
+	// refactor into own class
 	var hpbar = ship.graphic.getChildAt(1);  //change bar
 	var percent = hp/ship.hpmax;
 	var cred = (percent <= .5) ? 255 : 255*(2*(1-percent));
@@ -1330,7 +1330,7 @@ function shipSetHP(ship,hp) {
 	var dtext = ship.graphic.getChildAt(4);
 	dtext.text = hp+'/'+ship.hpmax;  //change text
 	if (ship.side == 1) dtext.x  = -7-dtext.width;
-
+	
 	if (hp <= 0) {
 		if (ship.status != 0) {
 			if (ship.damg) ship.graphic.removeChild(ship.damg);

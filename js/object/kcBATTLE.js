@@ -73,7 +73,7 @@ var BATTLE = (function() {
 	jetAttack = function() {
 		var body = document.createElement('tbody');
 		appendPhase("JET BATTLE");
-		processKouku(dbattle.api_injection_kouku, body, false, true);
+		kouku(dbattle.api_injection_kouku, body, false, true);
 		tab.append(body);
 	};
 
@@ -330,7 +330,7 @@ var BATTLE = (function() {
 			    eCTargets = [];
 
 			for (var i = 0; i < 6; i++) {
-				if (kouku.api_stage3.api_fdam) {
+				if (kouku.api_stage3.api_fdam && player.mainFleet[i]) {
 					var dam = Math.floor(kouku.api_stage3.api_fdam[i + 1]);
 					//remember later, .1 = protect
 					player.mainFleet[i].curHP -= dam;
@@ -344,7 +344,7 @@ var BATTLE = (function() {
 						});
 				}
 
-				if (kouku.api_stage3.api_edam) {
+				if (kouku.api_stage3.api_edam && opponent.mainFleet[i]) {
 					var dam = Math.floor(kouku.api_stage3.api_edam[i + 1]);
 					//remember later, .1 = protect
 					opponent.mainFleet[i].curHP -= dam;
