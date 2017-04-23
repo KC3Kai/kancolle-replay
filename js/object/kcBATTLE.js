@@ -577,7 +577,7 @@ var BATTLE = (function() {
 			opTorp();
 		if (dbattle.api_hourai_flag)
 			hourai();
-		if (dbattle.api_midnight_flag && nightBattle)
+		if (dbattle.api_midnight_flag && nightBattle.length && nightBattle.length != 0)
 			yasen();
 	};
 
