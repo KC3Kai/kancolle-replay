@@ -150,16 +150,16 @@ var BATTLE = (function() {
 		if (isPVP) {
 			if (dbattle.api_hourai_flag[0]) {
 				body.append(getTextRow("SHELL_START", [1]));
-				hougeki(dbattle.api_hougeki1, player);
+				hougeki(dbattle.api_hougeki1, player.mainFleet, body);
 				body.append(getTextRow("", []));
 			}
 			if (dbattle.api_hourai_flag[1]) {
 				body.append(getTextRow("SHELL_START", [2]));
-				hougeki(dbattle.api_hougeki2, player);
+				hougeki(dbattle.api_hougeki2, player.mainFleet, body);
 				body.append(getTextRow("", []));
 			}
 			if (dbattle.api_hourai_flag[3])
-				raigeki(dbattle.api_raigeki, body, player, false);
+				raigeki(dbattle.api_raigeki, body, player.mainFleet, false);
 
 		} else {
 			if (player.combined && combinedE) {//12vs12
@@ -524,7 +524,7 @@ var BATTLE = (function() {
 				}
 			}
 			if (defender.isSunk()) {
-				body.append(getTextRow("SHIP_END", [defender.name, 0]));
+				body.append(getTextRow("SHIP_END", [defender.name, isPVP]));
 			}
 		}
 	};

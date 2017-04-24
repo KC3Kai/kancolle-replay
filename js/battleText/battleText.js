@@ -3,7 +3,7 @@ var player = new FLEET();
 var world = API.world;
 var map = API.mapnum;
 var combined = API.combined;
-var startData = (API.battles[0].data.length) ? API.battles[0].data : API.battles[0].yasen;
+var startData = (API.battles[0].data.api_dock_id) ? API.battles[0].data : API.battles[0].yasen;
 
 var isPvP = (world == 0);
 var tabs = $('#tabNodes');
