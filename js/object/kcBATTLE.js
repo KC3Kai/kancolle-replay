@@ -21,6 +21,7 @@ var BATTLE = (function() {
 	start = function() {//possible armor break state - api_xal01
 		var body = document.createElement('tbody');
 		appendPhase("BATTLE START");
+		
 		if (combinedE)
 			opponent.addCombinedFleet(dbattle.api_ship_ke, dbattle.api_ship_ke_combined, dbattle.api_nowhps.slice(7), dbattle.api_nowhps_combined.slice(7));
 		else
@@ -118,9 +119,9 @@ var BATTLE = (function() {
 		var body = document.createElement('tbody');
 		appendPhase("OPENING ASW");
 		if (player.isCombined()) {
-			hougeki(data.api_opening_taisen, player.escortFleet, body);
+			hougeki(dbattle.api_opening_taisen, player.escortFleet, body);
 		} else {
-			hougeki(data.api_opening_taisen, player.mainFleet, body);
+			hougeki(dbattle.api_opening_taisen, player.mainFleet, body);
 		}
 		tab.append(body);
 	};
