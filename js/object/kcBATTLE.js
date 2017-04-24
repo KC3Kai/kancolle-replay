@@ -7,7 +7,9 @@ var BATTLE = (function() {
 	var combinedE;
 	var isPVP;
 	var node;
-	function BATTLE(playerFleet, battle, battleNode, PVP) {
+	var bossNode;
+	
+	function BATTLE(playerFleet, battle, battleNode, PVP, boss) {
 		player = playerFleet;
 		opponent = new FLEET();
 		tab = $('#battle-' + battleNode + ' table');
@@ -16,6 +18,7 @@ var BATTLE = (function() {
 		combinedE = (dbattle.api_ship_ke_combined) ? 1 : 0;
 		isPVP = PVP | 0;
 		node = battleNode;
+		bossNode = boss | 0;
 	};
 
 	start = function() {//possible armor break state - api_xal01
@@ -106,7 +109,7 @@ var BATTLE = (function() {
 		var body = document.createElement('tbody');
 		appendPhase("AIR BATTLE");
 		if (kou && kou.api_plane_from && (kou.api_plane_from[0][0] != -1 || kou.api_plane_from[1][0] != -1)) {
-			kouku(kou, body);
+			kouku(kou, body, player.mainFleet);
 		} else {
 			body.append(getTextRow("AIR_NONE", []));
 		}
@@ -117,7 +120,14 @@ var BATTLE = (function() {
 	support = function() {
 		var body = document.createElement('tbody');
 		appendPhase("SUPPORTING FIRE");
-
+		body.append(getTextRow("SUPPORT_START", [bossNode, dbattle.api_support_flag]));
+		if(dbattle.api_support_flag == 1) {
+			var fleet = (bossNode) ? player.supportBoss : player.supportNode;
+			
+			kouku(dbattle.api_support_info.api_support_airatack, body, fleet);
+		} else {
+			
+		}
 		tab.append(body);
 	};
 
@@ -270,7 +280,7 @@ var BATTLE = (function() {
 		tab.append(body);
 	};
 
-	kouku = function(kouku, table, isbombing, isjet) {
+	kouku = function(kouku, table, fleet, isbombing, isjet) {
 		var stage1 = kouku.api_stage1;
 		var stage2 = kouku.api_stage2;
 		var stage3 = kouku.api_stage3;
@@ -279,7 +289,7 @@ var BATTLE = (function() {
 		    eAttackers = [];
 		if (kouku.api_plane_from[0][0] != -1) {
 			for (var i = 0; i < kouku.api_plane_from[0].length; i++) {
-				var ship = (isbombing) ? kouku.api_plane_from[0][i] : (kouku.api_plane_from[0][i] < 7) ? player.mainFleet[kouku.api_plane_from[0][i] - 1] : player.escortFleet[kouku.api_plane_from[0][i] - 7];
+				var ship = (isbombing) ? kouku.api_plane_from[0][i] : (kouku.api_plane_from[0][i] < 7) ? fleet[kouku.api_plane_from[0][i] - 1] : player.escortFleet[kouku.api_plane_from[0][i] - 7];
 				if (isbombing && kouku.api_squadron_plane.length <= i)
 					continue;
 				/*
@@ -294,7 +304,7 @@ var BATTLE = (function() {
 			table.append(getTextRow("AIR_START", [arrayToString(fAttackers), stage1.api_f_count, (stage2) ? stage2.api_f_count : 0]));
 		}
 
-		if (kouku.api_plane_from[1][0] != -1) {
+		if (kouku.api_plane_from[1] && kouku.api_plane_from[1][0] != -1) {
 			for (var i = 0; i < kouku.api_plane_from[1].length; i++) {
 				var slot = kouku.api_plane_from[1][i];
 				if (slot > 6)
@@ -310,12 +320,14 @@ var BATTLE = (function() {
 			table.append(getTextRow("AIR_STAGE1_LOSS", [1, stage1.api_e_lostcount, 0]));
 
 		if (!isbombing && !isjet) {
-			table.append(getTextRow("AIR_SUPERIORITY", [stage1.api_disp_seiku]));
-
-			if (stage1.api_touch_plane[0] > 0)
-				table.append(getTextRow("AIR_CONTACT_F", [getItem(stage1.api_touch_plane[0])]));
-			if (stage1.api_touch_plane[1] > 0)
-				table.append(getTextRow("AIR_CONTACT_E", [getItem(stage1.api_touch_plane[1])]));
+			if(stage1.api_disp_seiku) table.append(getTextRow("AIR_SUPERIORITY", [stage1.api_disp_seiku]));
+			if(stage1.api_touch_plane) {
+				if (stage1.api_touch_plane[0] > 0)
+					table.append(getTextRow("AIR_CONTACT_F", [getItem(stage1.api_touch_plane[0])]));
+				if (stage1.api_touch_plane[1] > 0)
+					table.append(getTextRow("AIR_CONTACT_E", [getItem(stage1.api_touch_plane[1])]));	
+			}
+			
 		}
 		table.append(getTextRow("", []));
 
@@ -337,7 +349,7 @@ var BATTLE = (function() {
 			    eCTargets = [];
 
 			for (var i = 0; i < 6; i++) {
-				if (kouku.api_stage3.api_fdam && player.mainFleet[i]) {
+				if (kouku.api_stage3.api_fdam && fleet[i]) {
 					var dam = Math.floor(kouku.api_stage3.api_fdam[i + 1]);
 					//remember later, .1 = protect
 					player.mainFleet[i].curHP -= dam;

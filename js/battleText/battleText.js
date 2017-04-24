@@ -3,7 +3,7 @@ var player = new FLEET();
 var world = API.world;
 var map = API.mapnum;
 var combined = API.combined;
-var startData = (API.battles[0].data.api_dock_id) ? API.battles[0].data : API.battles[0].yasen;
+var startData = (API.battles[0].data.api_deck_id) ? API.battles[0].data : API.battles[0].yasen;
 
 var isPvP = (world == 0);
 var tabs = $('#tabNodes');
@@ -40,7 +40,7 @@ processPVP = function(battle) {
 processSortie = function(battles) {
 	battles.forEach(function(b) {
 		addTab(getNodeLetter(world, map, b.node));
-		var battle = new BATTLE(player, b, getNodeLetter(world, map, b.node), false);
+		var battle = new BATTLE(player, b, getNodeLetter(world, map, b.node), false, isBossNode(world, map, b.node));
 		battle.startBattle();
 	});
 
@@ -113,6 +113,11 @@ function getMapName(world, map) {
 	if (world > 6)
 		return MAPDATA[world].name + " " + MAPDATA[world].maps[map].name;
 	return MAPDATA[world].name;
+}
+
+function isBossNode(world, map, node) {
+		var bossNode = MAPDATA[world].maps[map].bossnode;
+		return node == bossNode;
 }
 
 function getNodeLetter(world, map, num) {

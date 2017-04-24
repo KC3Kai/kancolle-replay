@@ -201,13 +201,13 @@ var TEXTDATA = {
 			"text": "The <0> support fleet has arrived with <1>.",
 			"values": {
 				0 : {
-					1: "Node",
-					2: "Boss"
+					0: "Node",
+					1: "Boss"
 				},
 				1: {
 					1: "Aerial Support",
-					2: "Long Range Torpedo Attack", 
-					3:"Support Shelling"
+					2: "Support Shelling", 
+					3:"Long Range Torpedo Attack"
 				}
 			}
 		},
