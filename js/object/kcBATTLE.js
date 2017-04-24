@@ -126,6 +126,26 @@ var BATTLE = (function() {
 			
 			kouku(dbattle.api_support_info.api_support_airatack, body, fleet);
 		} else {
+			var support = dbattle.api_support_info.api_support_hourai;
+			var damages = [];
+			for (var i=0; i<support.api_damage.length; i++) {
+					damages.push(Math.floor(support.api_damage[i]));
+				}
+				if (damages[0] == -1) damages = damages.slice(1);
+				for (var i=0; i<damages.length; i++) {
+					var ship = (i<6) ? opponent.mainFleet[i] : opponent.escortFleet[i-6]; 
+					ship.damage(Math.floor(damages[i]));
+					
+					if(dbattle.api_support_flag == 2) {
+						if(damages[i] >= 1) body.append(getTextRow("SHELL_DAMAGE", [ship.name, support.api_cl_list[i+1], damages[i]]));
+					} else if (dbattle.api_support_flag == 3) {
+						if(damages[i] >= 1) body.append(getTextRow("TORP_DAMAGE", ["Support Fleet", ship.name, damages[i]]));
+					}
+					
+					if(ship.isSunk()) {
+						body.append(getTextRow("SHIP_END", [ship.name, isPVP]));
+					}
+				}
 			
 		}
 		tab.append(body);
@@ -378,7 +398,7 @@ var BATTLE = (function() {
 				}
 
 				if (stage3_combined) {
-					if (stage3_combined.api_fdam) {
+					if (stage3_combined.api_fdam && player.escortFleet) {
 						var dam = Math.floor(stage3_combined.api_fdam[i + 1]);
 						//remember later, .1 = protect
 						player.escortFleet[i].curHP -= dam;
@@ -391,7 +411,7 @@ var BATTLE = (function() {
 								rai : stage3_combined.api_frai_flag[i + 1]
 							});
 					}
-					if (stage3_combined.api_edam) {
+					if (stage3_combined.api_edam && opponent.escortFleet) {
 						var dam = Math.floor(stage3_combined.api_edam[i + 1]);
 						//remember later, .1 = protect
 						opponent.escortFleet[i].curHP -= dam;
