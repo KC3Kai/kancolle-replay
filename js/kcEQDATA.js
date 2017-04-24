@@ -91,13 +91,13 @@ EQTDATA[SECGUN] = {
 	name: 'Secondary Gun',
 	image: 4,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
-	canequip: ['CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','CVN','AS','AV','AR','LHA'],
+	canequip: ['CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AS','AV','AR','LHA'],
 };
 EQTDATA[SECGUNAA] = {
 	name: 'Secondary Gun',
 	image: 16,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3,AAfleet:2,AAself:1},
-	canequip: ['CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','CVN','AS','AV','AR','LHA'],
+	canequip: ['CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AS','AV','AR','LHA'],
 };
 EQTDATA[APSHELL] = {
 	name: 'AP Shell',
@@ -127,13 +127,13 @@ EQTDATA[AAGUN] = {
 	name: 'Anti-Air Gun',
 	image: 15,
 	improve: {Pshell:1,Ptorp:1.2,ACCtorp:2,AAself:1},
-	canequip: ['DD','CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','CVN','AS','AV','AO','AR','LHA'],
+	canequip: ['DD','CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AS','AV','AO','AR','LHA'],
 };
 EQTDATA[AAFD] = {
 	name: 'Fire Director',
 	image: 30,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3,AAfleet:2,AAself:1},
-	canequip: ['DD','CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','CVN','AS','AV','AO','AR','LHA'],
+	canequip: ['DD','CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AS','AV','AO','AR','LHA'],
 };
 EQTDATA[SONARS] = {
 	name: 'Sonar',
@@ -145,7 +145,7 @@ EQTDATA[SONARS] = {
 EQTDATA[SONARL] = {
 	name: 'Sonar',
 	image: 18,
-	canequip: ['CA','CAV','FBB','BB','BBV','CVL','CV','CVB','CVN','AS','AV','LHA'],
+	canequip: ['CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AS','AV','LHA'],
 };
 EQTDATA[DEPTHCHARGE] = {
 	name: 'Depth Charge',
@@ -156,14 +156,14 @@ EQTDATA[DEPTHCHARGE] = {
 EQTDATA[FIGHTER] = {
 	name: 'Fighter',
 	image: 6,
-	canequip: ['CVL','CV','CVB','CVN','LHA'],
+	canequip: ['CVL','CV','CVB','LHA'],
 	isPlane: true,
 	isfighter: true,
 };
 EQTDATA[TORPBOMBER] = {
 	name: 'Torpedo Bomber',
 	image: 8,
-	canequip: ['CVL','CV','CVB','CVN'],
+	canequip: ['CVL','CV','CVB'],
 	canequipS: [352],
 	isPlane: true,
 	canContact: true,
@@ -173,7 +173,7 @@ EQTDATA[TORPBOMBER] = {
 EQTDATA[DIVEBOMBER] = {
 	name: 'Dive Bomber',
 	image: 7,
-	canequip: ['CVL','CV','CVB','CVN'],
+	canequip: ['CVL','CV','CVB'],
 	isPlane: true,
 	isfighter: true,
 	isdivebomber: true,
@@ -197,7 +197,7 @@ EQTDATA[SEAPLANEBOMBER] = {
 EQTDATA[CARRIERSCOUT] = {
 	name: 'Scout Plane',
 	image: 9,
-	canequip: ['CVL','CV','CVB','CVN'],
+	canequip: ['CVL','CV','CVB'],
 	isPlane: true,
 	canContact: true,
 };
@@ -224,13 +224,13 @@ EQTDATA[RADARS] = {
 	name: 'Radar (S)',
 	image: 11,
 	improve: {ACCshell:1.7,ACCnb:1.3,AAfleet:1.5},
-	canequip: ['DD','CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','CVN','AS','AV','AO','AR','LHA'],
+	canequip: ['DD','CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AS','AV','AO','AR','LHA'],
 };
 EQTDATA[RADARL] = {
 	name: 'Radar (L)',
 	image: 11,
 	improve: {ACCshell:1.7,ACCnb:1.6,AAfleet:1.5},
-	canequip: ['CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','CVN','AV'],
+	canequip: ['CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AV'],
 	canequipS: [352,470],
 };
 EQTDATA[RADARXL] = {
@@ -241,7 +241,7 @@ EQTDATA[RADARXL] = {
 EQTDATA[ENGINE] = {
 	name: 'Engine',
 	image: 19,
-	canequip: ['DD','CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','CVN','SS','SSV','AS','AV','AO','AR','LHA'],
+	canequip: ['DD','CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','SS','SSV','AS','AV','AO','AR','LHA'],
 };
 EQTDATA[TYPE3SHELL] = {
 	name: 'Anti-Air Shell',
@@ -257,7 +257,7 @@ EQTDATA[BULGEM] = {
 EQTDATA[BULGEL] = {
 	name: 'Torpedo Bulge',
 	image: 23,
-	canequip: ['FBB','BB','BBV','CV','CVB','CVN'],
+	canequip: ['FBB','BB','BBV','CV','CVB'],
 };
 EQTDATA[LANDINGCRAFT] = {
 	name: 'Misc',
@@ -302,7 +302,7 @@ EQTDATA[SRF] = {
 EQTDATA[FCF] = {
 	name: 'Misc',
 	image: 28,
-	canequip: ['CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','CVN','AS','AV','LHA'],
+	canequip: ['CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AS','AV','LHA'],
 	canequipS: [464],
 };
 EQTDATA[DRUM] = {
@@ -313,7 +313,7 @@ EQTDATA[DRUM] = {
 EQTDATA[SCAMP] = {
 	name: 'Misc',
 	image: 29,
-	canequip: ['CAV','BBV','CVL','CV','CVB','CVN','AO'],
+	canequip: ['CAV','BBV','CVL','CV','CVB','AO'],
 	canequipS: [450],
 };
 EQTDATA[FLYINGBOAT] = {
@@ -327,12 +327,12 @@ EQTDATA[FLYINGBOAT] = {
 EQTDATA[REPAIR] = {
 	name: 'Misc',
 	image: 14,
-	canequip: ['DD','CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','CVN','SS','SSV','AS','AV','AO','AR','LHA'],
+	canequip: ['DD','CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','SS','SSV','AS','AV','AO','AR','LHA'],
 };
 EQTDATA[RATION] = {
 	name: 'Misc',
 	image: 34,
-	canequip: ['DD','CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','CVN','SS','SSV','AS','AV','AO','AR','LHA'],
+	canequip: ['DD','CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','SS','SSV','AS','AV','AO','AR','LHA'],
 };
 EQTDATA[SEAPLANEFIGHTER] = {
 	name: 'Seaplane Fighter',
@@ -373,7 +373,7 @@ EQTDATA[INTERCEPTOR] = {
 EQTDATA[TRANSPORTITEM] = {
 	name: 'Transportation Material',
 	image: 41,
-	canequip: ['CAV','BBV','CVL','CV','CVB','CVN','SSV','AV','AR','LHA'],
+	canequip: ['CAV','BBV','CVL','CV','CVB','SSV','AV','AR','LHA'],
 };
 EQTDATA[SUBRADAR] = {
 	name: 'Submarine Equipment',
@@ -391,7 +391,7 @@ EQTDATA[JETBOMBER] = {
 EQTDATA[OTHER] = {
 	name: 'Misc',
 	image: 14,
-	canequip: ['DD','CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','CVN','SS','SSV','AS','AV','AO','AR','LHA'],
+	canequip: ['DD','CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','SS','SSV','AS','AV','AO','AR','LHA'],
 };
 
 //FITDATA[shipclass][eqclass]
@@ -449,9 +449,9 @@ const A_XLGUN = 9;
 
 var EQDATA = {
 	0: {
-        name: ''
-    },
-    1: {
+		name: ''
+	},
+	1: {
 		name: '12cm Single Cannon',
 		nameJP: '12cm単装砲',
 		added: '2013-04-17',
@@ -2669,6 +2669,18 @@ var EQDATA = {
 		ASW: 2,
 		ACC: 2,
 		LOS: 4,
+	},
+	208: {
+		name: 'Seiran (631 Air Group)',
+		nameJP: '晴嵐(六三一空)',
+		added: '2017-01-27',
+		b_image: 11,
+		type: SEAPLANEBOMBER,
+		btype: B_RECON,
+		DIVEBOMB: 12,
+		ASW: 3,
+		ACC: 2,
+		LOS: 6,
 	},
 	209: {
 		name: 'Saiun (Disassembled for Transport)',

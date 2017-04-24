@@ -3559,6 +3559,12 @@ var VOICES = {
 		damage: "assets/voice/Southern_Damaged_2.ogg",
 		sunk: "assets/voice/Southern_War_Hime_Sunk.ogg",
 	},
+	1556: {
+		start: "assets/voice/Port_Hime_SN_Intro.ogg",
+		attack: "assets/voice/Port_Hime_SN_Attack.ogg",
+		damage: "assets/voice/Port_Hime_SN_Damaged.ogg",
+		sunk: "assets/voice/Port_Hime_SN_Destroyed.ogg",
+	},
 	1557: {
 		start: "assets/voice/BB_Hime_Attack_2.ogg",
 		attack: "assets/voice/BB_Hime_Attack_1.ogg",
@@ -3775,6 +3781,24 @@ var VOICES = {
 		attack: "assets/voice/Air_Defence_Hime_Attack.ogg",
 		damage: "assets/voice/Air_Defence_Hime_Damaged.ogg",
 		sunk: "assets/voice/Air_Defence_Hime_Sunk.ogg",
+	},
+	1631: {
+		start: "assets/voice/Port_Hime_SN_Intro.ogg",
+		attack: "assets/voice/Port_Hime_SN_Attack.ogg",
+		damage: "assets/voice/Port_Hime_SN_Damaged.ogg",
+		sunk: "assets/voice/Port_Hime_SN_Destroyed.ogg",
+	},
+	1632: {
+		start: "assets/voice/Port_Hime_SN_Intro.ogg",
+		attack: "assets/voice/Port_Hime_SN_Attack.ogg",
+		damage: "assets/voice/Port_Hime_SN_Damaged.ogg",
+		sunk: "assets/voice/Port_Hime_SN_Destroyed.ogg",
+	},
+	1633: {
+		start: "assets/voice/Port_Hime_SN_Intro.ogg",
+		attack: "assets/voice/Port_Hime_SN_Attack.ogg",
+		damage: "assets/voice/Port_Hime_SN_Damaged.ogg",
+		sunk: "assets/voice/Port_Hime_SN_Destroyed.ogg",
 	},
 	1634: {
 		start: "assets/voice/Isolated_Island_Oni_Intro.ogg",
