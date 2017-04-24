@@ -21,11 +21,17 @@ var BATTLE = (function() {
 	start = function() {//possible armor break state - api_xal01
 		var body = document.createElement('tbody');
 		appendPhase("BATTLE START");
+		var enemyId = (dbattle.api_ship_ke) ? dbattle.api_ship_ke: nightBattle.api_ship_ke;
 		
-		if (combinedE)
-			opponent.addCombinedFleet(dbattle.api_ship_ke, dbattle.api_ship_ke_combined, dbattle.api_nowhps.slice(7), dbattle.api_nowhps_combined.slice(7));
+		var enemyHp = (dbattle.api_ship_ke) ? dbattle.api_nowhps.slice(7) : nightBattle.api_nowhps.slice(7);
+		if (combinedE){
+			var enemyCId = (dbattle.api_ship_ke_combined) ? dbattle.api_ship_ke_combined: nightBattle.api_ship_ke_combined;
+			var enemyCHp = (dbattle.api_nowhps_combined) ? dbattle.api_nowhps_combined.slice(7) : nightBattle.api_nowhps_combined.slice(7);
+
+			opponent.addCombinedFleet(enemyId, enemyCId, enemyHp, enemyCHp);
+		}
 		else
-			opponent.addFleet(dbattle.api_ship_ke, dbattle.api_nowhps.slice(7));
+			opponent.addFleet(enemyId, enemyHp);
 			
 		if(isPVP)
 			body.append(getTextRow("PVP_START",[]));
@@ -230,7 +236,7 @@ var BATTLE = (function() {
 		var body = document.createElement('tbody');
 		appendPhase("NIGHT BATTLE");
 
-		var f1 = (player.isCombined) ? player.escortFleet : player.mainFleet;
+		var f1 = (player.isCombined()) ? player.escortFleet : player.mainFleet;
 		var f2 = (yasen.api_active_deck && yasen.api_active_deck[1] == 2) ? opponent.escortFleet : opponent.mainFleet;
 		var hou = nightBattle.api_hougeki;
 
@@ -285,7 +291,7 @@ var BATTLE = (function() {
 
 				fAttackers.push(ship);
 			}
-			table.append(getTextRow("AIR_START", [arrayToString(fAttackers), stage1.api_f_count, stage2.api_f_count]));
+			table.append(getTextRow("AIR_START", [arrayToString(fAttackers), stage1.api_f_count, (stage2) ? stage2.api_f_count : 0]));
 		}
 
 		if (kouku.api_plane_from[1][0] != -1) {
@@ -295,7 +301,7 @@ var BATTLE = (function() {
 					slot -= 6;
 				eAttackers.push(opponent.mainFleet[slot - 1]);
 			}
-			table.append(getTextRow("AIR_START", [arrayToString(eAttackers), stage1.api_e_count, stage2.api_e_count]));
+			table.append(getTextRow("AIR_START", [arrayToString(eAttackers), stage1.api_e_count, (stage2) ? stage2.api_e_count: 0]));
 		}
 
 		if (stage1.api_f_count > 0)
@@ -318,9 +324,9 @@ var BATTLE = (function() {
 			table.append(getTextRow("AIR_AACI", [AAShip.name, stage2.api_air_fire.api_kind]));
 		}
 
-		if (stage2.api_f_count > 0)
+		if (stage2 && stage2.api_f_count > 0)
 			table.append(getTextRow("AIR_STAGE2_LOSS", [1, stage2.api_f_lostcount, 0]));
-		if (stage2.api_e_count > 0)
+		if (stage2 && stage2.api_e_count > 0)
 			table.append(getTextRow("AIR_STAGE2_LOSS", [0, stage2.api_e_lostcount, 1]));
 		table.append(getTextRow("", []));
 
@@ -578,7 +584,7 @@ var BATTLE = (function() {
 			opTorp();
 		if (dbattle.api_hourai_flag)
 			hourai();
-		if (dbattle.api_midnight_flag && nightBattle.length && nightBattle.length != 0)
+		if ((dbattle.api_midnight_flag && nightBattle.length && nightBattle.length != 0) || (!dbattle.length && nightBattle.api_deck_id))
 			yasen();
 	};
 
