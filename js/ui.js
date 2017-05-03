@@ -192,15 +192,15 @@ function showAdditionalStats(fleet) {
 	for (var i=0; i<ships.length; i++) {
 		var td = $('<td></td>'); tr.append(td);
 		var html = '<div style="margin-left:16px">';
-		if (ships[i].PshellImprv) html += 'Shelling Power: '+Math.floor(ships[i].PshellImprv*100)/100+'<br>';
-		if (ships[i].ACCshellImprv) html += 'Shelling Acc: '+Math.floor(ships[i].ACCshellImprv*100)/100+'<br>';
-		if (ships[i].PnbImprv) html += 'Night Power: '+Math.floor(ships[i].PnbImprv*100)/100+'<br>';
-		if (ships[i].ACCnbImprv) html += 'Night Acc: '+Math.floor(ships[i].ACCnbImprv*100)/100+'<br>';
-		if (ships[i].PtorpImprv) html += 'Torpedo Power: '+Math.floor(ships[i].PtorpImprv*100)/100+'<br>';
-		if (ships[i].ACCtorpImprv) html += 'Torpedo Acc: '+Math.floor(ships[i].ACCtorpImprv*100)/100+'<br>';
-		if (ships[i].EVtorpImprv) html += 'Torpedo Evade: '+Math.floor(ships[i].EVtorpImprv*100)/100+'<br>';
-		if (ships[i].PaswImprv) html += 'ASW Power: '+Math.floor(ships[i].PaswImprv*100)/100+'<br>';
-		if (ships[i].ACCaswImprv) html += 'ASW Acc: '+Math.floor(ships[i].ACCaswImprv*100)/100+'<br>';
+		if (ships[i].improves.Pshell) html += 'Shelling Power: '+Math.floor(ships[i].improves.Pshell*100)/100+'<br>';
+		if (ships[i].improves.ACCshell) html += 'Shelling Acc: '+Math.floor(ships[i].improves.ACCshell*100)/100+'<br>';
+		if (ships[i].improves.Pnb) html += 'Night Power: '+Math.floor(ships[i].improves.Pnb*100)/100+'<br>';
+		if (ships[i].improves.ACCnb) html += 'Night Acc: '+Math.floor(ships[i].improves.ACCnb*100)/100+'<br>';
+		if (ships[i].improves.Ptorp) html += 'Torpedo Power: '+Math.floor(ships[i].improves.Ptorp*100)/100+'<br>';
+		if (ships[i].improves.ACCtorp) html += 'Torpedo Acc: '+Math.floor(ships[i].improves.ACCtorp*100)/100+'<br>';
+		if (ships[i].improves.EVtorp) html += 'Torpedo Evade: '+Math.floor(ships[i].improves.EVtorp*100)/100+'<br>';
+		if (ships[i].improves.Pasw) html += 'ASW Power: '+Math.floor(ships[i].improves.Pasw*100)/100+'<br>';
+		if (ships[i].improves.ACCasw) html += 'ASW Acc: '+Math.floor(ships[i].improves.ACCasw*100)/100+'<br>';
 		if (html.length > 30) {
 			td.append('Improvement:<br>');
 			td.append(html+'</div>');
@@ -575,7 +575,7 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor) {
     t.appendChild(tr);
      
     var stats = [  //stats
-        [['lvl','lv.png',1,150],['hp','hp.png',1,999]],
+        [['lvl','lv.png',1,155],['hp','hp.png',1,999]],
         [['fp','fp.png',0,999],['tp','tp.png',0,999]],
         [['aa','aa.png',0,999],['ar','ar.png',0,999]],
         [['ev','ev.png',1,999],['asw','asw.png',0,999]],

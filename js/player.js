@@ -146,7 +146,6 @@ function ShipG(id,side,hpmax) {
 	this.planetypes = [];
 }
 
-// var code = '0.8,1,1~AkatsukiKai2,31|YuudachiKai2,31|AyanamiKai2,32|HatsushimoKai2,31|OoyodoKai,47|HaguroKai2,57~Nenohi,30|FusouKai,75|IseKai,77|HatsushimoKai2,31|WakabaKai,30|HatsuharuKai,30~T:~S:4,15,1,0|11,4,2,5,3|5,15,1,0|12,3,1,0|1,15,1,13|15,4,1,5|3,10,1,0|14,4,1,4|2,14,1,0|10,5,1,0|0,14,1,4|13,3,1,3~S:0,10,1,21|10,4,1,1|1,13,1,25|11,2,1,21|2,11,1,5|12,5,2,4,4|3,13,1,2|13,5,1,5|4,11,1,0|14,5,1,5|5,11,1,18|15,4,1,0~T:0,13,2|1,15,10|3,14,16|4,15,0|5,13,1|14,0,0|15,0,0~N:0,15,2,0,0|10,2,2,0,1|1,12,2,6,6|11,3,1,0|2,11,2,29,2|12,1,1,0|3,10,2,6,0|4,12,2,8,3|14,4,1,0|5,15,2,4,0~'
 var fleet1 = [], fleet2 = [], fleet1C, fleet2C;
 var allfleets2 = [], allfleets2c = [];
 var GEngage = 0, GAP1 = 0, GAP2 = 0;

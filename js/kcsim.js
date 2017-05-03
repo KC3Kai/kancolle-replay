@@ -185,7 +185,7 @@ function shell(ship,target,APIhou) {
 	
 	var accflat = (ship.ACC)? ship.ACC : 0;
 	//if (ship.fleet.formation.shellaccflat) accflat += ship.fleet.formation.shellaccflat; //try global for enemy too
-	if (ship.ACCshellImprv) accflat += ship.ACCshellImprv;
+	if (ship.improves.ACCshell) accflat += ship.improves.ACCshell;
 	
 	var acc = hitRate(ship,(ship.fleet.baseaccshell||90),accflat,accMod); //use global hit acc
 	if (MECHANICS.fitGun && ship.ACCfit) acc += ship.ACCfit*.01;
@@ -252,7 +252,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen) {
 	var accBase = (69 + starshells[0]*5)*((nightscouts[0])? 1.1 : 1);
 	var accMod = ship.fleet.formation.NBacc * ship.moraleMod();
 	var accFlat = ship.ACC;
-	if (ship.ACCnbImprv) accFlat += ship.ACCnbImprv;
+	if (ship.improves.ACCnb) accFlat += ship.improves.ACCnb;
 	
 	var evMod = target.fleet.formation.NBev;
 	var evFlat = (target.type == 'CA' || target.type == 'CAV')? 5 : 0;
@@ -362,7 +362,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen) {
 function ASW(ship,target,isnight,APIhou) {
 	var sonarAcc = 0;
 	for (var i=0; i<ship.equips.length; i++) if (ship.equips[i].btype == B_SONAR) sonarAcc += 2*ship.equips[i].ASW;
-	if (ship.ACCaswImprv) sonarAcc += ship.ACCaswImprv;
+	if (ship.improves.ACCasw) sonarAcc += ship.improves.ACCasw;
 	var accMod = ship.moraleMod();
 	if (!formationCountered(ship.fleet.formation.id,target.fleet.formation.id)) accMod *= ship.fleet.formation.shellacc;
 	var acc = hitRate(ship,80,sonarAcc,accMod);
@@ -370,7 +370,6 @@ function ASW(ship,target,isnight,APIhou) {
 	var dmg = 0, realdmg = 0;
 	var premod = (isnight)? 0 : ship.fleet.formation.ASWmod*ENGAGEMENT*ship.damageMod();
 	if (res) {
-		if (C) console.log(ship.ASWPower());
 		dmg = damage(ship,target,ship.ASWPower(),premod,res,100);
 		realdmg = takeDamage(target,dmg);
 	}
@@ -555,16 +554,16 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai) {
 		if (power > 150) power = 150 + Math.sqrt(power-150);
 		
 		var accflat = (ship.ACC)? ship.ACC : 0;
-		if (ship.ACCtorpImprv) accflat += Math.floor(ship.ACCtorpImprv);
+		if (ship.improves.ACCtorp) accflat += Math.floor(ship.improves.ACCtorp);
 		accflat += Math.floor(power/5);
 		if (ship.TACC) accflat += ship.TACC;
 		var acc = hitRate(ship,85,accflat,ship.fleet.formation.torpacc*ship.moraleMod(true));
 		
-		var evFlat = (target.EVtorpImprv)? ship.EVtorpImprv : 0;
+		var evFlat = (target.improves.EVtorp)? ship.improves.EVtorp : 0;
 		var res = rollHit(accuracyAndCrit(ship,target,acc,target.fleet.formation.torpev,evFlat,1.5));
 		var realdmg = 0, dmg = 0;
 		if (res) {
-			var bonus = (ship.PtorpImprv)? ship.PtorpImprv : 0;
+			var bonus = (ship.improves.Ptorp)? ship.improves.Ptorp : 0;
 			dmg = damage(ship,target,power,1,res,10000); //power already capped
 			realdmg = takeDamage(target,dmg);
 		}
@@ -1015,6 +1014,7 @@ function sim(F1,F2,Fsupport,doNB,NBonly,aironly,bombing,noammo,BAPI,noupdate) {
 		if (ships2[i].retreated) continue;
 		if(ships2[i].isSub) subsalive2.push(ships2[i]);
 		else alive2.push(ships2[i]);
+		ships2[i].HPprev = ships2[i].HP;
 	}
 	
 	var r = Math.random();
@@ -1126,12 +1126,12 @@ function sim(F1,F2,Fsupport,doNB,NBonly,aironly,bombing,noammo,BAPI,noupdate) {
 	if (MECHANICS.OASW && !NBonly && !aironly && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length > 0) {
 		var attackers1 = [], order1 = [], attackers2 = [], order2 = [];
 		for (var i=0; i<alive1.length; i++) {
-			if ((alive1[i].ASW >= 100 || alive1[i].alwaysOpASW) && alive1[i].equiptypes[B_SONAR] && !alive1[i].neverOpASW)
+			if (alive1[i].alwaysOASW || (alive1[i].ASW >= 100 && alive1[i].equiptypes[B_SONAR] && isPlayable(alive1[i].mid)))
 				attackers1.push(alive1[i]);
 		}
 		orderByRange(attackers1,order1);
 		for (var i=0; i<alive2.length; i++) {
-			if ((alive2[i].ASW >= 100 || alive2[i].alwaysOpASW) && alive2[i].equiptypes[B_SONAR] && !alive2[i].neverOpASW)
+			if (alive2[i].alwaysOASW || (alive2[i].ASW >= 100 && alive2[i].equiptypes[B_SONAR] && isPlayable(alive2[i].mid)))
 				attackers2.push(alive2[i]);
 		}
 		orderByRange(attackers2,order2);
@@ -1262,43 +1262,38 @@ function sim(F1,F2,Fsupport,doNB,NBonly,aironly,bombing,noammo,BAPI,noupdate) {
 	return results;
 }
 
-function getRank(ships1,ships2) {
+function getRank(ships1,ships2,ships1C) {
 	var rank = '';
 	var dmg1 = 0, dmg2 = 0, sunk1 = 0, sunk2 = 0, dtotal1 = 0, dtotal2 = 0;
 	for (var i=0; i<ships2.length; i++) {
 		if (ships2[i].HP <= 0) sunk2++;
-		dmg2 += ships2[i].maxHP - Math.max(0,ships2[i].HP);
-		dtotal2 += ships2[i].maxHP;
+		dmg2 += ships2[i].HPprev - Math.max(0,ships2[i].HP);
+		dtotal2 += ships2[i].HPprev;
 	}
 	for (var i=0; i<ships1.length; i++) {
+		if (ships1[i].retreated) continue;
 		if (ships1[i].HP <= 0) sunk1++;
 		dmg1 += ships1[i].HPprev - Math.max(0,ships1[i].HP);
 		dtotal1 += ships1[i].HPprev;
 	}
-	dmg1 /= dtotal1; dmg2 /= dtotal2;
-	if (!sunk1) {
-		if (sunk2 == ships2.length) rank = 'S';
-		else if (ships2.length > 1 && sunk2 >= Math.floor(ships2.length*2/3)) rank = 'A';
-		else if (ships2[0].HP <= 0 || dmg2 >= dmg1*2.5) rank = 'B';
-		else if (dmg1 > dmg2) rank = 'C';
-		else rank = 'D';
-	} else {
-		if (sunk1 >= Math.floor(ships1.length*2/3)) rank = 'E';
-		else if (ships2[0].HP <= 0) {
-			if (sunk1 < sunk2) rank = 'B';
-			else rank = 'C';
-		} else {
-			if (dmg1 <= dmg2) rank = 'D';
-			else if (sunk2 >= Math.floor(ships2.length*2/3)) {
-				if (dmg1 > 2.5*dmg2) rank = 'B';
-				else rank = 'C';
-			} else {
-				if (dmg1 > 3*dmg2) rank = 'B';
-				else rank = 'C';
-			}
+	if (ships1C) {
+		for (var i=0; i<ships1C.length; i++) {
+			if (ships1C[i].retreated) continue;
+			if (ships1C[i].HP <= 0) sunk1++;
+			dmg1 += ships1C[i].HPprev - Math.max(0,ships1C[i].HP);
+			dtotal1 += ships1C[i].HPprev;
 		}
 	}
-	return rank;
+	dmg1 /= dtotal1; dmg2 /= dtotal2;
+	if (!sunk1) {
+		if (sunk2 == ships2.length) return 'S';
+		if (sunk2 >= Math.floor(ships2.length*.7)) return 'A';
+	}
+	if (sunk1 < sunk2 && ships2[0].HP <= 0) return 'B';
+	if (dmg2 > dmg1*2.5) return 'B';
+	if (dmg2 > dmg1*.9) return 'C';
+	if (sunk1 >= ships1.length-1) return 'E';
+	return 'D';
 }
 
 function updateMorale(ships1,rank,mvp,NBonly,didNB) {

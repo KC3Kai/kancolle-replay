@@ -165,19 +165,19 @@ function simCombined(type,F1,F1C,F2,Fsupport,doNB,NBonly,aironly,bombing,noammo,
 	if (MECHANICS.OASW && !NBonly && !aironly && alive1C.length+subsalive1C.length > 0 && alive2.length+subsalive2.length > 0) {
 		var attackers1 = [], order1 = [], attackers2 = [], order2 = [];
 		for (var i=0; i<alive1C.length; i++) {
-			if ((alive1C[i].ASW >= 100 || alive1C[i].alwaysOpASW) && alive1C[i].equiptypes[B_SONAR] && !alive1C[i].neverOpASW)
+			if (alive1C[i].alwaysOASW || (alive1C[i].ASW >= 100 && alive1C[i].equiptypes[B_SONAR] && isPlayable(alive1C[i].mid)))
 				attackers1.push(alive1C[i]);
 		}
 		orderByRange(attackers1,order1);
 		for (var i=0; i<alive2.length; i++) {
-			if ((alive2[i].ASW >= 100 || alive2[i].alwaysOpASW) && alive2[i].equiptypes[B_SONAR] && !alive2[i].neverOpASW)
+			if (alive2[i].alwaysOASW || (alive2[i].ASW >= 100 && alive2[i].equiptypes[B_SONAR] && isPlayable(alive2[i].mid)))
 				attackers2.push(alive2[i]);
 		}
 		orderByRange(attackers2,order2);
 		
 		if (order1.length) {
 			if (C) BAPI.data.api_opening_taisen = {api_at_list:[-1],api_at_type:[-1],api_damage:[-1],api_df_list:[-1],api_cl_list:[-1]};
-			shellPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,(C)? BAPI.data.api_opening_taisen:undefined,true);
+			shellPhase(order1,order2,alive1C,subsalive1C,alive2,subsalive2,(C)? BAPI.data.api_opening_taisen:undefined,true);
 		}
 	}
 	
@@ -272,7 +272,7 @@ function simCombined(type,F1,F1C,F2,Fsupport,doNB,NBonly,aironly,bombing,noammo,
 	
 	var results = {};
 	if (noupdate) {
-		results.rankDay = getRankC(ships1,ships1C,ships2);
+		results.rankDay = getRank(ships1,ships2,ships1C);
 		results.mvpDay = F1.getMVP();
 		results.mvpDayC = F1C.getMVP();
 		results.repairsDay = {};
@@ -340,7 +340,7 @@ function simCombined(type,F1,F1C,F2,Fsupport,doNB,NBonly,aironly,bombing,noammo,
 	}
 	
 	
-	results.rank = getRankC(ships1,ships1C,ships2);
+	results.rank = getRank(ships1,ships2,ships1C);
 	
 	results.redded = false;
 	results.flagredded = (ships1[0].HP/ships1[0].maxHP <= .25);
@@ -378,50 +378,6 @@ function simCombined(type,F1,F1C,F2,Fsupport,doNB,NBonly,aironly,bombing,noammo,
 	}
 	
 	return results;
-}
-
-function getRankC(ships1,ships1C,ships2) {
-	var rank = '';
-	var dmg1 = 0, dmg2 = 0, sunk1 = 0, sunk2 = 0, dtotal1 = 0, dtotal2 = 0;
-	for (var i=0; i<ships2.length; i++) {
-		if (ships2[i].HP <= 0) sunk2++;
-		dmg2 += ships2[i].maxHP - Math.max(0,ships2[i].HP);
-		dtotal2 += ships2[i].maxHP;
-	}
-	for (var i=0; i<ships1.length; i++) {
-		if (ships1[i].HP <= 0) sunk1++;
-		dmg1 += ships1[i].HPprev - Math.max(0,ships1[i].HP);
-		dtotal1 += ships1[i].HPprev;
-	}
-	for (var i=0; i<ships1C.length; i++) {
-		if (ships1C[i].HP <= 0) sunk1++;
-		dmg1 += ships1C[i].HPprev - Math.max(0,ships1C[i].HP);
-		dtotal1 += ships1C[i].HPprev;
-	}
-	dmg1 /= dtotal1; dmg2 /= dtotal2;
-	if (!sunk1) {
-		if (sunk2 == ships2.length) rank = 'S';
-		else if (ships2.length > 1 && sunk2 >= Math.floor(ships2.length*2/3)) rank = 'A';
-		else if (ships2[0].HP <= 0 || dmg2 >= dmg1*2.5) rank = 'B';
-		else if (dmg1 > dmg2) rank = 'C';
-		else rank = 'D';
-	} else {
-		if (sunk1 >= Math.floor(ships1.length*2/3)) rank = 'E';
-		else if (ships2[0].HP <= 0) {
-			if (sunk1 < sunk2) rank = 'B';
-			else rank = 'C';
-		} else {
-			if (dmg1 <= dmg2) rank = 'D';
-			else if (sunk2 >= Math.floor(ships2.length*2/3)) {
-				if (dmg1 > 2.5*dmg2) rank = 'B';
-				else rank = 'C';
-			} else {
-				if (dmg1 > 3*dmg2) rank = 'B';
-				else rank = 'C';
-			}
-		}
-	}
-	return rank;
 }
 
 function simStatsCombined(numsims,type,foptions) {
