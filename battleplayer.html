@@ -16,7 +16,7 @@
     <script src="js/howler.min.js"></script>
     <script src="js/URI.js"></script>
     <script type="text/javascript" src="reader/steganography.js"></script>
-    <script src="js/playertext.js"></script>
+    <script src="js/battleText/playertext-table.js"></script>
     <script type="text/javascript">
         function loadImage(file) {
             var preview = document.getElementById('imgpreview');
@@ -279,10 +279,13 @@
 
         <!--Fleet-->
         <div class="d-flex flex-column">
-
+			
             <div id="bp-fleet-comp" class="d-flex flex-row align-items-center">
                 <div>
-                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" onclick="loadFleetInfo(API)">Show Fleet Details</button>
+                	<button id="btnBattle" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" onclick="">Show Battle Data</button> 
+				</div>
+                <div>
+                    <button id="btnFleet" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">Show Fleet Details</button>
                 </div>
                 <div>
                     <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="radJP" onclick="translateTable()">
