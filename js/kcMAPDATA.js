@@ -1109,8 +1109,8 @@ var MAPDATA = {
 			3: {
 				name: 'E3',
 				bgmMap: 1,
-				bgmDN: 12,
-				bgmNN: 12,
+				bgmDN: 11,
+				bgmNN: 11,
 				bgmDB: 92,
 				bgmNB: 92,
 				bossnode: [22,23],
