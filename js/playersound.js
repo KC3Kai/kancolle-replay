@@ -37,13 +37,13 @@ SoundManager.prototype = {
 		this._sounds[name].play();
 		return this._sounds[name];
 	},
-	playBGM: function(num,vol) {
+	playBGM: function(num,vol,noloop) {
 		this.stopBGM();
 		if (!vol) vol = (BGMLIST[num].voldef)? BGMLIST[num].voldef : .3,
 		this._bgm = new Howl({
 			src:[BGMLIST[num].url],
 			volume:vol*this._volume,
-			loop:true,
+			loop:!noloop,
 			html5:true
 		});
 		this._bgm.play();
@@ -159,6 +159,9 @@ var BGMLIST = {
 	87: {url:'assets/music/Sound_b_bgm_87.ogg'},
 	88: {url:'assets/music/Sound_b_bgm_88.ogg'},
 	89: {url:'assets/music/Sound_b_bgm_89.ogg'},
+	91: {url:'assets/music/1_res.sounds.battle.BGM_91.mp3'},
+	92: {url:'assets/music/1_res.sounds.battle.BGM_92.mp3'},
+	93: {url:'assets/music/1_res.sounds.battle.BGM_93.mp3'},
 	107: {url:'assets/music/107b.ogg'},
 	998: {url:'assets/music/savior of song.mp3',voldef:.25},
 	999: {url:'assets/music/Orel Cruising & LSC Song [ENG Sub].mp3',voldef:.3},
@@ -166,5 +169,9 @@ var BGMLIST = {
 	2027: {url:'assets/music/Sound_bgm_almi.ogg'},
 	2031: {url:'assets/music/903y.ogg'},
 	2131: {url:'assets/music/904wNeo.ogg'},
+	3001: {url:'assets/music/Sound_se_18.ogg'},
+	3002: {url:'assets/music/Sound_se_63.ogg'},
+	3003: {url:'assets/music/Sound_se_52.ogg'},
+	3004: {url:'assets/music/Sound_se_31.ogg'},
 };
 
