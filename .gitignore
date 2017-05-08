@@ -1,1 +1,4 @@
 .project
+js/tableExport/test/
+.vscode/
+js/tableExport/tools/

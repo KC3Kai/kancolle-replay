@@ -342,6 +342,8 @@ Ship.prototype.canNB = function() { return (this.HP/this.maxHP > .25 && !this.re
 Ship.prototype.canTorp = function() { return (this.HP/this.maxHP > .5); }
 Ship.prototype.canOpTorp = function() { return this.hasMidgetSub; }
 Ship.prototype.canASW = function() { return false; }
+Ship.prototype.OASWstat = 100;
+Ship.prototype.canOASW = function() { return this.canASW() && (this.alwaysOASW || (this.ASW >= 100 && this.equiptypes[B_SONAR] && isPlayable(this.mid))); }
 Ship.prototype.canAS = function() { 
 	if (this.HP/this.maxHP <= .25) return false;
 	for (var i=0; i<this.equips.length; i++) {
@@ -498,8 +500,6 @@ Ship.prototype.ASWPower = function() {
 	this._aswpower = (2*Math.sqrt(this.ASW-equipASW)+1.5*equipASW+((this.planeasw)? 8 : 13))* ((hassonar && hasdc)? 1.15 : 1) + bonus;
 	return this._aswpower;
 }
-
-Ship.prototype.airPower = function(jetonly) { return 0; }
 
 Ship.prototype.damageMod = function(isTorp) {
 	if (isTorp) {
@@ -847,6 +847,48 @@ function DE(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 };
 DE.prototype = Object.create(Ship.prototype);
 DE.prototype.canTorp = function() { return false; }
+DE.prototype.OASWstat = 60;
+
+
+function LandBase(equips,levels,profs) {
+	this.HP = 200;
+	this.AR = 0;
+	this.planecount = [18,18,18,18];
+	this.equips = [];
+	for (var i=0; i<equips.length; i++) this.equips.push(new Equip(equips[i],levels[i],profs[i]));
+}
+LandBase.prototype.airPower = function(jetonly) {
+	var ap = 0;
+	for (var i=0; i<this.equips.length; i++) {
+		if (this.equips[i].isfighter && (!jetonly||this.equips[i].isjet)) {
+			var base = (this.equips[i].AA||0) + (this.equips[i].level||0)*.2;
+			if (this.equips[i].type == LANDBOMBER || this.equips[i].type == INTERCEPTOR) base += (this.equips[i].EV||0)*1.5;
+			ap += Math.floor(base * Math.sqrt(this.planecount[i]) + (this.equips[i].APbonus||0));
+		}
+	}
+	return Math.floor(ap);
+}
+LandBase.prototype.airPowerDefend = function() {
+	var ap = 0, mod = 1;
+	for (var i=0; i<this.equips.length; i++) {
+		if (this.equips[i].isfighter) {
+			var base = (this.equips[i].AA||0) + (this.equips[i].level||0)*.2;
+			if (this.equips[i].type == LANDBOMBER || this.equips[i].type == INTERCEPTOR) base += (this.equips[i].EV||0) + (this.equips[i].ACC||0)*2;
+			ap += Math.floor(base * Math.sqrt(this.planecount[i]) + (this.equips[i].APbonus||0));
+		}
+		var newmod = 1;
+		if (this.equips[i].type == SEAPLANE) {
+			if (this.equips[i].LOS >= 9) newmod = 1.16;
+			else if (this.equips[i].LOS == 8) newmod = 1.13;
+			else newmod = 1.1;
+		} else if (this.equips[i].type == CARRIERSCOUT) {
+			if (this.equips[i].LOS >= 9) newmod = 1.3;
+			else newmod = 1.2;
+		}
+		if (newmod > mod) mod = newmod;
+	}
+	return Math.floor(ap*mod);
+}
 
 var PLANEDEFAULT = new Ship(0,'PLANEDEFAULT',0, 1,1, 0,0,0,0, 0, 0,0,3, 1);
 PLANEDEFAULT.CVshelltype = true;

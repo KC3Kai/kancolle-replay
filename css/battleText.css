@@ -1,0 +1,59 @@
+body {
+	margin: 0;
+	background: #def;
+}
+
+#export, #export ul {
+	padding: 0;
+	margin: 0;
+	background: #def;
+	float: left;
+}
+
+#export li {
+	float: left;
+	display: inline;
+	position: relative;
+	width: 150px;
+	list-style: none;
+	cursor: pointer;
+}
+
+#export ul {
+	position: absolute;
+	left: 0;
+	top: 100%;
+	background: #ccc;
+	display: none;
+}
+
+#export ul ul {
+	left: 100%;
+	top: 0;
+	background: #999;
+}
+
+#export li:hover > ul {
+	display: block;
+}
+
+#tabNodes {
+	width: 100%;
+}
+
+.blank_row {
+	height: 14px !important; 
+}
+div[id^="battle-"] table, th, td {
+	border: 1px solid black;
+}
+
+div[id^="battle-"] table {
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+}
+
+th {
+	text-align: center;
+};

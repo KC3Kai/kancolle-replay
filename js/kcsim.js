@@ -591,6 +591,7 @@ function airstrike(ship,target,slot,contactMod,issupport) {
 	var equip = ship.equips[slot];
 	var dmg = 0, realdmg = 0;
 	var planebase = (equip.isdivebomber)? equip.DIVEBOMB : equip.TP;
+	planebase |= 0; //fix for abyssal hawk?
 	if (C) console.log('		'+slot+' '+planebase);
 	if (res) {
 		var base = (issupport)? 3 : 25;
@@ -1126,13 +1127,11 @@ function sim(F1,F2,Fsupport,doNB,NBonly,aironly,bombing,noammo,BAPI,noupdate) {
 	if (MECHANICS.OASW && !NBonly && !aironly && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length > 0) {
 		var attackers1 = [], order1 = [], attackers2 = [], order2 = [];
 		for (var i=0; i<alive1.length; i++) {
-			if (alive1[i].alwaysOASW || (alive1[i].ASW >= 100 && alive1[i].equiptypes[B_SONAR] && isPlayable(alive1[i].mid)))
-				attackers1.push(alive1[i]);
+			if (alive1[i].canOASW()) attackers1.push(alive1[i]);
 		}
 		orderByRange(attackers1,order1);
 		for (var i=0; i<alive2.length; i++) {
-			if (alive2[i].alwaysOASW || (alive2[i].ASW >= 100 && alive2[i].equiptypes[B_SONAR] && isPlayable(alive2[i].mid)))
-				attackers2.push(alive2[i]);
+			if (alive2[i].canOASW()) attackers2.push(alive2[i]);
 		}
 		orderByRange(attackers2,order2);
 		

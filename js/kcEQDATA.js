@@ -446,6 +446,7 @@ const B_TYPE3SHELL = 9;
 const B_LC1 = 10;
 const B_LC2 = 11;
 const B_LC3 = 12;
+const B_DEPTHCHARGE2 = 13;
 const B_OTHER = 0;
 
 //anti-air type
@@ -905,7 +906,7 @@ var EQDATA = {
 		type: REPAIR
 	},
 	44: {
-		name: 'Type 94 Depth Charge',
+		name: 'Type 94 Depth Charge Projector',
 		nameJP: '九四式爆雷投射機',
 		added: '2013-04-17',
 		type: DEPTHCHARGE,
@@ -914,7 +915,7 @@ var EQDATA = {
 		ASW: 5
 	},
 	45: {
-		name: 'Type 3 Depth Charge',
+		name: 'Type 3 Depth Charge Projector',
 		nameJP: '三式爆雷投射機',
 		added: '2013-04-17',
 		type: DEPTHCHARGE,
@@ -2821,7 +2822,7 @@ var EQDATA = {
 		b_image: 13,
 		type: INTERCEPTOR,
 		AA: 6,
-		ACC: 2,
+		EV: 2,
 	},
 	222: {
 		name: 'Type 1 Fighter Hayabusa Model III A',
@@ -2876,6 +2877,7 @@ var EQDATA = {
 		nameJP: '九五式爆雷',
 		added: '2017-05-02',
 		type: DEPTHCHARGE,
+		btype: B_DEPTHCHARGE2,
 		ASW: 4,
 	},
 	227: {
@@ -2883,6 +2885,7 @@ var EQDATA = {
 		nameJP: '二式爆雷',
 		added: '2017-05-02',
 		type: DEPTHCHARGE,
+		btype: B_DEPTHCHARGE2,
 		ASW: 7,
 	},
 	228: {
@@ -3291,7 +3294,7 @@ var EQDATA = {
 		ACC: 5,
 	},
 	542: {
-		name: 'Abyssal Depth Charge',
+		name: 'Abyssal Depth Charge Projector',
 		nameJP: '深海爆雷投射機',
 		type: DEPTHCHARGE,
 		btype: B_DEPTHCHARGE,
@@ -3305,7 +3308,7 @@ var EQDATA = {
 		ASW: 9,
 	},
 	544: {
-		name: 'Abyssal Depth Charge Mk.II',
+		name: 'Abyssal Depth Charge Projector Mk.II',
 		nameJP: '深海爆雷投射機 Mk.II',
 		type: DEPTHCHARGE,
 		btype: B_DEPTHCHARGE,
@@ -3620,7 +3623,7 @@ var EQDATA = {
 		RNG: 5,
 	},
 	574: {
-		name: 'Abyssal Attack Patrol Hawk',
+		name: 'Abyssal Patrolling Attack Hawk',
 		nameJP: '深海攻撃哨戒鷹',
 		added: '2017-05-02',
 		type: TORPBOMBER,
@@ -3635,7 +3638,7 @@ var EQDATA = {
 		RNG: 4,
 	},
 	575: {
-		name: 'Abyssal Attack Patrol Hawk Kai',
+		name: 'Abyssal Patrolling Attack Hawk Kai',
 		nameJP: '深海攻撃哨戒鷹改',
 		added: '2017-05-02',
 		type: TORPBOMBER,
