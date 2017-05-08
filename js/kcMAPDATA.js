@@ -1085,4 +1085,54 @@ var MAPDATA = {
 			},
 		}
 	},
+	38: {
+		name: 'Event Spring 2017',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmMap: 1,
+				bgmDN: 91,
+				bgmNN: 91,
+				bgmDB: 92,
+				bgmNB: 92,
+				bossnode: 13,
+			},
+			2: {
+				name: 'E2',
+				bgmMap: 1,
+				bgmDN: 91,
+				bgmNN: 91,
+				bgmDB: 92,
+				bgmNB: 92,
+				bossnode: [18,20],
+			},
+			3: {
+				name: 'E3',
+				bgmMap: 1,
+				bgmDN: 12,
+				bgmNN: 12,
+				bgmDB: 92,
+				bgmNB: 92,
+				bossnode: [22,23],
+			},
+			4: {
+				name: 'E4',
+				bgmMap: 1,
+				bgmDN: 92,
+				bgmNN: 92,
+				bgmDB: 19,
+				bgmNB: 19,
+				bossnode: 9,
+			},
+			5: {
+				name: 'E5',
+				bgmMap: 1,
+				bgmDN: 19,
+				bgmNN: 19,
+				bgmDB: 93,
+				bgmNB: 93,
+				bossnode: [18,20],
+			},
+		}
+	},
 }

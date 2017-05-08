@@ -3653,8 +3653,8 @@ var EQDATA = {
 		RNG: 4,
 	},
 	576: {
-		name: 'Abyssal 30.5cm Triple Gun Mount',
-		nameJP: '深海30.5cm三連装砲',
+		name: 'Abyssal 12inch Triple Gun Mount',
+		nameJP: '深海12inch三連装砲',
 		added: '2017-05-02',
 		type: MAINGUNL,
 		btype: B_MAINGUN,
