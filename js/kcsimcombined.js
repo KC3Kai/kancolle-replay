@@ -165,13 +165,11 @@ function simCombined(type,F1,F1C,F2,Fsupport,doNB,NBonly,aironly,bombing,noammo,
 	if (MECHANICS.OASW && !NBonly && !aironly && alive1C.length+subsalive1C.length > 0 && alive2.length+subsalive2.length > 0) {
 		var attackers1 = [], order1 = [], attackers2 = [], order2 = [];
 		for (var i=0; i<alive1C.length; i++) {
-			if (alive1C[i].alwaysOASW || (alive1C[i].ASW >= 100 && alive1C[i].equiptypes[B_SONAR] && isPlayable(alive1C[i].mid)))
-				attackers1.push(alive1C[i]);
+			if (alive1C[i].canOASW()) attackers1.push(alive1C[i]);
 		}
 		orderByRange(attackers1,order1);
 		for (var i=0; i<alive2.length; i++) {
-			if (alive2[i].alwaysOASW || (alive2[i].ASW >= 100 && alive2[i].equiptypes[B_SONAR] && isPlayable(alive2[i].mid)))
-				attackers2.push(alive2[i]);
+			if (alive2[i].canOASW()) attackers2.push(alive2[i]);
 		}
 		orderByRange(attackers2,order2);
 		

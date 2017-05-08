@@ -112,12 +112,12 @@ var TEXTDATA = {
 			"values": {}
 		},
 		"AIR_START": {
-			"text" : "<0> send <1> fighters and <2> bombers to battle.",
+			"text" : "<0> sent <1> fighters and <2> bombers to battle.",
 			"values": {}
 		},
 
 		"AIR_STAGE1_LOSS": {
-			"text" : "<0> fleet lost <1> fighters in the dogfight.",
+			"text" : "<0> fleet lost <1> planes in the dogfight.",
 			"values": {
 				0: {
 					0: "Ally",

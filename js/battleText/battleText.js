@@ -108,16 +108,18 @@ function addText(text) {
 }
 
 function getMapName(world, map) {
-	if (!MAPDATA[map])
-		return map;
+	if (!MAPDATA[world] || !MAPDATA[world].maps[map])
+		return world + '-' + map;
 	if (world > 6)
 		return MAPDATA[world].name + " " + MAPDATA[world].maps[map].name;
 	return MAPDATA[world].name;
 }
 
 function isBossNode(world, map, node) {
-		var bossNode = MAPDATA[world].maps[map].bossnode;
-		return node == bossNode;
+	if (!MAPDATA[world] || !MAPDATA[world].maps[map]) return false;
+	var bossNode = MAPDATA[world].maps[map].bossnode;
+	if (typeof bossNode == 'object') return bossNode.indexOf(node) != -1;
+	return node == bossNode;
 }
 
 function getNodeLetter(world, map, num) {
