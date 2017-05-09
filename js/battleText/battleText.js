@@ -108,11 +108,12 @@ function addText(text) {
 }
 
 function getMapName(world, map) {
-	if (!MAPDATA[world] || !MAPDATA[world].maps[map])
-		return world + '-' + map;
-	if (world > 6)
-		return MAPDATA[world].name + " " + MAPDATA[world].maps[map].name;
-	return MAPDATA[world].name;
+	return world + '-' + map;
+	// if (!MAPDATA[world] || !MAPDATA[world].maps[map])
+		// return world + '-' + map;
+	// if (world > 6)
+		// return MAPDATA[world].name + " " + MAPDATA[world].maps[map].name;
+	// return MAPDATA[world].name;
 }
 
 function isBossNode(world, map, node) {

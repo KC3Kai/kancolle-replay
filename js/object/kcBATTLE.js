@@ -137,7 +137,8 @@ var BATTLE = (function() {
 				}
 				if (damages[0] == -1) damages = damages.slice(1);
 				for (var i=0; i<damages.length; i++) {
-					var ship = (i<6) ? opponent.mainFleet[i] : opponent.escortFleet[i-6]; 
+					var ship = (i<6) ? opponent.mainFleet[i] : opponent.escortFleet[i-6];
+					if (!ship) continue;
 					ship.damage(Math.floor(damages[i]));
 					
 					if(dbattle.api_support_flag == 2) {
@@ -344,7 +345,7 @@ var BATTLE = (function() {
 			table.append(getTextRow("AIR_STAGE1_LOSS", [1, stage1.api_e_lostcount, 0]));
 
 		if (!isbombing && !isjet) {
-			if(stage1.api_disp_seiku) table.append(getTextRow("AIR_SUPERIORITY", [stage1.api_disp_seiku]));
+			if(stage1.api_disp_seiku != null) table.append(getTextRow("AIR_SUPERIORITY", [stage1.api_disp_seiku]));
 			if(stage1.api_touch_plane) {
 				if (stage1.api_touch_plane[0] > 0)
 					table.append(getTextRow("AIR_CONTACT_F", [getItem(stage1.api_touch_plane[0])]));
@@ -590,7 +591,8 @@ var BATTLE = (function() {
 
 		for (var i = 0; i < array.length; i++) {
 			if (i == (array.length - 1)) {
-				ships = ships.concat("and ", array[i].name);
+				// ships = ships.concat("and ", array[i].name);
+				ships = ships.concat(array[i].name);
 				continue;
 			}
 			ships = ships.concat(array[i].name, ", ");

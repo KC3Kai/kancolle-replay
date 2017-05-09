@@ -17,11 +17,11 @@ var TEXTDATA = {
 			"values": {}
 		},
 		"NODE_START": {
-			"text": "--Fleet Approching Node <0>--",
+			"text": "-- Fleet Approching <b>Node <0></b> --",
 			"values": {}
 		},
 		"FLEET_COMPOSITION": {
-			"text": "Sortieing fleet consisting of <0>.",
+			"text": "Sortieing fleet consisting of:<br><b><0></b>",
 			"values": {}
 		},
 		"COMBINED_FLEET_COMPOSITION": {
@@ -29,7 +29,7 @@ var TEXTDATA = {
 			"values": {}
 		},
 		"SUPPORT_FLEET_COMPOSITION": {
-			"text": "<0> are on standby with <1> Support.",
+			"text": "<0> are on standby with <b><1></b> Support.",
 			"values": {
 				1: {
 					1: "Node",
@@ -38,7 +38,7 @@ var TEXTDATA = {
 			}
 		},
 		"FORMATION_SELECT": {
-			"text": "Fleet engaging enemy in <0> formation.",
+			"text": "Fleet engaging enemy in <b><0></b> formation.",
 			"values": {
 				0: {
 					1: "Line Ahead",
@@ -54,19 +54,19 @@ var TEXTDATA = {
 			}
 		},
 		"BATTLE_START": {
-			"text": "Abyssal Fleet found at Node <0>.",
+			"text": "Abyssal Fleet found at <b>Node <0></b>.",
 			"values": {}
 		},
 		"DETECTION_F": {
 			"text": "<0>.",
 			"values": {
 				0: {
-					1: "Your plane successfully detected the enemy fleet",
-					2: "Your plane successfully detected the enemy fleet but was shot down",
-					3: "Your plane failed to detect the enemy fleet and was shot down",
-					4: "Your plane failed to detect the enemy fleet",
-					5: "Your fleet successfully detected the enemy fleet",
-					6: "Your fleet failed to detect the enemy fleet",
+					1: "Your plane <b><span style='color:green'>successfully detected</span></b> the enemy fleet",
+					2: "Your plane <b><span style='color:green'>successfully detected</span></b> the enemy fleet but was <b><span style='color:red'>shot down</span></b>",
+					3: "Your plane <b><span style='color:red'>failed to detect</span></b> the enemy fleet and was <b><span style='color:red'>shot down</span></b>",
+					4: "Your plane <b><span style='color:red'>failed to detect</span></b> the enemy fleet",
+					5: "Your fleet <b><span style='color:green'>successfully detected</span></b> the enemy fleet",
+					6: "Your fleet <b><span style='color:red'>failed to detect</span></b> the enemy fleet",
 				}
 			}
 		},
@@ -74,17 +74,17 @@ var TEXTDATA = {
 			"text": "<0>.",
 			"values": {
 				0: {
-					1: "The enemy's plane successfully detected your fleet",
-					2: "The enemy's plane successfully detected your fleet but was shot down",
-					3: "The enemy's plane failed to detect your fleet and was shot down",
-					4: "The enemy's plane failed to detect your fleet",
-					5: "The enemy fleet successfully detected your fleet",
-					6: "The enemy fleet failed to detect your fleet",
+					1: "The enemy's plane <b><span style='color:green'>successfully detected</span></b> your fleet",
+					2: "The enemy's plane <b><span style='color:green'>successfully detected</span></b> your fleet but was <b><span style='color:red'>shot down</span></b>",
+					3: "The enemy's plane <b><span style='color:red'>failed to detect</span></b> your fleet and was <b><span style='color:red'>shot down</span></b>",
+					4: "The enemy's plane <b><span style='color:red'>failed to detect</span></b> your fleet",
+					5: "The enemy fleet <b><span style='color:green'>successfully detected</span></b> your fleet",
+					6: "The enemy fleet <b><span style='color:red'>failed to detect</span></b> your fleet",
 				}
 			}
 		},
 		"ENEMY_FORMATION": {
-			"text": "The enemy fleet is a <0> fleet in <1>.",
+			"text": "The enemy fleet is a <b><0></b> fleet in <b><1></b>.",
 			"values": {
 				0: {
 					0: "single",
@@ -104,7 +104,7 @@ var TEXTDATA = {
 			}
 		},
 		"ENEMY_COMPOSITION": {
-			"text": "The enemy fleet consists of <0>.",
+			"text": "The enemy fleet consists of:<br><b><0><b>",
 			"values": {}
 		},
 		"AIR_NONE": {
@@ -112,12 +112,12 @@ var TEXTDATA = {
 			"values": {}
 		},
 		"AIR_START": {
-			"text" : "<0> sent <1> fighters and <2> bombers to battle.",
+			"text" : "<b><0></b> sent <b><1></b> fighters and <b><2></b> bombers to battle.",
 			"values": {}
 		},
 
 		"AIR_STAGE1_LOSS": {
-			"text" : "<0> fleet lost <1> planes in the dogfight.",
+			"text" : "<0> fleet lost <b><1></b> planes in the dogfight.",
 			"values": {
 				0: {
 					0: "Ally",
@@ -126,53 +126,53 @@ var TEXTDATA = {
 			}
 		},
 		"AIR_SUPERIORITY": {
-			"text": "Fleet has gained <0> against the enemy.",
+			"text": "Fleet has gained <b><0></b> against the enemy.",
 			"values": {
 				0: {
 					0: "Air Parity (AP)",
-					1: "Air Supremacy (AS+)",
-					2: "Air Superiority (AS)",
-					3: "Air Denial (AD)",
-					4: "Air Incapability (AI)"
+					1: "<span style='color:green'>Air Supremacy (AS+)</span>",
+					2: "<span style='color:green'>Air Superiority (AS)</span>",
+					3: "<span style='color:red'>Air Denial (AD)</span>",
+					4: "<span style='color:red'>Air Incapability (AI)</span>"
 				}
 			}
 		},
 		"AIR_CONTACT_F": {
-			"text": "Ally <0> has made contact with the enemy.",
+			"text": "Ally <b><0></b> has made <b>contact</b> with the enemy.",
 			"values": {}
 		},
 		"AIR_CONTACT_E": {
-			"text": "Enemy <0> has made contact with the fleet.",
+			"text": "Enemy <b><0></b> has made <b>contact</b> with the fleet.",
 			"values": {}
 		},
 		"AIR_AACI": {
-			"text": "<0> uses <1> type AACI.",
+			"text": "<b><0></b> uses type <b><1></b> AACI.",
 			"values": {
 				1: {
-					1: "H.H.R.",
-					2: "H.R.",
-					3: "H.H.",
-					4:	"M.S.A.R.",
-					5:	"B.B.R.",
-					6:	"M.S.A.",
-					7:	"H.A.R.",
-					8:	"B.R.",
-					9:	"H.A.",
-					10:	"H.C.R.",
-					11:	"H.C.",
-					12:	"C.G.R.",
-					14:	"H.G.R.",
-					15:	"H.G.",
-					16:	"H.G.R.",
-					17:	"H.G.",
-					18:	"C.",
-					19:	"H.C.",
-					20:	"C."
+					1: "1 (H.H.R.)",
+					2: "2 (H.R.)",
+					3: "3 (H.H.)",
+					4: "4 (M.S.A.R.)",
+					5: "5 (B.B.R.)",
+					6: "6 (M.S.A.)",
+					7: "7 (H.A.R.)",
+					8: "8 (B.R.)",
+					9: "9 (H.A.)",
+					10:	"10 (H.C.R.)",
+					11:	"11 (H.C.)",
+					12:	"12 (C.G.R.)",
+					14:	"14 (H.G.R.)",
+					15:	"15 (H.G.)",
+					16:	"16 (H.G.R.)",
+					17:	"17 (H.G.)",
+					18:	"18 (C.)",
+					19:	"19 (H.C.)",
+					20:	"20 (C.)"
 				}
 			}
 		},
 		"AIR_STAGE2_LOSS": {
-			"text" : "<0> fleet shot down <1> <2> bombers.",
+			"text" : "<0> fleet shot down <b><1></b> <2> bombers.",
 			"values": {
 				0: {
 					0: "Allied",
@@ -185,7 +185,7 @@ var TEXTDATA = {
 			}
 		},		
 		"AIR_DAMAGE": {
-			"text": "<0> <1>hit <2> dealing <3> damage.",
+			"text": "<0> <b><1>hit</b> <b><2></b> dealing <b><3></b> damage.",
 			"values": {
 				0: {
 					0: "Dive Bombers",
@@ -198,7 +198,7 @@ var TEXTDATA = {
 			}
 		},
 		"SUPPORT_START": {
-			"text": "The <0> support fleet has arrived with <1>.",
+			"text": "The <0> support fleet has arrived with <b><1></b>.",
 			"values": {
 				0 : {
 					0: "Node",
@@ -215,19 +215,19 @@ var TEXTDATA = {
 
 		},
 		"OPTORP_ATTACK": {
-			"text": "<0> launch a pre-emptive torpedo strike.",
+			"text": "<b><0></b> launch a pre-emptive torpedo strike.",
 			"values": {
 
 			}
 		},
 		"OPTORP_DAMAGE": {
-			"text": "<0> launch a pre-emptive torpedo strike.",
+			"text": "<b><0></b> launch a pre-emptive torpedo strike.",
 			"values": {
 
 			}
 		},
 		"ENGAGEMENT": {
-			"text": "Fleet has a <0> against the enemy.",
+			"text": "Fleet has a <b><0></b> against the enemy.",
 			"values": {
 				0:{
 					1: "Parallel Engagement",
@@ -241,14 +241,14 @@ var TEXTDATA = {
 			"text": "Beginning <0> Shelling Phase.",
 			"values": {
 				0:{
-					1: "Main (Range)",
-					2: "Main (Line-up)",
+					1: "First",
+					2: "Second",
 					3: "Escort"
 				}
 			}
 		},
 		"SHELL_DAMAGE": {
-			"text": "<0> is hit with a <1> dealing <2> damage.",
+			"text": "<b><0></b> is hit with a <b><1></b> dealing <b><2></b> damage.",
 			"values": {
 				1: {
 					1: "Normal Attack",
@@ -257,11 +257,11 @@ var TEXTDATA = {
 			}
 		},
 		"SHELL_MISS": {
-			"text": "<0> avoided the attack.",
+			"text": "<b><0></b> avoided the attack.",
 			"values": {}
 		},
 		"SHELL_DAMAGE_DOUBLE": {
-			"text": "<0> is hit with a <1> dealing <2> damage and a <3> dealing <4> damage.",
+			"text": "<b><0></b> is hit with a <b><1></b> dealing <b><2></b> damage and a <b><3></b> dealing <b><4></b> damage.",
 			"values": {
 				1: {
 					1: "Normal Attack",
@@ -274,7 +274,7 @@ var TEXTDATA = {
 			}
 		},
 		"SHELL_TARGET": {
-			"text": "<0> <1>attacks <2>.",
+			"text": "<b><0></b> <1>attacks <b><2></b>.",
 			"values": {
 				1: {
 					0: "",
@@ -288,19 +288,19 @@ var TEXTDATA = {
 			}
 		},
 		"TORP_ATTACK": {
-			"text": "<0> launches torpedoes.",
+			"text": "<b><0></b> launch torpedoes.",
 			"values": {
 
 			}
 		},
 		"TORP_DAMAGE": {
-			"text": "<0>'s torpedoes hit <1> dealing <2> damage.",
+			"text": "<b><0></b>'s torpedoes hit <b><1></b> dealing <b><2></b> damage.",
 			"values": {
 
 			}
 		},
 		"PROTECT_DAMAGE": {
-			"text": "<0> protects <1> from a <2> taking <3> damage.",
+			"text": "<b><0></b> protects <b><1></b> from a <b><2></b> taking <b><3></b> damage.",
 			"values": {
 				2: {
 					1: "Normal Attack",
@@ -309,7 +309,7 @@ var TEXTDATA = {
 			}
 		},
 		"PROTECT_MISS": {
-			"text": "<0> gets <1> out of the line of fire.",
+			"text": "<b><0></b> protects <b><1></b> from an attack which misses.",
 			"values": {
 				
 			}
@@ -322,7 +322,7 @@ var TEXTDATA = {
 			"values": {}
 		},
 		"NIGHT_COMBINED_START": {
-			"text": "Escort fleet Entering night battle against enemy {0} fleet.",
+			"text": "Escort fleet entering night battle against enemy <b><0> fleet</b>.",
 			"values": {
 				0: {
 					0: "Main",
@@ -331,7 +331,7 @@ var TEXTDATA = {
 			}
 		},
 		"NIGHT_TARGET": {
-			"text": "<0> attacks <1> with a <2>.",
+			"text": "<b><0></b> attacks <b><1></b> with a <b><2></b>.",
 			"values": {
 				2: {
 					0: "normal attack",
@@ -344,25 +344,25 @@ var TEXTDATA = {
 			}
 		},
 		"SHIP_END": {
-			"text": "<0> <1>.",
+			"text": "<b><0></b> <1>.",
 			"values": {
 				1: {
-					0: "has been sunk",
+					0: "has been <b><span style='color:blue'>sunk</span></b>",
 					1: "is no longer able to continue fighting"
 				}
 			}
 		},
 		"BATTLE_END": {
-			"text": "Battle Ending. Fleet has achieved <0> against the enemy.",
+			"text": "Battle Ending. Fleet has achieved <b><0></b> against the enemy.",
 			"values": {
 				0: {
-					"S+": "Total Victory",
-					"S": "Victory (S)",
-					"A": "Victory (A)",
-					"B": "Tactical Victory",
-					"C": "Tactical Defeat",
-					"D": "Defeat",
-					"E": "Complete Defeat"
+					"S+": "<span style='color:green'>Total Victory (S)</span>",
+					"S": "<span style='color:green'>Victory (S)</span>",
+					"A": "<span style='color:green'>Victory (A)</span>",
+					"B": "<span style='color:green'>Tactical Victory (B)</span>",
+					"C": "<span style='color:red'>Tactical Defeat (C)</span>",
+					"D": "<span style='color:red'>Defeat (D)</span>",
+					"E": "<span style='color:red'>Complete Defeat (E)</span>"
 				}
 			}
 		}
