@@ -16,7 +16,7 @@ SHIP.prototype.isSunk = function() {
 SHIP.prototype.getShipName = function(includeID) {
 	if (!SHIPDATA[this.mid])
 		return this.mid;
-	let name = SHIPDATA[this.mid].name;
+	let name = (LANG_SHIP_NAME == 'JP') ? SHIPDATA[this.mid].nameJP : SHIPDATA[this.mid].name;
 	if (includeID) name += ' ('+this.mid+')';
 	return name;
 	// return SHIPDATA[mid].nameJP + ' (' + mid + ')';

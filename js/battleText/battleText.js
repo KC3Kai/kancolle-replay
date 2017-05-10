@@ -152,6 +152,39 @@ exportBattle = function(battle) {
 		});
 };
 
+
+$(document).ready(function(){
+    $(this).scrollTop(0);
+});
+
+$('input[type=radio][name=lang]').change(function() {
+	setLanguage($(this).val());
+	window.location.reload();
+});
+
+
+var TEXTDATA, LANG_SHIP_NAME;
+function setLanguage(language) {
+	switch (language) {
+		case 'JP':
+			TEXTDATA = TEXTDATA_JP;
+			LANG_SHIP_NAME = 'JP';
+			break;
+		case 'CN':
+			TEXTDATA = TEXTDATA_CN;
+			LANG_SHIP_NAME = 'JP';
+			break;
+		case 'EN':
+		default:
+			TEXTDATA = TEXTDATA_EN;
+			LANG_SHIP_NAME = 'EN';
+			break;
+	}
+	localStorage.replay_log_lang = language;
+	$('input[value='+language+']').prop('checked',true);
+}
+
+setLanguage(localStorage.replay_log_lang);
 setTitle();
 processText();
 
