@@ -1,12 +1,17 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
+		<!--meta-->
+		<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+		
 		<!---->
 		<script src="js/kcSHIPDATA.js"></script>
 		<script src="js/kcEQDATA.js"></script>
 		<script src="js/kcEDGES.js"></script>
 		<script src="js/kcMAPDATA.js"></script>
-		<script src="js/data/kcTEXTDATA.js"></script>
+		<script src="js/data/kcTEXTDATA_EN.js"></script>
+		<script src="js/data/kcTEXTDATA_JP.js"></script>
+		<script src="js/data/kcTEXTDATA_CN.js"></script>
 		<script src="js/object/kcBATTLE.js"></script>
 		<script src="js/battleText/playertext-table.js"></script>
 
@@ -32,6 +37,21 @@
 		<link rel="stylesheet" href="./css/battleText.css" />
 	</head>
 	<body>
+		<div style="float:right;margin-right:20px">
+			<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="radJP">
+				<input type="radio" id="radJP" class="mdl-radio__button" name="lang" value="JP"/>
+				<span class="mdl-radio__label">JP</span>
+			</label>
+			<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="radCN">
+				<input type="radio" id="radCN" class="mdl-radio__button" name="lang" value="CN"/>
+				<span class="mdl-radio__label">CN</span>
+			</label>
+			<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="radEN">
+				<input type="radio" id="radEN" class="mdl-radio__button" name="lang" value="EN" checked/>
+				<span class="mdl-radio__label">EN</span>
+			</label>
+		</div>
+		<br style="clear:both">
 		<ul id="export" class="saveMenu">
 			<li>
 				<a>Save</a>

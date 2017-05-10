@@ -23,7 +23,7 @@ var BATTLE = (function() {
 
 	start = function() {//possible armor break state - api_xal01
 		var body = document.createElement('tbody');
-		appendPhase("BATTLE START");
+		appendPhase("TITLE_BATTLE_START");
 		var enemyId = (dbattle.api_ship_ke) ? dbattle.api_ship_ke: nightBattle.api_ship_ke;
 		
 		var enemyHp = (dbattle.api_ship_ke) ? dbattle.api_nowhps.slice(7) : nightBattle.api_nowhps.slice(7);
@@ -45,7 +45,7 @@ var BATTLE = (function() {
 
 	formation = function() {
 		var body = document.createElement('tbody');
-		appendPhase("FORMATION");
+		appendPhase("TITLE_FORMATION");
 		body.append(getTextRow("ENEMY_COMPOSITION", [opponent.toString()]));
 		body.append(getTextRow("FORMATION_SELECT", [dbattle.api_formation[0]]));
 		body.append(getTextRow("ENEMY_FORMATION", [combinedE, dbattle.api_formation[1]]));
@@ -56,7 +56,7 @@ var BATTLE = (function() {
 
 	detection = function() {
 		var body = document.createElement('tbody');
-		appendPhase("DETECTION");
+		appendPhase("TITLE_DETECTION");
 
 		body.append(getTextRow("DETECTION_F", [dbattle.api_search[0]]));
 		body.append(getTextRow("DETECTION_E", [dbattle.api_search[1]]));
@@ -66,7 +66,7 @@ var BATTLE = (function() {
 
 	jetLbas = function() {
 		var body = document.createElement('tbody');
-		appendPhase("LAND BASE JET BOMBING");
+		appendPhase("TITLE_LAND_BASE_JET_BOMBING");
 		/*
 		 data.api_air_base_injection.api_plane_from[1] = [];
 		 data.api_air_base_injection.api_squadron_plane = data.api_air_base_injection.api_air_base_data;
@@ -82,14 +82,14 @@ var BATTLE = (function() {
 
 	jetAttack = function() {
 		var body = document.createElement('tbody');
-		appendPhase("JET BATTLE");
+		appendPhase("TITLE_JET_BATTLE");
 		kouku(dbattle.api_injection_kouku, body, player.mainFleet, false, true);
 		tab.append(body);
 	};
 
 	lbas = function() {
 		var body = document.createElement('tbody');
-		appendPhase("LAND BASE BOMBING");
+		appendPhase("TITLE_LAND_BASE_BOMBING");
 		/*
 		 for (var i=0; i<dbattle.api_air_base_attack.length; i++) {
 		 dbattle.api_air_base_attack[i].api_plane_from[1] = [];
@@ -111,7 +111,7 @@ var BATTLE = (function() {
 	airAttack = function() {
 		var kou = dbattle.api_kouku;
 		var body = document.createElement('tbody');
-		appendPhase("AIR BATTLE");
+		appendPhase("TITLE_AIR_BATTLE");
 		if (kou && kou.api_plane_from && (kou.api_plane_from[0][0] != -1 || kou.api_plane_from[1][0] != -1)) {
 			kouku(kou, body, player.mainFleet);
 		} else {
@@ -123,7 +123,7 @@ var BATTLE = (function() {
 
 	support = function() {
 		var body = document.createElement('tbody');
-		appendPhase("SUPPORTING FIRE");
+		appendPhase("TITLE_SUPPORTING_FIRE");
 		body.append(getTextRow("SUPPORT_START", [bossNode, dbattle.api_support_flag]));
 		if(dbattle.api_support_flag == 1) {
 			var fleet = (bossNode) ? player.supportBoss : player.supportNode;
@@ -158,7 +158,7 @@ var BATTLE = (function() {
 
 	oasw = function() {
 		var body = document.createElement('tbody');
-		appendPhase("OPENING ASW");
+		appendPhase("TITLE_OPENING_ASW");
 		if (player.isCombined()) {
 			hougeki(dbattle.api_opening_taisen, player.escortFleet, body);
 		} else {
@@ -169,7 +169,7 @@ var BATTLE = (function() {
 
 	opTorp = function() {
 		var body = document.createElement('tbody');
-		appendPhase("OPENING TORPEDOS");
+		appendPhase("TITLE_OPENING_TORPEDO");
 		if (player.isCombined()) {
 			raigeki(dbattle.api_opening_atack, body, player.escortFleet, true);
 		} else {
@@ -181,7 +181,7 @@ var BATTLE = (function() {
 
 	hourai = function() {
 		var body = document.createElement('tbody');
-		appendPhase("SHELLING PHASE");
+		appendPhase("TITLE_SHELLING_PHASE");
 		if (isPVP) {
 			if (dbattle.api_hourai_flag[0]) {
 				body.append(getTextRow("SHELL_START", [1]));
@@ -269,7 +269,7 @@ var BATTLE = (function() {
 
 	yasen = function() {
 		var body = document.createElement('tbody');
-		appendPhase("NIGHT BATTLE");
+		appendPhase("TITLE_NIGHT_BATTLE");
 
 		var f1 = (player.isCombined()) ? player.escortFleet : player.mainFleet;
 		var f2 = (yasen.api_active_deck && yasen.api_active_deck[1] == 2) ? opponent.escortFleet : opponent.mainFleet;
@@ -567,7 +567,8 @@ var BATTLE = (function() {
 	};
 
 	function appendPhase(phase) {
-		$("<thead><tr></tr></thead>").find("tr").attr('data-tableexport-display', 'always').html('<th>' + phase + '</th>').end().appendTo(tab);
+		let title = (TEXTDATA[phase]) ? TEXTDATA[phase].text : phase.replace('TITLE_','').replace('_',' ');
+		$("<thead><tr></tr></thead>").find("tr").attr('data-tableexport-display', 'always').html('<th>' + title + '</th>').end().appendTo(tab);
 	}
 
 	function getTextRow(name, args) {
