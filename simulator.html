@@ -227,7 +227,7 @@
 					<span id="speednum">x1</span>
 				</div>
 				<div style="float:left">
-					<input type="button" value="&#128266;" style="width:30px" onclick="if(!Howler._muted){Howler.mute();this.value='&#128263;'}else{Howler.unmute();this.value='&#128266;';Howler.volume(parseFloat($('#rngvol').val()))}" />
+					<input type="button" value="&#128266;" style="width:30px" onclick="if(!Howler._muted){Howler.mute(true);this.value='&#128263;'}else{Howler.mute(false);this.value='&#128266;';Howler.volume(parseFloat($('#rngvol').val()))}" />
 					<input id="rngvol" type="range" value=".6" step=".01" min="0" max="1" style="width:100px" oninput="if(!Howler._muted)Howler.volume(parseFloat(this.value))" />
 				</div>
 			</div>

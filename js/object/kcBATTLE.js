@@ -290,7 +290,7 @@ var BATTLE = (function() {
 			else {
 				if (dam < 1) {
 					body.append(getTextRow("SHELL_MISS", [defender.name]));
-				} else if (hou.api_sp_list[j] == 1) {
+				} else if (hou.api_damage[j].length > 1 && hou.api_damage[j][1] != -1) {
 					body.append(getTextRow("SHELL_DAMAGE_DOUBLE", [defender.name, hou.api_cl_list[j][0], Math.floor(hou.api_damage[j][0]), hou.api_cl_list[j][1], Math.floor(hou.api_damage[j][1])]));
 				} else {
 					body.append(getTextRow("SHELL_DAMAGE", [defender.name, hou.api_cl_list[j][0], Math.floor(hou.api_damage[j][0])]));
