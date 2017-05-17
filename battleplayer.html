@@ -28,6 +28,7 @@
 				try {
 					var msg = steganography.decode(reader.result);
 					document.getElementById('code').value = msg;
+					console.log(msg.length);
 				} catch (e) {
 					$('#error').text('Error, data may be corrupted');
 					return;
@@ -264,7 +265,11 @@
 					</div>
 
 				</div>
-
+				
+				<div id="warningwebgl" style="display:none;color:red">
+					Warning: WebGL is not enabled. Animation may not display correctly. (Try checking if your browser's "Use hardware acceleration when available" is enabled.)
+				</div>
+				
 				<!--Player-->
 				<div class="d-inline-flex flex-column">
 					<div id="battlespace"></div>
@@ -285,11 +290,11 @@
 					<button id="btnFleet" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">Show Fleet Details</button>
 				</div>
 				<div>
-					<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="radJP" onclick="translateTable()">
+					<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="radJP" onclick="translateTable('JP')">
 						<input type="radio" id="radJP" class="mdl-radio__button" name="lang" value="1"/>
 						<span class="mdl-radio__label">JP</span>
 					</label>
-					<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="radEN" onclick="translateTable()">
+					<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="radEN" onclick="translateTable('EN')">
 						<input type="radio" id="radEN" class="mdl-radio__button" name="lang" value="2" checked/>
 						<span class="mdl-radio__label">EN</span>
 					</label>
@@ -302,6 +307,7 @@
 
 			<div id="fleetinfospace">
 				<div id="friendfleetspace"></div>
+				<div id="lbasspace"></div>
 				<div id="enemyfleetspace"></div>
 			</div>
 

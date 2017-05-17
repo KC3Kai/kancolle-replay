@@ -193,7 +193,7 @@ var TEXTDATA_EN = {
 			},
 			1: {
 				0: "",
-				1: "critically "
+				1: "<<span style='color:#D5AD13'>critically</span> "
 			}
 		}
 	},
@@ -252,7 +252,7 @@ var TEXTDATA_EN = {
 		"values": {
 			1: {
 				1: "Normal Attack",
-				2: "Critical Attack"
+				2: "<span style='color:#D5AD13'>Critical</span> Attack"
 			}
 		}
 	},
@@ -265,11 +265,11 @@ var TEXTDATA_EN = {
 		"values": {
 			1: {
 				1: "Normal Attack",
-				2: "Critical Attack"
+				2: "<span style='color:#D5AD13'>Critical</span> Attack"
 			},
 			3: {
 				1: "Normal Attack",
-				2: "Critical Attack"
+				2: "<span style='color:#D5AD13'>Critical</span> Attack"
 			}
 		}
 	},
@@ -304,7 +304,7 @@ var TEXTDATA_EN = {
 		"values": {
 			2: {
 				1: "Normal Attack",
-				2: "Critical Attack"
+				2: "<span style='color:#D5AD13'>Critical</span> Attack"
 			}
 		}
 	},
