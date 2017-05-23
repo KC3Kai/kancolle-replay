@@ -1448,6 +1448,14 @@ var VOICES = {
 		damage2: "assets/voice/Nagato-Minor_Damage_2.ogg",
 		damage3: "assets/voice/Nagato-Major_Damage.ogg",
 	},
+	541: {
+		start: "assets/voice/NagatoKai2-Battle_Start.ogg",
+		attack: "assets/voice/Nagato-Attack.ogg",
+		nbattack: "assets/voice/Nagato-Night_Attack.ogg",
+		damage1: "assets/voice/Nagato-Minor_Damage_1.ogg",
+		damage2: "assets/voice/Nagato-Minor_Damage_2.ogg",
+		damage3: "assets/voice/Nagato-Major_Damage.ogg",
+	},
 	81: {
 		start: "assets/voice/Mutsu-Battle_Start.ogg",
 		attack: "assets/voice/Mutsu-Attack.ogg",

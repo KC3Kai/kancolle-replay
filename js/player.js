@@ -405,7 +405,7 @@ function processAPI(root) {
 		bossbar.nowhp = root.now_maphp;
 		bossbar.mode = 2;
 		bossbar.show = true;
-	} else if (root.defeat_count != undefined && MAPDATA[root.world] && MAPDATA[root.world].maps[root.mapnum]) {
+	} else if (root.defeat_count != undefined && MAPDATA[root.world] && MAPDATA[root.world].maps[root.mapnum] && root.defeat_count < MAPDATA[root.world].maps[root.mapnum].bossHP) {
 		bossbar.maxhp = (MAPDATA[root.world].maps[root.mapnum].bossHP)? MAPDATA[root.world].maps[root.mapnum].bossHP : 5;
 		bossbar.nowhp = Math.max(1,bossbar.maxhp - root.defeat_count);
 		bossbar.mode = 1;
@@ -1314,7 +1314,7 @@ function shipSetHP(ship,hp) {
 	if (ship.side==0) { HPnow1 -= ship.hp-hp; setHPBar(1,1-HPnow1/HPtotal1); } //update HP bars
 	else { HPnow2 -= ship.hp-hp; setHPBar(0,1-HPnow2/HPtotal2); }
 	ship.escaped = false;
-	// refactor into own class
+	// refactor into own class - Vultren
 	var hpbar = ship.graphic.getChildAt(1);  //change bar
 	var percent = hp/ship.hpmax;
 	var cred = (percent <= .5) ? 255 : 255*(2*(1-percent));
