@@ -92,11 +92,11 @@ function loadFleetInfo(API, translate) {
 	if (!translate) {
 		makeTable('friendfleetspace', API.fleetnum, API['fleet' + API.fleetnum].length);
 		if (API.combined) makeTable('friendfleetspace', 2, API.fleet2.length);
-		if (API.lbas) makeTable('lbasspace', 5, API.lbas.length, true);
+		if (API.lbas && API.lbas.length) makeTable('lbasspace', 5, API.lbas.length, true);
 	}
 	fillTableF(API, API.fleetnum, false, translate);
 	if (API.combined) fillTableF(API, 2, true, translate);
-	if (API.lbas) fillTableLBAS(API, 5, translate);
+	if (API.lbas && API.lbas.length) fillTableLBAS(API, 5, translate);
 
 	for (var k = 0; k < API.battles.length; k++) {
 		var b = API.battles[k].data;
