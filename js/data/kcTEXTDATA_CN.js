@@ -294,9 +294,12 @@ var TEXTDATA_CN = {
 		}
 	},
 	"TORP_DAMAGE": {
-		"text": "<b><0></b> → <b><1></b> 造成 (<b><2></b>) 伤害",
+		"text": "<b><0></b> → <b><1></b> 造成 (<b><2></b>) <3>伤害",
 		"values": {
-
+			3: {
+				1: "",
+				2: "<b><span style='color:red'>暴击</span><b>"
+			}
 		}
 	},
 	"PROTECT_DAMAGE": {

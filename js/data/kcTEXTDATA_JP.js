@@ -296,7 +296,10 @@ var TEXTDATA_JP = {
 	"TORP_DAMAGE": {
 		"text": "<b><0></b> → <b><1></b> 命中 (<b><2></b>) ダメージ",
 		"values": {
-
+			3: {
+				1: "",
+				2: "<b><span style='color:red'></span><b>"
+			}
 		}
 	},
 	"PROTECT_DAMAGE": {
