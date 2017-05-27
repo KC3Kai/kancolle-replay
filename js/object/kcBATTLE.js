@@ -131,20 +131,21 @@ var BATTLE = (function() {
 			kouku(dbattle.api_support_info.api_support_airatack, body, fleet);
 		} else {
 			var support = dbattle.api_support_info.api_support_hourai;
-			var damages = [];
+			var damages = [], crits = [];
 			for (var i=0; i<support.api_damage.length; i++) {
 					damages.push(Math.floor(support.api_damage[i]));
+					crits.push(((support.api_cl_list[i] == 2)? 2 : 1));
 				}
-				if (damages[0] == -1) damages = damages.slice(1);
+				if (damages[0] == -1) { damages = damages.slice(1); crits = crits.slice(1); }
 				for (var i=0; i<damages.length; i++) {
 					var ship = (i<6) ? opponent.mainFleet[i] : opponent.escortFleet[i-6];
 					if (!ship) continue;
 					ship.damage(Math.floor(damages[i]));
 					
 					if(dbattle.api_support_flag == 2) {
-						if(damages[i] >= 1) body.append(getTextRow("SHELL_DAMAGE", [ship.name, support.api_cl_list[i+1], damages[i]]));
+						if(damages[i] >= 1) body.append(getTextRow("SHELL_DAMAGE", [ship.name, support.api_cl_list[i+1], damages[i], crits[i]]));
 					} else if (dbattle.api_support_flag == 3) {
-						if(damages[i] >= 1) body.append(getTextRow("TORP_DAMAGE", ["Support Fleet", ship.name, damages[i]]));
+						if(damages[i] >= 1) body.append(getTextRow("TORP_DAMAGE", ["Support Fleet", ship.name, damages[i], crits[i]]));
 					}
 					
 					if(ship.isSunk()) {
@@ -463,7 +464,7 @@ var BATTLE = (function() {
 				fTorpedos.push((i >= 6) ? fleet[i - 6] : fleet[i]);
 				fAttack.push({
 					atk : rai.api_fydam[i + 1],
-					crit : (rai.api_fcl[i + 1] == 2)
+					crit : ((rai.api_fcl[i + 1] == 2)? 2 : 1)
 				});
 
 				if ((combinedE && rai.api_frai[i + 1] >= 7)) {
@@ -476,7 +477,7 @@ var BATTLE = (function() {
 				eTorpedos.push((combinedE) ? opponent.escortFleet[i - 6] : opponent.mainFleet[i]);
 				eAttack.push({
 					atk : rai.api_eydam[i + 1],
-					crit : (rai.api_ecl[i + 1] == 2)
+					crit : ((rai.api_ecl[i + 1] == 2)? 2 : 1)
 				});
 
 				if ((opponent.escortFleet && rai.api_erai[i + 1] >= 7)) {
@@ -493,7 +494,7 @@ var BATTLE = (function() {
 		if (eTorpedos.length > 0)
 			table.append(getTextRow((opening) ? "OPTORP_ATTACK" : "TORP_ATTACK", [arrayToString(eTorpedos)]));
 		for (var j = 0; j < fTorpedos.length; j++) {
-			table.append(getTextRow("TORP_DAMAGE", [fTorpedos[j].name, fTargets[j].name, fAttack[j].atk]));
+			table.append(getTextRow("TORP_DAMAGE", [fTorpedos[j].name, fTargets[j].name, fAttack[j].atk, fAttack[j].crit]));
 			fTargets[j].damage(fAttack[j].atk);
 			if (fTargets[j].isSunk()) {
 				table.append(getTextRow("SHIP_END", [fTargets[j].name, isPVP]));
@@ -501,7 +502,7 @@ var BATTLE = (function() {
 		}
 
 		for (var j = 0; j < eTorpedos.length; j++) {
-			table.append(getTextRow("TORP_DAMAGE", [eTorpedos[j].name, eTargets[j].name, eAttack[j].atk]));
+			table.append(getTextRow("TORP_DAMAGE", [eTorpedos[j].name, eTargets[j].name, eAttack[j].atk, eAttack[j].crit]));
 			eTargets[j].damage(eAttack[j].atk);
 
 			if (eTargets[j].isSunk()) {

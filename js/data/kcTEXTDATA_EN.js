@@ -193,7 +193,7 @@ var TEXTDATA_EN = {
 			},
 			1: {
 				0: "",
-				1: "<<span style='color:#D5AD13'>critically</span> "
+				1: "<span style='color:#D5AD13'>critically</span> "
 			}
 		}
 	},
@@ -294,9 +294,12 @@ var TEXTDATA_EN = {
 		}
 	},
 	"TORP_DAMAGE": {
-		"text": "<b><0></b>'s torpedoes hit <b><1></b> dealing <b><2></b> damage.",
+		"text": "<b><0></b>'s torpedoes <3>hit <b><1></b> dealing <b><2></b> damage.",
 		"values": {
-
+			3: {
+				1: "",
+				2: "<span style='color:#D5AD13'><b>critically</b> </span>"
+			}
 		}
 	},
 	"PROTECT_DAMAGE": {
