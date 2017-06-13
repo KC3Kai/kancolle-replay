@@ -2159,6 +2159,22 @@ var VOICES = {
 		damage2: "assets/voice/Kumano-Minor_Damage_1.ogg",
 		damage3: "assets/voice/Kumano-Major_Damage.ogg",
 	},
+	504: {
+		start: "assets/voice/Kumano-Battle_Start.ogg",
+		attack: "assets/voice/Kumano-Attack.ogg",
+		nbattack: "assets/voice/Kumano-Night_Attack.ogg",
+		damage1: "assets/voice/KumanoKai2-Minor_Damage_2.ogg",
+		damage2: "assets/voice/Kumano-Minor_Damage_1.ogg",
+		damage3: "assets/voice/KumanoKai2-Major_Damage.ogg",
+	},
+	509: {
+		start: "assets/voice/KumanoCarrierKai2-Battle_Start.ogg",
+		attack: "assets/voice/KumanoCarrierKai2-Attack.ogg",
+		nbattack: "assets/voice/Kumano-Night_Attack.ogg",
+		damage1: "assets/voice/KumanoCarrierKai2-Minor_Damage_2.ogg",
+		damage2: "assets/voice/Kumano-Minor_Damage_1.ogg",
+		damage3: "assets/voice/Kumano-Major_Damage.ogg",
+	},
 	398: {
 		start: "assets/voice/I-168-Battle_Start.ogg",
 		attack: "assets/voice/I-168-Attack.ogg",
