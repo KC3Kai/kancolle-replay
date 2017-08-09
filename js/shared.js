@@ -107,6 +107,7 @@ function processFile(fleetnum,reader,fromfleet) {
 		if (fid <= 0) { clickedClear(fleetnum,i); continue; }
 		var mid = kcdata.ships['x'+fid].masterId;
 		var ship = kcdata.ships['x'+fid];
+		if (!SHIPDATA[mid]) continue;
 		var name = SHIPDATA[mid].name;
 		if (!name) name = '';
 		
@@ -123,7 +124,7 @@ function processFile(fleetnum,reader,fromfleet) {
 				profs.push((idata.ace>=0)? idata.ace : 0);
 			}
 		}
-		if (ship.ex_item) {
+		if (ship.ex_item && ship.ex_item>0) {
 			var idata = kcdata.gears['x'+ship.ex_item];
 			if (EQDATA[idata.masterId]) {
 				equips.push(idata.masterId);

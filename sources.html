@@ -530,14 +530,14 @@ Enemies cannot AACI.<br>
 <h2 id="li4">Night Battle Cut-In Chance</h2>
 <div class="confMed">
 <span class="equation">if double attack: 99%</span><br>
-<span class="equation">if LUCK &lt; 50: NB chance = (15 + LUK + 0.75*sqrt(LVL) + flagshipBonus + chuuhaBonus + lookoutBonus)/typeMod</span><br>
-<span class="equation">if LUCK &ge; 50: NB chance = (65 + sqrt(LUK-50) + 0.8*sqrt(LVL) + flagshipBonus + chuuhaBonus + lookoutBonus)/typeMod</span><br>
+<span class="equation">if LUCK &lt; 50: NB chance = (15 + LUK + 0.75*sqrt(LVL) + flagshipBonus + chuuhaBonus + lookoutBonus + searchlightBonus + starshellBonus)/typeMod</span><br>
+<span class="equation">if LUCK &ge; 50: NB chance = (65 + sqrt(LUK-50) + 0.8*sqrt(LVL) + flagshipBonus + chuuhaBonus + lookoutBonus + searchlightBonus + starshellBonus)/typeMod</span><br>
 <br>
 <span class="equation">flagshipBonus = 15 if flagship</span><br>
 <span class="equation">chuuhaBonus = 18 if medium damaged</span><br>
 <span class="equation">lookoutBonus = 5 if lookout equipped</span><br>
-<span class="equation">searchlight: +7 if self, -5 if enemy</span><br>
-<span class="equation">star shell: +4 if self, -10 if enemy</span><br>
+<span class="equation">searchlightBonus: +7 if self, -5 if enemy</span><br>
+<span class="equation">starshellBonus: +4 if self, -10 if enemy</span><br>
 <br>
 <table class="t1">
 	<tr><th style="width:135px">NB Attack</th><th>typeMod</th></tr>

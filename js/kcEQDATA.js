@@ -58,7 +58,7 @@ const OTHER = 99;
 //possible improves:
 //	Pshell, Pnb, Ptorp, Pasw,
 //	ACCshell, ACCnb, ACCtorp, ACCasw,
-//	AAfleet, AAself, EVtorp, LOS
+//	AAfleet, AAself, EVtorp, LOS, AR
 var EQTDATA = {};
 EQTDATA[MAINGUNS] = {
 	name: 'Main Gun (S)',
@@ -257,12 +257,14 @@ EQTDATA[TYPE3SHELL] = {
 EQTDATA[BULGEM] = {
 	name: 'Torpedo Bulge',
 	image: 23,
+	improve: {AR:.7},
 	canequip: ['CT','CA','CAV','CVL','AS','AV','AR'],
 	canequipS: [147],
 };
 EQTDATA[BULGEL] = {
 	name: 'Torpedo Bulge',
 	image: 23,
+	improve: {AR:.7},
 	canequip: ['FBB','BB','BBV','CV','CVB'],
 };
 EQTDATA[LANDINGCRAFT] = {
@@ -408,29 +410,33 @@ var IMPROVESPECIAL = {
 
 //FITDATA[shipclass][eqclass]
 var FITDATA = {
-	// 35.6/38, 381,  41,    46P,   46,     16,    51,  
-	1: { 1: 7, 2: -2, 3: -5, 4: -7, 5: -10, 6: -5, 7: 0 }, //Kongou
-	2: { 1: 4, 2:  1, 3: -5, 4: -7, 5: -10, 6: -5, 7: 0 }, //Bismarck
-	3: { 1: 4, 2:  1, 3: -5, 4: -7, 5: -10, 6: -5, 7: 0 }, //Littorio
-	4: { 1: 4, 2: -2, 3: -5, 4: -7, 5: -10, 6:  0, 7: 0 }, //Iowa
-	5: { 1: 4, 2:  2, 3:  2, 4: -3, 5:  -7, 6:  2, 7: 0 }, //Warspite
-	6: { 1: 4, 2:  2, 3:  0, 4: -3, 5:  -7, 6:  2, 7: 0 }, //Ise/Fusou
-	7: { 1: 4, 2:  2, 3:  2, 4: -3, 5:  -7, 6:  2, 7: 0 }, //Fusou Kai 2
-	8: { 1: 2, 2:  2, 3:  2, 4: -3, 5:  -7, 6:  2, 7: 0 }, //Nagato
-	9: { 1: 0, 2:  0, 3:  0, 4:  0, 5:   0, 6:  0, 7: 0 }, //Yamato
+	// 35.6/38, 381,  41,    46P,   46,     16,    51,   30.5
+	1: { 1: 7, 2: -2, 3: -5, 4: -7, 5: -10, 6: -5, 7: 0, 8:  7 }, //Kongou
+	2: { 1: 4, 2:  1, 3: -5, 4: -7, 5: -10, 6: -5, 7: 0, 8:  7 }, //Bismarck
+	3: { 1: 4, 2:  1, 3: -5, 4: -7, 5: -10, 6: -5, 7: 0, 8:  7 }, //Littorio
+	4: { 1: 4, 2: -2, 3: -5, 4: -7, 5: -10, 6:  4, 7: 0, 8:  7 }, //Iowa
+	5: { 1: 4, 2:  2, 3:  2, 4: -3, 5:  -7, 6:  2, 7: 0, 8:  4 }, //Warspite
+	6: { 1: 4, 2:  2, 3:  0, 4: -3, 5:  -7, 6:  0, 7: 0, 8:  4 }, //Ise/Fusou
+	7: { 1: 4, 2:  2, 3:  2, 4: -3, 5:  -7, 6:  0, 7: 0, 8:  4 }, //Fusou Kai 2
+	8: { 1: 2, 2:  2, 3:  2, 4: -3, 5:  -7, 6:  2, 7: 0, 8:  4 }, //Nagato
+	9: { 1: 0, 2:  0, 3:  0, 4:  0, 5:   0, 6:  0, 7: 0, 8:  0 }, //Yamato
+   10: { 1: 7, 2:  1, 3: -7, 4: -7, 5: -16, 6: -3, 7: 0, 8: 10 }, //Gangut
+   11: { 1:-2, 2: -2, 3:  4, 4: -2, 5:  -4, 6:  0, 7: 0, 8:  4 }, //Nagato Kai 2
 }
 //night
 var FITDATAN = {
 	// 35.6/38, 381,  41,    46P,   46,     16,    51,  
-	1: { 1: 7, 2:  0, 3: -5, 4: -7, 5: -10, 6: -5, 7: 0 }, //Kongou
-	2: { 1: 4, 2:  0, 3: -5, 4: -7, 5: -10, 6: -5, 7: 0 }, //Bismarck
-	3: { 1: 4, 2:  0, 3: -5, 4: -7, 5: -10, 6: -5, 7: 0 }, //Littorio
-	4: { 1: 4, 2:  0, 3: -5, 4: -7, 5: -10, 6:  0, 7: 0 }, //Iowa
-	5: { 1: 4, 2:  0, 3:  2, 4: -3, 5:  -7, 6:  2, 7: 0 }, //Warspite
-	6: { 1: 4, 2:  0, 3:  0, 4: -5, 5:  -8, 6:  2, 7: 0 }, //Ise/Fusou
-	7: { 1: 4, 2:  0, 3:  2, 4: -5, 5:  -8, 6:  2, 7: 0 }, //Fusou Kai 2
-	8: { 1: 2, 2:  0, 3:  2, 4: -3, 5:  -7, 6:  2, 7: 0 }, //Nagato
-	9: { 1: 0, 2:  0, 3:  0, 4:  0, 5:   0, 6:  0, 7: 0 }, //Yamato
+	1: { 1: 7, 2:  0, 3: -5, 4: -7, 5: -10, 6: -5, 7: 0, 8:  7 }, //Kongou
+	2: { 1: 4, 2:  0, 3: -5, 4: -7, 5: -10, 6: -5, 7: 0, 8:  7 }, //Bismarck
+	3: { 1: 4, 2:  0, 3: -5, 4: -7, 5: -10, 6: -5, 7: 0, 8:  7 }, //Littorio
+	4: { 1: 4, 2:  0, 3: -5, 4: -7, 5: -10, 6:  4, 7: 0, 8:  7 }, //Iowa
+	5: { 1: 4, 2:  0, 3:  2, 4: -3, 5:  -7, 6:  2, 7: 0, 8:  4 }, //Warspite
+	6: { 1: 4, 2:  0, 3:  0, 4: -5, 5:  -8, 6:  0, 7: 0, 8:  4 }, //Ise/Fusou
+	7: { 1: 4, 2:  0, 3:  2, 4: -5, 5:  -8, 6:  0, 7: 0, 8:  4 }, //Fusou Kai 2
+	8: { 1: 2, 2:  0, 3:  2, 4: -3, 5:  -7, 6:  2, 7: 0, 8:  4 }, //Nagato
+	9: { 1: 0, 2:  0, 3:  0, 4:  0, 5:   0, 6:  0, 7: 0, 8:  0 }, //Yamato
+   10: { 1: 7, 2:  1, 3: -7, 4: -7, 5: -16, 6: -3, 7: 0, 8: 10 }, //Gangut
+   11: { 1:-2, 2: -2, 3:  4, 4: -2, 5:  -4, 6:  0, 7: 0, 8:  4 }, //Nagato Kai 2
 }
 
 //artillery spot/night battle/other combat type
@@ -2676,6 +2682,17 @@ var EQDATA = {
 		EV: 2,
 		LOS: 1,
 	},
+	206: {
+		name: 'F6F-5',
+		nameJP: 'F6F-5',
+		added: '2017-06-29',
+		type: FIGHTER,
+		FP: 1,
+		AA: 10,
+		ACC: 1,
+		EV: 3,
+		LOS: 1,
+	},
 	207: {
 		name: 'Zuiun (631 Air Group)',
 		nameJP: '瑞雲(六三一空)',
@@ -2746,6 +2763,7 @@ var EQDATA = {
 		added: '2017-02-25',
 		type: TORPEDOSS,
 		btype: B_TORPEDO,
+		specialCutIn: true,
 		TP: 15,
 		ACC: 3,
 		EV: 1,
@@ -2757,6 +2775,7 @@ var EQDATA = {
 		added: '2017-02-25',
 		type: TORPEDOSS,
 		btype: B_TORPEDO,
+		specialCutIn: true,
 		TP: 15,
 		ACC: 5,
 		EV: 4,
@@ -2924,7 +2943,7 @@ var EQDATA = {
 		added: '2017-05-02',
 		type: MAINGUNL,
 		btype: B_MAINGUN,
-		fitclass: 1,
+		fitclass: 8,
 		FP: 16,
 		AR: 1,
 		ACC: 1,
@@ -2936,13 +2955,50 @@ var EQDATA = {
 		added: '2017-05-02',
 		type: MAINGUNL,
 		btype: B_MAINGUN,
-		fitclass: 1,
+		fitclass: 10,
 		FP: 17,
 		AA: 3,
 		AR: 1,
 		ACC: 3,
 		EV: 1,
 		RNG: 3,
+	},
+	233: {
+		name: 'F4U-1D',
+		nameJP: 'F4U-1D',
+		added: '2017-06-29',
+		type: DIVEBOMBER,
+		FP: 1,
+		DIVEBOMB: 7,
+		AA: 7,
+		EV: 1,
+		ASW: 1,
+		LOS: 1,
+	},
+	234: {
+		name: '15.5cm Triple Secondary Gun Mount Kai',
+		nameJP: '15.5cm三連装副砲改',
+		added: '2017-06-23',
+		type: SECGUN,
+		btype: B_SECGUN,
+		FP: 7,
+		AA: 4,
+		ACC: 3,
+		EV: 1,
+		RNG: 2,
+	},
+	235: {
+		name: '15.5cm Triple Gun Mount Kai',
+		nameJP: '15.5cm三連装砲改',
+		added: '2017-06-23',
+		type: MAINGUNM,
+		btype: B_MAINGUN,
+		FP: 7,
+		AA: 4,
+		AR: 1,
+		ACC: 2,
+		EV: 1,
+		RNG: 2,
 	},
 	236: {
 		name: '41cm Triple Gun Mount Kai',
@@ -2956,6 +3012,59 @@ var EQDATA = {
 		AR: 1,
 		ACC: 4,
 		RNG: 3,
+	},
+	237: {
+		name: 'Zuiun (634 Air Group/Skilled)',
+		nameJP: '瑞雲(六三四空/熟練)',
+		added: '2017-06-23',
+		type: SEAPLANEBOMBER,
+		btype: B_RECON,
+		DIVEBOMB: 9,
+		AA: 4,
+		ACC: 1,
+		EV: 1,
+		ASW: 6,
+		LOS: 7,
+	},
+	238: {
+		name: 'Type 0 Reconnaissance Seaplane Model 11B',
+		nameJP: '零式水上偵察機11型乙',
+		added: '2017-06-23',
+		type: SEAPLANE,
+		btype: B_RECON,
+		FP: 1,
+		AA: 1,
+		ACC: 2,
+		ASW: 7,
+		LOS: 6,
+	},
+	241: {
+		name: 'Combat Ration (Special Onigiri)',
+		nameJP: '戦闘糧食(特別なおにぎり)',
+		added: '2017-07-14',
+		type: RATION,
+	},
+	242: {
+		name: 'Swordfish',
+		nameJP: 'Swordfish',
+		added: '2017-07-28',
+		type: TORPBOMBER,
+		FP: 2,
+		TP: 3,
+		ACC: 1,
+		ASW: 4,
+		LOS: 1,
+	},
+	243: {
+		name: 'Swordfish Mk.II(Skilled)',
+		nameJP: 'Swordfish Mk.II(熟練)',
+		added: '2017-07-28',
+		type: TORPBOMBER,
+		FP: 3,
+		TP: 5,
+		ACC: 3,
+		ASW: 6,
+		LOS: 2,
 	},
 	501: {
 		name: '5inch Single Cannon',
@@ -3642,6 +3751,7 @@ var EQDATA = {
 		name: 'Abyssal Patrolling Attack Hawk',
 		nameJP: '深海攻撃哨戒鷹',
 		added: '2017-05-02',
+		b_image: 15,
 		type: TORPBOMBER,
 		FP: 3,
 		DIVEBOMB: 14,
@@ -3657,6 +3767,7 @@ var EQDATA = {
 		name: 'Abyssal Patrolling Attack Hawk Kai',
 		nameJP: '深海攻撃哨戒鷹改',
 		added: '2017-05-02',
+		b_image: 15,
 		type: TORPBOMBER,
 		FP: 5,
 		DIVEBOMB: 18,
