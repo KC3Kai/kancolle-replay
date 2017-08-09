@@ -351,6 +351,14 @@ var VOICES = {
 		damage2: "assets/voice/Yura-Minor_Damage_2.ogg",
 		damage3: "assets/voice/Yura-Major_Damage.ogg",
 	},
+	488: {
+		start: "assets/voice/YuraKai2-Battle_Start.ogg",
+		attack: "assets/voice/Yura-Attack.ogg",
+		nbattack: "assets/voice/YuraKai2-Night_Attack.ogg",
+		damage1: "assets/voice/Yura-Minor_Damage_1.ogg",
+		damage2: "assets/voice/Yura-Minor_Damage_2.ogg",
+		damage3: "assets/voice/Yura-Major_Damage.ogg",
+	},
 	24: {
 		start: "assets/voice/Ooi-Battle_Start.ogg",
 		attack: "assets/voice/Ooi-Attack.ogg",
@@ -481,6 +489,14 @@ var VOICES = {
 	},
 	257: {
 		start: "assets/voice/Fumizuki-Battle_Start.ogg",
+		attack: "assets/voice/Fumizuki-Attack.ogg",
+		nbattack: "assets/voice/Fumizuki-Night_Attack.ogg",
+		damage1: "assets/voice/Fumizuki-Minor_Damage_1.ogg",
+		damage2: "assets/voice/Fumizuki-Minor_Damage_2.ogg",
+		damage3: "assets/voice/Fumizuki-Major_Damage.ogg",
+	},
+	548: {
+		start: "assets/voice/FumizukiKai2-Battle_Start.ogg",
 		attack: "assets/voice/Fumizuki-Attack.ogg",
 		nbattack: "assets/voice/Fumizuki-Night_Attack.ogg",
 		damage1: "assets/voice/Fumizuki-Minor_Damage_1.ogg",

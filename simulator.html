@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
+		<title>KanColle Sortie Simulator</title>
 		<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 		<meta content="utf-8" http-equiv="encoding">
 		<script src="js/jquery-1.11.3.min.js"></script>
@@ -23,7 +24,7 @@
 	</head>
 	<body>
 		<h1 title="Boat Cockfight Simulator">Kancolle Sortie Simulator</h1>
-		<span style="color:red">v1.0 Beta 2.1 <span style="margin-left:20px;font-style:italic">(Last updated: 2017-03-23)</span></span>
+		<span style="color:red">v1.0 Beta 2.1 <span style="margin-left:20px;font-style:italic">(Last updated: 2017-08-08)</span></span>
 		<br><br><br>
 		<input type="radio" id="radJP" name="lang" onchange="transNames('JP')"/><label for="radJP">JP</label>
 		<input type="radio" id="radEN" name="lang" onchange="transNames('EN')" checked /><label for="radEN">EN</label>
@@ -54,6 +55,30 @@
 			<input type="button" id="btnDelSupB" value="Remove Boss Support" style="display:none" onClick="clickedDelSupportB()"/>
 			</div>
 		</div>
+		<br>
+		<div id="lbasspace">
+			<div class="fleet" id="TLB" style="width:980px; border:1px solid black; display:none">
+				<div style="background-color:#556b2f"><span style="font-weight:bold">Land Base Aerial Support</span></div>
+				<table class="t1">
+					<tr>
+						<td style="width:160px"><img src="assets/icons/LBAS1.png" /></td>
+						<td style="width:160px"><img src="assets/icons/LBAS2.png" /></td>
+						<td style="width:160px"><img src="assets/icons/LBAS3.png" /></td>
+					</tr>
+					<tr><td id="TLB00"></td><td id="TLB10"></td><td id="TLB20"></td></tr>
+					<tr><td id="TLB01"></td><td id="TLB11"></td><td id="TLB21"></td></tr>
+					<tr><td id="TLB02"></td><td id="TLB12"></td><td id="TLB22"></td></tr>
+					<tr><td id="TLB03"></td><td id="TLB13"></td><td id="TLB23"></td></tr>
+				</table>
+			</div>
+		</div>
+		<br>
+		<div style="width:1000px">
+			<div style="width:200px;margin:auto">
+			<input type="button" id="btnAddLBAS" value="Add LBAS" onClick="clickedAddLBAS(true)"/>
+			<input type="button" id="btnDelLBAS" value="Remove LBAS" style="display:none" onClick="clickedDelLBAS()"/>
+			</div>
+		</div>
 		<br><hr><br><br>
 		<div id="fleetspace2"></div>
 		<br>
@@ -78,7 +103,55 @@
 			<input type="checkbox" checked id="mech3" onchange="MECHANICS.fitGun=this.checked"/><label for="mech3">Fit Gun</label><br>
 			<input type="checkbox" checked id="mech4" onchange="MECHANICS.OASW=this.checked"/><label for="mech4">Opening ASW</label><br>
 			<input type="checkbox" checked id="mech5" onchange="MECHANICS.morale=this.checked"/><label for="mech5">Morale</label><br>
-			<label for="mechshelldmg">Day Shelling Soft-Cap: </label><input id="mechshelldmg" type="number" min="0" max="9999" value="180" style="width:50px" onchange="SHELLDMGBASE=parseInt(this.value);raiseFleetChange()" />
+			<label for="mechshelldmg">Day Shelling Soft-Cap: </label><input id="mechshelldmg" type="number" min="0" max="9999" value="180" style="width:50px" onchange="SHELLDMGBASE=parseInt(this.value);raiseFleetChange()" /><br>
+			<br>
+			<input type="button" value="Show Advanced" onclick="$('#optionsadvanced').toggle()" />
+			<div id="optionsadvanced" style="display:none">
+				<span>Support Shelling Base Accuracy:</span><br>
+				<span>Normal: </span><input type="number" style="width:50px" min="1" max="999" value="64" onchange="setConst('supportShellN',this.value)" />
+				<span>Boss: </span><input type="number" style="width:50px" min="1" max="999" value="64" onchange="setConst('supportShellB',this.value)" />
+				<br><br>
+				<span>Override Base Shell Power for Enemy Combined Fleet:</span><br>
+				<span style="color:red">Values default to 5 (normal value in standard 6vs6 battles)</span><br>
+				<table>
+				<tr>
+					<td>Main:</td>
+					<td>Player:<td><td><input id="advshellMF" type="number" min="-999" max="999" style="width:50px" onchange="setConst('shellEcMF',this.value)"/></td>
+					<td>Enemy:<td><td><input id="advshellME" type="number" min="-999" max="999" style="width:50px" onchange="setConst('shellEcME',this.value)" /></td>
+				</tr>
+				<tr>
+					<td>Escort:</td>
+					<td>Player:<td><td><input id="advshellEF" type="number" min="-999" max="999" style="width:50px" onchange="setConst('shellEcEF',this.value)" /></td>
+					<td>Enemy:<td><td><input id="advshellEE" type="number" min="-999" max="999" style="width:50px" onchange="setConst('shellEcEE',this.value)" /></td>
+				</tr>
+				</table>
+				<span>Preset 12vs6 values: </span>
+				<input type="button" value="CTF" onclick="clickedAdvDefault('shell',2,10,10,5)" />
+				<input type="button" value="STF" onclick="clickedAdvDefault('shell',10,5,-5,-5)" />
+				<input type="button" value="TTF" onclick="clickedAdvDefault('shell',-5,10,10,5)" />
+				<input type="button" value="Clear" onclick="clickedAdvDefault('shell',null,null,null,null)" />
+				<br><br>
+				<span>Override Base Accuracy for Enemy Combined Fleet:</span><br>
+				<span style="color:red">Values default to 90 (normal value in standard 6vs6 battles)</span><br>
+				<table>
+				<tr>
+					<td>Main:</td>
+					<td>Player:<td><td><input id="advaccMF" type="number" min="1" max="999" style="width:50px" onchange="setConst('accEcMF',this.value)"/></td>
+					<td>Enemy:<td><td><input id="advaccME" type="number" min="1" max="999" style="width:50px" onchange="setConst('accEcME',this.value)" /></td>
+				</tr>
+				<tr>
+					<td>Escort:</td>
+					<td>Player:<td><td><input id="advaccEF" type="number" min="1" max="999" style="width:50px" onchange="setConst('accEcEF',this.value)" /></td>
+					<td>Enemy:<td><td><input id="advaccEE" type="number" min="1" max="999" style="width:50px" onchange="setConst('accEcEE',this.value)" /></td>
+				</tr>
+				</table>
+				<!--<span>Preset 12vs6 values: </span>
+				<input type="button" value="CTF" onclick="clickedAdvDefault('acc',90,90,55,55)" />
+				<input type="button" value="STF" onclick="clickedAdvDefault('acc',50,65,75,75)" />
+				<input type="button" value="TTF" onclick="clickedAdvDefault('acc',50,50,75,75)" />
+				<input type="button" value="Clear" onclick="clickedAdvDefault('acc',null,null,null,null)" />
+				<br>-->
+			</div>
 			<br><br>
 			<table id="optionstable">
 			
@@ -96,6 +169,7 @@
 			
 			<h3>Statistics</h3>
 			<span style="color:red;font-size:14px">Accuracy of calculations is a work in progress and will be improved as new information is discovered. Please note that values are rough and may not exactly reflect real in-game rates.</span><br>
+			<div id="warnecombined"><span style="color:red;font-size:14px;font-weight:bold">Warning: Enemy combined fleet calculations are extremely tentative, so these results are especially rough. See Show Advanced for settings.</span><br></div>
 			<div>Number of runs: <span id="rnumruns">0</span></div><br>
 			<div class="rescolumn">
 				<div class="ressingle">Rank Rate:<br></div>
@@ -263,25 +337,25 @@
 		<div id="dialogselclass" style="display:none">
 			<span style="font-weight:bold;text-decoration:underline">Shipgirls</span><br>
 			<table class="dialog1">
-				<tr><td onclick="dialogShip(['DD','DE'],0)"><img src="assets/icons/KFubuki.jpg"/><br><span style="font-weight:bold">DD</span></td>
+				<tr><td onclick="dialogShip(['DD'],0)"><img src="assets/icons/KFubuki.jpg"/><br><span style="font-weight:bold">DD</span></td>
 					<td onclick="dialogShip(['CL','CLT'],0)"><img src="assets/icons/KSendai.png"/><br><span style="font-weight:bold">CL(T)</span></td>
 					<td onclick="dialogShip(['CA','CAV'],0)"><img src="assets/icons/KTakao.jpg"/><br><span style="font-weight:bold">CA(V)</span></td>
 					<td onclick="dialogShip(['BB','BBV','FBB'],0)"><img src="assets/icons/KNagato.png"/><br><span style="font-weight:bold">BB(V)</span></td></tr>
 				<tr><td onclick="dialogShip(['CVL'],0)"><img src="assets/icons/KHoushou.jpg"/><br><span style="font-weight:bold">CVL</span></td>
 					<td onclick="dialogShip(['CV','CVB'],0)"><img src="assets/icons/KAkagi.png"/><br><span style="font-weight:bold">CV</span></td>
 					<td onclick="dialogShip(['SS','SSV'],0)"><img src="assets/icons/KI-168.jpg"/><br><span style="font-weight:bold">SS</span></td>
-					<td onclick="dialogShip(['AV','AS','AR','CT','AO','LHA'],0)"><img src="assets/icons/KAkashi.jpg"/><br><span style="font-weight:bold">Other</span></td></tr>
+					<td onclick="dialogShip(['AV','AS','AR','CT','AO','LHA','DE'],0)"><img src="assets/icons/KAkashi.jpg"/><br><span style="font-weight:bold">Other</span></td></tr>
 			</table>
 			<br><br>
 			<span style="font-weight:bold;text-decoration:underline">Abyssals</span><br>
 			<table class="dialog1">
-				<tr><td onclick="dialogShip(['DD','DE'],1)"><img src="assets/icons/SI.jpg"/><br><span style="font-weight:bold">DD</span></td>
+				<tr><td onclick="dialogShip(['DD'],1)"><img src="assets/icons/SI.jpg"/><br><span style="font-weight:bold">DD</span></td>
 					<td onclick="dialogShip(['CL','CLT'],1)"><img src="assets/icons/SHo.jpg"/><br><span style="font-weight:bold">CL(T)</span></td>
 					<td onclick="dialogShip(['CA'],1)"><img src="assets/icons/SRi.png"/><br><span style="font-weight:bold">CA</span></td>
-					<td onclick="dialogShip(['BB'],1)"><img src="assets/icons/SRu.png"/><br><span style="font-weight:bold">BB</span></td></tr>
+					<td onclick="dialogShip(['BB','BBV','FBB'],1)"><img src="assets/icons/SRu.png"/><br><span style="font-weight:bold">BB</span></td></tr>
 				<tr><td onclick="dialogShip(['CVL','CV'],1)"><img src="assets/icons/SWo.png"/><br><span style="font-weight:bold">CV(L)</span></td>
 					<td onclick="dialogShip(['SS'],1)"><img src="assets/icons/SKa.jpg"/><br><span style="font-weight:bold">SS</span></td>
-					<td onclick="dialogShip(['AO','AV','AS','AR','CT','AO','LHA'],1)"><img src="assets/icons/SWa.jpg"/><br><span style="font-weight:bold">Other</span></td>
+					<td onclick="dialogShip(['AO','AV','AS','AR','CT','LHA','DE'],1)"><img src="assets/icons/SWa.jpg"/><br><span style="font-weight:bold">Other</span></td>
 					<td onclick="dialogShip(['Installation','BBVT'],1)"><img src="assets/icons/SAirH.jpg"/><br><span style="font-weight:bold">Boss</span></td></tr>
 			</table>
 			<br><br>
@@ -307,6 +381,7 @@
 		<br><hr><br>
 		<div style="font-size:14px">
 			<span style="font-weight:bold">Change Log:</span><br>
+			<span>2017-08-08 - Enemy combined fleet, LBAS</span><br>
 			<span>2017-03-23 - Fifth slot, separate plane improvement and proficiency, changed save/load code, day soft-cap option</span><br>
 			<span>2016-10-25 - Major reworking and improving of calculations. Added calculations explanations.</span><br>
 			<br>
