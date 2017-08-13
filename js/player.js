@@ -249,14 +249,16 @@ function createDots(container,form,num,side) {
 			var coords = [[5,0],[10,30],[10,-30],[20,15],[20,-15],[30,0]];
 			for (var i=0; i<coords.length; i++) {
 				var dot = getFromPool(nameM,pathM);
-				dot.position.set(coords[i][0],coords[i][1]);
+				var cx = (side)? -coords[i][0] : coords[i][0];
+				dot.position.set(cx,coords[i][1]);
 				dot.anchor.set(.5);
 				container.addChild(dot);
 			}
 			coords = [[-10,23],[-10,7],[-10,-7],[-10,-23],[-24,7],[-24,-7]];
 			for (var i=0; i<coords.length; i++) {
 				var dot = getFromPool(nameC,pathC);
-				dot.position.set(coords[i][0],coords[i][1]);
+				var cx = (side)? -coords[i][0] : coords[i][0];
+				dot.position.set(cx,coords[i][1]);
 				dot.anchor.set(.5);
 				container.addChild(dot);
 			}
@@ -265,14 +267,16 @@ function createDots(container,form,num,side) {
 			var coords = [[3,7],[3,-7],[16,0],[30,0],[30,17],[30,-17]];
 			for (var i=0; i<coords.length; i++) {
 				var dot = getFromPool(nameM,pathM);
-				dot.position.set(coords[i][0],coords[i][1]);
+				var cx = (side)? -coords[i][0] : coords[i][0];
+				dot.position.set(cx,coords[i][1]);
 				dot.anchor.set(.5);
 				container.addChild(dot);
 			}
 			coords = [[-10,7],[-10,-7],[-23,7],[-23,-7],[-36,7],[-36,-7]];
 			for (var i=0; i<coords.length; i++) {
 				var dot = getFromPool(nameC,pathC);
-				dot.position.set(coords[i][0],coords[i][1]);
+				var cx = (side)? -coords[i][0] : coords[i][0];
+				dot.position.set(cx,coords[i][1]);
 				dot.anchor.set(.5);
 				container.addChild(dot);
 			}
@@ -297,14 +301,16 @@ function createDots(container,form,num,side) {
 			var coords = [[12,7],[12,-7],[24,17],[24,0],[24,-17],[36,0]];
 			for (var i=0; i<coords.length; i++) {
 				var dot = getFromPool(nameM,pathM);
-				dot.position.set(coords[i][0],coords[i][1]);
+				var cx = (side)? -coords[i][0] : coords[i][0];
+				dot.position.set(cx,coords[i][1]);
 				dot.anchor.set(.5);
 				container.addChild(dot);
 			}
 			coords = [[0,0],[-12,0],[-24,7],[-24,-7],[-36,7],[-36,-7]];
 			for (var i=0; i<coords.length; i++) {
 				var dot = getFromPool(nameC,pathC);
-				dot.position.set(coords[i][0],coords[i][1]);
+				var cx = (side)? -coords[i][0] : coords[i][0];
+				dot.position.set(cx,coords[i][1]);
 				dot.anchor.set(.5);
 				container.addChild(dot);
 			}
