@@ -100,6 +100,7 @@ var MECHANICS = {
 	fitGun: true,
 	morale: true,
 };
+var NERFPTIMPS = false;
 
 function getRepairCost(ship) {
 	var base = (ship.maxHP - ship.HP)*SHIPDATA[ship.mid].fuel;
@@ -200,6 +201,8 @@ function shell(ship,target,APIhou) {
 			if ([MAINGUNS,MAINGUNSAA,SECGUN,AAGUN].indexOf(ship.equips[i].type) != -1) sguns++;
 		}
 		if (sguns >= 2) { accMod *= 1.5; postMod *= 1.2; } //acc is guess
+		
+		if (!NERFPTIMPS) accMod2 *= .5;
 	}
 	
 	var accflat = (ship.ACC)? ship.ACC : 0;
@@ -340,10 +343,23 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen) {
 			break;
 	}
 	
+	//PT Imp bonus
+	var accMod2 = 1;
+	if (target.isPT) {
+		var sguns = 0;
+		for (var i=0; i<ship.equips.length; i++) {
+			if ([MAINGUNS,MAINGUNSAA,SECGUN,AAGUN].indexOf(ship.equips[i].type) != -1) sguns++;
+		}
+		if (sguns >= 2) { accMod *= 1.5; postMod *= 1.2; } //acc is guess
+		
+		if (!NERFPTIMPS) accMod2 *= .5;
+	}
+	
 	var acc = hitRate(ship,accBase,accFlat,accMod);
 	if (MECHANICS.fitGun && ship.ACCfitN) acc += ship.ACCfitN*.01;
 	if (searchlights[0]) acc += .07;
 	if (ship.ACCnbca) acc += ship.ACCnbca*.01;
+	acc *= accMod2;
 	
 	var critMod = 1.5;
 	if (nightscouts[0]) critMod += .07;
@@ -609,7 +625,8 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai) {
 		if (ship.improves.ACCtorp) accflat += Math.floor(ship.improves.ACCtorp);
 		accflat += Math.floor(power/5);
 		if (ship.TACC) accflat += ship.TACC;
-		var acc = hitRate(ship,85,accflat,ship.fleet.formation.torpacc*ship.moraleMod(true));
+		var ptMod = (target.isPT)? .5 : 1;
+		var acc = hitRate(ship,85,accflat,ship.fleet.formation.torpacc*ship.moraleMod(true)*ptMod);
 		
 		var evFlat = (target.improves.EVtorp)? ship.improves.EVtorp : 0;
 		var res = rollHit(accuracyAndCrit(ship,target,acc,target.fleet.formation.torpev,evFlat,1.5));
