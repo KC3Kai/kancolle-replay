@@ -495,7 +495,8 @@ function processAPI(root) {
 			fleet1C[i].mask = mask;
 			fleet1C[i].graphic.addChild(mask);
 			fleet1C[i].escort = true;
-			fleet1C[i].graphic.y += 480;
+			fleet1C[i].graphic.startY = fleet1C[i].graphic.y + 480;
+			fleet1C[i].graphic.y = 479;
 			stage.addChild(fleet1C[i].graphic);
 			HPstate[i+12] = data.api_nowhps_combined[i+1];
 		}
@@ -577,7 +578,8 @@ function processAPI(root) {
 				sh.mask = mask;
 				sh.graphic.addChild(mask);
 				sh.escorte = true;
-				sh.graphic.y += 480;
+				sh.graphic.startY = sh.graphic.y + 480;
+				sh.graphic.y = 479;
 				HPstate[i+18] = data.api_nowhps_combined[i+7];
 			}
 		}
@@ -1521,14 +1523,17 @@ function battleStart(battledata,newships,newshipsC,escape,bgm,showbosshp) {
 }
 
 function shipEscortEnter(ship,targety) {
-	if (ship.graphic.y - targety > 100) {
-		ship.graphic.y -= 10;
+	var shipY = ship.graphic.shipY || ship.graphic.startY;
+	if (shipY - targety > 100) {
+		shipY -= 10;
 	} else {
-		ship.graphic.y -= (ship.graphic.y - targety) * .1;
-		if (ship.graphic.y - targety < 1) ship.graphic.y = targety;
+		shipY -= (shipY - targety) * .1;
+		if (shipY - targety < 1) shipY = targety;
 	}
-	
-	return (ship.graphic.y - targety <= 1);
+	if(shipY < 480)
+		ship.graphic.y = shipY;
+	ship.graphic.shipY = shipY;
+	return (shipY - targety <= 1);
 }
 
 function battleEnd() {
@@ -2787,7 +2792,8 @@ function resetBattle() {
 		fleet1[i].graphic.pivot.x = 0;
 	}
 	for (var i=0; i<fleet1C.length; i++) {
-		fleet1C[i].graphic.y = 557+44*i;
+		fleet1C[i].graphic.y = 479;
+		delete fleet1C[i].graphic.shipY;
 		fleet1C[i].graphic.x = 152;
 		if (!fleet1C[i].graphic.mask) {
 			fleet1C[i].graphic.mask = fleet1C[i].mask;
@@ -2812,7 +2818,8 @@ function resetBattle() {
 		fleet2C[i].shakepid = 0;
 		fleet2C[i].graphic.pivot.x = 0;
 		fleet2C[i].graphic.x = fleet2C[i].xorigin = 465;
-		fleet2C[i].graphic.y = 624+44*i;
+		delete fleet2C[i].graphic.shipY;
+		fleet2C[i].graphic.y = 479;
 		fleet2C[i].escorte = true;
 		if (fleet2C[i].hp != fleet2C[i].hpmax) shipSetHP(fleet2C[i],fleet2C[i].hpmax);
 		if (!fleet2C[i].graphic.mask) {
