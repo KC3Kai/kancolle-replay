@@ -1028,10 +1028,12 @@ function processAPI(root) {
 				d.push( (hou.api_df_list[j][0]>6)? f2e[hou.api_df_list[j][0]-7] : f1[hou.api_df_list[j][0]-1] ); //target
 				for (var k=0; k<hou.api_damage[j].length; k++) {
 					d.push(parseInt(hou.api_damage[j][k])); //damage
-					if (!combinedEType) HPstate[hou.api_df_list[j][0]-1+((COMBINED && hou.api_df_list[j][0] < 7)?12:0)] -= Math.max(0,Math.floor(hou.api_damage[j][k]));
-					else {
+					if (!combinedEType) {
+						HPstate[hou.api_df_list[j][0]-1+((COMBINED && hou.api_df_list[j][0] < 7)?12:0)] -= Math.max(0,Math.floor(hou.api_damage[j][k]));
+					} else {
 						var ind = hou.api_df_list[j][0]-1;
 						if (combinedEType == 2 && ind >= 6) ind += 12;
+						if (COMBINED && ind < 6) ind += 12;
 						HPstate[ind] -= Math.max(0,Math.floor(hou.api_damage[j][k]));
 					}
 				}
