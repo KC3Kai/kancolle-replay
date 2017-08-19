@@ -77,7 +77,9 @@ var BATTLE = (function() {
 		 if (data.api_air_base_injection.api_squadron_plane[j].api_mst_id) data.api_air_base_injection.api_plane_from[0][j] = j+7;
 		 processKouku(data.api_air_base_injection,true); //no isjet=true for now
 		 tab.append(body);*/
-
+		kouku(dbattle.api_air_base_injection, body, null, false, true, true);
+		body.append(getTextRow("", []));
+		tab.append(body);
 	};
 
 	jetAttack = function() {
