@@ -1307,7 +1307,7 @@ function shipAddEscape(ship) {
 	if (ship.escaped) return;
 	ship.escaped = true;
 	if (ship.damg) ship.graphic.removeChild(ship.damg);
-	for (i=0; i<5; i++) ship.graphic.getChildAt(i).filters = [new PIXI.filters.GrayFilter()];
+	ship.graphic.getChildAt(2).filters = [new PIXI.filters.GrayFilter()];
 	var dam = PIXI.Sprite.fromImage('assets/d403.png'); dam.y += 2;
 	ship.graphic.addChild(dam);
 	ship.damg = dam;
@@ -1342,7 +1342,7 @@ function shipSetHP(ship,hp) {
 	if (hp <= 0) {
 		if (ship.status != 0) {
 			if (ship.damg) ship.graphic.removeChild(ship.damg);
-			for (i=0; i<5; i++) ship.graphic.getChildAt(i).filters = [new PIXI.filters.GrayFilter()];
+			ship.graphic.getChildAt(2).filters = [new PIXI.filters.GrayFilter()];
 			var dam = PIXI.Sprite.fromImage('assets/d389.png'); dam.y += 2;
 			ship.graphic.addChild(dam);
 			ship.damg = dam;
@@ -1352,7 +1352,7 @@ function shipSetHP(ship,hp) {
 	} else if (hp <= ship.hpmax/4) {
 		if (ship.status != 1) {
 			if (ship.damg) ship.graphic.removeChild(ship.damg);
-			if (ship.status == 0) for (i=0; i<5; i++) ship.graphic.getChildAt(i).filters = null;
+			if (ship.status == 0) ship.graphic.getChildAt(2).filters = null;
 			var dam = PIXI.Sprite.fromImage('assets/d387.png'); dam.y += 2;
 			ship.graphic.addChild(dam);
 			ship.damg = dam;
@@ -1362,7 +1362,7 @@ function shipSetHP(ship,hp) {
 	} else if (hp <= ship.hpmax/2) {
 		if (ship.status != 2) {
 			if (ship.damg) ship.graphic.removeChild(ship.damg);
-			if (ship.status == 0) for (i=0; i<5; i++) ship.graphic.getChildAt(i).filters = null;
+			if (ship.status == 0) ship.graphic.getChildAt(2).filters = null;
 			var dam = PIXI.Sprite.fromImage('assets/d385.png'); dam.y += 2;
 			ship.graphic.addChild(dam);
 			ship.damg = dam;
@@ -1372,7 +1372,7 @@ function shipSetHP(ship,hp) {
 	} else if (hp <= ship.hpmax*.75) {
 		if (ship.status != 3) {
 			if (ship.damg) ship.graphic.removeChild(ship.damg);
-			if (ship.status == 0) for (i=0; i<5; i++) ship.graphic.getChildAt(i).filters = null;
+			if (ship.status == 0) ship.graphic.getChildAt(2).filters = null;
 			var dam = PIXI.Sprite.fromImage('assets/d383.png'); dam.y += 2;
 			ship.graphic.addChild(dam);
 			ship.damg = dam;
@@ -1380,7 +1380,7 @@ function shipSetHP(ship,hp) {
 			ship.status = 3;
 		}
 	} else {
-		if (ship.status == 0) for (i=0; i<5; i++) ship.graphic.getChildAt(i).filters = null;
+		if (ship.status == 0) ship.graphic.getChildAt(2).filters = null;
 		ship.graphic.removeChild(ship.damg);
 		ship.status = 4;
 	}
@@ -2681,7 +2681,7 @@ function NBstart(flares,contact,bgm,combinedEType) {
 		for (var i=0; i<3; i++) {
 			if (i >= fleet2C.length) break;
 			addTimeout(function() {
-				updates.push([shipMoveToV,[fleet2C[k2],-100,-10]]);
+				updates.push([shipMoveToV,[fleet2C[k2],-39,-10]]);
 				k2++;
 			}, 200+i*100);
 		}
@@ -2689,7 +2689,7 @@ function NBstart(flares,contact,bgm,combinedEType) {
 		for (var i=5; i>=3; i--) {
 			if (i >= fleet2C.length) continue;
 			addTimeout(function() {
-				updates.push([shipMoveToV,[fleet2C[kk2],600,10]]);
+				updates.push([shipMoveToV,[fleet2C[kk2],479,10]]);
 				kk2--;
 			}, 200+(5-i)*100);
 		}
@@ -2749,8 +2749,11 @@ function NBstart(flares,contact,bgm,combinedEType) {
 }
 
 function shipMoveToV(ship,target,speed) {
+	if((speed < 0)? (ship.graphic.y + speed < target) : (ship.graphic.y + speed > target)){
+		ship.graphic.y = target;
+		return true;
+	}
 	ship.graphic.y += speed;
-	return (speed < 0)? (ship.graphic.y < target) : (ship.graphic.y > target);
 }
 
 function repairTeam(ship,isgoddess) {
