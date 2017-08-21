@@ -866,7 +866,15 @@ function processAPI(root) {
 						} else eventqueue.push([shoot,d,getState()]);
 						break;
 					case 1:
-						var targets = []; for (var t=0; t<hou.api_df_list[j].length; t++) targets.push((hou.api_df_list[j][t]>6)? f2[hou.api_df_list[j][t]-7] : f1[hou.api_df_list[j][t]-1]);
+						var targets = [];
+						for (var t=0; t<hou.api_df_list[j].length; t++) {
+							if (ecombined) {
+								if (hou.api_at_eflag[j]) targets.push((hou.api_df_list[j][t]>6)? fleet1C[hou.api_df_list[j][t]-7] : fleet1[hou.api_df_list[j][t]-1]);
+								else targets.push((hou.api_df_list[j][t]>6)? f2c[hou.api_df_list[j][t]-7] : f2[hou.api_df_list[j][t]-1]);
+							} else {
+								targets.push((hou.api_df_list[j][t]>6)? f2[hou.api_df_list[j][t]-7] : f1[hou.api_df_list[j][t]-1]);
+							}
+						}
 						eventqueue.push([shootLaser,[d[0],targets,hou.api_damage[j]]]);
 						break; //laser
 					case 2:
@@ -1984,7 +1992,9 @@ function createLandingCraft(x,y,dir,image) {
 
 function shootLaser(ship,targets,damages) {
 	updates.push([shipMoveTo,[ship,ship.xorigin+25-50*ship.side,2]]);
-	var fleet = (targets[0].side==0)? fleet1 : fleet2;
+	var fleet;
+	if (targets[0].escort||targets[0].escorte) fleet = (targets[0].side==0)? fleet1C : fleet2C;
+	else fleet = (targets[0].side==0)? fleet1 : fleet2;
 	for (var i=0; i<fleet.length; i++) {
 		updates.push([shipMoveTo,[fleet[i],fleet[i].xorigin+25-50*fleet[i].side,2]]);
 	}
@@ -2016,7 +2026,9 @@ function createLaser(ship,targetfirst,targetlast) {
 	laser.lifetime = 90; laser.phase = 0;
 	var msk = new PIXI.Graphics();
 	msk.beginFill(0x000000);
-	msk.drawRect((ship.escort||targetfirst.escort)? 321 : 169, 0, (ship.escort||targetfirst.escort)? 310 : 462, 480);
+	var w = (ship.escort||targetfirst.escort)? 310 : 462;
+	if (ship.escorte||targetfirst.escorte) w -= 152;
+	msk.drawRect((ship.escort||targetfirst.escort)? 321 : 169, 0, w, 480);
 	laser.mask = msk;
 	updates.push([function(laser) {
 		laser.rotation += speed;
