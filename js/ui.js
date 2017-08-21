@@ -1158,10 +1158,7 @@ function loadIntoSim(fleet,side,isescort) {
 				}
 			}
 			
-			//do I want to do it like this?
-			var protect = (mid < 1000 && side==0)? 0 : 1;
-			if (side == 0 && [901,902,903,1001].indexOf(mid) != -1) protect = 0;
-			var ship = new ShipType(mid,SHIPDATA[mid].name,protect,s.lvl,s.hp,s.fp,s.tp,s.aa,s.ar,s.ev,s.asw,s.los,s.luk,s.rng,slots);
+			var ship = new ShipType(mid,SHIPDATA[mid].name,side,s.lvl,s.hp,s.fp,s.tp,s.aa,s.ar,s.ev,s.asw,s.los,s.luk,s.rng,slots);
 			if (s.tacc != null) ship.TACC = s.tacc;
 			ship.loadEquips(equips,levels,profs);
 			if (SHIPDATA[mid].isInstall) ship.isInstall = true;

@@ -160,7 +160,7 @@ function Ship(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	this.fuelDefault = 10;
 	this.ammoleft = 10;
 	this.ammoDefault = 10;
-	this.protection = (side==0)?true:false;
+	this.protection = (side==0 && isPlayable(this.mid));
 	this.LOSeq = 0;
 	this.APtype = false;
 	this.morale = 49;
@@ -627,7 +627,7 @@ Ship.prototype.reset = function() {
 	this.ammoleft = this.ammoDefault;
 	this.morale = this.moraleDefault;
 	if (this.repairsOrig) this.repairs = this.repairsOrig.slice();
-	if (this.side==0) this.protection = true;
+	if (this.side==0 && isPlayable(this.mid)) this.protection = true;
 	if (this.retreated) this.retreated = false;
 	// this._wAA = undefined;
 }

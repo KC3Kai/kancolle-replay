@@ -459,13 +459,18 @@ function laser(ship,targets,APIhou) {
 		ship.fleet.giveCredit(ship,realdmg);
 		if (C) {
 			console.log(ship.name+' LASERS '+targets[i].name+' FOR '+dmg+' DAMAGE, '+targets[i].HP+'/'+targets[i].maxHP+' left');
-			targetids.push(targets[i].apiID);
+			targetids.push((APIhou.api_at_eflag)? targets[i].apiID2 : targets[i].apiID);
 			damages.push(realdmg);
 			crits.push(((res>1)?2:1));
 		}
 	}
 	if (C) {
-		APIhou.api_at_list.push(ship.apiID);
+		if (APIhou.api_at_eflag) {
+			APIhou.api_at_eflag.push(ship.side);
+			APIhou.api_at_list.push(ship.apiID2);
+		} else {
+			APIhou.api_at_list.push(ship.apiID);
+		}
 		APIhou.api_df_list.push(targetids);
 		APIhou.api_damage.push(damages);
 		APIhou.api_at_type.push(1);
@@ -481,7 +486,10 @@ function shellPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,APIhou,isO
 				if (ASW(order1[i],target,false,APIhou)) subsalive2.splice(subsalive2.indexOf(target),1);
 			} else if (alive2.length && !isOASW) {
 				if (order1[i].canlaser && Math.random() < .5) {
-					var targets = shuffle(alive2.slice()).slice(0,1+Math.max(0,Math.floor((alive2.length-1)*Math.random())));
+					var temptargets = [];
+					for (var j=0; j<alive2.length; j++) if (!alive2[j].isescort) temptargets.push(alive2[j]);
+					if (temptargets.length <= 0) temptargets = alive2;
+					var targets = shuffle(temptargets.slice()).slice(0,1+Math.max(0,Math.floor((temptargets.length-1)*Math.random())));
 					laser(order1[i],targets,APIhou);
 					for (var j=0; j<targets.length; j++) if (targets[j].HP <= 0) alive2.splice(alive2.indexOf(targets[j]),1);
 				} else {
@@ -507,7 +515,10 @@ function shellPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,APIhou,isO
 				if (ASW(order2[i],target,false,APIhou)) subsalive1.splice(subsalive1.indexOf(target),1);
 			} else if (alive1.length && !isOASW) {
 				if (order2[i].canlaser && Math.random() < .5) {
-					var targets = shuffle(alive1.slice()).slice(0,1+Math.max(0,Math.floor((alive1.length-1)*Math.random())));
+					var temptargets = [];
+					for (var j=0; j<alive1.length; j++) if (!alive1[j].isescort) temptargets.push(alive1[j]);
+					if (temptargets.length <= 0) temptargets = alive1;
+					var targets = shuffle(temptargets.slice()).slice(0,1+Math.max(0,Math.floor((temptargets.length-1)*Math.random())));
 					laser(order2[i],targets,APIhou);
 					for (var j=0; j<targets.length; j++) if (targets[j].HP <= 0) alive1.splice(alive1.indexOf(targets[j]),1);
 				} else if (order2[i].isSub) {
