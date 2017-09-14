@@ -283,7 +283,8 @@ var TEXTDATA_EN = {
 				3: "cut-in ",
 				4: "radar cut-in ",
 				5: "AP cut-in ",
-				6: "gun cut-in "
+				6: "gun cut-in ",
+				7: "carrier cut-in "
 			}
 		}
 	},
@@ -342,7 +343,8 @@ var TEXTDATA_EN = {
 				2: "mixed cut-in", 
 				3: "torpedo cut-in",
 				4: "gun cut-in (secondary)",
-				5: "gun cut-in (main)"
+				5: "gun cut-in (main)",
+				6: "carrier cut-in"
 			}
 		}
 	},

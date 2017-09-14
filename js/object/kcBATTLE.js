@@ -285,7 +285,10 @@ var BATTLE = (function() {
 
 			attacker = (hou.api_at_list[j] > 6) ? f2[hou.api_at_list[j] - 7] : f1[hou.api_at_list[j] - 1];
 			defender = (hou.api_df_list[j][0] > 6) ? f2[hou.api_df_list[j][0] - 7] : f1[hou.api_df_list[j][0] - 1];
-			dam = (hou.api_damage[j].length == 2) ? hou.api_damage[j][0] + hou.api_damage[j][1] : hou.api_damage[j][0];
+			dam = 0;
+			for (var k=0; k<hou.api_damage[j].length; k++) {
+				if (hou.api_damage[j][k] > 0) dam += hou.api_damage[j][k];
+			}
 			body.append(getTextRow("NIGHT_TARGET", [attacker.name, defender.name, hou.api_sp_list[j]]));
 
 			if ((hou.api_damage[j][0] != Math.floor(hou.api_damage[j][0]))) {

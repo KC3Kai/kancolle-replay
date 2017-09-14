@@ -884,6 +884,8 @@ function processAPI(root) {
 					case 5:
 					case 6:
 						eventqueue.push([shootCutIn,d,getState()]); break;
+					case 7:
+						eventqueue.push([shootPlane,d,getState()]); break;
 				}
 				//console.log(HPstate[16]);
 				for (var i=0; i<f1.length; i++) {
@@ -1069,6 +1071,10 @@ function processAPI(root) {
 					case 5:
 						d[2] += Math.max(0,d[3]); d[3] = (d[4]||d[5]); d[4] = d[6];
 						eventqueue.push([shootBigGun,d,getState()]); break;
+					case 6:
+						d[2] += Math.max(0,d[3]); d[2] += Math.max(0,d[4]);
+						d.splice(3,2);
+						eventqueue.push([shootPlane,d,getState()]); break;
 				}
 				
 				for (var i=0; i<f1.length; i++) {
