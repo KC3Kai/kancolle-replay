@@ -73,6 +73,11 @@ loader.add('BG1','assets/82_res.images.ImgBackgroundDay.jpg')
 	.add('shield','assets/221_shield_png$f90866d61f09304ed4b65cd1a8d0dbbc1744783129.png')
 	.add('laser','assets/laser.png')
 	.add('laserring','assets/laserring.png')
+	.add('kleinfield','assets/kleinfield.png')
+	.add('kleinfieldring','assets/kleinfieldring.png')
+	.add('kleinfieldshine1','assets/kleinfieldshine1.png')
+	.add('kleinfieldshine2','assets/kleinfieldshine2.png')
+	.add('kleinfieldshine3','assets/kleinfieldshine3.png')
 	.add('plane9','assets/plane9.png')
 	.add('plane10','assets/plane10.png')
 	.add('plane11','assets/plane11.png')
@@ -390,6 +395,7 @@ function createShip(data,side,i,damaged) {
 	ship.issub = (sdata.type == 'SS' || sdata.type == 'SSV');
 	ship.isinstall = (sdata.type == 'Installation' || sdata.installtype > 0);
 	ship.isCV = (sdata.type == 'CV' || sdata.type == 'CVL' || sdata.type == 'CVB' || (sdata.type=='AO'&&ship.hasbomber));
+	ship.isfog = (parseInt(data[0]) >= 2000 && parseInt(data[0]) <= 2100);
 	if (sdata.nightattack==2) ship.nightgun = true;
 	ship.shakepid = 0;
 	ship.mid = data[0];
@@ -1672,7 +1678,8 @@ function standardHit(target,damage,move,protect,forcecrit) {
 	}
 	
 	if (PVPMODE && damage > target.hp-1) damage = target.hp-1;
-	createNumber(target.xorigin+85,target.graphic.y+22,damage,forcecrit);
+	if (target.isfog && damage <= 0) createKleinField(target); 
+	else createNumber(target.xorigin+85,target.graphic.y+22,damage,forcecrit);
 	shipSetHP(target,target.hp-Math.max(0,damage));
 	if (protect) {
 		createShield(target.graphic.x + ((target.side==0)? 180 : -10),target.side);
@@ -2066,6 +2073,62 @@ function createLaserRing(laser) {
 		if (ring.lifetime <= 0) { recycle(ring); return true; }
 		return false;
 	},[ring,laser]]);
+}
+
+function createKleinField(ship) {
+	var field = getFromPool('kleinfield','assets/kleinfield.png');
+	field.pivot.set(64,41);
+	field.position.set(ship.graphic.x+160-ship.side*140,ship.graphic.y+20);
+	field.alpha = 0;
+	field.timer = 70;
+	field.notpersistent = true;
+	var shines = [];
+	for (var i=0; i<3; i++) {
+		shines[i] = getFromPool('kleinfieldshine'+(i+1),'assets/kleinfieldshine'+(i+1)+'.png');
+		shines[i].position.set(field.x - 37 + ship.side*74, field.y);
+		shines[i].pivot.set(140,75);
+		shines[i].scale.x = (ship.side == 0)? -1 : 1;
+		stage.addChild(shines[i]);
+	}
+	stage.addChild(field);
+	updates.push([function() {
+		field.scale.set(1-.01*Math.sin(Math.PI*field.timer/5));
+		if (ship.side == 0) field.scale.x *= -1;
+		if (field.timer % 20 == 10 && field.timer > 10) createKleinFieldRing(field);
+		field.timer--;
+		if (field.timer >= 65) field.alpha += .1;
+		else if (field.timer < 5) field.alpha -= .1;
+		if (field.timer > 5) {
+			for (var i=0; i<3; i++) shines[i].alpha = .6*Math.sin(Math.PI*field.timer/10 + i*2*Math.PI/3);
+		} else {
+			for (var i=0; i<3; i++) shines[i].alpha = Math.max(shines[i].alpha-.07,0);
+		}
+		if (field.timer <= 0) {
+			recycle(field);
+			for (var i=0; i<3; i++) recycle(shines[i]);
+			return true;
+		}
+	},[]]);
+}
+
+function createKleinFieldRing(field) {
+	var ring = getFromPool('kleinfieldring','assets/kleinfieldring.png');
+	ring.pivot.set(118);
+	ring.position.set(field.x,field.y+20);
+	ring.position.x += (field.scale.x < 0)? -5 : 5;
+	ring.scale.set(.4);
+	ring.alpha = .35;
+	ring.notpersistent = true;
+	stage.addChildAt(ring,stage.getChildIndex(field)-1);
+	updates.push([function() {
+		ring.scale.set(ring.scale.x+.0125);
+		ring.scale.y *= .25;
+		if (ring.scale.x > .7) ring.alpha -= .05;
+		if (ring.alpha <= 0) {
+			recycle(ring);
+			return true;
+		}
+	},[]]);
 }
 
 var PLANESPRITES = ['938','914','916','918','920','922','924','926','plane9','plane10','plane11','plane12','plane13','plane544','plane511'];
