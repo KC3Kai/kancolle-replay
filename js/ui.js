@@ -94,7 +94,7 @@ function showAdditionalStats(fleet) {
 	var d = loadIntoSim(fleet,side,(fleet==11));
 	var ships = d[0], formation = d[1];
 	console.log(ships);
-	var fleettemp = new Fleet();
+	var fleettemp = new Fleet(side);
 	fleettemp.loadShips(ships);
 	fleettemp.formation = ALLFORMATIONS[formation];
 	var table = $('<table class="tadvstats"></table>');

@@ -891,7 +891,7 @@ function processAPI(root) {
 					case 6:
 						eventqueue.push([shootCutIn,d,getState()]); break;
 					case 7:
-						eventqueue.push([shootPlane,d,getState()]); break;
+						eventqueue.push([shootPlaneCutIn,d,getState()]); break;
 				}
 				//console.log(HPstate[16]);
 				for (var i=0; i<f1.length; i++) {
@@ -1058,7 +1058,7 @@ function processAPI(root) {
 				
 				switch(hou.api_sp_list[j]) {
 					case 0:
-						if (d[0].isCV && !d[0].nightgun) eventqueue.push([shootPlane,d,getState()]);
+						if (d[0].isCV && (!d[0].nightgun || (hou.api_n_mother_list && hou.api_n_mother_list[j]))) eventqueue.push([shootPlane,d,getState()]);
 						else if (d[1].isinstall) {
 							if (d[0].haslandingcraft2) { d.push(2); eventqueue.push([shootLandingCraft,d,getState()]); }
 							else if (d[0].haslandingcraft1) { d.push(1); eventqueue.push([shootLandingCraft,d,getState()]); }
@@ -1074,13 +1074,15 @@ function processAPI(root) {
 						d[2] += d[3]; d[3] = (d[4]||d[5]); d[4] = d[6];
 						eventqueue.push([shootBigTorp,d,getState()]); break;
 					case 4:
-					case 5:
 						d[2] += Math.max(0,d[3]); d[3] = (d[4]||d[5]); d[4] = d[6];
 						eventqueue.push([shootBigGun,d,getState()]); break;
+					case 5:
+						d[2] += Math.max(0,d[3]); d[3] = (d[4]||d[5]); d[4] = d[6];
+						eventqueue.push([shootSpecialGun,d,getState()]); break;
 					case 6:
 						d[2] += Math.max(0,d[3]); d[2] += Math.max(0,d[4]);
 						d.splice(3,2);
-						eventqueue.push([shootPlane,d,getState()]); break;
+						eventqueue.push([shootPlaneCutIn,d,getState()]); break;
 				}
 				
 				for (var i=0; i<f1.length; i++) {
@@ -1758,6 +1760,26 @@ function shootPlane(ship,target,damage,forcecrit,protect) {
 	addTimeout(function(){stage.removeChild(planes); ecomplete=true;},3000);
 }
 
+function shootPlaneCutIn(ship,target,damage,forcecrit,protect) {
+	var planes = createPlane(ship.graphic.x+85,ship.graphic.y+22,ship.planetypes,null,null,ship.side);
+	
+	var angle = Math.atan((ship.graphic.y-target.graphic.y)/(ship.graphic.x-target.graphic.x));
+	
+	shipShake(ship,3,0,36);
+	SM.playVoice(ship.mid,'attack',ship.id);
+	
+	addTimeout(function() {
+		updates.push([movePlane,[planes,angle,(ship.side==0) ? 5 : -5, planes.x, target.graphic.x+85]]);
+		SM.play('planelaunch');
+	}, 600);
+	
+	addTimeout(function() { SM.play('planeatk'); },(ship.escort||target.escort)? 1900 : 2500);
+	if (protect) addTimeout(function() { updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,3]]); }, (ship.escort||target.escort)? 2075 : 2675);
+	addTimeout(function(){ standardHit(target,damage,true,protect,forcecrit); }, (ship.escort||target.escort||ship.escorte||target.escorte)? 2200 : 2800);
+	
+	addTimeout(function(){stage.removeChild(planes); ecomplete=true;},3600);
+}
+
 function arcFade(arc) {
 	arc.lifetime--;
 	if (arc.lifetime >= 16) arc.alpha += .0625;
@@ -1842,6 +1864,7 @@ function shootBigGun(ship,target,damage,forcecrit,protect) {
 	if (!protect) updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,2]]);
 	else addTimeout(function() { updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,3]]); }, 675);
 	addTimeout(function(){
+		SM.playVoice(ship.mid,'nbattack',ship.id);
 		if (!protect) updates.push([shipMoveTo,[target,target.xorigin,4]]);
 		shipShake(target,5,.175/2);
 		if (!protect) target.graphic.x = target.xorigin-25+50*target.side;
@@ -1854,6 +1877,19 @@ function shootBigGun(ship,target,damage,forcecrit,protect) {
 		updates.push([shipMoveTo,[ship,ship.xorigin,2]]);
 	},2000);
 	addTimeout(function(){ ecomplete = true; }, 2700);
+}
+
+function shootSpecialGun(ship,target,damage,forcecrit,protect) {
+	shipShake(ship,3,0,36);
+	SM.playVoice(ship.mid,'nbattack',ship.id);
+	
+	addTimeout(function() {
+		updates.push([shipMoveTo,[ship,ship.xorigin+25-50*ship.side,3]]);
+		updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,3]]);
+	},600);
+	addTimeout(function(){ standardHit(target,damage,true,protect,forcecrit); },750);
+	addTimeout(function(){ updates.push([shipMoveTo,[ship,ship.xorigin,2]]); }, 900);
+	addTimeout(function(){ ecomplete = true; }, 2000);
 }
 
 function shootTorp(ship,target,damage,forcecrit,protect) {
