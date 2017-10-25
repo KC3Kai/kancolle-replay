@@ -1597,7 +1597,7 @@ function getRank(ships1,ships2,ships1C) {
 	if (sunk1 < sunk2 && ships2[0].HP <= 0) return 'B';
 	if (dmg2 > dmg1*2.5) return 'B';
 	if (dmg2 > dmg1*.9) return 'C';
-	if (sunk1 >= ships1.length-1) return 'E';
+	if (sunk1 > 0 && sunk1 >= ships1.length-1) return 'E';
 	return 'D';
 }
 

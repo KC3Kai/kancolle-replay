@@ -2,6 +2,7 @@
 //-------
 function Fleet(id,isescortfor) {
 	this.id = id;
+	this.side = id;
 	this.ships = [];
 	if (isescortfor) {
 		this.isescort = true;

@@ -344,7 +344,9 @@ var TEXTDATA_EN = {
 				3: "torpedo cut-in",
 				4: "gun cut-in (secondary)",
 				5: "gun cut-in (main)",
-				6: "carrier cut-in"
+				6: "carrier cut-in",
+				7: "gun-torpedo-radar cut-in",
+				8: "torpedo-radar-lookout cut-in"
 			}
 		}
 	},
