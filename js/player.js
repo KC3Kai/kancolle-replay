@@ -1083,6 +1083,11 @@ function processAPI(root) {
 						d[2] += Math.max(0,d[3]); d[2] += Math.max(0,d[4]);
 						d.splice(3,2);
 						eventqueue.push([shootPlaneCutIn,d,getState()]); break;
+					case 7:
+					case 8:
+						d[2] += Math.max(0,d[3]); d[2] += Math.max(0,d[4]);
+						d.splice(3,2);
+						eventqueue.push([shootBigTorp,d,getState()]); break;
 				}
 				
 				for (var i=0; i<f1.length; i++) {
