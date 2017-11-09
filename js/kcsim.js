@@ -839,7 +839,7 @@ function AADefenceFighters(carriers,showplanes,APIkouku,isjetphase) {
 						case -2: rmin = .25; rplus = .3333; break;
 					}
 					var randplus = Math.floor((Math.floor(1000*rplus)+1)*Math.random())/1000;
-					lostcount = Math.floor(ship.PLANESLOTS[j]*(rmin+randplus));
+					lostcount = Math.floor(ship.planecount[j]*(rmin+randplus));
 				} else {
 					var rmax;
 					switch(ship.fleet.AS) {
@@ -850,7 +850,7 @@ function AADefenceFighters(carriers,showplanes,APIkouku,isjetphase) {
 						case -2: rmax = 11; break;
 					}
 					var mod = Math.floor(Math.random()*rmax)*.35 + Math.floor(Math.random()*rmax)*.65;
-					lostcount = Math.floor(ship.PLANESLOTS[j]*mod/10);
+					lostcount = Math.floor(ship.planecount[j]*mod/10);
 				}
 				if (C) {
 					APIkouku.api_stage1[(ship.side)? 'api_e_count':'api_f_count'] += ship.planecount[j];
