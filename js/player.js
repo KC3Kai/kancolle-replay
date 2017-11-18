@@ -412,6 +412,7 @@ function processAPI(root) {
 	console.log(root);
 	COMBINED = root.combined;
 	PVPMODE = (root.world <= 0);
+	var OLDFORMAT = !!data.api_maxhps; //new format 2017-11-17
 	
 	if (root.now_maphp && root.max_maphp) {
 		bossbar.maxhp = root.max_maphp;
@@ -488,7 +489,15 @@ function processAPI(root) {
 	if (root.combined) {
 		for (var i=0; i<fshipsC.length; i++) {  //create ship objects (combined)
 			if (!fshipsC[i] || fshipsC[i]==-1) continue;
-			var d = [fshipsC[i], data.api_maxhps_combined[i+1], data.api_nowhps_combined[i+1]]; //[id, maxhp, nowhp, plane1, plane2, plane3, plane4]
+			var maxhp, nowhp;
+			if (data.api_f_maxhps_combined) { //new format 2017-11-17
+				maxhp = data.api_f_maxhps_combined[i];
+				nowhp = data.api_f_nowhps_combined[i];
+			} else {
+				maxhp = data.api_maxhps_combined[i+1];
+				nowhp = data.api_nowhps_combined[i+1];
+			}
+			var d = [fshipsC[i], maxhp, nowhp]; //[id, maxhp, nowhp, plane1, plane2, plane3, plane4]
 			for (var j=0; j<fequipsC[i].length; j++) {
 				if (fequipsC[i][j] == -1) break;
 				d.push(fequipsC[i][j]);
@@ -508,14 +517,22 @@ function processAPI(root) {
 	}
 	for (var i=0; i<fships.length; i++) {  //create ship objects
 		if (!fships[i] || fships[i]==-1) continue;
-		var d = [fships[i], data.api_maxhps[i+1], data.api_nowhps[i+1]]; //[id, maxhp, nowhp, plane1, plane2, plane3, plane4]
+		var maxhp, nowhp;
+		if (data.api_f_maxhps) { //new format 2017-11-17
+			maxhp = data.api_f_maxhps[i];
+			nowhp = data.api_f_nowhps[i];
+		} else {
+			maxhp = data.api_maxhps[i+1];
+			nowhp = data.api_nowhps[i+1];
+		}
+		var d = [fships[i], maxhp, nowhp]; //[id, maxhp, nowhp, plane1, plane2, plane3, plane4]
 		for (var j=0; j<fequips[i].length; j++) {
 			if (fequips[i][j] == -1) break;
 			d.push(fequips[i][j]);
 		}
 		fleet1.push(createShip(d,0,i));
 		stage.addChild(fleet1[i].graphic);
-		HPstate[i] = data.api_nowhps[i+1];
+		HPstate[i] = nowhp;
 	}
 	
 	for (var b=0; b<root.battles.length; b++) {
@@ -541,7 +558,15 @@ function processAPI(root) {
 				loader2.add('ship'+b+i,'assets/icons/'+SHIPDATA[data.api_ship_ke[i]].image);
 			else
 				loader2.add('ship'+b+i,'assets/icons/K.png');
-			var d = [data.api_ship_ke[i],data.api_maxhps[i+7],data.api_nowhps[i+7]];
+			var maxhp, nowhp;
+			if (data.api_e_maxhps) { //new format 2017-11-17
+				maxhp = data.api_e_maxhps[i];
+				nowhp = data.api_e_nowhps[i];
+			} else {
+				maxhp = data.api_maxhps[i+7];
+				nowhp = data.api_nowhps[i+7];
+			}
+			var d = [data.api_ship_ke[i],maxhp,nowhp];
 			if (data.api_eSlot[0] == -1) data.api_eSlot = data.api_eSlot.slice(1);
 			for (var j=0; j<data.api_eSlot[i].length; j++) {
 				if (data.api_eSlot[i][j] == -1) break;
@@ -549,7 +574,7 @@ function processAPI(root) {
 			}
 			var sh = createShip(d,1,i,data.api_boss_damaged);
 			f2.push(sh);
-			HPstate[i+6] = data.api_nowhps[i+7];
+			HPstate[i+6] = nowhp;
 			// stage.addChild(sh.graphic);
 		}
 		//load enemy combined
@@ -567,7 +592,15 @@ function processAPI(root) {
 					loader2.add('shipc'+b+i,'assets/icons/'+SHIPDATA[data.api_ship_ke_combined[i]].image);
 				else
 					loader2.add('shipc'+b+i,'assets/icons/K.png');
-				var d = [data.api_ship_ke_combined[i],data.api_maxhps_combined[i+7],data.api_nowhps_combined[i+7]];
+				var maxhp, nowhp;
+				if (data.api_e_maxhps_combined) { //new format 2017-11-17
+					maxhp = data.api_e_maxhps_combined[i];
+					nowhp = data.api_e_nowhps_combined[i];
+				} else {
+					maxhp = data.api_maxhps_combined[i+7];
+					nowhp = data.api_nowhps_combined[i+7];
+				}
+				var d = [data.api_ship_ke_combined[i],maxhp,nowhp];
 				if (data.api_eSlot_combined[0] == -1) data.api_eSlot_combined = data.api_eSlot_combined.slice(1);
 				for (var j=0; j<data.api_eSlot_combined[i].length; j++) {
 					if (data.api_eSlot_combined[i][j] == -1) break;
@@ -584,12 +617,22 @@ function processAPI(root) {
 				sh.graphic.addChild(mask);
 				sh.escorte = true;
 				sh.graphic.y += 480;
-				HPstate[i+18] = data.api_nowhps_combined[i+7];
+				HPstate[i+18] = nowhp;
 			}
 		}
 		
-		for (var i=0; i<fleet1.length; i++) HPstate[i] = data.api_nowhps[i+1];
-		if (COMBINED) for (var i=0; i<fleet1C.length; i++) HPstate[i+12] = data.api_nowhps_combined[i+1];
+		if (data.api_f_nowhps) {
+			for (var i=0; i<fleet1.length; i++) HPstate[i] = data.api_f_nowhps[i];
+		} else {
+			for (var i=0; i<fleet1.length; i++) HPstate[i] = data.api_nowhps[i+1];
+		}
+		if (COMBINED) {
+			if (data.api_f_nowhps_combined) {
+				for (var i=0; i<fleet1C.length; i++) HPstate[i+12] = data.api_f_nowhps_combined[i];
+			} else {
+				for (var i=0; i<fleet1C.length; i++) HPstate[i+12] = data.api_nowhps_combined[i+1];
+			}
+		}
 		var NBonly = (!!data.api_hougeki || Object.keys(data).length <= 0);
 		var battledata = [data.api_formation[2],data.api_formation[0],data.api_formation[1],0,0,(NBonly)?1:0];
 		var escape = [[],[]];
@@ -618,7 +661,7 @@ function processAPI(root) {
 		
 		//for reading air phase
 		var processKouku = function(kouku,isbombing,isjet) {
-			if (kouku && kouku.api_plane_from && (kouku.api_plane_from[0][0] != -1 || kouku.api_plane_from[1][0] != -1)) {
+			if (kouku && kouku.api_plane_from && ((kouku.api_plane_from[0] && kouku.api_plane_from[0][0] != -1) || (kouku.api_plane_from[1] && kouku.api_plane_from[1][0] != -1))) {
 				//air state
 				var AS1 = {0:0,1:2,2:1,3:-1,4:-2}[kouku.api_stage1.api_disp_seiku];
 				if (AS1 > 2) AS1 = -AS1+2;
@@ -627,7 +670,7 @@ function processAPI(root) {
 				//attackers
 				var attackdata = [];
 				var attackers = [];
-				if (kouku.api_plane_from[0][0] != -1) {
+				if (kouku.api_plane_from[0] && kouku.api_plane_from[0][0] != -1) {
 					for (var i=0; i<kouku.api_plane_from[0].length; i++) {
 						var ship = (isbombing)? kouku.api_plane_from[0][i] : (kouku.api_plane_from[0][i]<7)? fleet1[kouku.api_plane_from[0][i]-1] : fleet1C[kouku.api_plane_from[0][i]-7];
 						if (isbombing && kouku.api_squadron_plane.length <= i) continue;
@@ -640,7 +683,7 @@ function processAPI(root) {
 						attackers.push(ship);
 					}
 				}
-				if (kouku.api_plane_from[1][0] != -1) {
+				if (kouku.api_plane_from[1] && kouku.api_plane_from[1][0] != -1) {
 					for (var i=0; i<kouku.api_plane_from[1].length; i++) {
 						var slot = kouku.api_plane_from[1][i];
 						if (slot > 6) slot -= 6;
@@ -650,14 +693,14 @@ function processAPI(root) {
 				}
 				//defenders
 				var defenders = [];
-				if (kouku.api_plane_from[1][0] != -1) {
+				if (kouku.api_plane_from[1] && kouku.api_plane_from[1][0] != -1) {
 					var anyAA = false;
 					for (var i=0; i<fleet1.length; i++) {
 						if (fleet1[i].hasAAgear) { defenders.push(fleet1[i]); anyAA = true; }
 					}
 					if (!anyAA && ((kouku.api_stage1 && kouku.api_stage1.api_e_lostcount) || (kouku.api_stage2 && kouku.api_stage2.api_e_lostcount))) defenders.push(fleet1[0]);
 				}
-				if (kouku.api_plane_from[0][0] != -1) {
+				if (kouku.api_plane_from[0] && kouku.api_plane_from[0][0] != -1) {
 					var anyAA = false;
 					for (var i=0; i<f2.length; i++) {
 						if (f2[i].hasAAgear) { defenders.push(f2[i]); anyAA = true; }
@@ -708,40 +751,41 @@ function processAPI(root) {
 				var targetdata = [];
 				if (kouku.api_stage3) {
 					for (var i=0; i<6; i++) {
+						var ind = (OLDFORMAT)? i+1 : i;
 						if (kouku.api_stage3.api_fdam) {
-							var dam = parseInt(kouku.api_stage3.api_fdam[i+1]);  //remember later, .1 = protect
+							var dam = parseInt(kouku.api_stage3.api_fdam[ind]);  //remember later, .1 = protect
 							HPstate[i] -= Math.floor(dam);
-							var hit = (kouku.api_stage3.api_frai_flag[i+1] || kouku.api_stage3.api_fbak_flag[i+1]);
-							if (hit) targetdata.push([fleet1[i],(dam>0)? dam:0,(dam!=kouku.api_stage3.api_fdam[i+1]),kouku.api_stage3.api_fcl_flag[i+1],kouku.api_stage3.api_frai_flag[i+1]]);
+							var hit = (kouku.api_stage3.api_frai_flag[ind] || kouku.api_stage3.api_fbak_flag[ind]);
+							if (hit) targetdata.push([fleet1[i],(dam>0)? dam:0,(dam!=kouku.api_stage3.api_fdam[ind]),kouku.api_stage3.api_fcl_flag[ind],kouku.api_stage3.api_frai_flag[ind]]);
 						}
 						
 						if (kouku.api_stage3.api_edam) {
-							var dam = parseInt(kouku.api_stage3.api_edam[i+1]);
+							var dam = parseInt(kouku.api_stage3.api_edam[ind]);
 							HPstate[i+6] -= Math.floor(dam);
-							hit = (kouku.api_stage3.api_erai_flag[i+1] || kouku.api_stage3.api_ebak_flag[i+1]);
-							if (hit) targetdata.push([f2[i],(dam>0)? dam:0,(dam!=kouku.api_stage3.api_edam[i+1]),kouku.api_stage3.api_ecl_flag[i+1],kouku.api_stage3.api_erai_flag[i+1]]);
+							hit = (kouku.api_stage3.api_erai_flag[ind] || kouku.api_stage3.api_ebak_flag[ind]);
+							if (hit) targetdata.push([f2[i],(dam>0)? dam:0,(dam!=kouku.api_stage3.api_edam[ind]),kouku.api_stage3.api_ecl_flag[ind],kouku.api_stage3.api_erai_flag[ind]]);
 						}
 						
 						if (kouku.api_stage3_combined) {
 							if (kouku.api_stage3_combined.api_fdam) {
-								var dam = parseInt(kouku.api_stage3_combined.api_fdam[i+1]);  //remember later, .1 = protect
+								var dam = parseInt(kouku.api_stage3_combined.api_fdam[ind]);  //remember later, .1 = protect
 								HPstate[i+12] -= Math.floor(dam);
-								var hit = (kouku.api_stage3_combined.api_frai_flag[i+1] || kouku.api_stage3_combined.api_fbak_flag[i+1]);
-								if (hit) targetdata.push([fleet1C[i],(dam>0)? dam:0,(dam!=kouku.api_stage3_combined.api_fdam[i+1]),kouku.api_stage3_combined.api_fcl_flag[i+1],kouku.api_stage3_combined.api_frai_flag[i+1]]);
+								var hit = (kouku.api_stage3_combined.api_frai_flag[ind] || kouku.api_stage3_combined.api_fbak_flag[ind]);
+								if (hit) targetdata.push([fleet1C[i],(dam>0)? dam:0,(dam!=kouku.api_stage3_combined.api_fdam[ind]),kouku.api_stage3_combined.api_fcl_flag[ind],kouku.api_stage3_combined.api_frai_flag[ind]]);
 							}
 							if (kouku.api_stage3_combined.api_edam) {
-								var dam = parseInt(kouku.api_stage3_combined.api_edam[i+1]);  //remember later, .1 = protect
+								var dam = parseInt(kouku.api_stage3_combined.api_edam[ind]);  //remember later, .1 = protect
 								HPstate[i+18] -= Math.floor(dam);
-								var hit = (kouku.api_stage3_combined.api_erai_flag[i+1] || kouku.api_stage3_combined.api_ebak_flag[i+1]);
-								if (hit) targetdata.push([f2c[i],(dam>0)? dam:0,(dam!=kouku.api_stage3_combined.api_edam[i+1]),kouku.api_stage3_combined.api_ecl_flag[i+1],kouku.api_stage3_combined.api_erai_flag[i+1]]);
+								var hit = (kouku.api_stage3_combined.api_erai_flag[ind] || kouku.api_stage3_combined.api_ebak_flag[ind]);
+								if (hit) targetdata.push([f2c[i],(dam>0)? dam:0,(dam!=kouku.api_stage3_combined.api_edam[ind]),kouku.api_stage3_combined.api_ecl_flag[ind],kouku.api_stage3_combined.api_erai_flag[ind]]);
 							}
 						}
 					}
 				}
 				var show = false;
-				if (kouku.api_plane_from[0][0] != -1)
+				if (kouku.api_plane_from[0] && kouku.api_plane_from[0][0] != -1)
 					for (var i=0; i<f2.length; i++) if (!f2[i].issub) { show = true; break; }
-				if (!show && kouku.api_plane_from[1][0] != -1)
+				if (!show && kouku.api_plane_from[1] && kouku.api_plane_from[1][0] != -1)
 					for (var i=0; i<fleet1.length; i++) if (!fleet1[i].issub) { show = true; break; }
 				if (targetdata.length || show) {
 					eventqueue.push([wait,[1000]]);
@@ -777,24 +821,43 @@ function processAPI(root) {
 			var shots = [];
 			var num = (ecombined)? 12 : 6;
 			for (var i=0; i<num; i++) {
-				if (rai.api_frai[i+1] > 0) {
-					var target;
-					if (ecombined && rai.api_frai[i+1] >= 7) target = f2c[rai.api_frai[i+1]-7];
-					else target = f2[rai.api_frai[i+1]-1];
-					var attacker = (i>=6)? f1[i-6] : f1[i];
-					var crit = (rai.api_fcl[i+1] == 2);
-					shots.push([attacker,target,rai.api_fydam[i+1],crit]);
+				if (OLDFORMAT) {
+					if (rai.api_frai[i+1] > 0) {
+						var target;
+						if (ecombined && rai.api_frai[i+1] >= 7) target = f2c[rai.api_frai[i+1]-7];
+						else target = f2[rai.api_frai[i+1]-1];
+						var attacker = (i>=6)? f1[i-6] : f1[i];
+						var crit = (rai.api_fcl[i+1] == 2);
+						shots.push([attacker,target,rai.api_fydam[i+1],crit]);
+					}
+					if (rai.api_erai[i+1] > 0) {
+						var target;
+						if (ecombined) target = (rai.api_erai[i+1]>=7)? f1[rai.api_erai[i+1]-7] : fleet1[rai.api_erai[i+1]-1];
+						else target = f1[rai.api_erai[i+1]-1];
+						var attacker = (ecombined)? f2c[i-6] : f2[i];
+						var crit = (rai.api_ecl[i+1] == 2);
+						shots.push([attacker,target,rai.api_eydam[i+1],crit]);
+					}
+					HPstate[i+((i>=6)?12:6)] -= Math.floor(rai.api_edam[i+1]);
+					HPstate[i+((COMBINED)?12:0)] -= Math.floor(rai.api_fdam[i+1]);
+				} else {
+					if (rai.api_frai[i] > -1) {
+						var target;
+						if (ecombined && rai.api_frai[i] >= 6) target = f2c[rai.api_frai[i]-6];
+						else target = f2[rai.api_frai[i]];
+						var attacker = (i>=6)? f1[i-6] : f1[i];
+						var crit = (rai.api_fcl[i] == 2);
+						shots.push([attacker,target,rai.api_fydam[i],crit]);
+					}
+					if (rai.api_erai[i] > -1) {
+						var target;
+						if (ecombined) target = (rai.api_erai[i] >= 6)? f1[rai.api_erai[i]-6] : fleet1[rai.api_erai[i]];
+						else target = f1[rai.api_erai[i]];
+						var attacker = (ecombined)? f2c[i-6] : f2[i];
+						var crit = (rai.api_ecl[i] == 2);
+						shots.push([attacker,target,rai.api_eydam[i],crit]);
+					}
 				}
-				if (rai.api_erai[i+1] > 0) {
-					var target;
-					if (ecombined) target = (rai.api_erai[i+1]>=7)? f1[rai.api_erai[i+1]-7] : fleet1[rai.api_erai[i+1]-1];
-					else target = f1[rai.api_erai[i+1]-1];
-					var attacker = (ecombined)? f2c[i-6] : f2[i];
-					var crit = (rai.api_ecl[i+1] == 2);
-					shots.push([attacker,target,rai.api_eydam[i+1],crit]);
-				}
-				HPstate[i+((i>=6)?12:6)] -= Math.floor(rai.api_edam[i+1]);
-				HPstate[i+((COMBINED)?12:0)] -= Math.floor(rai.api_fdam[i+1]);
 			}
 			if (shots.length) {
 				eventqueue.push([wait,[1000]]);
@@ -822,7 +885,8 @@ function processAPI(root) {
 		
 		//for reading shelling phase
 		var processHougeki = function(hou,f1,ecombined) {
-			for (var j=1; j<hou.api_at_list.length; j++) {
+			for (var j=0; j<hou.api_at_list.length; j++) {
+				if (hou.api_at_list[j] == -1) continue;
 				var d = [];
 				
 				var attacker;
@@ -830,7 +894,11 @@ function processAPI(root) {
 					if (hou.api_at_eflag[j]) attacker = (hou.api_at_list[j]>6)? f2c[hou.api_at_list[j]-7] : f2[hou.api_at_list[j]-1];
 					else attacker = (hou.api_at_list[j]>6)? fleet1C[hou.api_at_list[j]-7] : fleet1[hou.api_at_list[j]-1];
 				} else {
-					attacker = (hou.api_at_list[j]>6)? f2[hou.api_at_list[j]-7] : f1[hou.api_at_list[j]-1]
+					if (hou.api_at_eflag) { //new format 2017-11-17
+						attacker = (hou.api_at_eflag[j])? f2[hou.api_at_list[j]] : f1[hou.api_at_list[j]];
+					} else {
+						attacker = (hou.api_at_list[j]>6)? f2[hou.api_at_list[j]-7] : f1[hou.api_at_list[j]-1];
+					}
 				}
 				d.push(attacker); //attacker
 				
@@ -839,14 +907,26 @@ function processAPI(root) {
 					if (!hou.api_at_eflag[j]) defender = (hou.api_df_list[j][0]>6)? f2c[hou.api_df_list[j][0]-7] : f2[hou.api_df_list[j][0]-1];
 					else defender = (hou.api_df_list[j][0]>6)? fleet1C[hou.api_df_list[j][0]-7] : fleet1[hou.api_df_list[j][0]-1];
 				} else {
-					defender = (hou.api_df_list[j][0]>6)? f2[hou.api_df_list[j][0]-7] : f1[hou.api_df_list[j][0]-1];
+					if (hou.api_at_eflag) { //new format 2017-11-17
+						defender = (hou.api_at_eflag[j])? f1[hou.api_df_list[j]] : f2[hou.api_df_list[j]];
+					} else {
+						defender = (hou.api_df_list[j][0]>6)? f2[hou.api_df_list[j][0]-7] : f1[hou.api_df_list[j][0]-1];
+					}
 				}
 				d.push(defender); //target
 				
 				for (var k=0; k<hou.api_damage[j].length; k++) {
 					d.push(parseInt(hou.api_damage[j][k])); //damage
-					if (!ecombined) HPstate[hou.api_df_list[j][0]-1+((f1[0].escort && hou.api_df_list[j][0] < 7)?12:0)] -= Math.floor(hou.api_damage[j][k]);
-					else {
+					if (!ecombined) {
+						if (hou.api_at_eflag) { //new format 2017-11-17
+							var ind = hou.api_df_list[j][0];
+							if (ind >= 6) ind += 6;
+							if (hou.api_at_eflag) ind += 6;
+							HPstate[ind] -= Math.floor(hou.api_damage[j][k]);
+						} else {
+							HPstate[hou.api_df_list[j][0]-1+((f1[0].escort && hou.api_df_list[j][0] < 7)?12:0)] -= Math.floor(hou.api_damage[j][k]);
+						}
+					} else {
 						var ind = hou.api_df_list[j][0]-1;
 						if (hou.api_at_eflag[j] && ind >= 6) ind += 6; //player escort (not used currently)
 						else if (!hou.api_at_eflag[j] && ind < 6) ind += 6; //enemy main
@@ -963,10 +1043,11 @@ function processAPI(root) {
 			} else if (data.api_support_info.api_support_airatack) {
 				var stage3 = data.api_support_info.api_support_airatack.api_stage3;
 				var targetdata = [];
-				for (var i=1; i<stage3.api_edam.length; i++) {
+				for (var i=0; i<stage3.api_edam.length; i++) {
+					if (stage3.api_edam[i] == -1) continue;
 					if (stage3.api_ebak_flag[i] || stage3.api_erai_flag[i]) {
-						if (i<=6) targetdata.push([f2[i-1],Math.floor(stage3.api_edam[i])]);
-						else targetdata.push([f2c[i-7],Math.floor(stage3.api_edam[i])]);
+						if (i<=5+1*OLDFORMAT) targetdata.push([f2[i-1*OLDFORMAT],Math.floor(stage3.api_edam[i])]);
+						else targetdata.push([f2c[i-6-1*OLDFORMAT],Math.floor(stage3.api_edam[i])]);
 					}
 				}
 				eventqueue.push([GAirPhase,[[1,1],targetdata,[],-1,-1,-1,-1,false,false,true]]);
@@ -1038,18 +1119,39 @@ function processAPI(root) {
 			}
 			eventqueue.push([NBstart,[yasen.api_flare_pos,yasen.api_touch_plane,(orel)?999:(isboss)? map.bgmNB : map.bgmNN, combinedEType]]);
 			var hou = yasen.api_hougeki;
-			for (var j=1; j<hou.api_at_list.length; j++) {
+			for (var j=0; j<hou.api_at_list.length; j++) {
+				if (hou.api_at_list[j] == -1) continue;
 				var d = [];
-				d.push( (hou.api_at_list[j]>6)? f2e[hou.api_at_list[j]-7] : f1[hou.api_at_list[j]-1] ); //attacker
-				d.push( (hou.api_df_list[j][0]>6)? f2e[hou.api_df_list[j][0]-7] : f1[hou.api_df_list[j][0]-1] ); //target
+				if (hou.api_at_eflag) { //new format 2017-11-17
+					d.push((hou.api_at_eflag[j])? f2e[hou.api_at_list[j]] : f1[hou.api_at_list[j]]); //attacker
+					d.push((hou.api_at_eflag[j])? f1[hou.api_df_list[j][0]] : f2e[hou.api_df_list[j][0]]); //target
+				} else {
+					d.push( (hou.api_at_list[j]>6)? f2e[hou.api_at_list[j]-7] : f1[hou.api_at_list[j]-1] ); //attacker
+					d.push( (hou.api_df_list[j][0]>6)? f2e[hou.api_df_list[j][0]-7] : f1[hou.api_df_list[j][0]-1] ); //target
+				}
 				for (var k=0; k<hou.api_damage[j].length; k++) {
 					d.push(parseInt(hou.api_damage[j][k])); //damage
 					if (!combinedEType) {
-						HPstate[hou.api_df_list[j][0]-1+((COMBINED && hou.api_df_list[j][0] < 7)?12:0)] -= Math.max(0,Math.floor(hou.api_damage[j][k]));
+						var ind;
+						if (hou.api_at_eflag) {
+							ind = hou.api_df_list[j][0];
+							if (ind >= 6) ind += 6;
+							if (hou.api_at_eflag) ind += 6;
+						} else {
+							ind = hou.api_df_list[j][0]-1+((COMBINED && hou.api_df_list[j][0] < 7)?12:0)
+						}
+						HPstate[ind] -= Math.max(0,Math.floor(hou.api_damage[j][k]));
 					} else {
-						var ind = hou.api_df_list[j][0]-1;
-						if (combinedEType == 2 && ind >= 6) ind += 12;
-						if (COMBINED && ind < 6) ind += 12;
+						var ind;
+						if (hou.api_at_eflag) {
+							ind = hou.api_df_list[j][0];
+							if (ind >= 6) ind += 6;
+							if (hou.api_at_eflag) ind += 6;
+						} else {
+							ind = hou.api_df_list[j][0]-1;
+							if (combinedEType == 2 && ind >= 6) ind += 12;
+							if (COMBINED && ind < 6) ind += 12;
+						}
 						HPstate[ind] -= Math.max(0,Math.floor(hou.api_damage[j][k]));
 					}
 				}
