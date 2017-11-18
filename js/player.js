@@ -512,7 +512,7 @@ function processAPI(root) {
 			fleet1C[i].escort = true;
 			fleet1C[i].graphic.y += 480;
 			stage.addChild(fleet1C[i].graphic);
-			HPstate[i+12] = data.api_nowhps_combined[i+1];
+			HPstate[i+12] = nowhp;
 		}
 	}
 	for (var i=0; i<fships.length; i++) {  //create ship objects
@@ -819,7 +819,7 @@ function processAPI(root) {
 		//for reading torpedo phase
 		var processRaigeki = function(rai,f1,ecombined) {
 			var shots = [];
-			var num = (ecombined)? 12 : 6;
+			var num = Math.max(rai.api_frai.length, rai.api_erai.length);
 			for (var i=0; i<num; i++) {
 				if (OLDFORMAT) {
 					if (rai.api_frai[i+1] > 0) {
@@ -842,18 +842,16 @@ function processAPI(root) {
 					HPstate[i+((COMBINED)?12:0)] -= Math.floor(rai.api_fdam[i+1]);
 				} else {
 					if (rai.api_frai[i] > -1) {
-						var target;
-						if (ecombined && rai.api_frai[i] >= 6) target = f2c[rai.api_frai[i]-6];
-						else target = f2[rai.api_frai[i]];
-						var attacker = (i>=6)? f1[i-6] : f1[i];
+						var ind = rai.api_frai[i];
+						var target = (ind >= 6)? f2c[ind-6] : f2[ind];
+						var attacker = (i>=6)? fleet1C[i-6] : fleet1[i];
 						var crit = (rai.api_fcl[i] == 2);
 						shots.push([attacker,target,rai.api_fydam[i],crit]);
 					}
 					if (rai.api_erai[i] > -1) {
-						var target;
-						if (ecombined) target = (rai.api_erai[i] >= 6)? f1[rai.api_erai[i]-6] : fleet1[rai.api_erai[i]];
-						else target = f1[rai.api_erai[i]];
-						var attacker = (ecombined)? f2c[i-6] : f2[i];
+						var ind = rai.api_erai[i];
+						var target = (ind >= 6)? fleet1C[ind-6] : fleet1[ind];
+						var attacker = (i >= 6)? f2c[i-6] : f2[i];
 						var crit = (rai.api_ecl[i] == 2);
 						shots.push([attacker,target,rai.api_eydam[i],crit]);
 					}
@@ -891,11 +889,19 @@ function processAPI(root) {
 				
 				var attacker;
 				if (ecombined) {
-					if (hou.api_at_eflag[j]) attacker = (hou.api_at_list[j]>6)? f2c[hou.api_at_list[j]-7] : f2[hou.api_at_list[j]-1];
-					else attacker = (hou.api_at_list[j]>6)? fleet1C[hou.api_at_list[j]-7] : fleet1[hou.api_at_list[j]-1];
+					if (OLDFORMAT) {
+						if (hou.api_at_eflag[j]) attacker = (hou.api_at_list[j]>6)? f2c[hou.api_at_list[j]-7] : f2[hou.api_at_list[j]-1];
+						else attacker = (hou.api_at_list[j]>6)? fleet1C[hou.api_at_list[j]-7] : fleet1[hou.api_at_list[j]-1];
+					} else {
+						var ind = hou.api_at_list[j];
+						if (hou.api_at_eflag[j]) attacker = (ind >= 6)? f2c[ind-6] : f2[ind];
+						else attacker = (ind >= 6)? fleet1C[ind-6] : fleet1[ind];
+					}
 				} else {
 					if (hou.api_at_eflag) { //new format 2017-11-17
-						attacker = (hou.api_at_eflag[j])? f2[hou.api_at_list[j]] : f1[hou.api_at_list[j]];
+						var ind = hou.api_at_list[j];
+						if (ind >= 6) ind -= 6; //combined
+						attacker = (hou.api_at_eflag[j])? f2[ind] : f1[ind];
 					} else {
 						attacker = (hou.api_at_list[j]>6)? f2[hou.api_at_list[j]-7] : f1[hou.api_at_list[j]-1];
 					}
@@ -904,11 +910,19 @@ function processAPI(root) {
 				
 				var defender;
 				if (ecombined) {
-					if (!hou.api_at_eflag[j]) defender = (hou.api_df_list[j][0]>6)? f2c[hou.api_df_list[j][0]-7] : f2[hou.api_df_list[j][0]-1];
-					else defender = (hou.api_df_list[j][0]>6)? fleet1C[hou.api_df_list[j][0]-7] : fleet1[hou.api_df_list[j][0]-1];
+					if (OLDFORMAT) {
+						if (!hou.api_at_eflag[j]) defender = (hou.api_df_list[j][0]>6)? f2c[hou.api_df_list[j][0]-7] : f2[hou.api_df_list[j][0]-1];
+						else defender = (hou.api_df_list[j][0]>6)? fleet1C[hou.api_df_list[j][0]-7] : fleet1[hou.api_df_list[j][0]-1];
+					} else {
+						var ind = hou.api_df_list[j][0];
+						if (hou.api_at_eflag[j]) defender = (ind >= 6)? fleet1C[ind-6] : fleet1[ind];
+						else defender = (ind >= 6)? f2c[ind-6] : f2[ind];
+					}
 				} else {
 					if (hou.api_at_eflag) { //new format 2017-11-17
-						defender = (hou.api_at_eflag[j])? f1[hou.api_df_list[j]] : f2[hou.api_df_list[j]];
+						var ind = hou.api_df_list[j][0];
+						if (ind >= 6) ind -= 6;
+						defender = (hou.api_at_eflag[j])? f1[ind] : f2[ind];
 					} else {
 						defender = (hou.api_df_list[j][0]>6)? f2[hou.api_df_list[j][0]-7] : f1[hou.api_df_list[j][0]-1];
 					}
@@ -1002,6 +1016,7 @@ function processAPI(root) {
 			for (var j=0; j<f2.length; j++)
 				if (f2[j].planetypes.length) data.api_air_base_injection.api_plane_from[1].push(7+j);
 			if (data.api_air_base_injection.api_plane_from[1].length <= 0) data.api_air_base_injection.api_plane_from[1] = [-1];
+			if (!data.api_air_base_injection.api_plane_from[0]) data.api_air_base_injection.api_plane_from[0] = [-1]; //new format, add back
 			for (var j=0; j<data.api_air_base_injection.api_squadron_plane.length; j++) 
 				if (data.api_air_base_injection.api_squadron_plane[j].api_mst_id) data.api_air_base_injection.api_plane_from[0][j] = j+7;
 			processKouku(data.api_air_base_injection,true); //no isjet=true for now
@@ -1017,6 +1032,7 @@ function processAPI(root) {
 				for (var j=0; j<f2.length; j++)
 					if (f2[j].planetypes.length) data.api_air_base_attack[i].api_plane_from[1].push(7+j);
 				if (data.api_air_base_attack[i].api_plane_from[1].length <= 0) data.api_air_base_attack[i].api_plane_from[1] = [-1];
+				if (!data.api_air_base_attack[i].api_plane_from[0]) data.api_air_base_attack[i].api_plane_from[0] = [-1]; //new format, add back
 				for (var j=0; j<data.api_air_base_attack[i].api_squadron_plane.length; j++) 
 					if (data.api_air_base_attack[i].api_squadron_plane[j].api_mst_id) data.api_air_base_attack[i].api_plane_from[0][j] = j+7;
 				processKouku(data.api_air_base_attack[i],true);
@@ -1123,8 +1139,12 @@ function processAPI(root) {
 				if (hou.api_at_list[j] == -1) continue;
 				var d = [];
 				if (hou.api_at_eflag) { //new format 2017-11-17
-					d.push((hou.api_at_eflag[j])? f2e[hou.api_at_list[j]] : f1[hou.api_at_list[j]]); //attacker
-					d.push((hou.api_at_eflag[j])? f1[hou.api_df_list[j][0]] : f2e[hou.api_df_list[j][0]]); //target
+					var ind = hou.api_at_list[j];
+					if (ind >= 6) ind -= 6;
+					d.push((hou.api_at_eflag[j])? f2e[ind] : f1[ind]); //attacker
+					ind = hou.api_df_list[j][0];
+					if (ind >= 6) ind -= 6;
+					d.push((hou.api_at_eflag[j])? f1[ind] : f2e[ind]); //target
 				} else {
 					d.push( (hou.api_at_list[j]>6)? f2e[hou.api_at_list[j]-7] : f1[hou.api_at_list[j]-1] ); //attacker
 					d.push( (hou.api_df_list[j][0]>6)? f2e[hou.api_df_list[j][0]-7] : f1[hou.api_df_list[j][0]-1] ); //target
@@ -3470,7 +3490,7 @@ function showContact(planeid,side,nightscout) {
 	if (nightscout) {
 		plane = getFromPool('p102','assets/p102.png');
 	} else {
-		switch (EQDATA[planeid].b_image) {
+		switch (EQDATA[planeid] && EQDATA[planeid].b_image) {
 			case 3: case 4: case 5: plane = getFromPool('p516','assets/p516.png'); break;
 			case 6: case 7: case 8: case 9: case 10: plane = getFromPool('p549','assets/p549.png'); break;
 			default:
