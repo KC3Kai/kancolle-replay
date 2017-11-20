@@ -531,6 +531,7 @@ function processAPI(root) {
 			d.push(fequips[i][j]);
 		}
 		fleet1.push(createShip(d,0,i));
+		if (fships.length >= 7) fleet1[i].graphic.y -= 25;
 		stage.addChild(fleet1[i].graphic);
 		HPstate[i] = nowhp;
 	}
@@ -843,15 +844,15 @@ function processAPI(root) {
 				} else {
 					if (rai.api_frai[i] > -1) {
 						var ind = rai.api_frai[i];
-						var target = (ind >= 6)? f2c[ind-6] : f2[ind];
-						var attacker = (i>=6)? fleet1C[i-6] : fleet1[i];
+						var target = (ind >= 6 && f2.length < 7)? f2c[ind-6] : f2[ind];
+						var attacker = (i >= 6 && fleet1.length < 7)? fleet1C[i-6] : fleet1[i];
 						var crit = (rai.api_fcl[i] == 2);
 						shots.push([attacker,target,rai.api_fydam[i],crit]);
 					}
 					if (rai.api_erai[i] > -1) {
 						var ind = rai.api_erai[i];
-						var target = (ind >= 6)? fleet1C[ind-6] : fleet1[ind];
-						var attacker = (i >= 6)? f2c[i-6] : f2[i];
+						var target = (ind >= 6 && fleet1.length < 7)? fleet1C[ind-6] : fleet1[ind];
+						var attacker = (i >= 6 && f2.length < 7)? f2c[i-6] : f2[i];
 						var crit = (rai.api_ecl[i] == 2);
 						shots.push([attacker,target,rai.api_eydam[i],crit]);
 					}
@@ -894,14 +895,15 @@ function processAPI(root) {
 						else attacker = (hou.api_at_list[j]>6)? fleet1C[hou.api_at_list[j]-7] : fleet1[hou.api_at_list[j]-1];
 					} else {
 						var ind = hou.api_at_list[j];
-						if (hou.api_at_eflag[j]) attacker = (ind >= 6)? f2c[ind-6] : f2[ind];
-						else attacker = (ind >= 6)? fleet1C[ind-6] : fleet1[ind];
+						if (hou.api_at_eflag[j]) attacker = (ind >= 6 && f2.length < 7)? f2c[ind-6] : f2[ind];
+						else attacker = (ind >= 6 && fleet1.length < 7)? fleet1C[ind-6] : fleet1[ind];
 					}
 				} else {
 					if (hou.api_at_eflag) { //new format 2017-11-17
+						var fleet = (hou.api_at_eflag[j])? f2 : f1;
 						var ind = hou.api_at_list[j];
-						if (ind >= 6) ind -= 6; //combined
-						attacker = (hou.api_at_eflag[j])? f2[ind] : f1[ind];
+						if (ind >= 6 && fleet.length < 7) ind -= 6; //combined
+						attacker = fleet[ind];
 					} else {
 						attacker = (hou.api_at_list[j]>6)? f2[hou.api_at_list[j]-7] : f1[hou.api_at_list[j]-1];
 					}
@@ -915,14 +917,15 @@ function processAPI(root) {
 						else defender = (hou.api_df_list[j][0]>6)? fleet1C[hou.api_df_list[j][0]-7] : fleet1[hou.api_df_list[j][0]-1];
 					} else {
 						var ind = hou.api_df_list[j][0];
-						if (hou.api_at_eflag[j]) defender = (ind >= 6)? fleet1C[ind-6] : fleet1[ind];
-						else defender = (ind >= 6)? f2c[ind-6] : f2[ind];
+						if (hou.api_at_eflag[j]) defender = (ind >= 6 && fleet1.length < 7)? fleet1C[ind-6] : fleet1[ind];
+						else defender = (ind >= 6 && f2.length < 7)? f2c[ind-6] : f2[ind];
 					}
 				} else {
 					if (hou.api_at_eflag) { //new format 2017-11-17
+						var fleet = (hou.api_at_eflag[j])? f1 : f2;
 						var ind = hou.api_df_list[j][0];
-						if (ind >= 6) ind -= 6;
-						defender = (hou.api_at_eflag[j])? f1[ind] : f2[ind];
+						if (ind >= 6 && fleet.length < 7) ind -= 6;
+						defender = fleet[ind];
 					} else {
 						defender = (hou.api_df_list[j][0]>6)? f2[hou.api_df_list[j][0]-7] : f1[hou.api_df_list[j][0]-1];
 					}
@@ -1139,12 +1142,14 @@ function processAPI(root) {
 				if (hou.api_at_list[j] == -1) continue;
 				var d = [];
 				if (hou.api_at_eflag) { //new format 2017-11-17
+					var fleet = (hou.api_at_eflag[j])? f2e : f1;
 					var ind = hou.api_at_list[j];
-					if (ind >= 6) ind -= 6;
-					d.push((hou.api_at_eflag[j])? f2e[ind] : f1[ind]); //attacker
+					if (ind >= 6 && fleet.length < 7) ind -= 6;
+					d.push(fleet[ind]); //attacker
+					fleet = (hou.api_at_eflag[j])? f1 : f2e;
 					ind = hou.api_df_list[j][0];
-					if (ind >= 6) ind -= 6;
-					d.push((hou.api_at_eflag[j])? f1[ind] : f2e[ind]); //target
+					if (ind >= 6 && fleet.length < 7) ind -= 6;
+					d.push(fleet[ind]); //target
 				} else {
 					d.push( (hou.api_at_list[j]>6)? f2e[hou.api_at_list[j]-7] : f1[hou.api_at_list[j]-1] ); //attacker
 					d.push( (hou.api_df_list[j][0]>6)? f2e[hou.api_df_list[j][0]-7] : f1[hou.api_df_list[j][0]-1] ); //target
