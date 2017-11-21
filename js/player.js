@@ -194,7 +194,7 @@ function createDots(container,form,num,side) {
 	switch(form) {
 		case 0:
 		case 1:
-			var space = 15;
+			var space = (num > 6)? 13 : 15;
 			for (var i=-space*(num-1)/2; i<=space*(num-1)/2; i+=space) {
 				var dot = getFromPool(name,path);
 				dot.x = i; dot.y = 0;
@@ -211,7 +211,8 @@ function createDots(container,form,num,side) {
 					if (++c > num) break;
 					var dot = getFromPool(name,path);
 					var ii = (side==0)? -i : i;
-					dot.position.set(ii,j);
+					if (num > 6 && c == num && num % 2 == 1) dot.position.set(ii,0);
+					else dot.position.set(ii,j);
 					dot.anchor.set(.5);
 					dot.scale.set(.67);
 					container.addChild(dot);
@@ -220,8 +221,10 @@ function createDots(container,form,num,side) {
 			break;
 		case 3:
 			var coords;
-			if (num >= 6) coords = [[23,0],[-23,0],[0,21],[0,-21],[-8,0],[8,0]];
-			else coords = [[16,0],[-16,0],[0,16],[0,-16],[0,0]];
+			if (num >= 7) coords = [[0,0],[-27,0],[27,0],[-14,-24],[14,-24],[-14,24],[14,24]];
+			else if (num == 6) coords = [[23,0],[-23,0],[0,21],[0,-21],[-8,0],[8,0]];
+			else if (num == 5) coords = [[16,0],[-16,0],[0,16],[0,-16],[0,0]];
+			else coords = [[0,0],[-16,0],[8,-14],[8,14]];
 			for (var i=0; i<coords.length; i++) {
 				var dot = getFromPool(name,path);
 				dot.position.set(coords[i][0],coords[i][1]);
@@ -231,7 +234,7 @@ function createDots(container,form,num,side) {
 			}
 			break;
 		case 4:
-			var space = 10;
+			var space = (num > 6)? 9 : 10;
 			for (var i=-space*(num-1)/2; i<=space*(num-1)/2; i+=space) {
 				var dot = getFromPool(name,path);
 				dot.position.set(i);
@@ -241,10 +244,22 @@ function createDots(container,form,num,side) {
 			}
 			break;
 		case 5:
-			var space = 15;
+			var space = (num > 6)? 13 : 15;
 			for (var i=-space*(num-1)/2; i<=space*(num-1)/2; i+=space) {
 				var dot = getFromPool(name,path);
 				dot.y = i; dot.x = 0;
+				dot.anchor.set(.5);
+				dot.scale.set(.67);
+				container.addChild(dot);
+			}
+			break;
+		case 6: 
+			var coords = [[11,12],[11,-12],[18,0],[-2,0],[-17,0],[-32,0],[32,0]];
+			for (var i=0; i<num; i++) {
+				var cx = (num <= 6)? coords[i][0] + 7 : coords[i][0];
+				if (side) cx *= -1;
+				var dot = getFromPool(name,path);
+				dot.position.set(cx, coords[i][1]);
 				dot.anchor.set(.5);
 				dot.scale.set(.67);
 				container.addChild(dot);
@@ -531,7 +546,7 @@ function processAPI(root) {
 			d.push(fequips[i][j]);
 		}
 		fleet1.push(createShip(d,0,i));
-		if (fships.length >= 7) fleet1[i].graphic.y -= 25;
+		dots1.y = radar1.y = (fships.length >= 7)? 429 : 402;
 		stage.addChild(fleet1[i].graphic);
 		HPstate[i] = nowhp;
 	}
