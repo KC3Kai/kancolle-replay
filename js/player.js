@@ -1180,10 +1180,10 @@ function processAPI(root) {
 			if (data.api_n_support_flag) {
 				processSupport(data.api_n_support_flag, data.api_n_support_info);
 			}
-			if (data.api_n_hougeki1) {
+			if (data.api_n_hougeki1 && data.api_n_hougeki1.api_at_list) {
 				processYasenHougeki(data.api_n_hougeki1);
 			}
-			if (data.api_n_hougeki2) {
+			if (data.api_n_hougeki2 && data.api_n_hougeki2.api_at_list) {
 				processYasenHougeki(data.api_n_hougeki2);
 			}
 			eventqueue.push([wait,[1000]]);
@@ -1295,7 +1295,7 @@ function processAPI(root) {
 			if (data.api_n_support_flag) {
 				processSupport(data.api_n_support_flag, data.api_n_support_info);
 			}
-			processYasenHougeki(yasen.api_hougeki);
+			if (yasen.api_hougeki && yasen.api_hougeki.api_at_list) processYasenHougeki(yasen.api_hougeki);
 			if (!isboss && map.bgmNN != map.bgmDN) eventqueue.push([wait,[1,true]]);
 		}
 		if (b==root.battles.length-1) eventqueue.push([battleEnd,[],getState()]);
