@@ -1674,6 +1674,10 @@ function battleStart(battledata,newships,newshipsC,escape,bgm,showbosshp) {
 
 	addTimeout(function() { showEngage(GEngage); }, 500);
 	
+	var hps = eventqueue[e][2].HP;
+	for (var i=0; i<fleet1.length; i++) shipSetHP(fleet1[i],hps[i]);
+	for (var i=0; i<fleet1C.length; i++) shipSetHP(fleet1C[i],hps[i+12]);
+	
 	HPtotal1 = HPtotal2 = 0;
 	for (var i=0; i<fleet1.length; i++) HPtotal1 += fleet1[i].hp;
 	for (var i=0; i<fleet1C.length; i++) HPtotal1 += fleet1C[i].hp;
