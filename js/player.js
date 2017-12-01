@@ -1186,9 +1186,11 @@ function processAPI(root) {
 			if (data.api_n_hougeki2 && data.api_n_hougeki2.api_at_list) {
 				processYasenHougeki(data.api_n_hougeki2);
 			}
-			eventqueue.push([wait,[1000]]);
-			eventqueue.push([shutters,[true]]);
-			eventqueue.push([enemyEscortExit,[]]);
+			if (data.api_hougeki1 !== undefined) {
+				eventqueue.push([wait,[1000]]);
+				eventqueue.push([shutters,[true]]);
+				eventqueue.push([enemyEscortExit,[]]);
+			}
 		}
 		
 		//jet LBAS phase
@@ -1260,23 +1262,24 @@ function processAPI(root) {
 			}
 		}
 		else {
+			var torpedoFirst = (data.api_ship_ke_combined && data.api_n_hougeki1 === undefined);
 			f = (COMBINED == 1 || COMBINED == 3)? fleet1C : fleet1;
-			if (data.api_hougeki1) processHougeki(data.api_hougeki1,f,data.api_ship_ke_combined);
+			if (data.api_hougeki1) processHougeki(data.api_hougeki1,f,torpedoFirst);
 			//CTF does closing torpedo
-			if ((COMBINED == 1 || COMBINED == 3 || data.api_ship_ke_combined) && data.api_raigeki)
-				processRaigeki(data.api_raigeki,f,(data.api_ship_ke_combined));
+			if ((COMBINED == 1 || COMBINED == 3 || torpedoFirst) && data.api_raigeki)
+				processRaigeki(data.api_raigeki,f,torpedoFirst);
 			
-			if (data.api_hougeki2) processHougeki(data.api_hougeki2,fleet1,data.api_ship_ke_combined); //always main fleet
+			if (data.api_hougeki2) processHougeki(data.api_hougeki2,fleet1,torpedoFirst); //always main fleet
 			if (data.api_hougeki3) {
 				f = (COMBINED == 2)? fleet1C : fleet1;
 				if (COMBINED == 2) eventqueue.push([wait,[1000]]); //short pause between main and escort shelling if STF
-				processHougeki(data.api_hougeki3,f,data.api_ship_ke_combined);
+				processHougeki(data.api_hougeki3,f,torpedoFirst);
 			}
 			
 			//closing torp (if not CTF/TTF)
 			f = (COMBINED)? fleet1C : fleet1;
-			if (COMBINED != 1 && COMBINED != 3 && !data.api_ship_ke_combined && data.api_raigeki)
-				processRaigeki(data.api_raigeki,f,data.api_ship_ke_combined);
+			if (COMBINED != 1 && COMBINED != 3 && !torpedoFirst && data.api_raigeki)
+				processRaigeki(data.api_raigeki,f,torpedoFirst);
 		}
 		
 		
