@@ -46,6 +46,7 @@ var TEXTDATA_EN = {
 				3: "Diamond",
 				4: "Echelon",
 				5: "Line Abreast",
+				6: "Vanguard",
 				11: "Cruising Formation 1",
 				12: "Cruising Formation 2",
 				13: "Cruising Formation 3",

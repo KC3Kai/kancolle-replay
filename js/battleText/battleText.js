@@ -3,7 +3,7 @@ var player = new FLEET();
 var world = API.world;
 var map = API.mapnum;
 var combined = API.combined;
-var startData = (API.battles[0].data.api_nowhps) ? API.battles[0].data : API.battles[0].yasen;
+var startData = (API.battles[0].data.api_nowhps || API.battles[0].data.api_f_nowhps) ? API.battles[0].data : API.battles[0].yasen;
 
 var isPvP = (world == 0);
 var tabs = $('#tabNodes');
@@ -47,11 +47,14 @@ processSortie = function(battles) {
 };
 
 processText = function() {
-
-	if (combined)
-		player.addCombinedFleet(API.fleet1, API.fleet2, startData.api_nowhps.slice(1, 7), startData.api_nowhps_combined.slice(1, 7), API.combined);
-	else
-		player.addFleet(API['fleet' + API.fleetnum], startData.api_nowhps.slice(1, 7));
+	
+	var hpsMain = startData.api_f_nowhps || startData.api_nowhps.slice(1, 7);
+	if (combined) {
+		var hpsEscort = startData.api_f_nowhps_combined || startData.api_nowhps_combined.slice(1, 7);
+		player.addCombinedFleet(API.fleet1, API.fleet2, hpsMain, hpsEscort, API.combined);
+	} else {
+		player.addFleet(API['fleet' + API.fleetnum], hpsMain);
+	}
 	if (API.support1 && API.support1 > 0)
 		player.addSupport(API['fleet' + API.support1]);
 	if (API.support2 && API.support2 > 0)
