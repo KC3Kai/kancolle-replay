@@ -1223,11 +1223,16 @@ function processAPI(root) {
 			}
 		}
 		
+		//earlier air support for night-to-day
+		if (data.api_n_hougeki1 && data.api_support_info) {
+			processSupport(data.api_support_flag, data.api_support_info);
+		}
+		
 		//air phase
 		if (data.api_kouku) processKouku(data.api_kouku);
 		
 		//support phase
-		if (data.api_support_info) {
+		if (data.api_support_info && !data.api_n_hougeki1) {
 			processSupport(data.api_support_flag, data.api_support_info);
 		}
 		
