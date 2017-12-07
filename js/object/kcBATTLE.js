@@ -128,7 +128,7 @@ var BATTLE = (function() {
 		var kou = dbattle.api_kouku;
 		var body = document.createElement('tbody');
 		appendPhase("TITLE_AIR_BATTLE");
-		if (kou && kou.api_plane_from && (kou.api_plane_from[0][0] != -1 || kou.api_plane_from[1][0] != -1)) {
+		if (kou && kou.api_plane_from && ((kou.api_plane_from[0] && kou.api_plane_from[0][0] != -1) || (kou.api_plane_from[1] && kou.api_plane_from[1][0] != -1))) {
 			kouku(kou, body, player.mainFleet);
 		} else {
 			body.append(getTextRow("AIR_NONE", []));
