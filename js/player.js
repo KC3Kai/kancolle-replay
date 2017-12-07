@@ -441,19 +441,21 @@ function processAPI(root) {
 		bossbar.show = true;
 	} else bossbar.show = false;
 	
-	var HPstate = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1];
-	var HPbeginstate = null, battlenumstate = 0;
+	var battlenumstate = 0;
 	var getState = function(newbattle) {
 		if (newbattle) {
-			HPbeginstate = HPstate.slice();
 			battlenumstate++;
 		}
 		var state = {
-			HP:HPbeginstate,
+			HP: {
+				fleet1: [],
+				fleet1C: [],
+			},
 			bg:(bg.parent)? 1 : 2,
 			battle:battlenumstate
-			};
-		HPbeginstate = HPstate.slice();
+		};
+		for (var i=0; i<fleet1.length; i++) state.HP.fleet1.push(fleet1[i].hpTrack);
+		for (var i=0; i<fleet1C.length; i++) state.HP.fleet1C.push(fleet1C[i].hpTrack);
 		return state;
 	};
 	battlestarts = [];
@@ -527,7 +529,7 @@ function processAPI(root) {
 			fleet1C[i].escort = true;
 			fleet1C[i].graphic.y += 480;
 			stage.addChild(fleet1C[i].graphic);
-			HPstate[i+12] = nowhp;
+			fleet1C[i].hpTrack = nowhp;
 		}
 	}
 	for (var i=0; i<fships.length; i++) {  //create ship objects
@@ -548,7 +550,7 @@ function processAPI(root) {
 		fleet1.push(createShip(d,0,i));
 		dots1.y = radar1.y = (fships.length >= 7)? 429 : 402;
 		stage.addChild(fleet1[i].graphic);
-		HPstate[i] = nowhp;
+		fleet1[i].hpTrack = nowhp;
 	}
 	
 	for (var b=0; b<root.battles.length; b++) {
@@ -590,8 +592,6 @@ function processAPI(root) {
 			}
 			var sh = createShip(d,1,i,data.api_boss_damaged);
 			f2.push(sh);
-			HPstate[i+6] = nowhp;
-			// stage.addChild(sh.graphic);
 		}
 		//load enemy combined
 		if (data.api_ship_ke_combined) {
@@ -633,20 +633,21 @@ function processAPI(root) {
 				sh.graphic.addChild(mask);
 				sh.escorte = true;
 				sh.graphic.y += 480;
-				HPstate[i+18] = nowhp;
 			}
 		}
 		
-		if (data.api_f_nowhps) {
-			for (var i=0; i<fleet1.length; i++) HPstate[i] = data.api_f_nowhps[i];
-		} else {
-			for (var i=0; i<fleet1.length; i++) HPstate[i] = data.api_nowhps[i+1];
+		var nowhps = data.api_f_nowhps || data.api_nowhps.slice(1);
+		for (var i=0, j=0; i<fleet1.length; i++) {
+			if (fleet1[i].hpTrack <= 0) continue; //sunk ship not in api, known bug: does not handle shifted api IDs later (ship 5 sinks, ship 6 becomes 5), will not fix for now due to existing replays without all equipment included, and sinking is rare
+			fleet1[i].hpTrack = nowhps[j];
+			j++;
 		}
 		if (COMBINED) {
-			if (data.api_f_nowhps_combined) {
-				for (var i=0; i<fleet1C.length; i++) HPstate[i+12] = data.api_f_nowhps_combined[i];
-			} else {
-				for (var i=0; i<fleet1C.length; i++) HPstate[i+12] = data.api_nowhps_combined[i+1];
+			nowhps = data.api_f_nowhps_combined || data.api_nowhps_combined.slice(1);
+			for (var i=0, j=0; i<fleet1C.length; i++) {
+				if (fleet1C[i].hpTrack <= 0) continue;
+				fleet1C[i].hpTrack = nowhps[j];
+				j++;
 			}
 		}
 		var NBonly = (!!data.api_hougeki || Object.keys(data).length <= 0 || data.api_n_hougeki1);
@@ -675,6 +676,24 @@ function processAPI(root) {
 		battlestarts.push(eventqueue.length-1);
 		allfleets2.push(f2);
 		allfleets2c.push(f2c);
+		
+		var handleRepair = function(fleet) {
+			for (var i=0; i<fleet.length; i++) {
+				if (fleet[i].hpTrack <= 0) {
+					if (fleet[i].hasrepairgoddess) {
+						fleet[i].hpTrack = fleet[i].hpmax
+						eventqueue.push([wait,[1000]]);
+						eventqueue.push([repairTeam,[fleet[i],true]]);
+						fleet[i].hasrepairgoddess--;
+					} else if (fleet[i].hasrepairteam) {
+						fleet[i].hpTrack = Math.floor(fleet[i].hpmax/5);
+						eventqueue.push([wait,[1000]]);
+						eventqueue.push([repairTeam,[fleet[i],false]]);
+						fleet[i].hasrepairteam--;
+					}
+				}
+			}
+		}
 		
 		//for reading air phase
 		var processKouku = function(kouku,isbombing,isjet) {
@@ -771,14 +790,15 @@ function processAPI(root) {
 						var ind = (OLDFORMAT)? i+1 : i;
 						if (kouku.api_stage3.api_fdam) {
 							var dam = parseInt(kouku.api_stage3.api_fdam[ind]);  //remember later, .1 = protect
-							HPstate[i] -= Math.floor(dam);
 							var hit = (kouku.api_stage3.api_frai_flag[ind] || kouku.api_stage3.api_fbak_flag[ind]);
-							if (hit) targetdata.push([fleet1[i],(dam>0)? dam:0,(dam!=kouku.api_stage3.api_fdam[ind]),kouku.api_stage3.api_fcl_flag[ind],kouku.api_stage3.api_frai_flag[ind]]);
+							if (hit) {
+								targetdata.push([fleet1[i],(dam>0)? dam:0,(dam!=kouku.api_stage3.api_fdam[ind]),kouku.api_stage3.api_fcl_flag[ind],kouku.api_stage3.api_frai_flag[ind]]);
+								fleet1[i].hpTrack -= Math.floor(dam);
+							}
 						}
 						
 						if (kouku.api_stage3.api_edam) {
 							var dam = parseInt(kouku.api_stage3.api_edam[ind]);
-							if (OLDFORMAT) HPstate[i+6] -= Math.floor(dam);
 							hit = (kouku.api_stage3.api_erai_flag[ind] || kouku.api_stage3.api_ebak_flag[ind]);
 							if (hit) targetdata.push([f2[i],(dam>0)? dam:0,(dam!=kouku.api_stage3.api_edam[ind]),kouku.api_stage3.api_ecl_flag[ind],kouku.api_stage3.api_erai_flag[ind]]);
 						}
@@ -786,13 +806,14 @@ function processAPI(root) {
 						if (kouku.api_stage3_combined) {
 							if (kouku.api_stage3_combined.api_fdam) {
 								var dam = parseInt(kouku.api_stage3_combined.api_fdam[ind]);  //remember later, .1 = protect
-								HPstate[i+12] -= Math.floor(dam);
 								var hit = (kouku.api_stage3_combined.api_frai_flag[ind] || kouku.api_stage3_combined.api_fbak_flag[ind]);
-								if (hit) targetdata.push([fleet1C[i],(dam>0)? dam:0,(dam!=kouku.api_stage3_combined.api_fdam[ind]),kouku.api_stage3_combined.api_fcl_flag[ind],kouku.api_stage3_combined.api_frai_flag[ind]]);
+								if (hit) {
+									targetdata.push([fleet1C[i],(dam>0)? dam:0,(dam!=kouku.api_stage3_combined.api_fdam[ind]),kouku.api_stage3_combined.api_fcl_flag[ind],kouku.api_stage3_combined.api_frai_flag[ind]]);
+									fleet1C[i].hpTrack -= Math.floor(dam);
+								}
 							}
 							if (kouku.api_stage3_combined.api_edam) {
 								var dam = parseInt(kouku.api_stage3_combined.api_edam[ind]);  //remember later, .1 = protect
-								HPstate[i+18] -= Math.floor(dam);
 								var hit = (kouku.api_stage3_combined.api_erai_flag[ind] || kouku.api_stage3_combined.api_ebak_flag[ind]);
 								if (hit) targetdata.push([f2c[i],(dam>0)? dam:0,(dam!=kouku.api_stage3_combined.api_edam[ind]),kouku.api_stage3_combined.api_ecl_flag[ind],kouku.api_stage3_combined.api_erai_flag[ind]]);
 							}
@@ -814,22 +835,8 @@ function processAPI(root) {
 					eventqueue.push([GAirPhase,[attackdata,targetdata,defenders,AACI1,undefined,contact1,contact2,AS1,AS2,false,isbombing,isjet],getState()]);  //remember AACI
 				}
 				
-				for (var i=0; i<fleet1.length; i++) {
-					var ind = i;
-					if (HPstate[ind] <= 0) {
-						if (fleet1[i].hasrepairgoddess) {
-							HPstate[ind] = fleet1[i].hpmax
-							eventqueue.push([wait,[1000]]);
-							eventqueue.push([repairTeam,[fleet1[i],true]]);
-							fleet1[i].hasrepairgoddess--;
-						} else if (fleet1[i].hasrepairteam) {
-							HPstate[ind] = Math.floor(fleet1[i].hpmax/4);
-							eventqueue.push([wait,[1000]]);
-							eventqueue.push([repairTeam,[fleet1[i],false]]);
-							fleet1[i].hasrepairteam--;
-						}
-					}
-				}
+				handleRepair(fleet1);
+				handleRepair(fleet1C);
 			}
 		};
 		
@@ -846,6 +853,7 @@ function processAPI(root) {
 						var attacker = (i>=6)? f1[i-6] : f1[i];
 						var crit = (rai.api_fcl[i+1] == 2);
 						shots.push([attacker,target,rai.api_fydam[i+1],crit]);
+						target.hpTrack -= Math.floor(rai.api_edam[i+1]);
 					}
 					if (rai.api_erai[i+1] > 0) {
 						var target;
@@ -854,9 +862,8 @@ function processAPI(root) {
 						var attacker = (ecombined)? f2c[i-6] : f2[i];
 						var crit = (rai.api_ecl[i+1] == 2);
 						shots.push([attacker,target,rai.api_eydam[i+1],crit]);
+						target.hpTrack -= Math.floor(rai.api_fdam[i+1]);
 					}
-					HPstate[i+((i>=6)?12:6)] -= Math.floor(rai.api_edam[i+1]);
-					HPstate[i+((COMBINED)?12:0)] -= Math.floor(rai.api_fdam[i+1]);
 				} else {
 					if (rai.api_frai[i] > -1) {
 						var ind = rai.api_frai[i];
@@ -864,6 +871,7 @@ function processAPI(root) {
 						var attacker = (i >= 6 && fleet1.length < 7)? fleet1C[i-6] : fleet1[i];
 						var crit = (rai.api_fcl[i] == 2);
 						shots.push([attacker,target,rai.api_fydam[i],crit]);
+						target.hpTrack -= Math.floor(rai.api_edam[i]);
 					}
 					if (rai.api_erai[i] > -1) {
 						var ind = rai.api_erai[i];
@@ -871,6 +879,7 @@ function processAPI(root) {
 						var attacker = (i >= 6 && f2.length < 7)? f2c[i-6] : f2[i];
 						var crit = (rai.api_ecl[i] == 2);
 						shots.push([attacker,target,rai.api_eydam[i],crit]);
+						target.hpTrack -= Math.floor(rai.api_fdam[i]);
 					}
 				}
 			}
@@ -879,23 +888,8 @@ function processAPI(root) {
 				eventqueue.push([GTorpedoPhase,[shots],getState()]);
 			}
 			
-			for (var i=0; i<f1.length; i++) {
-				var ind = (f1[0].escort)? i+12 : i;
-				if (HPstate[ind] <= 0) {
-					if (f1[i].hasrepairgoddess) {
-						HPstate[ind] = f1[i].hpmax
-						eventqueue.push([wait,[1000]]);
-						eventqueue.push([repairTeam,[f1[i],true]]);
-						f1[i].hasrepairgoddess--;
-					} else if (f1[i].hasrepairteam) {
-						HPstate[ind] = Math.floor(f1[i].hpmax/4);
-						eventqueue.push([wait,[1000]]);
-						eventqueue.push([repairTeam,[f1[i],false]]);
-						f1[i].hasrepairteam--;
-					}
-					// alert('sink '+i);
-				}
-			}
+			handleRepair(fleet1);
+			handleRepair(fleet1C);
 		};
 		
 		//for reading shelling phase
@@ -950,27 +944,7 @@ function processAPI(root) {
 				
 				for (var k=0; k<hou.api_damage[j].length; k++) {
 					d.push(parseInt(hou.api_damage[j][k])); //damage
-					if (!ecombined) {
-						if (hou.api_at_eflag) { //new format 2017-11-17
-							if (hou.api_at_eflag[j]) {
-								var ind = hou.api_df_list[j][0];
-								if (ind >= 6) ind += 6;
-								//if (!hou.api_at_eflag) ind += 6;
-								HPstate[ind] -= Math.floor(hou.api_damage[j][k]);
-							}
-						} else {
-							HPstate[hou.api_df_list[j][0]-1+((f1[0].escort && hou.api_df_list[j][0] < 7)?12:0)] -= Math.floor(hou.api_damage[j][k]);
-						}
-					} else {
-						if (OLDFORMAT || hou.api_at_eflag[j]) {
-							var ind = hou.api_df_list[j][0];
-							if (OLDFORMAT) ind -= 1;
-							if (hou.api_at_eflag[j] && ind >= 6) ind += 6; //player escort (not used currently)
-							else if (!hou.api_at_eflag[j] && ind < 6) ind += 6; //enemy main
-							else if (!hou.api_at_eflag[j] && ind >= 6) ind += 12; //enemy escort
-							HPstate[ind] -= Math.floor(hou.api_damage[j][k]);
-						}
-					}
+					defender.hpTrack -= Math.max(0,Math.floor(hou.api_damage[j][k]));
 				}
 				for (var k=0; k<hou.api_cl_list[j].length; k++) d.push((hou.api_cl_list[j][k]==2));
 				d.push((hou.api_damage[j][0] != Math.floor(hou.api_damage[j][0])));
@@ -1011,24 +985,9 @@ function processAPI(root) {
 					case 7:
 						eventqueue.push([shootPlaneCutIn,d,getState()]); break;
 				}
-				//console.log(HPstate[16]);
-				for (var i=0; i<f1.length; i++) {
-					var ind = (f1[0].escort)? i+12 : i;
-					if (HPstate[ind] <= 0) {
-						if (f1[i].hasrepairgoddess) {
-							HPstate[ind] = f1[i].hpmax
-							eventqueue.push([wait,[1000]]);
-							eventqueue.push([repairTeam,[f1[i],true]]);
-							f1[i].hasrepairgoddess--;
-						} else if (f1[i].hasrepairteam) {
-							HPstate[ind] = Math.floor(f1[i].hpmax/4);
-							eventqueue.push([wait,[1000]]);
-							eventqueue.push([repairTeam,[f1[i],false]]);
-							f1[i].hasrepairteam--;
-						}
-						// alert('sink '+i);
-					}
-				}
+				
+				handleRepair(fleet1);
+				handleRepair(fleet1C);
 				
 			}
 		};
@@ -1058,33 +1017,7 @@ function processAPI(root) {
 				}
 				for (var k=0; k<hou.api_damage[j].length; k++) {
 					d.push(parseInt(hou.api_damage[j][k])); //damage
-					if (!combinedEType) {
-						var ind;
-						if (hou.api_at_eflag) {
-							if (hou.api_at_eflag[j]) {
-								ind = hou.api_df_list[j][0];
-								if (ind >= 6 && fleet1.length < 7) ind += 6;
-								HPstate[ind] -= Math.max(0,Math.floor(hou.api_damage[j][k]));
-							}
-						} else {
-							ind = hou.api_df_list[j][0]-1+((COMBINED && hou.api_df_list[j][0] < 7)?12:0);
-							HPstate[ind] -= Math.max(0,Math.floor(hou.api_damage[j][k]));
-						}
-					} else {
-						var ind;
-						if (hou.api_at_eflag) {
-							if (hou.api_at_eflag[j]) {
-								ind = hou.api_df_list[j][0];
-								if (ind >= 6 && fleet1.length < 7) ind += 6;
-								HPstate[ind] -= Math.max(0,Math.floor(hou.api_damage[j][k]));
-							}
-						} else {
-							ind = hou.api_df_list[j][0]-1;
-							if (combinedEType == 2 && ind >= 6) ind += 12;
-							if (COMBINED && ind < 6) ind += 12;
-							HPstate[ind] -= Math.max(0,Math.floor(hou.api_damage[j][k]));
-						}
-					}
+					d[1].hpTrack -= Math.max(0,Math.floor(hou.api_damage[j][k]));
 				}
 				for (var k=0; k<hou.api_cl_list[j].length; k++) d.push((hou.api_cl_list[j][k]==2));
 				d.push((hou.api_damage[j][0] != Math.floor(hou.api_damage[j][0])));
@@ -1123,23 +1056,8 @@ function processAPI(root) {
 						eventqueue.push([shootBigTorp,d,getState()]); break;
 				}
 				
-				for (var i=0; i<f1.length; i++) {
-					var ind = (COMBINED)? i+12 : i;
-					if (HPstate[ind] <= 0) {
-						if (f1[i].hasrepairgoddess) {
-							HPstate[ind] = f1[i].hpmax
-							eventqueue.push([wait,[1000]]);
-							eventqueue.push([repairTeam,[f1[i],true]]);
-							f1[i].hasrepairgoddess--;
-						} else if (f1[i].hasrepairteam) {
-							HPstate[ind] = Math.floor(f1[i].hpmax/4);
-							eventqueue.push([wait,[1000]]);
-							eventqueue.push([repairTeam,[f1[i],false]]);
-							f1[i].hasrepairteam--;
-						}
-						// alert('sink '+i);
-					}
-				}
+				handleRepair(fleet1);
+				handleRepair(fleet1C);
 			}
 		}
 		
@@ -1151,12 +1069,6 @@ function processAPI(root) {
 					damages.push(Math.floor(support.api_damage[i]));
 				}
 				if (damages[0] == -1) damages = damages.slice(1);
-				if (OLDFORMAT || fleet1.length < 7) { //don't do for 7 ship
-					for (var i=0; i<damages.length; i++) {
-						if (i<6) HPstate[i+6] -= Math.floor(damages[i]);
-						else HPstate[i+12] -= Math.floor(damages[i]);
-					}
-				}
 				eventqueue.push([GSupportPhase,[[],damages,(flag==3)]]);
 			} else if (info.api_support_airatack) {
 				var stage3 = info.api_support_airatack.api_stage3;
@@ -1306,8 +1218,8 @@ function processAPI(root) {
 			if (yasen.api_hougeki && yasen.api_hougeki.api_at_list) processYasenHougeki(yasen.api_hougeki);
 			if (!isboss && map.bgmNN != map.bgmDN) eventqueue.push([wait,[1,true]]);
 		}
+		
 		if (b==root.battles.length-1) eventqueue.push([battleEnd,[],getState()]);
-		//console.log(HPstate);
 	}
 	
 	loader2.load(function() { SHIPSLOADED = true; });
@@ -1683,8 +1595,8 @@ function battleStart(battledata,newships,newshipsC,escape,bgm,showbosshp) {
 	addTimeout(function() { showEngage(GEngage); }, 500);
 	
 	var hps = eventqueue[e][2].HP;
-	for (var i=0; i<fleet1.length; i++) shipSetHP(fleet1[i],hps[i]);
-	for (var i=0; i<fleet1C.length; i++) shipSetHP(fleet1C[i],hps[i+12]);
+	for (var i=0; i<fleet1.length; i++) shipSetHP(fleet1[i],hps.fleet1[i]);
+	for (var i=0; i<fleet1C.length; i++) shipSetHP(fleet1C[i],hps.fleet1C[i]);
 	
 	HPtotal1 = HPtotal2 = 0;
 	for (var i=0; i<fleet1.length; i++) HPtotal1 += fleet1[i].hp;
@@ -3265,11 +3177,11 @@ function skipToBattle(battle) {
 		e = battlestarts[battle-1];
 		var hps = eventqueue[e][2].HP;
 		for (var i=0; i<fleet1.length; i++) {
-			if (fleet1[i].hp != hps[i] || fleet1[i].escaped) shipSetHP(fleet1[i],hps[i]);
+			if (fleet1[i].hp != hps.fleet1[i] || fleet1[i].escaped) shipSetHP(fleet1[i],hps.fleet1[i]);
 		}
 		if (COMBINED) {
 			for (var i=0; i<fleet1C.length; i++) {
-				if (fleet1C[i].hp != hps[i+12] || fleet1C[i].escaped) shipSetHP(fleet1C[i],hps[i+12]);
+				if (fleet1C[i].hp != hps.fleet1C[i] || fleet1C[i].escaped) shipSetHP(fleet1C[i],hps.fleet1C[i]);
 			}
 		}
 		shutterTop.y = -246; shutterTop.alpha = 0;
