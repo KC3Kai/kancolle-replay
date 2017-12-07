@@ -1098,7 +1098,7 @@ function processAPI(root) {
 			if (data.api_n_hougeki2 && data.api_n_hougeki2.api_at_list) {
 				processYasenHougeki(data.api_n_hougeki2);
 			}
-			if (data.api_hougeki1 !== undefined) {
+			if (data.api_day_flag) {
 				eventqueue.push([wait,[1000]]);
 				eventqueue.push([shutters,[true]]);
 				eventqueue.push([enemyEscortExit,[]]);
