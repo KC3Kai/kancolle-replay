@@ -184,6 +184,18 @@ var uri = new URI(window.location.href);
 var qs = uri.search(true);
 if (qs.fromImg) {
 	loadImgURL(qs.fromImg);
+} else if (qs.fromLZString) {
+	/*
+		- LZString.compressToEncodedURIComponent(str) to encode strings
+		- LZString.decompressFromEncodedURIComponent(str) to decode from LZString-encoded strings
+     */
+	try {
+		var decompressed = LZString.decompressFromEncodedURIComponent(qs.fromLZString);
+		document.getElementById('code').value = decompressed;
+		loadCode();
+	} catch (e) {
+		console.error('error while processing lz-string data', e)
+	}
 } else if (window.location.hash.length > 5) {
 	document.getElementById('code').value = decodeURIComponent(window.location.hash.substr(1));
 	loadCode();
