@@ -3378,6 +3378,10 @@ function clickedSkip() {
 
 }
 
+function clearCode() {
+  $('#code').val('')
+}
+
 var HASLOADTEXT = false;
 function loadCode(fromOwn,callback) {
 	if (!CANRESET) return;
