@@ -583,7 +583,7 @@ var BATTLE = (function() {
 
 	hougeki = function(hou, fleet, body) {
 		for (var j = 0; j < hou.api_at_list.length; j++) {
-			if (hou.api_at_list[0] == -1) continue;
+			if (hou.api_at_list[j] == -1) continue;
 			
 			var attacker,
 			    defender,
