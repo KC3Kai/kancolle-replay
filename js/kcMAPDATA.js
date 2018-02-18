@@ -1244,4 +1244,45 @@ var MAPDATA = {
 			},
 		}
 	},
+	41: {
+		name: 'Event Winter 2018',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmMap: 1,
+				bgmDN: 110,
+				bgmNN: 110,
+				bgmDB: 111,
+				bgmNB: 111,
+				bossnode: 15,
+			},
+			2: {
+				name: 'E2',
+				bgmMap: 1,
+				bgmDN: 110,
+				bgmNN: 110,
+				bgmDB: 111,
+				bgmNB: 111,
+				bossnode: 26,
+			},
+			3: {
+				name: 'E3',
+				bgmMap: 1,
+				bgmDN: 110,
+				bgmNN: 110,
+				bgmDB: 111,
+				bgmNB: 111,
+				bossnode: 21,
+			},
+			4: {
+				name: 'E4',
+				bgmMap: 1,
+				bgmDN: 111,
+				bgmNN: 111,
+				bgmDB: 113,
+				bgmNB: 113,
+				bossnode: 24,
+			},
+		}
+	},
 }
