@@ -85,6 +85,9 @@ loader.add('BG1','assets/82_res.images.ImgBackgroundDay.jpg')
 	.add('plane13','assets/plane13.png')
 	.add('plane544','assets/plane544.png')
 	.add('plane511','assets/plane511.png')
+	.add('plane588','assets/plane588.png')
+	.add('plane590','assets/plane590.png')
+	.add('plane592','assets/plane592.png')
 	.add('WG1','assets/684.png')
 	.add('WG2','assets/687.png')
 	.add('WG3','assets/690.png')
@@ -153,6 +156,7 @@ function ShipG(id,side,hpmax) {
 }
 
 var fleet1 = [], fleet2 = [], fleet1C, fleet2C;
+var fleetFriend = null;
 var allfleets2 = [], allfleets2c = [];
 var GEngage = 0, GAP1 = 0, GAP2 = 0;
 
@@ -1211,7 +1215,33 @@ function processAPI(root) {
 				eventqueue.push([wait,[1000,(orel)?false:(isboss)?(map.bgmNB!=map.bgmDB):(map.bgmNN!=map.bgmDN)],null]);
 				eventqueue.push([shutters,[],null]);
 			}
-			eventqueue.push([NBstart,[yasen.api_flare_pos,yasen.api_touch_plane,(orel)?999:(isboss)? map.bgmNB : map.bgmNN, combinedEType]]);
+			
+			var bgm = (orel)?999:(isboss)? map.bgmNB : map.bgmNN
+			
+			if (yasen.api_friendly_info) {
+				var data = yasen.api_friendly_info;
+				if (!fleetFriend) {
+					fleetFriend = [];
+					for (var i=0; i<data.api_ship_id.length; i++) {
+						var d = [data.api_ship_id[i],data.api_maxhps[i],data.api_nowhps[i]].concat(data.api_Slot[i]);
+						var sh = createShip(d,0,i);
+						fleetFriend.push(sh);
+						// stage.addChild(sh.graphic);
+					}
+				}
+			
+				eventqueue.push([friendStart,[bgm],null]);
+				var fleet1Temp = fleet1, f1Temp = f1;
+				f1 = fleet1 = fleetFriend;
+				eventqueue.push([NBstart,[yasen.api_friendly_battle.api_flare_pos,yasen.api_friendly_battle.api_touch_plane,bgm,null,true]]);
+				if (yasen.api_friendly_battle.api_hougeki) {
+					processYasenHougeki(yasen.api_friendly_battle.api_hougeki);
+				}
+				fleet1 = fleet1Temp; f1 = f1Temp;
+				eventqueue.push([friendExit,[],null]);
+			}
+			
+			eventqueue.push([NBstart,[yasen.api_flare_pos,yasen.api_touch_plane,bgm, combinedEType]]);
 			if (data.api_n_support_flag) {
 				processSupport(data.api_n_support_flag, data.api_n_support_info);
 			}
@@ -1635,6 +1665,7 @@ function battleStart(battledata,newships,newshipsC,escape,bgm,showbosshp) {
 	if (COMBINED) {
 		var jj = 0;
 		for (var i=0; i<fleet1C.length; i++) {
+			fleet1C[i].graphic.visible = false;
 			addTimeout(function(){
 				updates.push([shipEscortEnter,[fleet1C[jj],77+45*jj]]);
 				jj++;
@@ -1646,6 +1677,7 @@ function battleStart(battledata,newships,newshipsC,escape,bgm,showbosshp) {
 		fleet2C = newshipsC;
 		var jj2 = 0;
 		for (var i=0; i<fleet2C.length; i++) {
+			fleet2C[i].graphic.visible = false;
 			addTimeout(function(){
 				updates.push([shipEscortEnter,[fleet2C[jj2],144+45*jj2]]);
 				jj2++;
@@ -1668,6 +1700,7 @@ function shipEscortEnter(ship,targety) {
 		ship.graphic.y -= (ship.graphic.y - targety) * .1;
 		if (ship.graphic.y - targety < 1) ship.graphic.y = targety;
 	}
+	ship.graphic.visible = (ship.graphic.y+44 > 0) && (ship.graphic.y-5 < 480);
 	
 	return (ship.graphic.y - targety <= 1);
 }
@@ -2286,7 +2319,7 @@ function createKleinFieldRing(field) {
 	},[]]);
 }
 
-var PLANESPRITES = ['938','914','916','918','920','922','924','926','plane9','plane10','plane11','plane12','plane13','plane544','plane511'];
+var PLANESPRITES = ['938','914','916','918','920','922','924','926','plane9','plane10','plane11','plane12','plane13','plane544','plane511','plane588','plane590','plane592'];
 function createPlane(x,y,planetypes,shots,shots2,side) {
 	var num = Math.min(3,planetypes.length);
 	if (shots) shots = shuffle(shots);
@@ -2883,9 +2916,11 @@ function moveSearchlight(light) {
 	return false;
 }
 
-function NBstart(flares,contact,bgm,combinedEType) {
+function NBstart(flares,contact,bgm,combinedEType,isFriend) {
+	flares = flares || [-1,-1];
+	contact = contact || [-1,-1];
 	var wait = false;
-	if (COMBINED) {
+	if (COMBINED && !isFriend) {
 		for (var i=0; i<fleet1.length; i++) {
 			var j = 0;
 			addTimeout(function() {
@@ -2952,14 +2987,14 @@ function NBstart(flares,contact,bgm,combinedEType) {
 		wait = true;
 	}
 	var nbtimer = 0;
+	var f1 = (isFriend)? fleetFriend : (COMBINED)? fleet1C : fleet1;
 	if (flares[0] != -1 || flares[1] != -1) {
 		nbtimer = 5000;
 		if (flares[0] != -1 || flares[1] != -1) { //star shell
-			var ship = (COMBINED)? fleet1C[flares[0]-1] : fleet1[flares[0]-1], shipE = fleet2[flares[1]-1];
+			var ship = f1[flares[0]-1], shipE = fleet2[flares[1]-1];
 			addTimeout(function() { if (ship) shootFlare(ship); if (shipE) shootFlare(shipE,!!ship); }, (wait)? 1600 : 1);
 		}
 	}
-	var f1 = (COMBINED)? fleet1C : fleet1;
 	var light1 = null, light2 = null;
 	for (var i=0; i<f1.length; i++) if (f1[i].hassearchlight && f1[i].hp > 1 && !f1[i].escaped) { light1 = f1[i]; break; }
 	for (var i=0; i<fleet2.length; i++) if (fleet2[i].hassearchlight && fleet2[i].hp > 1) { light2 = fleet2[i]; break; }
@@ -3004,7 +3039,99 @@ function enemyEscortExit() { //for night-to-day
 
 function shipMoveToV(ship,target,speed) {
 	ship.graphic.y += speed;
+	ship.graphic.visible = (ship.graphic.y+44 > 0) && (ship.graphic.y-5 < 480);
 	return (speed < 0)? (ship.graphic.y < target) : (ship.graphic.y > target);
+}
+
+
+function friendStart(bgm) {
+	if (bgm != SM.BGMnum) {
+		SM.stopBGM();
+		SM.playBGM(bgm);
+	}
+
+	for (var i=0; i<fleetFriend.length; i++) {
+		fleetFriend[i].graphic.position.set(-240,77+45*i);
+		stage.addChild(fleetFriend[i].graphic);
+	}
+
+	for (var i=0; i<fleet1.length; i++) {
+		var j = 0;
+		addTimeout(function() {
+			updates.push([shipMoveTo,[fleet1[j],-220,10]]);
+			j++;
+		}, 100+i*100);
+	}
+
+	if (fleet1C) {
+		var k2 = 0;
+		for (var i=0; i<3; i++) {
+			if (i >= fleet1C.length) break;
+			addTimeout(function() {
+				updates.push([shipMoveToV,[fleet1C[k2],-100,-10]]);
+				k2++;
+			}, 200+i*100);
+		}
+		var kk2 = fleet1C.length-1;
+		for (var i=5; i>=3; i--) {
+			if (i >= fleet1C.length) continue;
+			addTimeout(function() {
+				updates.push([shipMoveToV,[fleet1C[kk2],600,10]]);
+				kk2--;
+			}, 200+(5-i)*100);
+		}
+	}
+	
+	addTimeout(function() {
+		var j = 0;
+		for (var i=0; i<fleetFriend.length; i++) {
+			fleetFriend[i].graphic.visible = true;
+			addTimeout(function(){
+				updates.push([shipMoveTo,[fleetFriend[j],fleetFriend[j].xorigin,10]]);
+				j++; SM.play('enter');
+			},100+100*i);
+		}
+	},1000);
+	
+	addTimeout(function() {
+		ecomplete = true;
+	}, 2000);
+}
+
+function friendExit() {
+	var k2 = 0;
+	for (var i=0; i<fleetFriend.length; i++) {
+		if (i >= fleetFriend.length) break;
+		addTimeout(function() {
+			updates.push([shipMoveToV,[fleetFriend[k2],-100,-10]]);
+			k2++;
+		}, 200+i*100);
+	}
+	
+	addTimeout(function() {
+		var j = 0;
+		for (var i=0; i<fleet1.length; i++) {
+			addTimeout(function(){
+				updates.push([shipMoveTo,[fleet1[j],fleet1[j].xorigin,10]]);
+				j++; SM.play('enter');
+			},100+100*i);
+		}
+		if (fleet1C) {
+			for (var i=0; i<fleet1C.length; i++) fleet1C[i].graphic.y = 557+44*i;
+			var jj = 0;
+			for (var i=0; i<fleet1C.length; i++) {
+				addTimeout(function(){
+					updates.push([shipEscortEnter,[fleet1C[jj],77+45*jj]]);
+					jj++;
+				},1000+100*i);
+			}
+		}
+	},1000);
+	
+	addTimeout(function() {
+		for (var i=0; i<fleetFriend.length; i++) stage.removeChild(fleetFriend[i].graphic);
+		ecomplete = true;
+	}, 3000);
 }
 
 function repairTeam(ship,isgoddess) {
@@ -3057,6 +3184,9 @@ function resetBattle() {
 		fleet1C[i].escort = true;
 		fleet1C[i].shakepid = 0;
 		fleet1C[i].graphic.pivot.x = 0;
+	}
+	if (fleetFriend) {
+		for (var i=0; i<fleetFriend.length; i++) stage.removeChild(fleetFriend[i].graphic);
 	}
 
 	for (var i=0; i<fleet2.length; i++) {
@@ -3249,6 +3379,7 @@ function reset(callback) {
 		eventqueue = [];
 		fleet1 = [];
 		fleet2 = [];
+		fleetFriend = null;
 		e = 0;
 		END = false;
 		ecomplete = true;
