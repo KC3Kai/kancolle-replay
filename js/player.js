@@ -875,7 +875,7 @@ function processAPI(root) {
 						var attacker = (i >= 6 && fleet1.length < 7)? fleet1C[i-6] : fleet1[i];
 						var crit = (rai.api_fcl[i] == 2);
 						shots.push([attacker,target,rai.api_fydam[i],crit]);
-						target.hpTrack -= Math.floor(rai.api_edam[i]);
+						target.hpTrack -= Math.floor(rai.api_fydam[i]);
 					}
 					if (rai.api_erai[i] > -1) {
 						var ind = rai.api_erai[i];
@@ -883,7 +883,7 @@ function processAPI(root) {
 						var attacker = (i >= 6 && f2.length < 7)? f2c[i-6] : f2[i];
 						var crit = (rai.api_ecl[i] == 2);
 						shots.push([attacker,target,rai.api_eydam[i],crit]);
-						target.hpTrack -= Math.floor(rai.api_fdam[i]);
+						target.hpTrack -= Math.floor(rai.api_eydam[i]);
 					}
 				}
 			}
@@ -3139,7 +3139,7 @@ function repairTeam(ship,isgoddess) {
 	if (isgoddess) repairteam = getFromPool('repairgoddess','assets/Emergency_Repair_Goddess_043_Card.png');
 	else repairteam = getFromPool('repairteam','assets/Emergency_Repair_Personnel_042_Card.png');
 	stage.addChild(repairteam); repairteam.pivot.set(130,130); repairteam.position.set(ship.graphic.x+80,ship.graphic.y+20);
-	repairteam.alpha = 0; repairteam.scale.set(1); repairteam.timer = 120;
+	repairteam.alpha = 0; repairteam.scale.set(1); repairteam.timer = 120; repairteam.notpersistent = true;
 	updates.push([function(repairteam) {
 		repairteam.timer--;
 		if (repairteam.timer > 70) {
