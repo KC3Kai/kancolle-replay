@@ -1283,6 +1283,33 @@ var MAPDATA = {
 				bgmNB: 113,
 				bossnode: 24,
 			},
+			5: {
+				name: 'E5',
+				bgmMap: 1,
+				bgmDN: 111,
+				bgmNN: 111,
+				bgmDB: 114,
+				bgmNB: 114,
+				bossnode: [12,20],
+			},
+			6: {
+				name: 'E6',
+				bgmMap: 1,
+				bgmDN: 114,
+				bgmNN: 114,
+				bgmDB: 113,
+				bgmNB: 113,
+				bossnode: [21,22,23],
+			},
+			7: {
+				name: 'E7',
+				bgmMap: 1,
+				bgmDN: 114,
+				bgmNN: 114,
+				bgmDB: 115,
+				bgmNB: 115,
+				bossnode: [22,24],
+			},
 		}
 	},
 }
