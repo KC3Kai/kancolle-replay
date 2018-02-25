@@ -174,6 +174,8 @@ var BGMLIST = {
 	110: {url:'assets/music/1_res.sounds.battle.BGM_110.mp3'},
 	111: {url:'assets/music/1_res.sounds.battle.BGM_111.mp3'},
 	113: {url:'assets/music/1_res.sounds.battle.BGM_113.mp3'},
+	114: {url:'assets/music/1_res.sounds.battle.BGM_114.mp3'},
+	115: {url:'assets/music/1_res.sounds.battle.BGM_115.mp3'},
 	998: {url:'assets/music/savior of song.mp3',voldef:.25},
 	999: {url:'assets/music/Orel Cruising & LSC Song [ENG Sub].mp3',voldef:.3},
 	1107: {url:'assets/music/107b.ogg'},

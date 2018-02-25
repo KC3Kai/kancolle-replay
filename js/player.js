@@ -1230,7 +1230,7 @@ function processAPI(root) {
 					}
 				}
 			
-				eventqueue.push([friendStart,[bgm],null]);
+				eventqueue.push([friendStart,[data.api_nowhps,bgm],null]);
 				var fleet1Temp = fleet1, f1Temp = f1;
 				f1 = fleet1 = fleetFriend;
 				eventqueue.push([NBstart,[yasen.api_friendly_battle.api_flare_pos,yasen.api_friendly_battle.api_touch_plane,bgm,null,true]]);
@@ -3044,7 +3044,7 @@ function shipMoveToV(ship,target,speed) {
 }
 
 
-function friendStart(bgm) {
+function friendStart(hps,bgm) {
 	if (bgm != SM.BGMnum) {
 		SM.stopBGM();
 		SM.playBGM(bgm);
@@ -3053,6 +3053,7 @@ function friendStart(bgm) {
 	for (var i=0; i<fleetFriend.length; i++) {
 		fleetFriend[i].graphic.position.set(-240,77+45*i);
 		stage.addChild(fleetFriend[i].graphic);
+		shipSetHP(fleetFriend[i],hps[i]);
 	}
 
 	for (var i=0; i<fleet1.length; i++) {
