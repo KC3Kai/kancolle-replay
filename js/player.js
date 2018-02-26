@@ -2553,7 +2553,7 @@ function GAirPhase(attackdata,targetdata,defenders,aaci1,aaci2,contact1,contact2
 	
 	addTimeout(function() {
 		for (var i=0; i<defenders.length; i++) {
-			if (defenders[i].hp <= 0) { defenders.splice(i--,1); continue; }
+			if (defenders[i].hp <= 0 || defenders[i].escaped) { defenders.splice(i--,1); continue; }
 			var angle1 = Math.random()*Math.PI/12 + ((defenders[i].side==0)? Math.PI/6 : 4*Math.PI/6);
 			var angle2 = -Math.random()*Math.PI/12 + ((defenders[i].side==0)? Math.PI/3 : 5*Math.PI/6);
 			createAAfire(defenders[i].graphic.position.x+70,defenders[i].graphic.position.y+15,angle1);
