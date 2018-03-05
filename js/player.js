@@ -790,7 +790,7 @@ function processAPI(root) {
 				//targets
 				var targetdata = [];
 				if (kouku.api_stage3) {
-					for (var i=0; i<fleet1.length; i++) {
+					for (var i=0; i<Math.max(fleet1.length,f2.length); i++) {
 						var ind = (OLDFORMAT)? i+1 : i;
 						if (kouku.api_stage3.api_fdam) {
 							var dam = parseInt(kouku.api_stage3.api_fdam[ind]);  //remember later, .1 = protect
