@@ -285,6 +285,12 @@ var BATTLE = (function() {
 	};
 
 	yasen = function() {
+		if (nightBattle.api_friendly_info && nightBattle.api_friendly_battle) {
+			var friendFleet = new FLEET();
+			friendFleet.addFleet(nightBattle.api_friendly_info.api_ship_id, nightBattle.api_friendly_info.api_nowhps);
+			yasenHougeki(nightBattle.api_friendly_battle.api_hougeki, friendFleet);
+		}
+	
 		if (nightBattle.api_n_support_flag && nightBattle.api_n_support_flag > 0) {
 			support(nightBattle.api_n_support_flag, nightBattle.api_n_support_info);
 		}
@@ -293,11 +299,13 @@ var BATTLE = (function() {
 		if (hou.api_at_list) yasenHougeki(hou);
 	};
 	
-	yasenHougeki = function(hou) {
+	yasenHougeki = function(hou, playerFleet) {
+		playerFleet = playerFleet || player;
+	
 		var body = document.createElement('tbody');
 		appendPhase("TITLE_NIGHT_BATTLE");
 		
-		var f1 = (player.isCombined()) ? player.escortFleet : player.mainFleet;
+		var f1 = (playerFleet.isCombined()) ? playerFleet.escortFleet : playerFleet.mainFleet;
 		var f2 = (yasen.api_active_deck && yasen.api_active_deck[1] == 2) ? opponent.escortFleet : opponent.mainFleet;
 	
 		for (var j = 0; j < hou.api_at_list.length; j++) {
@@ -313,9 +321,9 @@ var BATTLE = (function() {
 			} else {
 				if (hou.api_at_eflag[j]) {
 					attacker = (hou.api_at_list[j] >= 6 && opponent.mainFleet.length <= 6) ? opponent.escortFleet[hou.api_at_list[j] - 6] : opponent.mainFleet[hou.api_at_list[j]];
-					defender = (hou.api_df_list[j][0] >= 6 && player.mainFleet.length <= 6) ? player.escortFleet[hou.api_df_list[j][0] - 6] : player.mainFleet[hou.api_df_list[j][0]];
+					defender = (hou.api_df_list[j][0] >= 6 && playerFleet.mainFleet.length <= 6) ? playerFleet.escortFleet[hou.api_df_list[j][0] - 6] : playerFleet.mainFleet[hou.api_df_list[j][0]];
 				} else {
-					attacker = (hou.api_at_list[j] >= 6 && player.mainFleet.length <= 6) ? player.escortFleet[hou.api_at_list[j] - 6] : player.mainFleet[hou.api_at_list[j]];
+					attacker = (hou.api_at_list[j] >= 6 && playerFleet.mainFleet.length <= 6) ? playerFleet.escortFleet[hou.api_at_list[j] - 6] : playerFleet.mainFleet[hou.api_at_list[j]];
 					defender = (hou.api_df_list[j][0] >= 6 && opponent.mainFleet.length <= 6) ? opponent.escortFleet[hou.api_df_list[j][0] - 6] : opponent.mainFleet[hou.api_df_list[j][0]];
 				}
 			}
@@ -413,7 +421,7 @@ var BATTLE = (function() {
 			    eTargets = [],
 			    eCTargets = [];
 
-			for (var i = 0; i < 6; i++) {
+			for (var i = 0; i < Math.max(player.mainFleet.length,opponent.mainFleet.length); i++) {
 				var ind = (version == 1) ? i + 1 : i;
 				if (kouku.api_stage3.api_fdam && fleet[i]) {
 					var dam = Math.floor(kouku.api_stage3.api_fdam[ind]);
@@ -444,7 +452,7 @@ var BATTLE = (function() {
 				}
 
 				if (stage3_combined) {
-					if (stage3_combined.api_fdam && player.escortFleet) {
+					if (stage3_combined.api_fdam && player.escortFleet && player.escortFleet[i]) {
 						var dam = Math.floor(stage3_combined.api_fdam[ind]);
 						//remember later, .1 = protect
 						player.escortFleet[i].curHP -= dam;
@@ -457,7 +465,7 @@ var BATTLE = (function() {
 								rai : stage3_combined.api_frai_flag[ind]
 							});
 					}
-					if (stage3_combined.api_edam && opponent.escortFleet) {
+					if (stage3_combined.api_edam && opponent.escortFleet && opponent.escortFleet[i]) {
 						var dam = Math.floor(stage3_combined.api_edam[ind]);
 						//remember later, .1 = protect
 						opponent.escortFleet[i].curHP -= dam;
