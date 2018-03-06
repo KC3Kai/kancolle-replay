@@ -135,6 +135,7 @@ for (var i=389; i <= 417; i+=2) frames_exp.push(PIXI.Texture.fromImage('assets/'
 
 var COMBINED = false;
 var PVPMODE = false;
+var OLDFORMAT = false;
 
 var FLEET2ORIGIN = 631;
 
@@ -431,7 +432,7 @@ function processAPI(root) {
 	console.log(root);
 	COMBINED = root.combined;
 	PVPMODE = (root.world <= 0);
-	var OLDFORMAT = !!data.api_maxhps; //new format 2017-11-17
+	OLDFORMAT = !!data.api_maxhps; //new format 2017-11-17
 	
 	if (root.now_maphp && root.max_maphp) {
 		bossbar.maxhp = root.max_maphp;
@@ -2990,6 +2991,16 @@ function NBstart(flares,contact,bgm,combinedEType,isFriend) {
 	var f1 = (isFriend)? fleetFriend : (COMBINED)? fleet1C : fleet1;
 	if (flares[0] != -1 || flares[1] != -1) {
 		nbtimer = 5000;
+		if (!OLDFORMAT) {
+			if (flares[0] > -1) {
+				if (flares[0] >= 6) flares[0] -= 6;
+				flares[0]++;
+			}
+			if (flares[1] > -1) {
+				if (flares[1] >= 6) flares[1] -= 6;
+				flares[1]++;
+			}
+		}
 		if (flares[0] != -1 || flares[1] != -1) { //star shell
 			var ship = f1[flares[0]-1], shipE = fleet2[flares[1]-1];
 			addTimeout(function() { if (ship) shootFlare(ship); if (shipE) shootFlare(shipE,!!ship); }, (wait)? 1600 : 1);
