@@ -45,7 +45,7 @@ var BATTLE = (function() {
 				enemyCHp = (dbattle.api_e_nowhps_combined) ? dbattle.api_e_nowhps_combined : nightBattle.api_e_nowhps_combined;
 			}
 
-			opponent.addCombinedFleet(enemyId, enemyCId, enemyHp, enemyCHp);
+			opponent.addCombinedFleet(enemyId, enemyCId, enemyHp, enemyCHp, 1);
 		}
 		else
 			opponent.addFleet(enemyId, enemyHp);
@@ -358,6 +358,14 @@ var BATTLE = (function() {
 		var stage2 = kouku.api_stage2;
 		var stage3 = kouku.api_stage3;
 		var stage3_combined = kouku.api_stage3_combined;
+		if (opponent.combined && !stage3_combined) {
+			stage3_combined = {};
+			for (var prop in stage3) {
+				stage3_combined[prop] = [];
+				for (var i=6; i<stage3[prop].length; i++) stage3_combined[prop].push(stage3[prop][i]); //6 okay for old version because ignored as -1
+			}
+		}
+		
 		var fAttackers = [],
 		    eAttackers = [];
 		if (!islbas && kouku.api_plane_from[0] && kouku.api_plane_from[0][0] != -1) {
