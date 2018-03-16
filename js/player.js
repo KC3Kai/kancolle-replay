@@ -1716,6 +1716,9 @@ function battleEnd() {
 		addTimeout(function() {
 			SM.playVoice(fleet2[0].mid,'sunk',10);
 		}, 2000);
+		if ([1802,1803,1804].includes(fleet2[0].mid)){
+			setTimeout(function(){SM.playBGM(997,false,true);},6000);
+		}
 	}
 	addTimeout(function() { ecomplete = true; }, 2000);
 }
