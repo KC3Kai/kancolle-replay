@@ -124,8 +124,7 @@ var BATTLE = (function() {
 		tab.append(body);
 	};
 
-	airAttack = function() {
-		var kou = dbattle.api_kouku;
+	airAttack = function(kou) {
 		var body = document.createElement('tbody');
 		appendPhase("TITLE_AIR_BATTLE");
 		if (kou && kou.api_plane_from && ((kou.api_plane_from[0] && kou.api_plane_from[0][0] != -1) || (kou.api_plane_from[1] && kou.api_plane_from[1][0] != -1))) {
@@ -728,7 +727,9 @@ var BATTLE = (function() {
 		if (nightFirst && dbattle.api_support_flag && dbattle.api_support_flag > 0)
 			support(dbattle.api_support_flag, dbattle.api_support_info);
 		if (dbattle.api_stage_flag)
-			airAttack();
+			airAttack(dbattle.api_kouku);
+		if (dbattle.api_stage_flag2)
+			airAttack(dbattle.api_kouku2);
 		if (!nightFirst && dbattle.api_support_flag && dbattle.api_support_flag > 0)
 			support(dbattle.api_support_flag, dbattle.api_support_info);
 		if (dbattle.api_opening_taisen_flag)
