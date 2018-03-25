@@ -1,4 +1,4 @@
-var API = window.opener.API;
+var API = (window.location.hash.length > 5) ? JSON.parse(decodeURIComponent(window.location.hash.substr(1))) : window.opener.API;
 var player = new FLEET();
 var world = API.world;
 var map = API.mapnum;
