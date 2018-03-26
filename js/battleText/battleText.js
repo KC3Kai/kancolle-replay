@@ -138,7 +138,8 @@ function getNodeLetter(world, map, num) {
 getItem = function(mid) {
 	if (!EQDATA[mid])
 		return mid;
-	return EQDATA[mid].name + ' (' + mid + ')';
+	var name = (LANG_SHIP_NAME == 'JP')? EQDATA[mid].nameJP : EQDATA[mid].name;
+	return name + ' (' + mid + ')';
 };
 
 exportBattle = function(battle) {
