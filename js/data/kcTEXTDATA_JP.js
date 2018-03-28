@@ -173,12 +173,13 @@ var TEXTDATA_JP = {
 				20: "20 (C.)",
 				21: "21 (H.R.)",
 				22: "22 (C.)",
-				23: "23 (C.)",
+				23: "23 (G.)",
 				24: "24 (H.G.)",
 				25: "25 (S.G.R.)",
 				26: "26 (B.R.)",
 				27: "",
-				28: "28 (G.R.)"
+				28: "28 (G.R.)",
+				29: "29 (H.R.)"
 			}
 		}
 	},
@@ -226,13 +227,13 @@ var TEXTDATA_JP = {
 
 	},
 	"OPTORP_ATTACK": {
-		"text": "<b><0></b> が開幕魚雷攻撃を実行",
+		"text": "<b><0></b> が<span style='color:blue'>開幕魚雷攻撃</span>を実行",
 		"values": {
 
 		}
 	},
 	"OPTORP_DAMAGE": {
-		"text": "<b><0></b> が開幕魚雷攻撃を実行",
+		"text": "<b><0></b> が<span style='color:blue'>開幕魚雷攻撃</span>を実行",
 		"values": {
 
 		}
@@ -276,11 +277,11 @@ var TEXTDATA_JP = {
 		"values": {
 			1: {
 				1: "",
-				2: "<span style='color:#D5AD13'>Critical hit! </span>"
+				2: "<span style='color:#D5AD13'>Critical hit!</span> "
 			},
 			3: {
 				1: "",
-				2: "<span style='color:#D5AD13'>Critical hit! </span>"
+				2: "<span style='color:#D5AD13'>Critical hit!</span> "
 			}
 		}
 	},
@@ -300,7 +301,7 @@ var TEXTDATA_JP = {
 		}
 	},
 	"TORP_ATTACK": {
-		"text": "<b><0></b> が魚雷攻撃を実行",
+		"text": "<b><0></b> が<span style='color:blue'>魚雷攻撃</span>を実行",
 		"values": {
 
 		}
@@ -310,7 +311,7 @@ var TEXTDATA_JP = {
 		"values": {
 			3: {
 				1: "",
-				2: "<span style='color:#D5AD13'><b>Critical hit!</b> </span>"
+				2: "<span style='color:#D5AD13'><b>Critical hit!</b></span> "
 			}
 		}
 	},
@@ -366,7 +367,7 @@ var TEXTDATA_JP = {
 		"values": {
 			1: {
 				0: "は <b><span style='color:blue'>撃沈</span></b>した",
-				1: "は <b><span style='color:blue'>戦闘不能</span>になった"
+				1: "は <b><span style='color:blue'>戦闘不能</span></b>になった"
 			}
 		}
 	},
