@@ -140,7 +140,7 @@ var BATTLE = (function() {
 		var body = document.createElement('tbody');
 		appendPhase("TITLE_SUPPORTING_FIRE");
 		body.append(getTextRow("SUPPORT_START", [bossNode, support_flag]));
-		if(support_flag == 1) {
+		if(support_info.api_support_airatack) {
 			var fleet = (bossNode) ? player.supportBoss : player.supportNode;
 			
 			kouku(support_info.api_support_airatack, body, fleet);
