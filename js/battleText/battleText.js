@@ -166,6 +166,10 @@ $('input[type=radio][name=lang]').change(function() {
 	window.location.reload();
 });
 
+window.onhashchange = function() {
+	window.location.reload();
+}
+
 
 var TEXTDATA, LANG_SHIP_NAME;
 function setLanguage(language) {
