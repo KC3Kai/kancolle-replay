@@ -3701,7 +3701,7 @@ function showContact(planeid,side,nightscout) {
 
 function fun() {
 	if (!localStorage.af) {
-		loader2.add('ship4001','assets/images/K.png');
+		loader2.add('ship4001','assets/images/icons/K.png');
 		var ship = createShip([4001,1,1],1,0);
 		ship.graphic.getChildAt(4).text = '\u221E/\u221E';
 	
