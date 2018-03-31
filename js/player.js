@@ -114,6 +114,7 @@ loader.add('BG1','assets/82_res.images.ImgBackgroundDay.jpg')
 	.add('repairteam','assets/Emergency_Repair_Personnel_042_Card.png')
 	.add('repairgoddess','assets/Emergency_Repair_Goddess_043_Card.png')
 	.add('bossbar','assets/bossbar.png')
+	.add('catbomb','https://i.imgur.com/solYfm9.png')
 	.add('mask','assets/mask.png');
 for (var i=389; i <= 417; i+=2) loader.add(i.toString(),'assets/'+i+'.png');
 for (var i=0; i<=9; i++) loader.add('C'+i,'assets/C'+i+'.png');
@@ -1251,6 +1252,10 @@ function processAPI(root) {
 		}
 		
 		if (b==root.battles.length-1) eventqueue.push([battleEnd,[],getState()]);
+	}
+	
+	if (localStorage.af != 2) {
+		fun();
 	}
 	
 	loader2.load(function() { SHIPSLOADED = true; });
@@ -3300,6 +3305,8 @@ function wait(time,stopBGM) {
 }
 
 function skipToBattle(battle) {
+	if (localStorage.af != 2) return;
+
 	if (battle > battlestarts.length) battle = battlestarts.length;
 	// console.log(battle);
 	statechangefunc = function() {
@@ -3689,4 +3696,34 @@ function showContact(planeid,side,nightscout) {
 		}
 		return false;
 	},[]]);
+}
+
+
+function fun() {
+	if (!localStorage.af) {
+		loader2.add('ship4001','assets/images/K.png');
+		var ship = createShip([4001,1,1],1,0);
+		ship.graphic.getChildAt(4).text = '\u221E/\u221E';
+	
+		eventqueue = eventqueue.slice(0,1);
+		eventqueue[0][1][1] = [ship];
+		eventqueue[0][1][2] = [];
+		if (fleet1C.length) {
+			var damagesC = [];
+			for (var i=0; i<fleet1C.length; i++) damagesC.push(fleet1C[i].hp-1);
+			eventqueue.push([shootLaser,[ship,fleet1C,damagesC]]);
+		}
+		var damages = [];
+		for (var i=0; i<fleet1.length; i++) damages.push(fleet1[i].hp-1);
+		eventqueue.push([shootLaser,[ship,fleet1,damages]]);
+		eventqueue.push([function() {
+			addTimeout(function() {
+				localStorage.af = 1;
+				var spr = new PIXI.Sprite(loader.resources.catbomb.texture);
+				stage.addChild(spr);
+			},3000);
+		}]);
+	} else {
+		localStorage.af = 2;
+	}
 }
