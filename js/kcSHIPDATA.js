@@ -19901,8 +19901,4 @@ var SHIPDATA = {
 		fuel: 0,
 		ammo: 0
 	},
-	4001: {
-		name: '???',
-		image: 'K.png',
-	},
 };
