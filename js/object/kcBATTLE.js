@@ -333,6 +333,13 @@ var BATTLE = (function() {
 			body.append(getTextRow("NIGHT_TARGET", [attacker.name, defender.name, hou.api_sp_list[j]]));
 
 			if ((hou.api_damage[j][0] != Math.floor(hou.api_damage[j][0]))) {
+				if (dam < 1) {
+					body.append(getTextRow("PROTECT_MISS", [defender.name]));
+				} else if (hou.api_damage[j].length > 1 && hou.api_damage[j][1] != -1) {
+					body.append(getTextRow("PROTECT_DAMAGE_DOUBLE", [defender.name, hou.api_cl_list[j][0], Math.floor(hou.api_damage[j][0]), hou.api_cl_list[j][1], Math.floor(hou.api_damage[j][1])]));
+				} else {
+					body.append(getTextRow("PROTECT_DAMAGE", [defender.name, hou.api_cl_list[j][0], Math.floor(hou.api_damage[j][0])]));
+				}
 			}//protect
 			else {
 				if (dam < 1) {
@@ -644,20 +651,25 @@ var BATTLE = (function() {
 				defender.damage(Math.floor(hou.api_damage[j][k]));
 			}
 			if (hou.api_at_type[j] == 2) {
-				body.append(getTextRow("SHELL_DAMAGE_DOUBLE", [defender.name, hou.api_cl_list[j][0], hou.api_damage[j][0], hou.api_cl_list[j][1], hou.api_damage[j][1]]));
+				var damage = Math.floor(hou.api_damage[j][0]);
+				if (hou.api_damage[j][0] > damage) {
+					body.append(getTextRow("PROTECT_DAMAGE_DOUBLE", [defender.name, hou.api_cl_list[j][0], Math.floor(hou.api_damage[j][0]), hou.api_cl_list[j][1], Math.floor(hou.api_damage[j][1])]));
+				} else {
+					body.append(getTextRow("SHELL_DAMAGE_DOUBLE", [defender.name, hou.api_cl_list[j][0], hou.api_damage[j][0], hou.api_cl_list[j][1], hou.api_damage[j][1]]));
+				}
 			} else {
 
 				if (hou.api_damage[j][0] < 1) {// need protect
 					var damage = Math.floor(hou.api_damage[j][0]);
 					if (hou.api_damage[j][0] > damage) {
-						body.append(getTextRow("SHELL_MISS", [defender.name]));
+						body.append(getTextRow("PROTECT_MISS", [defender.name]));
 					} else {
 						body.append(getTextRow("SHELL_MISS", [defender.name]));
 					}
 				} else {
 					var damage = Math.floor(hou.api_damage[j][0]);
 					if (hou.api_damage[j][0] > damage) {//protect
-						body.append(getTextRow("SHELL_DAMAGE", [defender.name, hou.api_cl_list[j][0], damage]));
+						body.append(getTextRow("PROTECT_DAMAGE", [defender.name, hou.api_cl_list[j][0], damage]));
 					} else {
 						body.append(getTextRow("SHELL_DAMAGE", [defender.name, hou.api_cl_list[j][0], damage]));
 					}

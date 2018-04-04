@@ -316,16 +316,29 @@ var TEXTDATA_JP = {
 		}
 	},
 	"PROTECT_DAMAGE": {
-		"text": "<b><0></b> が <b><1></b> をかばい、<b><3></b> <b><2></b>ダメージを受けた",
+		"text": "<b><0></b> が 旗艦 をかばい、<b><2></b> <b><1></b>ダメージを受けた",
 		"values": {
-			2: {
+			1: {
+				1: "",
+				2: "<span style='color:#D5AD13'>クリティカル</span>"
+			}
+		}
+	},
+	"PROTECT_DAMAGE_DOUBLE": {
+		"text": "<b><0></b> が 旗艦 をかばい、<b><2></b> <b><1></b>ダメージを受けた、<b><4></b> <b><3></b>ダメージを受けた",
+		"values": {
+			1: {
+				1: "",
+				2: "<span style='color:#D5AD13'>クリティカル</span>"
+			},
+			3: {
 				1: "",
 				2: "<span style='color:#D5AD13'>クリティカル</span>"
 			}
 		}
 	},
 	"PROTECT_MISS": {
-		"text": "<b><0></b> が <b><1></b> をかばい、攻撃ははずれた",
+		"text": "<b><0></b> が 旗艦 をかばい、攻撃ははずれた",
 		"values": {
 			
 		}
