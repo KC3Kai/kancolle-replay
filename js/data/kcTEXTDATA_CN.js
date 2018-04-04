@@ -304,16 +304,29 @@ var TEXTDATA_CN = {
 		}
 	},
 	"PROTECT_DAMAGE": {
-		"text": "<b><span style='color:blue'>旗舰保护：</span></b> <b><0></b> ==> <b><1></b> 受到(<b><3></b>)<b><2></b>伤害",
+		"text": "<b><span style='color:blue'>旗舰保护：</span></b> <b><0></b> 受到(<b><2></b>)<b><1></b>伤害",
 		"values": {
-			2: {
+			1: {
+				1: "",
+				2: "<span style='color:red'>暴击<b>"
+			}
+		}
+	},
+	"PROTECT_DAMAGE_DOUBLE": {
+		"text": "<b><span style='color:blue'>旗舰保护：</span></b> <b><0></b> 受到(<b><2></b>)<b><1></b>，(<b><4></b>)<b><3></b>伤害",
+		"values": {
+			1: {
+				1: "",
+				2: "<span style='color:red'>暴击<b>"
+			},
+			3: {
 				1: "",
 				2: "<span style='color:red'>暴击<b>"
 			}
 		}
 	},
 	"PROTECT_MISS": {
-		"text": "<b><span style='color:blue'>旗舰保护：</span></b> <b><0></b> ==> <b><1></b> <span style='color:blue'>MISS</span>",
+		"text": "<b><span style='color:blue'>旗舰保护：</span></b> <b><0></b> <span style='color:blue'>MISS</span>",
 		"values": {
 			
 		}

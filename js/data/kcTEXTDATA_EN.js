@@ -305,16 +305,29 @@ var TEXTDATA_EN = {
 		}
 	},
 	"PROTECT_DAMAGE": {
-		"text": "<b><0></b> protects <b><1></b> from a <b><2></b> taking <b><3></b> damage.",
+		"text": "<b><0></b> protects flagship from a <b><1></b> taking <b><2></b> damage.",
 		"values": {
-			2: {
+			1: {
+				1: "Normal Attack",
+				2: "<span style='color:#D5AD13'>Critical</span> Attack"
+			}
+		}
+	},
+	"PROTECT_DAMAGE_DOUBLE": {
+		"text": "<b><0></b> protects flagship from a <b><1></b> dealing <b><2></b> damage and a <b><3></b> dealing <b><4></b> damage.",
+		"values": {
+			1: {
+				1: "Normal Attack",
+				2: "<span style='color:#D5AD13'>Critical</span> Attack"
+			},
+			3: {
 				1: "Normal Attack",
 				2: "<span style='color:#D5AD13'>Critical</span> Attack"
 			}
 		}
 	},
 	"PROTECT_MISS": {
-		"text": "<b><0></b> protects <b><1></b> from an attack which misses.",
+		"text": "<b><0></b> protects flagship from an attack which misses.",
 		"values": {
 			
 		}
