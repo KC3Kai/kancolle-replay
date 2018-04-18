@@ -60,10 +60,10 @@ var BATTLE = (function() {
 	formation = function() {
 		var body = document.createElement('tbody');
 		appendPhase("TITLE_FORMATION");
-		body.append(getTextRow("ENEMY_COMPOSITION", [opponent.toString()]));
+		body.append(getTextRow("ENEMY_COMPOSITION", [opponent.toString()], "end"));
 		body.append(getTextRow("FORMATION_SELECT", [dbattle.api_formation[0]]));
-		body.append(getTextRow("ENEMY_FORMATION", [combinedE, dbattle.api_formation[1]]));
-		body.append(getTextRow("ENGAGEMENT", [dbattle.api_formation[2]]));
+		body.append(getTextRow("ENEMY_FORMATION", [combinedE, dbattle.api_formation[1]], "end"));
+		body.append(getTextRow("ENGAGEMENT", [dbattle.api_formation[2]], "center"));
 		tab.append(body);
 
 	};
@@ -73,7 +73,7 @@ var BATTLE = (function() {
 		appendPhase("TITLE_DETECTION");
 
 		body.append(getTextRow("DETECTION_F", [dbattle.api_search[0]]));
-		body.append(getTextRow("DETECTION_E", [dbattle.api_search[1]]));
+		body.append(getTextRow("DETECTION_E", [dbattle.api_search[1]], "end"));
 
 		tab.append(body);
 	};
@@ -130,7 +130,7 @@ var BATTLE = (function() {
 		if (kou && kou.api_plane_from && ((kou.api_plane_from[0] && kou.api_plane_from[0][0] != -1) || (kou.api_plane_from[1] && kou.api_plane_from[1][0] != -1))) {
 			kouku(kou, body, player.mainFleet);
 		} else {
-			body.append(getTextRow("AIR_NONE", []));
+			body.append(getTextRow("AIR_NONE", [], "center"));
 		}
 
 		tab.append(body);
@@ -317,42 +317,46 @@ var BATTLE = (function() {
 			if (version == 1) {
 				attacker = (hou.api_at_list[j] > 6) ? f2[hou.api_at_list[j] - 7] : f1[hou.api_at_list[j] - 1];
 				defender = (hou.api_df_list[j][0] > 6) ? f2[hou.api_df_list[j][0] - 7] : f1[hou.api_df_list[j][0] - 1];
+				attacker['is_enemy'] = hou.api_at_list[j] > 6;
+				defender['is_enemy'] = hou.api_df_list[j][0] > 6;
 			} else {
 				if (hou.api_at_eflag[j]) {
 					attacker = (hou.api_at_list[j] >= 6 && opponent.mainFleet.length <= 6) ? opponent.escortFleet[hou.api_at_list[j] - 6] : opponent.mainFleet[hou.api_at_list[j]];
+					attacker['is_enmey'] = true;
 					defender = (hou.api_df_list[j][0] >= 6 && playerFleet.mainFleet.length <= 6) ? playerFleet.escortFleet[hou.api_df_list[j][0] - 6] : playerFleet.mainFleet[hou.api_df_list[j][0]];
 				} else {
 					attacker = (hou.api_at_list[j] >= 6 && playerFleet.mainFleet.length <= 6) ? playerFleet.escortFleet[hou.api_at_list[j] - 6] : playerFleet.mainFleet[hou.api_at_list[j]];
 					defender = (hou.api_df_list[j][0] >= 6 && opponent.mainFleet.length <= 6) ? opponent.escortFleet[hou.api_df_list[j][0] - 6] : opponent.mainFleet[hou.api_df_list[j][0]];
+					defender['is_enmey'] = true;
 				}
 			}
 			dam = 0;
 			for (var k=0; k<hou.api_damage[j].length; k++) {
 				if (hou.api_damage[j][k] > 0) dam += hou.api_damage[j][k];
 			}
-			body.append(getTextRow("NIGHT_TARGET", [attacker.name, defender.name, hou.api_sp_list[j]]));
+			body.append(getTextRow("NIGHT_TARGET", [attacker.name, defender.name, hou.api_sp_list[j]], attacker.is_enemy ? "end" : "start"));
 
 			if ((hou.api_damage[j][0] != Math.floor(hou.api_damage[j][0]))) {
 				if (dam < 1) {
-					body.append(getTextRow("PROTECT_MISS", [defender.name]));
+					body.append(getTextRow("PROTECT_MISS", [defender.name], defender.is_enemy ? "start" : "end"));
 				} else if (hou.api_damage[j].length > 1 && hou.api_damage[j][1] != -1) {
-					body.append(getTextRow("PROTECT_DAMAGE_DOUBLE", [defender.name, hou.api_cl_list[j][0], Math.floor(hou.api_damage[j][0]), hou.api_cl_list[j][1], Math.floor(hou.api_damage[j][1])]));
+					body.append(getTextRow("PROTECT_DAMAGE_DOUBLE", [defender.name, hou.api_cl_list[j][0], Math.floor(hou.api_damage[j][0]), hou.api_cl_list[j][1], Math.floor(hou.api_damage[j][1])], defender.is_enemy ? "start" : "end"));
 				} else {
-					body.append(getTextRow("PROTECT_DAMAGE", [defender.name, hou.api_cl_list[j][0], Math.floor(hou.api_damage[j][0])]));
+					body.append(getTextRow("PROTECT_DAMAGE", [defender.name, hou.api_cl_list[j][0], Math.floor(hou.api_damage[j][0])], defender.is_enemy ? "start" : "end"));
 				}
 			}//protect
 			else {
 				if (dam < 1) {
-					body.append(getTextRow("SHELL_MISS", [defender.name]));
+					body.append(getTextRow("SHELL_MISS", [defender.name], defender.is_enemy ? "start" : "end"));
 				} else if (hou.api_damage[j].length > 1 && hou.api_damage[j][1] != -1) {
-					body.append(getTextRow("SHELL_DAMAGE_DOUBLE", [defender.name, hou.api_cl_list[j][0], Math.floor(hou.api_damage[j][0]), hou.api_cl_list[j][1], Math.floor(hou.api_damage[j][1])]));
+					body.append(getTextRow("SHELL_DAMAGE_DOUBLE", [defender.name, hou.api_cl_list[j][0], Math.floor(hou.api_damage[j][0]), hou.api_cl_list[j][1], Math.floor(hou.api_damage[j][1])], defender.is_enemy ? "start" : "end"));
 				} else {
-					body.append(getTextRow("SHELL_DAMAGE", [defender.name, hou.api_cl_list[j][0], Math.floor(hou.api_damage[j][0])]));
+					body.append(getTextRow("SHELL_DAMAGE", [defender.name, hou.api_cl_list[j][0], Math.floor(hou.api_damage[j][0])], defender.is_enemy ? "start" : "end"));
 				}
 			}
 			defender.damage(dam);
 			if (defender.isSunk()) {
-				body.append(getTextRow("SHIP_END", [defender.name, isPVP]));
+				body.append(getTextRow("SHIP_END", [defender.name, isPVP], defender.is_enemy ? "start" : "end"));
 			}
 		}
 
@@ -398,21 +402,21 @@ var BATTLE = (function() {
 					slot -= 6;
 				eAttackers.push(opponent.mainFleet[slot - 1]);
 			}
-			table.append(getTextRow("AIR_START", [arrayToString(eAttackers), stage1.api_e_count, (stage2 && stage2.api_e_count) ? stage2.api_e_count: 0]));
+			table.append(getTextRow("AIR_START", [arrayToString(eAttackers), stage1.api_e_count, (stage2 && stage2.api_e_count) ? stage2.api_e_count: 0], "end"));
 		}
 
 		if (stage1.api_f_count > 0)
 			table.append(getTextRow("AIR_STAGE1_LOSS", [0, stage1.api_f_lostcount, 1]));
 		if (stage1.api_e_count > 0)
-			table.append(getTextRow("AIR_STAGE1_LOSS", [1, stage1.api_e_lostcount, 0]));
+			table.append(getTextRow("AIR_STAGE1_LOSS", [1, stage1.api_e_lostcount, 0], "end"));
 
 		if (!isbombing && !isjet) {
-			if(stage1.api_disp_seiku != null) table.append(getTextRow("AIR_SUPERIORITY", [stage1.api_disp_seiku]));
+			if(stage1.api_disp_seiku != null) table.append(getTextRow("AIR_SUPERIORITY", [stage1.api_disp_seiku], "center"));
 			if(stage1.api_touch_plane) {
 				if (stage1.api_touch_plane[0] > 0)
 					table.append(getTextRow("AIR_CONTACT_F", [getItem(stage1.api_touch_plane[0])]));
 				if (stage1.api_touch_plane[1] > 0)
-					table.append(getTextRow("AIR_CONTACT_E", [getItem(stage1.api_touch_plane[1])]));	
+					table.append(getTextRow("AIR_CONTACT_E", [getItem(stage1.api_touch_plane[1])], "end"));
 			}
 			
 		}
@@ -424,7 +428,7 @@ var BATTLE = (function() {
 		}
 
 		if (stage2 && stage2.api_f_count > 0)
-			table.append(getTextRow("AIR_STAGE2_LOSS", [1, stage2.api_f_lostcount, 0]));
+			table.append(getTextRow("AIR_STAGE2_LOSS", [1, stage2.api_f_lostcount, 0], "end"));
 		if (stage2 && stage2.api_e_count > 0)
 			table.append(getTextRow("AIR_STAGE2_LOSS", [0, stage2.api_e_lostcount, 1]));
 		table.append(getTextRow("", []));
@@ -502,9 +506,9 @@ var BATTLE = (function() {
 			}
 
 			for (var e in eTargets) {
-				table.append(getTextRow("AIR_DAMAGE", [eTargets[e].rai, eTargets[e].crit, eTargets[e].ship.name, eTargets[e].damage]));
+				table.append(getTextRow("AIR_DAMAGE", [eTargets[e].rai, eTargets[e].crit, eTargets[e].ship.name, eTargets[e].damage], "end"));
 				if (eTargets[e].ship.isSunk()) {
-					table.append(getTextRow("SHIP_END", [eTargets[e].ship.name, isPVP]));
+					table.append(getTextRow("SHIP_END", [eTargets[e].ship.name, isPVP], "end"));
 				}
 			}
 		}
@@ -583,7 +587,7 @@ var BATTLE = (function() {
 		if (fTorpedos.length > 0)
 			table.append(getTextRow((opening) ? "OPTORP_ATTACK" : "TORP_ATTACK", [arrayToString(fTorpedos)]));
 		if (eTorpedos.length > 0)
-			table.append(getTextRow((opening) ? "OPTORP_ATTACK" : "TORP_ATTACK", [arrayToString(eTorpedos)]));
+			table.append(getTextRow((opening) ? "OPTORP_ATTACK" : "TORP_ATTACK", [arrayToString(eTorpedos)], "end"));
 		for (var j = 0; j < fTorpedos.length; j++) {
 			table.append(getTextRow("TORP_DAMAGE", [fTorpedos[j].name, fTargets[j].name, fAttack[j].atk, fAttack[j].crit]));
 			fTargets[j].damage(fAttack[j].atk);
@@ -593,11 +597,11 @@ var BATTLE = (function() {
 		}
 
 		for (var j = 0; j < eTorpedos.length; j++) {
-			table.append(getTextRow("TORP_DAMAGE", [eTorpedos[j].name, eTargets[j].name, eAttack[j].atk, eAttack[j].crit]));
+			table.append(getTextRow("TORP_DAMAGE", [eTorpedos[j].name, eTargets[j].name, eAttack[j].atk, eAttack[j].crit], "end"));
 			eTargets[j].damage(eAttack[j].atk);
 
 			if (eTargets[j].isSunk()) {
-				table.append(getTextRow("SHIP_END", [eTargets[j].name, isPVP]));
+				table.append(getTextRow("SHIP_END", [eTargets[j].name, isPVP], "end"));
 			}
 		}
 
@@ -613,16 +617,20 @@ var BATTLE = (function() {
 			
 			if (version == 1) {
 				if (combinedE) {
-					if (hou.api_at_eflag[j])
-						attacker = (hou.api_at_list[j] > 6) ? opponent.escortFleet[hou.api_at_list[j] - 7] : opponent.mainFleet[hou.api_at_list[j] - 1];
+					if (hou.api_at_eflag[j]) {
+                        attacker = (hou.api_at_list[j] > 6) ? opponent.escortFleet[hou.api_at_list[j] - 7] : opponent.mainFleet[hou.api_at_list[j] - 1];
+                        attacker['is_enemy'] = true;
+                    }
 					else
 						attacker = (hou.api_at_list[j] > 6) ? player.escortFleet[hou.api_at_list[j] - 7] : player.mainFleet[hou.api_at_list[j] - 1];
 				} else {
 					attacker = (hou.api_at_list[j] > 6) ? opponent.mainFleet[hou.api_at_list[j] - 7] : fleet[hou.api_at_list[j] - 1];
+					if (hou.api_at_list[j] > 6) attacker['is_enemy'] = true;
 				}
 			} else {
 				if (hou.api_at_eflag[j]) {
 					attacker = (hou.api_at_list[j] >= 6 && opponent.mainFleet.length <= 6) ? opponent.escortFleet[hou.api_at_list[j] - 6] : opponent.mainFleet[hou.api_at_list[j]];
+                    attacker['is_enemy'] = true;
 				} else {
 					attacker = (hou.api_at_list[j] >= 6 && player.mainFleet.length <= 6) ? player.escortFleet[hou.api_at_list[j] - 6] : player.mainFleet[hou.api_at_list[j]];
 				}
@@ -630,22 +638,26 @@ var BATTLE = (function() {
 			
 			if (version == 1) {
 				if (combinedE) {
-					if (!hou.api_at_eflag[j])
-						defender = (hou.api_df_list[j][0] > 6) ? opponent.escortFleet[hou.api_df_list[j][0] - 7] : opponent.mainFleet[hou.api_df_list[j][0] - 1];
+					if (!hou.api_at_eflag[j]) {
+                        defender = (hou.api_df_list[j][0] > 6) ? opponent.escortFleet[hou.api_df_list[j][0] - 7] : opponent.mainFleet[hou.api_df_list[j][0] - 1];
+						defender['is_enemy'] = true;
+					}
 					else
 						defender = (hou.api_df_list[j][0] > 6) ? player.escortFleet[hou.api_df_list[j][0] - 7] : player.mainFleet[hou.api_df_list[j][0] - 1];
 				} else {
 					defender = (hou.api_df_list[j][0] > 6) ? opponent.mainFleet[hou.api_df_list[j][0] - 7] : fleet[hou.api_df_list[j][0] - 1];
+					if (hou.api_df_list[j][0] > 6) defender['is_enemy'] = true;
 				}
 			} else {
 				if (!hou.api_at_eflag[j]) {
 					defender = (hou.api_df_list[j][0] >= 6 && opponent.mainFleet.length <= 6) ? opponent.escortFleet[hou.api_df_list[j][0] - 6] : opponent.mainFleet[hou.api_df_list[j][0]];
+                    defender['is_enemy'] = true;
 				} else {
 					defender = (hou.api_df_list[j][0] >= 6 && player.mainFleet.length <= 6) ? player.escortFleet[hou.api_df_list[j][0] - 6] : player.mainFleet[hou.api_df_list[j][0]];
 				}
 			}
 
-			body.append(getTextRow("SHELL_TARGET", [attacker.name, hou.api_at_type[j], defender.name]));
+			body.append(getTextRow("SHELL_TARGET", [attacker.name, hou.api_at_type[j], defender.name], attacker.is_enemy? "end" : "start"));
 
 			for (var k in hou.api_damage[j]) {
 				defender.damage(Math.floor(hou.api_damage[j][k]));
@@ -653,40 +665,40 @@ var BATTLE = (function() {
 			if (hou.api_at_type[j] == 2) {
 				var damage = Math.floor(hou.api_damage[j][0]);
 				if (hou.api_damage[j][0] > damage) {
-					body.append(getTextRow("PROTECT_DAMAGE_DOUBLE", [defender.name, hou.api_cl_list[j][0], Math.floor(hou.api_damage[j][0]), hou.api_cl_list[j][1], Math.floor(hou.api_damage[j][1])]));
+					body.append(getTextRow("PROTECT_DAMAGE_DOUBLE", [defender.name, hou.api_cl_list[j][0], Math.floor(hou.api_damage[j][0]), hou.api_cl_list[j][1], Math.floor(hou.api_damage[j][1])], defender.is_enemy? "start" : "end"));
 				} else {
-					body.append(getTextRow("SHELL_DAMAGE_DOUBLE", [defender.name, hou.api_cl_list[j][0], hou.api_damage[j][0], hou.api_cl_list[j][1], hou.api_damage[j][1]]));
+					body.append(getTextRow("SHELL_DAMAGE_DOUBLE", [defender.name, hou.api_cl_list[j][0], hou.api_damage[j][0], hou.api_cl_list[j][1], hou.api_damage[j][1]], defender.is_enemy? "start" : "end"));
 				}
 			} else {
 
 				if (hou.api_damage[j][0] < 1) {// need protect
 					var damage = Math.floor(hou.api_damage[j][0]);
 					if (hou.api_damage[j][0] > damage) {
-						body.append(getTextRow("PROTECT_MISS", [defender.name]));
+						body.append(getTextRow("PROTECT_MISS", [defender.name], defender.is_enemy? "start" : "end"));
 					} else {
-						body.append(getTextRow("SHELL_MISS", [defender.name]));
+						body.append(getTextRow("SHELL_MISS", [defender.name], defender.is_enemy? "start" : "end"));
 					}
 				} else {
 					var damage = Math.floor(hou.api_damage[j][0]);
 					if (hou.api_damage[j][0] > damage) {//protect
-						body.append(getTextRow("PROTECT_DAMAGE", [defender.name, hou.api_cl_list[j][0], damage]));
+						body.append(getTextRow("PROTECT_DAMAGE", [defender.name, hou.api_cl_list[j][0], damage], defender.is_enemy? "start" : "end"));
 					} else {
-						body.append(getTextRow("SHELL_DAMAGE", [defender.name, hou.api_cl_list[j][0], damage]));
+						body.append(getTextRow("SHELL_DAMAGE", [defender.name, hou.api_cl_list[j][0], damage], defender.is_enemy? "start" : "end"));
 					}
 				}
 			}
 			if (defender.isSunk()) {
-				body.append(getTextRow("SHIP_END", [defender.name, isPVP]));
+				body.append(getTextRow("SHIP_END", [defender.name, isPVP], defender.is_enemy? "start" : "end"));
 			}
 		}
 	};
 
 	function appendPhase(phase) {
 		let title = (TEXTDATA[phase]) ? TEXTDATA[phase].text : phase.replace('TITLE_','').replace('_',' ');
-		$("<thead><tr></tr></thead>").find("tr").attr('data-tableexport-display', 'always').html('<th>' + title + '</th>').end().appendTo(tab);
+		$("<thead><tr></tr></thead>").find("tr").attr('data-tableexport-display', 'always').html('<th class="phase_title">' + title + '</th>').end().appendTo(tab);
 	}
 
-	function getTextRow(name, args) {
+	function getTextRow(name, args, align="start") {
 		var row = document.createElement('tr');
 		if (name.length === 0) {
 			var attr = document.createAttribute('data-tableexport-display');
@@ -695,7 +707,7 @@ var BATTLE = (function() {
 			row.className = 'blank_row';
 			row.innerHTML = '<td> </td>';
 		} else {
-			row.innerHTML = '<td>' + getText(name, args) + '\r\n</td>';
+			row.innerHTML = '<td style="text-align: ' + align + '">' + getText(name, args) + '\r\n</td>';
 		}
 		return row;
 	}

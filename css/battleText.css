@@ -56,4 +56,10 @@ div[id^="battle-"] table {
 
 th {
 	text-align: center;
-};
+}
+
+.phase_title {
+	font-size: 20px;
+	color: #1DBDC0;
+	background: rgba(49,65,80, 0.70);
+}
