@@ -369,6 +369,19 @@ var TEXTDATA_CN = {
 			}
 		}
 	},
+	"SHIP_REPAIR": {
+		"text": "<b><0></b> <1>recovered using a <b><span style='color:green'><2></span></b>.",
+		"values": {
+			1: {
+				0: "",
+				1: "completely "
+			},
+			2: {
+				0: "Repair Team",
+				1: "Repair Goddess "
+			}
+		}
+	},
 	"BATTLE_END": {
 		"text": "<span style='color:blue'>战斗结束，我方 </span><b><0></b>",
 		"values": {

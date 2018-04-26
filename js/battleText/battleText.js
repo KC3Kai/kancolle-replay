@@ -49,11 +49,13 @@ processSortie = function(battles) {
 processText = function() {
 	
 	var hpsMain = startData.api_f_nowhps || startData.api_nowhps.slice(1, 7);
+	let hpmMain = startData.api_f_maxhps || startData.api_maxhps.slice(1, 7);
 	if (combined) {
 		var hpsEscort = startData.api_f_nowhps_combined || startData.api_nowhps_combined.slice(1, 7);
-		player.addCombinedFleet(API.fleet1, API.fleet2, hpsMain, hpsEscort, API.combined);
+		var hpmEscort = startData.api_f_maxhps_combined || startData.api_maxhps_combined.slice(1, 7);
+		player.addCombinedFleet(API.fleet1, API.fleet2, hpsMain, hpmMain, hpsEscort, hpmEscort, API.combined);
 	} else {
-		player.addFleet(API['fleet' + API.fleetnum], hpsMain);
+		player.addFleet(API['fleet' + API.fleetnum], hpsMain, hpmMain);
 	}
 	if (API.support1 && API.support1 > 0)
 		player.addSupport(API['fleet' + API.support1]);
@@ -89,73 +91,11 @@ processText = function() {
 
 };
 
-function getText(name, args) {
-	var text = TEXTDATA[name].text;
-	for (var i = 0; i < args.length; i++) {
-		var val = args[i];
-		if (TEXTDATA[name].values[i])
-			val = TEXTDATA[name].values[i][args[i]];
-		text = text.replace('<' + i + '>', val);
-	}
-	return text;
-}
-
 setTitle = function() {
 	var title = document.createElement('title');
 	title.innerText = (isPvP) ? getText("PVP_TITLE", [API.id]) : getText("SORTIE_TITLE", [API.id, getMapName(world, map)]);
 	document.head.appendChild(title);
 };
-
-function addText(text) {
-	console.log(text);
-}
-
-function getMapName(world, map) {
-	return world + '-' + map;
-	// if (!MAPDATA[world] || !MAPDATA[world].maps[map])
-		// return world + '-' + map;
-	// if (world > 6)
-		// return MAPDATA[world].name + " " + MAPDATA[world].maps[map].name;
-	// return MAPDATA[world].name;
-}
-
-function isBossNode(world, map, node) {
-	if (!MAPDATA[world] || !MAPDATA[world].maps[map]) return false;
-	var bossNode = MAPDATA[world].maps[map].bossnode;
-	if (typeof bossNode == 'object') return bossNode.indexOf(node) != -1;
-	return node == bossNode;
-}
-
-function getNodeLetter(world, map, num) {
-	var edge;
-	if (!( edge = EDGES['World ' + world + '-' + map]))
-		return num;
-	if (!( edge = edge[num]))
-		return num;
-	return edge[1];
-}
-
-getItem = function(mid) {
-	if (!EQDATA[mid])
-		return mid;
-	var name = (LANG_SHIP_NAME == 'JP')? EQDATA[mid].nameJP : EQDATA[mid].name;
-	return name + ' (' + mid + ')';
-};
-
-exportBattle = function(battle) {
-	var table = (battle == 'all') ? $('table') : $('#battle-' + battle); 
-	var name = [];
-	name.push(document.title);
-	if(!isPvP && battle != 'all') {
-		name.push("Node " + battle);
-	}
-	table.tableExport(
-		{
-			type:'txt',
-			fileName: name.join(" ")
-		});
-};
-
 
 $(document).ready(function(){
     $(this).scrollTop(0);
