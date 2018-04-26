@@ -166,6 +166,11 @@ $('input[type=radio][name=lang]').change(function() {
 	window.location.reload();
 });
 
+$('#btnAlign').click(function() {
+	localStorage.replay_log_noAlign = +!+localStorage.replay_log_noAlign;
+	window.location.reload();
+});
+
 window.onhashchange = function() {
 	window.location.reload();
 }
