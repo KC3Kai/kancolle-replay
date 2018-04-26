@@ -699,6 +699,7 @@ var BATTLE = (function() {
 	}
 
 	function getTextRow(name, args, align="start") {
+		if (+localStorage.replay_log_noAlign) align = 'start';
 		var row = document.createElement('tr');
 		if (name.length === 0) {
 			var attr = document.createAttribute('data-tableexport-display');
@@ -768,4 +769,3 @@ var BATTLE = (function() {
 
 	return BATTLE;
 })();
-
