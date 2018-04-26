@@ -3523,6 +3523,18 @@ var EQDATA = {
 		EV: 1,
 		RNG: 1,
 	},
+	284: {
+		name: '5inch Single Gun Mount Mk.30',
+		nameJP: '5inch単装砲 Mk.30',
+		added: '2018-02-28',
+		type: MAINGUNS,
+		FP: 2,
+		AA: 6,
+		AR: 1,
+		ACC: 1,
+		EV: 2,
+		RNG: 1,
+	},
 	501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
