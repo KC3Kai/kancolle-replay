@@ -322,12 +322,12 @@ var BATTLE = (function() {
 			} else {
 				if (hou.api_at_eflag[j]) {
 					attacker = (hou.api_at_list[j] >= 6 && opponent.mainFleet.length <= 6) ? opponent.escortFleet[hou.api_at_list[j] - 6] : opponent.mainFleet[hou.api_at_list[j]];
-					attacker['is_enmey'] = true;
+					attacker['is_enemy'] = true;
 					defender = (hou.api_df_list[j][0] >= 6 && playerFleet.mainFleet.length <= 6) ? playerFleet.escortFleet[hou.api_df_list[j][0] - 6] : playerFleet.mainFleet[hou.api_df_list[j][0]];
 				} else {
 					attacker = (hou.api_at_list[j] >= 6 && playerFleet.mainFleet.length <= 6) ? playerFleet.escortFleet[hou.api_at_list[j] - 6] : playerFleet.mainFleet[hou.api_at_list[j]];
 					defender = (hou.api_df_list[j][0] >= 6 && opponent.mainFleet.length <= 6) ? opponent.escortFleet[hou.api_df_list[j][0] - 6] : opponent.mainFleet[hou.api_df_list[j][0]];
-					defender['is_enmey'] = true;
+					defender['is_enemy'] = true;
 				}
 			}
 			dam = 0;
