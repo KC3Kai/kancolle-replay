@@ -377,8 +377,8 @@ var TEXTDATA_CN = {
 				1: "completely "
 			},
 			2: {
-				0: "Repair Team",
-				1: "Repair Goddess "
+				0: "応急修理要員",
+				1: "応急修理女神"
 			}
 		}
 	},

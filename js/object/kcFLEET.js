@@ -10,7 +10,7 @@ const SHIP = function(data, hp, max) {
 
 		for(var i = 0; i < data.equip.length; i++) {
 			if(data.equip[i] === 0)
-				break;
+				continue;
 			if(EQDATA[data.equip[i]].type === REPAIR) {
 				this.damecoms.push(data.equip[i]);
 			}
@@ -42,7 +42,7 @@ Object.assign(SHIP.prototype, {
 
 		if(damecom) {
 			if(damecom === 42)
-				this.curHP = this.MaxHP/4;
+				this.curHP = Math.floor(this.MaxHP/5);
 			else if(damecom === 43)
 				this.curHP = this.MaxHP; 
 		} 

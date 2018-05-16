@@ -366,7 +366,7 @@ var BATTLE = (function() {
 
 				if(defender.hasDameCom()) {
 					let repairType = defender.useDameCom()
-					table.append(getTextRow("SHIP_REPAIR", [defender.name]));
+					table.append(getTextRow("SHIP_REPAIR", [defender.name, repairType, repairType], "end"));
 				} 
 			}
 		}
@@ -523,7 +523,7 @@ var BATTLE = (function() {
 
 					if(eTargets[e].ship.hasDameCom()) {
 						let repairType = eTargets[e].ship.useDameCom()
-						table.append(getTextRow("SHIP_REPAIR", [eTargets[e].ship.name]));
+						table.append(getTextRow("SHIP_REPAIR", [eTargets[e].ship.name, repairType, repairType], "end"));
 					} 
 				}
 			}
@@ -621,7 +621,7 @@ var BATTLE = (function() {
 
 				if(eTargets[j].hasDameCom()) {
 					let repairType = eTargets[j].useDameCom()
-					table.append(getTextRow("SHIP_REPAIR", [eTargets[j].name]));
+					table.append(getTextRow("SHIP_REPAIR", [eTargets[j].name, repairType, repairType], "end"));
 				} 
 			}
 
@@ -714,7 +714,7 @@ var BATTLE = (function() {
 
 				if(defender.hasDameCom()) {
 					let repairType = defender.useDameCom()
-					body.append(getTextRow("SHIP_REPAIR", [defender.name, repairType, repairType]));
+					body.append(getTextRow("SHIP_REPAIR", [defender.name, repairType, repairType], "end"));
 				} 
 			}
 		}
