@@ -384,6 +384,19 @@ var TEXTDATA_JP = {
 			}
 		}
 	},
+	"SHIP_REPAIR": {
+		"text": "<b><0></b> <1>recovered using a <b><span style='color:green'><2></span></b>.",
+		"values": {
+			1: {
+				0: "",
+				1: "completely "
+			},
+			2: {
+				0: "応急修理要員",
+				1: "応急修理女神"
+			}
+		}
+	},
 	"BATTLE_END": {
 		"text": "戦闘終了 評価: <b><0></b>",
 		"values": {

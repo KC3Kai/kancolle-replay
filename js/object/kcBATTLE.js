@@ -31,24 +31,30 @@ var BATTLE = (function() {
 		var enemyId = (dbattle.api_ship_ke) ? dbattle.api_ship_ke: nightBattle.api_ship_ke;
 		
 		var enemyHp;
+		var enemyHpMax;
 		if (version == 1) {
 			enemyHp = (dbattle.api_ship_ke) ? dbattle.api_nowhps.slice(7) : nightBattle.api_nowhps.slice(7);
+			enemyHpMax = (dbattle.api_ship_ke) ? dbattle.api_maxhps.slice(7) : nightBattle.api_maxhps.slice(7);
 		} else {
 			enemyHp = (dbattle.api_ship_ke) ? dbattle.api_e_nowhps : nightBattle.api_e_nowhps;
+			enemyHpMax = (dbattle.api_ship_ke) ? dbattle.api_e_maxhps : nightBattle.api_e_maxhps;
 		}
 		if (combinedE){
 			var enemyCId = (dbattle.api_ship_ke_combined) ? dbattle.api_ship_ke_combined: nightBattle.api_ship_ke_combined;
 			var enemyCHp;
+			var enemyCHpMax
 			if (version == 1) {
 				enemyCHp = (dbattle.api_nowhps_combined) ? dbattle.api_nowhps_combined.slice(7) : nightBattle.api_nowhps_combined.slice(7);
+				enemyCHpMax = (dbattle.api_nowhps_combined) ? dbattle.api_maxhps_combined.slice(7) : nightBattle.api_maxhps_combined.slice(7);
 			} else {
 				enemyCHp = (dbattle.api_e_nowhps_combined) ? dbattle.api_e_nowhps_combined : nightBattle.api_e_nowhps_combined;
+				enemyCHpMax = (dbattle.api_e_nowhps_combined) ? dbattle.api_e_maxhps_combined : nightBattle.api_e_maxhps_combined;
 			}
 
-			opponent.addCombinedFleet(enemyId, enemyCId, enemyHp, enemyCHp, 1);
+			opponent.addCombinedFleet(enemyId, enemyCId, enemyHp, enemyHpMax, enemyCHp, enemyCHpMax, 1);
 		}
 		else
-			opponent.addFleet(enemyId, enemyHp);
+			opponent.addFleet(enemyId, enemyHp, enemyHpMax);
 			
 		if(isPVP)
 			body.append(getTextRow("PVP_START",[]));
@@ -322,12 +328,12 @@ var BATTLE = (function() {
 			} else {
 				if (hou.api_at_eflag[j]) {
 					attacker = (hou.api_at_list[j] >= 6 && opponent.mainFleet.length <= 6) ? opponent.escortFleet[hou.api_at_list[j] - 6] : opponent.mainFleet[hou.api_at_list[j]];
-					attacker['is_enmey'] = true;
+					attacker['is_enemy'] = true;
 					defender = (hou.api_df_list[j][0] >= 6 && playerFleet.mainFleet.length <= 6) ? playerFleet.escortFleet[hou.api_df_list[j][0] - 6] : playerFleet.mainFleet[hou.api_df_list[j][0]];
 				} else {
 					attacker = (hou.api_at_list[j] >= 6 && playerFleet.mainFleet.length <= 6) ? playerFleet.escortFleet[hou.api_at_list[j] - 6] : playerFleet.mainFleet[hou.api_at_list[j]];
 					defender = (hou.api_df_list[j][0] >= 6 && opponent.mainFleet.length <= 6) ? opponent.escortFleet[hou.api_df_list[j][0] - 6] : opponent.mainFleet[hou.api_df_list[j][0]];
-					defender['is_enmey'] = true;
+					defender['is_enemy'] = true;
 				}
 			}
 			dam = 0;
@@ -357,6 +363,11 @@ var BATTLE = (function() {
 			defender.damage(dam);
 			if (defender.isSunk()) {
 				body.append(getTextRow("SHIP_END", [defender.name, isPVP], defender.is_enemy ? "start" : "end"));
+
+				if(defender.hasDameCom()) {
+					let repairType = defender.useDameCom()
+					table.append(getTextRow("SHIP_REPAIR", [defender.name, repairType, repairType], "end"));
+				} 
 			}
 		}
 
@@ -509,6 +520,11 @@ var BATTLE = (function() {
 				table.append(getTextRow("AIR_DAMAGE", [eTargets[e].rai, eTargets[e].crit, eTargets[e].ship.name, eTargets[e].damage], "end"));
 				if (eTargets[e].ship.isSunk()) {
 					table.append(getTextRow("SHIP_END", [eTargets[e].ship.name, isPVP], "end"));
+
+					if(eTargets[e].ship.hasDameCom()) {
+						let repairType = eTargets[e].ship.useDameCom()
+						table.append(getTextRow("SHIP_REPAIR", [eTargets[e].ship.name, repairType, repairType], "end"));
+					} 
 				}
 			}
 		}
@@ -602,7 +618,13 @@ var BATTLE = (function() {
 
 			if (eTargets[j].isSunk()) {
 				table.append(getTextRow("SHIP_END", [eTargets[j].name, isPVP], "end"));
+
+				if(eTargets[j].hasDameCom()) {
+					let repairType = eTargets[j].useDameCom()
+					table.append(getTextRow("SHIP_REPAIR", [eTargets[j].name, repairType, repairType], "end"));
+				} 
 			}
+
 		}
 
 	};
@@ -689,6 +711,11 @@ var BATTLE = (function() {
 			}
 			if (defender.isSunk()) {
 				body.append(getTextRow("SHIP_END", [defender.name, isPVP], defender.is_enemy? "start" : "end"));
+
+				if(defender.hasDameCom()) {
+					let repairType = defender.useDameCom()
+					body.append(getTextRow("SHIP_REPAIR", [defender.name, repairType, repairType], "end"));
+				} 
 			}
 		}
 	};
