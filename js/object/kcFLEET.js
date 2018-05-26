@@ -11,6 +11,7 @@ const SHIP = function(data, hp, max) {
 		for(var i = 0; i < data.equip.length; i++) {
 			if(data.equip[i] === 0)
 				continue;
+			if (!EQDATA[data.equip[i]]) continue;
 			if(EQDATA[data.equip[i]].type === REPAIR) {
 				this.damecoms.push(data.equip[i]);
 			}
