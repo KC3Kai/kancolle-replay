@@ -122,7 +122,8 @@ function loadFleetInfo(API, translate) {
 			if (!translate) {
 				if (SHIPDATA[mid]) $('#img2' + k + i).attr('src', 'assets/icons/' + SHIPDATA[mid].image);
 				var maxhp = (b.api_maxhps)? b.api_maxhps[i + 7] : b.api_e_maxhps[i];
-				$('#lvl2' + k + i).text(b.api_ship_lv[i + 1]); $('#hp2' + k + i).text(maxhp);
+				var level = (b.api_ship_lv[0] == -1)? b.api_ship_lv[i + 1] : b.api_ship_lv[i];
+				$('#lvl2' + k + i).text(level); $('#hp2' + k + i).text(maxhp);
 				$('#fp2' + k + i).text(b.api_eParam[i][0]); $('#tp2' + k + i).text(b.api_eParam[i][1]); $('#aa2' + k + i).text(b.api_eParam[i][2]); $('#ar2' + k + i).text(b.api_eParam[i][3]);
 			}
 			for (var j = 0; j < 4; j++) {
@@ -148,7 +149,8 @@ function loadFleetInfo(API, translate) {
 				if (!translate) {
 					if (SHIPDATA[mid]) $('#img2c' + k + i).attr('src', 'assets/icons/' + SHIPDATA[mid].image);
 					var maxhp = (b.api_maxhps_combined)? b.api_maxhps_combined[i + 7] : b.api_e_maxhps_combined[i];
-					$('#lvl2c' + k + i).text(b.api_ship_lv_combined[i + 1]); $('#hp2c' + k + i).text(maxhp);
+					var level = (b.api_ship_lv_combined[0] == -1)? b.api_ship_lv_combined[i + 1] : b.api_ship_lv_combined[i];
+					$('#lvl2c' + k + i).text(level); $('#hp2c' + k + i).text(maxhp);
 					$('#fp2c' + k + i).text(b.api_eParam_combined[i][0]); $('#tp2c' + k + i).text(b.api_eParam_combined[i][1]); $('#aa2c' + k + i).text(b.api_eParam_combined[i][2]); $('#ar2c' + k + i).text(b.api_eParam_combined[i][3]);
 				}
 				for (var j = 0; j < 4; j++) {
