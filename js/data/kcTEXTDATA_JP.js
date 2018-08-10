@@ -179,7 +179,11 @@ var TEXTDATA_JP = {
 				26: "(26: 武蔵改二&10cm連装高角砲改+増設機銃/電探)",
 				27: "",
 				28: "(28: 伊勢型改・武蔵改&噴進砲改二/電探)",
-				29: "(29: 磯風乙改・浜風乙改&高角砲/対空電探)"
+				29: "(29: 磯風乙改・浜風乙改&高角砲/対空電探)",
+				30: "(30: 天龍改二&高角砲/高角砲/高角砲)",
+				31: "(31: 天龍改二&高角砲/高角砲)",
+				32: "(32: 英国艦・金剛型&20連装7inch UP Rocket Launchers・16inch Mk.I三連装砲改+FCR type284/QF 2ポンド8連装ポンポン砲)",
+				33: ""
 			}
 		}
 	},
@@ -205,7 +209,7 @@ var TEXTDATA_JP = {
 			},
 			1: {
 				0: "",
-				1: "<span style='color:#D5AD13'>Critical hit!</span> "
+				1: "<span style='color:#D5AD13'>Critical hit! </span>"
 			}
 		}
 	},
@@ -264,12 +268,12 @@ var TEXTDATA_JP = {
 		"values": {
 			1: {
 				1: "",
-				2: "<span style='color:#D5AD13'>Critical hit!</span> "
+				2: "<span style='color:#D5AD13'>Critical hit! </span>"
 			}
 		}
 	},
 	"SHELL_MISS": {
-		"text": "<b><0></b> は <span style='color:green'>回避</span>した",
+		"text": "<b><0></b> は<span style='color:green'>回避</span>した",
 		"values": {}
 	},
 	"SHELL_DAMAGE_DOUBLE": {
@@ -277,11 +281,11 @@ var TEXTDATA_JP = {
 		"values": {
 			1: {
 				1: "",
-				2: "<span style='color:#D5AD13'>Critical hit!</span> "
+				2: "<span style='color:#D5AD13'>Critical hit! </span>"
 			},
 			3: {
 				1: "",
-				2: "<span style='color:#D5AD13'>Critical hit!</span> "
+				2: "<span style='color:#D5AD13'>Critical hit! </span>"
 			}
 		}
 	},
@@ -311,34 +315,34 @@ var TEXTDATA_JP = {
 		"values": {
 			3: {
 				1: "",
-				2: "<span style='color:#D5AD13'><b>Critical hit!</b></span> "
+				2: "<span style='color:#D5AD13'><b>Critical hit! </b></span>"
 			}
 		}
 	},
 	"PROTECT_DAMAGE": {
-		"text": "<b><0></b> が 旗艦 をかばい、<b><2></b> <b><1></b>ダメージを受けた",
+		"text": "旗艦をかばった <b><0></b> に <b><1></b><b><2></b> ダメージを与えた",
 		"values": {
 			1: {
 				1: "",
-				2: "<span style='color:#D5AD13'>クリティカル</span>"
+				2: "<span style='color:#D5AD13'>Critical hit! </span>"
 			}
 		}
 	},
 	"PROTECT_DAMAGE_DOUBLE": {
-		"text": "<b><0></b> が 旗艦 をかばい、<b><2></b> <b><1></b>ダメージを受けた、<b><4></b> <b><3></b>ダメージを受けた",
+		"text": "旗艦をかばった <b><0></b>  に <b><1></b><b><2></b> ダメージ、<b><3></b><b><4></b> ダメージを与えた",
 		"values": {
 			1: {
 				1: "",
-				2: "<span style='color:#D5AD13'>クリティカル</span>"
+				2: "<span style='color:#D5AD13'>Critical hit! </span>"
 			},
 			3: {
 				1: "",
-				2: "<span style='color:#D5AD13'>クリティカル</span>"
+				2: "<span style='color:#D5AD13'>Critical hit! </span>"
 			}
 		}
 	},
 	"PROTECT_MISS": {
-		"text": "<b><0></b> が 旗艦 をかばい、攻撃ははずれた",
+		"text": "旗艦をかばった <b><0></b> への攻撃は<span style='color:green'>命中</span>しなかった",
 		"values": {
 			
 		}
@@ -379,17 +383,17 @@ var TEXTDATA_JP = {
 		"text": "<b><0></b> <1>",
 		"values": {
 			1: {
-				0: "は <b><span style='color:blue'>撃沈</span></b>した",
-				1: "は <b><span style='color:blue'>戦闘不能</span></b>になった"
+				0: "は<b><span style='color:blue'>撃沈</span></b>した",
+				1: "は<b><span style='color:blue'>戦闘不能</span></b>になった"
 			}
 		}
 	},
 	"SHIP_REPAIR": {
-		"text": "<b><0></b> <1>recovered using a <b><span style='color:green'><2></span></b>.",
+		"text": "<b><0></b> は <b><span style='color:green'><2></span></b> により<1>",
 		"values": {
 			1: {
-				0: "",
-				1: "completely "
+				0: "轟沈を免れた",
+				1: "全快した"
 			},
 			2: {
 				0: "応急修理要員",
