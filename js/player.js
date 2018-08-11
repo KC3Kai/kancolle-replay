@@ -1716,6 +1716,9 @@ function battleEnd() {
 		addTimeout(function() {
 			SM.playVoice(fleet2[0].mid,'sunk',10);
 		}, 2000);
+		if ([1802,1803,1804].indexOf(fleet2[0].mid) > -1){ //Play Tsukiyomi if this is a LD clear and the boss is Abyssal Crane Princess (damaged)
+			setTimeout(function(){SM.playBGM(997,false,true);},6000);
+		}
 	}
 	addTimeout(function() { ecomplete = true; }, 2000);
 }
