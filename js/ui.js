@@ -107,6 +107,9 @@ function showAdditionalStats(fleet) {
 	for (var i=0; i<ships.length; i++) {
 		var td = $('<td></td>'); tr.append(td);
 		td.append('<span>Shell Power: '+Math.floor(ships[i].shellPower())+'</span><br>');
+		if (ships[i].canNB()) {
+			td.append('<span>NB Power: '+Math.floor(ships[i].NBPower())+'</span><br>');
+		}
 		if (ships[i].canASW()) {
 			td.append('<span>ASW Power: '+Math.floor(ships[i].ASWPower())+'</span><br>');
 		}
@@ -133,14 +136,9 @@ function showAdditionalStats(fleet) {
 			for (var j=0; j<AStypes.length; j++) {
 				console.log(chanceleft1 + ' ' + chanceleft2);
 				var chance2 = ASchance2, chance1 = ASchance1, name = '';
-				switch(AStypes[j]) {
-					case 6: chance2/=1.5; chance1/=1.5; name = 'AP CI'; break;
-					case 5: chance2/=1.4; chance1/=1.4; name = 'AP+Sec. CI'; break;
-					case 4: chance2/=1.3; chance1/=1.3; name = 'Radar CI'; break;
-					case 3: chance2/=1.2; chance1/=1.2; name = 'Sec. CI'; break;
-					case 2: chance2/=1.3; chance1/=1.3; name = 'DA'; break;
-					default: continue;
-				}
+				chance2 /= ARTILLERYSPOTDATA[AStypes[j]].chanceMod;
+				chance1 /= ARTILLERYSPOTDATA[AStypes[j]].chanceMod;
+				name = ARTILLERYSPOTDATA[AStypes[j]].name;
 				html += name + ': ' + Math.floor(100*chance2*chanceleft2) + '% / '+Math.floor(100*chance1*chanceleft1)+'%<br>';
 				chanceleft2 -= chance2*chanceleft2; chanceleft1 -= chance1*chanceleft1;
 			}
@@ -150,18 +148,18 @@ function showAdditionalStats(fleet) {
 	table.append(tr); tr = $('<tr></tr>');
 	for (var i=0; i<ships.length; i++) {
 		var td = $('<td></td>'); tr.append(td);
-		if (ships[i].NBtype() > 1) {
+		if (ships[i].NBtypes().length) {
 			td.append('<span>Night Attack:</span><br>');
-			var name = '', chance = ships[i].NBchance();
-			switch (ships[i].NBtype()) {
-				case 6: name = 'Torpedo CI'; chance/=1.22; break;
-				case 5: name = 'Main Gun CI'; chance/=1.4; break;
-				case 4: name = 'Sec. Gun CI'; chance/=1.3; break;
-				case 3: name = 'Mixed CI'; chance/=1.15; break;
-				case 2: name = 'DA'; chance=99; break;
-				default: continue;
+			var NBchance = ships[i].NBchance()/100, chanceleft = 1;
+			for (let NBtype of ships[i].NBtypes()) {
+				var name = '', chance = NBchance;
+				var typedata = NBATTACKDATA[NBtype];
+				if (typedata.chanceMod > 0) chance /= typedata.chanceMod;
+				else chance = .99;
+				name = typedata.name;
+				td.append('<div style="margin-left:16px">'+name+': '+Math.floor(100*chance*chanceleft)+'%</div>');
+				chanceleft -= chance*chanceleft;
 			}
-			td.append('<div style="margin-left:16px">Type: '+name+'<br>Rate: '+Math.floor(chance)+'%</div>');
 		}
 	}
 	table.append(tr); tr = $('<tr></tr>');

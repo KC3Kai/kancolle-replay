@@ -34,7 +34,7 @@ Fleet.prototype.loadShips = function(ships) {
 Fleet.prototype.fleetAirPower = function(jetonly) {  //get air power
 	this.AP = 0;
 	for (var i=0; i<this.ships.length; i++) {
-		if (this.ships[i].HP <= 0) continue;
+		if (this.ships[i].HP <= 0 || this.ships[i].retreated) continue;
 		this.AP += this.ships[i].airPower(jetonly);
 	}
 	return this.AP;
@@ -149,6 +149,7 @@ function Ship(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	this.maxHP = HP;
 	// this.equipstats = {FP:0,TP:0,AA:0,AR:0,ACC:0,EV:0,ASW:0,LOS:0,RNG:0,DIVEBOMB:0};
 	this.equiptypes = {};
+	this.equiptypesB = {};
 	this.equips = [];
 	this.improves = {};
 	this.fleet = false;
@@ -167,7 +168,7 @@ function Ship(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	this.morale = 49;
 	this.moraleDefault = 49;
 	
-	this._nbtype = false;
+	this._nbtypes = false;
 	this._astype = false;
 	this._aswpower = false;
 	
@@ -187,9 +188,10 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		
 		if (eq.RNG && eq.RNG > this.RNG) this.RNG = eq.RNG;
 		if (eq.ACC) this.ACC += eq.ACC;
+		this.equiptypes[eq.type] = this.equiptypes[eq.type] + 1 || 1;
 		if (eq.btype) {
-			if (!this.equiptypes[eq.btype]) this.equiptypes[eq.btype]=1;
-			else this.equiptypes[eq.btype]++;
+			if (!this.equiptypesB[eq.btype]) this.equiptypesB[eq.btype]=1;
+			else this.equiptypesB[eq.btype]++;
 		}
 		if (eq.atype) {
 			if (!atypes[eq.atype]) atypes[eq.atype]=1;
@@ -288,10 +290,10 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		}
 	}
 	
-	if (this.equiptypes[B_APSHELL]&&this.equiptypes[B_MAINGUN]) {
-		if (this.equiptypes[B_RADAR]&&this.equiptypes[B_SECGUN]) this.APtype = 4;
-		else if (this.equiptypes[B_SECGUN]) this.APtype = 3;
-		else if (this.equiptypes[B_RADAR]) this.APtype = 2;
+	if (this.equiptypesB[B_APSHELL]&&this.equiptypesB[B_MAINGUN]) {
+		if (this.equiptypesB[B_RADAR]&&this.equiptypesB[B_SECGUN]) this.APtype = 4;
+		else if (this.equiptypesB[B_SECGUN]) this.APtype = 3;
+		else if (this.equiptypesB[B_RADAR]) this.APtype = 2;
 		else this.APtype = 1;
 	}
 	
@@ -348,7 +350,7 @@ Ship.prototype.canTorp = function() { return (this.HP/this.maxHP > .5); }
 Ship.prototype.canOpTorp = function() { return this.hasMidgetSub; }
 Ship.prototype.canASW = function() { return false; }
 Ship.prototype.OASWstat = 100;
-Ship.prototype.canOASW = function() { return this.canASW() && (this.alwaysOASW || (this.ASW >= 100 && this.equiptypes[B_SONAR] && isPlayable(this.mid))); }
+Ship.prototype.canOASW = function() { return this.canASW() && (this.alwaysOASW || (this.ASW >= this.OASWstat && this.equiptypesB[B_SONAR] && isPlayable(this.mid))); }
 Ship.prototype.canAS = function() { 
 	if (this.HP/this.maxHP <= .25) return false;
 	for (var i=0; i<this.equips.length; i++) {
@@ -356,19 +358,40 @@ Ship.prototype.canAS = function() {
 	}
 	return false;
 }
+Ship.prototype.canNBAirAttack = function() { return false; }
 
-Ship.prototype.NBtype = function() {
-	if (this._nbtype) return this._nbtype;
-	var mguns = (this.equiptypes[B_MAINGUN])? this.equiptypes[B_MAINGUN] : 0;
-	var sguns = (this.equiptypes[B_SECGUN])? this.equiptypes[B_SECGUN] : 0;
-	var torps = (this.equiptypes[B_TORPEDO])? this.equiptypes[B_TORPEDO] : 0;
-	if (torps >= 2) this._nbtype = 6;  //torp cut-in
-	else if (mguns >= 3) this._nbtype = 5; //triple gun cut-in
-	else if (mguns >= 2 && sguns) this._nbtype = 4;  //gun cut-in
-	else if (torps && mguns) this._nbtype = 3;  //mix cut-in
-	else if (mguns+sguns >= 2) this._nbtype = 2;  //double attack
-	else this._nbtype = 1;  //single
-	return this._nbtype;
+Ship.prototype.NBtypes = function() {
+	if (this._nbtypes) return this._nbtypes;
+	this._nbtypes = [];
+	var mguns = (this.equiptypesB[B_MAINGUN])? this.equiptypesB[B_MAINGUN] : 0;
+	var sguns = (this.equiptypesB[B_SECGUN])? this.equiptypesB[B_SECGUN] : 0;
+	var torps = (this.equiptypesB[B_TORPEDO])? this.equiptypesB[B_TORPEDO] : 0;
+	
+	if (MECHANICS.CVCI && this.canNBAirAttack() && this.equiptypesB[B_NIGHTFIGHTER]) {
+		if (this.equiptypesB[B_NIGHTFIGHTER] >= 2 && this.equiptypesB[B_NIGHTBOMBER]) this._nbtypes.push(61);
+		if (this.equiptypesB[B_NIGHTBOMBER]) this._nbtypes.push(62);
+		if (this.equiptypesB[B_NIGHTFIGHTER] >= 3) {
+			this._nbtypes.push(63);
+		} else if (this.equiptypesB[B_NIGHTBOMBER2]) {
+			if ((this.equiptypesB[B_NIGHTFIGHTER] || 0) + (this.equiptypesB[B_NIGHTBOMBER] || 0) + (this.equiptypesB[B_NIGHTBOMBER2] || 0) >= 3) {
+				this._nbtypes.push(63);
+			}
+		}
+		// if ((this.equiptypesB[B_NIGHTFIGHTER] || 0) + (this.equiptypesB[B_NIGHTBOMBER] || 0) + (this.equiptypesB[B_NIGHTBOMBER2] || 0) >= 3) {
+			// this._nbtypes.push(63);
+		// }
+	}
+	if (MECHANICS.destroyerNBCI && this.type == 'DD') {
+		if (mguns && torps && this.equiptypesB[B_RADAR]) this._nbtypes.push(7);
+		if (this.hasLookout && torps && this.equiptypesB[B_RADAR]) this._nbtypes.push(8);
+	}
+	
+	if (torps >= 2) this._nbtypes.push(3);  //torp cut-in
+	else if (mguns >= 3) this._nbtypes.push(5); //triple gun cut-in
+	else if (mguns >= 2 && sguns) this._nbtypes.push(4);  //gun cut-in
+	else if (torps && mguns) this._nbtypes.push(2);  //mix cut-in
+	else if (mguns+sguns >= 2) this._nbtypes.push(1);  //double attack
+	return this._nbtypes;
 }
 
 Ship.prototype.NBchance = function() {
@@ -383,9 +406,16 @@ Ship.prototype.NBchance = function() {
 
 Ship.prototype.AStype = function() {
 	if (this._astype) return this._astype;
-	var mguns = this.equiptypes[B_MAINGUN], sguns = this.equiptypes[B_SECGUN], radars = this.equiptypes[B_RADAR], apshells = this.equiptypes[B_APSHELL];
-	var recons = (this.equiptypes[B_RECON])? this.equiptypes[B_RECON] : 0;
 	this._astype = [];
+	
+	if (MECHANICS.CVCI && this.CVshelltype) {
+		if (this.equiptypes[DIVEBOMBER] && this.equiptypes[TORPBOMBER] && this.equiptypes[FIGHTER]) this._astype.push(71);
+		if (this.equiptypes[DIVEBOMBER] >= 2 && this.equiptypes[TORPBOMBER]) this._astype.push(72);
+		if (this.equiptypes[DIVEBOMBER] && this.equiptypes[TORPBOMBER]) this._astype.push(73);
+	}
+	
+	var mguns = this.equiptypesB[B_MAINGUN], sguns = this.equiptypesB[B_SECGUN], radars = this.equiptypesB[B_RADAR], apshells = this.equiptypesB[B_APSHELL];
+	var recons = (this.equiptypesB[B_RECON])? this.equiptypesB[B_RECON] : 0;
 	if (recons <= 0 || mguns <= 0) return this._astype;
 	
 	if (mguns >= 2 && apshells) this._astype.push(6);
@@ -554,9 +584,10 @@ Ship.prototype.getAACItype = function(atypes) {
 	var types = [];
 	if (this.side == 1) return types; //enemy can't do AACI?
 	
-	var concentrated = false;
+	var concentrated = false, hasID = {};
 	for (var i=0; i<this.equips.length; i++) {
-		if (this.equips[i].isconcentrated) { concentrated = true; break; }
+		if (this.equips[i].isconcentrated) { concentrated = true; }
+		hasID[this.equips[i].mid] = true;
 	}
 	
 	if (this.hasBuiltInFD) {  //Akizuki-class
@@ -583,6 +614,16 @@ Ship.prototype.getAACItype = function(atypes) {
 	}
 	if (this.mid == 488 && atypes[A_HAGUN] && atypes[A_AIRRADAR]) types.push(21); //Yura Kai Ni
 	if (this.mid == 548 && concentrated) types.push(22); //Fumizuki Kai Ni
+	if ((this.mid == 539 || this.mid == 530) && atypes[A_AAGUN] && !concentrated) types.push(23); //UIT-25, I-504
+	if (this.mid == 478 && atypes[A_HAGUN] && atypes[A_AAGUN] && !concentrated) types.push(24); //Tatsuta Kai Ni
+	if ([77,82,87,88,553].indexOf(this.mid) != -1 && hasID[274] && atypes[A_AIRRADAR] && atypes[A_TYPE3SHELL]) types.push(25); //Ise-class
+	if (this.mid == 546 && hasID[275] && atypes[A_AIRRADAR]) types.push(26); //Musashi Kai Ni
+	if ([82,88,553,148,546].indexOf(this.mid) != -1 && hasID[274] && atypes[A_AIRRADAR]) types.push(28); //Ise-class + Musashi Kai
+	if (this.mid == 477) { //Tenryuu Kai Ni
+		if (atypes[A_HAGUN] >= 3) types.push(30);
+		if (atypes[A_HAGUN] >= 2) types.push(31);
+	}
+	if ([149,150,151,152,439,364,515,393,519,394].indexOf(this.mid) != -1 && hasID[191] && (hasID[300] || hasID[301])) types.push(32); //royal navy + Kongou-class
 	
 	var add6 = false;
 	if (this.type=='BB'||this.type=='BBV'||this.type=='FBB') {  //is BB
@@ -598,6 +639,7 @@ Ship.prototype.getAACItype = function(atypes) {
 	if (atypes[A_HAGUN] && atypes[A_AAFD]) types.push(9);
 	if (concentrated && atypes[A_AAGUN] >= 2 && atypes[A_AIRRADAR]) types.push(12);
 	// if (concentrated && atypes[A_HAFD] && atypes[A_AIRRADAR]) return 13;
+	if ((this.mid == 557 || this.mid == 558) && atypes[A_HAGUN] && atypes[A_AIRRADAR]) types.push(29); //Isokaze+Hamakaze B Kai
 	return types;
 }
 
@@ -653,6 +695,7 @@ Ship.prototype.numBombers = function () {
 	}
 	return planes;
 }
+Ship.prototype.rocketBarrageChance = function() { return 0; }
 
 //------------------
 
@@ -706,6 +749,14 @@ CAV.prototype.canASW = function() {
 	for (var i=0; i<this.equips.length; i++) { if (this.equips[i].isdivebomber || this.equips[i].istorpbomber) return true; }
 	return false;
 }
+CAV.prototype.rocketBarrageChance = function() {
+	let num = 0;
+	for (let equip of this.equips) {
+		if (equip.canBarrage) num++;
+	}
+	if (num <= 0) return 0;
+	return (this.weightedAntiAir()+this.LUK)/(322-(40*num+70*this.rocketBonus));
+}
 
 function BBV(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
@@ -719,6 +770,7 @@ BBV.prototype.canASW = function() {
 	for (var i=0; i<this.equips.length; i++) { if (this.equips[i].isdivebomber || this.equips[i].istorpbomber) return true; }
 	return false;
 }
+BBV.prototype.rocketBarrageChance = CAV.prototype.rocketBarrageChance;
 
 function BBVT(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	BBV.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
@@ -731,8 +783,16 @@ function CV(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 }
 CV.prototype = Object.create(Ship.prototype);
 CV.prototype.canTorp = function() { return false; }
-CV.prototype.canNB = function() { return (this.nightattack && this.HP/this.maxHP > .25 && !this.retreated); }
-CV.prototype.canAS = function() { return false; }
+CV.prototype.canNB = function() { return (((this.nightattack && this.HP/this.maxHP > .25) || this.canNBAirAttack()) && !this.retreated); }
+CV.prototype.canAS = function() {
+	if (this.HP/this.maxHP <= .25) return false;
+	let diveFlag = false, torpFlag = false;
+	for (var i=0; i<this.equips.length; i++) {
+		if(this.equips[i].type == DIVEBOMBER && this.planecount[i]) diveFlag = true;
+		if(this.equips[i].type == TORPBOMBER && this.planecount[i]) torpFlag = true;
+	}
+	return diveFlag && torpFlag;
+}
 CV.prototype.APweak = true;
 CV.prototype.canShell = function() {
 	if (this.HP <= 0) return false;
@@ -757,17 +817,58 @@ CV.prototype.shellPower = function(target) {
 	var improvebonus = (this.improves.Pshell)? Math.floor(this.improves.Pshell) : 0;
 	return 50 + bonus + 1.5*(this.FP + improvebonus + tp + Math.floor(1.3*dp));
 }
+CV.prototype.NBPower = function(target) {
+	if (this.canNBAirAttack()) {
+		let power = this.FP;
+		for (let i=0; i<this.equips.length; i++) {
+			let equip = this.equips[i];
+			power -= (equip.FP || 0);
+			if (equip.btype != B_NIGHTFIGHTER && equip.btype != B_NIGHTBOMBER && equip.btype != B_NIGHTBOMBER2) continue;
+			let mod = .3*((equip.FP || 0) + (equip.TP || 0) + (equip.ASW || 0) + (equip.DIVEBOMB || 0));
+			power += (equip.FP || 0) + (equip.TP || 0) + Math.sqrt(equip.level || 0);
+			if (equip.btype != B_NIGHTBOMBER2) {
+				power += this.planecount[i]*3;
+				mod *= 1.5;
+			}
+			power += mod*Math.sqrt(this.planecount[i]);
+		}
+		return power;
+	}
+	return Ship.prototype.NBPower.call(this,target);
+}
+CV.prototype.canNBAirAttack = function() {
+	return (this.equiptypesB[B_NIGHTCREW] || this.hasBuiltInNightCrew) && this.HP/this.maxHP > .5;
+}
+CV.prototype.rocketBarrageChance = CAV.prototype.rocketBarrageChance;
 
 function CVL(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	CV.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
 	this.planeasw = true;
 }
 CVL.prototype = Object.create(CV.prototype);
+CVL.prototype.OASWstat = 65;
 CVL.prototype.canASW = function() {
 	if (this.HP/this.maxHP <= .5) return false;
 	for (var i=0; i<this.equips.length; i++) { if (this.equips[i].isdivebomber || this.equips[i].istorpbomber) return true; }
 	return false;
 }
+CVL.prototype.canOASW = function() {
+	if (this.alwaysOASW) return true;
+	
+	if (this.CVEtype != 2) { //non-Taiyou Kai needs high ASW bomber
+		let found = false;
+		for (let equip of this.equips) {
+			if (equip.ASW >= 7 && EQTDATA[equip.type].isPlane) {
+				found = true;
+				break;
+			}
+		}
+		if (!found) return false;
+	}
+	let threshold = (this.equiptypes[SONARL])? 50 : 65;
+	return this.ASW >= threshold;
+}
+CVL.prototype.rocketBarrageChance = Ship.prototype.rocketBarrageChance;
 CVL.prototype.APweak = false;
 
 function CVB(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
@@ -800,6 +901,7 @@ AV.prototype.canASW = function() {
 	for (var i=0; i<this.equips.length; i++) { if (this.equips[i].isdivebomber || this.equips[i].istorpbomber) return true; }
 	return false;
 }
+AV.prototype.rocketBarrageChance = CAV.prototype.rocketBarrageChance;
 
 function AO(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
@@ -965,6 +1067,16 @@ function Equip(equipid,level,rank) {
 	if (EQTDATA[eq.type].isfighter && eq.AA) this.isfighter = true;
 	if (EQTDATA[eq.type].isdivebomber) this.isdivebomber = true;
 	if (EQTDATA[eq.type].istorpbomber) this.istorpbomber = true;
+	
+	if (eq.btype == null && EQTDATA[eq.type].btype) {
+		this.btype = EQTDATA[eq.type].btype;
+		if (this.btype == B_RADAR && this.AA >= 2) this.atype = A_AIRRADAR;
+	}
+	if (eq.atype == null && EQTDATA[eq.type].atype) {
+		this.atype = EQTDATA[eq.type].atype;
+		if (this.atype == A_HAGUN && this.AA >= 8) this.atype = A_HAFD;
+		if (this.atype == A_AAGUN && this.AA >= 9) this.isconcentrated = true;
+	}
 }
 Equip.prototype.setImprovement = function(level) {
 	this.level = level;

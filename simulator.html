@@ -24,7 +24,7 @@
 	</head>
 	<body>
 		<h1 title="Boat Cockfight Simulator">Kancolle Sortie Simulator</h1>
-		<span style="color:red">v1.0 Beta 3.0 <span style="margin-left:20px;font-style:italic">(Last updated: 2017-08-08)</span></span>
+		<span style="color:red">v1.0 Beta 4.0 <span style="margin-left:20px;font-style:italic">(Last updated: 2018-08-14)</span></span>
 		<br><br><br>
 		<input type="radio" id="radJP" name="lang" onchange="transNames('JP')"/><label for="radJP">JP</label>
 		<input type="radio" id="radEN" name="lang" onchange="transNames('EN')" checked /><label for="radEN">EN</label>
@@ -103,7 +103,10 @@
 			<input type="checkbox" checked id="mech3" onchange="MECHANICS.fitGun=this.checked"/><label for="mech3">Fit Gun</label><br>
 			<input type="checkbox" checked id="mech4" onchange="MECHANICS.OASW=this.checked"/><label for="mech4">Opening ASW</label><br>
 			<input type="checkbox" checked id="mech5" onchange="MECHANICS.morale=this.checked"/><label for="mech5">Morale</label><br>
+			<input type="checkbox" checked id="mech6" onchange="MECHANICS.CVCI=this.checked"/><label for="mech6">Carrier Cut-In</label><br>
+			<input type="checkbox" checked id="mech7" onchange="MECHANICS.destroyerNBCI=this.checked"/><label for="mech7">Destroyer NB Cut-In</label><br>
 			<label for="mechshelldmg">Day Shelling Soft-Cap: </label><input id="mechshelldmg" type="number" min="0" max="9999" value="180" style="width:50px" onchange="SHELLDMGBASE=parseInt(this.value);raiseFleetChange()" /><br>
+			<label for="mechaswdmg">ASW Soft-Cap: </label><input id="mechaswdmg" type="number" min="0" max="9999" value="150" style="width:50px" onchange="ASWDMGBASE=parseInt(this.value);raiseFleetChange()" /><br>
 			<br>
 			<input type="button" value="Show Advanced" onclick="$('#optionsadvanced').toggle()" />
 			<div id="optionsadvanced" style="display:none">
@@ -143,6 +146,25 @@
 					<td>Escort:</td>
 					<td>Player:<td><td><input id="advaccEF" type="number" min="1" max="999" style="width:50px" onchange="setConst('accEcEF',this.value)" /></td>
 					<td>Enemy:<td><td><input id="advaccEE" type="number" min="1" max="999" style="width:50px" onchange="setConst('accEcEE',this.value)" /></td>
+				</tr>
+				</table>
+				<br>
+				<span>Override Day CVCI Modifiers:</span><br>
+				<table>
+				<tr>
+					<td>FBA:</td>
+					<td>Accuracy:</td><td><input type="number" min=".01" max="999" value="1.2" step=".01" style="width:50px" onchange="ARTILLERYSPOTDATA[71].accMod = parseFloat(this.value) || 1.2" /></td>
+					<td>Chance:</td><td><input type="number" min=".01" max="999" value="1.25" step=".01" style="width:50px" onchange="ARTILLERYSPOTDATA[71].chanceMod = parseFloat(this.value) || 1.25" /></td>
+				</tr>
+				<tr>
+					<td>BBA:</td>
+					<td>Accuracy:</td><td><input type="number" min=".01" max="999" value="1.2" step=".01" style="width:50px" onchange="ARTILLERYSPOTDATA[72].accMod = parseFloat(this.value) || 1.2" /></td>
+					<td>Chance:</td><td><input type="number" min=".01" max="999" value="1.4" step=".01" style="width:50px" onchange="ARTILLERYSPOTDATA[72].chanceMod = parseFloat(this.value) || 1.4" /></td>
+				</tr>
+				<tr>
+					<td>BA:</td>
+					<td>Accuracy:</td><td><input type="number" min=".01" max="999" value="1.2" step=".01" style="width:50px" onchange="ARTILLERYSPOTDATA[73].accMod = parseFloat(this.value) || 1.2" /></td>
+					<td>Chance:</td><td><input type="number" min=".01" max="999" value="1.55" step=".01" style="width:50px" onchange="ARTILLERYSPOTDATA[73].chanceMod = parseFloat(this.value) || 1.55" /></td>
 				</tr>
 				</table>
 				<!--<span>Preset 12vs6 values: </span>
