@@ -208,9 +208,9 @@ function shell(ship,target,APIhou) {
 			if (ship.equips[0] && ship.equips[0].rank == 7) overrideCritDmgBonus += .15; //base scaling on 8 - 5.6 mods of standard crit dmg bonus
 			else if (ship.equips[0] && ship.equips[0].rank == 6) overrideCritDmgBonus += .1;
 			
-			if (AStypes[i] == 71) critRateBonus = 10;
-			else if (AStypes[i] == 72) critRateBonus = 7;
-			else critRateBonus = 5;
+			if (AStypes[i] == 71) critRateBonus = .1;
+			else if (AStypes[i] == 72) critRateBonus = .07;
+			else critRateBonus = .05;
 		}
 	}
 	
