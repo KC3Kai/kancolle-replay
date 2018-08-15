@@ -965,6 +965,7 @@ function DE(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 };
 DE.prototype = Object.create(Ship.prototype);
 DE.prototype.canTorp = function() { return false; }
+DE.prototype.canASW = function() { return true; }
 DE.prototype.OASWstat = 60;
 
 
