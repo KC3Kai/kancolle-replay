@@ -682,6 +682,7 @@ function airstrike(ship,target,slot,contactMod,issupport) {
 		var base = (issupport)? 3 : 25;
 		if (target.fleet.airstrikeMod) base += target.fleet.airstrikeMod; //in enemy combined, main gets -10, escort -20
 		var preMod = (equip.isdivebomber)? 1 : ((Math.random() < .5)? .8 : 1.5);
+		if (equip.isjet) preMod *= 1/Math.sqrt(2);
 		var postMod = 1;
 		if (equip.isdivebomber) postMod *= target.divebombWeak || 1;
 		dmg = damage(ship,target,base+Math.sqrt(ship.planecount[slot])*planebase,preMod,res*contactMod*postMod,150);
@@ -927,7 +928,7 @@ function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupp
 			if ((e.istorpbomber || e.isdivebomber) && ship.planecount[j]>0 && (!isjetphase||e.isjet)) {
 				bombers[i].push(j);
 				hasbomber = true;
-				var side = (ship.side == 3)? 0 : ship.side;
+				var side = (ship.side == 2 || ship.side == 3)? 0 : ship.side;
 				if (C && APIkouku.api_plane_from[side].indexOf(ship.apiID2)==-1) APIkouku.api_plane_from[side].push(ship.apiID2);
 			}
 		}
