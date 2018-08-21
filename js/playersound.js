@@ -132,6 +132,7 @@ var BGMLIST = {
 	39: {url:'assets/music/Sound_b_bgm_39.ogg'},
 	40: {url:'assets/music/Sound_b_bgm_40.ogg'},
 	41: {url:'assets/music/Sound_b_bgm_41.ogg'},
+	43: {url:'assets/music/122e.ogg'},
 	46: {url:'assets/music/Sound_b_bgm_46.ogg'},
 	47: {url:'assets/music/Sound_b_bgm_47.ogg'},
 	49: {url:'assets/music/Sound_b_bgm_49.ogg'},

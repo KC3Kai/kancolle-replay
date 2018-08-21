@@ -18,7 +18,8 @@ var MAPDATA = {
 				bgmNN: 2,
 				bgmDB: 2,
 				bgmNB: 2,
-				bossnode: 2,
+				bossnodeOld: 2,
+				bossnode: 5,
 			},
 			3: {
 				name: '1-3',
@@ -27,7 +28,8 @@ var MAPDATA = {
 				bgmNN: 2,
 				bgmDB: 2,
 				bgmNB: 2,
-				bossnode: 7,
+				bossnodeOld: 7,
+				bossnode: 10,
 			},
 			4: {
 				name: '1-4',
@@ -36,7 +38,8 @@ var MAPDATA = {
 				bgmNN: 2,
 				bgmDB: 12,
 				bgmNB: 12,
-				bossnode: 6,
+				bossnodeOld: 6,
+				bossnode: 12,
 			},
 			5: {
 				name: '1-5',
@@ -45,7 +48,8 @@ var MAPDATA = {
 				bgmNN: 7,
 				bgmDB: 13,
 				bgmNB: 13,
-				bossnode: 9,
+				bossnodeOld: 9,
+				bossnode: 10,
 				bossHP: 4,
 			},
 			6: {
@@ -69,7 +73,8 @@ var MAPDATA = {
 				bgmNN: 2,
 				bgmDB: 2,
 				bgmNB: 2,
-				bossnode: 5,
+				bossnodeOld: 5,
+				bossnode: 8,
 			},
 			2: {
 				name: '2-2',
@@ -78,7 +83,8 @@ var MAPDATA = {
 				bgmNN: 2,
 				bgmDB: 2,
 				bgmNB: 2,
-				bossnode: 6,
+				bossnodeOld: 6,
+				bossnode: 11,
 			},
 			3: {
 				name: '2-3',
@@ -87,7 +93,8 @@ var MAPDATA = {
 				bgmNN: 2,
 				bgmDB: 2,
 				bgmNB: 2,
-				bossnode: 7,
+				bossnodeOld: 7,
+				bossnode: 14,
 			},
 			4: {
 				name: '2-4',
@@ -96,7 +103,8 @@ var MAPDATA = {
 				bgmNN: 2,
 				bgmDB: 5,
 				bgmNB: 5,
-				bossnode: 10,
+				bossnodeOld: 10,
+				bossnode: 16,
 			},
 			5: {
 				name: '2-5',
@@ -105,7 +113,8 @@ var MAPDATA = {
 				bgmNN: 11,
 				bgmDB: 10,
 				bgmNB: 10,
-				bossnode: 12,
+				bossnodeOld: 12,
+				bossnode: 15,
 				bossHP: 4,
 			}
 		}
@@ -120,7 +129,8 @@ var MAPDATA = {
 				bgmNN: 2,
 				bgmDB: 2,
 				bgmNB: 2,
-				bossnode: 5,
+				bossnodeOld: 5,
+				bossnode: 7,
 			},
 			2: {
 				name: '3-2',
@@ -129,7 +139,8 @@ var MAPDATA = {
 				bgmNN: 2,
 				bgmDB: 11,
 				bgmNB: 11,
-				bossnode: 8,
+				bossnodeOld: 8,
+				bossnode: 12,
 			},
 			3: {
 				name: '3-3',
@@ -138,7 +149,8 @@ var MAPDATA = {
 				bgmNN: 2,
 				bgmDB: 11,
 				bgmNB: 11,
-				bossnode: 7,
+				bossnodeOld: 7,
+				bossnode: 13,
 			},
 			4: {
 				name: '3-4',
@@ -147,7 +159,8 @@ var MAPDATA = {
 				bgmNN: 2,
 				bgmDB: 5,
 				bgmNB: 5,
-				bossnode: 5,
+				bossnodeOld: 5,
+				bossnode: 15,
 			},
 			5: {
 				name: '3-5',
@@ -171,7 +184,8 @@ var MAPDATA = {
 				bgmNN: 2,
 				bgmDB: 8,
 				bgmNB: 8,
-				bossnode: 4,
+				bossnodeOld: 4,
+				bossnode: 10,
 			},
 			2: {
 				name: '4-2',
@@ -180,7 +194,8 @@ var MAPDATA = {
 				bgmNN: 2,
 				bgmDB: 8,
 				bgmNB: 8,
-				bossnode: 4,
+				bossnodeOld: 4,
+				bossnode: 12,
 			},
 			3: {
 				name: '4-3',
@@ -189,7 +204,8 @@ var MAPDATA = {
 				bgmNN: 2,
 				bgmDB: 10,
 				bgmNB: 10,
-				bossnode: 9,
+				bossnodeOld: 9,
+				bossnode: 14,
 			},
 			4: {
 				name: '4-4',
@@ -198,7 +214,8 @@ var MAPDATA = {
 				bgmNN: 12,
 				bgmDB: 5,
 				bgmNB: 5,
-				bossnode: 8,
+				bossnodeOld: 8,
+				bossnode: 11,
 				bossHP: 4,
 			},
 			5: {
@@ -208,7 +225,8 @@ var MAPDATA = {
 				bgmNN: 40,
 				bgmDB: 40,
 				bgmNB: 39,
-				bossnode: 13,
+				bossnodeOld: 13,
+				bossnode: 20,
 				bossHP: 5,
 			},
 		}
@@ -223,7 +241,8 @@ var MAPDATA = {
 				bgmNN: 2,
 				bgmDB: 3,
 				bgmNB: 3,
-				bossnode: 9,
+				bossnodeOld: 9,
+				bossnode: 10,
 			},
 			2: {
 				name: '5-2',
@@ -232,7 +251,8 @@ var MAPDATA = {
 				bgmNN: 12,
 				bgmDB: 10,
 				bgmNB: 10,
-				bossnode: 4,
+				bossnodeOld: 4,
+				bossnode: 15,
 				bossHP: 4,
 			},
 			3: {
@@ -242,7 +262,8 @@ var MAPDATA = {
 				bgmNN: 2,
 				bgmDB: 5,
 				bgmNB: 5,
-				bossnode: 11,
+				bossnodeOld: 11,
+				bossnode: 17,
 				bossHP: 5,
 			},
 			4: {
@@ -252,7 +273,8 @@ var MAPDATA = {
 				bgmNN: 2,
 				bgmDB: 5,
 				bgmNB: 5,
-				bossnode: 15,
+				bossnodeOld: 15,
+				bossnode: 16,
 				bossHP: 5,
 			},
 			5: {
@@ -262,7 +284,8 @@ var MAPDATA = {
 				bgmNN: 5,
 				bgmDB: 6,
 				bgmNB: 6,
-				bossnode: 14,
+				bossnodeOld: 14,
+				bossnode: 19,
 				bossHP: 5,
 			},
 		}
@@ -318,6 +341,21 @@ var MAPDATA = {
 				bgmNB: 68,
 				bossnode: 13,
 				bossHP: 6,
+			},
+		}
+	},
+	7: {
+		name: 'World 7',
+		maps: {
+			1: {
+				name: '7-1',
+				bgmMap: 1,
+				bgmDN: 37,
+				bgmNN: 37,
+				bgmDB: 43,
+				bgmNB: 41,
+				bossnode: 11,
+				bossHP: 3,
 			},
 		}
 	},

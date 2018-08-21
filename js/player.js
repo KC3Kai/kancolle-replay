@@ -471,6 +471,7 @@ function processAPI(root) {
 		for (let i=0; i<root.battles.length; i++) {
 			if (Object.keys(root.battles[i].data).length==0 && Object.keys(root.battles[i].yasen).length==0) continue;
 			var letter, edges = EDGES['World '+root.world+'-'+root.mapnum];
+			if (root.world < 7 && root.time*1000 < Date.UTC(2018,7,16)) edges = EDGES.old['World '+root.world+'-'+root.mapnum]; //old node letters pre-Phase 2
 			if (edges && edges[root.battles[i].node]) letter = edges[root.battles[i].node][1];
 			else letter = (root.battles[i].node <= 26)? String.fromCharCode(64+root.battles[i].node) : '-';
 			bspace.append(() => {
@@ -661,10 +662,15 @@ function processAPI(root) {
 		if (data.api_escape_idx) escape[0] = data.api_escape_idx;
 		if (data.api_escape_idx_combined) escape[1] = data.api_escape_idx_combined;
 		try {
+			var isPhase1 = root.world < 7 && root.time*1000 < Date.UTC(2018,7,16);
 			var bgm, map = MAPDATA[root.world].maps[root.mapnum];
-			var letter = (window['EDGES'] && EDGES['World '+root.world+'-'+root.mapnum])? EDGES['World '+root.world+'-'+root.mapnum][root.battles[b].node][1].charCodeAt()-64 : root.battles[b].node;
-			var letterOrig = (window['EDGES'] && EDGES['World '+root.world+'-'+root.mapnum])? EDGES['World '+root.world+'-'+root.mapnum][root.battles[b].node][1] : root.battles[b].node;
-			var isboss = (Array.isArray(map.bossnode))? (map.bossnode.indexOf(letter) != -1 || map.bossnode.indexOf(letterOrig) != -1) : (map.bossnode==letter);
+			var letter = root.battles[b].node, letterOrig = root.battles[b].node, edgeKey = 'World '+root.world+'-'+root.mapnum;
+			if (window['EDGES'] && EDGES[edgeKey]) {
+				letterOrig = (isPhase1)? EDGES.old[edgeKey][letter][1] : EDGES[edgeKey][letter][1];
+				letter = letterOrig.charCodeAt()-64;
+			}
+			var bossnode = (isPhase1 && map.bossnodeOld)? map.bossnodeOld : map.bossnode;
+			var isboss = (Array.isArray(bossnode))? (bossnode.indexOf(letter) != -1 || bossnode.indexOf(letterOrig) != -1) : (bossnode==letter);
 			if (isboss) bgm = (NBonly)? map.bgmNB : map.bgmDB;
 			else bgm = (NBonly)? map.bgmNN : map.bgmDN;
 			var orel = false; if (root.world==2 && root.mapnum==3) { //orel cruise
