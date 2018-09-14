@@ -1350,4 +1350,54 @@ var MAPDATA = {
 			},
 		}
 	},
+	42: {
+		name: 'Event Early Fall 2018',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmMap: 1,
+				bgmDN: 120,
+				bgmNN: 120,
+				bgmDB: 121,
+				bgmNB: 121,
+				bossnode: 9,
+			},
+			2: {
+				name: 'E2',
+				bgmMap: 1,
+				bgmDN: 120,
+				bgmNN: 120,
+				bgmDB: 121,
+				bgmNB: 121,
+				bossnode: [9,15],
+			},
+			3: {
+				name: 'E3',
+				bgmMap: 1,
+				bgmDN: 120,
+				bgmNN: 120,
+				bgmDB: 123,
+				bgmNB: 123,
+				bossnode: [13,17],
+			},
+			4: {
+				name: 'E4',
+				bgmMap: 1,
+				bgmDN: 123,
+				bgmNN: 123,
+				bgmDB: 99,
+				bgmNB: 99,
+				bossnode: [12,21],
+			},
+			5: {
+				name: 'E5',
+				bgmMap: 1,
+				bgmDN: 123,
+				bgmNN: 123,
+				bgmDB: 124,
+				bgmNB: 124,
+				bossnode: [10,23,'Z2'],
+			},
+		}
+	},
 }
