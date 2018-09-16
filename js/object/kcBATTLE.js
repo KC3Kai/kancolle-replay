@@ -658,64 +658,74 @@ var BATTLE = (function() {
 				}
 			}
 			
-			if (version == 1) {
-				if (combinedE) {
-					if (!hou.api_at_eflag[j]) {
-                        defender = (hou.api_df_list[j][0] > 6) ? opponent.escortFleet[hou.api_df_list[j][0] - 7] : opponent.mainFleet[hou.api_df_list[j][0] - 1];
-						defender['is_enemy'] = true;
+			var defenders = [];
+			for (let k=0; k<hou.api_df_list[j].length; k++) {
+				if (version == 1) {
+					if (combinedE) {
+						if (!hou.api_at_eflag[j]) {
+							defender = (hou.api_df_list[j][k] > 6) ? opponent.escortFleet[hou.api_df_list[j][k] - 7] : opponent.mainFleet[hou.api_df_list[j][k] - 1];
+							defender['is_enemy'] = true;
+						}
+						else
+							defender = (hou.api_df_list[j][k] > 6) ? player.escortFleet[hou.api_df_list[j][k] - 7] : player.mainFleet[hou.api_df_list[j][k] - 1];
+					} else {
+						defender = (hou.api_df_list[j][k] > 6) ? opponent.mainFleet[hou.api_df_list[j][k] - 7] : fleet[hou.api_df_list[j][k] - 1];
+						if (hou.api_df_list[j][k] > 6) defender['is_enemy'] = true;
 					}
-					else
-						defender = (hou.api_df_list[j][0] > 6) ? player.escortFleet[hou.api_df_list[j][0] - 7] : player.mainFleet[hou.api_df_list[j][0] - 1];
 				} else {
-					defender = (hou.api_df_list[j][0] > 6) ? opponent.mainFleet[hou.api_df_list[j][0] - 7] : fleet[hou.api_df_list[j][0] - 1];
-					if (hou.api_df_list[j][0] > 6) defender['is_enemy'] = true;
+					if (!hou.api_at_eflag[j]) {
+						defender = (hou.api_df_list[j][k] >= 6 && opponent.mainFleet.length <= 6) ? opponent.escortFleet[hou.api_df_list[j][k] - 6] : opponent.mainFleet[hou.api_df_list[j][k]];
+						defender['is_enemy'] = true;
+					} else {
+						defender = (hou.api_df_list[j][k] >= 6 && player.mainFleet.length <= 6) ? player.escortFleet[hou.api_df_list[j][k] - 6] : player.mainFleet[hou.api_df_list[j][k]];
+					}
 				}
-			} else {
-				if (!hou.api_at_eflag[j]) {
-					defender = (hou.api_df_list[j][0] >= 6 && opponent.mainFleet.length <= 6) ? opponent.escortFleet[hou.api_df_list[j][0] - 6] : opponent.mainFleet[hou.api_df_list[j][0]];
-                    defender['is_enemy'] = true;
-				} else {
-					defender = (hou.api_df_list[j][0] >= 6 && player.mainFleet.length <= 6) ? player.escortFleet[hou.api_df_list[j][0] - 6] : player.mainFleet[hou.api_df_list[j][0]];
-				}
+				defenders.push(defender);
 			}
+			if (hou.api_at_type[j] == 2) defenders = [defenders[0]];
 
-			body.append(getTextRow("SHELL_TARGET", [attacker.name, hou.api_at_type[j], defender.name], attacker.is_enemy? "end" : "start"));
+			var defenderName = (hou.api_at_type[j] == 100)? '' : defenders[0].name;
+			body.append(getTextRow("SHELL_TARGET", [attacker.name, hou.api_at_type[j], defenderName], attacker.is_enemy? "end" : "start"));
 
-			for (var k in hou.api_damage[j]) {
-				defender.damage(Math.floor(hou.api_damage[j][k]));
-			}
-			if (hou.api_at_type[j] == 2) {
-				var damage = Math.floor(hou.api_damage[j][0]);
-				if (hou.api_damage[j][0] > damage) {
-					body.append(getTextRow("PROTECT_DAMAGE_DOUBLE", [defender.name, hou.api_cl_list[j][0], Math.floor(hou.api_damage[j][0]), hou.api_cl_list[j][1], Math.floor(hou.api_damage[j][1])], defender.is_enemy? "start" : "end"));
-				} else {
-					body.append(getTextRow("SHELL_DAMAGE_DOUBLE", [defender.name, hou.api_cl_list[j][0], hou.api_damage[j][0], hou.api_cl_list[j][1], hou.api_damage[j][1]], defender.is_enemy? "start" : "end"));
+			for (var i=0; i<defenders.length; i++) {
+				var defender = defenders[i];
+				for (var k in hou.api_damage[j]) {
+					if (hou.api_at_type[j] != 2 && i != k) continue;
+					defender.damage(Math.floor(hou.api_damage[j][k]));
 				}
-			} else {
-
-				if (hou.api_damage[j][0] < 1) {// need protect
+				if (hou.api_at_type[j] == 2) {
 					var damage = Math.floor(hou.api_damage[j][0]);
 					if (hou.api_damage[j][0] > damage) {
-						body.append(getTextRow("PROTECT_MISS", [defender.name], defender.is_enemy? "start" : "end"));
+						body.append(getTextRow("PROTECT_DAMAGE_DOUBLE", [defender.name, hou.api_cl_list[j][0], Math.floor(hou.api_damage[j][0]), hou.api_cl_list[j][1], Math.floor(hou.api_damage[j][1])], defender.is_enemy? "start" : "end"));
 					} else {
-						body.append(getTextRow("SHELL_MISS", [defender.name], defender.is_enemy? "start" : "end"));
+						body.append(getTextRow("SHELL_DAMAGE_DOUBLE", [defender.name, hou.api_cl_list[j][0], hou.api_damage[j][0], hou.api_cl_list[j][1], hou.api_damage[j][1]], defender.is_enemy? "start" : "end"));
 					}
 				} else {
-					var damage = Math.floor(hou.api_damage[j][0]);
-					if (hou.api_damage[j][0] > damage) {//protect
-						body.append(getTextRow("PROTECT_DAMAGE", [defender.name, hou.api_cl_list[j][0], damage], defender.is_enemy? "start" : "end"));
+
+					if (hou.api_damage[j][i] < 1) {// need protect
+						var damage = Math.floor(hou.api_damage[j][i]);
+						if (hou.api_damage[j][i] > damage) {
+							body.append(getTextRow("PROTECT_MISS", [defender.name], defender.is_enemy? "start" : "end"));
+						} else {
+							body.append(getTextRow("SHELL_MISS", [defender.name], defender.is_enemy? "start" : "end"));
+						}
 					} else {
-						body.append(getTextRow("SHELL_DAMAGE", [defender.name, hou.api_cl_list[j][0], damage], defender.is_enemy? "start" : "end"));
+						var damage = Math.floor(hou.api_damage[j][i]);
+						if (hou.api_damage[j][i] > damage) {//protect
+							body.append(getTextRow("PROTECT_DAMAGE", [defender.name, hou.api_cl_list[j][i], damage], defender.is_enemy? "start" : "end"));
+						} else {
+							body.append(getTextRow("SHELL_DAMAGE", [defender.name, hou.api_cl_list[j][i], damage], defender.is_enemy? "start" : "end"));
+						}
 					}
 				}
-			}
-			if (defender.isSunk()) {
-				body.append(getTextRow("SHIP_END", [defender.name, isPVP], defender.is_enemy? "start" : "end"));
+				if (defender.isSunk()) {
+					body.append(getTextRow("SHIP_END", [defender.name, isPVP], defender.is_enemy? "start" : "end"));
 
-				if(defender.hasDameCom()) {
-					let repairType = defender.useDameCom()
-					body.append(getTextRow("SHIP_REPAIR", [defender.name, repairType, repairType], "end"));
-				} 
+					if(defender.hasDameCom()) {
+						let repairType = defender.useDameCom()
+						body.append(getTextRow("SHIP_REPAIR", [defender.name, repairType, repairType], "end"));
+					} 
+				}
 			}
 		}
 	};

@@ -285,7 +285,8 @@ var TEXTDATA_EN = {
 				4: "radar cut-in ",
 				5: "AP cut-in ",
 				6: "gun cut-in ",
-				7: "carrier cut-in "
+				7: "carrier cut-in ",
+				100: "Nelson Touch "
 			}
 		}
 	},

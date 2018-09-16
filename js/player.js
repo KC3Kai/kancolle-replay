@@ -931,30 +931,37 @@ function processAPI(root) {
 				}
 				d.push(attacker); //attacker
 				
-				var defender;
-				if (ecombined) {
-					if (OLDFORMAT) {
-						if (!hou.api_at_eflag[j]) defender = (hou.api_df_list[j][0]>6)? f2c[hou.api_df_list[j][0]-7] : f2[hou.api_df_list[j][0]-1];
-						else defender = (hou.api_df_list[j][0]>6)? fleet1C[hou.api_df_list[j][0]-7] : fleet1[hou.api_df_list[j][0]-1];
+				var defenders = [];
+				var num = (hou.api_at_type[j] == 100)? hou.api_df_list[j].length : 1;
+				for (var k=0; k<num; k++) {
+					var defender;
+					if (ecombined) {
+						if (OLDFORMAT) {
+							if (!hou.api_at_eflag[j]) defender = (hou.api_df_list[j][k]>6)? f2c[hou.api_df_list[j][k]-7] : f2[hou.api_df_list[j][k]-1];
+							else defender = (hou.api_df_list[j][k]>6)? fleet1C[hou.api_df_list[j][k]-7] : fleet1[hou.api_df_list[j][k]-1];
+						} else {
+							var ind = hou.api_df_list[j][k];
+							if (hou.api_at_eflag[j]) defender = (ind >= 6 && fleet1.length < 7)? fleet1C[ind-6] : fleet1[ind];
+							else defender = (ind >= 6 && f2.length < 7)? f2c[ind-6] : f2[ind];
+						}
 					} else {
-						var ind = hou.api_df_list[j][0];
-						if (hou.api_at_eflag[j]) defender = (ind >= 6 && fleet1.length < 7)? fleet1C[ind-6] : fleet1[ind];
-						else defender = (ind >= 6 && f2.length < 7)? f2c[ind-6] : f2[ind];
+						if (hou.api_at_eflag) { //new format 2017-11-17
+							var fleet = (hou.api_at_eflag[j])? f1 : f2;
+							var ind = hou.api_df_list[j][k];
+							if (ind >= 6 && fleet.length < 7) ind -= 6;
+							defender = fleet[ind];
+						} else {
+							defender = (hou.api_df_list[j][k]>6)? f2[hou.api_df_list[j][k]-7] : f1[hou.api_df_list[j][k]-1];
+						}
 					}
-				} else {
-					if (hou.api_at_eflag) { //new format 2017-11-17
-						var fleet = (hou.api_at_eflag[j])? f1 : f2;
-						var ind = hou.api_df_list[j][0];
-						if (ind >= 6 && fleet.length < 7) ind -= 6;
-						defender = fleet[ind];
-					} else {
-						defender = (hou.api_df_list[j][0]>6)? f2[hou.api_df_list[j][0]-7] : f1[hou.api_df_list[j][0]-1];
-					}
+					defenders.push(defender);
 				}
-				d.push(defender); //target
+				if (hou.api_at_type[j] == 100) d.push(defenders);
+				else d.push(defenders[0]); //target
 				
 				for (var k=0; k<hou.api_damage[j].length; k++) {
 					d.push(parseInt(hou.api_damage[j][k])); //damage
+					var defender = (defenders.length > 1)? defenders[k] : defenders[0];
 					defender.hpTrack -= Math.max(0,Math.floor(hou.api_damage[j][k]));
 				}
 				for (var k=0; k<hou.api_cl_list[j].length; k++) d.push((hou.api_cl_list[j][k]==2));
@@ -995,6 +1002,11 @@ function processAPI(root) {
 						eventqueue.push([shootCutIn,d,getState()]); break;
 					case 7:
 						eventqueue.push([shootPlaneCutIn,d,getState()]); break;
+					case 100:
+						var attackers = (hou.api_at_eflag[j])? [f2[0],f2[2],f2[4]] : [f1[0],f1[2],f1[4]];
+						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
+						var args = [attackers,defenders,d.slice(2,5),d.slice(5,8),protects];
+						eventqueue.push([shootNelsonTouch,args,getState()]); break;
 				}
 				
 				handleRepair(fleet1);
@@ -2047,6 +2059,40 @@ function shootSpecialGun(ship,target,damage,forcecrit,protect) {
 	addTimeout(function(){ standardHit(target,damage,true,protect,forcecrit); },750);
 	addTimeout(function(){ updates.push([shipMoveTo,[ship,ship.xorigin,2]]); }, 900);
 	addTimeout(function(){ ecomplete = true; }, 2000);
+}
+
+function shootNelsonTouch(ships,targets,damages,crits,protects) {
+	console.log(targets);
+	SM.playVoice(ships[0].mid,'nbattack',ships[0].id);
+	
+	for (var i=0; i<ships.length; i++) {
+		let ship = ships[i], target = targets[i], damage = damages[i], forcecrit = crits[i], protect = protects[i];
+		updates.push([shipMoveTo,[ship,ship.xorigin+25-50*ship.side,2]]);
+		
+		if (protect) {
+			addTimeout(function() { updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,3]]); }, 1500*i+675);
+		}
+		addTimeout(function() {
+			shipShake(target,5,.125,40);
+			createExplosion(target.xorigin+40+80*Math.random(),target.graphic.y+42*Math.random(),1);
+			if (damage>14) addTimeout(function(){createExplosion(target.xorigin+40+80*Math.random(),target.graphic.y+42*Math.random(),1);},75);
+			addTimeout(function(){createExplosion(target.xorigin+40+80*Math.random(),target.graphic.y+42*Math.random(),1);},150);
+			if (damage>14) addTimeout(function(){createExplosion(target.xorigin+40+80*Math.random(),target.graphic.y+42*Math.random(),1);},225);
+			addTimeout(function(){createExplosion(target.xorigin+40+80*Math.random(),target.graphic.y+42*Math.random(),1);},300);
+			if (damage<=14) SM.play('fire');
+			else if (damage<40) SM.play('hit');
+			else { SM.play('crit'); SM.play('fire'); }
+		}, 1500*i+800);
+		addTimeout(function(){
+			standardHit(target,damage,true,protect,forcecrit);
+		}, 1500*i+1500);
+		
+		addTimeout(function() {
+			updates.push([shipMoveTo,[ship,ship.xorigin,2]]);
+		},4500);
+	}
+	
+	addTimeout(function(){ ecomplete = true; }, 5500);
 }
 
 function shootTorp(ship,target,damage,forcecrit,protect) {
