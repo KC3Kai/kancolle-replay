@@ -292,7 +292,7 @@ var BATTLE = (function() {
 	yasen = function() {
 		if (nightBattle.api_friendly_info && nightBattle.api_friendly_battle) {
 			var friendFleet = new FLEET();
-			friendFleet.addFleet(nightBattle.api_friendly_info.api_ship_id, nightBattle.api_friendly_info.api_nowhps);
+			friendFleet.addFleet(nightBattle.api_friendly_info.api_ship_id, nightBattle.api_friendly_info.api_nowhps, nightBattle.api_friendly_info.api_maxhps);
 			yasenHougeki(nightBattle.api_friendly_battle.api_hougeki, friendFleet);
 		}
 	
