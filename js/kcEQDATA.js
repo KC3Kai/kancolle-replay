@@ -4689,6 +4689,7 @@ var EQDATA = {
 		name: 'Abyssal Patrolling Attack Hawk Kai Ni',
 		nameJP: '深海攻撃哨戒鷹改二',
 		added: '2018-09-08',
+		b_image: 15,
 		type: TORPBOMBER,
 		FP: 9,
 		DIVEBOMB: 27,
