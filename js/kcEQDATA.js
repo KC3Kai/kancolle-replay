@@ -4480,7 +4480,8 @@ var EQDATA = {
 	570: {
 		name: 'High-speed Abyssal Torpedo mod. 2',
 		nameJP: '高速深海魚雷 mod.2',
-		type: MIDGETSUB,
+		type: TORPEDO, //is actually midget sub, but doesn't allow opening torp
+		btype: 0,
 		TP: 13,
 		ACC: 3,
 		RNG: 1,
