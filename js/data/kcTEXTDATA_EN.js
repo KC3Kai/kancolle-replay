@@ -361,7 +361,8 @@ var TEXTDATA_EN = {
 				5: "gun cut-in (main)",
 				6: "carrier cut-in",
 				7: "gun-torpedo-radar cut-in",
-				8: "torpedo-radar-lookout cut-in"
+				8: "torpedo-radar-lookout cut-in",
+				100: "Nelson Touch"
 			}
 		}
 	},
