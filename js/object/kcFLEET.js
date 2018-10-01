@@ -76,6 +76,8 @@ Object.assign(FLEET.prototype, {
 		this.combined = combinedType;
 		for (var i = 0; i < main.length; i++) {
 			this.mainFleet.push(new SHIP(main[i], hp[i], hpMax[i]));
+		}
+		for (var i = 0; i < escort.length; i++) {
 			this.escortFleet.push(new SHIP(escort[i], ehp[i], ehpMax[i]));
 		}
 	},

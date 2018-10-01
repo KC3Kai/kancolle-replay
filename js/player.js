@@ -1027,13 +1027,18 @@ function processAPI(root) {
 						attacker = (ind >= 6 && fleet1.length < 7)? fleet1C[ind-6] : fleet1[ind];
 					}
 					d.push(attacker);
-					var ind = hou.api_df_list[j][0], target;
-					if (hou.api_at_eflag[j]) {
-						target = (ind >= 6 && fleet1.length < 7)? fleet1C[ind-6] : fleet1[ind];
-					} else {
-						target = (ind >= 6 && f2.length < 7)? f2c[ind-6] : f2[ind];
+					var targets = [];
+					for (var k=0; k<hou.api_df_list[j].length; k++) {
+						var ind = hou.api_df_list[j][k];
+						if (hou.api_at_eflag[j]) {
+							target = (ind >= 6 && fleet1.length < 7)? fleet1C[ind-6] : fleet1[ind];
+						} else {
+							target = (ind >= 6 && f2.length < 7)? f2c[ind-6] : f2[ind];
+						}
+						targets.push(target);
 					}
-					d.push(target);
+					if (hou.api_sp_list[j] == 100) d.push(targets);
+					else d.push(targets[0]);
 				} else {
 					d.push( (hou.api_at_list[j]>6)? f2e[hou.api_at_list[j]-7] : f1[hou.api_at_list[j]-1] ); //attacker
 					d.push( (hou.api_df_list[j][0]>6)? f2e[hou.api_df_list[j][0]-7] : f1[hou.api_df_list[j][0]-1] ); //target
@@ -1077,6 +1082,11 @@ function processAPI(root) {
 						d[2] += Math.max(0,d[3]); d[2] += Math.max(0,d[4]);
 						d.splice(3,2);
 						eventqueue.push([shootBigTorp,d,getState()]); break;
+					case 100:
+						var attackers = (hou.api_at_eflag[j])? [f2[0],f2[2],f2[4]] : [f1[0],f1[2],f1[4]];
+						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
+						var args = [attackers,targets,d.slice(2,5),d.slice(5,8),protects];
+						eventqueue.push([shootNelsonTouch,args,getState()]); break;
 				}
 				
 				handleRepair(fleet1);

@@ -357,7 +357,8 @@ var TEXTDATA_CN = {
 				2: "炮雷CI", //mix cut-in
 				3: "雷击CI",
 				4: "主副CI",
-				5: "主炮CI"
+				5: "主炮CI",
+				100: " (Nelson Touch)"
 			}
 		}
 	},
