@@ -416,7 +416,7 @@ function ASW(ship,target,isnight,APIhou) {
 	if (ship.improves.ACCasw) sonarAcc += ship.improves.ACCasw;
 	var accMod = ship.moraleMod();
 	if (!formationCountered(ship.fleet.formation.id,target.fleet.formation.id)) accMod *= ship.fleet.formation.shellacc;
-	var acc = hitRate(ship,80,sonarAcc,accMod);
+	var acc = hitRate(ship,80,sonarAcc+(ship.ACC||0),accMod);
 	var res = rollHit(accuracyAndCrit(ship,target,acc,target.fleet.formation.ASWev,0,1.3,ship.planeasw),ship.critdmgbonus);
 	var dmg = 0, realdmg = 0;
 	var premod = (isnight)? 0 : ship.fleet.formation.ASWmod*ENGAGEMENT*ship.damageMod();
@@ -1353,7 +1353,7 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 	}
 	
 	//jet airstrike
-	if (!NBonly && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length > 0) {
+	if (!NBonly && !bombing && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length > 0) {
 		if (C) BAPI.data.api_injection_kouku = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null};
 		compareAP(F1,F2,true);
 		airPhase(alive1,subsalive1,alive2,subsalive2,(C)? BAPI.data.api_injection_kouku:undefined,true);
