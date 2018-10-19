@@ -1401,3 +1401,1140 @@ var MAPDATA = {
 		}
 	},
 }
+
+//-------------------------------------
+
+var MAPDATA_BGM_HISTORY = {
+	"": {
+		1: {
+			1: {
+				"bgmDN": 1, 
+				"bgmNN": 2, 
+				"bgmDB": 2, 
+				"bgmNB": 2
+			}, 
+			2: {
+				"bgmDN": 1, 
+				"bgmNN": 2, 
+				"bgmDB": 2, 
+				"bgmNB": 2
+			}, 
+			3: {
+				"bgmDN": 1, 
+				"bgmNN": 2, 
+				"bgmDB": 2, 
+				"bgmNB": 2
+			}, 
+			4: {
+				"bgmDN": 1, 
+				"bgmNN": 2, 
+				"bgmDB": 2, 
+				"bgmNB": 2
+			}, 
+			5: {
+				"bgmDN": 7, 
+				"bgmNN": 2, 
+				"bgmDB": 6, 
+				"bgmNB": 6
+			}, 
+			6: {
+				"bgmDN": 37, 
+				"bgmNN": 37, 
+				"bgmDB": 37, 
+				"bgmNB": 37
+			}
+		}, 
+		2: {
+			1: {
+				"bgmDN": 1, 
+				"bgmNN": 2, 
+				"bgmDB": 2, 
+				"bgmNB": 2
+			}, 
+			2: {
+				"bgmDN": 1, 
+				"bgmNN": 2, 
+				"bgmDB": 2, 
+				"bgmNB": 2
+			}, 
+			3: {
+				"bgmDN": 1, 
+				"bgmNN": 2, 
+				"bgmDB": 2, 
+				"bgmNB": 2
+			}, 
+			4: {
+				"bgmDN": 12, 
+				"bgmNN": 12, 
+				"bgmDB": 5, 
+				"bgmNB": 5
+			}, 
+			5: {
+				"bgmDN": 11, 
+				"bgmNN": 11, 
+				"bgmDB": 10, 
+				"bgmNB": 10
+			}
+		}, 
+		3: {
+			1: {
+				"bgmDN": 1, 
+				"bgmNN": 2, 
+				"bgmDB": 2, 
+				"bgmNB": 2
+			}, 
+			2: {
+				"bgmDN": 1, 
+				"bgmNN": 2, 
+				"bgmDB": 2, 
+				"bgmNB": 2
+			}, 
+			3: {
+				"bgmDN": 1, 
+				"bgmNN": 2, 
+				"bgmDB": 2, 
+				"bgmNB": 2
+			}, 
+			4: {
+				"bgmDN": 12, 
+				"bgmNN": 12, 
+				"bgmDB": 5, 
+				"bgmNB": 5
+			}, 
+			5: {
+				"bgmDN": 19, 
+				"bgmNN": 19, 
+				"bgmDB": 13, 
+				"bgmNB": 13
+			}
+		}, 
+		4: {
+			1: {
+				"bgmDN": 1, 
+				"bgmNN": 2, 
+				"bgmDB": 2, 
+				"bgmNB": 2
+			}, 
+			2: {
+				"bgmDN": 1, 
+				"bgmNN": 2, 
+				"bgmDB": 2, 
+				"bgmNB": 2
+			}, 
+			3: {
+				"bgmDN": 1, 
+				"bgmNN": 2, 
+				"bgmDB": 2, 
+				"bgmNB": 2
+			}, 
+			4: {
+				"bgmDN": 12, 
+				"bgmNN": 12, 
+				"bgmDB": 5, 
+				"bgmNB": 5
+			}, 
+			5: {
+				"bgmDN": 30, 
+				"bgmNN": 40, 
+				"bgmDB": 40, 
+				"bgmNB": 39
+			}
+		}, 
+		5: {
+			1: {
+				"bgmDN": 1, 
+				"bgmNN": 2, 
+				"bgmDB": 2, 
+				"bgmNB": 2
+			}, 
+			2: {
+				"bgmDN": 12, 
+				"bgmNN": 12, 
+				"bgmDB": 3, 
+				"bgmNB": 3
+			}, 
+			3: {
+				"bgmDN": 1, 
+				"bgmNN": 2, 
+				"bgmDB": 3, 
+				"bgmNB": 3
+			}, 
+			4: {
+				"bgmDN": 4, 
+				"bgmNN": 2, 
+				"bgmDB": 5, 
+				"bgmNB": 5
+			}, 
+			5: {
+				"bgmDN": 4, 
+				"bgmNN": 5, 
+				"bgmDB": 6, 
+				"bgmNB": 6
+			}
+		}, 
+		6: {
+			1: {
+				"bgmDN": 20, 
+				"bgmNN": 20, 
+				"bgmDB": 6, 
+				"bgmNB": 6
+			}, 
+			2: {
+				"bgmDN": 9, 
+				"bgmNN": 9, 
+				"bgmDB": 3, 
+				"bgmNB": 3
+			}, 
+			3: {
+				"bgmDN": 8, 
+				"bgmNN": 3, 
+				"bgmDB": 4, 
+				"bgmNB": 5
+			}, 
+			4: {
+				"bgmDN": 38, 
+				"bgmNN": 4, 
+				"bgmDB": 49, 
+				"bgmNB": 41
+			}, 
+			5: {
+				"bgmDN": 75, 
+				"bgmNN": 75, 
+				"bgmDB": 68, 
+				"bgmNB": 68
+			}
+		}, 
+		7: {
+			1: {
+				"bgmDN": 37, 
+				"bgmNN": 37, 
+				"bgmDB": 43, 
+				"bgmNB": 41
+			}
+		}
+	}, 
+	"2014-08-08": {
+		1: {
+			5: {
+				"bgmDB": 13, 
+				"bgmNB": 13
+			}
+		}, 
+		3: {
+			2: {
+				"bgmDB": 11, 
+				"bgmNB": 11
+			}, 
+			3: {
+				"bgmDB": 11, 
+				"bgmNB": 11
+			}
+		}, 
+		4: {
+			1: {
+				"bgmDB": 8, 
+				"bgmNB": 8
+			}, 
+			2: {
+				"bgmDB": 8, 
+				"bgmNB": 8
+			}, 
+			3: {
+				"bgmDB": 10, 
+				"bgmNB": 10
+			}
+		}, 
+		5: {
+			1: {
+				"bgmDN": 13, 
+				"bgmDB": 3, 
+				"bgmNB": 3
+			}, 
+			2: {
+				"bgmDB": 10, 
+				"bgmNB": 10
+			}, 
+			3: {
+				"bgmDN": 13, 
+				"bgmDB": 5, 
+				"bgmNB": 5
+			}
+		}
+	}, 
+	"2014-12-12": {
+		1: {
+			4: {
+				"bgmDN": 29, 
+				"bgmDB": 12, 
+				"bgmNB": 12
+			}
+		}, 
+		2: {
+			4: {
+				"bgmDN": 29, 
+				"bgmNN": 2
+			}
+		}, 
+		3: {
+			1: {
+				"bgmDN": 29
+			}, 
+			2: {
+				"bgmDN": 29
+			}, 
+			3: {
+				"bgmDN": 29
+			}, 
+			4: {
+				"bgmDN": 29, 
+				"bgmNN": 2
+			}
+		}, 
+		6: {
+			2: {
+				"bgmDN": 29
+			}
+		}
+	}, 
+	"2015-07-17": { //kaga misaki
+		1: {
+			4: {
+				"bgmDB": 44, 
+				"bgmNB": 44
+			}
+		}, 
+		2: {
+			4: {
+				"bgmDB": 44, 
+				"bgmNB": 44
+			}
+		}, 
+		3: {
+			4: {
+				"bgmDB": 44, 
+				"bgmNB": 44
+			}
+		}, 
+		4: {
+			4: {
+				"bgmDB": 44, 
+				"bgmNB": 44
+			}
+		}
+	}, 
+	"2015-10-09": { //saury
+		1: {
+			5: {
+				"bgmDN": 51, 
+				"bgmNN": 37, 
+				"bgmDB": 51
+			}, 
+			6: {
+				"bgmDN": 51, 
+				"bgmNN": 51
+			}
+		}, 
+		3: {
+			1: {
+				"bgmDN": 51
+			}, 
+			2: {
+				"bgmDN": 51
+			}, 
+			3: {
+				"bgmDN": 51, 
+				"bgmDB": 51
+			}, 
+			4: {
+				"bgmDN": 51, 
+				"bgmDB": 51
+			}, 
+			5: {
+				"bgmDN": 51, 
+				"bgmDB": 51
+			}
+		}, 
+		6: {
+			1: {
+				"bgmDN": 51, 
+				"bgmDB": 51
+			}
+		}
+	}, 
+	"2015-10-30": { //saury end
+		1: {
+			5: {
+				"bgmDN": 7, 
+				"bgmNN": 2, 
+				"bgmDB": 13
+			}, 
+			6: {
+				"bgmDN": 37, 
+				"bgmNN": 37
+			}
+		}, 
+		3: {
+			1: {
+				"bgmDN": 29
+			}, 
+			2: {
+				"bgmDN": 29
+			}, 
+			3: {
+				"bgmDN": 29, 
+				"bgmDB": 11
+			}, 
+			4: {
+				"bgmDN": 29, 
+				"bgmDB": 44
+			}, 
+			5: {
+				"bgmDN": 19, 
+				"bgmDB": 13
+			}
+		}, 
+		6: {
+			1: {
+				"bgmDN": 20, 
+				"bgmDB": 6
+			}
+		}
+	}, 
+	"2016-10-21": { //saury
+		1: {
+			1: {
+				"bgmDN": 76, 
+				"bgmNN": 76
+			}, 
+			4: {
+				"bgmDB": 12, 
+				"bgmNB": 12
+			}, 
+			5: {
+				"bgmDN": 76, 
+				"bgmNN": 76, 
+				"bgmDB": 77, 
+				"bgmNB": 77
+			}, 
+			6: {
+				"bgmDN": 76, 
+				"bgmNN": 76
+			}
+		}, 
+		2: {
+			1: {
+				"bgmDB": 30, 
+				"bgmNB": 30
+			}, 
+			2: {
+				"bgmDB": 30, 
+				"bgmNB": 30
+			}, 
+			3: {
+				"bgmDB": 3, 
+				"bgmNB": 3
+			}, 
+			4: {
+				"bgmDB": 4, 
+				"bgmNB": 5
+			}, 
+			5: {
+				"bgmDB": 27, 
+				"bgmNB": 27
+			}
+		}, 
+		3: {
+			1: {
+				"bgmDN": 76, 
+				"bgmNN": 76, 
+				"bgmDB": 19, 
+				"bgmNB": 19
+			}, 
+			2: {
+				"bgmDN": 76, 
+				"bgmNN": 76
+			}, 
+			3: {
+				"bgmDN": 76, 
+				"bgmNN": 76, 
+				"bgmDB": 77, 
+				"bgmNB": 77
+			}, 
+			4: {
+				"bgmDN": 76, 
+				"bgmNN": 76, 
+				"bgmDB": 77, 
+				"bgmNB": 77
+			}, 
+			5: {
+				"bgmDN": 76, 
+				"bgmNN": 76, 
+				"bgmDB": 77, 
+				"bgmNB": 77
+			}
+		}, 
+		4: {
+			2: {
+				"bgmDB": 9, 
+				"bgmNB": 9
+			}
+		}, 
+		6: {
+			1: {
+				"bgmDN": 76, 
+				"bgmNN": 76, 
+				"bgmDB": 77, 
+				"bgmNB": 77
+			}, 
+			5: {
+				"bgmDN": 76, 
+				"bgmNN": 76, 
+				"bgmDB": 77, 
+				"bgmNB": 77
+			}
+		}
+	}, 
+	"2016-11-04": { //saury end
+		1: {
+			1: {
+				"bgmDN": 1, 
+				"bgmNN": 2
+			}, 
+			3: {
+				"bgmDB": 77, 
+				"bgmNB": 77
+			}, 
+			5: {
+				"bgmDN": 7, 
+				"bgmNN": 2, 
+				"bgmDB": 13, 
+				"bgmNB": 13
+			}, 
+			6: {
+				"bgmDN": 37, 
+				"bgmNN": 37
+			}
+		}, 
+		3: {
+			1: {
+				"bgmDN": 29, 
+				"bgmNN": 2
+			}, 
+			2: {
+				"bgmDN": 29, 
+				"bgmNN": 2
+			}, 
+			3: {
+				"bgmDN": 8, 
+				"bgmNN": 2, 
+				"bgmDB": 11, 
+				"bgmNB": 11
+			}, 
+			4: {
+				"bgmDN": 19, 
+				"bgmNN": 4, 
+				"bgmDB": 4, 
+				"bgmNB": 5
+			}, 
+			5: {
+				"bgmDN": 19, 
+				"bgmNN": 19, 
+				"bgmDB": 13, 
+				"bgmNB": 13
+			}
+		}, 
+		4: {
+			4: {
+				"bgmNN": 4
+			}
+		}, 
+		6: {
+			1: {
+				"bgmDN": 20, 
+				"bgmNN": 20, 
+				"bgmDB": 6, 
+				"bgmNB": 6
+			}, 
+			5: {
+				"bgmDN": 75, 
+				"bgmNN": 75, 
+				"bgmDB": 68, 
+				"bgmNB": 68
+			}
+		}
+	}, 
+	"2016-12-22": { //xmas
+		1: {
+			1: {
+				"bgmDN": 83, 
+				"bgmDB": 1107, 
+				"bgmNB": 1107
+			}, 
+			2: {
+				"bgmDN": 83, 
+				"bgmDB": 1107, 
+				"bgmNB": 1107
+			}, 
+			3: {
+				"bgmDN": 83
+			}, 
+			4: {
+				"bgmDN": 1107
+			}, 
+			5: {
+				"bgmDN": 1107
+			}, 
+			6: {
+				"bgmDN": 1107
+			}
+		}
+	}, 
+	"2016-12-26": { //xmas end
+		1: {
+			1: {
+				"bgmDN": 1, 
+				"bgmDB": 2, 
+				"bgmNB": 2
+			}, 
+			2: {
+				"bgmDN": 1, 
+				"bgmDB": 2, 
+				"bgmNB": 2
+			}, 
+			3: {
+				"bgmDN": 1
+			}, 
+			4: {
+				"bgmDN": 8
+			}, 
+			5: {
+				"bgmDN": 7
+			}, 
+			6: {
+				"bgmDN": 37
+			}
+		}
+	}, 
+	"2016-12-31": { //newyears
+		1: {
+			1: {
+				"bgmDN": 85
+			}
+		}
+	}, 
+	"2017-01-10": { //newyears end
+		1: {
+			1: {
+				"bgmDN": 1
+			}
+		}
+	}, 
+	"2017-05-22": { //renew (musashi)
+		4: {
+			1: {
+				"bgmDN": 30
+			}, 
+			2: {
+				"bgmDN": 39
+			}, 
+			3: {
+				"bgmDN": 39
+			}, 
+			5: {
+				"bgmDN": 94, 
+				"bgmNB": 41
+			}
+		}, 
+		5: {
+			3: {
+				"bgmDN": 4, 
+				"bgmNN": 5, 
+				"bgmNB": 3
+			}, 
+			4: {
+				"bgmNN": 5, 
+				"bgmNB": 22
+			}, 
+			5: {
+				"bgmDN": 94, 
+				"bgmNB": 49
+			}
+		}
+	}, 
+	"2017-09-29": { //saury + tsukiyomi
+		1: {
+			1: {
+				"bgmDN": 102
+			}, 
+			3: {
+				"bgmDB": 2, 
+				"bgmNB": 2
+			}, 
+			5: {
+				"bgmDN": 102, 
+				"bgmNN": 102, 
+				"bgmDB": 77, 
+				"bgmNB": 77
+			}, 
+			6: {
+				"bgmDN": 102, 
+				"bgmNN": 102
+			}
+		}, 
+		3: {
+			1: {
+				"bgmDN": 102, 
+				"bgmNN": 102
+			}, 
+			2: {
+				"bgmDN": 102, 
+				"bgmNN": 102
+			}, 
+			3: {
+				"bgmDN": 102, 
+				"bgmNN": 102, 
+				"bgmDB": 77, 
+				"bgmNB": 77
+			}, 
+			4: {
+				"bgmDN": 102, 
+				"bgmNN": 102, 
+				"bgmDB": 77, 
+				"bgmNB": 77
+			}, 
+			5: {
+				"bgmDN": 102, 
+				"bgmNN": 102, 
+				"bgmDB": 101, 
+				"bgmNB": 101
+			}
+		}, 
+		6: {
+			1: {
+				"bgmDN": 102, 
+				"bgmNN": 102, 
+				"bgmDB": 77, 
+				"bgmNB": 77
+			}, 
+			5: {
+				"bgmDN": 102, 
+				"bgmNN": 102, 
+				"bgmDB": 101, 
+				"bgmNB": 101
+			}
+		}
+	}, 
+	"2017-10-18": { //saury end
+		1: {
+			1: {
+				"bgmDN": 1
+			}, 
+			3: {
+				"bgmDB": 77, 
+				"bgmNB": 77
+			}, 
+			5: {
+				"bgmDN": 7, 
+				"bgmNN": 2, 
+				"bgmDB": 13, 
+				"bgmNB": 13
+			}, 
+			6: {
+				"bgmDN": 37, 
+				"bgmNN": 37
+			}
+		}, 
+		3: {
+			1: {
+				"bgmDN": 29, 
+				"bgmNN": 2
+			}, 
+			2: {
+				"bgmDN": 29, 
+				"bgmNN": 2
+			}, 
+			3: {
+				"bgmDN": 8, 
+				"bgmNN": 2, 
+				"bgmDB": 11, 
+				"bgmNB": 11
+			}, 
+			4: {
+				"bgmDN": 19, 
+				"bgmNN": 4, 
+				"bgmDB": 4, 
+				"bgmNB": 5
+			}, 
+			5: {
+				"bgmDN": 19, 
+				"bgmNN": 3, 
+				"bgmDB": 13, 
+				"bgmNB": 6
+			}
+		}, 
+		6: {
+			1: {
+				"bgmDN": 20, 
+				"bgmNN": 20, 
+				"bgmDB": 6, 
+				"bgmNB": 1002
+			}, 
+			5: {
+				"bgmDN": 75, 
+				"bgmNN": 75
+			}
+		}
+	}, 
+	"2017-12-11": { //xmas
+		1: {
+			1: {
+				"bgmDN": 83, 
+				"bgmDB": 1107, 
+				"bgmNB": 1107
+			}, 
+			2: {
+				"bgmDN": 83, 
+				"bgmDB": 1107, 
+				"bgmNB": 1107
+			}, 
+			3: {
+				"bgmDN": 1107, 
+				"bgmDB": 29, 
+				"bgmNB": 29
+			}, 
+			4: {
+				"bgmDN": 1107
+			}, 
+			5: {
+				"bgmDB": 29, 
+				"bgmNB": 29
+			}
+		}, 
+		2: {
+			3: {
+				"bgmDN": 1107
+			}
+		}, 
+		3: {
+			3: {
+				"bgmDN": 11, 
+				"bgmDB": 3, 
+				"bgmNB": 3
+			}
+		}, 
+		5: {
+			3: {
+				"bgmNB": 50
+			}, 
+			4: {
+				"bgmDN": 29
+			}
+		}, 
+		6: {
+			4: {
+				"bgmDB": 41
+			}
+		}
+	}, 
+	"2017-12-27": { //post-xmas
+		1: {
+			1: {
+				"bgmDN": 84
+			}, 
+			2: {
+				"bgmDN": 84
+			}
+		}, 
+		2: {
+			3: {
+				"bgmDN": 29
+			}
+		}
+	}, 
+	"2018-01-01": { //newyears
+		1: {
+			1: {
+				"bgmDN": 85
+			}, 
+			2: {
+				"bgmDN": 85
+			}
+		}
+	}, 
+	"2018-02-05": { //xmas/newyears end
+		1: {
+			1: {
+				"bgmDN": 1, 
+				"bgmDB": 2, 
+				"bgmNB": 2
+			}, 
+			2: {
+				"bgmDN": 1, 
+				"bgmDB": 2, 
+				"bgmNB": 2
+			}, 
+			3: {
+				"bgmDN": 1
+			}
+		}, 
+		6: {
+			5: {
+				"bgmDB": 68, 
+				"bgmNB": 68
+			}
+		}
+	}, 
+	"2018-05-15": { //5th anniversary
+		1: {
+			3: {
+				"bgmDN": 117, 
+				"bgmDB": 2, 
+				"bgmNB": 2
+			}, 
+			4: {
+				"bgmDN": 117
+			}, 
+			5: {
+				"bgmDB": 117, 
+				"bgmNB": 117
+			}
+		}, 
+		2: {
+			3: {
+				"bgmDN": 117
+			}, 
+			4: {
+				"bgmDN": 117
+			}
+		}, 
+		5: {
+			4: {
+				"bgmDN": 4
+			}
+		}, 
+		6: {
+			2: {
+				"bgmDN": 117
+			}
+		}
+	}, 
+	"2018-06-13": { //5th anniversary 2
+		1: {
+			3: {
+				"bgmDN": 1, 
+				"bgmDB": 117, 
+				"bgmNB": 117
+			}, 
+			5: {
+				"bgmNN": 13, 
+				"bgmDB": 37, 
+				"bgmNB": 37
+			}, 
+			6: {
+				"bgmNN": 13, 
+				"bgmNB": 13
+			}
+		}, 
+		2: {
+			2: {
+				"bgmDN": 117, 
+				"bgmDB": 46, 
+				"bgmNB": 46
+			}, 
+			3: {
+				"bgmDN": 8
+			}, 
+			4: {
+				"bgmDN": 31
+			}, 
+			5: {
+				"bgmNN": 31, 
+				"bgmNB": 1002
+			}
+		}, 
+		5: {
+			3: {
+				"bgmDB": 52, 
+				"bgmNB": 54
+			}, 
+			4: {
+				"bgmDB": 22, 
+				"bgmNB": 49
+			}, 
+			5: {
+				"bgmDB": 49, 
+				"bgmNB": 50
+			}
+		}, 
+		6: {
+			2: {
+				"bgmDN": 70, 
+				"bgmDB": 73, 
+				"bgmNB": 73
+			}
+		}
+	}, 
+	"2018-07-12": { //rainy
+		2: {
+			2: {
+				"bgmDN": 8
+			}, 
+			3: {
+				"bgmDN": 118
+			}
+		}, 
+		3: {
+			1: {
+				"bgmDN": 19
+			}, 
+			4: {
+				"bgmDN": 8
+			}
+		}, 
+		4: {
+			1: {
+				"bgmDN": 118
+			}, 
+			2: {
+				"bgmDN": 30
+			}
+		}, 
+		5: {
+			5: {
+				"bgmDN": 118
+			}
+		}, 
+		6: {
+			5: {
+				"bgmDN": 118
+			}
+		}
+	}, 
+	"2018-08-17": { //HTML5
+		2: {
+			2: {
+				"bgmDN": 117
+			}, 
+			3: {
+				"bgmDN": 8
+			}
+		}, 
+		3: {
+			1: {
+				"bgmDN": 29
+			}, 
+			4: {
+				"bgmDN": 19
+			}
+		}, 
+		4: {
+			1: {
+				"bgmDN": 30
+			}, 
+			2: {
+				"bgmDN": 39
+			}
+		}, 
+		5: {
+			5: {
+				"bgmDN": 94
+			}
+		}, 
+		6: {
+			5: {
+				"bgmDN": 75
+			}
+		}
+	}, 
+	"2018-10-10": { //saury
+		1: {
+			1: {
+				"bgmDN": 102
+			}, 
+			2: {
+				"bgmDN": 102
+			}, 
+			3: {
+				"bgmDN": 102, 
+				"bgmDB": 77, 
+				"bgmNB": 77
+			}, 
+			4: {
+				"bgmDN": 102, 
+				"bgmDB": 77, 
+				"bgmNB": 77
+			}, 
+			5: {
+				"bgmDB": 102, 
+				"bgmNB": 102
+			}, 
+			6: {
+				"bgmDN": 102, 
+				"bgmNN": 102
+			}
+		}, 
+		2: {
+			2: {
+				"bgmDN": 8
+			}, 
+			3: {
+				"bgmDN": 118
+			}
+		}, 
+		3: {
+			1: {
+				"bgmDN": 125
+			}, 
+			2: {
+				"bgmDN": 125
+			}, 
+			3: {
+				"bgmDN": 125, 
+				"bgmDB": 77, 
+				"bgmNB": 77
+			}, 
+			4: {
+				"bgmDN": 125, 
+				"bgmDB": 77, 
+				"bgmNB": 77
+			}, 
+			5: {
+				"bgmDN": 125, 
+				"bgmNN": 19, 
+				"bgmDB": 44, 
+				"bgmNB": 44
+			}
+		}, 
+		4: {
+			1: {
+				"bgmDN": 118
+			}, 
+			2: {
+				"bgmDN": 30
+			}, 
+			4: {
+				"bgmDB": 5, 
+				"bgmNB": 5
+			}
+		}, 
+		5: {
+			5: {
+				"bgmDN": 118
+			}
+		}, 
+		6: {
+			1: {
+				"bgmDN": 76, 
+				"bgmNN": 102, 
+				"bgmDB": 77, 
+				"bgmNB": 77
+			}, 
+			5: {
+				"bgmDN": 76, 
+				"bgmNN": 102, 
+				"bgmDB": 77, 
+				"bgmNB": 44
+			}
+		}
+	}
+}
