@@ -663,7 +663,24 @@ function processAPI(root) {
 		if (data.api_escape_idx_combined) escape[1] = data.api_escape_idx_combined;
 		try {
 			var isPhase1 = root.world < 7 && root.time*1000 < Date.UTC(2018,7,16);
-			var bgm, map = MAPDATA[root.world].maps[root.mapnum];
+			var bgm, map;
+			if (root.world < 10) {
+				map = {};
+				var mapBase = MAPDATA[root.world].maps[root.mapnum];
+				for (let prop in mapBase) map[prop] = mapBase[prop];
+				for (let date of Object.keys(MAPDATA_BGM_HISTORY).sort()) {
+					let d = date.split('-');
+					if (date !== '' && Date.UTC(d[0],d[1]-1,d[2],3) > root.time*1000) break; //compare noon JST, usually maint through then
+					if (MAPDATA_BGM_HISTORY[date][root.world] && MAPDATA_BGM_HISTORY[date][root.world][root.mapnum]) {
+						for (let prop in MAPDATA_BGM_HISTORY[date][root.world][root.mapnum]) {
+							map[prop] = MAPDATA_BGM_HISTORY[date][root.world][root.mapnum][prop];
+						}
+					}
+				}
+			} else {
+				map = MAPDATA[root.world].maps[root.mapnum];
+			}
+			console.log(map);
 			var letter = root.battles[b].node, letterOrig = root.battles[b].node, edgeKey = 'World '+root.world+'-'+root.mapnum;
 			if (window['EDGES'] && EDGES[edgeKey]) {
 				letterOrig = (isPhase1)? EDGES.old[edgeKey][letter][1] : EDGES[edgeKey][letter][1];
@@ -2073,7 +2090,7 @@ function shootSpecialGun(ship,target,damage,forcecrit,protect) {
 
 function shootNelsonTouch(ships,targets,damages,crits,protects) {
 	console.log(targets);
-	SM.playVoice(ships[0].mid,'nbattack',ships[0].id);
+	SM.playVoice(ships[0].mid,'special',ships[0].id);
 	
 	for (var i=0; i<ships.length; i++) {
 		let ship = ships[i], target = targets[i], damage = damages[i], forcecrit = crits[i], protect = protects[i];
