@@ -332,7 +332,7 @@ var BATTLE = (function() {
 				}
 			}
 			
-			var numDf = (hou.api_sp_list[j] == 100)? hou.api_df_list[j].length : 1;
+			var numDf = (hou.api_sp_list[j] >= 100)? hou.api_df_list[j].length : 1;
 			for (var k=0; k<numDf; k++) {
 				var defender;
 				if (version == 1) {
@@ -349,7 +349,7 @@ var BATTLE = (function() {
 				defenders.push(defender);
 			}
 			
-			var dfName = (hou.api_sp_list[j] == 100)? '' : defenders[0].name;
+			var dfName = (hou.api_sp_list[j] >= 100)? '' : defenders[0].name;
 			body.append(getTextRow("NIGHT_TARGET", [attacker.name, dfName, hou.api_sp_list[j]], attacker.is_enemy ? "end" : "start"));
 			
 			for (var i=0; i<defenders.length; i++) {
@@ -357,14 +357,14 @@ var BATTLE = (function() {
 				
 				dam = 0;
 				for (var k=0; k<hou.api_damage[j].length; k++) {
-					if (hou.api_sp_list[j] == 100 && i != k) continue;
+					if (hou.api_sp_list[j] >= 100 && i != k) continue;
 					if (hou.api_damage[j][k] > 0) dam += hou.api_damage[j][k];
 				}
 
 				if ((hou.api_damage[j][0] != Math.floor(hou.api_damage[j][0]))) {
 					if (dam < 1) {
 						body.append(getTextRow("PROTECT_MISS", [defender.name], defender.is_enemy ? "start" : "end"));
-					} else if (hou.api_damage[j].length > 1 && hou.api_damage[j][1] != -1 && hou.api_sp_list[j] != 100) {
+					} else if (hou.api_damage[j].length > 1 && hou.api_damage[j][1] != -1 && hou.api_sp_list[j] < 100) {
 						body.append(getTextRow("PROTECT_DAMAGE_DOUBLE", [defender.name, hou.api_cl_list[j][0], Math.floor(hou.api_damage[j][0]), hou.api_cl_list[j][1], Math.floor(hou.api_damage[j][1])], defender.is_enemy ? "start" : "end"));
 					} else {
 						body.append(getTextRow("PROTECT_DAMAGE", [defender.name, hou.api_cl_list[j][i], Math.floor(hou.api_damage[j][i])], defender.is_enemy ? "start" : "end"));
@@ -373,7 +373,7 @@ var BATTLE = (function() {
 				else {
 					if (dam < 1) {
 						body.append(getTextRow("SHELL_MISS", [defender.name], defender.is_enemy ? "start" : "end"));
-					} else if (hou.api_damage[j].length > 1 && hou.api_damage[j][1] != -1 && hou.api_sp_list[j] != 100) {
+					} else if (hou.api_damage[j].length > 1 && hou.api_damage[j][1] != -1 && hou.api_sp_list[j] < 100) {
 						body.append(getTextRow("SHELL_DAMAGE_DOUBLE", [defender.name, hou.api_cl_list[j][0], Math.floor(hou.api_damage[j][0]), hou.api_cl_list[j][1], Math.floor(hou.api_damage[j][1])], defender.is_enemy ? "start" : "end"));
 					} else {
 						body.append(getTextRow("SHELL_DAMAGE", [defender.name, hou.api_cl_list[j][i], Math.floor(hou.api_damage[j][i])], defender.is_enemy ? "start" : "end"));
@@ -704,7 +704,7 @@ var BATTLE = (function() {
 			}
 			if (hou.api_at_type[j] == 2) defenders = [defenders[0]];
 
-			var defenderName = (hou.api_at_type[j] == 100)? '' : defenders[0].name;
+			var defenderName = (hou.api_at_type[j] >= 100)? '' : defenders[0].name;
 			body.append(getTextRow("SHELL_TARGET", [attacker.name, hou.api_at_type[j], defenderName], attacker.is_enemy? "end" : "start"));
 
 			for (var i=0; i<defenders.length; i++) {

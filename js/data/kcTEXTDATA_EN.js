@@ -286,7 +286,8 @@ var TEXTDATA_EN = {
 				5: "AP cut-in ",
 				6: "gun cut-in ",
 				7: "carrier cut-in ",
-				100: "Nelson Touch "
+				100: "Nelson Touch ",
+				101: "Nagato Special ",
 			}
 		}
 	},

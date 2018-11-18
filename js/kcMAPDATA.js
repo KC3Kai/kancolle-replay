@@ -357,6 +357,14 @@ var MAPDATA = {
 				bossnode: 11,
 				bossHP: 3,
 			},
+			2: {
+				name: '7-2',
+                bgmDN: 105, 
+                bgmNN: 105, 
+                bgmDB: 80, 
+                bgmNB: 81,
+				bossnode: [7,13],
+            }
 		}
 	},
 	22: {
@@ -1610,7 +1618,13 @@ var MAPDATA_BGM_HISTORY = {
 				"bgmNN": 37, 
 				"bgmDB": 43, 
 				"bgmNB": 41
-			}
+			},
+			2: {
+                "bgmDN": 105, 
+                "bgmNN": 105, 
+                "bgmDB": 80, 
+                "bgmNB": 81
+            }
 		}
 	}, 
 	"2014-08-08": {
@@ -2536,5 +2550,76 @@ var MAPDATA_BGM_HISTORY = {
 				"bgmNB": 44
 			}
 		}
-	}
+	},
+	"2018-10-26": {
+        1: {
+            1: {
+                "bgmDN": 1
+            }, 
+            2: {
+                "bgmDN": 1
+            }, 
+            3: {
+                "bgmDN": 1, 
+                "bgmDB": 117, 
+                "bgmNB": 117
+            }, 
+            4: {
+                "bgmDN": 117, 
+                "bgmDB": 12, 
+                "bgmNB": 12
+            }, 
+            5: {
+                "bgmDB": 13, 
+                "bgmNB": 13
+            }, 
+            6: {
+                "bgmDN": 37, 
+                "bgmNN": 13
+            }
+        }, 
+        3: {
+            1: {
+                "bgmDN": 19
+            }, 
+            2: {
+                "bgmDN": 19
+            }, 
+            3: {
+                "bgmDN": 11, 
+                "bgmDB": 3, 
+                "bgmNB": 3
+            }, 
+            4: {
+                "bgmDN": 8, 
+                "bgmDB": 4, 
+                "bgmNB": 5
+            }, 
+            5: {
+                "bgmDN": 19, 
+                "bgmNN": 3, 
+                "bgmDB": 54, 
+                "bgmNB": 54
+            }
+        }, 
+        4: {
+            4: {
+                "bgmDB": 4
+            }
+        }, 
+        6: {
+            1: {
+                "bgmDN": 20, 
+                "bgmNN": 20, 
+                "bgmDB": 6, 
+                "bgmNB": 21
+            }, 
+            5: {
+                "bgmDN": 75, 
+                "bgmNN": 20, 
+                "bgmDB": 68, 
+                "bgmNB": 68
+            }
+        }
+    },
 }

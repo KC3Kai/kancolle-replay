@@ -948,7 +948,7 @@ function processAPI(root) {
 				d.push(attacker); //attacker
 				
 				var defenders = [];
-				var num = (hou.api_at_type[j] == 100)? hou.api_df_list[j].length : 1;
+				var num = (hou.api_at_type[j] >= 100)? hou.api_df_list[j].length : 1;
 				for (var k=0; k<num; k++) {
 					var defender;
 					if (ecombined) {
@@ -972,7 +972,7 @@ function processAPI(root) {
 					}
 					defenders.push(defender);
 				}
-				if (hou.api_at_type[j] == 100) d.push(defenders);
+				if (hou.api_at_type[j] >= 100) d.push(defenders);
 				else d.push(defenders[0]); //target
 				
 				for (var k=0; k<hou.api_damage[j].length; k++) {
@@ -1020,6 +1020,11 @@ function processAPI(root) {
 						eventqueue.push([shootPlaneCutIn,d,getState()]); break;
 					case 100:
 						var attackers = (hou.api_at_eflag[j])? [f2[0],f2[2],f2[4]] : [f1[0],f1[2],f1[4]];
+						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
+						var args = [attackers,defenders,d.slice(2,5),d.slice(5,8),protects];
+						eventqueue.push([shootNelsonTouch,args,getState()]); break;
+					case 101:
+						var attackers = (hou.api_at_eflag[j])? [f2[0],f2[0],f2[1]] : [f1[0],f1[0],f1[1]];
 						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
 						var args = [attackers,defenders,d.slice(2,5),d.slice(5,8),protects];
 						eventqueue.push([shootNelsonTouch,args,getState()]); break;
