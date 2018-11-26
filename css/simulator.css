@@ -164,3 +164,11 @@ div.secret:hover {
 table.tadvstats td{
 	vertical-align: top;
 }
+
+
+#divDataError, #divDataLoad {
+	color: red;
+}
+#divDataWarn {
+	color: orange;
+}
