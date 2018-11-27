@@ -1,0 +1,129 @@
+<html>
+<head>
+</head>
+<body>
+<pre>
+Link to simulator with JSON data in URL fragment to run simulator automatically from external data:
+https://kc3kai.github.io/kancolle-replay/simulator.html#{JSON here}
+
+Properties marked (default)/(optional) may be omitted, otherwise required.
+If ship/equip "masterId" not in simulator's database, "stats" is required.
+
+
+{
+	numSims: &lt;int&gt; (default 1000),
+	fleetF: {
+		ships: [{
+			masterId: &lt;int&gt;,
+			LVL: &lt;int&gt; (default 99 for player, 1 for abyssal, 50 for abyssal sub),
+			stats: { (optional)
+				HP: &lt;int&gt; (default based on LVL),
+				FP: &lt;int&gt; (default max),
+				TP: &lt;int&gt; (default max),
+				AA: &lt;int&gt; (default max),
+				AR: &lt;int&gt; (default max),
+				LUK: &lt;int&gt; (default base),
+				EV: &lt;int&gt; (default based on LVL),
+				ASW: &lt;int&gt; (default based on LVL),
+				LOS: &lt;int&gt; (default based on LVL),
+				RNG: &lt;int&gt; (default base),
+				SPD: &lt;int&gt; (default base),
+				SLOTS: [&lt;int&gt;] (default base),
+				TACC: &lt;int&gt; torpedo accuracy (default base),
+				type: &lt;int&gt; ship class (default actual class)
+			},
+			HPInit: &lt;int&gt; (default = HP),
+			fuelInit: &lt;float&gt; 0-1 percent (default 1),
+			ammoInit: &lt;float&gt; 0-1 percent (default 1),
+			equips: (if omitted, default equips if abyssal, otherwise none) [{
+				masterId: &lt;int&gt;,
+				improve: &lt;int&gt; 0-10 (default 0),
+				proficiency: &lt;int&gt; 0-7 (default 0),
+				stats: { (optional)
+					
+				}
+			}],
+			addEquipStats: &lt;bool&gt; if 0, specified ship stats are already including equipment, otherwise excluding (default 1)
+		}],
+		combineType: &lt;int&gt; 1=CTF, 2=STF, 3=TCF (optional),
+		shipsC: [&lt;same as ships&gt;] (optional),
+		formation: &lt;int&gt;
+	},
+	fleetSupportN: {&lt;same format as fleetF&gt;} applies to all but last node,
+	fleetSupportB: {&lt;same format as fleetF&gt;} applies to last node only,
+	lbas: [{
+		equips: {&lt;same format as fleetF.ships[x].equips&gt;}
+	}] (max 3),
+	nodes: [{
+		fleetE: &lt;same format as fleetF&gt;,
+		doNB: &lt;bool&gt; (default 0),
+		NBOnly: &lt;bool&gt; (default 0),
+		airOnly: &lt;bool&gt; (default 0),
+		airRaid: &lt;bool&gt; (default 0),
+		noAmmo: &lt;bool&gt; (default 0),
+		formationOverride: &lt;int&gt; overrides value in fleetF (optional),
+		lbas: [&lt;int&gt;] waves to send, e.g. [1,1,2,2] (optional)
+	}],
+	continueOnTaiha: &lt;bool&gt; (default 0),
+	bucketHPPercent: &lt;int&gt; if HP percent &lt;= bucketHPPercent, report as bucket used (default 0),
+	bucketTime: &lt;int&gt; if repair time in seconds &gt; bucketTime, report as bucket used (default "infinity"),
+	mechanics: optional, all are &lt;bool&gt; (default 1) {
+		artillerySpotting: 
+		AACI: 
+		fitGun: 
+		OASW:
+		morale:
+		CVCI:
+		DDCI:
+	},
+	consts: {
+		dayShellSoftCap: &lt;int&gt; (default 180),
+		aswSoftCap: &lt;int&gt; (default 150),
+		accEcMF: &lt;int&gt; base accuracy of enemy combined player main fleet shelling (default 90),
+		accEcME: &lt;int&gt; base accuracy of enemy combined enemy main fleet shelling (default 90),
+		accEcEF: &lt;int&gt; base accuracy of enemy combined player escort fleet shelling (default 90),
+		accEcEE: &lt;int&gt; base accuracy of enemy combined enemy escort fleet shelling (default 90),
+		accSupportShellN: &lt;int&gt; (default 64),
+		accSupportShellB: &lt;int&gt; (default 64),
+		cvciAccModFBA: &lt;float&gt; (default 1.2),
+		cvciAccModBBA: &lt;float&gt; (default 1.2),
+		cvciAccModBA: &lt;float&gt; (default 1.2),
+		cvciChanceFBA: &lt;float&gt; (default 1.25),
+		cvciChanceBBA: &lt;float&gt; (default 1.4),
+		cvciChanceBA: &lt;float&gt; (default 1.55)
+	} (optional),
+}
+
+
+Basic example:
+
+<span id="spanExample">{
+	"numSims": 10000,
+	"fleetF": {
+		"ships": [
+			{ "masterId": 200, "equips": [{ "masterId": 4 }, { "masterId": 4 }, { "masterId": 41 }] }
+		],
+		"formation": 1
+	},
+	"nodes": [{
+		"fleetE": {
+			"ships": [
+				{ "masterId": 1503 },
+				{ "masterId": 1502 },
+				{ "masterId": 1501 },
+				{ "masterId": 1501 }
+			],
+			"formation": 2
+		},
+		"doNB": 1
+	}]
+}</span>
+</pre>
+<a id="linkExample" target="_blank">Try Example</a>
+
+<script>
+	document.getElementById('linkExample').href = 'simulator.html#' + document.getElementById('spanExample').innerText;
+</script>
+
+</body>
+</html>
