@@ -2233,11 +2233,10 @@ function simData(data) {
 	if (combineType) simStatsCombined(numsims,combineType,optionsAll);
 	else simStats(numsims,optionsAll);
 	
-	document.getElementById('resultspace').style.display = 'block';
-	document.getElementById('simnotespace').innerHTML = '';
+	$('#resultspace').show();
 	$('#warnecombined').hide();
-	for (var num in ADDEDECOMBINED) {
-		if (ADDEDECOMBINED[num]) { $('#warnecombined').show(); break; }
+	for (let node of data.nodes) {
+		if (node.fleetE.shipsC) { $('#warnecombined').show(); break; }
 	}
 }
 
