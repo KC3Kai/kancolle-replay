@@ -38,12 +38,9 @@ If ship/equip "masterId" not in simulator's database, "stats" is required.
 			equips: (if omitted, default equips if abyssal, otherwise none) [{
 				masterId: &lt;int&gt;,
 				improve: &lt;int&gt; 0-10 (default 0),
-				proficiency: &lt;int&gt; 0-7 (default 0),
-				stats: { (optional)
-					
-				}
+				proficiency: &lt;int&gt; 0-7 (default 0)
 			}],
-			addEquipStats: &lt;bool&gt; if 0, specified ship stats are already including equipment, otherwise excluding (default 1)
+			includesEquipStats: &lt;bool&gt; if 1, specified ship stats are treated as already including equipment stats (default 0)
 		}],
 		combineType: &lt;int&gt; 1=CTF, 2=STF, 3=TCF (optional),
 		shipsC: [&lt;same as ships&gt;] (optional),
