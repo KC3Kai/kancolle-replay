@@ -2292,12 +2292,11 @@ function simDataLoad(data) {
 
 function simDataLoadFleet(dataFleet,side) {
 	let fleetMain = new Fleet(side);
-	let addStats = !dataFleet.includesEquipStats;
-	fleetMain.loadShips(simDataLoadShips(dataFleet.ships,side,addStats));
+	fleetMain.loadShips(simDataLoadShips(dataFleet.ships,side));
 	
 	if (dataFleet.shipsC) {
 		let fleetEscort = new Fleet(side,fleetMain);
-		fleetEscort.loadShips(simDataLoadShips(dataFleet.shipsC,side,addStats));
+		fleetEscort.loadShips(simDataLoadShips(dataFleet.shipsC,side));
 		let combineType = dataFleet.combineType || 1;
 		let formNum = ''+combineType + dataFleet.formation;
 		if (!ALLFORMATIONS[formNum]) {
@@ -2317,7 +2316,7 @@ function simDataLoadFleet(dataFleet,side) {
 	return fleetMain;
 }
 
-function simDataLoadShips(dataShips,side,addStats) {
+function simDataLoadShips(dataShips,side) {
 	let simShips = [];
 	for (let ship of dataShips) {
 		let level = ship.LVL || 99;
@@ -2365,7 +2364,7 @@ function simDataLoadShips(dataShips,side,addStats) {
 				improves.push(equip.improve);
 				profs.push(equip.proficiency);
 			}
-			simShip.loadEquips(equips,improves,profs,addStats);
+			simShip.loadEquips(equips,improves,profs,!ship.includesEquipStats);
 		} else if (sdata.EQUIPS) {
 			simShip.loadEquips(sdata.EQUIPS,[],[],true);
 		}
