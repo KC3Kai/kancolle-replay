@@ -30,7 +30,7 @@ If ship/equip "masterId" not in simulator's database, "stats" is required.
 				SPD: &lt;int&gt; (default base),
 				SLOTS: [&lt;int&gt;] (default base),
 				TACC: &lt;int&gt; torpedo accuracy (default base),
-				type: &lt;int&gt; ship class (default actual class)
+				type: &lt;int&gt; or &lt;string&gt; ship class, use API number or hull code e.g. "DD" (default actual class)
 			},
 			HPInit: &lt;int&gt; (default = HP),
 			fuelInit: &lt;float&gt; 0-1 percent (default 1),
@@ -38,7 +38,11 @@ If ship/equip "masterId" not in simulator's database, "stats" is required.
 			equips: (if omitted, default equips if abyssal, otherwise none) [{
 				masterId: &lt;int&gt;,
 				improve: &lt;int&gt; 0-10 (default 0),
-				proficiency: &lt;int&gt; 0-7 (default 0)
+				proficiency: &lt;int&gt; 0-7 (default 0),
+				stats: { (optional, used only if not in simulator's database)
+					type: &lt;int&gt; API number,
+					FP/TP/AA/AR/EV/ASW/LOS/ACC/DIVEBOMB/RNG: &lt;int&gt;
+				}
 			}],
 			includesEquipStats: &lt;bool&gt; if 1, specified ship stats are treated as already including equipment stats (default 0)
 		}],
