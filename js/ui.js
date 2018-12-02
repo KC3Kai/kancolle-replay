@@ -2249,6 +2249,24 @@ function simDataLoad(data) {
 	if (data.fleetSupportN) FLEETS1S[0] = simDataLoadFleet(data.fleetSupportN,0);
 	if (data.fleetSupportB) FLEETS1S[1] = simDataLoadFleet(data.fleetSupportB,0);
 	
+	if (data.lbas) {
+		LBAS = [];
+		for (let i=0; i<3; i++) {
+			if (!data.lbas[i]) break;
+			let eqids = [], improves = [], profs = [];
+			for (let equip of data.lbas[i].equips) {
+				eqids.push(equip.masterId);
+				improves.push(equip.improve || 0);
+				profs.push(equip.proficiency || 0);
+			}
+			LBAS[i] = new LandBase(eqids,improves,profs);
+			if (data.lbas[i].slots) {
+				LBAS[i].PLANESLOTS = data.lbas[i].slots;
+				LBAS[i].planecount = LBAS[i].PLANESLOTS.slice();
+			}
+		}
+	}
+	
 	for (let i=0; i<data.nodes.length; i++) {
 		let node = data.nodes[i];
 		let options = {};
@@ -2374,9 +2392,9 @@ function simDataLoadShips(dataShips,side) {
 			simDataAddWarn('Warning: Unknown ship - '+ship.masterId+', unique effects may be missing');
 		}
 		let simShip = new ShipType(ship.masterId,'',side,level,stats.HP,stats.FP,stats.TP,stats.AA,stats.AR,stats.EV,stats.ASW,stats.LOS,stats.LUK,stats.RNG,stats.SLOTS);
-		if (ship.HPInit) simShip.HP = ship.HPInit;
-		if (ship.fuelInit) simShip.fuelleft = 10*ship.fuelInit;
-		if (ship.ammoInit) simShip.ammoleft = 10*ship.ammoInit;
+		if (ship.HPInit != null) simShip.HP = simShip.HPDefault = ship.HPInit;
+		if (ship.fuelInit != null) simShip.fuelleft = simShip.fuelDefault = 10*ship.fuelInit;
+		if (ship.ammoInit != null) simShip.ammoleft = simShip.ammoDefault = 10*ship.ammoInit;
 		if (ship.stats && ship.stats.TACC) simShip.TACC = ship.stats.TACC;
 		if (overrideType) simShip.type = overrideType;
 		simShip.protection = (side === 0);

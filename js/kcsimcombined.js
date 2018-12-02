@@ -569,6 +569,7 @@ function simStatsCombined(numsims,type,foptions) {
 			totalResult.totalFuelS += cost[0];
 			totalResult.totalAmmoS += cost[1];
 			totalResult.totalBauxS += cost[2];
+			LBAS[alllbas[j]-1].reset();
 		}
 		for (var j=0; j<FLEETS1.length; j++) FLEETS1[j].reset();
 		for (var j=0; j<FLEETS2.length; j++) {
