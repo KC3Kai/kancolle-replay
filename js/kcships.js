@@ -704,7 +704,7 @@ Ship.prototype.moraleModEv = function() {
 }
 
 Ship.prototype.reset = function() {
-	this.HP = this.maxHP;
+	this.HP = (this.HPDefault != null)? this.HPDefault : this.maxHP;
 	this.planecount = this.PLANESLOTS.slice();
 	this.fuelleft = this.fuelDefault;
 	this.ammoleft = this.ammoDefault;
@@ -1049,6 +1049,9 @@ LandBase.prototype.airPowerDefend = function() {
 		if (newmod > mod) mod = newmod;
 	}
 	return Math.floor(ap*mod);
+}
+LandBase.prototype.reset = function() {
+	this.planecount = this.PLANESLOTS.slice();
 }
 LandBase.prototype.getCost = function() {
 	var cost = [0,0,0]; //fuel,ammo,baux
