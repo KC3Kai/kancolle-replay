@@ -2198,6 +2198,7 @@ if (window.location.hash.length > 5) {
 	let data;
 	try {
 		data = JSON.parse(decodeURIComponent(window.location.hash.substr(1)));
+		console.log(data);
 	} catch {
 		simDataAddError('JSON parse error');
 	}
@@ -2395,6 +2396,7 @@ function simDataLoadShips(dataShips,side) {
 		if (ship.HPInit != null) simShip.HP = simShip.HPDefault = ship.HPInit;
 		if (ship.fuelInit != null) simShip.fuelleft = simShip.fuelDefault = 10*ship.fuelInit;
 		if (ship.ammoInit != null) simShip.ammoleft = simShip.ammoDefault = 10*ship.ammoInit;
+		if (ship.morale != null) simShip.morale = simShip.moraleDefault = ship.morale;
 		if (ship.stats && ship.stats.TACC) simShip.TACC = ship.stats.TACC;
 		if (overrideType) simShip.type = overrideType;
 		simShip.protection = (side === 0);
