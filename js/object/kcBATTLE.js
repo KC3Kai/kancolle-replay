@@ -385,7 +385,7 @@ var BATTLE = (function() {
 
 					if(defender.hasDameCom()) {
 						let repairType = defender.useDameCom()
-						table.append(getTextRow("SHIP_REPAIR", [defender.name, repairType, repairType], "end"));
+						body.append(getTextRow("SHIP_REPAIR", [defender.name, repairType, repairType], "end"));
 					} 
 				}
 			}

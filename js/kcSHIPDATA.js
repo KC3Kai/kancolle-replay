@@ -12958,8 +12958,8 @@ var SHIPDATA = {
 		SLOTS: [37, 24, 19, 13],
 		fuel: 100,
 		ammo: 100,
-		next: 545,
-		prev: 0,
+		next: 0,
+		prev: 545,
 		nextlvl: 90,
 	},
 	551: {
