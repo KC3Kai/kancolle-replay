@@ -1436,7 +1436,7 @@ var MAPDATA = {
 				bgmNN: 130,
 				bgmDB: 131,
 				bgmNB: 131,
-				bossnode: [19,26],
+				bossnode: ['S','Z'],
 			},
 		}
 	},
