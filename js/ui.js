@@ -144,7 +144,6 @@ function showAdditionalStats(fleet) {
 			var html = '<div style="margin-left:16px">(in AS+ / AS)<br>';
 			var chanceleft2 = 1, chanceleft1 = 1;
 			for (var j=0; j<AStypes.length; j++) {
-				console.log(chanceleft1 + ' ' + chanceleft2);
 				var chance2 = ASchance2, chance1 = ASchance1, name = '';
 				chance2 /= ARTILLERYSPOTDATA[AStypes[j]].chanceMod;
 				chance1 /= ARTILLERYSPOTDATA[AStypes[j]].chanceMod;
@@ -223,7 +222,7 @@ function showAdditionalStats(fleet) {
 	table.append(tr); tr = $('<tr></tr>');
 	for (var i=0; i<ships.length; i++) {
 		var td = $('<td></td>'); tr.append(td);
-		if (ships[i].hasT3Shell || ships[i].numWG || ships[i].hasDH1 || ships[i].hasDH2 || ships[i].hasDH3) {
+		if (ships[i].hasT3Shell || ships[i].numWG || ships[i].hasDH1 || ships[i].hasDH2 || ships[i].hasDH3 || ships[i].softSkinMult > 1) {
 			td.append('VS Installation Power:<br>');
 			var html = '<div style="margin-left:16px">';
 			html += 'Soft-skin: '+Math.floor(ships[i].shellPower({isInstall:true}))+'<br>';
@@ -2256,6 +2255,20 @@ function simDataLoad(data) {
 			if (!data.lbas[i]) break;
 			let eqids = [], improves = [], profs = [];
 			for (let equip of data.lbas[i].equips) {
+				if (!EQDATA[equip.masterId]) {
+					if (equip.stats && equip.stats.type) {
+						if (!EQTDATA[equip.stats.type]) {
+							simDataAddWarn('Warning: Unknown equip type: '+equip.stats.type+', skipped ('+equip.masterId+')');
+							continue;
+						}
+						EQDATA[equip.masterId] = {};
+						for (let stat in equip.stats) EQDATA[equip.masterId][stat] = equip.stats[stat];
+						simDataAddWarn('Warning: Unknown equip  - '+equip.masterId+', unique effects may be missing');
+					} else {
+						simDataAddError('Unknown equip: '+equip.masterId+', stats required');
+						continue;
+					}
+				}
 				eqids.push(equip.masterId);
 				improves.push(equip.improve || 0);
 				profs.push(equip.proficiency || 0);
@@ -2406,6 +2419,10 @@ function simDataLoadShips(dataShips,side) {
 			for (let equip of ship.equips) {
 				if (!EQDATA[equip.masterId]) {
 					if (equip.stats && equip.stats.type) {
+						if (!EQTDATA[equip.stats.type]) {
+							simDataAddWarn('Warning: Unknown equip type: '+equip.stats.type+', skipped ('+equip.masterId+')');
+							continue;
+						}
 						EQDATA[equip.masterId] = {};
 						for (let stat in equip.stats) EQDATA[equip.masterId][stat] = equip.stats[stat];
 						simDataAddWarn('Warning: Unknown equip  - '+equip.masterId+', unique effects may be missing');
