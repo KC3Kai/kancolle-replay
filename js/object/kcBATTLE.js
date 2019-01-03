@@ -288,6 +288,14 @@ var BATTLE = (function() {
 
 		tab.append(body);
 	};
+	
+	ldShooting = function() {
+		var body = document.createElement('tbody');
+		appendPhase("TITLE_SHELLING_PHASE");
+		hougeki(dbattle.api_hougeki1, player.mainFleet, body);
+		body.append(getTextRow("", []));
+		tab.append(body);
+	};
 
 	yasen = function() {
 		if (nightBattle.api_friendly_info && nightBattle.api_friendly_battle) {
@@ -820,6 +828,8 @@ var BATTLE = (function() {
 			opTorp();
 		if (dbattle.api_hourai_flag)
 			hourai();
+		if (dbattle.api_name == 'ld_shooting')
+			ldShooting();
 		if ((dbattle.api_midnight_flag && nightBattle.length && nightBattle.length != 0) || (!dbattle.length && nightBattle.api_deck_id))
 			yasen();
 	};
