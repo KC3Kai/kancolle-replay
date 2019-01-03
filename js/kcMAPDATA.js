@@ -1408,6 +1408,38 @@ var MAPDATA = {
 			},
 		}
 	},
+	43: {
+		name: 'Event Winter 2019',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmMap: 1,
+				bgmDN: 127,
+				bgmNN: 127,
+				bgmDB: 128,
+				bgmNB: 128,
+				bossnode: [7,12],
+			},
+			2: {
+				name: 'E2',
+				bgmMap: 1,
+				bgmDN: 127,
+				bgmNN: 127,
+				bgmDB: 128,
+				bgmNB: 128,
+				bossnode: [11,16],
+			},
+			3: {
+				name: 'E3',
+				bgmMap: 1,
+				bgmDN: 130,
+				bgmNN: 130,
+				bgmDB: 131,
+				bgmNB: 131,
+				bossnode: [19,26],
+			},
+		}
+	},
 }
 
 //-------------------------------------
@@ -2551,7 +2583,7 @@ var MAPDATA_BGM_HISTORY = {
 			}
 		}
 	},
-	"2018-10-26": {
+	"2018-10-26": { //saury end
         1: {
             1: {
                 "bgmDN": 1
