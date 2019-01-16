@@ -828,7 +828,7 @@ var BATTLE = (function() {
 			opTorp();
 		if (dbattle.api_hourai_flag)
 			hourai();
-		if (dbattle.api_name == 'ld_shooting')
+		if (dbattle.api_name == 'ld_shooting' || dbattle.api_name == 'fc_ld_shooting')
 			ldShooting();
 		if ((dbattle.api_midnight_flag && nightBattle.length && nightBattle.length != 0) || (!dbattle.length && nightBattle.api_deck_id))
 			yasen();
