@@ -69,4 +69,10 @@ $(document).ready(() => {
         if (!Howler._muted)
             Howler.volume(num);
     });
+	
+	$('#btnImportSim').click(function() {
+		let code = $('#code').val();
+		if (!code) return;
+		window.open('simulator.html#'+code,'_blank');
+	});
 })
