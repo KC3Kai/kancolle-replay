@@ -363,7 +363,8 @@ var TEXTDATA_EN = {
 				6: "carrier cut-in",
 				7: "gun-torpedo-radar cut-in",
 				8: "torpedo-radar-lookout cut-in",
-				100: "Nelson Touch"
+				100: "Nelson Touch",
+				101: "Nagato Special ",
 			}
 		}
 	},
