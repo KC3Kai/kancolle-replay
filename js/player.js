@@ -1108,6 +1108,11 @@ function processAPI(root) {
 						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
 						var args = [attackers,targets,d.slice(2,5),d.slice(5,8),protects];
 						eventqueue.push([shootNelsonTouch,args,getState()]); break;
+					case 101:
+						var attackers = (hou.api_at_eflag[j])? [f2[0],f2[0],f2[1]] : [f1[0],f1[0],f1[1]];
+						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
+						var args = [attackers,targets,d.slice(2,5),d.slice(5,8),protects];
+						eventqueue.push([shootNelsonTouch,args,getState()]); break;
 				}
 				
 				handleRepair(fleet1);
@@ -2100,6 +2105,11 @@ function shootNelsonTouch(ships,targets,damages,crits,protects) {
 	for (var i=0; i<ships.length; i++) {
 		let ship = ships[i], target = targets[i], damage = damages[i], forcecrit = crits[i], protect = protects[i];
 		updates.push([shipMoveTo,[ship,ship.xorigin+25-50*ship.side,2]]);
+		addTimeout(function() {
+			updates.push([shipMoveTo,[ship,ship.xorigin,2]]);
+		},4500);
+		
+		if (!target) continue;
 		
 		if (protect) {
 			addTimeout(function() { updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,3]]); }, 1500*i+675);
@@ -2118,10 +2128,6 @@ function shootNelsonTouch(ships,targets,damages,crits,protects) {
 		addTimeout(function(){
 			standardHit(target,damage,true,protect,forcecrit);
 		}, 1500*i+1500);
-		
-		addTimeout(function() {
-			updates.push([shipMoveTo,[ship,ship.xorigin,2]]);
-		},4500);
 	}
 	
 	addTimeout(function(){ ecomplete = true; }, 5500);
