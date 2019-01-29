@@ -505,8 +505,8 @@ var MAPDATA = {
 			1: {
 				name: 'E1',
 				bgmMap: 1,
-				bgmDN: 1107,
-				bgmNN: 1107,
+				bgmDN: 23,
+				bgmNN: 23,
 				bgmDB: 998,
 				bgmNB: 998,
 				bossnode: 1,
@@ -514,8 +514,8 @@ var MAPDATA = {
 			2: {
 				name: 'E2',
 				bgmMap: 1,
-				bgmDN: 1107,
-				bgmNN: 1107,
+				bgmDN: 23,
+				bgmNN: 23,
 				bgmDB: 998,
 				bgmNB: 998,
 				bossnode: 1,
@@ -523,8 +523,8 @@ var MAPDATA = {
 			3: {
 				name: 'E3',
 				bgmMap: 1,
-				bgmDN: 1107,
-				bgmNN: 1107,
+				bgmDN: 23,
+				bgmNN: 23,
 				bgmDB: 998,
 				bgmNB: 998,
 				bossnode: 1,
@@ -2013,25 +2013,25 @@ var MAPDATA_BGM_HISTORY = {
 		1: {
 			1: {
 				"bgmDN": 83, 
-				"bgmDB": 1107, 
-				"bgmNB": 1107
+				"bgmDB": 23, 
+				"bgmNB": 23
 			}, 
 			2: {
 				"bgmDN": 83, 
-				"bgmDB": 1107, 
-				"bgmNB": 1107
+				"bgmDB": 23, 
+				"bgmNB": 23
 			}, 
 			3: {
 				"bgmDN": 83
 			}, 
 			4: {
-				"bgmDN": 1107
+				"bgmDN": 23
 			}, 
 			5: {
-				"bgmDN": 1107
+				"bgmDN": 23
 			}, 
 			6: {
-				"bgmDN": 1107
+				"bgmDN": 23
 			}
 		}
 	}, 
@@ -2235,21 +2235,21 @@ var MAPDATA_BGM_HISTORY = {
 		1: {
 			1: {
 				"bgmDN": 83, 
-				"bgmDB": 1107, 
-				"bgmNB": 1107
+				"bgmDB": 23, 
+				"bgmNB": 23
 			}, 
 			2: {
 				"bgmDN": 83, 
-				"bgmDB": 1107, 
-				"bgmNB": 1107
+				"bgmDB": 23, 
+				"bgmNB": 23
 			}, 
 			3: {
-				"bgmDN": 1107, 
+				"bgmDN": 23, 
 				"bgmDB": 29, 
 				"bgmNB": 29
 			}, 
 			4: {
-				"bgmDN": 1107
+				"bgmDN": 23
 			}, 
 			5: {
 				"bgmDB": 29, 
@@ -2258,7 +2258,7 @@ var MAPDATA_BGM_HISTORY = {
 		}, 
 		2: {
 			3: {
-				"bgmDN": 1107
+				"bgmDN": 23
 			}
 		}, 
 		3: {
@@ -2654,4 +2654,69 @@ var MAPDATA_BGM_HISTORY = {
             }
         }
     },
+	"2018-12-07": { //xmas
+        1: {
+            1: {
+                "bgmDN": 83, 
+                "bgmDB": 23, 
+                "bgmNB": 23
+            }, 
+            2: {
+                "bgmDN": 83, 
+                "bgmDB": 23, 
+                "bgmNB": 23
+            }, 
+            3: {
+                "bgmDN": 23, 
+                "bgmDB": 29, 
+                "bgmNB": 29
+            }, 
+            4: {
+                "bgmDN": 23
+            }
+        }, 
+        2: {
+            3: {
+                "bgmDN": 23
+            }
+        }, 
+        4: {
+            5: {
+                "bgmDN": 30
+            }
+        }, 
+        5: {
+            4: {
+                "bgmDN": 29
+            }, 
+            5: {
+                "bgmDN": 94
+            }
+        }
+    }, 
+    "2018-12-26": { //yearsend
+        1: {
+            1: {
+                "bgmDN": 84
+            }, 
+            2: {
+                "bgmDN": 84
+            }
+        }, 
+        4: {
+            5: {
+                "bgmDN": 73
+            }
+        }
+    }, 
+    "2018-12-31": { //newyears
+        1: {
+            1: {
+                "bgmDN": 85
+            }, 
+            2: {
+                "bgmDN": 85
+            }
+        }
+    }
 }
