@@ -24,7 +24,7 @@
 	</head>
 	<body style="display:none">
 		<h1 title="Boat Cockfight Simulator">Kancolle Sortie Simulator</h1>
-		<span style="color:red">v1.0 Beta 5.0 <span style="margin-left:20px;font-style:italic">(Last updated: 2018-11-26)</span></span>
+		<span style="color:red">v1.0 Beta 5.0 <span style="margin-left:20px;font-style:italic">(Last updated: 2019-03-11)</span></span>
 		<br><br><br>
 		<input type="radio" id="radJP" name="lang" onchange="transNames('JP')"/><label for="radJP">JP</label>
 		<input type="radio" id="radEN" name="lang" onchange="transNames('EN')" checked /><label for="radEN">EN</label>
@@ -98,6 +98,7 @@
 			<img src="assets/stats/kuso.png" id="redretrkuso" style="display:none;vertical-align:middle"/>
 			<br><br>
 			<span style="font-weight:bold">Mechanics:</span><br>
+			<input type="checkbox" checked id="mech5" onchange="MECHANICS.morale=this.checked"/><label for="mech5">Morale</label><br>
 			<input type="checkbox" checked id="mech1" onchange="MECHANICS.artillerySpotting=this.checked"/><label for="mech1">Artillery Spotting</label><br>
 			<input type="checkbox" checked id="mech2" onchange="MECHANICS.AACI=this.checked"/><label for="mech2">Anti-Air Cut-In</label><br>
 			<input type="checkbox" checked id="mech3" onchange="MECHANICS.fitGun=this.checked"/><label for="mech3">Fit Gun</label><br>
@@ -105,7 +106,9 @@
 			<input type="checkbox" checked id="mech6" onchange="MECHANICS.CVCI=this.checked"/><label for="mech6">Carrier Cut-In</label><br>
 			<input type="checkbox" checked id="mech7" onchange="MECHANICS.destroyerNBCI=this.checked"/><label for="mech7">Destroyer NB Cut-In</label><br>
 			<input type="checkbox" checked id="mech8" onchange="MECHANICS.LBASBuff=this.checked"/><label for="mech8">LBAS/Support Revamp (Fall 17)</label><br>
-			<input type="checkbox" checked id="mech5" onchange="MECHANICS.morale=this.checked"/><label for="mech5">Morale</label><br>
+			<input type="checkbox" checked id="mech9" onchange="MECHANICS.installRevamp=this.checked"/><label for="mech9">New Soft-Skin Installation Mods</label><br>
+			<input type="checkbox" checked id="mech10" onchange="MECHANICS.newSupply=this.checked"/><label for="mech10">New Fuel/Ammo Node Costs</label><br>
+			<input type="checkbox" checked id="mech11" onchange="toggleEchelon($(this).prop('checked'))"/><label for="mech11">New Echelon Mods</label><br>
 			<br>
 			<label for="mechshelldmg">Day Shelling Soft-Cap: </label><input id="mechshelldmg" type="number" min="0" max="9999" value="180" style="width:50px" onchange="SHELLDMGBASE=parseInt(this.value);raiseFleetChange()" /><br>
 			<label for="mechaswdmg">ASW Soft-Cap: </label><input id="mechaswdmg" type="number" min="0" max="9999" value="150" style="width:50px" onchange="ASWDMGBASE=parseInt(this.value);raiseFleetChange()" /><br>
@@ -402,6 +405,7 @@
 		<br><hr><br>
 		<div style="font-size:14px">
 			<span style="font-weight:bold">Change Log:</span><br>
+			<span>2019-03-11 - Historical Bonus config, Nelson/Nagato/Mutsu specials (day only currently), new mechanics: new installation mods/new resource costs/new echelon mods</span><br>
 			<span>2018-11-26 - <a href="simulator-import-help.html" target="_blank">Sim from Data Import</a>, enemy combined improvements, LBAS improvements, PT Imp improvements</span><br>
 			<span>2018-08-14 - CVCI, DD NBCI, ASW soft cap config, rocket barrage</span><br>
 			<span>2017-08-08 - Enemy combined fleet, LBAS</span><br>

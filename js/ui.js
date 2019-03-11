@@ -42,7 +42,7 @@ if (!HASURLDATA || HASURLDATA_CONFIG) {
 	$('#dialogselequiptype').append(table);
 }
 
-var STATNAMES = ['lvl','hp','fp','tp','aa','ar','ev','asw','los','luk','rng','spd','tacc'];
+var STATNAMES = ['lvl','hp','fp','tp','aa','ar','ev','asw','los','luk','rng','spd','tacc','bonus'];
 var PREVEQS = {};
 var WROTESTATS = false;
 var TUTORIAL = false;
@@ -651,6 +651,25 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
 		tr.appendChild(document.createElement('td'));
 	}
 	t.appendChild(tr);
+	
+	var tr = document.createElement('tr');
+	for (var j=0; j<6; j++) {
+		var td = document.createElement('td');
+		td.setAttribute('colspan','2');
+		var desc = 'Historical Bonus Multiplier';
+		var text = document.createElement('div'); text.setAttribute('title',desc);
+		text.setAttribute('style','float:left');
+		text.appendChild(document.createTextNode('Bonus Mult: '));
+		td.appendChild(text);
+		var input = document.createElement('input');
+		input.setAttribute('type','number'); input.setAttribute('id',tid+'bonus'+j);
+		input.setAttribute('min','0'); input.setAttribute('max','99'); input.setAttribute('step','.1'); input.setAttribute('title',desc);
+		input.setAttribute('onchange','updateFleetCode('+fleetnum+')');
+		input.setAttribute('style','width:65px');
+		td.appendChild(input);
+		tr.appendChild(td);
+	}
+	t.appendChild(tr);
      
 	var EQSORTED = {};
 	for (let equipid in EQDATA) {
@@ -849,6 +868,9 @@ function genOptions(fleetnum) {
 	div.append('<span class="option2"><label>1</label><input type="checkbox" id="lbas1A'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><input type="checkbox" id="lbas1B'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/></span>');
 	div.append('<span class="option2"><label>2</label><input type="checkbox" id="lbas2A'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><input type="checkbox" id="lbas2B'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/></span>');
 	div.append('<span class="option2"><label>3</label><input type="checkbox" id="lbas3A'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><input type="checkbox" id="lbas3B'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/></span>');
+	div.append('<span class="option2 line"><input type="checkbox" id="bonus'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="bonus'+fleetnum+'">Historical Bonus</label></span>');
+	// div.append('<span class="option2 line"><label>Historical Bonus Amount: </label></span>');
+	// div.append('<span class="option2"><label>x</label><input id="bonus'+fleetnum+'" type="number" min="0" max="3" step=".1" value="0" style="width:50px" title="(e.g. 0=none, 1=full)" onchange="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/></span>');
 	td.append(div);
 	html.append(td);
 	
@@ -876,6 +898,7 @@ function extractOptions(num) {
 			if ($('#lbas'+i+'B'+num).prop('checked')) options.lbas.push(i);
 		}
 	}
+	options.bonus = $('#bonus'+num).prop('checked');
 	return options;
 }
 
@@ -897,6 +920,8 @@ function loadOptions(num,options) {
 			else $('#lbas'+lbnum+'B'+num).prop('checked',true);
 		}
 	}
+	
+	if (options.bonus != null) $('#bonus'+num).prop('checked',options.bonus);
 }
 
 var DRAGINFO = [];
@@ -1175,6 +1200,7 @@ function loadIntoSim(fleet,side,isescort) {
 			
 			var ship = new ShipType(mid,SHIPDATA[mid].name,side,s.lvl,s.hp,s.fp,s.tp,s.aa,s.ar,s.ev,s.asw,s.los,s.luk,s.rng,slots);
 			if (s.tacc != null) ship.TACC = s.tacc;
+			if (s.bonus > 0) ship.bonusTemp = s.bonus;
 			ship.loadEquips(equips,levels,profs);
 			if (SHIPDATA[mid].isInstall) ship.isInstall = true;
 			if ($('#T'+fleet+'morale'+i).val()) ship.moraleDefault = ship.morale = parseInt($('#T'+fleet+'morale'+i).val());
@@ -1718,7 +1744,8 @@ function loadFleetFromCode(fleet,fcode) {
 			(parseInt(ship.luk) >= 0)? parseInt(ship.luk) : shipd.LUK,
 			(parseInt(ship.rng) >= 0)? parseInt(ship.rng) : shipd.RNG,
 			(parseInt(ship.spd) >= 0)? parseInt(ship.spd) : shipd.SPD,
-			(parseInt(ship.tacc) >= 0)? parseInt(ship.tacc) : shipd.TACC];
+			(parseInt(ship.tacc) >= 0)? parseInt(ship.tacc) : shipd.TACC,
+			(parseInt(ship.bonus) >= 0)? parseInt(ship.bonus) : null];
 		var equips = [0,0,0,0], improvs = [0,0,0,0], profs = [0,0,0,0], planes = [0,0,0,0];
 		for (var item in ship.items) {
 			var islot = item.substr(1);
@@ -1948,6 +1975,11 @@ function clickedWatchBattle() {
 		var LBASwaves = [];
 		for (var k=0; k<options.lbas.length; k++) {
 			LBASwaves.push(LBAS[options.lbas[k]-1]);
+		}
+		
+		for (let ship of FLEETS1[0].ships) {
+			if (ship.bonusTemp && options.bonus) ship.bonusSpecial = [{mod:ship.bonusTemp}];
+			else ship.bonusSpecial = null;
 		}
 		
 		var ennum = (j>0)? 21+j : 2;
@@ -2645,4 +2677,17 @@ function simDataRepToCodeFleetE(ship_ke,eParam,formation,oldIds,equips) {
 		code.f1['s'+num] = shipC;
 	}
 	return code;
+}
+
+//
+function toggleEchelon(useNew) {
+	if (useNew) {
+		ECHELON.shellmod = .75;
+		ECHELON.ASWmod = 1.1;
+		ECHELON.shellev = 1.3;
+	} else {
+		ECHELON.shellmod = .6;
+		ECHELON.ASWmod = 1;
+		ECHELON.shellev = 1.2;
+	}
 }

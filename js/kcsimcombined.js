@@ -403,33 +403,8 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	if (!noupdate) {
 		// var subonly = true;
 		// for (var j=0; j<ships2.length; j++) if (ships2[j].type != 'SS') subonly = false;
-		for (var i=0; i<ships1.length; i++) {
-			if (ships1[i].HP <= 0) continue;
-			if (ships1[i].retreated) continue;
-			if (bombing) {
-				ships1[i].fuelleft -= .5;
-				ships1[i].ammoleft -= .5;
-			} else {
-				ships1[i].fuelleft -= 2;
-				if (!noammo) ships1[i].ammoleft -= (didNB)? 3 : 2;
-			}
-			if (ships1[i].fuelleft < 0) ships1[i].fuelleft = 0;
-			if (ships1[i].ammoleft < 0) ships1[i].ammoleft = 0;
-			if (C) console.log('FUEL LEFT: '+ships1[i].fuelleft);
-		}
-		for (var i=0; i<ships1C.length; i++) {
-			if (ships1C[i].HP <= 0) continue;
-			if (ships1C[i].retreated) continue;
-			if (bombing) {
-				ships1C[i].fuelleft -= .5;
-				ships1C[i].ammoleft -= .5;
-			} else {
-				ships1C[i].fuelleft -= 2;
-				if (!noammo) ships1C[i].ammoleft -= (didNB)? 3 : 2;
-			}
-			if (ships1C[i].fuelleft < 0) ships1C[i].fuelleft = 0;
-			if (ships1C[i].ammoleft < 0) ships1C[i].ammoleft = 0;
-		}
+		updateSupply(ships1,didNB,NBonly,bombing,noammo);
+		updateSupply(ships1C,didNB,NBonly,bombing,noammo);
 	}
 	
 	
@@ -496,7 +471,11 @@ function simStatsCombined(numsims,type,foptions) {
 			MVPs: [0,0,0,0,0,0],
 			MVPsC: [0,0,0,0,0,0],
 			ranks: {S:0,A:0,B:0,C:0,D:0,E:0},
-			flagsunk: 0
+			flagsunk: 0,
+			airStates: [0,0,0,0,0],
+			lbasKills: [0,0,0,0,0,0],
+			lbasKillsC: [0,0,0,0,0,0],
+			lbasWipes: [0,0,0,0,0,0,0,0,0,0,0,0],
 		});
 	}
 	
@@ -518,7 +497,7 @@ function simStatsCombined(numsims,type,foptions) {
 			var LBASwaves = [];
 			for (var k=0; k<options.lbas.length; k++) LBASwaves.push(LBAS[options.lbas[k]-1]);
 			var res;
-			if (FLEETS2[j].combinedWith) res = sim12vs12(type,FLEETS1[0],FLEETS1[1],FLEETS2[j],FLEETS1S[supportNum],LBASwaves,options.NB,options.NBonly,options.aironly,options.landbomb,options.noammo);
+			if (FLEETS2[j].combinedWith) res = sim12vs12(type,FLEETS1[0],FLEETS1[1],FLEETS2[j],FLEETS1S[supportNum],LBASwaves,options.NB,options.NBonly,options.aironly,options.landbomb,options.noammo,null,null);
 			else res = simCombined(type,FLEETS1[0],FLEETS1[1],FLEETS2[j],FLEETS1S[supportNum],LBASwaves,options.NB,options.NBonly,options.aironly,options.landbomb,options.noammo);//,BAPI);
 			totalResult.nodes[j].num++;
 			if (res.redded) totalResult.nodes[j].redded++;
@@ -529,6 +508,18 @@ function simStatsCombined(numsims,type,foptions) {
 			totalResult.nodes[j].ranks[res.rank]++;
 			totalResult.nodes[j].MVPs[res.MVP]++;
 			totalResult.nodes[j].MVPsC[res.MVPC]++;
+			totalResult.nodes[j].airStates[FLEETS1[0].AS+2]++;
+			if (res.lbasKills) {
+				for (let k=0; k<6; k++) {
+					if (res.lbasKills[k]) totalResult.nodes[j].lbasKills[k]++;
+					if (res.lbasKillsC[k]) totalResult.nodes[j].lbasKillsC[k]++;
+				}
+			}
+			if (res.lbasWipes) {
+				for (let k=0; k<res.lbasWipes.length; k++) {
+					if (res.lbasWipes[k]) totalResult.nodes[j].lbasWipes[k]++;
+				}
+			}
 			//if ((res.redded && DORETREAT)||res.flagredded) break;
 			if (!canContinue(FLEETS1[0].ships,FLEETS1[1].ships)) break;
 		}
@@ -576,6 +567,7 @@ function simStatsCombined(numsims,type,foptions) {
 			FLEETS2[j].reset();
 			if (FLEETS2[j].combinedWith) FLEETS2[j].combinedWith.reset();
 		}
+		if (friendFleet) friendFleet.reset();
 	}
 	
 	// totalResult.totalFuelR/=numsims;
@@ -973,21 +965,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	
 	//results
 	if (!noupdate) {
-		for (var i=0; i<ships1.length; i++) {
-			if (ships1[i].HP <= 0) continue;
-			if (ships1[i].retreated) continue;
-			if (bombing) {
-				ships1[i].fuelleft -= .5;
-				ships1[i].ammoleft -= .5;
-			} else {
-				ships1[i].fuelleft -= 2;
-				if (!noammo) ships1[i].ammoleft -= (didNB)? 3 : 2;
-				else if (didNB) ships1[i].ammoleft -= 1;
-			}
-			if (ships1[i].fuelleft < 0) ships1[i].fuelleft = 0;
-			if (ships1[i].ammoleft < 0) ships1[i].ammoleft = 0;
-			if (C) console.log('FUEL LEFT: '+ships1[i].fuelleft+' AMMO LEFT: '+ships1[i].ammoleft);
-		}
+		updateSupply(ships1,didNB,NBonly,bombing,noammo);
 	}
 	
 	
@@ -1020,7 +998,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 }
 
 //------------------
-function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,noupdate) {
+function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,noupdate,friendFleet) {
 	var F2C = F2.combinedWith;
 	var ships1 = F1.ships, ships2 = F2.ships, ships1C = F1C.ships, ships2C = F2C.ships;
 	var alive1 = [], alive1C = [], alive2 = [], alive2C = [], subsalive1 = [], subsalive1C = [], subsalive2 = [], subsalive2C = [];
@@ -1445,6 +1423,13 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		}
 	}
 	
+	//friend fleet
+	if (friendFleet && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
+		friendFleetPhase(friendFleet,F2,alive2.concat(alive2C),subsalive2.concat(subsalive2C),BAPI);
+		removeSunk(alive2); removeSunk(subsalive2);
+		removeSunk(alive2C); removeSunk(subsalive2C);
+	}
+	
 	//night battle
 	var didNB = false;
 	if ((doNB||NBonly) && alive1C.length+subsalive1C.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
@@ -1492,33 +1477,8 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	if (!noupdate) {
 		// var subonly = true;
 		// for (var j=0; j<ships2.length; j++) if (ships2[j].type != 'SS') subonly = false;
-		for (var i=0; i<ships1.length; i++) {
-			if (ships1[i].HP <= 0) continue;
-			if (ships1[i].retreated) continue;
-			if (bombing) {
-				ships1[i].fuelleft -= .5;
-				ships1[i].ammoleft -= .5;
-			} else {
-				ships1[i].fuelleft -= 2;
-				if (!noammo) ships1[i].ammoleft -= (didNB)? 3 : 2;
-			}
-			if (ships1[i].fuelleft < 0) ships1[i].fuelleft = 0;
-			if (ships1[i].ammoleft < 0) ships1[i].ammoleft = 0;
-			if (C) console.log('FUEL LEFT: '+ships1[i].fuelleft);
-		}
-		for (var i=0; i<ships1C.length; i++) {
-			if (ships1C[i].HP <= 0) continue;
-			if (ships1C[i].retreated) continue;
-			if (bombing) {
-				ships1C[i].fuelleft -= .5;
-				ships1C[i].ammoleft -= .5;
-			} else {
-				ships1C[i].fuelleft -= 2;
-				if (!noammo) ships1C[i].ammoleft -= (didNB)? 3 : 2;
-			}
-			if (ships1C[i].fuelleft < 0) ships1C[i].fuelleft = 0;
-			if (ships1C[i].ammoleft < 0) ships1C[i].ammoleft = 0;
-		}
+		updateSupply(ships1,didNB,NBonly,bombing,noammo);
+		updateSupply(ships1C,didNB,NBonly,bombing,noammo);
 	}
 	
 	
