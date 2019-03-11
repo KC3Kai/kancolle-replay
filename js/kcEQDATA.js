@@ -47,6 +47,7 @@ const SEAPLANEFIGHTER = 45;
 const LANDINGTANK = 46;
 const LANDBOMBER = 47;
 const INTERCEPTOR = 48;
+const LANDSCOUT = 49;
 const TRANSPORTITEM = 50;
 const SUBRADAR = 51;
 const JETBOMBER = 57;
@@ -474,6 +475,13 @@ EQTDATA[INTERCEPTOR] = {
 	isPlane: true,
 	isfighter: true,
 };
+EQTDATA[LANDSCOUT] = {
+	name: 'Misc',
+	image: 9,
+	canequip: ['LandBase'],
+	isPlane: true,
+	canContact: true,
+};
 EQTDATA[TRANSPORTITEM] = {
 	name: 'Transportation Material',
 	image: 41,
@@ -513,7 +521,7 @@ var FITDATA = {
 	3: { 1: 4, 2:  1, 3: -5, 4: -7, 5: -10, 6: -5, 7: 0, 8:  7, 9:  0 }, //Littorio
 	4: { 1: 4, 2: -2, 3: -5, 4: -7, 5: -10, 6:  4, 7: 0, 8:  7, 9:  0 }, //Iowa
 	5: { 1: 4, 2:  2, 3:  2, 4: -3, 5:  -7, 6:  2, 7: 0, 8:  4, 9:  0 }, //Warspite
-	6: { 1: 4, 2:  2, 3:  0, 4: -3, 5:  -7, 6:  0, 7: 0, 8:  4, 9: -2 }, //Ise/Fusou
+	6: { 1: 4, 2:  2, 3:  2, 4: -3, 5:  -7, 6:  0, 7: 0, 8:  4, 9: -2 }, //Ise/Fusou
 	7: { 1: 4, 2:  2, 3:  2, 4: -3, 5:  -7, 6:  0, 7: 0, 8:  4, 9: -2 }, //Fusou Kai 2
 	8: { 1: 2, 2:  2, 3:  2, 4: -3, 5:  -7, 6:  2, 7: 0, 8:  4, 9:  0 }, //Nagato
 	9: { 1: 0, 2:  0, 3:  0, 4:  0, 5:   0, 6:  0, 7: 0, 8:  0, 9:  0 }, //Yamato
@@ -3897,7 +3905,7 @@ var EQDATA = {
 		name: 'Type 2 Land-based Reconnaissance Aircraft',
 		nameJP: '二式陸上偵察機',
 		added: '2018-11-29',
-		type: CARRIERSCOUT,
+		type: LANDSCOUT,
 		AA: 3,
 		ACC: 2,
 		LOS: 8,
@@ -3906,7 +3914,7 @@ var EQDATA = {
 		name: 'Type 2 Land-based Reconnaissance Aircraft (Skilled)',
 		nameJP: '二式陸上偵察機(熟練)',
 		added: '2018-12-27',
-		type: CARRIERSCOUT,
+		type: LANDSCOUT,
 		AA: 3,
 		AR: 1,
 		ACC: 3,
@@ -3947,6 +3955,39 @@ var EQDATA = {
 		ASW: 3,
 		LOS: 8,
 		RNG: 2,
+	},
+	316: {
+		name: 'Re.2001 CB Kai',
+		nameJP: 'Re.2001 CB改',
+		added: '2019-01-30',
+		type: DIVEBOMBER,
+		FP: 3,
+		DIVEBOMB: 6,
+		AA: 4,
+		ACC: 1,
+		EV: 2,
+		ASW: 3,
+	},
+	317: {
+		name: 'Type 3 Shell Kai',
+		nameJP: '三式弾改',
+		added: '2019-02-22',
+		type: TYPE3SHELL,
+		FP: 3,
+		AA: 6,
+		ACC: 1,
+	},
+	318: {
+		name: '41cm Twin Gun Mount Kai Ni',
+		nameJP: '41cm連装砲改二',
+		added: '2019-02-22',
+		type: MAINGUNL,
+		FP: 21,
+		AA: 5,
+		AR: 2,
+		ACC: 5,
+		EV: 1,
+		RNG: 3,
 	},
 	501: {
 		name: '5inch Single Cannon',
