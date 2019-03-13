@@ -652,7 +652,9 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 		var dataroot = (NBonly)? BAPI.yasen : BAPI.data;
 		dataroot.api_formation = [F1.formation.id,F2.formation.id,{1:1,.8:2,1.2:3,.6:4}[ENGAGEMENT]];
 		dataroot.api_dock_id = 1;
-
+		var retreatlist = [];
+		for (var i=0; i<ships1.length; i++) if (ships1[i].retreated) retreatlist.push(i+1);
+		if (retreatlist.length) dataroot.api_escape_idx = retreatlist;
 		if (NEWFORMAT) {
 			dataroot.api_f_maxhps = []; dataroot.api_f_nowhps = [];
 			dataroot.api_e_maxhps = []; dataroot.api_e_nowhps = [];
