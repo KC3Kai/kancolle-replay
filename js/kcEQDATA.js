@@ -3586,7 +3586,7 @@ var EQDATA = {
 		name: '51cm Twin Gun Mount',
 		nameJP: '51cm連装砲',
 		added: '2018-02-16',
-		type: MAINGUNL,
+		type: MAINGUNXL,
 		FP: 32,
 		AA: 5,
 		AR: 2,
@@ -3618,7 +3618,7 @@ var EQDATA = {
 		name: '5inch Single Gun Mount Mk.30',
 		nameJP: '5inch単装砲 Mk.30',
 		added: '2018-02-28',
-		type: MAINGUNS,
+		type: MAINGUNSAA,
 		FP: 2,
 		AA: 6,
 		AR: 1,
@@ -5034,6 +5034,12 @@ var LBASDATA = {
 	277: { distance: 4, cost: 6 },
 	291: { distance: 5, cost: 5 },
 	292: { distance: 6, cost: 5 },
+	302: { distance: 4, cost: 5 },
+	304: { distance: 3, cost: 3 },
+	305: { distance: 4, cost: 8 },
+	306: { distance: 4, cost: 8 },
+	311: { distance: 8, cost: 5 },
+	312: { distance: 9, cost: 5 },
 };
 
 var EXPANSIONSLOTDATA = {
