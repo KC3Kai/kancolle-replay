@@ -846,8 +846,10 @@ function shellPhaseC(order1,order2,targets,APIhou,isOASW) {
 	let numRounds = Math.max(order1.length,order2.length);
 	for (var i=0; i<numRounds; i++) {
 		if (i < order1.length && order1[i].canStillShell()) {
-			if (order1[i].attackSpecial && !order1[i].fleet.didSpecial && order1[i].fleet.formation.id == 12 && order1[i].HP/order1[i].maxHP > .5 && Math.random() < .65) {
-				for (var k=0; k<3; k++) {
+			if (canSpecialAttack(order1[i]) && Math.random() < .65) {
+				let k=0;
+				for (; k<3; k++) {
+					if (targets.alive2.length + targets.alive2C.length <= 0) break;
 					let ship;
 					if (order1[i].attackSpecial == 101 || order1[i].attackSpecial == 102) {
 						ship = (k == 2)? order1[i].fleet.ships[1] : order1[i];
@@ -858,7 +860,19 @@ function shellPhaseC(order1,order2,targets,APIhou,isOASW) {
 					// console.log(ship);
 				}
 				order1[i].fleet.didSpecial = true;
-				// console.log('NAGATO SPECIAL');
+				if (C) {
+					let ind = APIhou.api_damage.length-k;
+					for (let j=1; j<k; j++) {
+						for (let key of ['api_damage','api_cl_list','api_df_list']) {
+							APIhou[key][ind].push(APIhou[key][ind+j][0]);
+						}
+					}
+					for (let j=1; j<k; j++) {
+						for (let key in APIhou) {
+							APIhou[key].pop();
+						}
+					}
+				}
 			} else {
 				doShellC(order1[i],targets,APIhou,isOASW);
 			}
