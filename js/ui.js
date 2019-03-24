@@ -2240,7 +2240,7 @@ if (window.location.hash.length > 5) {
 	try {
 		data = JSON.parse(decodeURIComponent(window.location.hash.substr(1)));
 		console.log(data);
-	} catch {
+	} catch(e) {
 		simDataAddError('JSON parse error');
 	}
 	window.location.hash = '';
