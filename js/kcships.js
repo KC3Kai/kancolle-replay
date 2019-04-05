@@ -740,12 +740,12 @@ Ship.prototype.moraleModEv = function() {
 	return 1.4;
 }
 
-Ship.prototype.reset = function() {
-	this.HP = (this.HPDefault != null)? this.HPDefault : this.maxHP;
+Ship.prototype.reset = function(notHP,notMorale) {
+	if (!notHP) this.HP = (this.HPDefault != null)? this.HPDefault : this.maxHP;
 	this.planecount = this.PLANESLOTS.slice();
 	this.fuelleft = this.fuelDefault;
 	this.ammoleft = this.ammoDefault;
-	this.morale = this.moraleDefault;
+	if (!notMorale) this.morale = this.moraleDefault;
 	if (this.repairsOrig) this.repairs = this.repairsOrig.slice();
 	if (this.side==0 && isPlayable(this.mid)) this.protection = true;
 	if (this.retreated) this.retreated = false;

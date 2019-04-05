@@ -132,8 +132,10 @@ function setConst(key, val) {
 	else SIMCONSTS[key] = parseInt(val);
 }
 
-var BUCKETPERCENT = 0;
+var BUCKETPERCENT = .5;
 var BUCKETTIME = 99*3600;
+var CARRYOVERHP = false;
+var CARRYOVERMORALE = false;
 
 var C = true;
 var NEWFORMAT = true;
@@ -570,6 +572,9 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen) {
 				switch (cutinR) {
 					case 1:
 						si_list = [btypeMap[B_MAINGUN][0],btypeMap[B_MAINGUN][1]];
+						var ind = 0;
+						if (!si_list[0]) si_list[0] = btypeMap[B_SECGUN][ind++];
+						if (!si_list[1]) si_list[1] = btypeMap[B_SECGUN][ind++];
 						break;
 					case 2:
 						si_list = [btypeMap[B_MAINGUN][0],btypeMap[B_TORPEDO][0]];
@@ -1908,7 +1913,7 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 		if (ships1[i].retreated) continue;
 		if(ships1[i].isSub) subsalive1.push(ships1[i]);
 		else alive1.push(ships1[i]);
-		ships1[i].HPprev = ships1[i].HP;
+		if (!ships1[i].HPprev || (BAPI && BAPI.source != 10)) ships1[i].HPprev = ships1[i].HP;
 		if (!MECHANICS.morale) ships1[i].morale = 49;
 		if (ships1[i].isInstall) hasInstall1 = true;
 	}
@@ -1917,7 +1922,7 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 		if (ships2[i].retreated) continue;
 		if(ships2[i].isSub) subsalive2.push(ships2[i]);
 		else alive2.push(ships2[i]);
-		ships2[i].HPprev = ships2[i].HP;
+		if (!ships2[i].HPprev || (BAPI && BAPI.source != 10)) ships2[i].HPprev = ships2[i].HP;
 		if (ships2[i].isInstall) hasInstall2 = true;
 	}
 	
@@ -2497,7 +2502,19 @@ function simStats(numsims,foptions) {
 			LBAS[alllbas[j]-1].reset();
 		}
 		
-		for (var j=0; j<FLEETS1.length; j++) FLEETS1[j].reset();
+		if (CARRYOVERHP || CARRYOVERMORALE) {
+			for (var j=0; j<FLEETS1.length; j++) {
+				FLEETS1[j].reset(true);
+				for (var k=0; k<FLEETS1[j].ships.length; k++) {
+					var ship = FLEETS1[j].ships[k];
+					var notHP = CARRYOVERHP && ship.HP/ship.maxHP > BUCKETPERCENT && getRepairTime(ship) <= BUCKETTIME;
+					ship.reset(notHP, CARRYOVERMORALE);
+					if (CARRYOVERMORALE) ship.morale = Math.max(49, ship.morale - 15);
+				}
+			}
+		} else {
+			for (var j=0; j<FLEETS1.length; j++) FLEETS1[j].reset();
+		}
 		for (var j=0; j<FLEETS2.length; j++) {
 			FLEETS2[j].reset();
 			if (FLEETS2[j].combinedWith) FLEETS2[j].combinedWith.reset();
