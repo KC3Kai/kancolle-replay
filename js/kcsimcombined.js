@@ -7,7 +7,7 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		if (ships1[i].retreated) continue;
 		if(ships1[i].isSub) subsalive1.push(ships1[i]);
 		else alive1.push(ships1[i]);
-		ships1[i].HPprev = ships1[i].HP;
+		if (!ships1[i].HPprev || (BAPI && BAPI.source != 10)) ships1[i].HPprev = ships1[i].HP;
 		if (!MECHANICS.morale) ships1[i].morale = 49;
 		if (ships1[i].isInstall) hasInstall1 = true;
 	}
@@ -16,7 +16,7 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		if (ships1C[i].retreated) continue;
 		if(ships1C[i].isSub) subsalive1C.push(ships1C[i]);
 		else alive1C.push(ships1C[i]);
-		ships1C[i].HPprev = ships1C[i].HP;
+		if (!ships1C[i].HPprev || (BAPI && BAPI.source != 10)) ships1C[i].HPprev = ships1C[i].HP;
 		if (!MECHANICS.morale) ships1C[i].morale = 49;
 		if (ships1C[i].isInstall) hasInstall1C = true;
 	}
@@ -25,7 +25,7 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		if (ships2[i].retreated) continue;
 		if(ships2[i].isSub) subsalive2.push(ships2[i]);
 		else alive2.push(ships2[i]);
-		ships2[i].HPprev = ships2[i].HP;
+		if (!ships2[i].HPprev || (BAPI && BAPI.source != 10)) ships2[i].HPprev = ships2[i].HP;
 		if (!MECHANICS.morale) ships2[i].morale = 49;
 		if (ships2[i].isInstall) hasInstall2 = true;
 	}
@@ -562,12 +562,23 @@ function simStatsCombined(numsims,type,foptions) {
 			totalResult.totalBauxS += cost[2];
 			LBAS[alllbas[j]-1].reset();
 		}
-		for (var j=0; j<FLEETS1.length; j++) FLEETS1[j].reset();
+		if (CARRYOVERHP || CARRYOVERMORALE) {
+			for (var j=0; j<FLEETS1.length; j++) {
+				FLEETS1[j].reset(true);
+				for (var k=0; k<FLEETS1[j].ships.length; k++) {
+					var ship = FLEETS1[j].ships[k];
+					var notHP = CARRYOVERHP && ship.HP/ship.maxHP > BUCKETPERCENT && getRepairTime(ship) <= BUCKETTIME;
+					ship.reset(notHP, CARRYOVERMORALE);
+					if (CARRYOVERMORALE) ship.morale = Math.max(49, ship.morale - 15);
+				}
+			}
+		} else {
+			for (var j=0; j<FLEETS1.length; j++) FLEETS1[j].reset();
+		}
 		for (var j=0; j<FLEETS2.length; j++) {
 			FLEETS2[j].reset();
 			if (FLEETS2[j].combinedWith) FLEETS2[j].combinedWith.reset();
 		}
-		if (friendFleet) friendFleet.reset();
 	}
 	
 	// totalResult.totalFuelR/=numsims;
@@ -613,7 +624,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 		if (ships1[i].retreated) continue;
 		if(ships1[i].isSub) subsalive1.push(ships1[i]);
 		else alive1.push(ships1[i]);
-		ships1[i].HPprev = ships1[i].HP;
+		if (!ships1[i].HPprev || (BAPI && BAPI.source != 10)) ships1[i].HPprev = ships1[i].HP;
 		if (!MECHANICS.morale) ships1[i].morale = 49;
 		if (ships1[i].isInstall) hasInstall1 = true;
 	}
@@ -622,7 +633,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 		if (ships2[i].retreated) continue;
 		if(ships2[i].isSub) subsalive2.push(ships2[i]);
 		else alive2.push(ships2[i]);
-		ships2[i].HPprev = ships2[i].HP;
+		if (!ships2[i].HPprev || (BAPI && BAPI.source != 10)) ships2[i].HPprev = ships2[i].HP;
 		if (!MECHANICS.morale) ships2[i].morale = 49;
 		if (ships2[i].isInstall) hasInstall2 = true;
 	}
@@ -631,7 +642,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 		if (ships2C[i].retreated) continue;
 		if(ships2C[i].isSub) subsalive2C.push(ships2C[i]);
 		else alive2C.push(ships2C[i]);
-		ships2C[i].HPprev = ships2C[i].HP;
+		if (!ships2C[i].HPprev || (BAPI && BAPI.source != 10)) ships2C[i].HPprev = ships2C[i].HP;
 		if (!MECHANICS.morale) ships2C[i].morale = 49;
 		if (ships2C[i].isInstall) hasInstall2C = true;
 	}
@@ -1010,7 +1021,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		if (ships1[i].retreated) continue;
 		if(ships1[i].isSub) subsalive1.push(ships1[i]);
 		else alive1.push(ships1[i]);
-		ships1[i].HPprev = ships1[i].HP;
+		if (!ships1[i].HPprev || (BAPI && BAPI.source != 10)) ships1[i].HPprev = ships1[i].HP;
 		if (!MECHANICS.morale) ships1[i].morale = 49;
 		if (ships1[i].isInstall) hasInstall1 = true;
 	}
@@ -1019,7 +1030,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		if (ships1C[i].retreated) continue;
 		if(ships1C[i].isSub) subsalive1C.push(ships1C[i]);
 		else alive1C.push(ships1C[i]);
-		ships1C[i].HPprev = ships1C[i].HP;
+		if (!ships1C[i].HPprev || (BAPI && BAPI.source != 10)) ships1C[i].HPprev = ships1C[i].HP;
 		if (!MECHANICS.morale) ships1C[i].morale = 49;
 		if (ships1C[i].isInstall) hasInstall1C = true;
 	}
@@ -1028,7 +1039,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		if (ships2[i].retreated) continue;
 		if(ships2[i].isSub) subsalive2.push(ships2[i]);
 		else alive2.push(ships2[i]);
-		ships2[i].HPprev = ships2[i].HP;
+		if (!ships2[i].HPprev || (BAPI && BAPI.source != 10)) ships2[i].HPprev = ships2[i].HP;
 		if (!MECHANICS.morale) ships2[i].morale = 49;
 		if (ships2[i].isInstall) hasInstall2 = true;
 	}
@@ -1037,7 +1048,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		if (ships2C[i].retreated) continue;
 		if(ships2C[i].isSub) subsalive2C.push(ships2C[i]);
 		else alive2C.push(ships2C[i]);
-		ships2C[i].HPprev = ships2C[i].HP;
+		if (!ships2C[i].HPprev || (BAPI && BAPI.source != 10)) ships2C[i].HPprev = ships2C[i].HP;
 		if (!MECHANICS.morale) ships2C[i].morale = 49;
 		if (ships2C[i].isInstall) hasInstall2C = true;
 	}
