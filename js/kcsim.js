@@ -122,10 +122,10 @@ var SIMCONSTS = {
 	accEcEE: null,
 	supportShellN: null,
 	supportShellB: null,
-	vanguardEvDD1: 25,
+	vanguardEvDD1: 20,
 	vanguardEvDD2: 40,
-	vanguardEvOther1: 15,
-	vanguardEvOther2: 25,
+	vanguardEvOther1: 5,
+	vanguardEvOther2: 20,
 }
 function setConst(key, val) {
 	if (val == null) SIMCONSTS[key] = null;
