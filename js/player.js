@@ -3083,18 +3083,19 @@ function NBstart(flares,contact,bgm,combinedEType,isFriend) {
 	var f1 = (isFriend)? fleetFriend : (COMBINED)? fleet1C : fleet1;
 	if (flares[0] != -1 || flares[1] != -1) {
 		nbtimer = 5000;
+		var flareIndF = flares[0], flareIndE = flares[1];
 		if (!OLDFORMAT) {
-			if (flares[0] > -1) {
-				if (flares[0] >= 6) flares[0] -= 6;
-				flares[0]++;
+			if (flareIndF > -1) {
+				if (flareIndF >= 6 && f1.length < 7) flareIndF -= 6;
+				flareIndF++;
 			}
-			if (flares[1] > -1) {
-				if (flares[1] >= 6) flares[1] -= 6;
-				flares[1]++;
+			if (flareIndE > -1) {
+				if (flareIndE >= 6 && fleet2.length < 7) flareIndE -= 6;
+				flareIndE++;
 			}
 		}
-		if (flares[0] != -1 || flares[1] != -1) { //star shell
-			var ship = f1[flares[0]-1], shipE = fleet2[flares[1]-1];
+		if (flareIndF != -1 || flareIndE != -1) { //star shell
+			var ship = f1[flareIndF-1], shipE = fleet2[flareIndE-1];
 			addTimeout(function() { if (ship) shootFlare(ship); if (shipE) shootFlare(shipE,!!ship); }, (wait)? 1600 : 1);
 		}
 	}
