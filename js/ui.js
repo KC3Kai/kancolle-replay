@@ -1619,6 +1619,7 @@ function changedPreset3(fleet) {
 	if (fleet.toString()[0] == '2') {
 		if (document.getElementById('T'+fleet+'r'+form)) document.getElementById('T'+fleet+'r'+form).checked = true;
 		if (node.toLowerCase().indexOf('boss') != -1) $('#NB'+fleet).prop('checked',true);
+		else if ((fleet == 2 && NUMFLEETS2 == 1) || (+fleet.toString()[1] == NUMFLEETS2)) $('#NB'+fleet).prop('checked',true);
 		else $('#NB'+fleet).prop('checked',false);
 		if (ENEMYCOMPS[world][level][node][version].NB) $('#NBonly'+fleet).prop('checked',true);
 		else $('#NBonly'+fleet).prop('checked',false);

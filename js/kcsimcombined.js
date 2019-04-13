@@ -526,10 +526,13 @@ function simStatsCombined(numsims,type,foptions) {
 		for (var fl=0; fl<=1; fl++) {
 			for (var j=0; j<FLEETS1[fl].ships.length; j++) { //get refuel and repair costs
 				var ship = FLEETS1[fl].ships[j];
-				var r = getRepairCost(ship);
-				totalResult.totalFuelR += r[0];
-				totalResult.totalSteelR += r[1];
-				if (ship.HP/ship.maxHP <= BUCKETPERCENT || getRepairTime(ship) > BUCKETTIME) totalResult.totalBuckets++;
+				var useBucket = ship.HP/ship.maxHP <= BUCKETPERCENT || getRepairTime(ship) > BUCKETTIME;
+				if (!CARRYOVERHP || useBucket) {
+					var r = getRepairCost(ship);
+					totalResult.totalFuelR += r[0];
+					totalResult.totalSteelR += r[1];
+				}
+				if (useBucket) totalResult.totalBuckets++;
 				totalResult.totalFuelS += Math.floor(ship.fuel * (10-ship.fuelleft)/10);
 				totalResult.totalAmmoS += Math.floor(ship.ammo * (10-ship.ammoleft)/10);
 				for (var k=0; k<ship.PLANESLOTS.length; k++) totalResult.totalBauxS += 5*(ship.PLANESLOTS[k]-ship.planecount[k]);
