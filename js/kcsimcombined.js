@@ -868,7 +868,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	F2C.clearFleetLoS();
 	
 	//shelling 1
-	if (C) BAPI.data.api_hougeki1 = null;
+	if (C && !NBonly) BAPI.data.api_hougeki1 = null;
 	if (!NBonly && !aironly && alive1.length+subsalive1.length > 0 && alive2C.length+subsalive2C.length > 0) {
 		F1.basepowshell = SIMCONSTS.shellEcEF || 5; F2C.basepowshell = SIMCONSTS.shellEcEE || -5;
 		F1.baseaccshell = SIMCONSTS.accEcEF; F2C.baseaccshell = SIMCONSTS.accEcEE;
@@ -973,7 +973,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 			BAPI.yasen.api_touch_plane = [-1,-1];
 			let n = (fightescort)? 2 : 1;
 			BAPI.yasen.api_active_deck = [1,n];
-			BAPI.yasen.api_ship_ke_combined = [];
+			if (!NBonly) BAPI.yasen.api_ship_ke_combined = [];
 		}
 		if (fightescort) nightPhase(order1,order2,alive1,subsalive1,alive2C,subsalive2C,NBonly,(C)? BAPI.yasen:undefined);
 		else nightPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,NBonly,(C)? BAPI.yasen:undefined);
@@ -1483,7 +1483,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 			BAPI.yasen.api_touch_plane = [-1,-1];
 			let n = (fightescort)? 2 : 1;
 			BAPI.yasen.api_active_deck = [1,n];
-			BAPI.yasen.api_ship_ke_combined = [];
+			if (!NBonly) BAPI.yasen.api_ship_ke_combined = [];
 		}
 		if (fightescort) nightPhase(order1,order2,alive1C,subsalive1C,alive2C,subsalive2C,NBonly,(C)? BAPI.yasen:undefined);
 		else nightPhase(order1,order2,alive1C,subsalive1C,alive2,subsalive2,NBonly,(C)? BAPI.yasen:undefined);

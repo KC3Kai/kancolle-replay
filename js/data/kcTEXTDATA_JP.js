@@ -301,7 +301,11 @@ var TEXTDATA_JP = {
 				5: " (主徹CI)",
 				6: " (主主CI)",
 				7: " (戦爆連合CI)",
-				100: " (Nelson Touch)"
+				100: " (Nelson Touch)",
+				101: " (長門CI)",
+				102: " (陸奥CI)",
+				200: " (瑞雲CI)",
+				201: " (彗星CI)"
 			}
 		}
 	},
@@ -377,7 +381,9 @@ var TEXTDATA_JP = {
 				6: " (夜襲CI)",
 				7: " (主魚電CI)",
 				8: " (魚見電CI)",
-				100: " (Nelson Touch)"
+				100: " (Nelson Touch)",
+				101: " (長門CI)",
+				102: " (陸奥CI)"
 			}
 		}
 	},
