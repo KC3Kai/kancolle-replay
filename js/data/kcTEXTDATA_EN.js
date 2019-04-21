@@ -289,6 +289,8 @@ var TEXTDATA_EN = {
 				100: "Nelson Touch ",
 				101: "Nagato Special ",
 				102: "Mutsu Special ",
+				200: "Zuiun cut-in ",
+				201: "Suisei cut-in ",
 			}
 		}
 	},
