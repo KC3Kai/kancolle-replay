@@ -1069,7 +1069,7 @@ function processAPI(root) {
 				}
 				for (var k=0; k<hou.api_damage[j].length; k++) {
 					d.push(parseInt(hou.api_damage[j][k])); //damage
-					var defender = (targets.length > 1)? targets[k] : targets[0];
+					var defender = (targets.length > 1 && targets[k])? targets[k] : targets[0];
 					defender.hpTrack -= Math.max(0,Math.floor(hou.api_damage[j][k]));
 				}
 				for (var k=0; k<hou.api_cl_list[j].length; k++) d.push((hou.api_cl_list[j][k]==2));
