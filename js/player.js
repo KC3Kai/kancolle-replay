@@ -1021,13 +1021,13 @@ function processAPI(root) {
 					case 7:
 						eventqueue.push([shootPlaneCutIn,d,getState()]); break;
 					case 100:
-						var attackers = (hou.api_at_eflag[j])? [f2[0],f2[2],f2[4]] : [f1[0],f1[2],f1[4]];
+						var attackers = (hou.api_at_eflag && hou.api_at_eflag[j])? [f2[0],f2[2],f2[4]] : [f1[0],f1[2],f1[4]];
 						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
 						var args = [attackers,defenders,d.slice(2,5),d.slice(5,8),protects];
 						eventqueue.push([shootNelsonTouch,args,getState()]); break;
 					case 101:
 					case 102:
-						var attackers = (hou.api_at_eflag[j])? [f2[0],f2[0],f2[1]] : [f1[0],f1[0],f1[1]];
+						var attackers = (hou.api_at_eflag && hou.api_at_eflag[j])? [f2[0],f2[0],f2[1]] : [f1[0],f1[0],f1[1]];
 						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
 						var args = [attackers,defenders,d.slice(2,5),d.slice(5,8),protects];
 						eventqueue.push([shootNelsonTouch,args,getState()]); break;
@@ -1042,7 +1042,7 @@ function processAPI(root) {
 		var processYasenHougeki = function(hou) {
 			for (var j=0; j<hou.api_at_list.length; j++) {
 				if (hou.api_at_list[j] == -1) continue;
-				var d = [];
+				var d = [], targets;
 				if (hou.api_at_eflag) { //new format 2017-11-17
 					var ind = hou.api_at_list[j], attacker;
 					if (hou.api_at_eflag[j]) {
@@ -1051,7 +1051,7 @@ function processAPI(root) {
 						attacker = (ind >= 6 && fleet1.length < 7)? fleet1C[ind-6] : fleet1[ind];
 					}
 					d.push(attacker);
-					var targets = [];
+					targets = [];
 					for (var k=0; k<hou.api_df_list[j].length; k++) {
 						var ind = hou.api_df_list[j][k];
 						if (hou.api_at_eflag[j]) {
@@ -1066,6 +1066,7 @@ function processAPI(root) {
 				} else {
 					d.push( (hou.api_at_list[j]>6)? f2e[hou.api_at_list[j]-7] : f1[hou.api_at_list[j]-1] ); //attacker
 					d.push( (hou.api_df_list[j][0]>6)? f2e[hou.api_df_list[j][0]-7] : f1[hou.api_df_list[j][0]-1] ); //target
+					targets = [d[1]];
 				}
 				for (var k=0; k<hou.api_damage[j].length; k++) {
 					d.push(parseInt(hou.api_damage[j][k])); //damage
@@ -1108,13 +1109,13 @@ function processAPI(root) {
 						d.splice(3,2);
 						eventqueue.push([shootBigTorp,d,getState()]); break;
 					case 100:
-						var attackers = (hou.api_at_eflag[j])? [f2[0],f2[2],f2[4]] : [f1[0],f1[2],f1[4]];
+						var attackers = (hou.api_at_eflag && hou.api_at_eflag[j])? [f2[0],f2[2],f2[4]] : [f1[0],f1[2],f1[4]];
 						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
 						var args = [attackers,targets,d.slice(2,5),d.slice(5,8),protects];
 						eventqueue.push([shootNelsonTouch,args,getState()]); break;
 					case 101:
 					case 102:
-						var attackers = (hou.api_at_eflag[j])? [f2[0],f2[0],f2[1]] : [f1[0],f1[0],f1[1]];
+						var attackers = (hou.api_at_eflag && hou.api_at_eflag[j])? [f2[0],f2[0],f2[1]] : [f1[0],f1[0],f1[1]];
 						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
 						var args = [attackers,targets,d.slice(2,5),d.slice(5,8),protects];
 						eventqueue.push([shootNelsonTouch,args,getState()]); break;
