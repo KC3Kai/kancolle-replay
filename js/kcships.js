@@ -395,6 +395,15 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	if (this.equiptypes[SEAPLANEBOMBER]) this.ptAccMod *= 2;
 	
 	if (this.repairs) this.repairsOrig = this.repairs.slice();
+	
+	if (MECHANICS.divebomberInstall && this.hasDivebomber) {
+		for (let eq of this.equips) {
+			if (eq.canShellInstall) {
+				this.hasDivebomber = false;
+				break;
+			}
+		}
+	}
 }
 Ship.prototype.getFormation = function() {
 	if (!this.fleet || !this.fleet.formation) return null;
@@ -691,7 +700,7 @@ Ship.prototype.getAACItype = function(atypes) {
 		if (atypes[A_HAGUN] >= 3) types.push(30);
 		if (atypes[A_HAGUN] >= 2) types.push(31);
 	}
-	if ([149,150,151,152,439,364,515,393,519,394].indexOf(this.mid) != -1 && hasID[191] && (hasID[300] || hasID[301])) types.push(32); //royal navy + Kongou-class
+	if ([149,150,151,152,439,364,515,393,519,394].indexOf(this.mid) != -1 && ((hasID[191] && hasID[300]) || (hasID[301] && hasID[191]) || (hasID[301] >= 2))) types.push(32); //royal navy + Kongou-class
 	
 	if(this.mid == 579 && atypes[A_HAGUN] && atypes[A_AAGUN]) types.push(33); //Gotland Kai
 

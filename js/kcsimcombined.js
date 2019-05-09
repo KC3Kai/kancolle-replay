@@ -408,7 +408,7 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	}
 	
 	
-	results.rank = getRank(ships1,ships2,ships1C);
+	results.rank = (bombing)? getRankRaid(ships1) : getRank(ships1,ships2,ships1C);
 	
 	results.redded = false;
 	results.flagredded = (ships1[0].HP/ships1[0].maxHP <= .25);
@@ -458,6 +458,7 @@ function simStatsCombined(numsims,type,foptions) {
 		totalFuelR: 0,
 		totalSteelR: 0,
 		totalBuckets: 0,
+		totalEmptiedPlanes: 0,
 		nodes: []
 	};
 	for (var i=0; i<FLEETS2.length; i++) {
@@ -535,7 +536,10 @@ function simStatsCombined(numsims,type,foptions) {
 				if (useBucket) totalResult.totalBuckets++;
 				totalResult.totalFuelS += Math.floor(ship.fuel * (10-ship.fuelleft)/10);
 				totalResult.totalAmmoS += Math.floor(ship.ammo * (10-ship.ammoleft)/10);
-				for (var k=0; k<ship.PLANESLOTS.length; k++) totalResult.totalBauxS += 5*(ship.PLANESLOTS[k]-ship.planecount[k]);
+				for (var k=0; k<ship.PLANESLOTS.length; k++) {
+					totalResult.totalBauxS += 5*(ship.PLANESLOTS[k]-ship.planecount[k]);
+					if (ship.PLANESLOTS[k] && ship.planecount[k] <= 0) totalResult.totalEmptiedPlanes++;
+				}
 			}
 		}
 		//support
@@ -985,7 +989,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	}
 	
 	
-	results.rank = getRank(ships1,ships2.concat(ships2C));
+	results.rank = (bombing)? getRankRaid(ships1) : getRank(ships1,ships2.concat(ships2C));
 	
 	results.redded = false;
 	results.flagredded = (ships1[0].HP/ships1[0].maxHP <= .25);
@@ -1498,7 +1502,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	}
 	
 	
-	results.rank = getRank(ships1,ships2.concat(ships2C),ships1C);
+	results.rank = (bombing)? getRankRaid(ships1) : getRank(ships1,ships2.concat(ships2C),ships1C);
 	
 	results.redded = false;
 	results.flagredded = (ships1[0].HP/ships1[0].maxHP <= .25);

@@ -1407,6 +1407,10 @@ function updateResults(results) {
 		$('.ressingle').each(function() { $(this).show(); });
 		$('.resmulti').each(function() { $(this).hide(); });
 		$('.rescolumn').each(function() { $(this).css('width','250px'); } );
+		
+		for (var i=0; i<node.airStates.length; i++) {
+			resultAddWeight('tabAirState'+(5-i),node.airStates[i],addnum);
+		}
 	} else {
 		for (var n=1; n<=results.nodes.length; n++) {
 			var node = results.nodes[n-1];
@@ -1424,6 +1428,10 @@ function updateResults(results) {
 			resultAddWeight('nodam'+n,node.undamaged,addnum);
 			
 			$('.res'+n).each(function() { $(this).show(); } );
+			
+			for (var i=0; i<node.airStates.length; i++) {
+				resultAddWeight('tabAirState'+(5-i)+n,node.airStates[i],addnum);
+			}
 		}
 		
 		var node = results.nodes[results.nodes.length-1];
@@ -1459,6 +1467,8 @@ function updateResults(results) {
 	$('#rspF').text(Math.round(1000*RESVALUES['rsrep'][0]/results.totalnum/Frate)/1000);
 	$('#rbpF').text(Math.round(1000*RESVALUES['rbsup'][0]/results.totalnum/Frate)/1000);
 	$('#bucketpF').text(Math.round(1000*RESVALUES['bucketrep'][0]/results.totalnum/Frate)/1000);
+	
+	resultAddWeight('rEmptiedPlanes',results.totalEmptiedPlanes,results.totalnum);
 	
 	document.getElementById('rnumruns').innerHTML = prevnum + results.totalnum;
 	
@@ -1508,6 +1518,21 @@ function genStatTableHTML() {
 		mvptab.append(tr);
 	}
 	
+	//air state
+	var tabAirState = $('#tabAirState');
+	var tr = $('<tr><th></th></tr>');
+	tabAirState.append(tr);
+	for (var i=1; i<=NUMNODESDEFAULT; i++) {
+		tr.append($('<th class="res'+i+'">'+i+'</th>'));
+	}
+	var rowNames = [['AS+','green'],['AS','green'],['AP',''],['AD','red'],['AI','red']];
+	for (var i=1; i<=rowNames.length; i++) {
+		var tr = $('<tr><th style="color:'+rowNames[i-1][1]+'">'+rowNames[i-1][0]+'</th></tr>');
+		for (var j=1; j<=NUMNODESDEFAULT; j++) {
+			tr.append($('<td id="tabAirState'+i+j+'" class="res'+j+'"></td>'));
+		}
+		tabAirState.append(tr);
+	}
 	
 	//damage lists and table
 	var dmglist = $('#dmglist');
