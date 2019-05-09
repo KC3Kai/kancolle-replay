@@ -24,7 +24,7 @@
 	</head>
 	<body style="display:none">
 		<h1 title="Boat Cockfight Simulator">Kancolle Sortie Simulator</h1>
-		<span style="color:red">v1.0 Beta 5.0 <span style="margin-left:20px;font-style:italic">(Last updated: 2019-04-21)</span></span>
+		<span style="color:red">v1.0 Beta 5.0 <span style="margin-left:20px;font-style:italic">(Last updated: 2019-05-10)</span></span>
 		<br><br><br>
 		<input type="radio" id="radJP" name="lang" onchange="transNames('JP')"/><label for="radJP">JP</label>
 		<input type="radio" id="radEN" name="lang" onchange="transNames('EN')" checked /><label for="radEN">EN</label>
@@ -109,6 +109,9 @@
 			<input type="checkbox" checked id="mech9" onchange="MECHANICS.installRevamp=this.checked"/><label for="mech9">New Soft-Skin Installation Mods</label><br>
 			<input type="checkbox" checked id="mech10" onchange="MECHANICS.newSupply=this.checked"/><label for="mech10">New Fuel/Ammo Node Costs</label><br>
 			<input type="checkbox" checked id="mech11" onchange="toggleEchelon($(this).prop('checked'))"/><label for="mech11">New Echelon Mods</label><br>
+			<!--<input type="checkbox" checked id="mech12" onchange="MECHANICS.zuiunCI=this.checked"/><label for="mech12">Zuiun/Suisei Cut-In</label><br>-->
+			<input type="checkbox" checked id="mech13" onchange="MECHANICS.aaResist=this.checked"/><label for="mech13">Anti-Air Resist</label><br>
+			<input type="checkbox" checked id="mech14" onchange="MECHANICS.divebomberInstall=this.checked"/><label for="mech14">Divebomber Installation Targeting</label><br>
 			<br>
 			<label for="mechshelldmg">Day Shelling Soft-Cap: </label><input id="mechshelldmg" type="number" min="0" max="9999" value="180" style="width:50px" onchange="SHELLDMGBASE=parseInt(this.value);raiseFleetChange()" /><br>
 			<label for="mechaswdmg">ASW Soft-Cap: </label><input id="mechaswdmg" type="number" min="0" max="9999" value="150" style="width:50px" onchange="ASWDMGBASE=parseInt(this.value);raiseFleetChange()" /><br>
@@ -180,6 +183,13 @@
 				<input type="button" value="TTF" onclick="clickedAdvDefault('acc',50,50,75,75)" />
 				<input type="button" value="Clear" onclick="clickedAdvDefault('acc',null,null,null,null)" />
 				<br>-->
+				<br>
+				<span>Nelson/Nagato Special Activation Rate:</span><br>
+				<table>
+				<tr><td>Nelson Touch:</td><td><input type="number" min="0" max="100" value="65" onchange="SIMCONSTS.nelsonTouchRate = +this.value" />%</td></tr>
+				<tr><td>Nagato Cut-In:</td><td><input type="number" min="0" max="100" value="65" onchange="SIMCONSTS.nagatoSpecialRate = +this.value" />%</td></tr>
+				<tr><td>Mutsu Cut-In:</td><td><input type="number" min="0" max="100" value="65" onchange="SIMCONSTS.mutsuSpecialRate = +this.value" />%</td></tr>
+				</table>
 			</div>
 			<br><br>
 			<table id="optionstable">
@@ -249,7 +259,21 @@
 					<span><img src="assets/stats/MVP.png"> Rate Per Battle:</span>
 					<table id="mvptab" class="stattable"></table>
 				</div>
-				<br>
+				<br><br>
+				<div class="ressingle">
+					Air State Rate:
+					<table>
+					<tr><th><span style="color:green">AS+</span></th><td><span id="tabAirState1"></span></td></tr>
+					<tr><th><span style="color:green">AS</span></th><td><span id="tabAirState2"></span></td></tr>
+					<tr><th><span>AP</span></th><td><span id="tabAirState3"></span></td></tr>
+					<tr><th><span style="color:red">AD</span></th><td><span id="tabAirState4"></span></td></tr>
+					<tr><th><span style="color:red">AI</span></th><td><span id="tabAirState5"></span></td></tr>
+					</table>
+				</div>
+				<div class="resmulti">
+					Air State Rate Per Battle:
+					<table id="tabAirState" class="stattable"></table>
+				</div>
 			</div>
 			<div class="rescolumn">
 				<div class="ressingle">
@@ -310,6 +334,8 @@
 				<img src="assets/stats/steel.png"></img> <span id="rspF" style="font-weight:bold">0</span><br>
 				<img src="assets/stats/baux.png"></img> <span id="rbpF" style="font-weight:bold">0</span><br>
 				<img src="assets/stats/bucket.png"></img> <span id="bucketpF" style="font-weight:bold">0</span><br>
+				<br>
+				Avg Emptied Plane Slots: <span id="rEmptiedPlanes">0</span>
 				<br>
 			</div>
 			
@@ -415,6 +441,7 @@
 		<br><hr><br>
 		<div style="font-size:14px">
 			<span style="font-weight:bold">Change Log:</span><br>
+			<span>2019-05-10 - Mechanics: <a href="https://twitter.com/muu_1106/status/1124658313428213760?s=19" target="_blank">Anti-Air Resist</a>, Divebomber Installation Targeting</span><br>
 			<span>2019-04-21 - Nelson/Nagato/Mutsu specials night</span><br>
 			<span>2019-04-05 - Carry over HP/Morale option, update presets to Phase 2 comps, vanguard formation</span><br>
 			<span>2019-03-11 - Historical Bonus config, Nelson/Nagato/Mutsu specials (day only currently), new mechanics: new installation mods/new resource costs/new echelon mods</span><br>
