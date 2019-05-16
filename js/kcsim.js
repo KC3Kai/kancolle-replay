@@ -53,29 +53,29 @@ var AACIDATA = {
 	11:{num:6,rate:.55,mod:1.5,equip:'HC'},
 	12:{num:3,rate:.45,mod:1.25,equip:'CGR'},
 	// 13:{num:4,rate:.35,mod:1.35,equip:'BCR'},
-	14:{num:4,rate:.58,mod:1.45,equip:'HGR'},
-	15:{num:3,rate:.58,mod:1.3,equip:'HG'},
-	16:{num:4,rate:.5,mod:1.4,equip:'HGR'},
-	17:{num:2,rate:.5,mod:1.25,equip:'HG'},
+	14:{num:4,rate:.63,mod:1.45,equip:'HGR'},
+	15:{num:3,rate:.53,mod:1.3,equip:'HG'},
+	16:{num:4,rate:.6,mod:1.4,equip:'HGR'},
+	17:{num:2,rate:.55,mod:1.25,equip:'HG'},
 	18:{num:2,rate:.6,mod:1.2,equip:'C'},
-	19:{num:5,rate:.4,mod:1.45,equip:'HC'},
-	20:{num:3,rate:.5,mod:1.25,equip:'C'},
+	19:{num:5,rate:.55,mod:1.45,equip:'HC'},
+	20:{num:3,rate:.65,mod:1.25,equip:'C'},
 	21:{num:5,rate:.6,mod:1.45,equip:'HR'},
 	22:{num:2,rate:.6,mod:1.2,equip:'C'},
-	23:{num:1,rate:.6,mod:1.05,equip:'G'},
-	24:{num:3,rate:.6,mod:1.25,equip:'HG'},
+	23:{num:1,rate:.8,mod:1.05,equip:'G'},
+	24:{num:3,rate:.55,mod:1.25,equip:'HG'},
 	25:{num:7,rate:.6,mod:1.55,equip:'GRS'},
 	26:{num:8,rate:.6,mod:1.4,equip:'HR'},
-	28:{num:4,rate:.6,mod:1.4,equip:'GR'},
+	28:{num:4,rate:.55,mod:1.4,equip:'GR'},
 	29:{num:5,rate:.6,mod:1.55,equip:'HR'},
-	30:{num:3,rate:.6,mod:1.3,equip:'HHH'},
-	31:{num:2,rate:.6,mod:1.2,equip:'HH'},
-	32:{num:3,rate:.6,mod:1.2,equip:'CM'},
-	33:{num:3,rate:.6,mod:1.35,equip:'HG'},
-	34:{num:7,rate:.6,mod:1.6,equip:'BB'},
-	35:{num:6,rate:.6,mod:1.55,equip:'BH'},
-	36:{num:6,rate:.6,mod:1.55,equip:'HHR'},
-	37:{num:4,rate:.6,mod:1.45,equip:'HH'},
+	30:{num:3,rate:.4,mod:1.3,equip:'HHH'},
+	31:{num:2,rate:.5,mod:1.2,equip:'HH'},
+	32:{num:3,rate:.5,mod:1.2,equip:'CM'},
+	33:{num:3,rate:.4,mod:1.35,equip:'HG'},
+	34:{num:7,rate:.6,mod:1.6,equip:'BB',rollIndiv:true},
+	35:{num:6,rate:.55,mod:1.55,equip:'BH',rollIndiv:true},
+	36:{num:6,rate:.55,mod:1.55,equip:'HHR',rollIndiv:true},
+	37:{num:4,rate:.4,mod:1.45,equip:'HH',rollIndiv:true},
 };
 
 var ARTILLERYSPOTDATA = {
@@ -98,8 +98,8 @@ var NBATTACKDATA = {
 	61: { dmgMod: 1.25, accMod: 1.25, chanceMod: 1.25, id: 6, name: 'CVCI (1.25)' },
 	62: { dmgMod: 1.2, accMod: 1.2, chanceMod: 1.3, id: 6, name: 'CVCI (1.2)' },
 	63: { dmgMod: 1.18, accMod: 1.2, chanceMod: 1.4, id: 6, name: 'CVCI (1.18)' },
-	7: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.5, torpedo: true, name: 'DDCI (GTR)' },
-	8: { dmgMod: 1.2, accMod: 1.65, chanceMod: 1.8, torpedo: true, name: 'DDCI (LTR)' },
+	7: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.3, torpedo: true, name: 'DDCI (GTR)' },
+	8: { dmgMod: 1.2, accMod: 1.65, chanceMod: 1.5, torpedo: true, name: 'DDCI (LTR)' },
 }
 
 var FLEETS1 = [];
@@ -439,12 +439,14 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 					if (ship.numSpecialTorp >= 2) preMod = 1.6;
 					if (ship.numSpecialTorp && ship.hasSubRadar) preMod = 1.75;
 				} else if (NBtype == 7) { //D-gun bonus
+					let count = 0;
 					for (let equip of ship.equips) {
 						if (equip.mid == 267) {
-							preMod *= 1.25;
-							break;
+							count++;
 						}
 					}
+					if (count) preMod *= 1.25;
+					if (count >= 2) preMod *= 1.125;
 				}
 			}
 		}
@@ -1398,10 +1400,10 @@ function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupp
 		var AACIship, AACItype = 0;
 		for (var i=0; i<defenders.length; i++) {
 			if (defenders[i].AACItype.length) {
-				var r = Math.random(), r2 = Math.random();
+				var r = Math.random();
 				for (var j=0; j<defenders[i].AACItype.length; j++) {
 					var type = defenders[i].AACItype[j];
-					let roll = (type >= 34 && type <= 37)? r2 : r; //Johnston AACIs roll separately
+					let roll = (AACIDATA[type].rollIndiv)? Math.random() : r;
 					if (type > AACItype && roll < AACIDATA[type].rate) {
 						AACItype = type;
 						AACIship = defenders[i];

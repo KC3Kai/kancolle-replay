@@ -661,9 +661,9 @@ Ship.prototype.getAACItype = function(atypes) {
 	var types = [];
 	if (this.side == 1) return types; //enemy can't do AACI?
 	
-	var concentrated = false, hasID = {};
+	var concentrated = 0, hasID = {};
 	for (var i=0; i<this.equips.length; i++) {
-		if (this.equips[i].isconcentrated) { concentrated = true; }
+		if (this.equips[i].isconcentrated) { concentrated++; }
 		hasID[this.equips[i].mid] = hasID[this.equips[i].mid] + 1 || 1;
 	}
 	
@@ -684,31 +684,15 @@ Ship.prototype.getAACItype = function(atypes) {
 		if (atypes[A_AIRRADAR]) types.push(16);
 		types.push(17);
 	}
-	if (this.mid == 418 && concentrated) types.push(18); //Satsuki Kai Ni
-	if (this.mid == 487 && concentrated) { //Kinu Kai Ni
-		if (atypes[A_HAGUN]) types.push(19);
-		types.push(20);
-	}
+	if (this.mid == 487 && concentrated && atypes[A_HAGUN] > (atypes[A_HAFD] || 0)) types.push(19); //Kinu Kai Ni (1)
 	if (this.mid == 488 && atypes[A_HAGUN] && atypes[A_AIRRADAR]) types.push(21); //Yura Kai Ni
-	if (this.mid == 548 && concentrated) types.push(22); //Fumizuki Kai Ni
-	if ((this.mid == 539 || this.mid == 530) && atypes[A_AAGUN] && !concentrated) types.push(23); //UIT-25, I-504
-	if (this.mid == 478 && atypes[A_HAGUN] && atypes[A_AAGUN] && !concentrated) types.push(24); //Tatsuta Kai Ni
 	if ([77,82,87,88,553].indexOf(this.mid) != -1 && hasID[274] && atypes[A_AIRRADAR] && atypes[A_TYPE3SHELL]) types.push(25); //Ise-class
-	if (this.mid == 546 && hasID[275] && atypes[A_AIRRADAR]) types.push(26); //Musashi Kai Ni
-	if ([82,88,553,148,546].indexOf(this.mid) != -1 && hasID[274] && atypes[A_AIRRADAR]) types.push(28); //Ise-class + Musashi Kai
-	if (this.mid == 477) { //Tenryuu Kai Ni
-		if (atypes[A_HAGUN] >= 3) types.push(30);
-		if (atypes[A_HAGUN] >= 2) types.push(31);
-	}
-	if ([149,150,151,152,439,364,515,393,519,394].indexOf(this.mid) != -1 && ((hasID[191] && hasID[300]) || (hasID[301] && hasID[191]) || (hasID[301] >= 2))) types.push(32); //royal navy + Kongou-class
-	
-	if(this.mid == 579 && atypes[A_HAGUN] && atypes[A_AAGUN]) types.push(33); //Gotland Kai
 
 	if((this.mid == 562 || this.mid == 689) && hasID[308] || hasID[313]) { //Johnston
-		if (hasID[313] >= 2) types.push(34);
+		if (hasID[308] >= 2) types.push(34);
 		if (hasID[313] >= 1 && hasID[308] >= 1) types.push(35);
-		if (hasID[308] >= 2 && hasID[307]) types.push(36);
-		if (hasID[308] >= 2) types.push(37);
+		if (hasID[313] >= 2) types.push(37);
+		if (hasID[313] >= 2 && hasID[307]) types.push(36);
 	}
 	
 	var add6 = false;
@@ -720,12 +704,31 @@ Ship.prototype.getAACItype = function(atypes) {
 	}
 	if (atypes[A_HAFD] >= 2 && atypes[A_AIRRADAR]) types.push(5);
 	if (add6) types.push(6);
+	if (atypes[A_HAFD] && atypes[A_AIRRADAR]) types.push(8); //changed 8 > 7 some time between 2018-04-21 - 2019-04-24, too minor for mechanic toggle
 	if (atypes[A_HAGUN] && atypes[A_AAFD] && atypes[A_AIRRADAR]) types.push(7);
-	if (atypes[A_HAFD] && atypes[A_AIRRADAR]) types.push(8);
+	
+	if (this.mid == 546 && hasID[275] && atypes[A_AIRRADAR]) types.push(26); //Musashi Kai Ni
+	if ([82,88,553,148,546].indexOf(this.mid) != -1 && hasID[274] && atypes[A_AIRRADAR]) types.push(28); //Ise-class + Musashi Kai
+	if ((this.mid == 557 || this.mid == 558) && atypes[A_HAGUN] && atypes[A_AIRRADAR]) types.push(29); //Isokaze+Hamakaze B Kai
+	
 	if (atypes[A_HAGUN] && atypes[A_AAFD]) types.push(9);
+	
+	if(this.mid == 579 && atypes[A_HAGUN] && atypes[A_AAGUN]) types.push(33); //Gotland Kai
+	
 	if (concentrated && atypes[A_AAGUN] >= 2 && atypes[A_AIRRADAR]) types.push(12);
 	// if (concentrated && atypes[A_HAFD] && atypes[A_AIRRADAR]) return 13;
-	if ((this.mid == 557 || this.mid == 558) && atypes[A_HAGUN] && atypes[A_AIRRADAR]) types.push(29); //Isokaze+Hamakaze B Kai
+	
+	if (this.mid == 418 && concentrated) types.push(18); //Satsuki Kai Ni
+	if (this.mid == 487 && concentrated) types.push(20); //Kinu Kai Ni (2)
+	if (this.mid == 548 && concentrated) types.push(22); //Fumizuki Kai Ni
+	if ((this.mid == 539 || this.mid == 530) && atypes[A_AAGUN] > concentrated) types.push(23); //UIT-25, I-504
+	if (this.mid == 477) { //Tenryuu Kai Ni
+		if (atypes[A_HAGUN] >= 3) types.push(30);
+		if (atypes[A_HAGUN] >= 2) types.push(31);
+	}
+	if (this.mid == 478 && atypes[A_HAGUN] && atypes[A_AAGUN] > concentrated) types.push(24); //Tatsuta Kai Ni
+	if ([149,150,151,152,439,364,515,393,519,394].indexOf(this.mid) != -1 && ((hasID[191] && hasID[300]) || (hasID[301] && hasID[191]) || (hasID[301] >= 2))) types.push(32); //royal navy + Kongou-class
+	
 	return types;
 }
 

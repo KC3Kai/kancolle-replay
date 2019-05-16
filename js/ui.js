@@ -185,13 +185,14 @@ function showAdditionalStats(fleet) {
 		td.append('Anti-Air:<br>');
 		td.append('<div style="margin-left:16px">Proportional: '+getAAShotProp(ships[i],100)+'%<br>Flat: '+Math.floor(getAAShotFlat(ships[i]))+'</div>');
 		if (ships[i].AACItype.length) {
-			var chanceused = 0;
+			var chanceused = 0, chancemod = 1;
 			for (var j=0; j<ships[i].AACItype.length; j++) {
 				var aacid = AACIDATA[ships[i].AACItype[j]];
 				if (chanceused > aacid.rate) continue;
 				td.append('AACI: #'+ships[i].AACItype[j]+'<br>');
-				td.append('<div style="margin-left:16px">Planes: '+aacid.num+'<br>Rate: '+Math.round((aacid.rate-chanceused)*100)+'%<br>Multiplier: '+aacid.mod+'<br></div>');
-				chanceused += aacid.rate;
+				td.append('<div style="margin-left:16px">Planes: '+aacid.num+'<br>Rate: '+Math.round((aacid.rate-chanceused)*chancemod*100)+'%<br>Multiplier: '+aacid.mod+'<br></div>');
+				if (aacid.rollIndiv) chancemod *= 1-aacid.rate;
+				else chanceused += aacid.rate;
 			}
 		}
 	}
