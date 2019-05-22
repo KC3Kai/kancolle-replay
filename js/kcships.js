@@ -186,6 +186,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	var planeexp = 0, planecount = 0;
 	var installeqs = {DH1:0,DH2:0,DH3:0,WG:0,AP:0,T3:0,SB:0,SF:0,DH1stars:0,DH3stars:0};
 	var fitcounts = {};
+	var tpEquip = 0;
 	for (var i=0; i<equips.length; i++){
 		if (!equips[i]) continue;
 		var eq = new Equip(equips[i],levels[i],profs[i]);
@@ -268,6 +269,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (eq.mid == 193) installeqs.TDH = 1;
 		
 		if (eq.LOS) this.LOSeq += eq.LOS;
+		if (eq.TP) tpEquip += eq.TP;
 		
 		this.equips.push(eq);
 	}
@@ -404,6 +406,8 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 			}
 		}
 	}
+	
+	this.hasTorpStat = this.TP - tpEquip > 0 && SHIPDATA[this.mid].TP > 0;
 }
 Ship.prototype.getFormation = function() {
 	if (!this.fleet || !this.fleet.formation) return null;
@@ -415,7 +419,7 @@ Ship.prototype.getFormation = function() {
 Ship.prototype.canShell = function() { return (this.HP > 0); }
 Ship.prototype.canStillShell = function() { return this.canShell(); }
 Ship.prototype.canNB = function() { return (this.HP/this.maxHP > .25 && !this.retreated); }
-Ship.prototype.canTorp = function() { return (this.HP/this.maxHP > .5); }
+Ship.prototype.canTorp = function() { return this.hasTorpStat && (this.HP/this.maxHP > .5); }
 Ship.prototype.canOpTorp = function() { return this.hasMidgetSub; }
 Ship.prototype.canASW = function() { return false; }
 Ship.prototype.OASWstat = 100;
@@ -819,7 +823,6 @@ function BB(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 }
 BB.prototype = Object.create(Ship.prototype);
 BB.prototype.enableSecondShelling = true;
-BB.prototype.canTorp = function() { return false; }
 BB.prototype.APweak = true;
 
 function FBB(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
@@ -857,7 +860,6 @@ function BBV(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 BBV.prototype = Object.create(Ship.prototype);
 BBV.prototype.APweak = true;
 BBV.prototype.enableSecondShelling = true;
-BBV.prototype.canTorp = function() { return false; }
 BBV.prototype.canASW = CAV.prototype.canASW;
 BBV.prototype.rocketBarrageChance = CAV.prototype.rocketBarrageChance;
 
@@ -865,13 +867,11 @@ function BBVT(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	BBV.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
 }
 BBVT.prototype = Object.create(BBV.prototype);
-BBVT.prototype.canTorp = function() { return (this.HP/this.maxHP > .5); }
 
 function CV(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
 }
 CV.prototype = Object.create(Ship.prototype);
-CV.prototype.canTorp = function() { return false; }
 CV.prototype.canNB = function() { return (((this.nightattack && this.HP/this.maxHP > .25) || this.canNBAirAttack()) && !this.retreated); }
 CV.prototype.canAS = function() {
 	if (this.HP/this.maxHP <= .25) return false;
@@ -993,7 +993,6 @@ function AO(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
 };
 AO.prototype = Object.create(Ship.prototype);
-AO.prototype.canTorp = function() { return false; }
 AO.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	Ship.prototype.loadEquips.call(this,equips,levels,profs,addstats);
 	for (var i=0; i<equips.length; i++) {
@@ -1025,13 +1024,11 @@ function AS(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
 };
 AS.prototype = Object.create(Ship.prototype);
-AS.prototype.canTorp = function() { return false; }
 
 function AR(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
 };
 AR.prototype = Object.create(Ship.prototype);
-AR.prototype.canTorp = function() { return false; }
 
 function CT(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
@@ -1044,13 +1041,11 @@ function LHA(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
 };
 LHA.prototype = Object.create(Ship.prototype);
-LHA.prototype.canTorp = function() { return false; }
 
 function DE(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
 };
 DE.prototype = Object.create(Ship.prototype);
-DE.prototype.canTorp = function() { return false; }
 DE.prototype.canASW = function() { return true; }
 DE.prototype.OASWstat = 60;
 
