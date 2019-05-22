@@ -1440,6 +1440,35 @@ var MAPDATA = {
 			},
 		}
 	},
+	44: {
+		name: 'Event Spring 2019',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmDN: 135,
+				bgmNN: 135,
+				bgmDB: 136,
+				bgmNB: 136,
+				bossnode: 23,
+			},
+			2: {
+				name: 'E2',
+				bgmDN: 135,
+				bgmNN: 135,
+				bgmDB: 136,
+				bgmNB: 136,
+				bossnode: [12,21],
+			},
+			3: {
+				name: 'E3',
+				bgmDN: 135,
+				bgmNN: 135,
+				bgmDB: 136,
+				bgmNB: 136,
+				bossnode: [14,18],
+			},
+		}
+	},
 }
 
 //-------------------------------------
