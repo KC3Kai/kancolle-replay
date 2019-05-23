@@ -187,6 +187,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	var installeqs = {DH1:0,DH2:0,DH3:0,WG:0,AP:0,T3:0,SB:0,SF:0,DH1stars:0,DH3stars:0};
 	var fitcounts = {};
 	var tpEquip = 0;
+	var aswPenetrate = 0;
 	for (var i=0; i<equips.length; i++){
 		if (!equips[i]) continue;
 		var eq = new Equip(equips[i],levels[i],profs[i]);
@@ -270,6 +271,10 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		
 		if (eq.LOS) this.LOSeq += eq.LOS;
 		if (eq.TP) tpEquip += eq.TP;
+		
+		if (eq.btype == B_DEPTHCHARGE2 && eq.ASW) {
+			aswPenetrate += Math.max(0, Math.sqrt(eq.ASW - 2) + +(this.type == 'DE'));
+		}
 		
 		this.equips.push(eq);
 	}
@@ -408,6 +413,8 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	}
 	
 	this.hasTorpStat = this.TP - tpEquip > 0 && SHIPDATA[this.mid].TP > 0;
+	
+	if (aswPenetrate > 0) this.aswPenetrate = aswPenetrate;
 }
 Ship.prototype.getFormation = function() {
 	if (!this.fleet || !this.fleet.formation) return null;

@@ -1203,6 +1203,7 @@ function damage(ship,target,base,preMod,postMod,cap) {
 	if (C) console.log('	before def: '+dmg);
 	var ar = target.AR + (target.improves.AR || 0);
 	dmg -= .7*ar+.6*Math.floor(Math.random()*ar) - (target.debuff||0);
+	if (target.isSub && ship.aswPenetrate) dmg += ship.aswPenetrate;
 	if (C) console.log('	after def: '+dmg);
 	
 	if (ship.ammoleft < 5) dmg *= .2*ship.ammoleft;
@@ -2376,44 +2377,56 @@ function getRankRaid(ships1) {
 
 function updateSupply(ships,didNB,NBonly,bombing,noammo) {
 	if (ships[0].fleet.didSpecial == 1 && (ships[0].attackSpecial == 101 || ships[0].attackSpecial == 102)) {
-		ships[0].ammoleft -= 1;
-		ships[1].ammoleft -= 1;
+		for (let i=0; i<2; i++) {
+			let ammoMax = ships[i].ammo || 100;
+			ships[i].ammoleft -= (Math.floor(ammoMax * .1) || 1) / ammoMax;
+		}
 		ships[0].fleet.didSpecial = 2;
+	}
+	let costFuel = 0, costAmmo = 0;
+	if (MECHANICS.newSupply) {
+		let allPT = true;
+		for (let ship of ships) { if (!ship.isPT) { allPT = false; break; } }
+		if (allPT) {
+			costFuel = .04;
+			costAmmo = .08;
+		} else if (bombing) {
+			costFuel = .06;
+			costAmmo = .04;
+		} else if (noammo) {
+			costFuel = .08;
+		} else if (NBonly) {
+			costFuel = .1;
+			costAmmo = .1;
+		} else {
+			costFuel = .2;
+			costAmmo = .2;
+		}
+	} else {
+		if (bombing) {
+			costFuel = .08;
+			costAmmo = .04;
+		} else {
+			costFuel = .2;
+			if (!noammo) costAmmo = .2;
+		}
 	}
 	for (var i=0; i<ships.length; i++) {
 		if (ships[i].HP <= 0) continue;
 		if (ships[i].retreated) continue;
-		if (MECHANICS.newSupply) {
-			let allPT = true;
-			for (let ship of ships) { if (!ship.isPT) { allPT = false; break; } }
-			if (allPT) {
-				ships[i].fuelleft -= .4;
-				ships[i].ammoleft -= .8;
-			} else if (bombing) {
-				ships[i].fuelleft -= .6;
-				ships[i].ammoleft -= .4;
-			} else if (noammo) {
-				ships[i].fuelleft -= .8;
-			} else if (NBonly) {
-				ships[i].fuelleft -= 1;
-				ships[i].ammoleft -= 1;
-			} else {
-				ships[i].fuelleft -= 2;
-				ships[i].ammoleft -= 2;
-				if (didNB) ships[i].ammoleft -= 1;
-			}
-		} else {
-			if (bombing) {
-				ships[i].fuelleft -= .8;
-				ships[i].ammoleft -= .4;
-			} else {
-				ships[i].fuelleft -= 2;
-				if (!noammo) ships[i].ammoleft -= (didNB)? 3 : 2;
-				else if (didNB) ships[i].ammoleft -= 1;
-			}
+		
+		let fuelMax = ships[i].fuel || 100;
+		let ammoMax = ships[i].ammo || 100;
+		if (costFuel > 0) {
+			ships[i].fuelleft -= 10*(Math.floor(fuelMax * costFuel) || 1) / fuelMax;
+			if (ships[i].fuelleft < 0) ships[i].fuelleft = 0;
 		}
-		if (ships[i].fuelleft < 0) ships[i].fuelleft = 0;
-		if (ships[i].ammoleft < 0) ships[i].ammoleft = 0;
+		if (costAmmo > 0) {
+			ships[i].ammoleft -= 10*(Math.floor(ammoMax * costAmmo) || 1) / ammoMax;
+			if (didNB) ships[i].ammoleft -= 10*Math.ceil(ships[i].ammo * costAmmo/2) / ships[i].ammo;
+			if (ships[i].ammoleft < 0) ships[i].ammoleft = 0;
+		}
+		
 		if (C) console.log('FUEL LEFT: '+ships[i].fuelleft+' AMMO LEFT: '+ships[i].ammoleft);
 	}
 }
@@ -2525,6 +2538,7 @@ function simStats(numsims,foptions) {
 		totalSteelR: 0,
 		totalBuckets: 0,
 		totalEmptiedPlanes: 0,
+		totalGaugeDamage: 0,
 		nodes: []
 	};
 	for (var i=0; i<FLEETS2.length; i++) {
@@ -2570,6 +2584,8 @@ function simStats(numsims,foptions) {
 			totalResult.nodes[j].airStates[FLEETS1[0].AS+2]++;
 			if (!canContinue(FLEETS1[0].ships)) break;
 		}
+		let flagshipFinal = FLEETS2[FLEETS2.length-1].ships[0];
+		totalResult.totalGaugeDamage += flagshipFinal.maxHP - Math.max(0,flagshipFinal.HP);
 		for (var j=0; j<FLEETS1[0].ships.length; j++) { //get refuel and repair costs
 			var ship = FLEETS1[0].ships[j];
 			var useBucket = ship.HP/ship.maxHP <= BUCKETPERCENT || getRepairTime(ship) > BUCKETTIME;
