@@ -21925,6 +21925,7 @@ var SHIPDATA = {
 		TP: 98,
 		AA: 108,
 		AR: 108,
+		EV: 74,
 		ASW: 98,
 		LOS: 58,
 		LUK: 66,

@@ -837,8 +837,8 @@ function genOptions(fleetnum) {
 	div.append('<span class="option2"><input id="NB'+fleetnum+'" type="checkbox" checked onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="NB'+fleetnum+'">Night battle?</label></span>');
 	div.append('<span class="option2 line"><input id="NBonly'+fleetnum+'" type="checkbox" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="NBonly'+fleetnum+'">Night-Only</label></span>');
 	div.append('<span class="option2"><input id="aironly'+fleetnum+'" type="checkbox" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="aironly'+fleetnum+'">Air-Only</label></span>');
-	div.append('<span class="option2"><input id="landbomb'+fleetnum+'" type="checkbox" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="landbomb'+fleetnum+'">Land Bombing</label></span>');
-	div.append('<span class="option2 line"><input id="noammo'+fleetnum+'" type="checkbox" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="noammo'+fleetnum+'">Use No Ammo</label></span>');
+	div.append('<span class="option2"><input id="landbomb'+fleetnum+'" type="checkbox" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="landbomb'+fleetnum+'">Air Raid</label></span>');
+	div.append('<span class="option2 line"><input id="noammo'+fleetnum+'" type="checkbox" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="noammo'+fleetnum+'">Sub-Only (No Ammo)</label></span>');
 	td.append(div);
 	div = $('<div></div>');
 	div.append('<span class="option2"><label>Formation: </label></span>');
@@ -1189,6 +1189,7 @@ function loadIntoSim(fleet,side,isescort) {
 				var stat = parseInt(document.getElementById('T'+fleet+STATNAMES[j]+i).value);
 				s[STATNAMES[j]] = (stat)? stat : 0;
 			}
+			s.bonus = parseFloat(document.getElementById('T'+fleet+'bonus'+i).value) || 0;
 			var equips = [], levels = [], slots = [], profs = [];
 			for (var j=0; j<NUMEQUIPSMAX; j++) {
 				if (parseInt(PREVEQS[fleet][i][j])) {
@@ -1470,6 +1471,7 @@ function updateResults(results) {
 	$('#bucketpF').text(Math.round(1000*RESVALUES['bucketrep'][0]/results.totalnum/Frate)/1000);
 	
 	resultAddWeight('rEmptiedPlanes',results.totalEmptiedPlanes,results.totalnum);
+	resultAddWeight('rsunkfsHP',results.totalGaugeDamage,results.totalnum);
 	
 	document.getElementById('rnumruns').innerHTML = prevnum + results.totalnum;
 	
@@ -1773,7 +1775,7 @@ function loadFleetFromCode(fleet,fcode) {
 			(parseInt(ship.rng) >= 0)? parseInt(ship.rng) : shipd.RNG,
 			(parseInt(ship.spd) >= 0)? parseInt(ship.spd) : shipd.SPD,
 			(parseInt(ship.tacc) >= 0)? parseInt(ship.tacc) : shipd.TACC,
-			(parseInt(ship.bonus) >= 0)? parseInt(ship.bonus) : null];
+			(parseFloat(ship.bonus) >= 0)? parseFloat(ship.bonus) : null];
 		var equips = [0,0,0,0], improvs = [0,0,0,0], profs = [0,0,0,0], planes = [0,0,0,0];
 		for (var item in ship.items) {
 			var islot = item.substr(1);

@@ -459,6 +459,7 @@ function simStatsCombined(numsims,type,foptions) {
 		totalSteelR: 0,
 		totalBuckets: 0,
 		totalEmptiedPlanes: 0,
+		totalGaugeDamage: 0,
 		nodes: []
 	};
 	for (var i=0; i<FLEETS2.length; i++) {
@@ -524,6 +525,8 @@ function simStatsCombined(numsims,type,foptions) {
 			//if ((res.redded && DORETREAT)||res.flagredded) break;
 			if (!canContinue(FLEETS1[0].ships,FLEETS1[1].ships)) break;
 		}
+		let flagshipFinal = FLEETS2[FLEETS2.length-1].ships[0];
+		totalResult.totalGaugeDamage += flagshipFinal.maxHP - Math.max(0,flagshipFinal.HP);
 		for (var fl=0; fl<=1; fl++) {
 			for (var j=0; j<FLEETS1[fl].ships.length; j++) { //get refuel and repair costs
 				var ship = FLEETS1[fl].ships[j];
