@@ -2011,9 +2011,12 @@ function clickedWatchBattle() {
 			LBASwaves.push(LBAS[options.lbas[k]-1]);
 		}
 		
-		for (let ship of FLEETS1[0].ships) {
-			if (ship.bonusTemp && options.bonus) ship.bonusSpecial = [{mod:ship.bonusTemp}];
-			else ship.bonusSpecial = null;
+		for (let n=0; n<2; n++) {
+			if (!FLEETS1[n]) continue;
+			for (let ship of FLEETS1[n].ships) {
+				if (ship.bonusTemp && options.bonus) ship.bonusSpecial = [{mod:ship.bonusTemp}];
+				else ship.bonusSpecial = null;
+			}
 		}
 		
 		var ennum = (j>0)? 21+j : 2;
