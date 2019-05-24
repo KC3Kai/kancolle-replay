@@ -1476,6 +1476,7 @@ function updateResults(results) {
 	
 	resultAddWeight('rEmptiedPlanes',results.totalEmptiedPlanes,results.totalnum);
 	resultAddWeight('rsunkfsHP',results.totalGaugeDamage,results.totalnum);
+	resultAddWeight('rsunkfsHPB',results.totalGaugeDamage,results.nodes[results.nodes.length-1].num);
 	
 	document.getElementById('rnumruns').innerHTML = prevnum + results.totalnum;
 	
