@@ -243,7 +243,10 @@ function showAdditionalStats(fleet) {
 	}
 	table.append(tr);
 	
-	$('#dialogadvstats').html('<span>Fleet Air Power: '+fleettemp.fleetAirPower()+'</span>');
+	$('#dialogadvstats').html('');
+	$('#dialogadvstats').append('<span>Fleet Air Power: '+fleettemp.fleetAirPower()+'</span>');
+	let elos = getELoS(fleettemp.ships);
+	$('#dialogadvstats').append('<span style="margin-left:50px">Effective LoS (HQ 120): C1 = '+elos[0].toFixed(1)+', C2 = '+elos[1].toFixed(1)+', C3 = '+elos[2].toFixed(1)+', C4 = '+elos[3].toFixed(1)+'</span>');
 	$('#dialogadvstats').append(table);
 	$('#dialogadvstats').dialog("open");
 }
@@ -1446,7 +1449,8 @@ function updateResults(results) {
 		
 		$('.ressingle').each(function() { $(this).hide(); });
 		$('.resmulti').each(function() { $(this).show(); });
-		$('.rescolumn').each(function() { $(this).css('width',(results.nodes.length>3)?'300px':'250px'); } );
+		let width = (results.nodes.length > 6)? ((results.nodes.length-6)*40 + 300)+'px' : (results.nodes.length > 3)? '300px' : '250px';
+		$('.rescolumn').each(function() { $(this).css('width',width); } );
 	}
 	
 	resultAddWeight('rfsup',results.totalFuelS,results.totalnum);
@@ -1478,7 +1482,7 @@ function updateResults(results) {
 	WROTESTATS = true;
 }
 
-const NUMNODESDEFAULT = 6;
+const NUMNODESDEFAULT = 9;
 function genStatTableHTML() {
 	// console.log('tables');
 	
@@ -2720,4 +2724,34 @@ function toggleEchelon(useNew) {
 		ECHELON.ASWmod = 1;
 		ECHELON.shellev = 1.2;
 	}
+}
+
+
+function getELoS(ships,hq=120) {
+	let losMod = { 8: .8, 9: 1, 10: 1.2, 11: 1.1 };
+	let losModImpr = { 9: 1.2, 10: 1.2, 11: 1.15, 12: 1.25, 13: 1.4, 26: 1, 41: 1.2 };
+	
+	let elosE = 0, elosS = 0;
+	for (let ship of ships) {
+		let baseLOS = ship.LOS;
+		for (let equip of ship.equips) {
+			if (!equip.LOS) continue;
+			let mod = losMod[equip.type] || .6;
+			let bonusImpr = 0;
+			if (equip.level && losModImpr[equip.type]) {
+				bonusImpr = Math.sqrt(equip.level) * losModImpr[equip.type];
+			}
+			elosE += (equip.LOS + bonusImpr) * mod;
+			baseLOS -= equip.LOS;
+		}
+		elosS += Math.sqrt(baseLOS);
+	}
+	
+	elosS -= Math.ceil(.4*hq);
+	elosS += 2*(6 - ships.length);
+	let results = [];
+	for (let c=1; c<=4; c++) {
+		results.push(elosE*c + elosS);
+	}
+	return results;
 }
