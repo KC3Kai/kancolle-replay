@@ -487,6 +487,12 @@ function simStatsCombined(numsims,type,foptions) {
 	for (var i=0; i<numsims; i++) {
 		for (var j=0; j<FLEETS2.length; j++) {
 			var options = foptions[j];
+			for (let n=0; n<2; n++) {
+				for (let ship of FLEETS1[n].ships) {
+					if (ship.bonusTemp && options.bonus) ship.bonusSpecial = [{mod:ship.bonusTemp}];
+					else ship.bonusSpecial = null;
+				}
+			}
 			if (options.formation != '0') {
 				FLEETS1[0].formation = ALLFORMATIONS[type+options.formation];
 				FLEETS1[1].formation = ALLFORMATIONS[type+options.formation+'E'];

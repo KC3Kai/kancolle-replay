@@ -21996,7 +21996,7 @@ var SHIPDATA = {
 		RNG: 2,
 		SPD: 0,
 		TACC: 55,
-		SLOTS: [0, 0, 0, 90],
+		SLOTS: [0, 0, 0, 50],
 		EQUIPS: [589,565,580,562],
 	},
 	1866: {
@@ -22017,7 +22017,7 @@ var SHIPDATA = {
 		RNG: 2,
 		SPD: 0,
 		TACC: 55,
-		SLOTS: [0, 0, 0, 90],
+		SLOTS: [0, 0, 0, 70],
 		EQUIPS: [589,565,580,562],
 	},
 	1867: {
@@ -22059,7 +22059,7 @@ var SHIPDATA = {
 		RNG: 2,
 		SPD: 0,
 		TACC: 55,
-		SLOTS: [0, 0, 0, 120],
+		SLOTS: [0, 0, 0, 80],
 		EQUIPS: [589,591,590,562],
 	},
 	1869: {
@@ -22080,7 +22080,7 @@ var SHIPDATA = {
 		RNG: 2,
 		SPD: 0,
 		TACC: 55,
-		SLOTS: [0, 0, 0, 120],
+		SLOTS: [0, 0, 0, 100],
 		EQUIPS: [589,591,590,562],
 	},
 	1870: {
