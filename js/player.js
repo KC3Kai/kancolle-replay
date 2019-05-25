@@ -1031,6 +1031,11 @@ function processAPI(root) {
 						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
 						var args = [attackers,defenders,d.slice(2,5),d.slice(5,8),protects];
 						eventqueue.push([shootNelsonTouch,args,getState()]); break;
+					case 103:
+						var attackers = (hou.api_at_eflag && hou.api_at_eflag[j])? [f2[0],f2[1],f2[2]] : [f1[0],f1[1],f1[2]];
+						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
+						var args = [attackers,defenders,d.slice(2,5),d.slice(5,8),protects];
+						eventqueue.push([shootNelsonTouch,args,getState()]); break;
 				}
 				
 				handleRepair(fleet1);
@@ -1116,6 +1121,11 @@ function processAPI(root) {
 					case 101:
 					case 102:
 						var attackers = (hou.api_at_eflag && hou.api_at_eflag[j])? [f2[0],f2[0],f2[1]] : [f1[0],f1[0],f1[1]];
+						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
+						var args = [attackers,targets,d.slice(2,5),d.slice(5,8),protects];
+						eventqueue.push([shootNelsonTouch,args,getState()]); break;
+					case 103:
+						var attackers = (hou.api_at_eflag && hou.api_at_eflag[j])? [f2[0],f2[1],f2[2]] : [f1[0],f1[1],f1[2]];
 						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
 						var args = [attackers,targets,d.slice(2,5),d.slice(5,8),protects];
 						eventqueue.push([shootNelsonTouch,args,getState()]); break;
@@ -2105,7 +2115,6 @@ function shootSpecialGun(ship,target,damage,forcecrit,protect) {
 }
 
 function shootNelsonTouch(ships,targets,damages,crits,protects) {
-	console.log(targets);
 	SM.playVoice(ships[0].mid,'special',ships[0].id);
 	
 	for (var i=0; i<ships.length; i++) {

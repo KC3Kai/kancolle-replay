@@ -5191,6 +5191,27 @@ var EQDATA = {
 		ASW: 7,
 		RNG: 2,
 	},
+	592: {
+		name: 'Abyssal 16inch Mk.VIII Twin Gun Mount Kai',
+		nameJP: '深海16inch Mk.VIII連装砲改',
+		added: '2019-05-25',
+		type: MAINGUNL,
+		FP: 23,
+		AA: 4,
+		AR: 3,
+		ACC: 22,
+		RNG: 3,
+	},
+	593: {
+		name: 'High-speed Abyssal Torpedo mod. 3',
+		nameJP: '高速深海魚雷 mod.3',
+		added: '2019-05-25',
+		type: TORPEDO,
+		TP: 15,
+		ACC: 10,
+		EV: 3,
+		RNG: 1,
+	},
 };
 
 var LBASDATA = {
