@@ -1467,6 +1467,22 @@ var MAPDATA = {
 				bgmNB: 136,
 				bossnode: [14,18],
 			},
+			4: {
+				name: 'E4',
+				bgmDN: 135,
+				bgmNN: 135,
+				bgmDB: 136,
+				bgmNB: 136,
+				bossnode: 22,
+			},
+			5: {
+				name: 'E5',
+				bgmDN: 136,
+				bgmNN: 136,
+				bgmDB: 138,
+				bgmNB: 138,
+				bossnode: [17,26],
+			},
 		}
 	},
 }

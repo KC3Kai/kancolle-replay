@@ -218,7 +218,7 @@ function exportDeckbuilder(fleet) {
 }
 
 function isPlayable(shipid) {
-	return (shipid < 1000 || (shipid >= 2001 && shipid <= 2003));
+	return (shipid < 1000 || (shipid >= 2001 && shipid <= 2003) || (shipid >= 1400 && shipid <= 1500));
 }
 
 function sameShip(mid1,mid2) {

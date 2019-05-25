@@ -288,6 +288,7 @@ var TEXTDATA_CN = {
 				100: "(Nelson Touch)",
 				101: "(長門CI)",
 				102: "(陸奥CI)",
+				103: "(Colorado CI)",
 				200: "(瑞雲CI)",
 				201: "(彗星CI)"
 			}
@@ -364,7 +365,8 @@ var TEXTDATA_CN = {
 				5: "主炮CI",
 				100: "Nelson Touch",
 				101: "長門CI",
-				102: "陸奥CI"
+				102: "陸奥CI",
+				103: "Colorado CI"
 			}
 		}
 	},
