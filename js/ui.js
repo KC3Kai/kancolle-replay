@@ -204,7 +204,7 @@ function showAdditionalStats(fleet) {
 			var html = '<div style="margin-left:16px">';
 			if (ships[i].ACCplane) html += 'Acc Bonus: '+ships[i].ACCplane.toFixed(2)+'%<br>';
 			if (ships[i].ACCplane) html += 'Crit Rate Bonus: '+Math.round((ships[i].critratebonus||0)*10)/10+'%<br>';
-			if (ships[i].ACCplane) html += 'Crit Multiplier: '+Math.round((ships[i].critdmgbonus||0)*10)/10+'<br>';
+			if (ships[i].ACCplane) html += 'Crit Multiplier: '+Math.round((ships[i].critdmgbonus||0)*100)/100+'<br>';
 			if (ships[i].APbonus) html += 'Air Power: '+ships[i].APbonus.toFixed(2)+'</div>';
 			td.append(html+'</div>');
 		}
@@ -1475,6 +1475,7 @@ function updateResults(results) {
 	$('#bucketpF').text(Math.round(1000*RESVALUES['bucketrep'][0]/results.totalnum/Frate)/1000);
 	
 	resultAddWeight('rEmptiedPlanes',results.totalEmptiedPlanes,results.totalnum);
+	resultAddWeight('rEmptiedPlanesLB',results.totalEmptiedLBAS,results.totalnum);
 	resultAddWeight('rsunkfsHP',results.totalGaugeDamage,results.totalnum);
 	resultAddWeight('rsunkfsHPB',results.totalGaugeDamage,results.nodes[results.nodes.length-1].num);
 	

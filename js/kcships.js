@@ -245,16 +245,16 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 			this.APbonus += eq.APbonus;
 		}
 		if (eq.isdivebomber||eq.istorpbomber) {
-			if (eq.rank > 5) {
+			if (eq.exp > 0) {
 				if (!this.critratebonus) this.critratebonus = 0;
 				if (!this.critdmgbonus) this.critdmgbonus = 1;
-				var mod;
-				if (eq.rank == 7) mod = 8;
-				else if (eq.rank == 6) mod = 5.6;
-				this.critratebonus += mod*.75; //x.75????
-				this.critdmgbonus += (Math.sqrt(eq.exp*1.2) + mod)/((i==0)? 100:200); //seems browser version is actually +.1 on max? added 1.2
+				var mod = 0;
+				if (eq.rank == 7) mod = 10;
+				else if (eq.rank == 6) mod = 7;
+				this.critratebonus += mod*.6; //x.75????
+				this.critdmgbonus += Math.floor(Math.sqrt(eq.exp) + mod)/((i==0)? 100:200);
+				planeexp += eq.exp;
 			}
-			if (eq.exp) planeexp += eq.exp;
 			planecount++;
 		}
 		
@@ -857,7 +857,8 @@ CAV.prototype.rocketBarrageChance = function() {
 		if (equip.canBarrage) num++;
 	}
 	if (num <= 0) return 0;
-	return (this.weightedAntiAir()+this.LUK)/(322-(40*num+70*this.rocketBonus));
+	let base = 48, numBonus = 40 + 30*num, classBonus = 70*(this.sclass == 2);
+	return (this.weightedAntiAir() + .9*this.LUK)/(400 - (base + numBonus + classBonus));
 }
 
 function BBV(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
@@ -1064,7 +1065,10 @@ function LandBase(equips,levels,profs) {
 	this.PLANESLOTS = [18,18,18,18];
 	this.planecount = this.PLANESLOTS.slice();
 	this.equips = [];
-	for (var i=0; i<equips.length; i++) this.equips.push(new Equip(equips[i],levels[i],profs[i],true));
+	for (var i=0; i<equips.length; i++) {
+		this.equips.push(new Equip(equips[i],levels[i],profs[i],true));
+		this.equips[i].rankInit = profs[i];
+	}
 	this.AS = 0;
 }
 LandBase.prototype.airState = function() { return this.AS; }
@@ -1110,6 +1114,9 @@ LandBase.prototype.airPowerDefend = function() {
 }
 LandBase.prototype.reset = function() {
 	this.planecount = this.PLANESLOTS.slice();
+	for (let eq of this.equips) {
+		if (eq.rank != eq.rankInit) eq.setProficiency(eq.rankInit);
+	}
 }
 LandBase.prototype.getCost = function() {
 	var cost = [0,0,0]; //fuel,ammo,baux
