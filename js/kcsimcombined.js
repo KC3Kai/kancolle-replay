@@ -459,6 +459,7 @@ function simStatsCombined(numsims,type,foptions) {
 		totalSteelR: 0,
 		totalBuckets: 0,
 		totalEmptiedPlanes: 0,
+		totalEmptiedLBAS: 0,
 		totalGaugeDamage: 0,
 		nodes: []
 	};
@@ -576,6 +577,9 @@ function simStatsCombined(numsims,type,foptions) {
 			totalResult.totalFuelS += cost[0];
 			totalResult.totalAmmoS += cost[1];
 			totalResult.totalBauxS += cost[2];
+			for (let eq of LBAS[alllbas[j]-1].equips) {
+				if (eq.rank <= 0 && eq.rank != eq.rankInit) totalResult.totalEmptiedLBAS++;
+			}
 			LBAS[alllbas[j]-1].reset();
 		}
 		if (CARRYOVERHP || CARRYOVERMORALE) {

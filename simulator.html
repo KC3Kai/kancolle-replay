@@ -24,7 +24,7 @@
 	</head>
 	<body style="display:none">
 		<h1 title="Boat Cockfight Simulator">Kancolle Sortie Simulator</h1>
-		<span style="color:red">v1.0 Beta 5.0 <span style="margin-left:20px;font-style:italic">(Last updated: 2019-05-16)</span></span>
+		<span style="color:red">v1.0 Beta 5.0 <span style="margin-left:20px;font-style:italic">(Last updated: 2019-05-28)</span></span>
 		<br><br><br>
 		<input type="radio" id="radJP" name="lang" onchange="transNames('JP')"/><label for="radJP">JP</label>
 		<input type="radio" id="radEN" name="lang" onchange="transNames('EN')" checked /><label for="radEN">EN</label>
@@ -189,6 +189,7 @@
 				<tr><td>Nelson Touch:</td><td><input type="number" min="0" max="100" value="65" onchange="SIMCONSTS.nelsonTouchRate = +this.value" />%</td></tr>
 				<tr><td>Nagato Cut-In:</td><td><input type="number" min="0" max="100" value="65" onchange="SIMCONSTS.nagatoSpecialRate = +this.value" />%</td></tr>
 				<tr><td>Mutsu Cut-In:</td><td><input type="number" min="0" max="100" value="65" onchange="SIMCONSTS.mutsuSpecialRate = +this.value" />%</td></tr>
+				<tr><td>Colorado Cut-In:</td><td><input type="number" min="0" max="100" value="65" onchange="SIMCONSTS.coloradoSpecialRate = +this.value" />%</td></tr>
 				</table>
 			</div>
 			<br><br>
@@ -337,7 +338,8 @@
 				<img src="assets/stats/baux.png"></img> <span id="rbpF" style="font-weight:bold">0</span><br>
 				<img src="assets/stats/bucket.png"></img> <span id="bucketpF" style="font-weight:bold">0</span><br>
 				<br>
-				Avg Emptied Plane Slots: <span id="rEmptiedPlanes">0</span>
+				Avg Emptied Plane Slots: <span id="rEmptiedPlanes">0</span><br>
+				Avg Emptied LBAS Slots: <span id="rEmptiedPlanesLB">0</span>
 				<br>
 			</div>
 			

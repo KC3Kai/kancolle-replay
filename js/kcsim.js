@@ -129,6 +129,7 @@ var SIMCONSTS = {
 	nelsonTouchRate: 65,
 	nagatoSpecialRate: 65,
 	mutsuSpecialRate: 65,
+	coloradoSpecialRate: 65,
 }
 function setConst(key, val) {
 	if (val == null) SIMCONSTS[key] = null;
@@ -774,6 +775,15 @@ function canSpecialAttack(ship) {
 		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[1].type) == -1) return false;
 		let rate = (ship.attackSpecial == 101)? SIMCONSTS.nagatoSpecialRate : SIMCONSTS.mutsuSpecialRate;
 		return Math.random() < rate/100;
+	} else if (ship.attackSpecial == 103) {
+		if (ship.fleet.ships[0] != ship) return false;
+		if (ship.fleet.ships.length < 3) return false;
+		if (ship.fleet.formation.id != 12 && ship.fleet.formation.id != 4) return false;
+		if (ship.HP/ship.maxHP <= .5) return false;
+		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[1].type) == -1) return false;
+		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[2].type) == -1) return false;
+		let rate = SIMCONSTS.coloradoSpecialRate;
+		return Math.random() < rate/100;
 	}
 	return false;
 }
@@ -784,6 +794,8 @@ function getSpecialAttackShips(ships,attackSpecial) {
 		attackers = [ships[0], ships[0], ships[1]];
 	} else if (attackSpecial == 100) {
 		attackers = [ships[0], ships[2], ships[4]];
+	} else if (attackSpecial == 103) {
+		attackers = [ships[0], ships[1], ships[2]];
 	}
 	return attackers;
 }
@@ -809,6 +821,20 @@ function getSpecialAttackMod(ship,attackSpecial) {
 			mod *= ((ship.isflagship)? 1.15 : 1.35);
 		} else if (ship.fleet.ships[1].mid == 541) {
 			mod *= ((ship.isflagship)? 1.2 : 1.4);
+		}
+		if (ship.equiptypesB[B_APSHELL]) mod *= 1.35;
+		if (ship.equiptypesB[B_RADAR]) mod *= 1.15;
+	} else if (attackSpecial == 103) {
+		if (ship.isflagship) {
+			mod = 1.3;
+		} else {
+			mod = 1.15;
+			if ([19,88,93].indexOf(ship.sclass) != -1) {
+				mod *= 1.1;
+				if (ship.num == 3 && [19,88,93].indexOf(ship.fleet.ships[1].sclass) != -1) {
+					mod *= 1.15;
+				}
+			}
 		}
 		if (ship.equiptypesB[B_APSHELL]) mod *= 1.35;
 		if (ship.equiptypesB[B_RADAR]) mod *= 1.15;
@@ -926,14 +952,18 @@ function nightPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,NBonly,API
 		if (alive2[i].hasSearchlight) { light2 = true; lightship2 = i; slrerolls2 = alive2[i].hasSearchlight; break; }
 	}
 	var scout1 = false;
-	for (var i=0; i<alive1.length; i++) {
-		if (alive1[i].retreated) continue;
-		if (alive1[i].hasNightScout && Math.random() < Math.floor(Math.sqrt(alive1[i].LVL)*Math.sqrt(3))/25) { scout1 = true; if (C) APIyasen.api_touch_plane[0] = 102; break; }
+	if (alive1[0] && alive1[0].fleet.AP != -2 && (NBonly || alive1[0].fleet.AP != 0)) {
+		for (var i=0; i<alive1.length; i++) {
+			if (alive1[i].retreated) continue;
+			if (alive1[i].hasNightScout && Math.random() < Math.floor(Math.sqrt(alive1[i].LVL)*Math.sqrt(3))/25) { scout1 = true; if (C) APIyasen.api_touch_plane[0] = 102; break; }
+		}
 	}
 	var scout2 = false;
-	for (var i=0; i<alive2.length; i++) {
-		if (alive2[i].retreated) continue;
-		if (alive2[i].hasNightScout && Math.random() < Math.floor(Math.sqrt(alive2[i].LVL)*Math.sqrt(3))/25) { scout2 = true; if (C) APIyasen.api_touch_plane[1] = 102; break; }
+	if (alive2[0] && alive2[0].fleet.AP != -2 && (NBonly || alive2[0].fleet.AP != 0)) {
+		for (var i=0; i<alive2.length; i++) {
+			if (alive2[i].retreated) continue;
+			if (alive2[i].hasNightScout && Math.random() < Math.floor(Math.sqrt(alive2[i].LVL)*Math.sqrt(3))/25) { scout2 = true; if (C) APIyasen.api_touch_plane[1] = 102; break; }
+		}
 	}
 	let numRounds = Math.max(order1.length,order2.length);
 	for (var i=0; i<numRounds; i++) {
@@ -1848,7 +1878,10 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 			console.log(lbas.planecount[i] + ' ' + defender.name + ' ' + shotProp + ' ' + shotFlat);
 		}
 		lbas.planecount[i] = Math.max(0,lbas.planecount[i]-shotProp-shotFlat-shotFix);
-		if (lbas.planecount[i] < 0) continue;
+		if (lbas.planecount[i] <= 0) {
+			lbas.equips[i].setProficiency(0);
+			continue;
+		}
 		
 		var contactMod = 1;
 		if (lbas.airState() != -2 && lbas.airState() != 0) {
@@ -1919,18 +1952,18 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 	var critdmgbonus = 1, critratebonus = 0, ACCplane = 0;
 	if (equip.type != LANDBOMBER || MECHANICS.LBASBuff) {
 		ACCplane = Math.sqrt(equip.exp*.1);
-		var critval;
+		var critval = 0;
 		switch(equip.rank) {
-			case 7: ACCplane += 9; critval = 8; break;
-			case 6: ACCplane += 6; critval = 5.6; break;
+			case 7: ACCplane += 9; critval = 10; break;
+			case 6: ACCplane += 6; critval = 7; break;
 			case 5: ACCplane += 4; break;
 			case 4: ACCplane += 3; break;
 			case 3: ACCplane += 2; break;
 			case 2: ACCplane += 1; break;
 			case 0: ACCplane = 0; break;
 		}
-		critdmgbonus += (Math.sqrt(equip.exp*1.2)+critval)/100;
-		critratebonus = critval*.75;
+		critdmgbonus += Math.floor(Math.sqrt(equip.exp)+critval)/100;
+		critratebonus = critval*.6;
 	}
 	if (MECHANICS.LBASBuff) {
 		ACCplane += 12*Math.sqrt(equip.ACC || 0);
@@ -2538,6 +2571,7 @@ function simStats(numsims,foptions) {
 		totalSteelR: 0,
 		totalBuckets: 0,
 		totalEmptiedPlanes: 0,
+		totalEmptiedLBAS: 0,
 		totalGaugeDamage: 0,
 		nodes: []
 	};
@@ -2627,6 +2661,9 @@ function simStats(numsims,foptions) {
 			totalResult.totalFuelS += cost[0];
 			totalResult.totalAmmoS += cost[1];
 			totalResult.totalBauxS += cost[2];
+			for (let eq of LBAS[alllbas[j]-1].equips) {
+				if (eq.rank <= 0 && eq.rank != eq.rankInit) totalResult.totalEmptiedLBAS++; //doesn't count rankInit = 0
+			}
 			LBAS[alllbas[j]-1].reset();
 		}
 		
