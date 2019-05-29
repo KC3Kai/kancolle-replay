@@ -1373,6 +1373,28 @@ function clickedDelSupportB() {
 	raiseFleetChange();
 }
 
+var ADDEDFRIENDFLEET = false;
+function clickedAddFriendFleet(update) {
+	if (ADDEDFRIENDFLEET) return;
+	if (!document.getElementById('T14')) genFleetHTML('fleetspace1FF', 14, 'Friend Fleet', '#CCEEAA');
+	else $('#T14').css('display','block');
+	ADDEDFRIENDFLEET = true;
+	if (update) updateFleetCode('14');
+	$('#btnDelFF').css('display','');
+	$('#btnAddFF').css('display','none');
+	raiseFleetChange();
+}
+
+function clickedDelFriendFleet() {
+	if (!ADDEDFRIENDFLEET) return;
+	$('#T14').css('display','none');
+	saveFleet('14','');
+	ADDEDFRIENDFLEET = false;
+	$('#btnDelFF').css('display','none');
+	$('#btnAddFF').css('display','');
+	raiseFleetChange();
+}
+
 // tableSetShip(1,2,1,[50,32,59,89,51,59,91,60,1,50,1,60]);
 // for (shipid in SHIPDATA) {
 	// if(SHIPDATA[shipid].image=='') console.log(SHIPDATA[shipid].name);
@@ -1931,6 +1953,15 @@ function extractForSim() {
 			FLEETS1S[1].supportBoss = true;
 		}
 	}
+	if (ADDEDFRIENDFLEET) {
+		d = loadIntoSim(14,0);
+		if (!d[0].length) FLEETS1S[2] = null;
+		else {
+			FLEETS1S[2] = new Fleet(0);
+			FLEETS1S[2].loadShips(d[0]);
+			FLEETS1S[2].formation = ALLFORMATIONS[d[1]];
+		}
+	}
 	
 	if (ADDEDLBAS) {
 		for (var i=0; i<3; i++) {
@@ -1993,6 +2024,12 @@ function clickedWatchBattle() {
 	
 	var supportN = (ADDEDSUPPORTN)? FLEETS1S[0] : null;
 	var supportB = (ADDEDSUPPORTB)? FLEETS1S[1] : null;
+	var friendFleet = (ADDEDFRIENDFLEET)? FLEETS1S[2] : null;
+	if (friendFleet) {
+		for (let ship of friendFleet.ships) {
+			if (ship.bonusTemp) ship.bonusSpecial = [{mod:ship.bonusTemp}];
+		}
+	}
 	
 	var formdef = FLEETS1[0].formation;
 	for (var j=0; j<FLEETS2.length; j++) {
@@ -2007,6 +2044,7 @@ function clickedWatchBattle() {
 		}
 		
 		var supportF = (j==FLEETS2.length-1)? supportB : supportN;
+		var friendFleetF = (j==FLEETS2.length-1)? friendFleet : null;
 		
 		var LBASwaves = [];
 		for (var k=0; k<options.lbas.length; k++) {
@@ -2025,14 +2063,14 @@ function clickedWatchBattle() {
 		var res;
 		if (ADDEDCOMBINED) {
 			if (ADDEDECOMBINED[ennum])
-				res = sim12vs12(API.combined,FLEETS1[0],FLEETS1[1],FLEETS2[j],supportF,LBASwaves,options.NB,options.NBonly,options.aironly,options.landbomb,options.noammo,BAPI);
+				res = sim12vs12(API.combined,FLEETS1[0],FLEETS1[1],FLEETS2[j],supportF,LBASwaves,options.NB,options.NBonly,options.aironly,options.landbomb,options.noammo,BAPI,false,friendFleetF);
 			else
-				res = simCombined(API.combined,FLEETS1[0],FLEETS1[1],FLEETS2[j],supportF,LBASwaves,options.NB,options.NBonly,options.aironly,options.landbomb,options.noammo,BAPI);
+				res = simCombined(API.combined,FLEETS1[0],FLEETS1[1],FLEETS2[j],supportF,LBASwaves,options.NB,options.NBonly,options.aironly,options.landbomb,options.noammo,BAPI,false,friendFleetF);
 		} else {
 			if (ADDEDECOMBINED[ennum])
-				res = sim6vs12(FLEETS1[0],FLEETS2[j],supportF,LBASwaves,options.NB,options.NBonly,options.aironly,options.landbomb,options.noammo,BAPI);
+				res = sim6vs12(FLEETS1[0],FLEETS2[j],supportF,LBASwaves,options.NB,options.NBonly,options.aironly,options.landbomb,options.noammo,BAPI,false,friendFleetF);
 			else
-				res = sim(FLEETS1[0],FLEETS2[j],supportF,LBASwaves,options.NB,options.NBonly,options.aironly,options.landbomb,options.noammo,BAPI);
+				res = sim(FLEETS1[0],FLEETS2[j],supportF,LBASwaves,options.NB,options.NBonly,options.aironly,options.landbomb,options.noammo,BAPI,false,friendFleetF);
 		}
 		API.battles.push(BAPI);
 		//if ((res.redded && DORETREAT) || res.flagredded) break;
@@ -2075,6 +2113,7 @@ function loadLocalStorage() {
 	if (localStorage.simulator_fleet11) clickedAddComb();
 	if (localStorage.simulator_fleet12) clickedAddSupportN();
 	if (localStorage.simulator_fleet13) clickedAddSupportB();
+	if (localStorage.simulator_fleet14) clickedAddFriendFleet();
 	
 	for (var key in localStorage) {
 		if (key.indexOf('simulator_fleet') == -1) continue;

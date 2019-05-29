@@ -184,7 +184,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	if (!equips || this.equips.length > 0) return;  //don't load if already have equips, do removeEquips() first
 	var atypes = {};
 	var planeexp = 0, planecount = 0;
-	var installeqs = {DH1:0,DH2:0,DH3:0,WG:0,AP:0,T3:0,SB:0,SF:0,DH1stars:0,DH3stars:0};
+	var installeqs = {DH1:0,DH2:0,DH3:0,TDH:0,TDH11:0,WG:0,AP:0,T3:0,SB:0,DB:0,DH1stars:0,DH3stars:0};
 	var fitcounts = {};
 	var tpEquip = 0;
 	var aswPenetrate = 0;
@@ -266,8 +266,9 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		else if(eq.type == TYPE3SHELL) installeqs.T3++;
 		else if(eq.type == SEAPLANEBOMBER) installeqs.SB++;
 		else if(eq.type == SEAPLANEFIGHTER) installeqs.SB++;
-		if (eq.mid == 230) installeqs.TDH11 = 1;
-		if (eq.mid == 193) installeqs.TDH = 1;
+		else if (eq.type == DIVEBOMBER) installeqs.DB++;
+		if (eq.mid == 230) installeqs.TDH11++;
+		if (eq.mid == 193) installeqs.TDH++;
 		
 		if (eq.LOS) this.LOSeq += eq.LOS;
 		if (eq.TP) tpEquip += eq.TP;
@@ -326,41 +327,77 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	var installbonus1 = 1 + (installeqs.DH1stars / (installeqs.DH1+installeqs.DH2))/50;
 	var installbonus3 = 1 + (installeqs.DH3stars / installeqs.DH3)/30;
 	
+	this.installFlat = 0;
+	if (this.numWG) this.installFlat += WGpower(this.numWG);
+	if (installeqs.TDH11) this.installFlat += 25;
+	
 	this.softSkinMult = 1;
 	if (this.hasT3Shell) this.softSkinMult *= 2.5;
 	if (MECHANICS.installRevamp) {
 		if (this.numWG) this.softSkinMult *= 1.3;
-		if (installeqs.TDH11) this.softSkinMult *= 2.8;
-		else if (installeqs.DH2) this.softSkinMult *= 2.1;
+		if (this.numWG >= 2) this.softSkinMult *= 1.4;
+		if (installeqs.DH1 || installeqs.DH2 || installeqs.TDH || installeqs.TDH11) this.softSkinMult *= 1.4;
+		if (installeqs.TDH) this.softSkinMult *= 1.15;
+		if (installeqs.TDH11) this.softSkinMult *= 1.8;
+		let numDH2 = installeqs.DH2 - installeqs.TDH11;
+		if (numDH2 > 0) this.softSkinMult *= 1.5;
+		if (numDH2 >= 2) this.softSkinMult *= 1.3;
+		if (installbonus1 > 1) this.softSkinMult *= installbonus1;
 		if (installeqs.DH3) this.softSkinMult *= 1.5 * installbonus3;
-		if (this.equiptypes[SEAPLANEBOMBER] || this.equiptypes[SEAPLANEFIGHTER]) this.softSkinMult *= 1.2;
+		if (installeqs.DH3 >= 2) this.softSkinMult *= 1.2;
+		if (installeqs.SB) this.softSkinMult *= 1.2;
 	} else {
 		if (installeqs.TDH11) this.softSkinMult *= 1.39;
 	}
 	
 	this.pillboxMult = (this.type=='DD'||this.type=='CL')? 1.4 : 1;
-	if (this.type == 'SS' || this.type == 'SSV') this.pillboxMult *= 2.3;
 	if (this.numWG >= 2) this.pillboxMult*=2.72;
 	else if (this.numWG == 1) this.pillboxMult*=1.6;
-	if (installeqs.DH2 >= 2) this.pillboxMult*=3*installbonus1;
-	else if (installeqs.TDH11) this.pillboxMult*=2.2*installbonus1;
-	else if (installeqs.DH2 == 1) this.pillboxMult*=2.15*installbonus1;
-	else if (installeqs.TDH) this.pillboxMult*=2.05*installbonus1;
-	else if (installeqs.DH1) this.pillboxMult*=1.8*installbonus1;
-	if (installeqs.DH3 >= 2) this.pillboxMult*=3.2*installbonus3;
-	else if (installeqs.DH3) this.pillboxMult*=2.4*installbonus3;
+	if (MECHANICS.installRevamp) {
+		if (installeqs.DH1 || installeqs.DH2 || installeqs.TDH || installeqs.TDH11) this.pillboxMult *= 1.8;
+		if (installeqs.TDH) this.pillboxMult *= 1.15;
+		if (installeqs.TDH11) this.pillboxMult *= 1.8;
+		let numDH2 = installeqs.DH2 - installeqs.TDH11;
+		if (numDH2 > 0) this.pillboxMult *= 1.5;
+		if (numDH2 >= 2) this.pillboxMult *= 1.4;
+		if (installbonus1 > 1) this.pillboxMult *= installbonus1;
+		if (installeqs.DH3) this.pillboxMult *= 2.4 * installbonus3;
+		if (installeqs.DH3 >= 2) this.pillboxMult *= 1.35;
+	} else {
+		if (installeqs.DH2 >= 2) this.pillboxMult*=3*installbonus1;
+		else if (installeqs.TDH11) this.pillboxMult*=2.2*installbonus1;
+		else if (installeqs.DH2 == 1) this.pillboxMult*=2.15*installbonus1;
+		else if (installeqs.TDH) this.pillboxMult*=2.05*installbonus1;
+		else if (installeqs.DH1) this.pillboxMult*=1.8*installbonus1;
+		if (installeqs.DH3 >= 2) this.pillboxMult*=3.2*installbonus3;
+		else if (installeqs.DH3) this.pillboxMult*=2.4*installbonus3;
+	}
 	if (installeqs.AP) this.pillboxMult*=1.85;
 	if (installeqs.SB) this.pillboxMult*=1.5;
+	if (installeqs.DB) this.pillboxMult*=1.5;
 	
 	this.isoMult = 1;
 	if (this.numWG >= 2) this.isoMult*=2.1;
 	else if (this.numWG == 1) this.isoMult*=1.4;
-	if (installeqs.DH2 >= 2) this.isoMult*=3*installbonus1;
-	else if (installeqs.TDH11) this.isoMult*=2.2*installbonus1;
-	else if (installeqs.DH2 == 1) this.isoMult*=2.15*installbonus1;
-	else if (installeqs.DH1) this.isoMult*=1.8*installbonus1;
-	if (installeqs.DH3) this.isoMult*=2.4*installbonus3;
+	if (MECHANICS.installRevamp) {
+		if (installeqs.DH1 || installeqs.DH2 || installeqs.TDH || installeqs.TDH11) this.isoMult *= 1.8;
+		if (installeqs.TDH) this.isoMult *= 1.15;
+		if (installeqs.TDH11) this.isoMult *= 1.8;
+		let numDH2 = installeqs.DH2 - installeqs.TDH11;
+		if (numDH2 > 0) this.isoMult *= 1.2;
+		if (numDH2 >= 2) this.isoMult *= 1.4;
+		if (installbonus1 > 1) this.isoMult *= installbonus1;
+		if (installeqs.DH3) this.isoMult *= 2.4 * installbonus3;
+		if (installeqs.DH3 >= 2) this.isoMult *= 1.35;
+	} else {
+		if (installeqs.DH2 >= 2) this.isoMult*=3*installbonus1;
+		else if (installeqs.TDH11) this.isoMult*=2.2*installbonus1;
+		else if (installeqs.DH2 == 1) this.isoMult*=2.15*installbonus1;
+		else if (installeqs.DH1) this.isoMult*=1.8*installbonus1;
+		if (installeqs.DH3) this.isoMult*=2.4*installbonus3;
+	}
 	if (installeqs.T3) this.isoMult*=1.75;
+	if (installeqs.DB) this.isoMult *= 1.4;
 	
 	this.northernMult = 1;
 	if (this.numWG >= 2) this.northernMult*=2.1;
@@ -555,23 +592,21 @@ Ship.prototype.shellPower = function(target,base) {
 	//var shellbonus = (this.fleet && this.fleet.formation.shellbonus!==undefined)? this.fleet.formation.shellbonus : 5;
 	var shellbonus = (base != null)? base+5 : 5;
 	if (target && target.isInstall) {
+		bonus += this.installFlat;
+		let fp = (this.isSub)? this.FP + 30 : this.FP;
 		switch (target.installtype) {
 			case 2: //artillery imp
-				if (this.numWG) bonus += WGpower(this.numWG);
-				if (this.pillboxMult) return this.FP*this.pillboxMult + shellbonus + bonus;
+				if (this.pillboxMult) return fp*this.pillboxMult + shellbonus + bonus;
 				break;
 			case 4: //isolated island
-				if (this.numWG) bonus += WGpower(this.numWG);
-				if (this.isoMult) return this.FP*this.isoMult + shellbonus + bonus;
+				if (this.isoMult) return fp*this.isoMult + shellbonus + bonus;
 				break;
 			case 5: //northernmost
-				if (this.numWG) bonus += WGpower(this.numWG);
-				if (this.northernMult) return this.FP*this.northernMult + shellbonus + bonus;
+				if (this.northernMult) return fp*this.northernMult + shellbonus + bonus;
 				break;
 			case 3: //supply depot
 			default: //regular soft
-				if (this.numWG) bonus += WGpower(this.numWG);
-				if (this.softSkinMult) return this.FP*this.softSkinMult + shellbonus + bonus;
+				if (this.softSkinMult) return fp*this.softSkinMult + shellbonus + bonus;
 				break;
 		}
 	}
@@ -581,26 +616,20 @@ Ship.prototype.shellPower = function(target,base) {
 Ship.prototype.NBPower = function(target) {
 	var bonus = (this.improves.Pnb)? Math.floor(this.improves.Pnb) : 0;
 	if (target && target.isInstall) {
+		bonus += this.installFlat;
+		let fp = (this.isSub)? this.FP + 30 : this.FP;
 		switch (target.installtype) {
 			case 2:
-				if (this.numWG) bonus += WGpower(this.numWG);
-				if (this.pillboxMult) return this.FP*this.pillboxMult + bonus;
-				break;
-			case 3:
-				if (this.numWG) bonus += WGpower(this.numWG);
-				if (this.hasT3Shell) return this.FP*2.5 + bonus;
+				if (this.pillboxMult) return fp*this.pillboxMult + bonus;
 				break;
 			case 4:
-				if (this.numWG) bonus += WGpower(this.numWG);
-				if (this.isoMult) return this.FP*this.isoMult + bonus;
+				if (this.isoMult) return fp*this.isoMult + bonus;
 				break;
 			case 5: //northernmost
-				if (this.numWG) bonus += WGpower(this.numWG);
-				if (this.northernMult) return this.FP*this.northernMult + this.TP + bonus;
+				if (this.northernMult) return fp*this.northernMult + this.TP + bonus;
 				break;
 			default:
-				if (this.numWG) bonus += WGpower(this.numWG);
-				if (this.hasT3Shell) return this.FP*2.5 + bonus;
+				if (this.softSkinMult) return fp*this.softSkinMult + bonus;
 				break;
 		}
 		return this.FP + bonus;

@@ -1,4 +1,4 @@
-function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,noupdate) {
+function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,noupdate,friendFleet) {
 	var ships1 = F1.ships, ships2 = F2.ships, ships1C = F1C.ships;
 	var alive1 = [], alive1C = [], alive2 = [], subsalive1 = [], subsalive1C = [], subsalive2 = [];
 	var hasInstall1 = false, hasInstall2 = false, hasInstall1C = false;
@@ -368,6 +368,12 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		}
 	}
 	
+	//friend fleet
+	if ((doNB||NBonly) && friendFleet && alive2.length+subsalive2.length > 0) {
+		friendFleetPhase(friendFleet,F2,alive2,subsalive2,BAPI);
+		removeSunk(alive2); removeSunk(subsalive2);
+	}
+	
 	//night battle
 	var didNB = false;
 	if ((doNB||NBonly) && alive1C.length+subsalive1C.length > 0 && alive2.length+subsalive2.length > 0) {
@@ -482,6 +488,12 @@ function simStatsCombined(numsims,type,foptions) {
 		});
 	}
 	
+	if (FLEETS1S[2]) {
+		for (let ship of FLEETS1S[2].ships) {
+			if (ship.bonusTemp) ship.bonusSpecial = [{mod:ship.bonusTemp}];
+		}
+	}
+	
 	//var BAPI = {data:{},yasen:{},mvp:[],rating:''};
 	C = false;
 	var formdef = FLEETS1[0].formation, formdefc = FLEETS1[1].formation;
@@ -503,11 +515,12 @@ function simStatsCombined(numsims,type,foptions) {
 			}
 			FLEETS1[0].DMGTOTALS = [0,0,0,0,0,0]; FLEETS1[1].DMGTOTALS = [0,0,0,0,0,0];
 			var supportNum = (j == FLEETS2.length-1)? 1 : 0;
+			let friendFleet = (j == FLEETS2.length-1)? FLEETS1S[2] : null;
 			var LBASwaves = [];
 			for (var k=0; k<options.lbas.length; k++) LBASwaves.push(LBAS[options.lbas[k]-1]);
 			var res;
-			if (FLEETS2[j].combinedWith) res = sim12vs12(type,FLEETS1[0],FLEETS1[1],FLEETS2[j],FLEETS1S[supportNum],LBASwaves,options.NB,options.NBonly,options.aironly,options.landbomb,options.noammo,null,null);
-			else res = simCombined(type,FLEETS1[0],FLEETS1[1],FLEETS2[j],FLEETS1S[supportNum],LBASwaves,options.NB,options.NBonly,options.aironly,options.landbomb,options.noammo);//,BAPI);
+			if (FLEETS2[j].combinedWith) res = sim12vs12(type,FLEETS1[0],FLEETS1[1],FLEETS2[j],FLEETS1S[supportNum],LBASwaves,options.NB,options.NBonly,options.aironly,options.landbomb,options.noammo,null,false,friendFleet);
+			else res = simCombined(type,FLEETS1[0],FLEETS1[1],FLEETS2[j],FLEETS1S[supportNum],LBASwaves,options.NB,options.NBonly,options.aironly,options.landbomb,options.noammo,null,false,friendFleet);
 			totalResult.nodes[j].num++;
 			if (res.redded) totalResult.nodes[j].redded++;
 			for (var k=0; k<res.reddedIndiv.length; k++) if (res.reddedIndiv[k]) totalResult.nodes[j].redIndiv[k]++;
@@ -553,7 +566,7 @@ function simStatsCombined(numsims,type,foptions) {
 			}
 		}
 		//support
-		for (var s=0; s<=1; s++) {
+		for (var s=0; s<=FLEETS1S.length; s++) {
 			if (FLEETS1S[s]) {
 				for (var j=0; j<FLEETS1S[s].ships.length; j++) {
 					var shipS = FLEETS1S[s].ships[j];
@@ -634,7 +647,7 @@ function simStatsCombined(numsims,type,foptions) {
 
 
 //-------------------------------
-function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,noupdate) {
+function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,noupdate,friendFleet) {
 	var F2C = F2.combinedWith;
 	var ships1 = F1.ships, ships2 = F2.ships, ships2C = F2C.ships;
 	var alive1 = [], alive2 = [], alive2C = [], subsalive1 = [], subsalive2 = [], subsalive2C = [];
@@ -951,6 +964,13 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 		for (var i=0; i<ships1.length; i++) {
 			if (ships1[i].repairs) results.repairsDay[i] = ships1[i].repairs.slice();
 		}
+	}
+	
+	//friend fleet
+	if ((doNB||NBonly) && friendFleet && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
+		friendFleetPhase(friendFleet,F2,alive2.concat(alive2C),subsalive2.concat(subsalive2C),BAPI);
+		removeSunk(alive2); removeSunk(subsalive2);
+		removeSunk(alive2C); removeSunk(subsalive2C);
 	}
 	
 	//night battle
@@ -1457,7 +1477,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	}
 	
 	//friend fleet
-	if (friendFleet && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
+	if ((doNB||NBonly) && friendFleet && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
 		friendFleetPhase(friendFleet,F2,alive2.concat(alive2C),subsalive2.concat(subsalive2C),BAPI);
 		removeSunk(alive2); removeSunk(subsalive2);
 		removeSunk(alive2C); removeSunk(subsalive2C);
