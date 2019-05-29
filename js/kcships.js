@@ -965,7 +965,6 @@ CVL.prototype.canOASW = function() {
 	let threshold = (this.equiptypes[SONARL])? 50 : 65;
 	return this.ASW >= threshold;
 }
-CVL.prototype.rocketBarrageChance = Ship.prototype.rocketBarrageChance;
 CVL.prototype.APweak = false;
 
 function CVB(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
