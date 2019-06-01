@@ -2455,25 +2455,24 @@ function simDataLoadFleet(dataFleet,side) {
 	if (ships.length) fleetMain.loadShips(ships);
 	else return null;
 	
+	let combineType = dataFleet.combineType || 1;
+	let formNum = dataFleet.formation.toString();
+	if (formNum.length == 2) {
+		formNum = combineType + formNum;
+	}
+	if (!ALLFORMATIONS[formNum]) {
+		simDataAddError('Invalid formation (combined): '+dataFleet.formation);
+		return fleetMain;
+	}
 	if (dataFleet.shipsC) {
 		let fleetEscort = new Fleet(side,fleetMain);
 		let shipsC = simDataLoadShips(dataFleet.shipsC,side);
 		if (shipsC.length) fleetEscort.loadShips(shipsC);
 		else return null;
-		let combineType = dataFleet.combineType || 1;
-		let formNum = ''+combineType + dataFleet.formation;
-		if (!ALLFORMATIONS[formNum]) {
-			simDataAddError('Invalid formation (combined): '+dataFleet.formation);
-			return fleetMain;
-		}
+		
 		fleetMain.formation = ALLFORMATIONS[formNum];
 		fleetEscort.formation = ALLFORMATIONS[formNum+'E'];
 	} else {
-		let formNum = dataFleet.formation;
-		if (!ALLFORMATIONS[formNum]) {
-			simDataAddError('Invalid formation: '+dataFleet.formation);
-			return fleetMain;
-		}
 		fleetMain.formation = ALLFORMATIONS[formNum];
 	}
 	return fleetMain;

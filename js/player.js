@@ -403,8 +403,8 @@ function createShip(data,side,i,damaged) {
 			if (hasonlytorp == undefined && eq.type == TORPEDO) hasonlytorp = true;
 			if ([MAINGUNS,MAINGUNM,MAINGUNL].indexOf(eq.type) != -1) hasonlytorp = false;
 			if (eq.type == WG42) ship.hasWG = true;
-			if (data[j] == 68 || data[j] == 166) ship.haslandingcraft1 = true;
-			if (data[j] == 167) ship.haslandingcraft2 = true;
+			if (eq.type == LANDINGCRAFT) ship.haslandingcraft1 = true;
+			if (eq.type == LANDINGTANK) ship.haslandingcraft2 = true;
 			if (eq.atype && eq.atype != A_GUN) ship.hasAAgear = true;
 			if (eq.type == SEARCHLIGHTS || eq.type == SEARCHLIGHTL) ship.hassearchlight = true;
 			if (data[j]==42) ship.hasrepairteam = (ship.hasrepairteam)? ship.hasrepairteam+1 : 1;
