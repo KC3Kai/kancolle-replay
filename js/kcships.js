@@ -934,14 +934,15 @@ CV.prototype.canStillShell = function () {
 CV.prototype.CVshelltype = true;
 CV.prototype.shellPower = function(target,base) {
 	var dp = 0, tp = 0;
+	let installOnly = MECHANICS.divebomberInstall && target && target.isInstall;
 	for (var i=0; i<this.equips.length; i++) {
-		if(this.equips[i].DIVEBOMB) dp += this.equips[i].DIVEBOMB;
+		if(this.equips[i].DIVEBOMB && (!installOnly || this.equips[i].canShellInstall)) dp += this.equips[i].DIVEBOMB;
 		if(this.equips[i].TP) tp += this.equips[i].TP;
 	}
 	var bonus = (base||0) + 5;
 	if (target && target.isInstall) tp = 0;
 	var improvebonus = (this.improves.Pshell)? Math.floor(this.improves.Pshell) : 0;
-	return 50 + bonus + 1.5*(this.FP + improvebonus + tp + Math.floor(1.3*dp));
+	return 25 + 1.5*(15 + bonus + this.FP + improvebonus + tp + Math.floor(1.3*dp));
 }
 CV.prototype.NBPower = function(target) {
 	if (this.canNBAirAttack()) {
