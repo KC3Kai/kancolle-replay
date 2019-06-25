@@ -108,13 +108,40 @@ function showKC3QDpopup() {
 	$('#dialogkc3file').dialog("open");
 }
 function showAdditionalStats(fleet) {
-	var side = (fleet.toString()[0]=='1')? 0 : 1;
-	var d = loadIntoSim(fleet,side,(fleet==11));
+	fleet = fleet.toString();
+	var side = (fleet[0]=='1')? 0 : 1;
+	let fleetMain = fleet, fleetEscort = null;
+	if (fleet == '11') {
+		fleetMain = '1';
+		fleetEscort = '11';
+	} else if (fleet[0] == '3') {
+		fleetMain = fleet.replace('3','2');
+		fleetEscort = fleet;
+	} else if (ADDEDCOMBINED && fleet == '1') {
+		fleetEscort = '11';
+	} else if (fleet[0] == '2' && ADDEDECOMBINED[fleet]) {
+		fleetEscort = fleet.replace('2','3');
+	}
+	var d = loadIntoSim(fleetMain,side);
 	var ships = d[0], formation = d[1];
-	console.log(ships);
 	var fleettemp = new Fleet(side);
-	fleettemp.loadShips(ships);
+	if (ships.length > 0) fleettemp.loadShips(ships);
 	fleettemp.formation = ALLFORMATIONS[formation];
+	if (fleetEscort) {
+		d = loadIntoSim(fleetEscort,side,true);
+		let fleettemp2 = new Fleet(side,fleettemp);
+		if (d[0].length > 0) fleettemp2.loadShips(d[0]);
+		if (d[1].toString().length < 3) d[1] = '2' + d[1];
+		fleettemp.formation = ALLFORMATIONS[d[1]];
+		fleettemp2.formation = ALLFORMATIONS[d[1]+'E'];
+		if (fleetEscort == fleet) {
+			fleettemp = fleettemp2;
+			ships = d[0]; formation = d[1];
+		}
+	}
+	if (ships.length <= 0) return;
+	console.log(fleettemp);
+	
 	var table = $('<table class="tadvstats"></table>');
 	var tr = $('<tr></tr>');
 	for (var i=0; i<ships.length; i++) {
@@ -244,8 +271,16 @@ function showAdditionalStats(fleet) {
 	table.append(tr);
 	
 	$('#dialogadvstats').html('');
-	$('#dialogadvstats').append('<span>Fleet Air Power: '+fleettemp.fleetAirPower()+'</span>');
-	let elos = getELoS(fleettemp.ships);
+	let ap = fleettemp.fleetAirPower(), airText = ap.toString();
+	if (fleettemp.combinedWith) {
+		ap2 = fleettemp.combinedWith.fleetAirPower();
+		if (ap2 > 0) {
+			airText += ' (' + (ap + ap2) + ')'
+		}
+	}
+	$('#dialogadvstats').append('<span>Fleet Air Power: '+airText+'</span>');
+	let shipsLOS = (fleettemp.combinedWith)? fleettemp.ships.concat(fleettemp.combinedWith.ships) : fleettemp.ships;
+	let elos = getELoS(shipsLOS);
 	$('#dialogadvstats').append('<span style="margin-left:50px">Effective LoS (HQ 120): C1 = '+elos[0].toFixed(1)+', C2 = '+elos[1].toFixed(1)+', C3 = '+elos[2].toFixed(1)+', C4 = '+elos[3].toFixed(1)+'</span>');
 	$('#dialogadvstats').append(table);
 	$('#dialogadvstats').dialog("open");

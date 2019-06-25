@@ -98,8 +98,8 @@ var NBATTACKDATA = {
 	61: { dmgMod: 1.25, accMod: 1.25, chanceMod: 1.25, id: 6, name: 'CVCI (1.25)' },
 	62: { dmgMod: 1.2, accMod: 1.2, chanceMod: 1.3, id: 6, name: 'CVCI (1.2)' },
 	63: { dmgMod: 1.18, accMod: 1.2, chanceMod: 1.4, id: 6, name: 'CVCI (1.18)' },
-	7: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.3, torpedo: true, name: 'DDCI (GTR)' },
-	8: { dmgMod: 1.2, accMod: 1.65, chanceMod: 1.5, torpedo: true, name: 'DDCI (LTR)' },
+	7: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.3, name: 'DDCI (GTR)' },
+	8: { dmgMod: 1.2, accMod: 1.65, chanceMod: 1.5, name: 'DDCI (LTR)' },
 }
 
 var FLEETS1 = [];
@@ -126,10 +126,10 @@ var SIMCONSTS = {
 	vanguardEvDD2: 40,
 	vanguardEvOther1: 5,
 	vanguardEvOther2: 20,
-	nelsonTouchRate: 65,
-	nagatoSpecialRate: 65,
-	mutsuSpecialRate: 65,
-	coloradoSpecialRate: 65,
+	nelsonTouchRate: 60,
+	nagatoSpecialRate: 60,
+	mutsuSpecialRate: 60,
+	coloradoSpecialRate: 60,
 }
 function setConst(key, val) {
 	if (val == null) SIMCONSTS[key] = null;
@@ -272,7 +272,7 @@ function shell(ship,target,APIhou,attackSpecial) {
 	
 	var evFlat = 0;
 	if (target.fleet.formation.id == 6) {
-		if (target.getFormation() == VANGUARD1) {
+		if (target.num/target.fleet.ships.length <= .8) {
 			evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD1 : SIMCONSTS.vanguardEvOther1;
 		} else {
 			evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD2 : SIMCONSTS.vanguardEvOther2;
@@ -487,7 +487,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 		preMod *= .5;
 	}
 	if (target.fleet.formation.id == 6) {
-		if (target.getFormation() == VANGUARD1) {
+		if (target.num/target.fleet.ships.length <= .5) {
 			evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD1 : SIMCONSTS.vanguardEvOther1;
 		} else {
 			evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD2 : SIMCONSTS.vanguardEvOther2;
@@ -632,7 +632,7 @@ function ASW(ship,target,isnight,APIhou) {
 	if (!formationCountered(ship.fleet.formation.id,target.fleet.formation.id)) accMod *= ship.getFormation().shellacc;
 	var evFlat = 0;
 	if (target.fleet.formation.id == 6) {
-		if (target.getFormation() == VANGUARD1) {
+		if (target.num/target.fleet.ships.length <= .8) {
 			evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD1 : SIMCONSTS.vanguardEvOther1;
 		} else {
 			evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD2 : SIMCONSTS.vanguardEvOther2;
@@ -777,6 +777,7 @@ function canSpecialAttack(ship) {
 		if (ship.fleet.formation.id != 12 && ship.fleet.formation.id != 4) return false;
 		if (ship.HP/ship.maxHP <= .5) return false;
 		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[1].type) == -1) return false;
+		if (ship.fleet.ships[1].HP/ship.fleet.ships[1].maxHP <= .25) return false;
 		let rate = (ship.attackSpecial == 101)? SIMCONSTS.nagatoSpecialRate : SIMCONSTS.mutsuSpecialRate;
 		return Math.random() < rate/100;
 	} else if (ship.attackSpecial == 103) {
@@ -1097,7 +1098,7 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 		
 		var evFlat = (target.improves.EVtorp)? ship.improves.EVtorp : 0;
 		if (target.fleet.formation.id == 6) {
-			if (target.getFormation() == VANGUARD1) {
+			if (target.num/target.fleet.ships.length <= .5) {
 				evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD1 : SIMCONSTS.vanguardEvOther1;
 			} else {
 				evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD2 : SIMCONSTS.vanguardEvOther2;
@@ -1274,19 +1275,7 @@ function compareAP(fleet1,fleet2,isjetphase,includeEscort,includeScout) {
 	if (C) console.log('AS: '+ap1+' '+ap2+' '+fleet1.AS + ' '+fleet2.AS);
 }
 
-function choiceWProtect(targets,searchlightRerolls,ignoreVanguard) {
-	if (!ignoreVanguard && targets[0].fleet.formation.id == 6) {
-		let targetV = choiceWProtect(targets,searchlightRerolls,true);
-		if (targetV.getFormation() == VANGUARD1 && Math.random() < .6) {
-			let vanguards = [];
-			for (let ship of targets) if (ship.getFormation() == VANGUARD2) vanguards.push(ship);
-			if (vanguards.length) {
-				targetV = vanguards[Math.floor(Math.random()*vanguards.length)];
-			}
-		}
-		return targetV;
-	}
-	
+function choiceWProtect(targets,searchlightRerolls) {
 	DIDPROTECT = false; //disgusting hack, rework later?
 	var target = targets[Math.floor(Math.random()*targets.length)];
 	if (searchlightRerolls) {
@@ -1294,6 +1283,9 @@ function choiceWProtect(targets,searchlightRerolls,ignoreVanguard) {
 			if (target.hasSearchlight) break;
 			target = targets[Math.floor(Math.random()*targets.length)];
 		}
+	}
+	if (target.getFormation() == VANGUARD1) {
+		target = targets[Math.floor(Math.random()*targets.length)];
 	}
 	if (!target.isflagship || target.isInstall || target.isescort || !MECHANICS.flagProtect) return target;
 	
@@ -3213,7 +3205,7 @@ function getDetection(shipsF,shipsE) {
 	let weightedLOS = 0, numReconSlots = 0, numCarriers = 0, numShips = 0, reconSlots = [];
 	for (let ship of shipsF) {
 		if (ship.HP <= 0 || ship.retreated) continue;
-		weightedLOS += ship.LOS/weights[ind++];
+		weightedLOS += ship.LOS/weights[ind++] || 0;
 		for (let i=0; i<ship.equips.length; i++) {
 			if (ship.planecount[i] <= 0) continue;
 			let eq = ship.equips[i];
