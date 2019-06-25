@@ -251,6 +251,11 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 				var mod = 0;
 				if (eq.rank == 7) mod = 10;
 				else if (eq.rank == 6) mod = 7;
+				else if (eq.rank == 5) mod = 5;
+				else if (eq.rank == 4) mod = 4;
+				else if (eq.rank == 3) mod = 3;
+				else if (eq.rank == 2) mod = 2;
+				else if (eq.rank == 1) mod = 1;
 				this.critratebonus += mod*.6; //x.75????
 				this.critdmgbonus += Math.floor(Math.sqrt(eq.exp) + mod)/((i==0)? 100:200);
 				planeexp += eq.exp;
@@ -531,8 +536,8 @@ Ship.prototype.AStype = function() {
 		if (this.equiptypes[DIVEBOMBER] && this.equiptypes[TORPBOMBER]) this._astype.push(73);
 	}
 	
-	var mguns = this.equiptypesB[B_MAINGUN], sguns = this.equiptypesB[B_SECGUN], radars = this.equiptypesB[B_RADAR], apshells = this.equiptypesB[B_APSHELL];
-	var recons = (this.equiptypesB[B_RECON])? this.equiptypesB[B_RECON] : 0;
+	var mguns = this.equiptypesB[B_MAINGUN] || 0, sguns = this.equiptypesB[B_SECGUN] || 0, radars = this.equiptypesB[B_RADAR] || 0, apshells = this.equiptypesB[B_APSHELL] || 0;
+	var recons = this.equiptypesB[B_RECON] || 0;
 	if (recons <= 0 || mguns <= 0) return this._astype;
 	
 	if (mguns >= 2 && apshells) this._astype.push(6);
