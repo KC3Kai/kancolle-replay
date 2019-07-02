@@ -897,6 +897,10 @@ function doShellC(ship,targets,APIhou,isOASW,attackSpecial) {
 }
 
 function shellPhaseC(order1,order2,targets,APIhou,isOASW) {
+	if (C && NEWFORMAT) {
+		formatRemovePadding(APIhou);
+		if (!APIhou.api_at_eflag) APIhou.api_at_eflag = [];
+	}
 	let numRounds = Math.max(order1.length,order2.length);
 	for (var i=0; i<numRounds; i++) {
 		if (i < order1.length && order1[i].canStillShell()) {
@@ -1142,7 +1146,7 @@ function airstrike(ship,target,slot,contactMod,issupport) {
 	var res = rollHit(accuracyAndCrit(ship,target,acc,target.getFormation().AAmod,0,.2,!issupport),!issupport && ship.critdmgbonus);
 	var equip = ship.equips[slot];
 	var dmg = 0, realdmg = 0;
-	var planebase = (equip.isdivebomber)? equip.DIVEBOMB : (target.isInstall)? 0 : equip.TP;
+	var planebase = (equip.isdivebomber)? equip.DIVEBOMB : (target.isInstall)? 0 : equip.TP + .2*(equip.level || 0);
 	planebase = planebase || 0;
 	if (C) console.log('		'+slot+' '+planebase);
 	if (res) {
@@ -1632,7 +1636,7 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 	}
 	if (MECHANICS.LBASBuff && suptype == 1 && subsalive2.length) {
 		for (let ship of shipsS) {
-			if (ship.CVshelltype && ship.canASW()) {
+			if (ship.CVshelltype) {
 				suptype = 4;
 				break;
 			}
