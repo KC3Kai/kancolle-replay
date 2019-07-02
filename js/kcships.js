@@ -107,12 +107,14 @@ Fleet.prototype.supportChance = function(isboss) {
 	return c;
 }
 Fleet.prototype.reset = function(notShips) {
-	if (!notShips) { for (var i=0; i<this.ships.length; i++) this.ships[i].reset();}
+	if (!notShips) {
+		for (var i=0; i<this.ships.length; i++) this.ships[i].reset();
+		delete this.didSpecial;
+	}
 	this.AS = 0;
 	this.DMGTOTALS = [0,0,0,0,0,0];
 	this._baseFAA = undefined;
 	this._fLoS = undefined;
-	delete this.didSpecial;
 }
 Fleet.prototype.giveCredit = function(ship,damage) {
 	this.DMGTOTALS[this.ships.indexOf(ship)] += damage;
@@ -124,8 +126,18 @@ Fleet.prototype.getMVP = function() {
 	}
 	return ship.id;
 }
-Fleet.prototype.setFormation = function(formNum) {
-	this.formation = ALLFORMATIONS[formNum];
+Fleet.prototype.setFormation = function(formNum,combineType) {
+	if (formNum > 10 && this.combinedWith) {
+		if (this.isescort) {
+			this.combinedWith.formation = ALLFORMATIONS[''+combineType+formNum];
+			this.formation = ALLFORMATIONS[''+combineType+formNum+'E'];
+		} else {
+			this.formation = ALLFORMATIONS[''+combineType+formNum];
+			this.combinedWith.formation = ALLFORMATIONS[''+combineType+formNum+'E'];
+		}
+	} else {
+		this.formation = ALLFORMATIONS[formNum];
+	}
 }
 //----------
 
@@ -814,7 +826,7 @@ Ship.prototype.airPower = function(jetonly,includeScout) {
 	var ap = 0;
 	for (var i=0; i<this.equips.length; i++) {
 		if ((this.equips[i].isfighter && (!jetonly||this.equips[i].isjet)) || (includeScout && EQTDATA[this.equips[i].type].isPlane)) {
-			ap += Math.floor(((this.equips[i].AA||0) + (this.equips[i].level||0)*.2) * Math.sqrt(this.planecount[i]) + (this.equips[i].APbonus||0));
+			ap += Math.floor(((this.equips[i].AA||0) + (this.equips[i].AAImprove||0)) * Math.sqrt(this.planecount[i]) + (this.equips[i].APbonus||0));
 		}
 	}
 	return Math.floor(ap);
@@ -1114,7 +1126,7 @@ LandBase.prototype.airPower = function(jetonly) {
 			else if (this.equips[i].ACC <= 2 && landscoutmod < 1.15) landscoutmod = 1.15;
 		}
 		if (EQTDATA[this.equips[i].type].isPlane && (!jetonly||this.equips[i].isjet)) {
-			var base = (this.equips[i].AA||0) + (this.equips[i].level||0)*.2;
+			var base = (this.equips[i].AA||0) + (this.equips[i].AAImprove||0);
 			if (this.equips[i].type == LANDBOMBER || this.equips[i].type == INTERCEPTOR) base += (this.equips[i].EV||0)*1.5;
 			ap += Math.floor(base * Math.sqrt(this.planecount[i]) + (this.equips[i].APbonus||0));
 		}
@@ -1126,7 +1138,7 @@ LandBase.prototype.airPowerDefend = function() {
 	var ap = 0, mod = 1;
 	for (var i=0; i<this.equips.length; i++) {
 		if (EQTDATA[this.equips[i].type].isPlane) {
-			var base = (this.equips[i].AA||0) + (this.equips[i].level||0)*.2;
+			var base = (this.equips[i].AA||0) + (this.equips[i].AAImprove||0);
 			if (this.equips[i].type == LANDBOMBER || this.equips[i].type == INTERCEPTOR) base += (this.equips[i].EV||0) + (this.equips[i].ACC||0)*2;
 			ap += Math.floor(base * Math.sqrt(this.planecount[i]) + (this.equips[i].APbonus||0));
 		}
@@ -1234,7 +1246,14 @@ Equip.prototype.setImprovement = function(level) {
 	}
 	if ((this.type == MAINGUNSAA || this.type == SECGUNAA) && this.AA >= 8) special = IMPROVESPECIAL['HAFDGUN'];
 	if (special) {
-		for (var key in special) this.improves[key] = improve[key]*Math.sqrt(level);
+		for (var key in special) this.improves[key] = special[key]*Math.sqrt(level);
+	}
+
+	switch (this.type) {
+		case FIGHTER:
+			this.AAImprove = .2*level;
+		case DIVEBOMBER:
+			this.AAImprove = .25*level;
 	}
 }
 Equip.prototype.setProficiency = function(rank,forLBAS) {

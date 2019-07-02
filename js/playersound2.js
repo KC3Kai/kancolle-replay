@@ -2663,9 +2663,9 @@ var VOICES = {
 	167: {
 		start: "assets/voice/Isokaze-Battle_Start.ogg",
 		attack: "assets/voice/Isokaze-Attack.ogg",
-		nbattack: "assets/voice/Isokaze-Night_Attack.ogg",
+		nbattack: "assets/voice/IsokazeKai-Night_Attack.ogg",
 		damage1: "assets/voice/Isokaze-Minor_Damage_1.ogg",
-		damage2: "assets/voice/Isokaze-Minor_Damage_2.ogg",
+		damage2: "assets/voice/IsokazeKai-Minor_Damage_2.ogg",
 		damage3: "assets/voice/Isokaze-Major_Damage.ogg",
 	},
 	557: {
@@ -2673,7 +2673,7 @@ var VOICES = {
 		attack: "assets/voice/Isokaze-Attack.ogg",
 		nbattack: "assets/voice/IsokazeKai-Night_Attack.ogg",
 		damage1: "assets/voice/IsokazeBKai-Minor_Damage_1.ogg",
-		damage2: "assets/voice/IsokazeBKai-Minor_Damage_2.ogg",
+		damage2: "assets/voice/IsokazeKai-Minor_Damage_2.ogg",
 		damage3: "assets/voice/IsokazeBKai-Major_Damage.ogg",
 	},
 	556: {
@@ -2741,11 +2741,11 @@ var VOICES = {
 		damage3: "assets/voice/Hamakaze-Major_Damage.ogg",
 	},
 	558: {
-		start: "assets/voice/Hamakaze-Battle_Start.ogg",
-		attack: "assets/voice/Hamakaze-Attack.ogg",
-		nbattack: "assets/voice/Hamakaze-Night_Attack.ogg",
-		damage1: "assets/voice/Hamakaze-Minor_Damage_1.ogg",
-		damage2: "assets/voice/Hamakaze-Minor_Damage_2.ogg",
+		start: "assets/voice/HamakazeBKai-Battle_Start.ogg",
+		attack: "assets/voice/HamakazeBKai-Attack.ogg",
+		nbattack: "assets/voice/HamakazeKai-Night_Attack.ogg",
+		damage1: "assets/voice/HamakazeKai-Minor_Damage_1.ogg",
+		damage2: "assets/voice/HamakazeKai-Minor_Damage_2.ogg",
 		damage3: "assets/voice/Hamakaze-Major_Damage.ogg",
 	},
 	173: {

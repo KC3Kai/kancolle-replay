@@ -15310,7 +15310,7 @@ var SHIPDATA = {
 		RNG: 3,
 		SPD: 5,
 		TACC: 50,
-		SLOTS: [0, 0, 50],
+		SLOTS: [0, 0, 50, 0],
 		EQUIPS: [509, 505, 520, 531],
 		fuel: 0,
 		ammo: 0
