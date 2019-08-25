@@ -219,7 +219,6 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 			}
 		}
 		if (eq.type == TYPE3SHELL) this.hasT3Shell = true;
-		if (eq.type == WG42) this.numWG = (this.numWG)? this.numWG+1 : 1;
 		if (eq.type == MIDGETSUB) this.hasMidgetSub = true;
 		if (eq.type == STARSHELL) this.hasStarShell = true;
 		if (eq.type == SEARCHLIGHTS) this.hasSearchlight = 1;
@@ -286,6 +285,10 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		else if (eq.type == DIVEBOMBER) installeqs.DB++;
 		if (eq.mid == 230) installeqs.TDH11++;
 		if (eq.mid == 193) installeqs.TDH++;
+		if (eq.mid == 346) installeqs.mortar = installeqs.mortar + 1 || 1;
+		if (eq.mid == 347) installeqs.mortarC = installeqs.mortarC + 1 || 1;
+		if (eq.mid == 348) installeqs.rocket4 = installeqs.rocket4 + 1 || 1;
+		if (eq.mid == 126) this.numWG = this.numWG + 1 || 1;
 		
 		if (eq.LOS) this.LOSeq += eq.LOS;
 		if (eq.TP) tpEquip += eq.TP;
@@ -347,12 +350,24 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	this.installFlat = 0;
 	if (this.numWG) this.installFlat += WGpower(this.numWG);
 	if (installeqs.TDH11) this.installFlat += 25;
+	if (installeqs.mortarC >= 2) this.installFlat += 110;
+	else if (installeqs.mortarC) this.installFlat += 60;
+	if (installeqs.mortar >= 3) this.installFlat += 75;
+	else if (installeqs.mortar == 2) this.installFlat += 55;
+	else if (installeqs.mortar) this.installFlat += 30;
+	if (installeqs.rocket4 >= 2) this.installFlat += 115;
+	else if (installeqs.rocket4) this.installFlat += 55;
+	let numMortar = (installeqs.mortar || 0) + (installeqs.mortarC || 0);
 	
 	this.softSkinMult = 1;
 	if (this.hasT3Shell) this.softSkinMult *= 2.5;
 	if (MECHANICS.installRevamp) {
 		if (this.numWG) this.softSkinMult *= 1.3;
 		if (this.numWG >= 2) this.softSkinMult *= 1.4;
+		if (numMortar) this.softSkinMult *= 1.2;
+		if (numMortar >= 2) this.softSkinMult *= 1.3;
+		if (installeqs.rocket4) this.softSkinMult *= 1.25;
+		if (installeqs.rocket4 >= 2) this.softSkinMult *= 1.5;
 		if (installeqs.DH1 || installeqs.DH2 || installeqs.TDH || installeqs.TDH11) this.softSkinMult *= 1.4;
 		if (installeqs.TDH) this.softSkinMult *= 1.15;
 		if (installeqs.TDH11) this.softSkinMult *= 1.8;
@@ -370,6 +385,10 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	this.pillboxMult = (this.type=='DD'||this.type=='CL')? 1.4 : 1;
 	if (this.numWG >= 2) this.pillboxMult*=2.72;
 	else if (this.numWG == 1) this.pillboxMult*=1.6;
+	if (numMortar) this.pillboxMult *= 1.3;
+	if (numMortar >= 2) this.pillboxMult *= 1.5;
+	if (installeqs.rocket4) this.pillboxMult *= 1.5;
+	if (installeqs.rocket4 >= 2) this.pillboxMult *= 1.8;
 	if (MECHANICS.installRevamp) {
 		if (installeqs.DH1 || installeqs.DH2 || installeqs.TDH || installeqs.TDH11) this.pillboxMult *= 1.8;
 		if (installeqs.TDH) this.pillboxMult *= 1.15;
@@ -396,6 +415,10 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	this.isoMult = 1;
 	if (this.numWG >= 2) this.isoMult*=2.1;
 	else if (this.numWG == 1) this.isoMult*=1.4;
+	if (numMortar) this.isoMult *= 1.2;
+	if (numMortar >= 2) this.isoMult *= 1.4;
+	if (installeqs.rocket4) this.isoMult *= 1.3;
+	if (installeqs.rocket4 >= 2) this.isoMult *= 1.65;
 	if (MECHANICS.installRevamp) {
 		if (installeqs.DH1 || installeqs.DH2 || installeqs.TDH || installeqs.TDH11) this.isoMult *= 1.8;
 		if (installeqs.TDH) this.isoMult *= 1.15;
@@ -427,6 +450,10 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	if (MECHANICS.installRevamp) {
 		if (this.numWG >= 2) this.supplyPostMult*=1.625;
 		else if (this.numWG == 1) this.supplyPostMult*=1.45;
+		if (numMortar) this.supplyPostMult *= 1.2;
+		if (numMortar >= 2) this.supplyPostMult *= 1.4;
+		if (installeqs.rocket4) this.supplyPostMult *= 1.15;
+		if (installeqs.rocket4 >= 2) this.supplyPostMult *= 1.2;
 		if (installeqs.TDH11) this.supplyPostMult*=3.5*installbonus1;
 		else if (installeqs.DH2) this.supplyPostMult*=2.1*installbonus1;
 		if (installeqs.DH3 >= 2) this.supplyPostMult*=2.5*installbonus3;
@@ -541,6 +568,16 @@ Ship.prototype.NBchance = function() {
 Ship.prototype.AStype = function() {
 	if (this._astype) return this._astype;
 	this._astype = [];
+	
+	if (MECHANICS.zuiunCI && this.canZuiunCI && this.equiptypesB[B_MAINGUN]) {
+		let numZuiun = 0, num634 = 0;
+		for (let equip of this.equips) {
+			if (equip.type == SEAPLANEBOMBER && equip.nameJP.indexOf('瑞雲') != -1) numZuiun++;
+			if (equip.type == DIVEBOMBER && equip.nameJP.indexOf('六三四空') != -1) num634++;
+		}
+		if (num634 >= 2) this._astype.push(201);
+		if (numZuiun >= 2) this._astype.push(200);
+	}
 	
 	if (MECHANICS.CVCI && this.CVshelltype) {
 		if (this.equiptypes[DIVEBOMBER] && this.equiptypes[TORPBOMBER] && this.equiptypes[FIGHTER]) this._astype.push(71);
