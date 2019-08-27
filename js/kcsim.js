@@ -2423,7 +2423,9 @@ function updateSupply(ships,didNB,NBonly,bombing,noammo) {
 	if (ships[0].fleet.didSpecial == 1 && (ships[0].attackSpecial == 101 || ships[0].attackSpecial == 102)) {
 		for (let i=0; i<2; i++) {
 			let ammoMax = ships[i].ammo || 100;
-			ships[i].ammoleft -= (Math.floor(ammoMax * .1) || 1) / ammoMax;
+			let cost = 10*(Math.floor(ammoMax * .1) || 1) / ammoMax;
+			if (NBonly) cost *= .5;
+			ships[i].ammoleft -= cost;
 		}
 		ships[0].fleet.didSpecial = 2;
 	}
