@@ -125,6 +125,8 @@
 			<label for="mechshelldmg">Day Shelling Soft-Cap: </label><input id="mechshelldmg" type="number" min="0" max="9999" value="180" style="width:50px" onchange="SHELLDMGBASE=parseInt(this.value);raiseFleetChange()" /><br>
 			<label for="mechaswdmg">ASW Soft-Cap: </label><input id="mechaswdmg" type="number" min="0" max="9999" value="150" style="width:50px" onchange="ASWDMGBASE=parseInt(this.value);raiseFleetChange()" /><br>
 			<br>
+			<input type="checkbox" id="advCostW6" onchange="SIMCONSTS.airRaidCostW6=this.checked;raiseFleetChange()" /><label for="advCostW6">Use World 6 costs for Air Raid (4% <img src="assets/stats/fuel.png" /> 8% <img src="assets/stats/ammo.png" />)</label><br>
+			<br>
 			<input type="button" value="Show Advanced" onclick="$('#optionsadvanced').toggle()" />
 			<div id="optionsadvanced" style="display:none">
 				<span>Support Shelling Base Accuracy:</span><br>
@@ -200,6 +202,10 @@
 				<tr><td>Mutsu Cut-In:</td><td><input type="number" min="0" max="100" value="60" onchange="SIMCONSTS.mutsuSpecialRate = +this.value" />%</td></tr>
 				<tr><td>Colorado Cut-In:</td><td><input type="number" min="0" max="100" value="60" onchange="SIMCONSTS.coloradoSpecialRate = +this.value" />%</td></tr>
 				</table>
+				<br>
+				<input type="checkbox" id="advEAACI" checked onchange="SIMCONSTS.enableEnemyAACI=this.checked;raiseFleetChange()" /><label for="advEAACI">Enable Abyssal AACI on Normal Air Phase</label><br>
+				<input type="checkbox" id="advEAACILB" onchange="SIMCONSTS.enableEnemyAACILBAS=this.checked;raiseFleetChange()" /><label for="advEAACILB">Enable Abyssal AACI on LBAS Phase</label><br>
+				<br>
 			</div>
 			<br><br>
 			<table id="optionstable">

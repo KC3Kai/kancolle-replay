@@ -132,6 +132,9 @@ var SIMCONSTS = {
 	nagatoSpecialRate: 60,
 	mutsuSpecialRate: 60,
 	coloradoSpecialRate: 60,
+	airRaidCostW6: false,
+	enableEnemyAACI: true,
+	enableEnemyAACILBAS: false,
 }
 function setConst(key, val) {
 	if (val == null) SIMCONSTS[key] = null;
@@ -1375,62 +1378,7 @@ function getAAShotFlat(defender,resistModShip,resistModFleet) {
 	return (sAA+fAA)*mod;
 }
 
-function getContact(carriers) {
-	if (!MECHANICS.artillerySpotting) return null;
-	var losPower = 0;
-	for (var i=0; i<carriers.length; i++) {
-		var ship = carriers[i];
-		for (var j=0; j<ship.equips.length; j++) {
-			var e = ship.equips[j];
-			if (e.LOS && EQTDATA[e.type].isPlane) losPower += Math.floor(Math.sqrt(ship.planecount[j])*e.LOS);
-		}
-	}
-	var chance, cmod;
-	if (carriers[0].airState() == 2) { chance = losPower/25; cmod = 14; }
-	else if (carriers[0].airState() == 1) { chance = losPower/40; cmod = 16; }
-	else { chance = losPower/55; cmod = 18; }
-	if (C) console.log('CONTACT CHANCE 1: '+chance);
-	//phase 2
-	if (Math.random() < chance) {
-		var contacter = null;
-		for (var j=0; j<carriers.length; j++) {
-			var ship = carriers[j];
-			for (var i=0; i<ship.equips.length; i++) {
-				var equip = ship.equips[i];
-				if (!EQTDATA[equip.type].canContact || !equip.LOS) continue;
-				if (contacter && ((contacter.ACC||0) >= (equip.ACC||0))) continue;
-				if (C) console.log('    CHANCE 2: '+(equip.LOS/cmod));
-				if (Math.random() < equip.LOS/cmod) contacter = equip;
-			}
-		}
-		if (contacter) {
-			if (contacter.ACC >= 3) contactMod = 1.2;
-			else if(contacter.ACC==2) contactMod = 1.17;
-			else contactMod = 1.12;
-			return {mod:contactMod, id:contacter.mid};
-		}
-	}
-	return null;
-}
-
-function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupport,isjetphase,combinedAll) {
-	var bombers = [], hasbomber = false;
-	for (var i=0; i<carriers.length; i++) {
-		var ship = carriers[i];
-		bombers.push([]);
-		for (var j=0; j<ship.equips.length; j++) {
-			var e = ship.equips[j];
-			if ((e.istorpbomber || e.isdivebomber) && ship.planecount[j]>0 && (!isjetphase||e.isjet)) {
-				bombers[i].push(j);
-				hasbomber = true;
-				var side = (ship.side == 2 || ship.side == 3)? 0 : ship.side;
-				if (C && APIkouku.api_plane_from[side].indexOf(ship.apiID2)==-1) APIkouku.api_plane_from[side].push(ship.apiID2);
-			}
-		}
-	}
-	if (!hasbomber) return;
-	
-	//get AACI
+function getAACI(defenders,APIkouku) {
 	var AACInum = 0, AACImod = 1;
 	if (MECHANICS.AACI) {
 		var AACIship, AACItype = 0;
@@ -1497,6 +1445,71 @@ function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupp
 				}
 			}
 		}
+	}
+	return { num: AACInum, mod: AACImod };
+}
+
+function getContact(carriers) {
+	if (!MECHANICS.artillerySpotting) return null;
+	var losPower = 0;
+	for (var i=0; i<carriers.length; i++) {
+		var ship = carriers[i];
+		for (var j=0; j<ship.equips.length; j++) {
+			var e = ship.equips[j];
+			if (e.LOS && EQTDATA[e.type].isPlane) losPower += Math.floor(Math.sqrt(ship.planecount[j])*e.LOS);
+		}
+	}
+	var chance, cmod;
+	if (carriers[0].airState() == 2) { chance = losPower/25; cmod = 14; }
+	else if (carriers[0].airState() == 1) { chance = losPower/40; cmod = 16; }
+	else { chance = losPower/55; cmod = 18; }
+	if (C) console.log('CONTACT CHANCE 1: '+chance);
+	//phase 2
+	if (Math.random() < chance) {
+		var contacter = null;
+		for (var j=0; j<carriers.length; j++) {
+			var ship = carriers[j];
+			for (var i=0; i<ship.equips.length; i++) {
+				var equip = ship.equips[i];
+				if (!EQTDATA[equip.type].canContact || !equip.LOS) continue;
+				if (contacter && ((contacter.ACC||0) >= (equip.ACC||0))) continue;
+				if (C) console.log('    CHANCE 2: '+(equip.LOS/cmod));
+				if (Math.random() < equip.LOS/cmod) contacter = equip;
+			}
+		}
+		if (contacter) {
+			if (contacter.ACC >= 3) contactMod = 1.2;
+			else if(contacter.ACC==2) contactMod = 1.17;
+			else contactMod = 1.12;
+			return {mod:contactMod, id:contacter.mid};
+		}
+	}
+	return null;
+}
+
+function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupport,isjetphase,combinedAll) {
+	var bombers = [], hasbomber = false;
+	for (var i=0; i<carriers.length; i++) {
+		var ship = carriers[i];
+		bombers.push([]);
+		for (var j=0; j<ship.equips.length; j++) {
+			var e = ship.equips[j];
+			if ((e.istorpbomber || e.isdivebomber) && ship.planecount[j]>0 && (!isjetphase||e.isjet)) {
+				bombers[i].push(j);
+				hasbomber = true;
+				var side = (ship.side == 2 || ship.side == 3)? 0 : ship.side;
+				if (C && APIkouku.api_plane_from[side].indexOf(ship.apiID2)==-1) APIkouku.api_plane_from[side].push(ship.apiID2);
+			}
+		}
+	}
+	if (!hasbomber) return;
+	
+	//get AACI
+	var AACInum = 0, AACImod = 1;
+	if (SIMCONSTS.enableEnemyAACI) {
+		let AACIResult = getAACI(defenders,APIkouku);
+		AACInum = AACIResult.num;
+		AACImod = AACIResult.mod;
 	}
 	
 	//get contact
@@ -1868,6 +1881,11 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 	var AACInum = 0;
 	for (var i=0; i<alive2.length; i++) defenders.push(alive2[i]);
 	for (var i=0; i<subsalive2.length; i++) defenders.push(subsalive2[i]);
+	if (SIMCONSTS.enableEnemyAACILBAS) {
+		let AACIResult = getAACI(defenders,APIkouku);
+		AACInum = AACIResult.num;
+		AACImod = AACIResult.mod;
+	}
 	for (var i=0; i<lbas.equips.length; i++) {
 		var eq = lbas.equips[i];
 		if (!eq.isdivebomber && !eq.istorpbomber) continue;
@@ -2437,8 +2455,13 @@ function updateSupply(ships,didNB,NBonly,bombing,noammo) {
 			costFuel = .04;
 			costAmmo = .08;
 		} else if (bombing) {
-			costFuel = .06;
-			costAmmo = .04;
+			if (SIMCONSTS.airRaidCostW6) {
+				costFuel = .04;
+				costAmmo = .08;
+			} else {
+				costFuel = .06;
+				costAmmo = .04;
+			}
 		} else if (noammo) {
 			costFuel = .08;
 		} else if (NBonly) {

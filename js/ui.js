@@ -368,6 +368,7 @@ function dSetEquip(eqid) {
 	$('#T'+SELFLEET+'e'+SELSLOT+SELEQ).trigger("chosen:updated");
 	changedEquip(SELFLEET,SELSLOT,SELEQ);
 	if (SELFLEET != 'LB') updateFleetCode(SELFLEET);
+	else raiseFleetChange();
 	SELFLEET = SELSLOT = SELEQ = undefined;
 }
 
@@ -2299,6 +2300,7 @@ function clickedDelLBAS() {
 	$('#btnDelLBAS').hide();
 	ADDEDLBAS = false;
 	delete localStorage.simulator_lbas;
+	raiseFleetChange();
 }
 
 function saveLBAS() {
@@ -2314,6 +2316,7 @@ function saveLBAS() {
 		}
 	}
 	localStorage.simulator_lbas = JSON.stringify(data);
+	raiseFleetChange();
 }
 
 function loadLBAS(datastr) {
