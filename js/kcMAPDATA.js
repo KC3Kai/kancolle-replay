@@ -1485,6 +1485,35 @@ var MAPDATA = {
 			},
 		}
 	},
+	45: {
+		name: 'Event Summer 2019',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmDN: 140,
+				bgmNN: 140,
+				bgmDB: 143,
+				bgmNB: 143,
+				bossnode: 14,
+			},
+			2: {
+				name: 'E2',
+				bgmDN: 140,
+				bgmNN: 140,
+				bgmDB: 141,
+				bgmNB: 141,
+				bossnode: [14,22],
+			},
+			3: {
+				name: 'E3',
+				bgmDN: 141,
+				bgmNN: 141,
+				bgmDB: 144,
+				bgmNB: 144,
+				bossnode: [],
+			},
+		}
+	},
 }
 
 //-------------------------------------

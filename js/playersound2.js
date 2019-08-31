@@ -5870,6 +5870,42 @@ var VOICES = {
 		damage: "assets/voice/445187430.mp3",
 		sunk: "assets/voice/445187441.mp3",
 	},
+	1877: {
+		start: "assets/voice/452187710.mp3",
+		attack: "assets/voice/452187720.mp3",
+		damage: "assets/voice/452187730.mp3",
+		sunk: "assets/voice/452187740.mp3",
+	},
+	1878: {
+		start: "assets/voice/452187710.mp3",
+		attack: "assets/voice/452187720.mp3",
+		damage: "assets/voice/452187730.mp3",
+		sunk: "assets/voice/452187740.mp3",
+	},
+	1879: {
+		start: "assets/voice/452187710.mp3",
+		attack: "assets/voice/452187720.mp3",
+		damage: "assets/voice/452187730.mp3",
+		sunk: "assets/voice/452187740.mp3",
+	},
+	1880: {
+		start: "assets/voice/452188010.mp3",
+		attack: "assets/voice/452188020.mp3",
+		damage: "assets/voice/452188030.mp3",
+		sunk: "assets/voice/452188041.mp3",
+	},
+	1881: {
+		start: "assets/voice/452188010.mp3",
+		attack: "assets/voice/452188020.mp3",
+		damage: "assets/voice/452188030.mp3",
+		sunk: "assets/voice/452188041.mp3",
+	},
+	1882: {
+		start: "assets/voice/452188010.mp3",
+		attack: "assets/voice/452188020.mp3",
+		damage: "assets/voice/452188030.mp3",
+		sunk: "assets/voice/452188041.mp3",
+	},
 	2001: {
 		start: "assets/voice/Iona_fog_-Battle_Start.ogg",
 		attack: "assets/voice/Iona_fog_-Attack.ogg",
