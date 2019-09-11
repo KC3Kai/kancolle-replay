@@ -1510,7 +1510,7 @@ var MAPDATA = {
 				bgmNN: 141,
 				bgmDB: 144,
 				bgmNB: 144,
-				bossnode: [],
+				bossnode: [10,21],
 			},
 		}
 	},
