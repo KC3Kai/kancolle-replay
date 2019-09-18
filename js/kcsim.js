@@ -69,7 +69,7 @@ var AACIDATA = {
 	28:{num:4,rate:.55,mod:1.4,equip:'GR'},
 	29:{num:5,rate:.6,mod:1.55,equip:'HR'},
 	30:{num:3,rate:.4,mod:1.3,equip:'HHH'},
-	31:{num:2,rate:.5,mod:1.2,equip:'HH'},
+	31:{num:2,rate:.5,mod:1.25,equip:'HH'},
 	32:{num:3,rate:.5,mod:1.2,equip:'CM'},
 	33:{num:3,rate:.4,mod:1.35,equip:'HG'},
 	34:{num:7,rate:.6,mod:1.6,equip:'BB',rollIndiv:true},
@@ -290,6 +290,10 @@ function shell(ship,target,APIhou,attackSpecial) {
 		cutin = attackSpecial;
 	}
 	
+	if (target.isAnchorage) {
+		postMod *= ship.anchoragePostMult;
+	}
+	
 	if (C) console.log('PREMOD: '+preMod+' POSTMOD: '+postMod);
 	
 	if (da) {
@@ -502,6 +506,10 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 	if (attackSpecial) {
 		cutin = attackSpecial;
 		preMod *= getSpecialAttackMod(ship,attackSpecial);
+	}
+	
+	if (target.isAnchorage) {
+		postMod *= ship.anchoragePostMult;
 	}
 	
 	if (da) {
@@ -775,6 +783,7 @@ function canSpecialAttack(ship) {
 		if (ship.HP/ship.maxHP <= .5) return false;
 		for (let s of ship.fleet.ships) { if (s.isSub) return false; }
 		if (ship.fleet.ships[2].CVshelltype || ship.fleet.ships[4].CVshelltype) return false;
+		if (ship.fleet.ships[2].retreated || ship.fleet.ships[4].retreated) return false;
 		return Math.random() < SIMCONSTS.nelsonTouchRate/100;
 	} else if (ship.attackSpecial == 101 || ship.attackSpecial == 102) {
 		if (ship.fleet.ships[0] != ship) return false;
@@ -2500,6 +2509,29 @@ function updateSupply(ships,didNB,NBonly,bombing,noammo) {
 	}
 }
 
+function underwaySupply(fleet) {
+	let ships = fleet.ships, num = fleet.numUnderwaySupply || 0;
+	if (fleet.combinedWith) {
+		ships = ships.concat(fleet.combinedWith.ships);
+		num += (fleet.combinedWith.numUnderwaySupply || 0);
+	}
+	if (num == 0) return;
+	let amount;
+	if (num == 1) amount = (fleet.combinedWith)? .15 : .25;
+	else if (num == 2) amount = (fleet.combinedWith)? .275 : .36;
+	else amount = (fleet.combinedWith)? .4 : .47;
+	for (let ship of ships) {
+		let fuel = 10*(Math.floor(ship.fuel * amount) || 1) / ship.fuel;
+		let ammo = 10*(Math.floor(ship.ammo * amount) || 1) / ship.ammo;
+		if (ship.fuelleft + fuel > 10) fuel = 10 - ship.fuelleft;
+		if (ship.ammoleft + ammo > 10) ammo = 10 - ship.ammoleft;
+		ship.fuelleft += fuel;
+		ship.ammoleft += ammo;
+		ship._fuelUnderway = fuel;
+		ship._ammoUnderway = ammo;
+	}
+}
+
 function updateMorale(ships1,rank,mvp,NBonly,didNB) {
 	for (var i=0; i<ships1.length; i++) {
 		if (ships1[i].morale < 30) ships1[i].morale -= 6;
@@ -2644,8 +2676,13 @@ function simStats(numsims,foptions) {
 			FLEETS1[0].DMGTOTALS = [0,0,0,0,0,0];
 			if (options.formation != '0') FLEETS1[0].formation = ALLFORMATIONS[options.formation];
 			else FLEETS1[0].formation = formdef;
-			var supportNum = (j == FLEETS2.length-1)? 1 : 0;
-			let friendFleet = (j == FLEETS2.length-1)? FLEETS1S[2] : null;
+			var supportNum = 0;
+			let friendFleet = null;
+			if (j == FLEETS2.length - 1) {
+				supportNum = 1;
+				friendFleet = FLEETS1S[2];
+				underwaySupply(FLEETS1[0]);
+			}
 			var LBASwaves = [];
 			for (var k=0; k<options.lbas.length; k++) LBASwaves.push(LBAS[options.lbas[k]-1]);
 			var res;
@@ -2672,8 +2709,10 @@ function simStats(numsims,foptions) {
 				totalResult.totalSteelR += r[1];
 			}
 			if (useBucket) totalResult.totalBuckets++;
-			totalResult.totalFuelS += Math.floor(ship.fuel * (10-ship.fuelleft)/10);
-			totalResult.totalAmmoS += Math.floor(ship.ammo * (10-ship.ammoleft)/10);
+			let fuelleft = ship.fuelleft - (ship._fuelUnderway || 0);
+			let ammoleft = ship.ammoleft - (ship._ammoUnderway || 0);
+			totalResult.totalFuelS += Math.floor(ship.fuel * (10-fuelleft)/10);
+			totalResult.totalAmmoS += Math.floor(ship.ammo * (10-ammoleft)/10);
 			for (var k=0; k<ship.PLANESLOTS.length; k++) {
 				totalResult.totalBauxS += 5*(ship.PLANESLOTS[k]-ship.planecount[k]);
 				if (ship.PLANESLOTS[k] && ship.planecount[k] <= 0) totalResult.totalEmptiedPlanes++;
