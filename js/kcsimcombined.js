@@ -514,8 +514,13 @@ function simStatsCombined(numsims,type,foptions) {
 				FLEETS1[1].formation = formdefc;
 			}
 			FLEETS1[0].DMGTOTALS = [0,0,0,0,0,0]; FLEETS1[1].DMGTOTALS = [0,0,0,0,0,0];
-			var supportNum = (j == FLEETS2.length-1)? 1 : 0;
-			let friendFleet = (j == FLEETS2.length-1)? FLEETS1S[2] : null;
+			var supportNum = 0;
+			let friendFleet = null;
+			if (j == FLEETS2.length - 1) {
+				supportNum = 1;
+				friendFleet = FLEETS1S[2];
+				underwaySupply(FLEETS1[0]);
+			}
 			var LBASwaves = [];
 			for (var k=0; k<options.lbas.length; k++) LBASwaves.push(LBAS[options.lbas[k]-1]);
 			var res;
@@ -557,8 +562,10 @@ function simStatsCombined(numsims,type,foptions) {
 					totalResult.totalSteelR += r[1];
 				}
 				if (useBucket) totalResult.totalBuckets++;
-				totalResult.totalFuelS += Math.floor(ship.fuel * (10-ship.fuelleft)/10);
-				totalResult.totalAmmoS += Math.floor(ship.ammo * (10-ship.ammoleft)/10);
+				let fuelleft = ship.fuelleft - (ship._fuelUnderway || 0);
+				let ammoleft = ship.ammoleft - (ship._ammoUnderway || 0);
+				totalResult.totalFuelS += Math.floor(ship.fuel * (10-fuelleft)/10);
+				totalResult.totalAmmoS += Math.floor(ship.ammo * (10-ammoleft)/10);
 				for (var k=0; k<ship.PLANESLOTS.length; k++) {
 					totalResult.totalBauxS += 5*(ship.PLANESLOTS[k]-ship.planecount[k]);
 					if (ship.PLANESLOTS[k] && ship.planecount[k] <= 0) totalResult.totalEmptiedPlanes++;
@@ -980,9 +987,14 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 		var count = 0, allsunk = true;
 		for (var i=0; i<ships2.length; i++) if (ships2[i].HP > 0) { allsunk = false; break; }
 		for (var i=0; i<ships2C.length; i++) {
-			if (ships2C[i].HP/ships2C[i].maxHP > .5) count++;
+			let point = 0;
+			if (ships2C[i].HP/ships2C[i].maxHP > .5) point = 1;
+			else if (ships2C[i].HP/ships2C[i].maxHP > .25) point = .5;
+			else if (ships2C[i].HP/ships2C[i].maxHP > 0) point = .25;
+			if (i==0) point *= 2;
+			count += point;
 		}
-		if (ships2C[0].HP/ships2C[0].maxHP > .5) count++;
+		if (ships2C[0].HP > 0) count += .5;
 		var fightescort = (allsunk || count >= 3);
 		
 		var order1 = [], order2 = [];
@@ -1490,9 +1502,14 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		var count = 0, allsunk = true;
 		for (var i=0; i<ships2.length; i++) if (ships2[i].HP > 0) { allsunk = false; break; }
 		for (var i=0; i<ships2C.length; i++) {
-			if (ships2C[i].HP/ships2C[i].maxHP > .5) count++;
+			let point = 0;
+			if (ships2C[i].HP/ships2C[i].maxHP > .5) point = 1;
+			else if (ships2C[i].HP/ships2C[i].maxHP > .25) point = .5;
+			else if (ships2C[i].HP/ships2C[i].maxHP > 0) point = .25;
+			if (i==0) point *= 2;
+			count += point;
 		}
-		if (ships2C[0].HP/ships2C[0].maxHP > .5) count++;
+		if (ships2C[0].HP > 0) count += .5;
 		var fightescort = (allsunk || count >= 3);
 		
 		var order1 = [], order2 = [];

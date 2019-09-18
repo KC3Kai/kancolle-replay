@@ -26,6 +26,7 @@ Fleet.prototype.loadShips = function(ships) {
 		ships[i].fleet = this;
 		for (var j=0; j<ships[i].equips.length; j++) {
 			if (ships[i].equips[j].noRedT) { this.noRedT = true; break; }
+			if (ships[i].equips[j].type == OILDRUM) this.numUnderwaySupply = this.numUnderwaySupply + 1 || 1;
 		}
 		if (this.isescort) ships[i].isescort = true;
 	}
@@ -282,12 +283,13 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		else if(eq.type == TYPE3SHELL) installeqs.T3++;
 		else if(eq.type == SEAPLANEBOMBER) installeqs.SB++;
 		else if(eq.type == SEAPLANEFIGHTER) installeqs.SB++;
-		else if (eq.type == DIVEBOMBER) installeqs.DB++;
+		else if (eq.type == DIVEBOMBER || eq.type == JETBOMBER) installeqs.DB++;
 		if (eq.mid == 230) installeqs.TDH11++;
 		if (eq.mid == 193) installeqs.TDH++;
 		if (eq.mid == 346) installeqs.mortar = installeqs.mortar + 1 || 1;
 		if (eq.mid == 347) installeqs.mortarC = installeqs.mortarC + 1 || 1;
 		if (eq.mid == 348) installeqs.rocket4 = installeqs.rocket4 + 1 || 1;
+		if (eq.mid == 355) installeqs.m4a1 = installeqs.m4a1 + 1 || 1;
 		if (eq.mid == 126) this.numWG = this.numWG + 1 || 1;
 		
 		if (eq.LOS) this.LOSeq += eq.LOS;
@@ -371,9 +373,8 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (installeqs.DH1 || installeqs.DH2 || installeqs.TDH || installeqs.TDH11) this.softSkinMult *= 1.4;
 		if (installeqs.TDH) this.softSkinMult *= 1.15;
 		if (installeqs.TDH11) this.softSkinMult *= 1.8;
-		let numDH2 = installeqs.DH2 - installeqs.TDH11;
-		if (numDH2 > 0) this.softSkinMult *= 1.5;
-		if (numDH2 >= 2) this.softSkinMult *= 1.3;
+		if (installeqs.DH2 > 0) this.softSkinMult *= 1.5;
+		if (installeqs.DH2 >= 2) this.softSkinMult *= 1.3;
 		if (installbonus1 > 1) this.softSkinMult *= installbonus1;
 		if (installeqs.DH3) this.softSkinMult *= 1.5 * installbonus3;
 		if (installeqs.DH3 >= 2) this.softSkinMult *= 1.2;
@@ -393,9 +394,8 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (installeqs.DH1 || installeqs.DH2 || installeqs.TDH || installeqs.TDH11) this.pillboxMult *= 1.8;
 		if (installeqs.TDH) this.pillboxMult *= 1.15;
 		if (installeqs.TDH11) this.pillboxMult *= 1.8;
-		let numDH2 = installeqs.DH2 - installeqs.TDH11;
-		if (numDH2 > 0) this.pillboxMult *= 1.5;
-		if (numDH2 >= 2) this.pillboxMult *= 1.4;
+		if (installeqs.DH2 > 0) this.pillboxMult *= 1.5;
+		if (installeqs.DH2 >= 2) this.pillboxMult *= 1.4;
 		if (installbonus1 > 1) this.pillboxMult *= installbonus1;
 		if (installeqs.DH3) this.pillboxMult *= 2.4 * installbonus3;
 		if (installeqs.DH3 >= 2) this.pillboxMult *= 1.35;
@@ -423,9 +423,8 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (installeqs.DH1 || installeqs.DH2 || installeqs.TDH || installeqs.TDH11) this.isoMult *= 1.8;
 		if (installeqs.TDH) this.isoMult *= 1.15;
 		if (installeqs.TDH11) this.isoMult *= 1.8;
-		let numDH2 = installeqs.DH2 - installeqs.TDH11;
-		if (numDH2 > 0) this.isoMult *= 1.2;
-		if (numDH2 >= 2) this.isoMult *= 1.4;
+		if (installeqs.DH2 > 0) this.isoMult *= 1.2;
+		if (installeqs.DH2 >= 2) this.isoMult *= 1.4;
 		if (installbonus1 > 1) this.isoMult *= installbonus1;
 		if (installeqs.DH3) this.isoMult *= 2.4 * installbonus3;
 		if (installeqs.DH3 >= 2) this.isoMult *= 1.35;
@@ -454,8 +453,8 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (numMortar >= 2) this.supplyPostMult *= 1.4;
 		if (installeqs.rocket4) this.supplyPostMult *= 1.15;
 		if (installeqs.rocket4 >= 2) this.supplyPostMult *= 1.2;
-		if (installeqs.TDH11) this.supplyPostMult*=3.5*installbonus1;
-		else if (installeqs.DH2) this.supplyPostMult*=2.1*installbonus1;
+		if (installeqs.DH2) this.supplyPostMult*=2.1*installbonus1;
+		if (installeqs.m4a1) this.supplyPostMult *= 1.2;
 		if (installeqs.DH3 >= 2) this.supplyPostMult*=2.5*installbonus3;
 		else if (installeqs.DH3 == 1) this.supplyPostMult*=1.9*installbonus3;
 	} else {
@@ -467,6 +466,19 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (installeqs.DH3 >= 2) this.supplyPostMult*=2.5*installbonus3;
 		else if (installeqs.DH3 == 1) this.supplyPostMult*=1.7*installbonus3;
 	}
+	
+	this.anchoragePostMult = 1;
+	if (numMortar) this.anchoragePostMult *= 1.15;
+	if (installeqs.rocket4) this.anchoragePostMult *= 1.2;
+	if (this.numWG) this.anchoragePostMult *= 1.25;
+	if (this.numWG >= 2) this.anchoragePostMult *= 1.3;
+	if (installeqs.DH1 || installeqs.DH2 || installeqs.TDH || installeqs.TDH11) this.anchoragePostMult *= 1.45 * installbonus1;
+	if (installeqs.DH2 > 0) this.anchoragePostMult *= 1.15;
+	if (installeqs.DH3) this.anchoragePostMult *= 2.4 * installbonus3;
+	if (installeqs.m4a1) this.anchoragePostMult *= 1.75;
+	if (installeqs.T3) this.anchoragePostMult *= 1.35;
+	if (installeqs.DB) this.anchoragePostMult *= 1.4;
+	if (installeqs.DB >= 2) this.anchoragePostMult *= 1.5;
 	
 	this.ptDmgMod = 1;
 	this.ptAccMod = 1;
@@ -855,6 +867,8 @@ Ship.prototype.reset = function(notHP,notMorale) {
 	if (this.repairsOrig) this.repairs = this.repairsOrig.slice();
 	if (this.side==0 && isPlayable(this.mid)) this.protection = true;
 	if (this.retreated) this.retreated = false;
+	delete this._fuelUnderway;
+	delete this._ammoUnderway;
 	// this._wAA = undefined;
 }
 
@@ -1270,6 +1284,15 @@ function Equip(equipid,level,rank,forLBAS) {
 }
 Equip.prototype.setImprovement = function(level) {
 	this.level = level;
+	switch (this.type) {
+		case FIGHTER:
+			this.AAImprove = .2*level;
+			break;
+		case DIVEBOMBER:
+			this.AAImprove = .25*level;
+			break;
+	}
+	
 	var improve = (this.improve)? this.improve : EQTDATA[this.type].improve;
 	if (!improve) return;
 	for (var key in improve) {
@@ -1284,13 +1307,6 @@ Equip.prototype.setImprovement = function(level) {
 	if ((this.type == MAINGUNSAA || this.type == SECGUNAA) && this.AA >= 8) special = IMPROVESPECIAL['HAFDGUN'];
 	if (special) {
 		for (var key in special) this.improves[key] = special[key]*Math.sqrt(level);
-	}
-
-	switch (this.type) {
-		case FIGHTER:
-			this.AAImprove = .2*level;
-		case DIVEBOMBER:
-			this.AAImprove = .25*level;
 	}
 }
 Equip.prototype.setProficiency = function(rank,forLBAS) {

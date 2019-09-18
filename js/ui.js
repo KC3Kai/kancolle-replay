@@ -265,6 +265,7 @@ function showAdditionalStats(fleet) {
 			html += 'Pillbox: '+Math.floor(ships[i].shellPower({isInstall:true,installtype:2}))+'<br>';
 			html += 'Iso Hime: '+Math.floor(ships[i].shellPower({isInstall:true,installtype:4}))+'<br>';
 			html += 'Supply Post-mod: '+ships[i].supplyPostMult.toFixed(2)+'<br>';
+			html += 'Anchorage Post-mod: '+ships[i].anchoragePostMult.toFixed(2)+'<br>';
 			td.append(html+'</div>');
 		}
 	}
@@ -2081,6 +2082,9 @@ function clickedWatchBattle() {
 		
 		var supportF = (j==FLEETS2.length-1)? supportB : supportN;
 		var friendFleetF = (j==FLEETS2.length-1)? friendFleet : null;
+		if (j==FLEETS2.length-1) {
+			underwaySupply(FLEETS1[0]);
+		}
 		
 		var LBASwaves = [];
 		for (var k=0; k<options.lbas.length; k++) {
@@ -2799,7 +2803,7 @@ function toggleEchelon(useNew) {
 	if (useNew) {
 		ECHELON.shellmod = .75;
 		ECHELON.ASWmod = 1.1;
-		ECHELON.shellev = 1.3;
+		ECHELON.shellev = 1.6;
 	} else {
 		ECHELON.shellmod = .6;
 		ECHELON.ASWmod = 1;

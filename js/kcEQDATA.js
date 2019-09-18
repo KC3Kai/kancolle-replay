@@ -3067,7 +3067,6 @@ var EQDATA = {
 		nameJP: '特大発動艇+戦車第11連隊',
 		added: '2017-05-02',
 		type: LANDINGCRAFT,
-		btype: B_LC2,
 	},
 	231: {
 		name: '30.5cm Triple Gun Mount',
@@ -5396,7 +5395,7 @@ var EQDATA = {
 		name: 'Abyssal 4.7inch Gun Mk.XII',
 		nameJP: '深海4.7inch砲 Mk.XII',
 		added: '2019-09-04',
-		type: MAINGUNS,
+		type: MAINGUNSAA,
 		FP: 6,
 		AA: 6,
 		ACC: 24,
