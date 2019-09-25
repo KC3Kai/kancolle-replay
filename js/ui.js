@@ -222,6 +222,9 @@ function showAdditionalStats(fleet) {
 				else chanceused += aacid.rate;
 			}
 		}
+		if (ships[i].rocketBarrageChance()) {
+			td.append('Rocket Barrage: ' + Math.floor(ships[i].rocketBarrageChance()*100) + '%<br>');
+		}
 	}
 	table.append(tr); tr = $('<tr></tr>');
 	for (var i=0; i<ships.length; i++) {

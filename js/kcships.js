@@ -765,7 +765,7 @@ Ship.prototype.weightedAntiAir = function() {
 
 Ship.prototype.getAACItype = function(atypes) {
 	var types = [];
-	// if (this.side == 1) return types; //enemy can't do AACI?
+	if (this.side == 1) return types;
 	
 	var concentrated = 0, hasID = {};
 	for (var i=0; i<this.equips.length; i++) {
