@@ -1937,7 +1937,8 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 		}
 		contactMod *= contactModLB;
 		
-		var targets = (MECHANICS.LBASBuff && eq.ASW >= 7)? subsalive2 : alive2;
+		let isASWPlane = MECHANICS.LBASBuff && eq.ASW >= 7;
+		var targets = (isASWPlane)? subsalive2.concat(alive2) : alive2;
 		if (targets.length) {
 			if (targets[0].fleet.combinedWith) {
 				var targetsM = [], targetsE = [];
@@ -1948,6 +1949,10 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 				if (!targetsE.length) targets = targetsM;
 				else if (!targetsM.length) targets = targetsE;
 				else targets = (Math.random() < .5)? targetsM : targetsE;
+			}
+			if (isASWPlane) {
+				let targetsSub = targets.filter(ship => ship.isSub);
+				if (targetsSub.length) targets = targetsSub;
 			}
 			var target = choiceWProtect(targets);
 			var dmg = airstrikeLBAS(lbas,target,i,contactMod);
@@ -2031,7 +2036,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 		// postMod *= (target.divebombWeak || 1);
 		if (target.fleet.combinedWith) postMod *= 1.1;
 		dmg = damage(lbas,target,dmgbase,preMod,res*contactMod*postMod,150);
-		if (target.installtype == 3) dmg += 100;
+		if (target.installtype == 3 && target.mid <= 1658) dmg += 100;
 		realdmg = takeDamage(target,dmg);
 	}
 	if(C) {
