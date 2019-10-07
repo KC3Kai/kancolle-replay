@@ -359,7 +359,7 @@ EQTDATA[LANDINGCRAFT] = {
 	btype: B_LC1,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['AV','LHA'],
-	canequipS: [147, 198, 199, 200, 352, 418, 434, 435, 464, 468, 469, 470, 478, 487, 488, 489, 490, 498, 500, 541, 547, 548, 563],
+	canequipS: [147, 198, 199, 200, 352, 418, 434, 435, 464, 468, 469, 470, 478, 487, 488, 489, 490, 498, 500, 541, 547, 548, 563, 587],
 	cannotequipS: [445, 491]
 };
 EQTDATA[SEARCHLIGHTS] = {
@@ -399,12 +399,13 @@ EQTDATA[SRF] = {
 	name: 'Misc',
 	image: 26,
 	canequip: ['AR'],
+	canequipS: [450],
 };
 EQTDATA[FCF] = {
 	name: 'Misc',
 	image: 28,
 	canequip: ['CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AS','AV','LHA'],
-	canequipS: [464, 497, 498, 500, 542, 543, 567],
+	canequipS: [464, 497, 498, 500, 542, 543, 567, 587],
 	cannotequipS: [521]
 };
 EQTDATA[DRUM] = {
@@ -452,7 +453,7 @@ EQTDATA[LANDINGTANK] = {
 	btype: B_LC3,
 	improve: {Pshell:1,Pnb:1},
 	canequip: ['SS','SSV','AV','LHA'],
-	canequipS: [147, 198, 199, 200, 352, 418, 464, 468, 470, 478, 487, 488, 489, 490, 497, 500, 541, 547, 548, 568, 573],
+	canequipS: [147, 198, 199, 200, 352, 418, 464, 468, 470, 478, 487, 488, 489, 490, 497, 500, 541, 547, 548, 568, 573, 587],
 	cannotequipS: [445, 491, 581]
 };
 EQTDATA[OILDRUM] = {
@@ -4341,11 +4342,20 @@ var EQDATA = {
 		type: WG42,
 		AR: -2,
 	},
+	349: {
+		name: 'Type 4 20cm Anti-ground Rocket Launcher (Concentrated Deployment)',
+		nameJP: '四式20cm対地噴進砲 集中配備',
+		added: '2019-09-29',
+		type: WG42,
+		FP: 1,
+		AR: -4,
+	},
 	350: {
 		name: 'Me163B',
 		nameJP: 'Me163B',
 		added: '2019-08-28',
 		type: INTERCEPTOR,
+		isRocket: true,
 		AA: 2,
 		ACC: 9,
 	},
@@ -4354,6 +4364,7 @@ var EQDATA = {
 		nameJP: '試製 秋水',
 		added: '2019-08-28',
 		type: INTERCEPTOR,
+		isRocket: true,
 		AA: 2,
 		ACC: 8,
 	},
@@ -4362,6 +4373,7 @@ var EQDATA = {
 		nameJP: '秋水',
 		added: '2019-08-28',
 		type: INTERCEPTOR,
+		isRocket: true,
 		AA: 3,
 		ACC: 9,
 	},
@@ -4392,6 +4404,16 @@ var EQDATA = {
 		type: LANDINGCRAFT,
 		FP: 2,
 		EV: -1,
+	},
+	356: {
+		name: '8inch Triple Gun Mount Mk.9',
+		nameJP: '8inch三連装砲 Mk.9',
+		added: '2019-09-30',
+		type: MAINGUNM,
+		FP: 11,
+		AA: 1,
+		EV: -1,
+		RNG: 2,
 	},
 	501: {
 		name: '5inch Single Cannon',
@@ -5338,6 +5360,8 @@ var EQDATA = {
 		nameJP: '深海空要塞',
 		added: '2019-09-04',
 		type: DIVEBOMBER,
+		b_image: 19,
+		highAltitude: true,
 		FP: 17,
 		DIVEBOMB: 3,
 		AA: 9,
@@ -5350,6 +5374,8 @@ var EQDATA = {
 		nameJP: '深海空要塞Ace',
 		added: '2019-09-04',
 		type: DIVEBOMBER,
+		b_image: 19,
+		highAltitude: true,
 		FP: 17,
 		DIVEBOMB: 7,
 		AA: 17,
@@ -5372,6 +5398,8 @@ var EQDATA = {
 		nameJP: '深海空要塞(重爆型)',
 		added: '2019-09-04',
 		type: DIVEBOMBER,
+		b_image: 20,
+		highAltitude: true,
 		FP: 17,
 		DIVEBOMB: 27,
 		AA: 9,
@@ -5384,6 +5412,8 @@ var EQDATA = {
 		nameJP: '深海空要塞Ace(重爆型)',
 		added: '2019-09-04',
 		type: DIVEBOMBER,
+		b_image: 20,
+		highAltitude: true,
 		FP: 17,
 		DIVEBOMB: 37,
 		AA: 17,
@@ -5537,6 +5567,27 @@ var LBASDATA = {
 	306: { distance: 4, cost: 8 },
 	311: { distance: 8, cost: 5 },
 	312: { distance: 9, cost: 5 },
+	316: { distance: 3, cost: 6 },
+	319: { distance: 5, cost: 5 },
+	320: { distance: 5, cost: 6 },
+	322: { distance: 5, cost: 8 },
+	323: { distance: 5, cost: 8 },
+	333: { distance: 4, cost: 9 },
+	334: { distance: 4, cost: 9 },
+	335: { distance: 4, cost: 10 },
+	336: { distance: 5, cost: 10 },
+	337: { distance: 6, cost: 10 },
+	338: { distance: 5, cost: 11 },
+	339: { distance: 6, cost: 11 },
+	342: { distance: 6, cost: 9 },
+	343: { distance: 6, cost: 9 },
+	344: { distance: 4, cost: 6 },
+	345: { distance: 4, cost: 6 },
+	350: { distance: 1, cost: 4 },
+	351: { distance: 1, cost: 4 },
+	352: { distance: 1, cost: 4 },
+	353: { distance: 4, cost: 7 },
+	354: { distance: 3, cost: 8 },
 };
 
 var EXPANSIONSLOTDATA = {

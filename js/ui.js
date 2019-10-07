@@ -267,6 +267,7 @@ function showAdditionalStats(fleet) {
 			html += 'Soft-skin: '+Math.floor(ships[i].shellPower({isInstall:true}))+'<br>';
 			html += 'Pillbox: '+Math.floor(ships[i].shellPower({isInstall:true,installtype:2}))+'<br>';
 			html += 'Iso Hime: '+Math.floor(ships[i].shellPower({isInstall:true,installtype:4}))+'<br>';
+			html += 'Harbour Summer: '+Math.floor(ships[i].shellPower({isInstall:true,installtype:6}))+'<br>';
 			html += 'Supply Post-mod: '+ships[i].supplyPostMult.toFixed(2)+'<br>';
 			html += 'Anchorage Post-mod: '+ships[i].anchoragePostMult.toFixed(2)+'<br>';
 			td.append(html+'</div>');
