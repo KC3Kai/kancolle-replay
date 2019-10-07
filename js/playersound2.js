@@ -1576,6 +1576,7 @@ var VOICES = {
 		damage1: "assets/voice/Mutsu-Minor_Damage_1.ogg",
 		damage2: "assets/voice/Mutsu-Minor_Damage_2.ogg",
 		damage3: "assets/voice/Mutsu-Major_Damage.ogg",
+		special: "assets/voice/MutsuKai2-Special_1.ogg",
 	},
 	83: {
 		start: "assets/voice/Akagi-Battle_Start.ogg",

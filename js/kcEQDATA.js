@@ -4342,6 +4342,14 @@ var EQDATA = {
 		type: WG42,
 		AR: -2,
 	},
+	349: {
+		name: 'Type 4 20cm Anti-ground Rocket Launcher (Concentrated Deployment)',
+		nameJP: '四式20cm対地噴進砲 集中配備',
+		added: '2019-09-29',
+		type: WG42,
+		FP: 1,
+		AR: -4,
+	},
 	350: {
 		name: 'Me163B',
 		nameJP: 'Me163B',
@@ -4396,6 +4404,16 @@ var EQDATA = {
 		type: LANDINGCRAFT,
 		FP: 2,
 		EV: -1,
+	},
+	356: {
+		name: '8inch Triple Gun Mount Mk.9',
+		nameJP: '8inch三連装砲 Mk.9',
+		added: '2019-09-30',
+		type: MAINGUNM,
+		FP: 11,
+		AA: 1,
+		EV: -1,
+		RNG: 2,
 	},
 	501: {
 		name: '5inch Single Cannon',
