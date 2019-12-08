@@ -1514,6 +1514,59 @@ var MAPDATA = {
 			},
 		}
 	},
+	46: {
+		name: 'Event Fall 2019',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmDN: 146,
+				bgmNN: 146,
+				bgmDB: 148,
+				bgmNB: 148,
+				bossnode: ['H','K'],
+			},
+			2: {
+				name: 'E2',
+				bgmDN: 146,
+				bgmNN: 146,
+				bgmDB: 148,
+				bgmNB: 148,
+				bossnode: ['R'],
+			},
+			3: {
+				name: 'E3',
+				bgmDN: 146,
+				bgmNN: 146,
+				bgmDB: 147,
+				bgmNB: 147,
+				bossnode: ['M','O'],
+			},
+			4: {
+				name: 'E4',
+				bgmDN: 148,
+				bgmNN: 148,
+				bgmDB: 147,
+				bgmNB: 147,
+				bossnode: ['P','S'],
+			},
+			5: {
+				name: 'E5',
+				bgmDN: 147,
+				bgmNN: 147,
+				bgmDB: 150,
+				bgmNB: 150,
+				bossnode: ['J','O'],
+			},
+			6: {
+				name: 'E6',
+				bgmDN: 150,
+				bgmNN: 150,
+				bgmDB: 151,
+				bgmNB: 151,
+				bossnode: ['P','W'],
+			},
+		}
+	},
 }
 
 //-------------------------------------
