@@ -2845,5 +2845,286 @@ var MAPDATA_BGM_HISTORY = {
                 "bgmDN": 85
             }
         }
+    },
+    "2019-02-08": { //newyears end
+        1: {
+            1: {
+                "bgmDN": 1
+            }, 
+            2: {
+                "bgmDN": 1
+            }
+        }
+    }, 
+    "2019-03-22": { //naganami
+        1: {
+            1: {
+                "bgmDB": 133, 
+                "bgmNB": 133
+            }, 
+            2: {
+                "bgmDB": 133, 
+                "bgmNB": 133
+            }, 
+            3: {
+                "bgmDB": 117, 
+                "bgmNB": 117
+            }
+        }, 
+        2: {
+            1: {
+                "bgmDN": 133
+            }, 
+            2: {
+                "bgmDN": 133
+            }, 
+            3: {
+                "bgmDN": 8
+            }
+        }, 
+        5: {
+            4: {
+                "bgmDN": 133
+            }
+        }
+    }, 
+    "2019-03-27": { //zuiun
+        1: {
+            4: {
+                "bgmDN": 132
+            }, 
+            6: {
+                "bgmDN": 132
+            }
+        }, 
+        5: {
+            5: {
+                "bgmDN": 132
+            }
+        }, 
+        6: {
+            5: {
+                "bgmDN": 132
+            }
+        }
+    }, 
+    "2019-07-18": { //rainy
+        1: {
+            1: {
+                "bgmDB": 118, 
+                "bgmNB": 2
+            }, 
+            2: {
+                "bgmDB": 118, 
+                "bgmNB": 2
+            }, 
+            4: {
+                "bgmDN": 118
+            }, 
+            6: {
+                "bgmDN": 118
+            }
+        }, 
+        5: {
+            5: {
+                "bgmDN": 129
+            }
+        }, 
+        6: {
+            5: {
+                "bgmDN": 129
+            }
+        }
+    }, 
+    "2019-09-30": { //rainy end
+        1: {
+            1: {
+                "bgmDB": 133
+            }, 
+            2: {
+                "bgmDB": 133
+            }, 
+            3: {
+                "bgmDN": 25
+            }, 
+            4: {
+                "bgmDN": 8
+            }, 
+            6: {
+                "bgmDN": 134
+            }
+        }, 
+        2: {
+            2: {
+                "bgmDN": 8
+            }, 
+            3: {
+                "bgmDN": 38
+            }
+        }, 
+        4: {
+            1: {
+                "bgmDN": 25
+            }
+        }
+    }, 
+    "2019-10-25": { //saury
+        1: {
+            1: {
+                "bgmDN": 76
+            }, 
+            2: {
+                "bgmDN": 76
+            }, 
+            3: {
+                "bgmDN": 102, 
+                "bgmDB": 77, 
+                "bgmNB": 77
+            }, 
+            4: {
+                "bgmDN": 102, 
+                "bgmDB": 77, 
+                "bgmNB": 77
+            }, 
+            5: {
+                "bgmDB": 102, 
+                "bgmNB": 102
+            }, 
+            6: {
+                "bgmDN": 102, 
+                "bgmNN": 102
+            }
+        }, 
+        2: {
+            1: {
+                "bgmDN": 125, 
+                "bgmDB": 44, 
+                "bgmNB": 44
+            }, 
+            2: {
+                "bgmDN": 125, 
+                "bgmDB": 44, 
+                "bgmNB": 44
+            }
+        }, 
+        3: {
+            1: {
+                "bgmDN": 125
+            }, 
+            2: {
+                "bgmDN": 125
+            }, 
+            3: {
+                "bgmDN": 125, 
+                "bgmDB": 77, 
+                "bgmNB": 77
+            }, 
+            4: {
+                "bgmDN": 125, 
+                "bgmDB": 77, 
+                "bgmNB": 77
+            }, 
+            5: {
+                "bgmDN": 125, 
+                "bgmDB": 44, 
+                "bgmNB": 44
+            }
+        }, 
+        6: {
+            1: {
+                "bgmDN": 102, 
+                "bgmNN": 102, 
+                "bgmDB": 77, 
+                "bgmNB": 77
+            }, 
+            5: {
+                "bgmDN": 76, 
+                "bgmNN": 102, 
+                "bgmDB": 77, 
+                "bgmNB": 44
+            }
+        }
+    }, 
+    "2019-11-20": { //saury end
+        1: {
+            1: {
+                "bgmDN": 1, 
+                "bgmDB": 2
+            }, 
+            2: {
+                "bgmDN": 1, 
+                "bgmDB": 2
+            }, 
+            3: {
+                "bgmDN": 25, 
+                "bgmDB": 26, 
+                "bgmNB": 26
+            }, 
+            4: {
+                "bgmDN": 8, 
+                "bgmDB": 12, 
+                "bgmNB": 12
+            }, 
+            5: {
+                "bgmDB": 13, 
+                "bgmNB": 13
+            }, 
+            6: {
+                "bgmDN": 37, 
+                "bgmNN": 13
+            }
+        }, 
+        2: {
+            1: {
+                "bgmDN": 133, 
+                "bgmDB": 30, 
+                "bgmNB": 30
+            }, 
+            2: {
+                "bgmDN": 8, 
+                "bgmDB": 46, 
+                "bgmNB": 46
+            }, 
+            3: {
+                "bgmDN": 8
+            }
+        }, 
+        3: {
+            1: {
+                "bgmDN": 19
+            }, 
+            2: {
+                "bgmDN": 29
+            }, 
+            3: {
+                "bgmDN": 11, 
+                "bgmDB": 3, 
+                "bgmNB": 3
+            }, 
+            4: {
+                "bgmDN": 8, 
+                "bgmDB": 4, 
+                "bgmNB": 4
+            }, 
+            5: {
+                "bgmDN": 19, 
+                "bgmDB": 54, 
+                "bgmNB": 54
+            }
+        }, 
+        6: {
+            1: {
+                "bgmDN": 20, 
+                "bgmNN": 20, 
+                "bgmDB": 6, 
+                "bgmNB": 21
+            }, 
+            5: {
+                "bgmDN": 134, 
+                "bgmNN": 20, 
+                "bgmDB": 68, 
+                "bgmNB": 68
+            }
+        }
     }
 }

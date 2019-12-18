@@ -42,7 +42,7 @@ if (!HASURLDATA || HASURLDATA_CONFIG) {
 	$('#dialogselequiptype').append(table);
 }
 
-var STATNAMES = ['lvl','hp','fp','tp','aa','ar','ev','asw','los','luk','rng','spd','tacc','bonus'];
+var STATNAMES = ['lvl','hp','fp','tp','aa','ar','ev','asw','los','luk','rng','spd','tacc','bonus','bonusB','bonusD'];
 var PREVEQS = {};
 var WROTESTATS = false;
 var TUTORIAL = false;
@@ -697,24 +697,64 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
 	}
 	t.appendChild(tr);
 	
-	var tr = document.createElement('tr');
-	for (var j=0; j<6; j++) {
-		var td = document.createElement('td');
-		td.setAttribute('colspan','2');
-		var desc = 'Historical Bonus Multiplier';
-		var text = document.createElement('div'); text.setAttribute('title',desc);
-		text.setAttribute('style','float:left');
-		text.appendChild(document.createTextNode('Bonus Mult: '));
-		td.appendChild(text);
-		var input = document.createElement('input');
-		input.setAttribute('type','number'); input.setAttribute('id',tid+'bonus'+j);
-		input.setAttribute('min','0'); input.setAttribute('max','99'); input.setAttribute('step','.1'); input.setAttribute('title',desc);
-		input.setAttribute('onchange','updateFleetCode('+fleetnum+')');
-		input.setAttribute('style','width:65px');
-		td.appendChild(input);
-		tr.appendChild(td);
+	if (fleetnum < 20 && fleetnum != 2) {
+		var tr = document.createElement('tr');
+		for (var j=0; j<6; j++) {
+			var td = document.createElement('td');
+			td.setAttribute('colspan','2');
+			var desc = 'Historical Bonus Multiplier';
+			var text = document.createElement('div'); text.setAttribute('title',desc);
+			text.setAttribute('style','float:left');
+			text.appendChild(document.createTextNode('Bonus Mult: '));
+			td.appendChild(text);
+			var input = document.createElement('input');
+			input.setAttribute('type','number'); input.setAttribute('id',tid+'bonus'+j);
+			input.setAttribute('min','0'); input.setAttribute('max','99'); input.setAttribute('step','.1'); input.setAttribute('title',desc);
+			input.setAttribute('onchange','updateFleetCode('+fleetnum+')');
+			input.setAttribute('style','width:65px');
+			td.appendChild(input);
+			tr.appendChild(td);
+		}
+		t.appendChild(tr);
+		
+		var tr = document.createElement('tr');
+		for (var j=0; j<6; j++) {
+			var td = document.createElement('td');
+			td.setAttribute('colspan','2');
+			var desc = 'Boss node only, replaces above, = above if empty';
+			var text = document.createElement('div'); text.setAttribute('title',desc);
+			text.setAttribute('style','float:left;font-size:14px');
+			text.appendChild(document.createTextNode('Bonus (Boss): '));
+			td.appendChild(text);
+			var input = document.createElement('input');
+			input.setAttribute('type','number'); input.setAttribute('id',tid+'bonusB'+j);
+			input.setAttribute('min','0'); input.setAttribute('max','99'); input.setAttribute('step','.1'); input.setAttribute('title',desc);
+			input.setAttribute('onchange','updateFleetCode('+fleetnum+')');
+			input.setAttribute('style','width:65px');
+			td.appendChild(input);
+			tr.appendChild(td);
+		}
+		t.appendChild(tr);
+		
+		var tr = document.createElement('tr');
+		for (var j=0; j<6; j++) {
+			var td = document.createElement('td');
+			td.setAttribute('colspan','2');
+			var desc = 'Applies only to boss node flagship, stacks with above';
+			var text = document.createElement('div'); text.setAttribute('title',desc);
+			text.setAttribute('style','float:left;font-size:13px');
+			text.appendChild(document.createTextNode('Bonus (Debuff): '));
+			td.appendChild(text);
+			var input = document.createElement('input');
+			input.setAttribute('type','number'); input.setAttribute('id',tid+'bonusD'+j);
+			input.setAttribute('min','0'); input.setAttribute('max','99'); input.setAttribute('step','.1'); input.setAttribute('title',desc);
+			input.setAttribute('onchange','updateFleetCode('+fleetnum+')');
+			input.setAttribute('style','width:65px');
+			td.appendChild(input);
+			tr.appendChild(td);
+		}
+		t.appendChild(tr);
 	}
-	t.appendChild(tr);
      
 	var EQSORTED = {};
 	for (let equipid in EQDATA) {
@@ -1023,7 +1063,9 @@ function tableSetShip(fleet,slot,shipid,stats,equips,improves,profs,slots) {
 	var hlStats = ['ev','asw','los','luk'];
 	if (parseInt(shipid) > 1000) hlStats.push('tacc');
 	for (var i=0; i<stats.length; i++) {
-		document.getElementById('T'+fleet+STATNAMES[i]+slot).value = (stats[i]||stats[i]==0)? stats[i] : '';
+		let e = document.getElementById('T'+fleet+STATNAMES[i]+slot);
+		if (!e) continue;
+		e.value = (stats[i]||stats[i]==0)? stats[i] : '';
 		if (SHIPDATA[shipid].unknownstats && hlStats.indexOf(STATNAMES[i])!=-1) { $('#T'+fleet+STATNAMES[i]+slot).css('background-color','yellow'); $('#T'+fleet+STATNAMES[i]+slot).attr('title',"This stat's true value is currently unknown."); }
 		else { $('#T'+fleet+STATNAMES[i]+slot).css('background-color',''); $('#T'+fleet+STATNAMES[i]+slot).attr('title',""); }
 	}
@@ -1093,7 +1135,9 @@ function changedShipForm(fleet,slot) {
 	var hlStats = ['ev','asw','los','luk'];
 	if (parseInt(shipid) > 1000) hlStats.push('tacc');
 	for (var i=1; i<STATNAMES.length; i++) {
-		document.getElementById('T'+fleet+STATNAMES[i]+slot).value = SHIPDATA[shipid][STATNAMES[i].toUpperCase()];
+		let e = document.getElementById('T'+fleet+STATNAMES[i]+slot)
+		if (!e) continue;
+		e.value = SHIPDATA[shipid][STATNAMES[i].toUpperCase()];
 		if (SHIPDATA[shipid].unknownstats && hlStats.indexOf(STATNAMES[i])!=-1) { $('#T'+fleet+STATNAMES[i]+slot).css('background-color','yellow'); $('#T'+fleet+STATNAMES[i]+slot).attr('title',"This stat's true value is currently unknown."); }
 		else { $('#T'+fleet+STATNAMES[i]+slot).css('background-color',''); $('#T'+fleet+STATNAMES[i]+slot).attr('title',""); }
 	}
@@ -1125,7 +1169,9 @@ function clickedClear(fleet,slot) {
 		changedEquip(fleet,slot,i);
 	}
 	for (var i=0; i<STATNAMES.length; i++) {
-		document.getElementById('T'+fleet+STATNAMES[i]+slot).value = '';
+		let e = document.getElementById('T'+fleet+STATNAMES[i]+slot);
+		if (!e) continue;
+		e.value = '';
 		changedNum(fleet,slot,STATNAMES[i]);
 	}
 	if ($('#T'+fleet+'morale'+slot)) $('#T'+fleet+'morale'+slot).val(49);
@@ -1230,10 +1276,19 @@ function loadIntoSim(fleet,side,isescort) {
 			var ShipType = window[SHIPDATA[mid].type];
 			var s = {};
 			for (var j=0; j<STATNAMES.length; j++) {
+				if (!document.getElementById('T'+fleet+STATNAMES[j]+i)) continue;
 				var stat = parseInt(document.getElementById('T'+fleet+STATNAMES[j]+i).value);
 				s[STATNAMES[j]] = (stat)? stat : 0;
 			}
-			s.bonus = parseFloat(document.getElementById('T'+fleet+'bonus'+i).value) || 0;
+			if (document.getElementById('T'+fleet+'bonus'+i)) {
+				s.bonus = parseFloat(document.getElementById('T'+fleet+'bonus'+i).value) || 0;
+			}
+			if (document.getElementById('T'+fleet+'bonusB'+i)) {
+				s.bonusB = parseFloat(document.getElementById('T'+fleet+'bonusB'+i).value) || 0;
+			}
+			if (document.getElementById('T'+fleet+'bonusD'+i)) {
+				s.bonusD = parseFloat(document.getElementById('T'+fleet+'bonusD'+i).value) || 0;
+			}
 			var equips = [], levels = [], slots = [], profs = [];
 			for (var j=0; j<NUMEQUIPSMAX; j++) {
 				if (parseInt(PREVEQS[fleet][i][j])) {
@@ -1248,6 +1303,8 @@ function loadIntoSim(fleet,side,isescort) {
 			var ship = new ShipType(mid,SHIPDATA[mid].name,side,s.lvl,s.hp,s.fp,s.tp,s.aa,s.ar,s.ev,s.asw,s.los,s.luk,s.rng,slots);
 			if (s.tacc != null) ship.TACC = s.tacc;
 			if (s.bonus > 0) ship.bonusTemp = s.bonus;
+			if (s.bonusB > 0) ship.bonusBTemp = s.bonusB;
+			if (s.bonusD > 0) ship.bonusDTemp = s.bonusD;
 			ship.loadEquips(equips,levels,profs);
 			if (SHIPDATA[mid].isInstall) ship.isInstall = true;
 			if ($('#T'+fleet+'morale'+i).val()) ship.moraleDefault = ship.morale = parseInt($('#T'+fleet+'morale'+i).val());
@@ -1844,7 +1901,9 @@ function loadFleetFromCode(fleet,fcode) {
 			(parseInt(ship.rng) >= 0)? parseInt(ship.rng) : shipd.RNG,
 			(parseInt(ship.spd) >= 0)? parseInt(ship.spd) : shipd.SPD,
 			(parseInt(ship.tacc) >= 0)? parseInt(ship.tacc) : shipd.TACC,
-			(parseFloat(ship.bonus) >= 0)? parseFloat(ship.bonus) : null];
+			(parseFloat(ship.bonus) >= 0)? parseFloat(ship.bonus) : null,
+			(parseFloat(ship.bonusB) >= 0)? parseFloat(ship.bonusB) : null,
+			(parseFloat(ship.bonusD) >= 0)? parseFloat(ship.bonusD) : null];
 		var equips = [0,0,0,0], improvs = [0,0,0,0], profs = [0,0,0,0], planes = [0,0,0,0];
 		for (var item in ship.items) {
 			var islot = item.substr(1);
@@ -2068,7 +2127,12 @@ function clickedWatchBattle() {
 	var friendFleet = (ADDEDFRIENDFLEET)? FLEETS1S[2] : null;
 	if (friendFleet) {
 		for (let ship of friendFleet.ships) {
-			if (ship.bonusTemp) ship.bonusSpecial = [{mod:ship.bonusTemp}];
+			let bonus = ship.bonusBTemp || ship.bonusTemp;
+			if (bonus) ship.bonusSpecial = [{mod:bonus}];
+			if (ship.bonusDTemp) {
+				if (!ship.bonusSpecial) ship.bonusSpecial = [];
+				ship.bonusSpecial.push({mod:ship.bonusDTemp,on:[FLEETS2[FLEETS2.length-1].ships[0].mid]});
+			}
 		}
 	}
 	
@@ -2098,8 +2162,13 @@ function clickedWatchBattle() {
 		for (let n=0; n<2; n++) {
 			if (!FLEETS1[n]) continue;
 			for (let ship of FLEETS1[n].ships) {
-				if (ship.bonusTemp && options.bonus) ship.bonusSpecial = [{mod:ship.bonusTemp}];
+				let bonus = (j==FLEETS2.length-1 && ship.bonusBTemp)? ship.bonusBTemp : ship.bonusTemp;
+				if (bonus && options.bonus) ship.bonusSpecial = [{mod:bonus}];
 				else ship.bonusSpecial = null;
+				if (ship.bonusDTemp) {
+					if (!ship.bonusSpecial) ship.bonusSpecial = [];
+					ship.bonusSpecial.push({mod:ship.bonusDTemp,on:[FLEETS2[FLEETS2.length-1].ships[0].mid]});
+				}
 			}
 		}
 		

@@ -1176,7 +1176,7 @@ function airstrike(ship,target,slot,contactMod,issupport) {
 		var postMod = (issupport && MECHANICS.LBASBuff)? 1.35 : 1;
 		if (target.isPT && !NERFPTIMPS) postMod *= .6;
 		if (equip.isdivebomber) postMod *= target.divebombWeak || 1;
-		dmg = damage(ship,target,base+Math.sqrt(ship.planecount[slot])*planebase,preMod,res*contactMod*postMod,150);
+		dmg = damage(ship,target,base+Math.sqrt(ship.planecount[slot])*planebase,preMod,res*contactMod*postMod,150,true);
 		realdmg = takeDamage(target,dmg);
 	}
 	ship.fleet.giveCredit(ship,realdmg);
@@ -1239,7 +1239,7 @@ function rollHit(accCrit,critdmgbonus) {
 	return 0;  //miss
 }
 
-function damage(ship,target,base,preMod,postMod,cap) {
+function damage(ship,target,base,preMod,postMod,cap,isAirstrike) {
 	if (!cap) cap = 150;
 	if (typeof preMod === 'undefined') preMod = 1;
 	if (typeof postMod === 'undefined') postMod = 1;
@@ -1250,10 +1250,14 @@ function damage(ship,target,base,preMod,postMod,cap) {
 	
 	if (dmg > cap) dmg = cap + Math.sqrt(dmg-cap);
 	
-	dmg *= postMod;  //artillery spotting, contact, AP shell, critical
 	if (target.installtype == 3) { //supply depot type installations
-		dmg *= (ship.supplyPostMult||1);
+		if (isAirstrike) {
+			if (target.mid <= 1658) dmg += 100;
+		} else {
+			dmg *= (ship.supplyPostMult||1);
+		}
 	}
+	dmg *= postMod;  //artillery spotting, contact, AP shell, critical
 	if (ship.bonusSpecial) { //e.g. event historical bonus
 		for (var i=0; i<ship.bonusSpecial.length; i++) {
 			if (!ship.bonusSpecial[i].on || ship.bonusSpecial[i].on.indexOf(target.mid) != -1) {
@@ -2035,8 +2039,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 		if (equip.isdivebomber) postMod *= (target.divebombWeak || 1);
 		// postMod *= (target.divebombWeak || 1);
 		if (target.fleet.combinedWith) postMod *= 1.1;
-		dmg = damage(lbas,target,dmgbase,preMod,res*contactMod*postMod,150);
-		if (target.installtype == 3 && target.mid <= 1658) dmg += 100;
+		dmg = damage(lbas,target,dmgbase,preMod,res*contactMod*postMod,150,true);
 		realdmg = takeDamage(target,dmg);
 	}
 	if(C) {
@@ -2669,7 +2672,12 @@ function simStats(numsims,foptions) {
 	
 	if (FLEETS1S[2]) {
 		for (let ship of FLEETS1S[2].ships) {
-			if (ship.bonusTemp) ship.bonusSpecial = [{mod:ship.bonusTemp}];
+			let bonus = ship.bonusBTemp || ship.bonusTemp;
+			if (bonus) ship.bonusSpecial = [{mod:bonus}];
+			if (ship.bonusDTemp) {
+				if (!ship.bonusSpecial) ship.bonusSpecial = [];
+				ship.bonusSpecial.push({mod:ship.bonusDTemp,on:[FLEETS2[FLEETS2.length-1].ships[0].mid]});
+			}
 		}
 	}
 	
@@ -2680,8 +2688,13 @@ function simStats(numsims,foptions) {
 		for (var j=0; j<FLEETS2.length; j++) {
 			var options = foptions[j];
 			for (let ship of FLEETS1[0].ships) {
-				if (ship.bonusTemp && options.bonus) ship.bonusSpecial = [{mod:ship.bonusTemp}];
+				let bonus = (j==FLEETS2.length-1 && ship.bonusBTemp)? ship.bonusBTemp : ship.bonusTemp;
+				if (bonus && options.bonus) ship.bonusSpecial = [{mod:bonus}];
 				else ship.bonusSpecial = null;
+				if (ship.bonusDTemp) {
+					if (!ship.bonusSpecial) ship.bonusSpecial = [];
+					ship.bonusSpecial.push({mod:ship.bonusDTemp,on:[FLEETS2[FLEETS2.length-1].ships[0].mid]});
+				}
 			}
 			FLEETS1[0].DMGTOTALS = [0,0,0,0,0,0];
 			if (options.formation != '0') FLEETS1[0].formation = ALLFORMATIONS[options.formation];
