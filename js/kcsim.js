@@ -76,6 +76,9 @@ var AACIDATA = {
 	35:{num:6,rate:.55,mod:1.55,equip:'BH',rollIndiv:true},
 	36:{num:6,rate:.55,mod:1.55,equip:'HHR',rollIndiv:true},
 	37:{num:4,rate:.4,mod:1.45,equip:'HH',rollIndiv:true},
+	39:{num:10,rate:.6,mod:1.7,equip:'BB',rollIndiv:true},
+	40:{num:10,rate:.6,mod:1.7,equip:'BBR',rollIndiv:true},
+	41:{num:9,rate:.5,mod:1.65,equip:'BB',rollIndiv:true},
 };
 
 var ARTILLERYSPOTDATA = {
@@ -1428,6 +1431,12 @@ function getAACI(defenders,APIkouku) {
 					apiAACI.api_use_items = [313,313,307];
 				} else if (AACItype == 37) {
 					apiAACI.api_use_items = [313,313];
+				} else if (AACItype == 39) {
+					apiAACI.api_use_items = [363,362];
+				} else if (AACItype == 40) {
+					apiAACI.api_use_items = [362,362,307];
+				} else if (AACItype == 41) {
+					apiAACI.api_use_items = [362,362];
 				} else if (AACItype == 32) {
 					let mids = [];
 					for (let equip of AACIship.equips) mids.push(equip.mid);

@@ -849,6 +849,12 @@ Ship.prototype.getAACItype = function(atypes) {
 		if (hasID[313] >= 2 && hasID[307]) types.push(36);
 	}
 	
+	if (this.mid == 696) { //Atlanta
+		if (hasID[363] && (hasID[363] || 0) + (hasID[362] || 0) >= 2) types.push(39);
+		if (hasID[307] && (hasID[363] || 0) + (hasID[362] || 0) >= 2) types.push(40);
+		if ((hasID[363] || 0) + (hasID[362] || 0) >= 2) types.push(41);
+	}
+	
 	var add6 = false;
 	if (this.type=='BB'||this.type=='BBV'||this.type=='FBB') {  //is BB
 		if (atypes[A_GUN] && atypes[A_TYPE3SHELL] && atypes[A_AAFD]) {
