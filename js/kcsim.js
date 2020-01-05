@@ -781,16 +781,15 @@ function canSpecialAttack(ship) {
 	if (ship.fleet.didSpecial) return false;
 	if (ship.attackSpecial == 100) {
 		if (ship.fleet.ships[0] != ship) return false;
-		if (ship.fleet.ships.length < 5) return false;
+		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated).length < 6) return false;
 		if (ship.fleet.formation.id != 12 && ship.fleet.formation.id != 2) return false;
 		if (ship.HP/ship.maxHP <= .5) return false;
 		for (let s of ship.fleet.ships) { if (s.isSub) return false; }
 		if (ship.fleet.ships[2].CVshelltype || ship.fleet.ships[4].CVshelltype) return false;
-		if (ship.fleet.ships[2].retreated || ship.fleet.ships[4].retreated) return false;
 		return Math.random() < SIMCONSTS.nelsonTouchRate/100;
 	} else if (ship.attackSpecial == 101 || ship.attackSpecial == 102) {
 		if (ship.fleet.ships[0] != ship) return false;
-		if (ship.fleet.ships.length < 2) return false;
+		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated).length < 6) return false;
 		if (ship.fleet.formation.id != 12 && ship.fleet.formation.id != 4) return false;
 		if (ship.HP/ship.maxHP <= .5) return false;
 		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[1].type) == -1) return false;
@@ -799,7 +798,7 @@ function canSpecialAttack(ship) {
 		return Math.random() < rate/100;
 	} else if (ship.attackSpecial == 103) {
 		if (ship.fleet.ships[0] != ship) return false;
-		if (ship.fleet.ships.length < 3) return false;
+		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated).length < 6) return false;
 		if (ship.fleet.formation.id != 12 && ship.fleet.formation.id != 4) return false;
 		for (let i=0; i<=2; i++) {
 			let s = ship.fleet.ships[i];
