@@ -78,7 +78,7 @@ var AACIDATA = {
 	37:{num:4,rate:.4,mod:1.45,equip:'HH',rollIndiv:true},
 	39:{num:10,rate:.6,mod:1.7,equip:'BB',rollIndiv:true},
 	40:{num:10,rate:.6,mod:1.7,equip:'BBR',rollIndiv:true},
-	41:{num:9,rate:.5,mod:1.65,equip:'BB',rollIndiv:true},
+	41:{num:9,rate:.6,mod:1.65,equip:'BB',rollIndiv:true},
 };
 
 var ARTILLERYSPOTDATA = {
@@ -1105,7 +1105,7 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 		var ship = shots[i][0]; var target = shots[i][1];
 		
 		var power = (combinedAll)? ship.TP+15 : (ship.isescort||target.isescort)? ship.TP : (ship.TP+5);
-		power *= ship.getFormation().torpmod*ENGAGEMENT*damageMods[ship.id];
+		power *= ship.getFormation().torpmod*ENGAGEMENT*(combinedAll? ship.damageMod(true) : damageMods[ship.id]);
 		if (target.isPT && !NERFPTIMPS) power *= .6;
 		if (power > 150) power = 150 + Math.sqrt(power-150);
 		
@@ -1723,7 +1723,7 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 			var dmg = 0, realdmg = 0;
 			if (res) {
 				var preMod = ENGAGEMENT;
-				if (FLEETS1[0] && FLEETS1[0].formation && FLEETS1[0].formation.id == 6) preMod *= .5;
+				if (FLEETS1[0] && FLEETS1[0].formation && !FLEETS1[0].combinedWith) preMod *= FLEETS1[0].formation.shellmod;
 				var dmg;
 				if (suptype==3) dmg = damage(ship,target,torpDmg*.55,preMod,res,150);
 				else if (suptype == 2) dmg = damage(ship,target,ship.shellPower(target)-1,preMod,res,150);
