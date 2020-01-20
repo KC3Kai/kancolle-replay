@@ -849,7 +849,7 @@ Ship.prototype.getAACItype = function(atypes) {
 		if (hasID[313] >= 2 && hasID[307]) types.push(36);
 	}
 	
-	if (this.mid == 696) { //Atlanta
+	if (this.mid == 597 || this.mid == 696) { //Atlanta
 		if (hasID[363] && (hasID[363] || 0) + (hasID[362] || 0) >= 2) types.push(39);
 		if (hasID[307] && (hasID[363] || 0) + (hasID[362] || 0) >= 2) types.push(40);
 		if ((hasID[363] || 0) + (hasID[362] || 0) >= 2) types.push(41);
