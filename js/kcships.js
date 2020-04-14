@@ -838,6 +838,9 @@ Ship.prototype.getAACItype = function(atypes) {
 		if (atypes[A_AIRRADAR]) types.push(16);
 		types.push(17);
 	}
+	if (this.mid == 622 && atypes[A_HAGUN] && atypes[A_AAGUN] && atypes[A_AIRRADAR]) { //Yuubari Kai Ni
+		types.push(16);
+	}
 	if (this.mid == 487 && concentrated && atypes[A_HAGUN] > (atypes[A_HAFD] || 0)) types.push(19); //Kinu Kai Ni (1)
 	if (this.mid == 488 && atypes[A_HAGUN] && atypes[A_AIRRADAR]) types.push(21); //Yura Kai Ni
 	if ([77,82,87,88,553].indexOf(this.mid) != -1 && hasID[274] && atypes[A_AIRRADAR] && atypes[A_TYPE3SHELL]) types.push(25); //Ise-class
@@ -1187,12 +1190,14 @@ AO.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		var d = EQTDATA[EQDATA[equips[i]].type];
 		if (d && (d.istorpbomber||d.isdivebomber)) {
 			this.planeasw = true;
-			this.CVshelltype = true;
-			this.shellPower = CV.prototype.shellPower;
-			this.canShell = CV.prototype.canShell;
-			this.canStillShell = CV.prototype.canStillShell;
-			this.numBombers = CV.prototype.numBombers;
-			break;
+			if (d.istorpbomber) {
+				this.CVshelltype = true;
+				this.shellPower = CV.prototype.shellPower;
+				this.canShell = CV.prototype.canShell;
+				this.canStillShell = CV.prototype.canStillShell;
+				this.numBombers = CV.prototype.numBombers;
+				break;
+			}
 		}
 	}
 }
