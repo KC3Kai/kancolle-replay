@@ -306,7 +306,7 @@ function dialogShip(types,side) {
 	var c=0, tr = $('<tr></tr>'), baseships = [], done = [];
 	for (var mid in SHIPDATA) {
 		var ship = SHIPDATA[mid];
-		if ((side==0&&mid>=1000)||(side==1&&(mid<1000||mid>2000))||types.indexOf(ship.type)==-1) continue;
+		if ((side==0&&mid>=1500)||(side==1&&(mid<1500||mid>2000))||types.indexOf(ship.type)==-1) continue;
 		if (ship.prev && types.indexOf(SHIPDATA[ship.prev].type)!=-1) continue;
 		if (done.indexOf(mid)==-1) {
 			var ships = [mid]; done.push(mid);
@@ -599,7 +599,7 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
 		var g3 = document.createElement('optgroup');
 		g3.setAttribute('label','Fleet of Fog');
 		for (let shipid in SHIPDATA) {  //enemies
-			if (shipid < 1000) continue;
+			if (shipid < 1500) continue;
 			var o = document.createElement('option');
 			o.appendChild(document.createTextNode(SHIPDATA[shipid].name));
 			o.setAttribute('value',shipid);
@@ -1061,7 +1061,7 @@ function tableSetShip(fleet,slot,shipid,stats,equips,improves,profs,slots) {
 	img.src = 'assets/icons/'+SHIPDATA[shipid].image;
 	document.getElementById('T'+fleet+'i'+slot+'alt').src = 'assets/icons/'+SHIPDATA[shipid].image;
 	var hlStats = ['ev','asw','los','luk'];
-	if (parseInt(shipid) > 1000) hlStats.push('tacc');
+	if (parseInt(shipid) > 1500) hlStats.push('tacc');
 	for (var i=0; i<stats.length; i++) {
 		let e = document.getElementById('T'+fleet+STATNAMES[i]+slot);
 		if (!e) continue;
@@ -1131,9 +1131,9 @@ function changedShipForm(fleet,slot) {
 		$('#T'+fleet+'n'+slot+'_chosen').attr('title','');
 	}
 	document.getElementById('T'+fleet+'i'+slot+'alt').src = 'assets/icons/'+SHIPDATA[shipid].image;
-	document.getElementById('T'+fleet+'lvl'+slot).value = (shipid=='0')? '' : (parseInt(shipid)<1000)? 99 : (SHIPDATA[shipid].type == 'SS')? 50 : 1;
+	document.getElementById('T'+fleet+'lvl'+slot).value = (shipid=='0')? '' : (parseInt(shipid)<1500)? 99 : (SHIPDATA[shipid].type == 'SS')? 50 : 1;
 	var hlStats = ['ev','asw','los','luk'];
-	if (parseInt(shipid) > 1000) hlStats.push('tacc');
+	if (parseInt(shipid) > 1500) hlStats.push('tacc');
 	for (var i=1; i<STATNAMES.length; i++) {
 		let e = document.getElementById('T'+fleet+STATNAMES[i]+slot)
 		if (!e) continue;

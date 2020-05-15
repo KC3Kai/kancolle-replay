@@ -933,6 +933,7 @@ Ship.prototype.airState = function() { return this.fleet.AS; }
 Ship.prototype.airPower = function(jetonly,includeScout) {
 	var ap = 0;
 	for (var i=0; i<this.equips.length; i++) {
+		if (this.planecount[i] <= 0) continue;
 		if ((this.equips[i].isfighter && (!jetonly||this.equips[i].isjet)) || (includeScout && EQTDATA[this.equips[i].type].isPlane)) {
 			ap += Math.floor(((this.equips[i].AA||0) + (this.equips[i].AAImprove||0)) * Math.sqrt(this.planecount[i]) + (this.equips[i].APbonus||0));
 		}
