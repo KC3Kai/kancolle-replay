@@ -290,6 +290,7 @@ var TEXTDATA_EN = {
 				101: "Nagato Special ",
 				102: "Mutsu Special ",
 				103: "Colorado Special ",
+				104: "Kongou Special ",
 				200: "Zuiun cut-in ",
 				201: "Suisei cut-in ",
 			}
@@ -368,9 +369,10 @@ var TEXTDATA_EN = {
 				7: "gun-torpedo-radar cut-in",
 				8: "torpedo-radar-lookout cut-in",
 				100: "Nelson Touch",
-				101: "Nagato Special ",
-				102: "Mutsu Special ",
-				103: "Colorado Special ",
+				101: "Nagato Special",
+				102: "Mutsu Special",
+				103: "Colorado Special",
+				104: "Kongou Special",
 			}
 		}
 	},

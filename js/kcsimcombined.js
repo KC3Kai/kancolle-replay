@@ -1001,10 +1001,9 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 			if (ships2C[i].HP/ships2C[i].maxHP > .5) point = 1;
 			else if (ships2C[i].HP/ships2C[i].maxHP > .25) point = .5;
 			else if (ships2C[i].HP/ships2C[i].maxHP > 0) point = .25;
-			if (i==0) point *= 2;
 			count += point;
 		}
-		if (ships2C[0].HP > 0) count += .5;
+		if (ships2C[0].HP > 0) count += 1;
 		var fightescort = (allsunk || count >= 3);
 		
 		var order1 = [], order2 = [];
@@ -1040,7 +1039,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	
 	//results
 	if (!noupdate) {
-		updateSupply(ships1,didNB,NBonly,bombing,noammo);
+		updateSupply(ships1,didNB,NBonly,bombing,noammo,true);
 	}
 	
 	
@@ -1516,10 +1515,9 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 			if (ships2C[i].HP/ships2C[i].maxHP > .5) point = 1;
 			else if (ships2C[i].HP/ships2C[i].maxHP > .25) point = .5;
 			else if (ships2C[i].HP/ships2C[i].maxHP > 0) point = .25;
-			if (i==0) point *= 2;
 			count += point;
 		}
-		if (ships2C[0].HP > 0) count += .5;
+		if (ships2C[0].HP > 0) count += 1;
 		var fightescort = (allsunk || count >= 3);
 		
 		var order1 = [], order2 = [];
@@ -1557,8 +1555,8 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	if (!noupdate) {
 		// var subonly = true;
 		// for (var j=0; j<ships2.length; j++) if (ships2[j].type != 'SS') subonly = false;
-		updateSupply(ships1,didNB,NBonly,bombing,noammo);
-		updateSupply(ships1C,didNB,NBonly,bombing,noammo);
+		updateSupply(ships1,didNB,NBonly,bombing,noammo,true);
+		updateSupply(ships1C,didNB,NBonly,bombing,noammo,true);
 	}
 	
 	
