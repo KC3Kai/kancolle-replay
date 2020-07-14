@@ -601,6 +601,7 @@ Ship.prototype.NBtypes = function() {
 		if (mguns && torps && this.equiptypesB[B_RADAR]) this._nbtypes.push(7);
 		if (this.hasLookout && torps && this.equiptypesB[B_RADAR]) this._nbtypes.push(8);
 	}
+	if (this.hasSubRadar && this.numSpecialTorp) torps++;
 	
 	if (torps >= 2) this._nbtypes.push(3);  //torp cut-in
 	else if (mguns >= 3) this._nbtypes.push(5); //triple gun cut-in

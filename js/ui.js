@@ -641,7 +641,7 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
     t.appendChild(tr);
      
     var stats = [  //stats
-        [['lvl','lv.png',1,999],['hp','hp.png',1,999]],
+        [['lvl','lv.png',1,999],['hp','hp.png',1,9999]],
         [['fp','fp.png',0,999],['tp','tp.png',0,999]],
         [['aa','aa.png',0,999],['ar','ar.png',0,999]],
         [['ev','ev.png',1,999],['asw','asw.png',0,999]],

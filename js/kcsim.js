@@ -448,21 +448,22 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 				if (attackData.numHits) da = attackData.numHits;
 				cutin = attackData.id || NBtype;
 				cutinR = NBtype;
-				preMod *= attackData.dmgMod;
-				accMod *= attackData.accMod;
+				let dmgMod = attackData.dmgMod;
 				if (NBtype == 3) { //special sub TCI
-					if (ship.numSpecialTorp >= 2) preMod = 1.6;
-					if (ship.numSpecialTorp && ship.hasSubRadar) preMod = 1.75;
-				} else if (NBtype == 7) { //D-gun bonus
-					let count = 0;
+					if (ship.numSpecialTorp >= 2) dmgMod = 1.6;
+					if (ship.numSpecialTorp && ship.hasSubRadar) dmgMod = 1.75;
+				} else if (NBtype == 7 || NBtype == 8) { //D-gun bonus
+					let count = 0, count2 = 0;
 					for (let equip of ship.equips) {
-						if (equip.mid == 267) {
-							count++;
-						}
+						if (equip.mid == 267) { count++; }
+						if (equip.mid == 366) { count++; count2++; }
 					}
-					if (count) preMod *= 1.25;
-					if (count >= 2) preMod *= 1.125;
+					if (count) dmgMod *= 1.25;
+					if (count >= 2) dmgMod *= 1.125;
+					if (count2) dmgMod *= 1.05;
 				}
+				preMod *= dmgMod;
+				accMod *= attackData.accMod;
 			}
 		}
 	}

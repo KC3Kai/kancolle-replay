@@ -1567,6 +1567,80 @@ var MAPDATA = {
 			},
 		}
 	},
+	47: {
+		name: 'Hinamatsuri 2020',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmDN: 152,
+				bgmNN: 152,
+				bgmDB: 153,
+				bgmNB: 153,
+				bossnode: ['I','J','T'],
+			},
+		}
+	},
+	48: {
+		name: 'Rainy-Summer 2020',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmDN: 155,
+				bgmNN: 155,
+				bgmDB: 156,
+				bgmNB: 156,
+				bossnode: ['M','T'],
+			},
+			2: {
+				name: 'E2',
+				bgmDN: 155,
+				bgmNN: 155,
+				bgmDB: 156,
+				bgmNB: 156,
+				bossnode: ['M','T'],
+			},
+			3: {
+				name: 'E3',
+				bgmDN: 155,
+				bgmNN: 155,
+				bgmDB: 156,
+				bgmNB: 156,
+				bossnode: ['O'],
+			},
+			4: {
+				name: 'E4',
+				bgmDN: 156,
+				bgmNN: 156,
+				bgmDB: 157,
+				bgmNB: 157,
+				bossnode: ['M','R','Z3'],
+			},
+			5: {
+				name: 'E5',
+				bgmDN: 157,
+				bgmNN: 157,
+				bgmDB: 159,
+				bgmNB: 159,
+				bossnode: ['Y','Z'],
+			},
+			6: {
+				name: 'E6',
+				bgmDN: 157,
+				bgmNN: 157,
+				bgmDB: 159,
+				bgmNB: 159,
+				bossnode: ['X','Z'],
+			},
+			7: {
+				name: 'E7',
+				bgmDN: 159,
+				bgmNN: 159,
+				bgmDB: 160,
+				bgmNB: 160,
+				bossnode: ['X','Y','Z'],
+			},
+		}
+	},
 }
 
 //-------------------------------------
