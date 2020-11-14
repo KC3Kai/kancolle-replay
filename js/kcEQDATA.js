@@ -50,6 +50,7 @@ const INTERCEPTOR = 48;
 const LANDSCOUT = 49;
 const TRANSPORTITEM = 50;
 const SUBRADAR = 51;
+const LANDBOMBERL = 53;
 const JETBOMBER = 57;
 const JETSCOUT = 59;
 const RADARXL = 93;
@@ -117,7 +118,7 @@ EQTDATA[MAINGUNM] = {
 	atype: A_GUN,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['CL','CT','CLT','CA','CAV','BB','BBV'],
-	canequipS: [372, 491, 500, 581, 586, 690],
+	canequipS: [372, 491, 500, 581, 586, 634, 639, 690],
 };
 EQTDATA[MAINGUNL] = {
 	name: 'Main Gun (L)',
@@ -213,7 +214,7 @@ EQTDATA[SONARL] = {
 	image: 18,
 	btype: B_SONAR,
 	canequip: ['CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AS','AV','LHA'],
-	canequipS: [500, 624],
+	canequipS: [500, 624, 629],
 	cannotequipS: [380, 381, 521, 526, 534, 581],
 };
 EQTDATA[DEPTHCHARGE] = {
@@ -270,7 +271,7 @@ EQTDATA[SEAPLANEBOMBER] = {
 	image: 10,
 	btype: B_RECON,
 	canequip: ['CAV','BBV','SSV','AV','AO','LandBase'],
-	canequipS: [305, 306, 307, 314, 358, 361, 392, 446, 447, 488, 496, 547, 574, 579, 591, 626, 630],
+	canequipS: [305, 306, 307, 314, 358, 361, 392, 446, 447, 488, 496, 547, 574, 579, 591, 626, 630, 639],
 	isPlane: true,
 	isfighter: true,
 	isdivebomber: true,
@@ -296,7 +297,7 @@ EQTDATA[AUTOGYRO] = {
 	name: 'Anti-Sub Plane',
 	image: 21,
 	canequip: ['CAV','BBV','CVL','AS','AO','AR','LHA'],
-	canequipS: [372, 477, 478, 491, 546, 547, 573, 574, 586, 630, 690],
+	canequipS: [372, 477, 478, 491, 546, 547, 573, 574, 586, 630, 646, 690],
 	cannotequipS: [380, 381, 521, 526, 534, 621],
 	isPlane: true,
 };
@@ -304,7 +305,7 @@ EQTDATA[ASWPLANE] = {
 	name: 'Anti-Sub Plane',
 	image: 22,
 	canequip: ['CVL','LHA'],
-	canequipS: [553, 554],
+	canequipS: [553, 554, 646],
 	cannotequipS: [521, 526, 534, 621, 626],
 	isPlane: true,
 };
@@ -347,7 +348,7 @@ EQTDATA[BULGEM] = {
 	image: 23,
 	improve: {AR:.7},
 	canequip: ['CT','CA','CAV','CVL','AS','AV','AR'],
-	canequipS: [146, 147, 216, 217, 305, 306, 307, 314, 500, 542, 543, 547, 563, 564, 566, 567, 568, 569, 578, 579, 621, 622, 623, 624, 626, 630],
+	canequipS: [146, 147, 216, 217, 305, 306, 307, 314, 500, 542, 543, 547, 563, 564, 566, 567, 568, 569, 578, 579, 621, 622, 623, 624, 626, 629, 630, 656],
 };
 EQTDATA[BULGEL] = {
 	name: 'Torpedo Bulge',
@@ -361,7 +362,7 @@ EQTDATA[LANDINGCRAFT] = {
 	btype: B_LC1,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['AV','LHA'],
-	canequipS: [147, 198, 199, 200, 352, 418, 434, 435, 464, 468, 469, 470, 478, 487, 488, 489, 490, 498, 500, 541, 547, 548, 563, 587, 623, 630],
+	canequipS: [147, 198, 199, 200, 260, 352, 418, 434, 435, 464, 468, 469, 470, 478, 487, 488, 489, 490, 498, 500, 541, 547, 548, 563, 587, 623, 630, 703],
 	cannotequipS: [445, 491],
 };
 EQTDATA[SEARCHLIGHTS] = {
@@ -369,7 +370,7 @@ EQTDATA[SEARCHLIGHTS] = {
 	image: 24,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['DD','CL','CA','CAV','FBB','BB','BBV','AV'],
-	canequipS: [343, 356, 500, 626],
+	canequipS: [343, 356, 500, 626, 639],
 };
 EQTDATA[SEARCHLIGHTL] = {
 	name: 'Night Equip',
@@ -407,7 +408,7 @@ EQTDATA[FCF] = {
 	name: 'Misc',
 	image: 28,
 	canequip: ['CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AS','AV','LHA'],
-	canequipS: [464, 497, 498, 500, 542, 543, 567, 587],
+	canequipS: [464, 497, 498, 500, 542, 543, 567, 587, 628, 629, 651, 656],
 	cannotequipS: [521],
 };
 EQTDATA[DRUM] = {
@@ -455,7 +456,7 @@ EQTDATA[LANDINGTANK] = {
 	btype: B_LC3,
 	improve: {Pshell:1,Pnb:1},
 	canequip: ['SS','SSV','AV','LHA'],
-	canequipS: [147, 198, 199, 200, 352, 418, 464, 468, 470, 478, 487, 488, 489, 490, 497, 500, 541, 547, 548, 564, 568, 569, 573, 578, 587, 623],
+	canequipS: [147, 198, 199, 200, 352, 418, 464, 468, 470, 478, 487, 488, 489, 490, 497, 500, 541, 547, 548, 564, 568, 569, 573, 578, 587, 623, 656],
 	cannotequipS: [445, 491, 581],
 };
 EQTDATA[OILDRUM] = {
@@ -471,6 +472,7 @@ EQTDATA[LANDBOMBER] = {
 	isfighter: true,
 	isdivebomber: true,
 	istorpbomber: true,
+	isLB: true,
 };
 EQTDATA[INTERCEPTOR] = {
 	name: 'Misc',
@@ -478,6 +480,7 @@ EQTDATA[INTERCEPTOR] = {
 	canequip: ['LandBase'],
 	isPlane: true,
 	isfighter: true,
+	isLB: true,
 };
 EQTDATA[LANDSCOUT] = {
 	name: 'Misc',
@@ -498,11 +501,21 @@ EQTDATA[SUBRADAR] = {
 	image: 42,
 	canequip: ['SS','SSV'],
 };
+EQTDATA[LANDBOMBERL] = {
+	name: 'Misc',
+	image: 37,
+	canequip: ['LandBase'],
+	isPlane: true,
+	isfighter: true,
+	isdivebomber: true,
+	istorpbomber: true,
+	isLB: true,
+};
 EQTDATA[JETBOMBER] = {
 	name: 'Jet Fighter-Bomber',
 	image: 39,
 	canequip: ['LandBase'],
-	canequipS: [466, 467],
+	canequipS: [466, 467, 646],
 	isPlane: true,
 	isfighter: true,
 	isdivebomber: true,
@@ -3010,6 +3023,7 @@ var EQDATA = {
 		added: '2017-05-02',
 		b_image: 13,
 		type: LANDBOMBER,
+		aaResistShip: .6,
 		FP: 3,
 		DIVEBOMB: 8,
 		AA: 6,
@@ -4292,6 +4306,7 @@ var EQDATA = {
 		nameJP: '流星改(一航戦/熟練)',
 		added: '2019-04-30',
 		type: TORPBOMBER,
+		aaResistShip: .6,
 		TP: 15,
 		AA: 3,
 		ACC: 2,
@@ -4763,6 +4778,123 @@ var EQDATA = {
 		ACC: 4,
 		EV: 1,
 		RNG: 2,
+	},
+	388: {
+		name: 'Ginga (Egusa Squadron)',
+		nameJP: '銀河(江草隊)',
+		added: '2020-08-31',
+		type: LANDBOMBER,
+		DIVEBOMB: 15,
+		TP: 15,
+		AA: 3,
+		ACC: 3,
+		ASW: 4,
+		LOS: 4,
+	},
+	389: {
+		name: 'TBM-3W+3S',
+		nameJP: 'TBM-3W+3S',
+		added: '2020-08-27',
+		type: TORPBOMBER,
+		FP: 3,
+		DIVEBOMB: 7,
+		TP: 10,
+		ACC: 3,
+		ASW: 13,
+		LOS: 10,
+	},
+	390: {
+		name: '16inch Triple Gun Mount Mk.6 + GFCS',
+		nameJP: '16inch三連装砲 Mk.6+GFCS',
+		added: '2020-09-30',
+		type: MAINGUNL,
+		FP: 23,
+		AA: 3,
+		AR: 2,
+		ACC: 6,
+		EV: 1,
+		RNG: 3,
+	},
+	391: {
+		name: 'Type 99 Dive Bomber Model 22',
+		nameJP: '九九式艦爆二二型',
+		added: '2020-10-16',
+		type: DIVEBOMBER,
+		DIVEBOMB: 6,
+		ACC: 1,
+		ASW: 3,
+		LOS: 2,
+	},
+	392: {
+		name: 'Type 99 Dive Bomber Model 22 (Skilled)',
+		nameJP: '九九式艦爆二二型(熟練)',
+		added: '2020-10-16',
+		type: DIVEBOMBER,
+		DIVEBOMB: 8,
+		AA: 1,
+		ACC: 3,
+		ASW: 4,
+		LOS: 3,
+	},
+	393: {
+		name: '120mm/50 Twin Gun Mount mod.1936',
+		nameJP: '120mm/50 連装砲 mod.1936',
+		added: '2020-10-29',
+		type: MAINGUNS,
+		FP: 3,
+		AA: 3,
+		ACC: 2,
+		RNG: 1,
+	},
+	394: {
+		name: '120mm/50 Twin Gun Mount Kai A.mod.1937',
+		nameJP: '120mm/50 連装砲改 A.mod.1937',
+		added: '2020-10-29',
+		type: MAINGUNS,
+		FP: 3,
+		AA: 4,
+		ACC: 3,
+		RNG: 1,
+	},
+	395: {
+		name: 'Shinzan',
+		nameJP: '深山',
+		added: '2020-10-29',
+		type: LANDBOMBERL,
+		DIVEBOMB: 17,
+		TP: 16,
+		AA: 1,
+	},
+	396: {
+		name: 'Shinzan Kai',
+		nameJP: '深山改',
+		added: '2020-10-29',
+		type: LANDBOMBERL,
+		DIVEBOMB: 19,
+		TP: 17,
+		AA: 2,
+	},
+	397: {
+		name: 'Locally Modified 12.7cm Twin High-angle Gun Mount',
+		nameJP: '現地改装12.7cm連装高角砲',
+		added: '2020-11-13',
+		type: MAINGUNSAA,
+		FP: 3,
+		AA: 6,
+		AR: 1,
+		ACC: 2,
+		RNG: 1,
+	},
+	398: {
+		name: 'Locally Modified 10cm Twin High-angle Gun Mount',
+		nameJP: '現地改装10cm連装高角砲',
+		added: '2020-11-13',
+		type: MAINGUNSAA,
+		FP: 2,
+		AA: 8,
+		ACC: 1,
+		EV: 2,
+		RNG: 1,
 	},
 	501: {
 		name: '5inch Single Cannon',
@@ -5740,6 +5872,7 @@ var EQDATA = {
 		nameJP: '深海6inch三連装新型速射砲',
 		added: '2019-08-30',
 		type: MAINGUNM,
+		atype: A_HAFD,
 		FP: 14,
 		AA: 13,
 		ACC: 9,
