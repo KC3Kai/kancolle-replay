@@ -1375,6 +1375,8 @@ Equip.prototype.setImprovement = function(level) {
 	this.level = level;
 	switch (this.type) {
 		case FIGHTER:
+		case SEAPLANEFIGHTER:
+		case INTERCEPTOR:
 			this.AAImprove = .2*level;
 			break;
 		case DIVEBOMBER:
