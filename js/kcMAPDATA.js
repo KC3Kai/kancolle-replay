@@ -1641,6 +1641,43 @@ var MAPDATA = {
 			},
 		}
 	},
+	49: {
+		name: 'Fall 2020',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmDN: 164,
+				bgmNN: 164,
+				bgmDB: 165,
+				bgmNB: 165,
+				bossnode: ['J','O'],
+			},
+			2: {
+				name: 'E2',
+				bgmDN: 165,
+				bgmNN: 165,
+				bgmDB: 166,
+				bgmNB: 166,
+				bossnode: ['N','Q'],
+			},
+			3: {
+				name: 'E3',
+				bgmDN: 166,
+				bgmNN: 166,
+				bgmDB: 167,
+				bgmNB: 167,
+				bossnode: ['Q','X','Z'],
+			},
+			4: {
+				name: 'E4',
+				bgmDN: 168,
+				bgmNN: 168,
+				bgmDB: 169,
+				bgmNB: 169,
+				bossnode: ['Q','W','Z'],
+			},
+		}
+	},
 }
 
 //-------------------------------------
