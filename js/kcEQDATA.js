@@ -5911,7 +5911,7 @@ var EQDATA = {
 		nameJP: '深海6inch三連装新型速射砲',
 		added: '2019-08-30',
 		type: MAINGUNM,
-		atype: A_HAFD,
+		atype: 0,
 		FP: 14,
 		AA: 13,
 		ACC: 9,
