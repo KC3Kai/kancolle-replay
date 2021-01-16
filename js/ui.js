@@ -2110,7 +2110,7 @@ function clickedWatchBattle() {
 			var ship = FLEETS1[i].ships[j];
 			var obj = {equip:[],kyouka:[]};
 			obj.mst_id = ship.mid;
-			for (var k=0; k<5; k++) {
+			for (var k=0; k<NUMEQUIPSMAX; k++) {
 				if (k<ship.equips.length) obj.equip.push(ship.equips[k].mid);
 				else obj.equip.push(-1);
 			}
