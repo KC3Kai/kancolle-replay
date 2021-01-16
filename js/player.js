@@ -390,7 +390,7 @@ function createShip(data,side,i,damaged) {
 
 	if (data.length > 2) shipSetHP(ship,data[2]);
 	var hasonlytorp;
-	for (var j=3; j<=7; j++) {
+	for (var j=3; j<=data.length; j++) {
 		if (!data[j]) continue;
 		var eq = EQDATA[data[j]];
 		if (eq) {
