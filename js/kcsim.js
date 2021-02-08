@@ -2063,6 +2063,13 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 			preMod = (planebase >= 10)? .7 + Math.random()*.3 : .35 + Math.random()*.45;
 		}
 		var postMod = (equip.type == LANDBOMBER)? 1.8 : 1;
+		if (equip.mid == 405 && !target.isInstall) {
+			if (['DD','CL'].indexOf(target.type) != -1) postMod *= 1.1;
+		}
+		if (equip.mid == 406 && !target.isInstall) {
+			if (['CA','CAV','CV','CVB'].indexOf(target.type) != -1) postMod *= 1.15;
+			if (['FBB','BB','BBV'].indexOf(target.type) != -1) postMod *= 1.38;
+		}
 		if (target.isPT && !NERFPTIMPS) postMod *= .6;
 		// if (target.isInstall) { //https://cdn.discordapp.com/attachments/178613137430282240/284476587783618560/isohime.PNG
 			// if (equip.isdivebomber) postMod *= 2;
