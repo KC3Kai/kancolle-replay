@@ -11089,7 +11089,7 @@ var SHIPDATA = {
 	461: {
 		name: 'Shoukaku Kai 2',
 		nameJP: '翔鶴改二',
-		image: 'KShoukakuKai2A.jpg',
+		image: 'K461.jpg',
 		type: 'CV', sclass: 33,
 		nid: 261,
 		added: '2015-09-25',
@@ -11114,7 +11114,7 @@ var SHIPDATA = {
 	462: {
 		name: 'Zuikaku Kai 2',
 		nameJP: '瑞鶴改二',
-		image: 'KZuikakuKai2A.jpg',
+		image: 'KZuikakuKai2.jpg',
 		type: 'CV', sclass: 33,
 		nid: 262,
 		added: '2015-10-30',
