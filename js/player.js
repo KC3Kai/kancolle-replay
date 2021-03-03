@@ -415,7 +415,7 @@ function createShip(data,side,i,damaged) {
 	ship.issub = (sdata.type == 'SS' || sdata.type == 'SSV');
 	ship.isinstall = (sdata.type == 'Installation' || sdata.installtype > 0 || sdata.isAnchorage);
 	ship.isCV = (sdata.type == 'CV' || sdata.type == 'CVL' || sdata.type == 'CVB' || (sdata.type=='AO'&&ship.hastorpbomber));
-	ship.isfog = (parseInt(data[0]) >= 2000 && parseInt(data[0]) <= 2100);
+	ship.isfog = (parseInt(data[0]) >= 9000 && parseInt(data[0]) <= 9100);
 	if (sdata.nightattack==2) ship.nightgun = true;
 	ship.shakepid = 0;
 	ship.mid = data[0];
@@ -1000,9 +1000,10 @@ function processAPI(root) {
 					case 1:
 						var targets = [];
 						for (var t=0; t<hou.api_df_list[j].length; t++) {
-							if (ecombined) {
-								if (hou.api_at_eflag[j]) targets.push((hou.api_df_list[j][t]>6)? fleet1C[hou.api_df_list[j][t]-7] : fleet1[hou.api_df_list[j][t]-1]);
-								else targets.push((hou.api_df_list[j][t]>6)? f2c[hou.api_df_list[j][t]-7] : f2[hou.api_df_list[j][t]-1]);
+							if (ecombined || !OLDFORMAT) {
+								let off = OLDFORMAT ? -1 : 0;
+								if (hou.api_at_eflag[j]) targets.push((hou.api_df_list[j][t]>5-off)? fleet1C[hou.api_df_list[j][t]-6+off] : fleet1[hou.api_df_list[j][t]+off]);
+								else targets.push((hou.api_df_list[j][t]>5-off)? f2c[hou.api_df_list[j][t]-6+off] : f2[hou.api_df_list[j][t]+off]);
 							} else {
 								targets.push((hou.api_df_list[j][t]>6)? f2[hou.api_df_list[j][t]-7] : f1[hou.api_df_list[j][t]-1]);
 							}

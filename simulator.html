@@ -122,8 +122,14 @@
 			<input type="checkbox" checked id="mech13" onchange="MECHANICS.aaResist=this.checked"/><label for="mech13">Anti-Air Resist</label><br>
 			<input type="checkbox" checked id="mech14" onchange="MECHANICS.divebomberInstall=this.checked"/><label for="mech14">Divebomber Installation Targeting</label><br>
 			<br>
-			<label for="mechshelldmg">Day Shelling Soft-Cap: </label><input id="mechshelldmg" type="number" min="0" max="9999" value="180" style="width:50px" onchange="SHELLDMGBASE=parseInt(this.value);raiseFleetChange()" /><br>
-			<label for="mechaswdmg">ASW Soft-Cap: </label><input id="mechaswdmg" type="number" min="0" max="9999" value="150" style="width:50px" onchange="ASWDMGBASE=parseInt(this.value);raiseFleetChange()" /><br>
+			<table>
+			<tr><td><label for="mechshelldmg">Day Shelling Soft-Cap: </label></td><td><input id="mechshelldmg" type="number" min="0" max="9999" value="220" style="width:50px" onchange="setConst('shellDmgCap',this.value);raiseFleetChange()" /></td></tr>
+			<tr><td><label for="mechaswdmg">ASW Soft-Cap: </label></td><td><input id="mechaswdmg" type="number" min="0" max="9999" value="170" style="width:50px" onchange="setConst('aswDmgCap',this.value);raiseFleetChange()" /></td></tr>
+			<tr><td><label for="mechtorpedodmg">Torpedo Soft-Cap: </label></td><td><input id="mechtorpedodmg" type="number" min="0" max="9999" value="180" style="width:50px" onchange="setConst('torpedoDmgCap',this.value);raiseFleetChange()" /></td></tr>
+			<tr><td><label for="mechnightdmg">Night Soft-Cap: </label></td><td><input id="mechnightdmg" type="number" min="0" max="9999" value="360" style="width:50px" onchange="setConst('nightDmgCap',this.value);raiseFleetChange()" /></td></tr>
+			<tr><td><label for="mechairdmg">Air Soft-Cap: </label></td><td><input id="mechairdmg" type="number" min="0" max="9999" value="170" style="width:50px" onchange="setConst('airDmgCap',this.value);raiseFleetChange()" /></td></tr>
+			<tr><td><label for="mechsupportdmg">Support Soft-Cap: </label></td><td><input id="mechsupportdmg" type="number" min="0" max="9999" value="170" style="width:50px" onchange="setConst('supportDmgCap',this.value);raiseFleetChange()" /></td></tr>
+			</table>
 			<br>
 			<input type="checkbox" id="advCostW6" onchange="SIMCONSTS.airRaidCostW6=this.checked;raiseFleetChange()" /><label for="advCostW6">Use World 6 costs for Air Raid (4% <img src="assets/stats/fuel.png" /> 8% <img src="assets/stats/ammo.png" />)</label><br>
 			<br>
