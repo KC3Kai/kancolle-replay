@@ -306,7 +306,7 @@ function dialogShip(types,side) {
 	var c=0, tr = $('<tr></tr>'), baseships = [], done = [];
 	for (var mid in SHIPDATA) {
 		var ship = SHIPDATA[mid];
-		if ((side==0&&mid>=1500)||(side==1&&(mid<1500||mid>2000))||types.indexOf(ship.type)==-1) continue;
+		if ((side==0&&mid>=1500)||(side==1&&(mid<1500||mid>3000))||types.indexOf(ship.type)==-1) continue;
 		if (ship.prev && types.indexOf(SHIPDATA[ship.prev].type)!=-1) continue;
 		if (done.indexOf(mid)==-1) {
 			var ships = [mid]; done.push(mid);
@@ -345,7 +345,7 @@ function dialogShip(types,side) {
 }
 
 function dialogShipFog() {
-	$('#dialogselship').html('<table class="dialog2"><tr><td onclick="dSetShip(2001)"><img src="assets/icons/AIona.png"><br><span>Iona</span><br></td><td onclick="dSetShip(2002)"><img src="assets/icons/ATakao.png"><br><span>Takao</span><br></td><td onclick="dSetShip(2003)"><img src="assets/icons/AHaruna.png"><br><span>Haruna</span><br></td></tr><tr><td onclick="dSetShip(2015)"><img src="assets/icons/AKirishima.png"><br><span>Kirishima</span><br></td><td onclick="dSetShip(2013)"><img src="assets/icons/AMaya.png"><br><span>Maya</span><br></td><td onclick="dSetShip(2016)"><img src="assets/icons/AKongou.jpg"><br><span>Kongou</span><br></td><td onclick="dSetShip(2011)"><img src="assets/icons/ANagara.png"><br><span>Nagara-Class</span><br></td></tr></table>');
+	$('#dialogselship').html('<table class="dialog2"><tr><td onclick="dSetShip(9001)"><img src="assets/icons/AIona.png"><br><span>Iona</span><br></td><td onclick="dSetShip(9002)"><img src="assets/icons/ATakao.png"><br><span>Takao</span><br></td><td onclick="dSetShip(9003)"><img src="assets/icons/AHaruna.png"><br><span>Haruna</span><br></td></tr><tr><td onclick="dSetShip(9015)"><img src="assets/icons/AKirishima.png"><br><span>Kirishima</span><br></td><td onclick="dSetShip(9013)"><img src="assets/icons/AMaya.png"><br><span>Maya</span><br></td><td onclick="dSetShip(9016)"><img src="assets/icons/AKongou.jpg"><br><span>Kongou</span><br></td><td onclick="dSetShip(9011)"><img src="assets/icons/ANagara.png"><br><span>Nagara-Class</span><br></td></tr></table>');
 	$('#dialogselship').dialog("open");
 }
 
@@ -603,9 +603,9 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
 			var o = document.createElement('option');
 			o.appendChild(document.createTextNode(SHIPDATA[shipid].name));
 			o.setAttribute('value',shipid);
-			if (shipid < 2000) g1.appendChild(o);
-			else if (shipid < 3000) g3.appendChild(o);
-			else g2.appendChild(o);
+			if (shipid < 3000) g1.appendChild(o);
+			else if (shipid < 9000) g2.appendChild(o);
+			else g3.appendChild(o);
 		}
 		sel.appendChild(g1);
 		sel.appendChild(g3);
