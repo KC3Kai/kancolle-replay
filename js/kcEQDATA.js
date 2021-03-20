@@ -4833,6 +4833,7 @@ var EQDATA = {
 		added: '2020-08-27',
 		image: 46,
 		type: TORPBOMBER,
+		btype: B_NIGHTBOMBER,
 		FP: 3,
 		DIVEBOMB: 7,
 		TP: 10,
