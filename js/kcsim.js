@@ -520,14 +520,15 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 		postMod *= ship.anchoragePostMult;
 	}
 	
+	let critdmgbonus = ship.canNBAirAttack() ? ship.critdmgbonus : 1;
 	if (da) {
-		var res1 = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,critMod));
+		var res1 = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,critMod,ship.canNBAirAttack()),critdmgbonus);
 		var dmg1 = getScratchDamage(target.HP), realdmg1 = 0;
 		if (res1) {
 			dmg1 = damage(ship,target,ship.NBPower(target)+bonus,preMod,res1*postMod,SIMCONSTS.nightDmgCap);
 			realdmg1 = takeDamage(target,dmg1);
 		} else { realdmg1 = takeDamage(target,dmg1) };
-		var res2 = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,critMod));
+		var res2 = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,critMod,ship.canNBAirAttack()),critdmgbonus);
 		var dmg2 = getScratchDamage(target.HP), realdmg2 = 0;
 		if (res2) {
 			dmg2 = damage(ship,target,ship.NBPower(target)+bonus,preMod,res2*postMod,SIMCONSTS.nightDmgCap);
@@ -551,7 +552,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 			APIyasen.api_n_mother_list.push(0);
 		}
 	} else {
-		var res = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,critMod,ship.canNBAirAttack()));
+		var res = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,critMod,ship.canNBAirAttack()),critdmgbonus);
 		var dmg = (cutin)? getScratchDamage(target.HP) : 0; var realdmg = 0;
 		if (res) {
 			dmg = damage(ship,target,ship.NBPower(target)+bonus,preMod,res*postMod,SIMCONSTS.nightDmgCap);
@@ -1063,6 +1064,12 @@ function nightPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,NBonly,API
 
 function apiAdjustHougekiSpecial(APIhou,numAttack) {
 	let ind = APIhou.api_damage.length - numAttack;
+	let at_type = APIhou.api_at_type || APIhou.api_sp_list;
+	let sp = at_type[at_type.length-1];
+	while (at_type[ind] != sp) {
+		ind++;
+		numAttack--;
+	}
 	for (let i=1; i<numAttack; i++) {
 		for (let key of ['api_damage','api_cl_list','api_df_list']) {
 			APIhou[key][ind].push(APIhou[key][ind+i][0]);
