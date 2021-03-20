@@ -226,7 +226,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (eq.type == SEARCHLIGHTL) this.hasSearchlight = 2;
 		if (eq.isnightscout) this.hasNightScout = true;
 		if (eq.type == PICKET) this.hasLookout = true;
-		if (eq.type == DIVEBOMBER || eq.type == JETBOMBER) this.hasDivebomber = true;
+		if ((eq.type == DIVEBOMBER || eq.type == JETBOMBER) && this.CVshelltype) this.hasDivebomber = true;
 		if (eq.type == FCF) this.hasFCF = equips[i];
 		if (eq.type == SUBRADAR) this.hasSubRadar = true;
 		if (eq.specialCutIn) this.numSpecialTorp = this.numSpecialTorp+1 || 1;
@@ -575,6 +575,7 @@ Ship.prototype.canAS = function() {
 	return false;
 }
 Ship.prototype.canNBAirAttack = function() { return false; }
+Ship.prototype.hasNBAirGear = function() { return false; }
 
 Ship.prototype.NBtypes = function() {
 	if (this._nbtypes) return this._nbtypes;
@@ -583,18 +584,23 @@ Ship.prototype.NBtypes = function() {
 	var sguns = (this.equiptypesB[B_SECGUN])? this.equiptypesB[B_SECGUN] : 0;
 	var torps = (this.equiptypesB[B_TORPEDO])? this.equiptypesB[B_TORPEDO] : 0;
 	
-	if (MECHANICS.CVCI && this.canNBAirAttack()) {
-		let hasFuze = this.equips.some(eq => eq.mid == 320);
-		if (this.equiptypesB[B_NIGHTFIGHTER] >= 2 && this.equiptypesB[B_NIGHTBOMBER]) {
-			this._nbtypes.push(61);
-		}
-		if ((this.equiptypesB[B_NIGHTFIGHTER] && hasFuze) || (this.equiptypesB[B_NIGHTBOMBER] && hasFuze) || (this.equiptypesB[B_NIGHTFIGHTER] && this.equiptypesB[B_NIGHTBOMBER])) {
-			this._nbtypes.push(62);
-		}
-		if (this.equiptypesB[B_NIGHTFIGHTER]) {
-			if ((this.equiptypesB[B_NIGHTFIGHTER] || 0) + (this.equiptypesB[B_NIGHTBOMBER] || 0) + (this.equiptypesB[B_NIGHTBOMBER2] || 0) >= 3) {
-				this._nbtypes.push(63);
+	if (this.canNBAirAttack()) {
+		if (MECHANICS.CVCI) {
+			let hasFuze = this.equips.some(eq => eq.mid == 320);
+			if (this.equiptypesB[B_NIGHTFIGHTER] >= 2 && this.equiptypesB[B_NIGHTBOMBER]) {
+				this._nbtypes.push(61);
 			}
+			if ((this.equiptypesB[B_NIGHTFIGHTER] && hasFuze) || (this.equiptypesB[B_NIGHTBOMBER] && hasFuze) || (this.equiptypesB[B_NIGHTFIGHTER] && this.equiptypesB[B_NIGHTBOMBER])) {
+				this._nbtypes.push(62);
+			}
+			if (this.equiptypesB[B_NIGHTFIGHTER]) {
+				if ((this.equiptypesB[B_NIGHTFIGHTER] || 0) + (this.equiptypesB[B_NIGHTBOMBER] || 0) + (this.equiptypesB[B_NIGHTBOMBER2] || 0) >= 3) {
+					this._nbtypes.push(63);
+				}
+			}
+		}
+		if (this.hasNBAirGear()) {
+			return this._nbtypes;
 		}
 	}
 	if (MECHANICS.destroyerNBCI && this.type == 'DD') {
@@ -1062,8 +1068,8 @@ CV.prototype.canShell = function() {
 	}
 	return false;
 }
-CV.prototype.canStillShell = function () {
-	return (this.HP > this.maxHP*.5 && this.canShell());
+CV.prototype.canStillShell = function (isNight) {
+	return (this.HP > this.maxHP*.5 && (isNight || this.canShell()));
 }
 CV.prototype.CVshelltype = true;
 CV.prototype.shellPower = function(target,base) {
@@ -1102,24 +1108,37 @@ CV.prototype.shellPower = function(target,base) {
 CV.prototype.NBPower = function(target) {
 	if (this.canNBAirAttack()) {
 		let power = this.FP;
-		for (let i=0; i<this.equips.length; i++) {
-			let equip = this.equips[i];
-			power -= (equip.FP || 0);
-			if (equip.btype != B_NIGHTFIGHTER && equip.btype != B_NIGHTBOMBER && equip.btype != B_NIGHTBOMBER2) continue;
-			let mod = .3*((equip.FP || 0) + (equip.TP || 0) + (equip.ASW || 0) + (equip.DIVEBOMB || 0));
-			power += (equip.FP || 0) + (equip.TP || 0) + Math.sqrt(equip.level || 0);
-			if (equip.btype != B_NIGHTBOMBER2) {
-				power += this.planecount[i]*3;
-				mod *= 1.5;
+		if (this.hasNBAirGear()) {
+			for (let i=0; i<this.equips.length; i++) {
+				let equip = this.equips[i];
+				power -= (equip.FP || 0);
+				if (equip.btype != B_NIGHTFIGHTER && equip.btype != B_NIGHTBOMBER && equip.btype != B_NIGHTBOMBER2) continue;
+				let mod = .3*((equip.FP || 0) + (equip.TP || 0) + (equip.ASW || 0) + (equip.DIVEBOMB || 0));
+				power += (equip.FP || 0) + (equip.TP || 0) + Math.sqrt(equip.level || 0);
+				if (equip.btype != B_NIGHTBOMBER2) {
+					power += this.planecount[i]*3;
+					mod *= 1.5;
+				}
+				power += mod*Math.sqrt(this.planecount[i]);
 			}
-			power += mod*Math.sqrt(this.planecount[i]);
+		} else if (this.sclass == 78) {
+			for (let i=0; i<this.equips.length; i++) {
+				let equip = this.equips[i];
+				power -= (equip.FP || 0);
+				if (equip.isSwordfish) {
+					power += (equip.FP || 0) + (equip.TP || 0) + Math.sqrt(equip.level || 0);
+				}
+			}
 		}
 		return power;
 	}
 	return Ship.prototype.NBPower.call(this,target);
 }
 CV.prototype.canNBAirAttack = function() {
-	return (this.equiptypesB[B_NIGHTCREW] || this.hasBuiltInNightCrew) && this.HP/this.maxHP > .5;
+	return (this.hasNBAirGear() || (this.sclass == 78 && this.equips.find(eq => eq.isSwordfish))) && this.canStillShell(true);
+}
+CV.prototype.hasNBAirGear = function() {
+	return (this.equiptypesB[B_NIGHTCREW] || this.hasBuiltInNightCrew) && (this.equiptypesB[B_NIGHTFIGHTER] || this.equiptypesB[B_NIGHTBOMBER]);
 }
 CV.prototype.rocketBarrageChance = CAV.prototype.rocketBarrageChance;
 
@@ -1156,8 +1175,8 @@ function CVB(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	CV.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
 }
 CVB.prototype = Object.create(CV.prototype);
-CVB.prototype.canStillShell = function() {
-	return (this.HP > this.maxHP*.25 && this.canShell());
+CVB.prototype.canStillShell = function(isNight) {
+	return (this.HP > this.maxHP*.25 && (isNight || this.canShell()));
 }
 
 
