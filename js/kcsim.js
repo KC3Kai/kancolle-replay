@@ -175,6 +175,7 @@ var MECHANICS = {
 	zuiunCI: false,
 	aaResist: true,
 	divebomberInstall: true,
+	specialAttacks: true,
 };
 var NERFPTIMPS = false;
 var BREAKPTIMPS = false;
@@ -786,6 +787,7 @@ function shellPhaseAttack(ship,targetData,APIhou,attackSpecial) {
 }
 
 function canSpecialAttack(ship,isNB) {
+	if (!MECHANICS.specialAttacks) return false;
 	if (ship.fleet.didSpecial) return false;
 	if (ship.attackSpecial == 100) {
 		if (ship.fleet.ships[0] != ship) return false;

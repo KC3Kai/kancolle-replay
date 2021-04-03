@@ -2542,8 +2542,8 @@ function simDataLoad(data) {
 		MECHANICS[mechanic] = data.mechanics[mechanic];
 	}
 	if (data.consts) {
-		if (data.consts.dayShellSoftCap) SHELLDMGBASE = data.consts.dayShellSoftCap;
-		if (data.consts.aswSoftCap) ASWDMGBASE = data.consts.aswSoftCap;
+		if (data.consts.dayShellSoftCap) SIMCONSTS.shellDmgCap = data.consts.dayShellSoftCap;
+		if (data.consts.aswSoftCap) SIMCONSTS.aswDmgCap = data.consts.aswSoftCap;
 		if (data.consts.accEcMF) SIMCONSTS.accEcMF = data.consts.accEcMF;
 		if (data.consts.accEcME) SIMCONSTS.accEcME = data.consts.accEcME;
 		if (data.consts.accEcEF) SIMCONSTS.accEcEF = data.consts.accEcEF;
@@ -2560,6 +2560,7 @@ function simDataLoad(data) {
 	if (data.bucketHPPercent != null) BUCKETPERCENT = data.bucketHPPercent;
 	if (data.bucketTime != null) BUCKETTIME = data.bucketTime;
 	if (data.continueOnTaiha) DORETREAT = false;
+	if (data.didSpecial) MECHANICS.specialAttacks = false;
 	
 	return optionsAll;
 }
