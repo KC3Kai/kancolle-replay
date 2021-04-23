@@ -126,6 +126,9 @@ var BATTLE = (function() {
 			kouku(dbattle.api_air_base_attack[i], body, null, false, false, true);
 			body.append(getTextRow("", []));
 		}
+		if (dbattle.api_air_base_rescue_type) {
+			body.append(getTextRow("AIR_BASE_RESCUE",[dbattle.api_air_base_rescue_type]));
+		}
 		
 		tab.append(body);
 	};

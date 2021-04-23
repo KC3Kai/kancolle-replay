@@ -198,6 +198,10 @@ var TEXTDATA_CN = {
 			}
 		}
 	},
+	"AIR_BASE_RESCUE": {
+		"text": "<b>Catalina救助:</b> <b><0></b>",
+		"values": {}
+	},
 	"SUPPORT_START": {
 		"text": "<span style='color:blue'><0> 支援舰队没有咕咕咕！并展开了 <b><1></b></span>",
 		"values": {
