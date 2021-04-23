@@ -198,6 +198,10 @@ var TEXTDATA_EN = {
 			}
 		}
 	},
+	"AIR_BASE_RESCUE": {
+		"text": "<b>Catalina rescue:</b> level <b><0></b>",
+		"values": {}
+	},
 	"SUPPORT_START": {
 		"text": "The <0> support fleet has arrived with <b><1></b>.",
 		"values": {

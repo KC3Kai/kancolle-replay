@@ -213,6 +213,10 @@ var TEXTDATA_JP = {
 			}
 		}
 	},
+	"AIR_BASE_RESCUE": {
+		"text": "<b>カタリナ救助:</b> <b><0></b>",
+		"values": {}
+	},
 	"SUPPORT_START": {
 		"text": "<0>支援艦隊が到着しました！ <b><1></b>開始！",
 		"values": {

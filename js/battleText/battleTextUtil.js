@@ -4,6 +4,7 @@ function getText(name, args) {
 		var val = args[i];
 		if (TEXTDATA[name].values[i])
 			val = TEXTDATA[name].values[i][args[i]];
+		if (val === undefined) val = args[i];
 		text = text.replace('<' + i + '>', val);
 	}
 	return text;
