@@ -1009,7 +1009,7 @@ CAV.prototype.APweak = true;
 CAV.prototype.canASW = function() {
 	for (var i=0; i<this.equips.length; i++) {
 		if (this.planecount[i] <= 0) continue;
-		if (this.equips[i].isdivebomber || this.equips[i].istorpbomber) return true;
+		if (EQTDATA[this.equips[i].type].isASWPlane && this.equips[i].ASW > 0) return true;
 	}
 	return false;
 }
@@ -1150,7 +1150,10 @@ CVL.prototype = Object.create(CV.prototype);
 CVL.prototype.OASWstat = 65;
 CVL.prototype.canASW = function() {
 	if (this.HP/this.maxHP <= .5) return false;
-	for (var i=0; i<this.equips.length; i++) { if (this.equips[i].isdivebomber || this.equips[i].istorpbomber) return true; }
+	for (var i=0; i<this.equips.length; i++) {
+		if (this.planecount[i] <= 0) continue;
+		if (EQTDATA[this.equips[i].type].isASWPlane && this.equips[i].ASW > 0) return true;
+	}
 	return false;
 }
 CVL.prototype.canOASW = function() {
@@ -1254,6 +1257,7 @@ function LHA(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
 };
 LHA.prototype = Object.create(Ship.prototype);
+LHA.prototype.canASW = CAV.prototype.canASW;
 
 function DE(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
