@@ -5095,6 +5095,15 @@ var EQDATA = {
 		LOS: 2,
 		RNG: 2,
 	},
+	413: {
+		name: 'Elite Torpedo Squadron Command Facility',
+		nameJP: '精鋭水雷戦隊 司令部',
+		added: '2021-05-08',
+		type: FCF,
+		TP: 3,
+		ACC: 2,
+		LOS: 1,
+	},
 	414: {
 		name: 'SOC Seagull',
 		nameJP: 'SOC Seagull',
@@ -5105,6 +5114,16 @@ var EQDATA = {
 		EV: 1,
 		ASW: 1,
 		LOS: 4,
+	},
+	415: {
+		name: 'SO3C Seamew Kai',
+		nameJP: 'SO3C Seamew改',
+		added: '2021-05-08',
+		type: SEAPLANE,
+		AA: 1,
+		ACC: 3,
+		ASW: 2,
+		LOS: 7,
 	},
 	501: {
 		name: '5inch Single Cannon',
@@ -6241,6 +6260,16 @@ var EQDATA = {
 		ACC: 25,
 		EV: 4,
 		RNG: 3,
+	},
+	610: {
+		name: 'Abyssal Seamew Reconnaissance Seaplane',
+		nameJP: '深海カモメ水偵',
+		added: '2021-05-08',
+		type: SEAPLANE,
+		ACC: 4,
+		EV: 3,
+		ASW: 4,
+		LOS: 6,
 	},
 };
 

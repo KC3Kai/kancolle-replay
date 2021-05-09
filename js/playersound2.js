@@ -2944,6 +2944,7 @@ var VOICES = {
 		damage1: "assets/voice/Taigei-Minor_Damage_1.ogg",
 		damage2: "assets/voice/Taigei-Minor_Damage_2.ogg",
 		damage3: "assets/voice/Taigei-Major_Damage.ogg",
+		special: "assets/voice/184_900.mp3",
 	},
 	185: {
 		start: "assets/voice/Ryuuhou-Battle_Start.ogg",
@@ -6506,5 +6507,11 @@ var VOICES = {
 		damage1: "assets/voice/625_damage1.mp3",
 		damage2: "assets/voice/625_damage2.mp3",
 		damage3: "assets/voice/625_damage3.mp3",
+	},
+	634: {
+		special: "assets/voice/634_900.mp3",
+	},
+	639: {
+		special: "assets/voice/634_900.mp3",
 	},
 }

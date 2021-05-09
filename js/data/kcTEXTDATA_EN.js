@@ -297,6 +297,9 @@ var TEXTDATA_EN = {
 				104: "Kongou Special ",
 				200: "Zuiun cut-in ",
 				201: "Suisei cut-in ",
+				300: "Submarine Fleet Special ",
+				301: "Submarine Fleet Special ",
+				302: "Submarine Fleet Special ",
 			}
 		}
 	},
@@ -377,6 +380,9 @@ var TEXTDATA_EN = {
 				102: "Mutsu Special",
 				103: "Colorado Special",
 				104: "Kongou Special",
+				300: "Submarine Fleet Special ",
+				301: "Submarine Fleet Special ",
+				302: "Submarine Fleet Special ",
 			}
 		}
 	},

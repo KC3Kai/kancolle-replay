@@ -1037,6 +1037,16 @@ function processAPI(root) {
 						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
 						var args = [attackers,defenders,d.slice(2,5),d.slice(5,8),protects];
 						eventqueue.push([shootNelsonTouch,args,getState()]); break;
+					case 300:
+					case 301:
+					case 302:
+						let f = hou.api_at_eflag && hou.api_at_eflag[j] ? f2 : f1;
+						var attackers;
+						if (hou.api_at_type[j] == 300) attackers = [f[0],f[1],f[2]];
+						if (hou.api_at_type[j] == 301) attackers = [f[0],f[2],f[3]];
+						if (hou.api_at_type[j] == 302) attackers = [f[0],f[1],f[3]];
+						var args = [attackers, defenders, hou.api_damage[j], hou.api_cl_list[j], hou.api_damage[j].map(n => Math.floor(n) != n)];
+						eventqueue.push([shootSSAttack,args,getState()]); break;
 				}
 				
 				handleRepair(fleet1);
@@ -1135,6 +1145,16 @@ function processAPI(root) {
 						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
 						var args = [attackers,targets,d.slice(2,4),d.slice(4,6),protects];
 						eventqueue.push([shootNelsonTouch,args,getState()]); break;
+					case 300:
+					case 301:
+					case 302:
+						let f = hou.api_at_eflag && hou.api_at_eflag[j] ? f2 : f1;
+						var attackers;
+						if (hou.api_sp_list[j] == 300) attackers = [f[0],f[1],f[2]];
+						if (hou.api_sp_list[j] == 301) attackers = [f[0],f[2],f[3]];
+						if (hou.api_sp_list[j] == 302) attackers = [f[0],f[1],f[3]];
+						var args = [attackers, targets, hou.api_damage[j], hou.api_cl_list[j], hou.api_damage[j].map(n => Math.floor(n) != n)];
+						eventqueue.push([shootSSAttack,args,getState()]); break;
 				}
 				
 				handleRepair(fleet1);
@@ -2152,6 +2172,39 @@ function shootNelsonTouch(ships,targets,damages,crits,protects) {
 	}
 	
 	addTimeout(function(){ ecomplete = true; }, 5500);
+}
+
+function shootSSAttack(ships,targets,damages,crits,protects) {
+	SM.playVoice(ships[0].mid,'special',ships[0].id);
+	updates.push([shipMoveTo,[ships[0],ships[0].xorigin+25-50*ships[0].side,2]]);
+	addTimeout(function() {
+		updates.push([shipMoveTo,[ships[0],ships[0].xorigin,2]]);
+	},3500);
+	
+	for (let i=1; i<ships.length; i++) {
+		addTimeout(function(){ shipShake(ships[i],3,0,36); }, 1000);
+	}
+	addTimeout(function() { SM.play('torpedo'); }, 1500);
+	
+	let byTarget = {};
+	for (let i=0; i<targets.length; i++) {
+		let id = targets[i].id;
+		if (!byTarget[id]) byTarget[id] = { 'target': targets[i], 'damage': 0, 'crit': 0, 'protect': false };
+		byTarget[id].damage += Math.floor(damages[i]);
+		byTarget[id].crit = Math.max(byTarget[id].crit, crits[i]);
+		if (protects[i]) byTarget[id].protect = true;
+		
+		let ship = i % 2 == 0 ? ships[1] : ships[2];
+		let target = targets[i];
+		let speed = (Math.abs(ship.graphic.x-target.graphic.x) < 600)? 3 : 4;
+		addTimeout(function(){ createTorp(ship,target,speed); }, 1500);
+	}
+	
+	for (let id in byTarget) {
+		addTimeout(function(){ standardHit(byTarget[id].target,byTarget[id].damage,true,byTarget[id].protect,byTarget[id].crit); },3500);
+	}
+	
+	addTimeout(function(){ ecomplete = true; }, 4200);
 }
 
 function shootTorp(ship,target,damage,forcecrit,protect) {
