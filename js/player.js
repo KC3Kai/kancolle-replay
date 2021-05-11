@@ -1121,6 +1121,12 @@ function processAPI(root) {
 						eventqueue.push([shootPlaneCutIn,d,getState()]); break;
 					case 7:
 					case 8:
+					case 9:
+					case 10:
+					case 11:
+					case 12:
+					case 13:
+					case 14:
 						d[2] += Math.max(0,d[3]); d[2] += Math.max(0,d[4]);
 						d.splice(3,2);
 						eventqueue.push([shootBigTorp,d,getState()]); break;
