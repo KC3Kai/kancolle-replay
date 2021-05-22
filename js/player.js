@@ -685,6 +685,12 @@ function processAPI(root) {
 				letterOrig = (isPhase1)? EDGES.old[edgeKey][letter][1] : EDGES[edgeKey][letter][1];
 				letter = letterOrig.charCodeAt()-64;
 			}
+			if (map.overrideBGM && map.overrideBGM[letterOrig]) {
+				let m = {};
+				for (let key in map) m[key] = map[key];
+				for (let key in map.overrideBGM[letterOrig]) m[key] = map.overrideBGM[letterOrig][key];
+				map = m;
+			}
 			var bossnode = (isPhase1 && map.bossnodeOld)? map.bossnodeOld : map.bossnode;
 			var isboss = (Array.isArray(bossnode))? (bossnode.indexOf(letter) != -1 || bossnode.indexOf(letterOrig) != -1) : (bossnode==letter);
 			if (isboss) bgm = (NBonly)? map.bgmNB : map.bgmDB;
