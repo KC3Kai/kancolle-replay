@@ -1678,6 +1678,58 @@ var MAPDATA = {
 			},
 		}
 	},
+	50: {
+		name: 'Spring 2021',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmDN: 174,
+				bgmNN: 174,
+				bgmDB: 176,
+				bgmNB: 176,
+				bossnode: ['J','Q','V'],
+			},
+			2: {
+				name: 'E2',
+				bgmDN: 174,
+				bgmNN: 174,
+				bgmDB: 177,
+				bgmNB: 177,
+				bossnode: ['Q','U','ZII'],
+			},
+			3: {
+				name: 'E3',
+				bgmDN: 177,
+				bgmNN: 177,
+				bgmDB: 175,
+				bgmNB: 175,
+				bossnode: ['M','W','Z'],
+			},
+			4: {
+				name: 'E4',
+				bgmDN: 179,
+				bgmNN: 179,
+				bgmDB: 180,
+				bgmNB: 180,
+				bossnode: ['L','V','Y','Z'],
+				overrideBGM: {
+					'Y': { bgmDB: 82, bgmNB: 82 },
+				},
+			},
+			5: {
+				name: 'E5',
+				bgmDN: 180,
+				bgmNN: 180,
+				bgmDB: 181,
+				bgmNB: 181,
+				bossnode: ['J','V','Z'],
+				overrideBGM: {
+					'J': { bgmDB: 46, bgmNB: 46 },
+					'V': { bgmDB: 159, bgmNB: 159 },
+				},
+			},
+		}
+	},
 }
 
 //-------------------------------------
