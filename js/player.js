@@ -430,7 +430,7 @@ function processAPI(root) {
 		stage.addChildAt(bg2,0);
 	}
 	console.log(root);
-	COMBINED = root.combined;
+	COMBINED = root.fleetnum == 1 ? root.combined : 0;
 	PVPMODE = (root.world <= 0);
 	OLDFORMAT = !!data.api_maxhps; //new format 2017-11-17
 	
@@ -498,7 +498,7 @@ function processAPI(root) {
 		if (!SHIPDATA[root[fleet][i].mst_id]) continue;
 		loader2.add('ship'+i,'assets/icons/'+SHIPDATA[root[fleet][i].mst_id].image);
 	}
-	if (root.combined) {
+	if (COMBINED) {
 		for (var i=0; i<root.fleet2.length; i++) {
 			if(!root.fleet2[i] || root.fleet2[i] == -1) continue;
 			fshipsC.push(root.fleet2[i].mst_id);
@@ -509,7 +509,7 @@ function processAPI(root) {
 	}
 	fleet1 = []; fleet2 = []; fleet1C = []; fleet2C = [];
 	HPtotal1 = 0; HPtotal2 = 0;
-	if (root.combined) {
+	if (COMBINED) {
 		for (var i=0; i<fshipsC.length; i++) {  //create ship objects (combined)
 			if (!fshipsC[i] || fshipsC[i]==-1) continue;
 			var maxhp, nowhp;

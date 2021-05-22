@@ -2,7 +2,7 @@ var API = (window.location.hash.length > 5) ? JSON.parse(decodeURIComponent(wind
 var player = new FLEET();
 var world = API.world;
 var map = API.mapnum;
-var combined = API.combined;
+var combined = API.fleetnum == 1 ? API.combined : 0;
 var startData = (API.battles[0].data.api_nowhps || API.battles[0].data.api_f_nowhps) ? API.battles[0].data : API.battles[0].yasen;
 
 var isPvP = (world == 0);
@@ -53,7 +53,7 @@ processText = function() {
 	if (combined) {
 		var hpsEscort = startData.api_f_nowhps_combined || startData.api_nowhps_combined.slice(1, 7);
 		var hpmEscort = startData.api_f_maxhps_combined || startData.api_maxhps_combined.slice(1, 7);
-		player.addCombinedFleet(API.fleet1, API.fleet2, hpsMain, hpmMain, hpsEscort, hpmEscort, API.combined);
+		player.addCombinedFleet(API.fleet1, API.fleet2, hpsMain, hpmMain, hpsEscort, hpmEscort, combined);
 	} else {
 		player.addFleet(API['fleet' + API.fleetnum], hpsMain, hpmMain);
 	}
