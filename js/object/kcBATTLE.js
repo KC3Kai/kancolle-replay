@@ -465,7 +465,7 @@ var BATTLE = (function() {
 		table.append(getTextRow("", []));
 
 		if (stage2 && stage2.api_air_fire) {
-			var AAShip = (stage2.api_air_fire.api_idx > 5) ? player.escortFleet[stage2.api_air_fire.api_idx - 6] : player.mainFleet[stage2.api_air_fire.api_idx];
+			var AAShip = (stage2.api_air_fire.api_idx > 5 && player.mainFleet.length <= 6) ? player.escortFleet[stage2.api_air_fire.api_idx - 6] : player.mainFleet[stage2.api_air_fire.api_idx];
 			table.append(getTextRow("AIR_AACI", [AAShip.name, stage2.api_air_fire.api_kind]));
 		}
 
