@@ -70,27 +70,41 @@
 			border-collapse: collapse;
 			font-size: 14px;
 		}
-		
+
 		.infotable td {
 			border: 1px solid black;
 			padding: 0px;
 			width: 50px;
 			height: 10px;
 		}
-		
+
 		.infotable img {
 			vertical-align: middle;
+		}
+
+		input[type="file"] {
+			display: none;
+		}
+
+		.custom-file-upload {
+			border: 1px solid #ccc;
+			display: inline-block;
+			padding: 6px 12px;
+			cursor: pointer;
 		}
 	</style>
 
 	<!--Bootstrap CDN-->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
-		crossorigin="anonymous">
-	<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+		integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
+		integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
 		crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
+		integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
 		crossorigin="anonymous"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+		integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
 		crossorigin="anonymous"></script>
 
 	<!--Material Design Lite-->
@@ -100,225 +114,288 @@
 
 	<!--Custom-->
 	<link rel="stylesheet" href="./css/battleplayer.css" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+		integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+		crossorigin="anonymous"></script>
+
+
 
 </head>
 
 <body>
 
-	<div id="bp-container" class="d-flex flex-column">
-
-		<!--Title-->
-		<div class="d-flex flex-row align-items-center justify-content-center">
-			<div id="bp-title" class="p-1">
-				KanColle Battle Replayer
-			</div>
-			<div id="bp-title-ver" class="p-1">
-				v1.6.4
-			</div>
-			<div id="bp-title-upd" class="p-1">
-				(Last update: 2021-05-09)
-			</div>
-		</div>
-
-		<!--Main Component-->
-		<div class="d-flex flex-row justify-content-center align-items-start">
-
-			<!--Left-->
-			<div id="bp-comp-left" class="d-flex flex-column align-items-center">
-
-				<!--Part 1-->
-				<div class="d-flex flex-row">
-					<div>
-						<!--Pause/Reset-->
-						<div class="d-flex flex-row justify-content-center align-items-center">
-							<button id="btnPause" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">Pause</button>
-							<button id="btnReset" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">Reset</button>
-						</div>
-
-						<!--Speed-->
-						<div class="d-flex flex-row justify-content-between align-items-center" style="height: 36px">
-							<input id="rangeSpeed" class="mdl-slider mdl-js-slider" data-toggle="tooltip" data-placement="bottom" title="Speed" type="range" data-animation="false"
-								min="0" max="80" value="40">
-							<span id="speednum" style="width:50px;margin-left:-20px">x1</span>
-						</div>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark"> <a class="navbar-brand" href="#">Navbar</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span
+				class="navbar-toggler-icon"></span> </button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active"> <a class="nav-link" href="#">Home <span
+							class="sr-only">(current)</span></a> </li>
+				<li class="nav-item"> <a class="nav-link" href="#">Link</a> </li>
+				<li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+						role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Dropdown </a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown"> <a class="dropdown-item"
+							href="#">Action</a> <a class="dropdown-item" href="#">Another action</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="#">Something else here</a>
 					</div>
+				</li>
+				<li class="nav-item"> <a class="nav-link disabled" href="#" tabindex="-1"
+						aria-disabled="true">Disabled</a> </li>
+			</ul>
+			<form class="form-inline my-2 my-lg-0">
+				<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+			</form>
+		</div>
+	</nav>
 
-					<div>
-						<!--Sound/Voice-->
-						<div id="bp-sound-1" class="d-flex flex-column justify-content-center">
-							<div style="margin-bottom:10px">
-							<label for="switchSound" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-								<input type="checkbox" id="switchSound" class="mdl-switch__input" checked>
-								<span class="mdl-switch__label">Sound</span>
-							 </label>
-							 </div>
-							 <div>
-							<label for="chkvoice" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-								<input type="checkbox" id="chkvoice" class="mdl-switch__input" checked>
-								<span class="mdl-switch__label">Voice</span>
-							</label>
+	<div class="jumbotron jumbotron-fluid text-center">
+		<h1 class="display-4">KanColle Battle Replayer</h1>
+
+		<div id="bp-container" class="d-flex flex-column">
+
+			<!--Title-->
+			<div class="d-flex flex-row align-items-center justify-content-center">
+				<div id="bp-title" class="p-1">
+					KanColle Battle Replayer
+				</div>
+				<div id="bp-title-ver" class="p-1">
+					v1.6.4
+				</div>
+				<div id="bp-title-upd" class="p-1">
+					(Last update: 2021-05-09)
+				</div>
+			</div>
+
+			<!--Main Component-->
+			<div class="d-flex flex-row justify-content-center align-items-start">
+
+				<!--Left-->
+				<div id="bp-comp-left" class="d-flex flex-column align-items-center">
+
+					<!--Part 1-->
+					<div class="d-flex flex-row">
+						<div>
+							<!--Pause/Reset-->
+							<div class="d-flex flex-row justify-content-center align-items-center">
+								<button id="btnPause"
+									class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">Pause</button>
+								<button id="btnReset"
+									class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">Reset</button>
+							</div>
+
+							<!--Speed-->
+							<div class="d-flex flex-row justify-content-between align-items-center"
+								style="height: 36px">
+								<input id="rangeSpeed" class="mdl-slider mdl-js-slider" data-toggle="tooltip"
+									data-placement="bottom" title="Speed" type="range" data-animation="false" min="0"
+									max="80" value="40">
+								<span id="speednum" style="width:50px;margin-left:-20px">x1</span>
 							</div>
 						</div>
 
-						<!--Volume-->
-						<div id="bp-sound-2" class="d-flex flex-row justify-content-between align-items-center" style="height: 36px">
-							<input id="rangeVolume" class="mdl-slider mdl-js-slider" data-toggle="tooltip" data-placement="bottom" title="Volume" type="range" data-animation="false"
-								min="0" max="100" value="60">
+						<div>
+							<!--Sound/Voice-->
+							<div id="bp-sound-1" class="d-flex flex-column justify-content-center">
+								<div style="margin-bottom:10px">
+									<label for="switchSound" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+										<input type="checkbox" id="switchSound" class="mdl-switch__input" checked>
+										<span class="mdl-switch__label">Sound</span>
+									</label>
+								</div>
+								<div>
+									<label for="chkvoice" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+										<input type="checkbox" id="chkvoice" class="mdl-switch__input" checked>
+										<span class="mdl-switch__label">Voice</span>
+									</label>
+								</div>
+							</div>
+
+							<!--Volume-->
+							<div id="bp-sound-2" class="d-flex flex-row justify-content-between align-items-center"
+								style="height: 36px">
+								<input id="rangeVolume" class="mdl-slider mdl-js-slider" data-toggle="tooltip"
+									data-placement="bottom" title="Volume" type="range" data-animation="false" min="0"
+									max="100" value="60">
+							</div>
 						</div>
 					</div>
+
+					<!--Part 2-->
+					<div id="bp-com-left-2" class="d-flex flex-column" style="height: 60px;">
+						<div>
+							<div>
+								<span style="font-weight:bold">Upload image</span>
+							</div>
+							<div>
+								<input id="upload-image" class="btn btn-info btn-md" type="file"
+									onchange="loadImage(this.files[0])" size="12" />
+
+
+								<label for="file-upload" class="custom-file-upload">
+									<i class="fa fa-cloud-upload"></i> Upload Picture
+								</label>
+								<input id="file-upload" type="file" onchange="loadImage(this.files[0])" />
+							</div>
+							<hr>
+							<div>
+								<span style="font-weight:bold">Load from URL</span>
+							</div>
+							<div>
+								<input id="textimgurl" type="text">
+								<input type="button" value="Load" class="btn btn-info btn-md"
+									onclick="loadImgURL($('#textimgurl').val())" />
+							</div>
+							<hr>
+							<div style="height:200px">
+								<img src="" id="imgpreview" height="200" alt="Image preview...">
+							</div>
+						</div>
+
+						<div>
+							<hr>
+							<div>
+								<span style="font-weight:bold">Load from text</span>
+								<textarea id="code" cols="38" rows="2"></textarea>
+							</div>
+							<div>
+								<input id="codeb" type="button" class="btn btn-info btn-md" value="Load"
+									onClick="loadCode()" />
+								<input class="btn btn-info btn-md" type="button" value="Sample Code 1"
+									onclick="$('#code').val(APIsample);" />
+								<input type="button" class="btn btn-info btn-md" value="Sample Code 2"
+									onclick="$('#code').val(APIsample2);" />
+							</div>
+							<div style="height: 15px;">
+								<span id="error" style="color:red; font-size: 10px;"></span>
+							</div>
+
+						</div>
+					</div>
+
 				</div>
 
-				<!--Part 2-->
-				<div id="bp-com-left-2" class="d-flex flex-column" style="height: 60px;">
-					<div>
-						<div>
-							<span style="font-weight:bold">Upload image</span>
+				<!--Right-->
+				<div id="bp-comp-right" class=" d-flex flex-column">
+
+					<!--Battle node-->
+					<div class="d-inline-flex flex-row align-items-center">
+						<div class="bp-label">
+							Skip to Battle
 						</div>
-						<div>
-							<input id="upload-image" type="file" onchange="loadImage(this.files[0])">
-						</div>
-						<hr>
-						<div>
-							<span style="font-weight:bold">Load from URL</span>
-						</div>
-						<div>
-							<input id="textimgurl" type="text">
-							<input type="button" value="Load" onclick="loadImgURL($('#textimgurl').val())" />
-						</div>
-						<hr>
-						<div style="height:200px">
-							<img src="" id="imgpreview" height="200" alt="Image preview...">
+						<div id="skipbuttonspace">
 						</div>
 					</div>
 
-					<div>
-						<hr>
-						<div>
-							<span style="font-weight:bold">Load from text</span>
-							<textarea id="code" cols="38" rows="5"></textarea>
+					<!--Battle info-->
+					<div class="d-inline-flex flex-row justify-content-between align-items-center" style="height: 50px">
+
+						<!--Battle 1-->
+						<div class="d-flex flex-column">
+							<div class="d-flex flex-row">
+								<div class="bp-label bp-air-battle-text">
+									Air Battle
+								</div>
+								<div id="plAS1" class="bp-air-battle-value"></div>
+							</div>
+							<div class="bp-battle-bar">
+								<!--<canvas id="plHP1" width="240px" height="10px" style="border:1px solid black;border-radius:5px"></canvas>-->
+								<canvas id="plHP1"></canvas>
+							</div>
 						</div>
-						<div>
-							<input id="codeb" type="button" value="Load" onClick="loadCode()" />
-							<input type="button" value="Sample Code 1" onclick="$('#code').val(APIsample);" />
-							<input type="button" value="Sample Code 2" onclick="$('#code').val(APIsample2);" />
+
+						<!--Engagement-->
+						<div class="d-flex flex-column align-items-center">
+							<div class="bp-label bp-engagement">
+								Engagement
+							</div>
+							<div class="bt-engagement-value">
+								<span id="plEngage"></span>
+								<span id="plEngageT"></span>
+							</div>
 						</div>
-						<div style="height: 15px;">
-							<span id="error" style="color:red; font-size: 10px;"></span>
+
+						<!--Battle 2-->
+						<div class="d-flex flex-column">
+							<div class="d-flex flex-row">
+								<div class="bp-label bp-air-battle-text">
+									Air Battle
+								</div>
+								<div id="plAS2" class="bp-air-battle-value"></div>
+							</div>
+							<div class="bp-battle-bar">
+								<!--<canvas id="plHP2" width="240px" height="10px" style="border:1px solid black;border-radius:5px"></canvas>-->
+								<canvas id="plHP2"></canvas>
+							</div>
 						</div>
 
 					</div>
+
+					<div id="warningwebgl" style="display:none;color:red">
+						Warning: WebGL is not enabled. Animation may not display correctly. (Try checking if your
+						browser's "Use hardware acceleration when available" is enabled.)
+					</div>
+
+					<!--Player-->
+					<div class="d-inline-flex flex-column">
+						<div id="battlespace"></div>
+						<span id="bp-player-fps">FPS: <span id="FPS"></span></span>
+					</div>
+
 				</div>
 
 			</div>
 
-			<!--Right-->
-			<div id="bp-comp-right" class=" d-flex flex-column">
+			<hr>
 
-				<!--Battle node-->
-				<div class="d-inline-flex flex-row align-items-center">
-					<div class="bp-label">
-						Skip to Battle
+			<!--Fleet-->
+			<div class="d-flex flex-column container">
+
+				<div id="bp-fleet-comp" class="d-flex flex-row align-items-center centered">
+					<div>
+						<button id="btnFleet"
+							class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">Show
+							Fleet Details</button>
 					</div>
-					<div id="skipbuttonspace">
+					<div>
+						<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="radJP"
+							onclick="translateTable('JP')">
+							<input type="radio" id="radJP" class="mdl-radio__button" name="lang" value="1" />
+							<span class="mdl-radio__label">JP</span>
+						</label>
+						<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="radEN"
+							onclick="translateTable('EN')">
+							<input type="radio" id="radEN" class="mdl-radio__button" name="lang" value="2" checked />
+							<span class="mdl-radio__label">EN</span>
+						</label>
+					</div>
+
+					<div style="margin-left:100px">
+						<button id="btnBattle"
+							class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect"
+							onclick="">Show Battle Log</button>
+					</div>
+
+					<div style="margin-left:100px">
+						<button id="btnImportSim"
+							class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect"
+							onclick="">Import Into Simulator</button>
 					</div>
 				</div>
 
-				<!--Battle info-->
-				<div class="d-inline-flex flex-row justify-content-between align-items-center" style="height: 50px">
-
-					<!--Battle 1-->
-					<div class="d-flex flex-column">
-						<div class="d-flex flex-row">
-							<div class="bp-label bp-air-battle-text">
-								Air Battle
-							</div>
-							<div id="plAS1" class="bp-air-battle-value"></div>
-						</div>
-						<div class="bp-battle-bar">
-							<!--<canvas id="plHP1" width="240px" height="10px" style="border:1px solid black;border-radius:5px"></canvas>-->
-							<canvas id="plHP1"></canvas>
-						</div>
-					</div>
-
-					<!--Engagement-->
-					<div class="d-flex flex-column align-items-center">
-						<div class="bp-label bp-engagement">
-							Engagement
-						</div>
-						<div class="bt-engagement-value">
-							<span id="plEngage"></span>
-							<span id="plEngageT"></span>
-						</div>
-					</div>
-
-					<!--Battle 2-->
-					<div class="d-flex flex-column">
-						<div class="d-flex flex-row">
-							<div class="bp-label bp-air-battle-text">
-								Air Battle
-							</div>
-							<div id="plAS2" class="bp-air-battle-value"></div>
-						</div>
-						<div class="bp-battle-bar">
-							<!--<canvas id="plHP2" width="240px" height="10px" style="border:1px solid black;border-radius:5px"></canvas>-->
-							<canvas id="plHP2"></canvas>
-						</div>
-					</div>
-
-				</div>
-				
-				<div id="warningwebgl" style="display:none;color:red">
-					Warning: WebGL is not enabled. Animation may not display correctly. (Try checking if your browser's "Use hardware acceleration when available" is enabled.)
-				</div>
-				
-				<!--Player-->
-				<div class="d-inline-flex flex-column">
-					<div id="battlespace"></div>
-					<span id="bp-player-fps">FPS: <span id="FPS"></span></span>
+				<div id="fleetinfospace">
+					<div id="friendfleetspace"></div>
+					<div id="lbasspace"></div>
+					<div id="enemyfleetspace"></div>
 				</div>
 
 			</div>
 
 		</div>
-
-		<hr>
-
-		<!--Fleet-->
-		<div class="d-flex flex-column">
-			
-			<div id="bp-fleet-comp" class="d-flex flex-row align-items-center">
-				<div>
-					<button id="btnFleet" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">Show Fleet Details</button>
-				</div>
-				<div>
-					<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="radJP" onclick="translateTable('JP')">
-						<input type="radio" id="radJP" class="mdl-radio__button" name="lang" value="1"/>
-						<span class="mdl-radio__label">JP</span>
-					</label>
-					<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="radEN" onclick="translateTable('EN')">
-						<input type="radio" id="radEN" class="mdl-radio__button" name="lang" value="2" checked/>
-						<span class="mdl-radio__label">EN</span>
-					</label>
-				</div>
-				
-				<div style="margin-left:100px">
-					<button id="btnBattle" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" onclick="">Show Battle Log</button> 
-				</div>
-				
-				<div style="margin-left:100px">
-					<button id="btnImportSim" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" onclick="">Import Into Simulator</button> 
-				</div>
-			</div>
-
-			<div id="fleetinfospace">
-				<div id="friendfleetspace"></div>
-				<div id="lbasspace"></div>
-				<div id="enemyfleetspace"></div>
-			</div>
-
-		</div>
-
-	</div>
 
 	</div>
 
@@ -328,6 +405,13 @@
 	<script src="js/battleplayer.js"></script>
 	<script src="js/battleplayer2.js"></script>
 
+	<div class="row">
+		<div class="text-center col-lg-6 offset-lg-3">
+			<h4>KanColle Battle Replayer </h4>
+			<p>Copyright &copy; 2021 &middot; All Rights Reserved &middot; <a
+					href="http://kc3kai.github.io/kancolle-replay">Kancolle-Replay</a></p>
+		</div>
+	</div>
 </body>
 
 </html>
