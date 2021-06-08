@@ -95,6 +95,13 @@
 	</style>
 
 	<!--Bootstrap CDN-->
+
+	<!--Moved here due to bug-->
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+		crossorigin="anonymous"></script>
+	<!--Moved here due to bug-->
+
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
 		integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 	<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
@@ -116,9 +123,8 @@
 	<link rel="stylesheet" href="./css/battleplayer.css" />
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
 		integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-		crossorigin="anonymous"></script>
+
+
 
 
 
@@ -126,25 +132,25 @@
 
 <body>
 
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark"> <a class="navbar-brand" href="#">Navbar</a>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark"> <a class="navbar-brand" href="#">KC3Kai</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
 			aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span
 				class="navbar-toggler-icon"></span> </button>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active"> <a class="nav-link" href="#">Home <span
-							class="sr-only">(current)</span></a> </li>
-				<li class="nav-item"> <a class="nav-link" href="#">Link</a> </li>
+				<li class="nav-item active"> <a class="nav-link" href="battleplayerBS.html">KanColle Battle Replayer
+						<span class="sr-only">(current)</span></a> </li>
+				<li class="nav-item"> <a class="nav-link" href="simulator.html">Simulator</a> </li>
 				<li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-						role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Dropdown </a>
+						role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> External Links
+					</a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown"> <a class="dropdown-item"
-							href="#">Action</a> <a class="dropdown-item" href="#">Another action</a>
+							href="https://ssummerkc.github.io/">夏川の艦これ部屋
+						</a> <a class="dropdown-item" href="https://kc.piro.moe/nav">KanColle Navi</a>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="#">Something else here</a>
+						<a class="dropdown-item" href="https://github.com/KC3Kai">KC3Kai</a>
 					</div>
 				</li>
-				<li class="nav-item"> <a class="nav-link disabled" href="#" tabindex="-1"
-						aria-disabled="true">Disabled</a> </li>
 			</ul>
 			<form class="form-inline my-2 my-lg-0">
 				<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -153,7 +159,7 @@
 		</div>
 	</nav>
 
-	<div class="jumbotron jumbotron-fluid text-center">
+	<div class=" jumbotron jumbotron-fluid text-center">
 		<h1 class="display-4">KanColle Battle Replayer</h1>
 
 		<div id="bp-container" class="d-flex flex-column">
@@ -342,6 +348,7 @@
 
 					<!--Player-->
 					<div class="d-inline-flex flex-column">
+						<div></div>
 						<div id="battlespace"></div>
 						<span id="bp-player-fps">FPS: <span id="FPS"></span></span>
 					</div>
@@ -353,65 +360,60 @@
 			<hr>
 
 			<!--Fleet-->
-			<div class="d-flex flex-column container">
+			<div class="container">
+				<div class="d-flex flex-column">
 
-				<div id="bp-fleet-comp" class="d-flex flex-row align-items-center centered">
-					<div>
-						<button id="btnFleet"
-							class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">Show
-							Fleet Details</button>
-					</div>
-					<div>
-						<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="radJP"
-							onclick="translateTable('JP')">
-							<input type="radio" id="radJP" class="mdl-radio__button" name="lang" value="1" />
-							<span class="mdl-radio__label">JP</span>
-						</label>
-						<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="radEN"
-							onclick="translateTable('EN')">
-							<input type="radio" id="radEN" class="mdl-radio__button" name="lang" value="2" checked />
-							<span class="mdl-radio__label">EN</span>
-						</label>
+					<div id="bp-fleet-comp" class="d-flex flex-row align-items-center">
+						<div>
+							<button id="btnFleet"
+								class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">Show
+								Fleet Details</button>
+						</div>
+						<div>
+							<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="radJP"
+								onclick="translateTable('JP')">
+								<input type="radio" id="radJP" class="mdl-radio__button" name="lang" value="1" />
+								<span class="mdl-radio__label">JP</span>
+							</label>
+							<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="radEN"
+								onclick="translateTable('EN')">
+								<input type="radio" id="radEN" class="mdl-radio__button" name="lang" value="2"
+									checked />
+								<span class="mdl-radio__label">EN</span>
+							</label>
+						</div>
+
+						<div style="margin-left:100px">
+							<button id="btnBattle"
+								class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect"
+								onclick="">Show Battle Log</button>
+						</div>
+
+						<div style="margin-left:100px">
+							<button id="btnImportSim"
+								class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect"
+								onclick="">Import Into Simulator</button>
+						</div>
 					</div>
 
-					<div style="margin-left:100px">
-						<button id="btnBattle"
-							class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect"
-							onclick="">Show Battle Log</button>
-					</div>
 
-					<div style="margin-left:100px">
-						<button id="btnImportSim"
-							class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect"
-							onclick="">Import Into Simulator</button>
-					</div>
 				</div>
-
-				<div id="fleetinfospace">
-					<div id="friendfleetspace"></div>
-					<div id="lbasspace"></div>
-					<div id="enemyfleetspace"></div>
-				</div>
-
 			</div>
 
 		</div>
-
 	</div>
 
+	<div class="text-center col-lg-6 offset-lg-3">
+		<h4>KanColle Battle Replayer </h4>
+		<p>Copyright &copy; 2021 &middot; All Rights Reserved &middot; <a
+				href="http://kc3kai.github.io/kancolle-replay">Kancolle-Replay</a></p>
+	</div>
 	<script src="js/playersound.js"></script>
 	<script src="js/playersound2.js"></script>
 	<script src="js/player.js"></script>
 	<script src="js/battleplayer.js"></script>
 	<script src="js/battleplayer2.js"></script>
 
-	<div class="row">
-		<div class="text-center col-lg-6 offset-lg-3">
-			<h4>KanColle Battle Replayer </h4>
-			<p>Copyright &copy; 2021 &middot; All Rights Reserved &middot; <a
-					href="http://kc3kai.github.io/kancolle-replay">Kancolle-Replay</a></p>
-		</div>
-	</div>
 </body>
 
 </html>
