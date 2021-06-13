@@ -340,6 +340,9 @@ var BATTLE = (function() {
 					attacker['is_enemy'] = true;
 				} else {
 					attacker = (hou.api_at_list[j] >= 6 && playerFleet.mainFleet.length <= 6) ? playerFleet.escortFleet[hou.api_at_list[j] - 6] : playerFleet.mainFleet[hou.api_at_list[j]];
+					if (hou.api_sp_list[j] >= 100 && playerFleet.escortFleet) {
+						attacker = playerFleet.escortFleet[0];
+					}
 				}
 			}
 			
