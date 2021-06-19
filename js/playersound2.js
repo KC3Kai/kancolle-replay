@@ -6174,6 +6174,78 @@ var VOICES = {
 		damage: "assets/voice/Supply_Depot_Princess_Broken_Form_Damaged.ogg",
 		sunk: "assets/voice/Supply_Depot_Princess_Destroyed.ogg",
 	},
+	2000: {
+		start: "assets/voice/503200010.mp3",
+		attack: "assets/voice/503200021.mp3",
+		damage: "assets/voice/503200031.mp3",
+		sunk: "assets/voice/503200041.mp3",
+	},
+	2001: {
+		start: "assets/voice/503200010.mp3",
+		attack: "assets/voice/503200021.mp3",
+		damage: "assets/voice/503200031.mp3",
+		sunk: "assets/voice/503200041.mp3",
+	},
+	2002: {
+		start: "assets/voice/503200010.mp3",
+		attack: "assets/voice/503200021.mp3",
+		damage: "assets/voice/503200031.mp3",
+		sunk: "assets/voice/503200041.mp3",
+	},
+	2003: {
+		start: "assets/voice/503200310.mp3",
+		attack: "assets/voice/503200321.mp3",
+		damage: "assets/voice/503200331.mp3",
+		sunk: "assets/voice/503200341.mp3",
+	},
+	2004: {
+		start: "assets/voice/503200310.mp3",
+		attack: "assets/voice/503200321.mp3",
+		damage: "assets/voice/503200331.mp3",
+		sunk: "assets/voice/503200341.mp3",
+	},
+	2005: {
+		start: "assets/voice/503200310.mp3",
+		attack: "assets/voice/503200321.mp3",
+		damage: "assets/voice/503200331.mp3",
+		sunk: "assets/voice/503200341.mp3",
+	},
+	2006: {
+		start: "assets/voice/505200610.mp3",
+		attack: "assets/voice/505200620.mp3",
+		damage: "assets/voice/505200630.mp3",
+		sunk: "assets/voice/505200640.mp3",
+	},
+	2007: {
+		start: "assets/voice/505200610.mp3",
+		attack: "assets/voice/505200620.mp3",
+		damage: "assets/voice/505200630.mp3",
+		sunk: "assets/voice/505200640.mp3",
+	},
+	2008: {
+		start: "assets/voice/505200610.mp3",
+		attack: "assets/voice/505200620.mp3",
+		damage: "assets/voice/505200630.mp3",
+		sunk: "assets/voice/505200640.mp3",
+	},
+	2009: {
+		start: "assets/voice/505200910.mp3",
+		attack: "assets/voice/505200921.mp3",
+		damage: "assets/voice/505200931.mp3",
+		sunk: "assets/voice/505200941.mp3",
+	},
+	2010: {
+		start: "assets/voice/505200910.mp3",
+		attack: "assets/voice/505200921.mp3",
+		damage: "assets/voice/505200931.mp3",
+		sunk: "assets/voice/505200941.mp3",
+	},
+	2011: {
+		start: "assets/voice/505200910.mp3",
+		attack: "assets/voice/505200921.mp3",
+		damage: "assets/voice/505200931.mp3",
+		sunk: "assets/voice/505200941.mp3",
+	},
 	9001: {
 		start: "assets/voice/Iona_fog_-Battle_Start.ogg",
 		attack: "assets/voice/Iona_fog_-Attack.ogg",
@@ -6514,4 +6586,23 @@ var VOICES = {
 	639: {
 		special: "assets/voice/634_900.mp3",
 	},
+}
+
+for (let id in SHIPDATA) {
+	if (SHIPDATA[id].prev) continue;
+	let idNext = id, done = {};
+	while (idNext = SHIPDATA[idNext].next) {
+		if (done[idNext]) break;
+		if (!VOICES[idNext]) {
+			VOICES[idNext] = VOICES[id];
+		} else {
+			for (let key in VOICES[id]) {
+				if (!VOICES[idNext][key]) {
+					VOICES[idNext][key] = VOICES[id][key];
+				}
+			}
+		}
+		done[idNext] = 1;
+		id = idNext;
+	}
 }
