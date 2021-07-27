@@ -211,7 +211,7 @@ EQTDATA[SONARS] = {
 	btype: B_SONAR,
 	improve: {Pshell:.75,Pasw:1,ACCasw:1.3,EVtorp:1.5},
 	canequip: ['DD','CL','CT','CLT','SS','SSV','DE'],
-	canequipS: [352, 372, 380, 381, 450, 491, 500, 529, 534, 536, 546, 554, 586, 591, 592, 626, 645, 650, 690, 699],
+	canequipS: [352, 372, 380, 381, 450, 491, 500, 529, 534, 536, 546, 554, 586, 591, 592, 626, 645, 650, 690, 699, 707],
 };
 EQTDATA[SONARL] = {
 	name: 'Sonar',
@@ -373,7 +373,7 @@ EQTDATA[LANDINGCRAFT] = {
 	btype: B_LC1,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['AV','LHA'],
-	canequipS: [147, 198, 199, 200, 260, 352, 418, 434, 435, 464, 468, 469, 470, 478, 487, 488, 489, 490, 498, 500, 506, 541, 547, 548, 563, 587, 623, 630, 645, 650, 657, 699, 703],
+	canequipS: [147, 198, 199, 200, 260, 352, 418, 434, 435, 464, 468, 469, 470, 478, 487, 488, 489, 490, 498, 500, 506, 541, 547, 548, 563, 587, 623, 630, 645, 650, 657, 699, 703, 707],
 	cannotequipS: [445, 491],
 };
 EQTDATA[SEARCHLIGHTS] = {
@@ -426,7 +426,7 @@ EQTDATA[DRUM] = {
 	name: 'Misc',
 	image: 25,
 	canequip: ['DD','CL','CAV','AV','AO','LHA'],
-	canequipS: [530, 539, 605],
+	canequipS: [530, 539, 605, 707],
 };
 EQTDATA[SCAMP] = {
 	name: 'Misc',
@@ -5205,6 +5205,16 @@ var EQDATA = {
 		EV: 2,
 		ASW: 6,
 		LOS: 4,
+	},
+	422: {
+		name: 'FR-1 Fireball',
+		nameJP: 'FR-1 Fireball',
+		added: '2021-07-15',
+		type: FIGHTER,
+		FP: 2,
+		AA: 11,
+		ACC: 1,
+		EV: 3,
 	},
 	501: {
 		name: '5inch Single Cannon',
