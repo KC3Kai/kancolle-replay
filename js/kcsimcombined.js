@@ -30,6 +30,10 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		if (ships2[i].isInstall) hasInstall2 = true;
 	}
 	
+	if (F2.formation.id == 4) {
+		F2.formation = SIMCONSTS.echelonOld;
+	}
+	
 	var r = Math.random();
 	if (r < .45) ENGAGEMENT = 1;
 	else if (r < .6) ENGAGEMENT = 1.2;
@@ -695,6 +699,10 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 		if (!ships2C[i].HPprev || (BAPI && BAPI.source != 10)) ships2C[i].HPprev = ships2C[i].HP;
 		if (!MECHANICS.morale) ships2C[i].morale = 49;
 		if (ships2C[i].isInstall) hasInstall2C = true;
+	}
+	
+	if (F1.formation.id == 4) {
+		F1.formation = SIMCONSTS.echelonOld;
 	}
 	
 	var r = Math.random();

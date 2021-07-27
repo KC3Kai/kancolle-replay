@@ -1113,18 +1113,17 @@ function processAPI(root) {
 						eventqueue.push([shootDA,d,getState()]); break;
 					case 2:
 					case 3:
-						d[2] += d[3]; d[3] = (d[4]||d[5]); d[4] = d[6];
-						eventqueue.push([shootBigTorp,d,getState()]); break;
+						var args = [d[0], d[1], hou.api_damage[j].reduce((a,b) => Math.floor(Math.max(0,a) + Math.max(0,b)),0), hou.api_cl_list[j].some(n => n == 2), hou.api_damage[j].some(n => n != Math.floor(n))];
+						eventqueue.push([shootBigTorp,args,getState()]); break;
 					case 4:
-						d[2] += Math.max(0,d[3]); d[3] = (d[4]||d[5]); d[4] = d[6];
-						eventqueue.push([shootBigGun,d,getState()]); break;
+						var args = [d[0], d[1], hou.api_damage[j].reduce((a,b) => Math.floor(Math.max(0,a) + Math.max(0,b)),0), hou.api_cl_list[j].some(n => n == 2), hou.api_damage[j].some(n => n != Math.floor(n))];
+						eventqueue.push([shootBigGun,args,getState()]); break;
 					case 5:
-						d[2] += Math.max(0,d[3]); d[3] = (d[4]||d[5]); d[4] = d[6];
-						eventqueue.push([shootSpecialGun,d,getState()]); break;
+						var args = [d[0], d[1], hou.api_damage[j].reduce((a,b) => Math.floor(Math.max(0,a) + Math.max(0,b)),0), hou.api_cl_list[j].some(n => n == 2), hou.api_damage[j].some(n => n != Math.floor(n))];
+						eventqueue.push([shootSpecialGun,args,getState()]); break;
 					case 6:
-						d[2] += Math.max(0,d[3]); d[2] += Math.max(0,d[4]);
-						d.splice(3,2);
-						eventqueue.push([shootPlaneCutIn,d,getState()]); break;
+						var args = [d[0], d[1], hou.api_damage[j].reduce((a,b) => Math.floor(Math.max(0,a) + Math.max(0,b)),0), hou.api_cl_list[j].some(n => n == 2), hou.api_damage[j].some(n => n != Math.floor(n))];
+						eventqueue.push([shootPlaneCutIn,args,getState()]); break;
 					case 7:
 					case 8:
 					case 9:
@@ -1133,9 +1132,8 @@ function processAPI(root) {
 					case 12:
 					case 13:
 					case 14:
-						d[2] += Math.max(0,d[3]); d[2] += Math.max(0,d[4]);
-						d.splice(3,2);
-						eventqueue.push([shootBigTorp,d,getState()]); break;
+						var args = [d[0], d[1], hou.api_damage[j].reduce((a,b) => Math.floor(Math.max(0,a) + Math.max(0,b)),0), hou.api_cl_list[j].some(n => n == 2), hou.api_damage[j].some(n => n != Math.floor(n))];
+						eventqueue.push([shootBigTorp,args,getState()]); break;
 					case 100:
 						var attackers = (hou.api_at_eflag && hou.api_at_eflag[j])? [f2[0],f2[2],f2[4]] : [f1[0],f1[2],f1[4]];
 						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);

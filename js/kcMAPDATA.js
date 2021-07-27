@@ -1703,7 +1703,7 @@ var MAPDATA = {
 				bgmNN: 177,
 				bgmDB: 175,
 				bgmNB: 175,
-				bossnode: ['M','W','Z'],
+				bossnode: ['N','W','Z'],
 			},
 			4: {
 				name: 'E4',
