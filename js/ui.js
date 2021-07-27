@@ -201,9 +201,18 @@ function showAdditionalStats(fleet) {
 				if (typedata.chanceMod > 0) chance /= typedata.chanceMod;
 				else chance = .99;
 				name = typedata.name;
-				td.append('<div style="margin-left:16px">'+name+': '+Math.floor(100*chance*chanceleft)+'%</div>');
+				if (typedata.replace && ships[i].LVL >= 80) {
+					let rate = typedata.replaceChance;
+					let c = Math.floor(100*chance*chanceleft);
+					let nameR = NBATTACKDATA[typedata.replace].name;
+					td.append('<div style="margin-left:16px">'+nameR+': '+(Math.round(c*rate))+'%</div>');
+					td.append('<div style="margin-left:16px">'+name+': '+(Math.round(c*(1-rate)))+'%</div>');
+				} else {
+					td.append('<div style="margin-left:16px">'+name+': '+Math.floor(100*chance*chanceleft)+'%</div>');
+				}
 				chanceleft -= chance*chanceleft;
 			}
+			td.append('<div style="margin-left:16px">Single: '+Math.floor(100*chanceleft)+'%</div>');
 		}
 	}
 	table.append(tr); tr = $('<tr></tr>');
@@ -2872,18 +2881,6 @@ function simDataRepToCodeFleetE(ship_ke,eParam,formation,oldIds,equips) {
 	return code;
 }
 
-//
-function toggleEchelon(useNew) {
-	if (useNew) {
-		ECHELON.shellmod = .75;
-		ECHELON.ASWmod = 1.1;
-		ECHELON.shellev = 1.6;
-	} else {
-		ECHELON.shellmod = .6;
-		ECHELON.ASWmod = 1;
-		ECHELON.shellev = 1.2;
-	}
-}
 
 
 function getELoS(ships,hq=120) {

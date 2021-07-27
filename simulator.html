@@ -24,7 +24,7 @@
 	</head>
 	<body style="display:none">
 		<h1 title="Boat Cockfight Simulator">Kancolle Sortie Simulator</h1>
-		<span style="color:red">v1.0 Beta 5.0 <span style="margin-left:20px;font-style:italic">(Last updated: 2021-03-03)</span></span>
+		<span style="color:red">v1.0 Beta 5.0 <span style="margin-left:20px;font-style:italic">(Last updated: 2021-07-27)</span></span>
 		<br><br><br>
 		<input type="radio" id="radJP" name="lang" onchange="transNames('JP')"/><label for="radJP">JP</label>
 		<input type="radio" id="radEN" name="lang" onchange="transNames('EN')" checked /><label for="radEN">EN</label>
@@ -121,6 +121,8 @@
 			<!--<input type="checkbox" checked id="mech12" onchange="MECHANICS.zuiunCI=this.checked"/><label for="mech12">Zuiun/Suisei Cut-In</label><br>-->
 			<input type="checkbox" checked id="mech13" onchange="MECHANICS.aaResist=this.checked"/><label for="mech13">Anti-Air Resist</label><br>
 			<input type="checkbox" checked id="mech14" onchange="MECHANICS.divebomberInstall=this.checked"/><label for="mech14">Divebomber Installation Targeting</label><br>
+			<input type="checkbox" checked id="mech15" onchange="toggleDDCIBuff(this.checked)"/><label for="mech15">Destroyer NB Cut-In Buff (Double Hit)</label><br>
+			<input type="checkbox" checked id="mech16" onchange="MECHANICS.subFleetAttack=this.checked"/><label for="mech16">Submarine Fleet Attack</label><br>
 			<br>
 			<table>
 			<tr><td><label for="mechshelldmg">Day Shelling Soft-Cap: </label></td><td><input id="mechshelldmg" type="number" min="0" max="9999" value="220" style="width:50px" onchange="setConst('shellDmgCap',this.value);raiseFleetChange()" /></td></tr>
@@ -466,6 +468,7 @@
 		<br><hr><br>
 		<div style="font-size:14px">
 			<span style="font-weight:bold">Change Log:</span><br>
+			<span>2021-07-27 - Mechanics: DDCI Buff + Submarine Fleet Attack, add Torpedo Squadron Command Facility use, update anti-installation/anti-PT mods, update Echelon mods</span><br>
 			<span>2021-03-03 - Options for new soft caps (torpedo, night, air)</span><br>
 			<span>2019-12-18 - Additional Historical Bonus settings (boss node, boss flagship)</span><br>
 			<span>2019-09-18 - Provisional Anchorage Water Demon mods, underway resupply (applied on last node if equipped)</span><br>
