@@ -24,7 +24,7 @@
 	</head>
 	<body style="display:none">
 		<h1 title="Boat Cockfight Simulator">Kancolle Sortie Simulator</h1>
-		<span style="color:red">v1.0 Beta 5.0 <span style="margin-left:20px;font-style:italic">(Last updated: 2021-07-27)</span></span>
+		<span style="color:red">v1.0 Beta 5.0 <span style="margin-left:20px;font-style:italic">(Last updated: 2021-09-05)</span></span>
 		<br><br><br>
 		<input type="radio" id="radJP" name="lang" onchange="transNames('JP')"/><label for="radJP">JP</label>
 		<input type="radio" id="radEN" name="lang" onchange="transNames('EN')" checked /><label for="radEN">EN</label>
@@ -123,6 +123,7 @@
 			<input type="checkbox" checked id="mech14" onchange="MECHANICS.divebomberInstall=this.checked"/><label for="mech14">Divebomber Installation Targeting</label><br>
 			<input type="checkbox" checked id="mech15" onchange="toggleDDCIBuff(this.checked)"/><label for="mech15">Destroyer NB Cut-In Buff (Double Hit)</label><br>
 			<input type="checkbox" checked id="mech16" onchange="MECHANICS.subFleetAttack=this.checked"/><label for="mech16">Submarine Fleet Attack</label><br>
+			<input type="checkbox" checked id="mech17" onchange="MECHANICS.kongouSpecialBuff=this.checked"/><label for="mech17">Kongou Special Buff</label><br>
 			<br>
 			<table>
 			<tr><td><label for="mechshelldmg">Day Shelling Soft-Cap: </label></td><td><input id="mechshelldmg" type="number" min="0" max="9999" value="220" style="width:50px" onchange="setConst('shellDmgCap',this.value);raiseFleetChange()" /></td></tr>
@@ -443,7 +444,7 @@
 				<tr><td onclick="dialogShip(['CVL','CV'],1)"><img src="assets/icons/SWo.png"/><br><span style="font-weight:bold">CV(L)</span></td>
 					<td onclick="dialogShip(['SS'],1)"><img src="assets/icons/SKa.jpg"/><br><span style="font-weight:bold">SS</span></td>
 					<td onclick="dialogShip(['AO','AV','AS','AR','CT','LHA','DE'],1)"><img src="assets/icons/SWa.jpg"/><br><span style="font-weight:bold">Other</span></td>
-					<td onclick="dialogShip(['Installation','BBVT'],1)"><img src="assets/icons/SAirH.jpg"/><br><span style="font-weight:bold">Boss</span></td></tr>
+					<td onclick="dialogShip([],1,true)"><img src="assets/icons/SAirH.jpg"/><br><span style="font-weight:bold">Installation</span></td></tr>
 			</table>
 			<br><br>
 			<span style="font-weight:bold;text-decoration:underline">Extra</span><br>

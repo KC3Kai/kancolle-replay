@@ -1730,6 +1730,40 @@ var MAPDATA = {
 			},
 		}
 	},
+	51: {
+		name: 'Summer 2021',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmDN: 183,
+				bgmNN: 183,
+				bgmDB: 184,
+				bgmNB: 184,
+				bossnode: ['G','O','V'],
+			},
+			2: {
+				name: 'E2',
+				bgmDN: 184,
+				bgmNN: 184,
+				bgmDB: 185,
+				bgmNB: 185,
+				bossnode: ['I','W','Z'],
+			},
+			3: {
+				name: 'E3',
+				bgmDN: 185,
+				bgmNN: 185,
+				bgmDB: 187,
+				bgmNB: 187,
+				bossnode: ['I','O','Z2','Z3'],
+				overrideBGM: {
+					'I': { bgmDB: 99, bgmNB: 99 },
+					'O': { bgmDB: 100, bgmNB: 100 },
+					'Z2': { bgmDB: 185, bgmNB: 185 },
+				},
+			},
+		}
+	},
 }
 
 //-------------------------------------

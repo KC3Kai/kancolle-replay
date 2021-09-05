@@ -72,7 +72,6 @@ SoundManager.prototype = {
 		if (!this._sounds['V'+type+shipid]) this._sounds['V'+type+shipid] = new Howl({
 			src:[VOICES[shipid][type]],
 			volume:.4*this._volume,
-			html5:true
 			});
 		if (this._voices[slot] && isPlayable(shipid)) {
 			this._voices[slot].stop();
@@ -236,6 +235,10 @@ var BGMLIST = {
 	179: {url:'assets/music/179_8932.mp3'},
 	180: {url:'assets/music/180_1246.mp3'},
 	181: {url:'assets/music/181_2515.mp3'},
+	183: {url:'assets/music/183_2551.mp3'},
+	184: {url:'assets/music/184_5603.mp3'},
+	185: {url:'assets/music/185_2650.mp3'},
+	187: {url:'assets/music/187_2537.mp3'},
 	998: {url:'assets/music/savior of song.mp3',voldef:.25},
 	999: {url:'assets/music/Orel Cruising & LSC Song [ENG Sub].mp3',voldef:.3},
 	2001: {url:'assets/music/103v.ogg', voldef:.7},
