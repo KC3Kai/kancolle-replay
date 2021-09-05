@@ -1250,7 +1250,7 @@ function changedEquip(fleet,slot,equipslot,nochangeimprov) {
 				changedProficiency('#T'+fleet+'prof'+slot+equipslot);
 			}
 		}
-		if(equipid!='0') $('#T'+fleet+'eqimg'+slot+equipslot).attr('src','assets/items/'+EQTDATA[equip.type].image+'.png');
+		if(equipid!='0') $('#T'+fleet+'eqimg'+slot+equipslot).attr('src','assets/items/'+getIcon(equipid)+'.png');
 		else  $('#T'+fleet+'eqimg'+slot+equipslot).attr('src','assets/items/empty.png');
 	} else $('#T'+fleet+'e'+slot+equipslot+'_chosen').attr('title','');
 	if (!PREVEQS[fleet]) return;
