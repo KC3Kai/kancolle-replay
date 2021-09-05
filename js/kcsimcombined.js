@@ -118,6 +118,9 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	for (var i=0; i<ships1.length; i++) {
 		if (ships1[i].enableSecondShelling) doShell2 = true;
 	}
+	for (var i=0; i<ships1C.length; i++) {
+		if (ships1C[i].enableSecondShelling) doShell2 = true;
+	}
 	for (var i=0; i<ships2.length; i++) {
 		if (ships2[i].enableSecondShelling) doShell2 = true;
 	}
@@ -242,11 +245,11 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		for (var i=0; i<alive1C.length; i++) {
 			if (alive1C[i].canOASW()) attackers1.push(alive1C[i]);
 		}
-		orderByRange(attackers1,order1);
+		orderByRange(attackers1,order1,false,true);
 		for (var i=0; i<alive2.length; i++) {
 			if (alive2[i].canOASW()) attackers2.push(alive2[i]);
 		}
-		orderByRange(attackers2,order2);
+		orderByRange(attackers2,order2,false,true);
 		
 		if (order1.length+order2.length) {
 			if (C) BAPI.data.api_opening_taisen = {api_at_list:[-1],api_at_type:[-1],api_damage:[-1],api_df_list:[-1],api_cl_list:[-1],api_si_list:[-1]};
@@ -527,7 +530,7 @@ function simStatsCombined(numsims,type,foptions) {
 				FLEETS1[0].formation = formdef;
 				FLEETS1[1].formation = formdefc;
 			}
-			FLEETS1[0].DMGTOTALS = [0,0,0,0,0,0]; FLEETS1[1].DMGTOTALS = [0,0,0,0,0,0];
+			FLEETS1[0].resetBattle(); FLEETS1[1].resetBattle();
 			var supportNum = 0;
 			let friendFleet = null;
 			if (j == FLEETS2.length - 1) {
@@ -784,6 +787,9 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	for (var i=0; i<ships2.length; i++) {
 		if (ships2[i].enableSecondShelling) doShell2 = true;
 	}
+	for (var i=0; i<ships2C.length; i++) {
+		if (ships2C[i].enableSecondShelling) doShell2 = true;
+	}
 	
 	//jet lbas
 	if (LBASwaves && LBASwaves.length && !NBonly && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
@@ -892,11 +898,11 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 		for (var i=0; i<alive1.length; i++) {
 			if (alive1[i].canOASW()) attackers1.push(alive1[i]);
 		}
-		orderByRange(attackers1,order1);
+		orderByRange(attackers1,order1,false,true);
 		for (var i=0; i<alive2C.length; i++) {
 			if (alive2C[i].canOASW()) attackers2.push(alive2C[i]);
 		}
-		orderByRange(attackers2,order2);
+		orderByRange(attackers2,order2,false,true);
 		
 		if (order1.length+order2.length) {
 			if (C) BAPI.data.api_opening_taisen = {api_at_eflag:[-1],api_at_list:[-1],api_at_type:[-1],api_damage:[-1],api_df_list:[-1],api_cl_list:[-1]};
@@ -1220,8 +1226,14 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	for (var i=0; i<ships1.length; i++) {
 		if (ships1[i].enableSecondShelling) doShell2 = true;
 	}
+	for (var i=0; i<ships1C.length; i++) {
+		if (ships1C[i].enableSecondShelling) doShell2 = true;
+	}
 	for (var i=0; i<ships2.length; i++) {
 		if (ships2[i].enableSecondShelling) doShell2 = true;
+	}
+	for (var i=0; i<ships2C.length; i++) {
+		if (ships2C[i].enableSecondShelling) doShell2 = true;
 	}
 	
 	//jet lbas
@@ -1328,11 +1340,11 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		for (var i=0; i<alive1C.length; i++) {
 			if (alive1C[i].canOASW()) attackers1.push(alive1C[i]);
 		}
-		orderByRange(attackers1,order1);
+		orderByRange(attackers1,order1,false,true);
 		for (var i=0; i<alive2C.length; i++) {
 			if (alive2C[i].canOASW()) attackers2.push(alive2C[i]);
 		}
-		orderByRange(attackers2,order2);
+		orderByRange(attackers2,order2,false,true);
 		
 		if (order1.length+order2.length) {
 			if (C) BAPI.data.api_opening_taisen = {api_at_eflag:[-1],api_at_list:[-1],api_at_type:[-1],api_damage:[-1],api_df_list:[-1],api_cl_list:[-1]};

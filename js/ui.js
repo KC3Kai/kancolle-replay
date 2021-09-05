@@ -158,6 +158,9 @@ function showAdditionalStats(fleet) {
 		if (ships[i].canASW()) {
 			td.append('<span>ASW Power: '+Math.floor(ships[i].ASWPower())+'</span><br>');
 		}
+		if (ships[i].canOASW()) {
+			td.append('<span>Can OASW</span><br>');
+		}
 	}
 	table.append(tr); tr = $('<tr></tr>');
 	for (var i=0; i<ships.length; i++) {
@@ -228,7 +231,7 @@ function showAdditionalStats(fleet) {
 				td.append('AACI: #'+ships[i].AACItype[j]+'<br>');
 				td.append('<div style="margin-left:16px">Planes: '+aacid.num+'<br>Rate: '+Math.round((aacid.rate-chanceused)*chancemod*100)+'%<br>Multiplier: '+aacid.mod+'<br></div>');
 				if (aacid.rollIndiv) chancemod *= 1-aacid.rate;
-				else chanceused += aacid.rate;
+				else chanceused = aacid.rate;
 			}
 		}
 		if (ships[i].rocketBarrageChance()) {
@@ -308,14 +311,16 @@ function dialogType(button,fleet,slot) {
 	$('#dialogselequiptype').dialog("close");
 	$('#dialogselequip').dialog("close");
 }
-function dialogShip(types,side) {
+function dialogShip(types,side,installOnly) {
 	$('#dialogselship').html('');
 	var table = $('<table class="dialog2"></table>');
 	$('#dialogselship').append(table);
 	var c=0, tr = $('<tr></tr>'), baseships = [], done = [];
 	for (var mid in SHIPDATA) {
 		var ship = SHIPDATA[mid];
-		if ((side==0&&mid>=1500)||(side==1&&(mid<1500||mid>3000))||types.indexOf(ship.type)==-1) continue;
+		if ((side==0&&mid>=1500)||(side==1&&(mid<1500||mid>3000))||(!installOnly && types.indexOf(ship.type)==-1)) continue;
+		if (installOnly && !ship.installtype) continue;
+		if (!installOnly && ship.installtype) continue;
 		if (ship.prev && types.indexOf(SHIPDATA[ship.prev].type)!=-1) continue;
 		if (done.indexOf(mid)==-1) {
 			var ships = [mid]; done.push(mid);
@@ -406,7 +411,7 @@ function dialogEquip(types) {
 			var equip = EQDATA[eqid];
 			if (types.indexOf(equip.type)==-1) continue;
 			var tr = $('<tr></tr>');
-			tr.append('<td class="left" onclick="dSetEquip('+eqid+')"><img src="assets/items/'+EQTDATA[equip.type].image+'.png"/></td>');
+			tr.append('<td class="left" onclick="dSetEquip('+eqid+')"><img src="assets/items/'+getIcon(eqid)+'.png"/></td>');
 			var td = $('<td onclick="dSetEquip('+eqid+')"></td>');
 			td.append('<span>'+equip.name+'</span><br>');
 			for (var j=0; j<STATS.length; j++) {
@@ -1100,7 +1105,7 @@ function tableSetShip(fleet,slot,shipid,stats,equips,improves,profs,slots) {
 		
 		$('#T'+fleet+'imprv'+slot+i).val((improves)?improves[i]:0);
 		
-		if (eqid!='0') $('#T'+fleet+'eqimg'+slot+i).attr('src','assets/items/'+EQTDATA[EQDATA[eqid].type].image+'.png');
+		if (eqid!='0') $('#T'+fleet+'eqimg'+slot+i).attr('src','assets/items/'+getIcon(eqid)+'.png');
 		else $('#T'+fleet+'eqimg'+slot+i).attr('src','assets/items/empty.png');
 	}
 }
@@ -2181,6 +2186,7 @@ function clickedWatchBattle() {
 			}
 		}
 		
+		for (let f of FLEETS1) f.resetBattle();
 		var ennum = (j>0)? 21+j : 2;
 		var res;
 		if (ADDEDCOMBINED) {
@@ -2910,4 +2916,10 @@ function getELoS(ships,hq=120) {
 		results.push(elosE*c + elosS);
 	}
 	return results;
+}
+
+
+function getIcon(id) {
+	if (!EQDATA[id]) return 0;
+	return EQDATA[id].image || EQTDATA[EQDATA[id].type].image;
 }
