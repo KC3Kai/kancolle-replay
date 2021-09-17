@@ -820,6 +820,14 @@ var BATTLE = (function() {
 			jetAttack();
 		if (dbattle.api_air_base_attack)
 			lbas();
+		if (dbattle.api_friendly_kouku) {
+			let friendFleet = new FLEET();
+			friendFleet.addFleet(dbattle.api_friendly_info.api_ship_id, dbattle.api_friendly_info.api_nowhps, dbattle.api_friendly_info.api_maxhps);
+			let temp = player;
+			player = friendFleet;
+			airAttack(dbattle.api_friendly_kouku);
+			player = temp;
+		}
 		if (nightFirst && dbattle.api_support_flag && dbattle.api_support_flag > 0)
 			support(dbattle.api_support_flag, dbattle.api_support_info);
 		if (dbattle.api_stage_flag)
