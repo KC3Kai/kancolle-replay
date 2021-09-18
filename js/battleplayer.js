@@ -127,7 +127,7 @@ function loadFleetInfo(API, translate) {
 				$('#lvl2' + k + i).text(level); $('#hp2' + k + i).text(maxhp);
 				$('#fp2' + k + i).text(b.api_eParam[i][0]); $('#tp2' + k + i).text(b.api_eParam[i][1]); $('#aa2' + k + i).text(b.api_eParam[i][2]); $('#ar2' + k + i).text(b.api_eParam[i][3]);
 			}
-			for (var j = 0; j < 4; j++) {
+			for (var j = 0; j < 6; j++) {
 				if (b.api_eSlot[i][j] <= 0) continue;
 				if (EQDATA[b.api_eSlot[i][j]]) $('#eq' + j + '2' + k + i).text(EQDATA[b.api_eSlot[i][j]][$('#radJP').prop('checked') ? 'nameJP' : 'name']);
 				else $('#eq' + j + '2' + k + i).text(b.api_eSlot[i][j]);
@@ -154,7 +154,7 @@ function loadFleetInfo(API, translate) {
 					$('#lvl2c' + k + i).text(level); $('#hp2c' + k + i).text(maxhp);
 					$('#fp2c' + k + i).text(b.api_eParam_combined[i][0]); $('#tp2c' + k + i).text(b.api_eParam_combined[i][1]); $('#aa2c' + k + i).text(b.api_eParam_combined[i][2]); $('#ar2c' + k + i).text(b.api_eParam_combined[i][3]);
 				}
-				for (var j = 0; j < 4; j++) {
+				for (var j = 0; j < 6; j++) {
 					if (b.api_eSlot_combined[i][j] <= 0) continue;
 					if (EQDATA[b.api_eSlot_combined[i][j]]) $('#eq' + j + '2c' + k + i).text(EQDATA[b.api_eSlot_combined[i][j]][$('#radJP').prop('checked') ? 'nameJP' : 'name']);
 					else $('#eq' + j + '2c' + k + i).text(b.api_eSlot_combined[i][j]);
@@ -162,29 +162,38 @@ function loadFleetInfo(API, translate) {
 				}
 			}
 		}
+		let friendFleets = [];
+		if (API.battles[k].data && API.battles[k].data.api_friendly_info) {
+			friendFleets.push({ id: '2fd'+k, info: API.battles[k].data.api_friendly_info });
+		}
 		if (API.battles[k].yasen && API.battles[k].yasen.api_friendly_info) {
-			var d = API.battles[k].yasen.api_friendly_info;
+			friendFleets.push({ id: '2f'+k, info: API.battles[k].yasen.api_friendly_info });
+		}
+		for (let ff of friendFleets) {
+			var d = ff.info;
 			if (!translate) {
 				$('#enemyfleetspace > br:last-child').remove();
-				makeTable('enemyfleetspace', '2f' + k, d.api_ship_id.length);
+				makeTable('enemyfleetspace', ff.id, d.api_ship_id.length);
 			}
 			for (var i=0; i<d.api_ship_id.length; i++) {
 				var mid = d.api_ship_id[i];
 				if (mid <= 0) continue;
 				if (SHIPDATA[mid]) {
-					if ($('#radJP').prop('checked')) $('#name2f' + k + i).text(mid + '. ' + SHIPDATA[mid].nameJP);
-					else $('#name2f' + k + i).text(mid + '. ' + SHIPDATA[mid].name);
-				} else $('#name2f' + k + i).text(mid + '.');
+					if ($('#radJP').prop('checked')) $('#name' + ff.id + i).text(mid + '. ' + SHIPDATA[mid].nameJP);
+					else $('#name' + ff.id + i).text(mid + '. ' + SHIPDATA[mid].name);
+				} else $('#name' + ff.id + i).text(mid + '.');
 				if (!translate) {
-					if (SHIPDATA[mid]) $('#img2f' + k + i).attr('src', 'assets/icons/' + SHIPDATA[mid].image);
-					$('#lvl2f' + k + i).text(d.api_ship_lv[i]); $('#hp2f' + k + i).text(d.api_nowhps[i]+'/'+d.api_maxhps[i]);
-					$('#fp2f' + k + i).text(d.api_Param[i][0]); $('#tp2f' + k + i).text(d.api_Param[i][1]); $('#aa2f' + k + i).text(d.api_Param[i][2]); $('#ar2f' + k + i).text(d.api_Param[i][3]);
+					if (SHIPDATA[mid]) $('#img'+ ff.id + i).attr('src', 'assets/icons/' + SHIPDATA[mid].image);
+					$('#lvl' + ff.id + i).text(d.api_ship_lv[i]); $('#hp' + ff.id + i).text(d.api_nowhps[i]+'/'+d.api_maxhps[i]);
+					$('#fp' + ff.id + i).text(d.api_Param[i][0]); $('#tp' + ff.id + i).text(d.api_Param[i][1]); $('#aa' + ff.id + i).text(d.api_Param[i][2]); $('#ar' + ff.id + i).text(d.api_Param[i][3]);
 				}
-				for (var j = 0; j < 4; j++) {
-					if (d.api_Slot[i][j] <= 0) continue;
-					if (EQDATA[d.api_Slot[i][j]]) $('#eq' + j + '2f' + k + i).text(EQDATA[d.api_Slot[i][j]][$('#radJP').prop('checked') ? 'nameJP' : 'name']);
-					else $('#eq' + j + '2f' + k + i).text(d.api_Slot[i][j]);
-					$('#eq' + j + '2f' + k + i).attr('title', d.api_Slot[i][j]);
+				let items = d.api_Slot[i].map(id => id);
+				if (d.api_slot_ex[i] && d.api_slot_ex[i] > 0) items.push(d.api_slot_ex[i]);
+				for (var j = 0; j < 6; j++) {
+					if (items[j] <= 0) continue;
+					if (EQDATA[items[j]]) $('#eq' + j + ff.id + i).text(EQDATA[items[j]][$('#radJP').prop('checked') ? 'nameJP' : 'name']);
+					else $('#eq' + j + ff.id + i).text(items[j]);
+					$('#eq' + j + ff.id + i).attr('title', items[j]);
 				}
 			}
 		}
