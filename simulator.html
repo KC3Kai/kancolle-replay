@@ -24,7 +24,7 @@
 	</head>
 	<body style="display:none">
 		<h1 title="Boat Cockfight Simulator">Kancolle Sortie Simulator</h1>
-		<span style="color:red">v1.0 Beta 5.0 <span style="margin-left:20px;font-style:italic">(Last updated: 2021-09-05)</span></span>
+		<span style="color:red">v1.0 Beta 5.0 <span style="margin-left:20px;font-style:italic">(Last updated: 2021-10-17)</span></span>
 		<br><br><br>
 		<input type="radio" id="radJP" name="lang" onchange="transNames('JP')"/><label for="radJP">JP</label>
 		<input type="radio" id="radEN" name="lang" onchange="transNames('EN')" checked /><label for="radEN">EN</label>
@@ -138,11 +138,7 @@
 			<br>
 			<input type="button" value="Show Advanced" onclick="$('#optionsadvanced').toggle()" />
 			<div id="optionsadvanced" style="display:none">
-				<span>Support Shelling Base Accuracy:</span><br>
-				<span>Normal: </span><input type="number" style="width:50px" min="1" max="999" value="64" onchange="setConst('supportShellN',this.value)" />
-				<span>Boss: </span><input type="number" style="width:50px" min="1" max="999" value="64" onchange="setConst('supportShellB',this.value)" />
-				<br><br>
-				<span>Override Base Shell Power for Enemy Combined Fleet:</span><br>
+				<!-- <span>Override Base Shell Power for Enemy Combined Fleet:</span><br>
 				<table>
 				<tr>
 					<td>Main:</td>
@@ -170,7 +166,7 @@
 					<td>Enemy:<td><td><input id="advaccEE" type="number" min="1" max="999" style="width:50px" onchange="setConst('accEcEE',this.value)" /></td>
 				</tr>
 				</table>
-				<br>
+				<br> -->
 				<span>Override Day CVCI Modifiers:</span><br>
 				<table>
 				<tr>
@@ -192,10 +188,19 @@
 				<br>
 				<span>Vanguard Evasion Bonus:</span><br>
 				<table>
-				<tr><td>Top Half DD:</td><td><input type="number" min="0" max="99" value="20" onchange="SIMCONSTS.vanguardEvDD1 = parseInt(this.value) || 20" /></td></tr>
-				<tr><td>Bottom Half DD:</td><td><input type="number" min="0" max="99" value="40" onchange="SIMCONSTS.vanguardEvDD2 = parseInt(this.value) || 40" /></td></tr>
-				<tr><td>Top Half Non-DD:</td><td><input type="number" min="0" max="99" value="5" onchange="SIMCONSTS.vanguardEvOther1 = parseInt(this.value) || 5" /></td></tr>
-				<tr><td>Bottom Half Non-DD:</td><td><input type="number" min="0" max="99" value="20" onchange="SIMCONSTS.vanguardEvOther2 = parseInt(this.value) || 20" /></td></tr>
+					<tr><td></td><td>Shelling</td><td>Torpedo</td></tr>
+					<tr><td>DD 1:</td><td><input type="number" min="0" max="99" value="7" onchange="SIMCONSTS.vanguardEvShellDD[0] = +this.value || 7" /></td><td><input type="number" min="0" max="99" value="15" onchange="SIMCONSTS.vanguardEvTorpDD[0] = +this.value || 15" /></td></tr>
+					<tr><td>DD 2:</td><td><input type="number" min="0" max="99" value="7" onchange="SIMCONSTS.vanguardEvShellDD[1] = +this.value || 7" /></td><td><input type="number" min="0" max="99" value="15" onchange="SIMCONSTS.vanguardEvTorpDD[1] = +this.value || 15" /></td></tr>
+					<tr><td>DD 3:</td><td><input type="number" min="0" max="99" value="20" onchange="SIMCONSTS.vanguardEvShellDD[2] = +this.value || 20" /></td><td><input type="number" min="0" max="99" value="45" onchange="SIMCONSTS.vanguardEvTorpDD[2] = +this.value || 45" /></td></tr>
+					<tr><td>DD 4:</td><td><input type="number" min="0" max="99" value="20" onchange="SIMCONSTS.vanguardEvShellDD[3] = +this.value || 20" /></td><td><input type="number" min="0" max="99" value="50" onchange="SIMCONSTS.vanguardEvTorpDD[3] = +this.value || 50" /></td></tr>
+					<tr><td>DD 5:</td><td><input type="number" min="0" max="99" value="35" onchange="SIMCONSTS.vanguardEvShellDD[4] = +this.value || 35" /></td><td><input type="number" min="0" max="99" value="65" onchange="SIMCONSTS.vanguardEvTorpDD[4] = +this.value || 65" /></td></tr>
+					<tr><td>DD 6:</td><td><input type="number" min="0" max="99" value="40" onchange="SIMCONSTS.vanguardEvShellDD[5] = +this.value || 40" /></td><td><input type="number" min="0" max="99" value="75" onchange="SIMCONSTS.vanguardEvTorpDD[5] = +this.value || 75" /></td></tr>
+					<tr><td>Other 1:</td><td><input type="number" min="0" max="99" value="7" onchange="SIMCONSTS.vanguardEvShellOther[0] = +this.value || 7" /></td><td><input type="number" min="0" max="99" value="15" onchange="SIMCONSTS.vanguardEvTorpOther[0] = +this.value || 15" /></td></tr>
+					<tr><td>Other 2:</td><td><input type="number" min="0" max="99" value="7" onchange="SIMCONSTS.vanguardEvShellOther[1] = +this.value || 7" /></td><td><input type="number" min="0" max="99" value="15" onchange="SIMCONSTS.vanguardEvTorpOther[1] = +this.value || 15" /></td></tr>
+					<tr><td>Other 3:</td><td><input type="number" min="0" max="99" value="7" onchange="SIMCONSTS.vanguardEvShellOther[2] = +this.value || 7" /></td><td><input type="number" min="0" max="99" value="20" onchange="SIMCONSTS.vanguardEvTorpOther[2] = +this.value || 20" /></td></tr>
+					<tr><td>Other 4:</td><td><input type="number" min="0" max="99" value="7" onchange="SIMCONSTS.vanguardEvShellOther[3] = +this.value || 7" /></td><td><input type="number" min="0" max="99" value="45" onchange="SIMCONSTS.vanguardEvTorpOther[3] = +this.value || 45" /></td></tr>
+					<tr><td>Other 5:</td><td><input type="number" min="0" max="99" value="15" onchange="SIMCONSTS.vanguardEvShellOther[4] = +this.value || 15" /></td><td><input type="number" min="0" max="99" value="45" onchange="SIMCONSTS.vanguardEvTorpOther[4] = +this.value || 45" /></td></tr>
+					<tr><td>Other 6:</td><td><input type="number" min="0" max="99" value="20" onchange="SIMCONSTS.vanguardEvShellOther[5] = +this.value || 20" /></td><td><input type="number" min="0" max="99" value="60" onchange="SIMCONSTS.vanguardEvTorpOther[5] = +this.value || 60" /></td></tr>
 				</table>
 				<!--<span>Preset 12vs6 values: </span>
 				<input type="button" value="CTF" onclick="clickedAdvDefault('acc',90,90,55,55)" />
@@ -210,10 +215,8 @@
 				<tr><td>Nagato Cut-In:</td><td><input type="number" min="0" max="100" value="60" onchange="SIMCONSTS.nagatoSpecialRate = +this.value" />%</td></tr>
 				<tr><td>Mutsu Cut-In:</td><td><input type="number" min="0" max="100" value="60" onchange="SIMCONSTS.mutsuSpecialRate = +this.value" />%</td></tr>
 				<tr><td>Colorado Cut-In:</td><td><input type="number" min="0" max="100" value="60" onchange="SIMCONSTS.coloradoSpecialRate = +this.value" />%</td></tr>
+				<tr><td>Kongou Cut-In:</td><td><input type="number" min="0" max="100" onchange="SIMCONSTS.kongouSpecialRate = +this.value" />%</td></tr>
 				</table>
-				<br>
-				<input type="checkbox" id="advEAACI" checked onchange="SIMCONSTS.enableEnemyAACI=this.checked;raiseFleetChange()" /><label for="advEAACI">Enable Abyssal AACI on Normal Air Phase</label><br>
-				<input type="checkbox" id="advEAACILB" onchange="SIMCONSTS.enableEnemyAACILBAS=this.checked;raiseFleetChange()" /><label for="advEAACILB">Enable Abyssal AACI on LBAS Phase</label><br>
 				<br>
 			</div>
 			<br><br>
@@ -469,6 +472,7 @@
 		<br><hr><br>
 		<div style="font-size:14px">
 			<span style="font-weight:bold">Change Log:</span><br>
+			<span>2021-10-17 - <a href="https://twitter.com/Xe_UCH/status/1426851469945294848">PT Imp acc mods</a>, <a href="https://twitter.com/Divinity__123/status/1447941755182227458">Combined Fleet acc bases/mods</a>, <a href="https://docs.google.com/spreadsheets/d/14uCat5nahv3A0Zq6d263Ye3U_f1nBYpIMEc9ALegyNA/edit#gid=0">Vanguard evasion values</a></span><br>
 			<span>2021-07-27 - Mechanics: DDCI Buff + Submarine Fleet Attack, add Torpedo Squadron Command Facility use, update anti-installation/anti-PT mods, update Echelon mods</span><br>
 			<span>2021-03-03 - Options for new soft caps (torpedo, night, air)</span><br>
 			<span>2019-12-18 - Additional Historical Bonus settings (boss node, boss flagship)</span><br>

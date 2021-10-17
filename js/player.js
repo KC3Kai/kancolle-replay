@@ -1252,7 +1252,7 @@ function processAPI(root) {
 		}
 		
 		//friend fleet air
-		if (data.api_friendly_info) {
+		if (data.api_friendly_info && !data.api_hougeki) {
 			var fleetData = data.api_friendly_info;
 			if (!fleetFriendDay[b]) {
 				fleetFriendDay[b] = [];

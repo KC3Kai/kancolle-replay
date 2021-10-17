@@ -286,6 +286,7 @@ EQTDATA[SEAPLANEBOMBER] = {
 	name: 'Seaplane Bomber',
 	image: 10,
 	btype: B_RECON,
+	improve: {LOS:1.15},
 	canequip: ['CAV','BBV','SSV','AV','AO','LandBase'],
 	canequipS: [305, 306, 307, 314, 358, 361, 392, 446, 447, 488, 496, 547, 574, 579, 591, 626, 630, 639, 640, 652, 662, 663, 668, 879],
 	isPlane: true,
@@ -455,6 +456,7 @@ EQTDATA[SCAMP] = {
 EQTDATA[FLYINGBOAT] = {
 	name: 'Recon Seaplane',
 	image: 33,
+	improve: {LOS:1.2},
 	canequip: ['LandBase'],
 	canequipS: [445, 450, 500, 586, 690],
 	isPlane: true,
@@ -5078,6 +5080,16 @@ var EQDATA = {
 		AA: 13,
 		ACC: 1,
 		EV: 1,
+	},
+	438: {
+		name: 'Type 3 Active Sonar Kai',
+		nameJP: '三式水中探信儀改',
+		added: '2021-09-28',
+		type: SONARS,
+		AR: 1,
+		ACC: 2,
+		EV: 1,
+		ASW: 11,
 	},
 	501: {
 		name: '5inch Single Cannon',

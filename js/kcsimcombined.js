@@ -305,16 +305,22 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	F1C.clearFleetLoS();
 	F2.clearFleetLoS();
 	
+	
+	F1.basepowshell = COMBINEDCONSTS[type].esingle.main.shellDmgF;
+	F1.baseaccshell = COMBINEDCONSTS[type].esingle.main.shellAccF;
+	F1C.basepowshell = COMBINEDCONSTS[type].esingle.escort.shellDmgF;
+	F1C.baseaccshell = COMBINEDCONSTS[type].esingle.escort.shellAccF;
+	
 	//shelling 1
 	if (!NBonly) {
 		if (C) BAPI.data.api_hougeki1 = {api_at_list:[-1],api_at_type:[-1],api_damage:[-1],api_df_list:[-1],api_cl_list:[-1],api_si_list:[-1]};
 		if (type==2) {
-			F1.basepowshell = F1.formation.shellbonus; F1.baseaccshell = F1.formation.accbase;
-			F2.basepowshell = F1.formation.shellbonusE; F2.baseaccshell = 65; //guess
+			F2.basepowshell = COMBINEDCONSTS[type].esingle.main.shellDmgE;
+			F2.baseaccshell = COMBINEDCONSTS[type].esingle.main.shellAccE;
 			shellRange(false,(C)? BAPI.data.api_hougeki1 : undefined);
 		} else {
-			F1C.basepowshell = F1C.formation.shellbonus; F1C.baseaccshell = F1C.formation.accbase;
-			F2.basepowshell = F1C.formation.shellbonusE; F2.baseaccshell = F1C.formation.accbase;
+			F2.basepowshell = COMBINEDCONSTS[type].esingle.escort.shellDmgE;
+			F2.baseaccshell = COMBINEDCONSTS[type].esingle.escort.shellAccE;
 			shellRange(true,(C)? BAPI.data.api_hougeki1 : undefined);
 		}
 	}
@@ -328,11 +334,9 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	//shelling 2
 	if (!NBonly) {
 		if (C) BAPI.data.api_hougeki2 = {api_at_list:[-1],api_at_type:[-1],api_damage:[-1],api_df_list:[-1],api_cl_list:[-1],api_si_list:[-1]};
-		F1.basepowshell = F1.formation.shellbonus; F1.baseaccshell = F1.formation.accbase;
-		F2.basepowshell = F1.formation.shellbonusE; F2.baseaccshell = F1.formation.accbase;
-		if (type == 3) F2.baseaccshell = 65;
+		F2.basepowshell = COMBINEDCONSTS[type].esingle.main.shellDmgE;
+		F2.baseaccshell = COMBINEDCONSTS[type].esingle.main.shellAccE;
 		if (type==2) {
-			F2.baseaccshell = 65; //guess
 			if (doShell2) shellOrder(false,(C)? BAPI.data.api_hougeki2 : undefined);
 		} else {
 			shellRange(false,(C)? BAPI.data.api_hougeki2 : undefined);
@@ -343,13 +347,12 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	if (!NBonly) {
 		if (C) BAPI.data.api_hougeki3 = {api_at_list:[-1],api_at_type:[-1],api_damage:[-1],api_df_list:[-1],api_cl_list:[-1],api_si_list:[-1]};
 		if (type==2) {
-			F1C.basepowshell = F1C.formation.shellbonus; F1C.baseaccshell = F1C.formation.accbase;
-			F2.basepowshell = F1C.formation.shellbonusE; F2.baseaccshell = F1C.formation.accbase;
+			F2.basepowshell = COMBINEDCONSTS[type].esingle.escort.shellDmgE;
+			F2.baseaccshell = COMBINEDCONSTS[type].esingle.escort.shellAccE;
 			shellRange(true,(C)? BAPI.data.api_hougeki3 : undefined);
 		} else if (doShell2) {
-			F1.basepowshell = F1.formation.shellbonus; F1.baseaccshell = F1.formation.accbase;
-			F2.basepowshell = F1.formation.shellbonusE; F2.baseaccshell = F1.formation.accbase;
-			if (type == 3) F2.baseaccshell = 65;
+			F2.basepowshell = COMBINEDCONSTS[type].esingle.main.shellDmgE;
+			F2.baseaccshell = COMBINEDCONSTS[type].esingle.main.shellAccE;
 			shellOrder(false,(C)? BAPI.data.api_hougeki3 : undefined);
 		}
 	}
@@ -928,11 +931,16 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	F2.clearFleetLoS();
 	F2C.clearFleetLoS();
 	
+	F1.basepowshell = COMBINEDCONSTS[0].ecombined.main.shellDmgF;
+	F1.baseaccshell = COMBINEDCONSTS[0].ecombined.main.shellAccF;
+	F2.basepowshell = COMBINEDCONSTS[0].ecombined.main.shellDmgE;
+	F2.baseaccshell = COMBINEDCONSTS[0].ecombined.main.shellAccE;
+	F2C.basepowshell = COMBINEDCONSTS[0].ecombined.escort.shellDmgE;
+	F2C.baseaccshell = COMBINEDCONSTS[0].ecombined.escort.shellAccE;
+	
 	//shelling 1
 	if (C && !NBonly) BAPI.data.api_hougeki1 = null;
 	if (!NBonly && !aironly && alive1.length+subsalive1.length > 0 && alive2C.length+subsalive2C.length > 0) {
-		F1.basepowshell = SIMCONSTS.shellEcEF || 5; F2C.basepowshell = SIMCONSTS.shellEcEE || -5;
-		F1.baseaccshell = SIMCONSTS.accEcEF; F2C.baseaccshell = SIMCONSTS.accEcEE;
 		var order1 = [], order2 = [];
 		orderByRange(ships1,order1,hasInstall2C);
 		orderByRange(ships2C,order2,hasInstall1);
@@ -951,9 +959,6 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	
 	//shelling 2
 	if (!NBonly && !aironly && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length > 0) {
-		F1.basepowshell = SIMCONSTS.shellEcMF || 5; F2.basepowshell = SIMCONSTS.shellEcME || 10;
-		F1.baseaccshell = SIMCONSTS.accEcMF; F2.baseaccshell = SIMCONSTS.accEcME;
-		
 		var order1 = [], order2 = [];
 		orderByRange(ships1,order1,hasInstall2);
 		orderByRange(ships2,order2,hasInstall1);
@@ -964,9 +969,6 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	
 	//shelling 3
 	if (doShell2 && !NBonly && !aironly && alive1.length+subsalive1.length > 0 && (alive2.length+subsalive2.length > 0 || alive2C.length+subsalive2C.length > 0)) {
-		F1.basepowshell = SIMCONSTS.shellEcMF || 5; F2.basepowshell = SIMCONSTS.shellEcME || 10;
-		F1.baseaccshell = SIMCONSTS.accEcMF; F2.baseaccshell = SIMCONSTS.accEcME;
-		
 		var order1 = [], order2 = [];
 		for (var i=0; i<ships1.length; i++) {
 			if (!hasInstall2 && !hasInstall2C && ships1[i].isSub) continue;
@@ -1411,6 +1413,16 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	F2.clearFleetLoS();
 	F2C.clearFleetLoS();
 	
+	F1.basepowshell = COMBINEDCONSTS[type].ecombined.main.shellDmgF;
+	F1.baseaccshell = COMBINEDCONSTS[type].ecombined.main.shellAccF;
+	F1C.basepowshell = COMBINEDCONSTS[type].ecombined.escort.shellDmgF;
+	F1C.baseaccshell = COMBINEDCONSTS[type].ecombined.escort.shellAccF;
+	
+	F2.basepowshell = COMBINEDCONSTS[type].ecombined.main.shellDmgE;
+	F2.baseaccshell = COMBINEDCONSTS[type].ecombined.main.shellAccE;
+	F2C.basepowshell = COMBINEDCONSTS[type].ecombined.escort.shellDmgE;
+	F2C.baseaccshell = COMBINEDCONSTS[type].ecombined.escort.shellAccE;
+	
 	//shelling 1
 	var d1M = {ships1f: ships1, alive1f: alive1, subsalive1f: subsalive1, hasInstall1f: hasInstall1};
 	var d1E = {ships1f: ships1C, alive1f: alive1C, subsalive1f: subsalive1C, hasInstall1f: hasInstall1C};
@@ -1418,12 +1430,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	var d2E = {ships2f: ships2C, alive2f: alive2C, subsalive2f: subsalive2C, hasInstall2f: hasInstall2C};
 	if (!NBonly) {
 		if (C) BAPI.data.api_hougeki1 = {api_at_eflag:[-1],api_at_list:[-1],api_at_type:[-1],api_damage:[-1],api_df_list:[-1],api_cl_list:[-1]};
-		// F1.basepowshell = F1.formation.shellbonus;
-		// F2.basepowshell = F1.formation.shellbonus;
-		F1.basepowshell = SIMCONSTS.shellEcMF || ((type==3)? -5 : 2); F2.basepowshell = SIMCONSTS.shellEcME || 10;
-		F1.baseaccshell = SIMCONSTS.accEcMF; F2.baseaccshell = SIMCONSTS.accEcME;
 		if (type==2) {
-			//F2.baseaccshell = 65; //guess
 			shellRange(d1M, d2M, (C)? BAPI.data.api_hougeki1 : undefined);
 		} else {
 			shellRange(d1M, d2M, (C)? BAPI.data.api_hougeki1 : undefined);
@@ -1440,16 +1447,8 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	if (!NBonly) {
 		if (C) BAPI.data.api_hougeki2 = {api_at_eflag:[-1],api_at_list:[-1],api_at_type:[-1],api_damage:[-1],api_df_list:[-1],api_cl_list:[-1]};
 		if (type==2) {
-			// F1.basepowshell = F1.formation.shellbonus;
-			// F2.basepowshell = F1.formation.shellbonus;
-			F1.basepowshell = SIMCONSTS.shellEcMF || ((type==3)? -5 : 2); F2.basepowshell = SIMCONSTS.shellEcME || 10;
-			F1.baseaccshell = SIMCONSTS.accEcMF; F2.baseaccshell = SIMCONSTS.accEcME;
 			if (doShell2) shellOrder(d1A, d2A, (C)? BAPI.data.api_hougeki2 : undefined);
 		} else {
-			// F1C.basepowshell = F1C.formation.shellbonus;
-			// F2.basepowshell = F1C.formation.shellbonus;
-			F1C.basepowshell = SIMCONSTS.shellEcEF || -5; F2C.basepowshell = SIMCONSTS.shellEcEE || -5;
-			F1C.baseaccshell = SIMCONSTS.accEcEF; F2C.baseaccshell = SIMCONSTS.accEcEE;
 			shellRange(d1E, d2E, (C)? BAPI.data.api_hougeki2 : undefined);
 		}
 		removeSunk(alive1); removeSunk(alive1C);
@@ -1474,16 +1473,8 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	if (!NBonly) {
 		if (C) BAPI.data.api_hougeki3 = {api_at_eflag:[-1],api_at_list:[-1],api_at_type:[-1],api_damage:[-1],api_df_list:[-1],api_cl_list:[-1]};
 		if (type==2) {
-			// F1C.basepowshell = F1C.formation.shellbonus;
-			// F2.basepowshell = F1C.formation.shellbonus;
-			F1C.basepowshell = SIMCONSTS.shellEcEF || -5; F2C.basepowshell = SIMCONSTS.shellEcEE || -5;
-			F1C.baseaccshell = SIMCONSTS.accEcEF; F2C.baseaccshell = SIMCONSTS.accEcEE;
 			shellRange(d1E, d2E, (C)? BAPI.data.api_hougeki3 : undefined);
 		} else if (doShell2) {
-			// F1.basepowshell = F1.formation.shellbonus;
-			// F2.basepowshell = F1.formation.shellbonus;
-			F1.basepowshell = SIMCONSTS.shellEcMF || ((type==3)? -5 : 2); F2.basepowshell = SIMCONSTS.shellEcME || 10;
-			F1.baseaccshell = SIMCONSTS.accEcMF; F2.baseaccshell = SIMCONSTS.accEcME;
 			shellOrder(d1A, d2A, (C)? BAPI.data.api_hougeki3 : undefined);
 		}
 		removeSunk(alive1); removeSunk(alive1C);
