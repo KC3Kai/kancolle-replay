@@ -3,8 +3,8 @@ var DOUBLELINE = {shellmod:.8,torpmod:.8,ASWmod:.8,AAmod:1.2, shellacc:1.2,torpa
 var DIAMOND = {shellmod:.7,torpmod:.7,ASWmod:1.2,AAmod:1.6, shellacc:1,torpacc:.4,NBacc:.7, shellev:1.1,torpev:1.1,NBev:1,ASWev:1, id:3};
 var ECHELON = {shellmod:.75,torpmod:.6,ASWmod:1.1,AAmod:1, shellacc:1.2,torpacc:.75,NBacc:.9, shellev:1.4,torpev:1.3,NBev:1.3,ASWev:1.3, id:4};
 var LINEABREAST = {shellmod:.6,torpmod:.6,ASWmod:1.3,AAmod:1, shellacc:1.2,torpacc:.3,NBacc:.8, shellev:1.3,torpev:1.4,NBev:1.2,ASWev:1.1, id:5};
-var VANGUARD1 = {shellmod:0.5,torpmod:1,ASWmod:1,AAmod:1.1, shellacc:.8,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:6};
-var VANGUARD2 = {shellmod:1,torpmod:1,ASWmod:.6,AAmod:1.1, shellacc:1.2,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:6};
+var VANGUARD1 = {shellmod:0.5,torpmod:1,ASWmod:1,AAmod:1.1, shellacc:.8,torpacc:1,NBacc:1,ASWacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:6};
+var VANGUARD2 = {shellmod:1,torpmod:1,ASWmod:.6,AAmod:1.1, shellacc:1.2,torpacc:1,NBacc:1,ASWacc:1.1, shellev:1,torpev:1,NBev:1,ASWev:1, id:6};
 
 var COMBINEDCF1 = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellacc:.9,torpacc:.6,NBacc:1,ASWacc:1.25, shellev:1,torpev:1,NBev:1,ASWev:1, id:11};
 var COMBINEDCF2 = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1, shellacc:1,torpacc:.9,NBacc:1,ASWacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:12};
@@ -108,8 +108,8 @@ var ARTILLERYSPOTDATA = {
 	71: { dmgMod: 1.25, accMod: 1.2, chanceMod: 1.25, id: 7, name: 'CVCI (FBA)' },
 	72: { dmgMod: 1.2, accMod: 1.2, chanceMod: 1.4, id: 7, name: 'CVCI (BBA)' },
 	73: { dmgMod: 1.15, accMod: 1.2, chanceMod: 1.55, id: 7, name: 'CVCI (BA)' },
-	200: { dmgMod: 1.35, accMod: 1.2, chanceMod: 1.4, name: 'Zuiun CI' },
-	201: { dmgMod: 1.3, accMod: 1.2, chanceMod: 1.4, name: 'DB CI' },
+	200: { dmgMod: 1.35, accMod: 1.2, chanceMod: 1.2, name: 'Zuiun CI' },
+	201: { dmgMod: 1.3, accMod: 1.2, chanceMod: 1.3, name: 'DB CI' },
 }
 
 var NBATTACKDATA = {
@@ -221,6 +221,7 @@ var MECHANICS = {
 	eqBonusTorp: false,
 	anchorageTorpNerf: true,
 	eqBonusASW: false,
+	coloradoSpecialFix: true,
 };
 var NERFPTIMPS = false;
 var BREAKPTIMPS = false;
@@ -892,9 +893,10 @@ function canSpecialAttack(ship,isNB) {
 		if (ship.fleet.ships[0] != ship || (!isNB && ship.isescort)) return false;
 		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated && !ship.isSub).length < 6) return false;
 		if (ship.fleet.formation.id != 12 && ship.fleet.formation.id != 4) return false;
+		let damageThres = MECHANICS.coloradoSpecialFix ? .25 : .5;
 		for (let i=0; i<=2; i++) {
 			let s = ship.fleet.ships[i];
-			if (s.HP/s.maxHP <= .5) return false;
+			if (s.HP/s.maxHP <= damageThres) return false;
 		}
 		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[1].type) == -1) return false;
 		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[2].type) == -1) return false;
@@ -988,17 +990,30 @@ function getSpecialAttackMod(ship,attackSpecial) {
 			mod = 1.3;
 		} else {
 			mod = 1.15;
-			if (ship.num == 3 && [19,88,93].indexOf(ship.sclass) != -1) mod *= 1.15;
 			let ship2 = ship.fleet.ships[1];
 			if ([19,88,93].indexOf(ship2.sclass) != -1) mod2 *= 1.1;
 			if (ship2.equiptypesB[B_APSHELL]) mod2 *= 1.35;
 			if (ship2.equiptypesB[B_RADAR]) mod2 *= 1.15;
+			if (ship.num == 2) {
+				mod *= mod2;
+			}
+			if (ship.num == 3) {
+				if (MECHANICS.coloradoSpecialFix) mod2 = 1;
+				if ([19,88,93].indexOf(ship.sclass) != -1) {
+					mod *= 1.15;
+					mod *= mod2;
+				} else if (!MECHANICS.coloradoSpecialFix && SHIPDATA[ship2.mid].SLOTS.length == 5 && ship2.equips[4] && !ship2.equips[5]) {
+					let mod5th = 1;
+					if (ship2.equips[4].btype == B_APSHELL) mod5th *= 1.35;
+					if (ship2.equips[4].btype == B_RADAR) mod5th *= 1.15;
+					if (mod5th > 1) mod *= mod5th * mod2;
+				}
+			}
 		}
 		if (mod2 == 1) {
-			if (ship.equiptypesB[B_APSHELL]) mod2 *= 1.35;
-			if (ship.equiptypesB[B_RADAR]) mod2 *= 1.15;
+			if (ship.equiptypesB[B_APSHELL]) mod *= 1.35;
+			if (ship.equiptypesB[B_RADAR]) mod *= 1.15;
 		}
-		mod *= mod2;
 	} else if (attackSpecial == 104) {
 		mod = 1.9;
 		if (ENGAGEMENT == 1.2) mod *= 1.25;
@@ -1347,7 +1362,7 @@ function takeDamage(ship,damage) {
 	if (damage < 0) damage = 0;
 	if (ship.protection) {
 		if (ship.HP == 1) damage = 0;
-		else if (damage >= ship.HP) damage = Math.floor(ship.HP*.5+.3*Math.floor(Math.random()*ship.HP));  //overkill protection
+		else if (damage >= ship.HP) damage = Math.floor(ship.HP*.5+.3*Math.floor(Math.random()*ship.HP)*+!ship.protectionFF);  //overkill protection
 	}
 	ship.HP -= damage;
 	if (ship.HP <= 0 && ship.repairs && ship.repairs.length) {
@@ -3459,6 +3474,7 @@ function friendFleetPhase(fleet1,fleet2,alive2,subsalive2,BAPI) {
 				if (alive2.length + subsalive2.length == 1) { //friend fleet can't sink all
 					let ship = (alive2.length)? alive2[0] : subsalive2[0];
 					ship.protection = true;
+					ship.protectionFF = true;
 				}
 				
 				if (subsalive2.length && attacker.canASWNight() && (!attacker.canNBAirAttack() || alive2.length <= 0)) {
@@ -3495,7 +3511,10 @@ function friendFleetPhase(fleet1,fleet2,alive2,subsalive2,BAPI) {
 		if (alive1.length + subsalive1.length <= 0) break;
 	}
 	
-	for (let ship of ships2) ship.protection = false;
+	for (let ship of ships2) {
+		ship.protection = false;
+		delete ship.protectionFF;
+	}
 }
 
 function formatRemovePadding(obj) {

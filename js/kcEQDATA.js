@@ -346,7 +346,7 @@ EQTDATA[RADARL] = {
 	btype: B_RADAR,
 	improve: {ACCshell:1,ACCnb:1.3,LOS:1.4},
 	canequip: ['CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AV'],
-	canequipS: [330, 346, 352, 357, 421, 422, 423, 470, 532, 537, 626, 645, 650, 699],
+	canequipS: [330, 346, 352, 357, 419, 421, 422, 423, 470, 532, 537, 626, 645, 650, 699],
 	cannotequipS: [477, 478, 521, 574, 623, 624, 877],
 };
 EQTDATA[RADARXL] = {
@@ -374,7 +374,7 @@ EQTDATA[BULGEM] = {
 	name: 'Torpedo Bulge',
 	image: 23,
 	canequip: ['CT','CA','CAV','CVL','AS','AV','AR'],
-	canequipS: [146, 147, 216, 217, 305, 306, 307, 314, 330, 346, 357, 500, 537, 542, 543, 547, 563, 564, 566, 567, 568, 569, 578, 579, 621, 622, 623, 624, 626, 629, 630, 645, 649, 650, 652, 656, 657, 662, 663, 668, 699],
+	canequipS: [146, 147, 216, 217, 305, 306, 307, 314, 330, 346, 357, 500, 537, 542, 543, 547, 563, 564, 566, 567, 568, 569, 578, 579, 621, 622, 623, 624, 626, 629, 630, 645, 649, 650, 652, 656, 657, 662, 663, 668, 670, 699],
 };
 EQTDATA[BULGEL] = {
 	name: 'Torpedo Bulge',
@@ -388,7 +388,7 @@ EQTDATA[LANDINGCRAFT] = {
 	btype: B_LC1,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['AV','LHA'],
-	canequipS: [147, 198, 199, 200, 260, 352, 418, 434, 435, 464, 468, 469, 470, 478, 487, 488, 489, 490, 498, 500, 506, 541, 547, 548, 563, 587, 623, 630, 645, 650, 657, 699, 703, 707],
+	canequipS: [147, 198, 199, 200, 260, 352, 418, 419, 434, 435, 464, 468, 469, 470, 478, 487, 488, 489, 490, 498, 500, 506, 541, 547, 548, 563, 587, 623, 630, 645, 650, 657, 667, 699, 703, 707],
 	cannotequipS: [445, 491],
 };
 EQTDATA[SEARCHLIGHTS] = {
@@ -437,7 +437,7 @@ EQTDATA[FCF] = {
 	image: 28,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AS','AV','LHA'],
-	canequipS: [330, 346, 357, 421, 422, 423, 464, 497, 498, 500, 532, 537, 542, 543, 567, 587, 628, 629, 645, 649, 650, 651, 656, 699],
+	canequipS: [330, 346, 357, 419, 421, 422, 423, 464, 497, 498, 500, 532, 537, 542, 543, 567, 587, 628, 629, 645, 649, 650, 651, 656, 667, 699],
 	cannotequipS: [521, 877],
 };
 EQTDATA[DRUM] = {
@@ -488,7 +488,7 @@ EQTDATA[LANDINGTANK] = {
 	btype: B_LC3,
 	improve: {Pshell:1,Pnb:1},
 	canequip: ['SS','SSV','AV','LHA'],
-	canequipS: [147, 198, 199, 200, 352, 418, 464, 468, 470, 478, 487, 488, 489, 490, 497, 500, 506, 541, 547, 548, 564, 568, 569, 573, 578, 587, 623, 656, 657, 662, 663, 668],
+	canequipS: [147, 198, 199, 200, 352, 418, 464, 468, 470, 478, 487, 488, 489, 490, 497, 500, 506, 541, 547, 548, 564, 568, 569, 573, 578, 587, 588, 623, 656, 657, 662, 663, 667, 668, 670],
 	cannotequipS: [445, 491, 581],
 };
 EQTDATA[OILDRUM] = {
@@ -3448,6 +3448,7 @@ var EQDATA = {
 		nameJP: '三式爆雷投射機 集中配備',
 		added: '2018-05-26',
 		type: DEPTHCHARGE,
+		isDCProjector: true,
 		ASW: 12,
 	},
 	288: {
@@ -3455,6 +3456,7 @@ var EQDATA = {
 		nameJP: '試製15cm9連装対潜噴進砲',
 		added: '2018-05-26',
 		type: DEPTHCHARGE,
+		isDCProjector: true,
 		ACC: 1,
 		ASW: 15,
 	},
@@ -4423,6 +4425,7 @@ var EQDATA = {
 		nameJP: 'RUR-4A Weapon Alpha改',
 		added: '2020-05-20',
 		type: DEPTHCHARGE,
+		isDCProjector: true,
 		AR: 1,
 		ACC: 1,
 		EV: 1,
@@ -4433,6 +4436,7 @@ var EQDATA = {
 		nameJP: '対潜短魚雷(試作初期型)',
 		added: '2020-05-20',
 		type: DEPTHCHARGE,
+		isDCOnly: true,
 		TP: 2,
 		ASW: 20,
 	},
@@ -5090,6 +5094,16 @@ var EQDATA = {
 		ACC: 2,
 		EV: 1,
 		ASW: 11,
+	},
+	439: {
+		name: 'Hedgehog (Initial Model)',
+		nameJP: 'Hedgehog(初期型)',
+		added: '2021-10-29',
+		type: DEPTHCHARGE,
+		isDCOnly: true,
+		AR: -1,
+		ACC: 3,
+		ASW: 18,
 	},
 	501: {
 		name: '5inch Single Cannon',
