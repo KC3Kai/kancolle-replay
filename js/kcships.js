@@ -281,7 +281,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (eq.LOS) this.LOSeq += eq.LOS;
 		if (eq.TP) tpEquip += eq.TP;
 		
-		if (eq.btype == B_DEPTHCHARGE2 && eq.ASW) {
+		if ([226,227].includes(eq.mid)) {
 			aswPenetrate += Math.max(0, Math.sqrt(eq.ASW - 2) + +(this.type == 'DE'));
 		}
 		
