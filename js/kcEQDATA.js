@@ -196,7 +196,7 @@ EQTDATA[AAGUN] = {
 	name: 'Anti-Air Gun',
 	image: 15,
 	atype: A_AAGUN,
-	improve: {Pshell:1,Ptorp:1.2,ACCtorp:2,AAself:1},
+	improve: {Pshell:1,Ptorp:1.2,ACCtorp:2,AAself:2},
 	canequip: ['DD','CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AS','AV','AO','AR','LHA','DE'],
 	canequipS: [530, 539],
 	cannotequipS: [645, 650],

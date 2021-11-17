@@ -41,7 +41,7 @@ Fleet.prototype.fleetAirPower = function(jetonly,includeScout) {  //get air powe
 	}
 	return this.AP;
 }
-Fleet.prototype.fleetAntiAir = function(alreadyCombined) {
+Fleet.prototype.fleetAntiAir = function(alreadyCombined,isRaid) {
 	if (this._baseFAA === undefined) {
 		this._baseFAA = 0;
 		for (var i=0; i<this.ships.length; i++) {
@@ -64,18 +64,23 @@ Fleet.prototype.fleetAntiAir = function(alreadyCombined) {
 					default:
 						mod = .2; break;
 				}
-				if (equip.AA) this._baseFAA += Math.floor(equip.AA * mod);
+				if (equip.AA) this._baseFAA += equip.AA * mod;
 			}
 			if (this.ships[i].improves.AAfleet) this._baseFAA += this.ships[i].improves.AAfleet;
 		}
-		if (this.side == 0) this._baseFAA /= 1.3; //player side fleetAA is lower?
+		this._baseFAA = Math.floor(this._baseFAA);
 	}
-	var FAA = this._baseFAA*2*this.formation.AAmod;
+	var FAA = this._baseFAA;
+	if (alreadyCombined) return FAA;
 	if (this.combinedWith) {
-		FAA *= ((this.isescort)? .48 : .72);
-		if (!alreadyCombined) FAA += this.combinedWith.fleetAntiAir(true);
+		FAA += this.combinedWith.fleetAntiAir(true,isRaid);
 	}
-	// console.log('FLEET ANTI-AIR: '+FAA);
+	FAA = Math.floor(FAA*this.formation.AAmod);
+	if (this.side == 0) FAA = FAA/1.3;
+	if (this.combinedWith) {
+		if (this.isescort) FAA *= .48;
+		else FAA *= (isRaid ? .72 : .8);
+	}
 	return FAA;
 }
 Fleet.prototype.clearFleetAntiAir = function() {
@@ -689,10 +694,32 @@ Ship.prototype.canASWNight = function() {
 }
 Ship.prototype.canAS = function() { 
 	if (this.HP/this.maxHP <= .25) return false;
+	let hasRecon = null;
 	for (var i=0; i<this.equips.length; i++) {
-		if(this.equips[i].btype == B_RECON && this.planecount[i]) return true;
+		if (this.equips[i].btype == B_RECON && this.planecount[i]) hasRecon = true;
 	}
-	return false;
+	if (MECHANICS.zuiunCI && this.canZuiunCI) {
+		let types = this.AStype(), typesNow = [];
+		for (let type of types) {
+			if (type == 200 || type == 201) {
+				if (this.canASZuiun(type)) typesNow.push(type);
+			} else {
+				if (hasRecon) typesNow.push(type);
+			}
+		}
+		return typesNow.length ? typesNow : null;
+	}
+	return hasRecon && this.AStype();
+}
+Ship.prototype.canASZuiun = function(type) {
+	if (!MECHANICS.zuiunCI || !this.canZuiunCI) return false;
+	let numZuiun = 0, num634 = 0;
+	for (let i=0; i<this.equips.length; i++) {
+		let equip = this.equips[i];
+		if ((!type || type == 200) && this.planecount[i] && equip.type == SEAPLANEBOMBER && equip.nameJP.indexOf('瑞雲') != -1) numZuiun++;
+		if ((!type || type == 201) && this.planecount[i] && equip.type == DIVEBOMBER && equip.nameJP.indexOf('六三四空') != -1) num634++;
+	}
+	return numZuiun >= 2 ||	num634 >= 2;
 }
 Ship.prototype.canNBAirAttack = function() { return false; }
 Ship.prototype.hasNBAirGear = function() { return false; }
@@ -759,13 +786,8 @@ Ship.prototype.AStype = function() {
 	this._astype = [];
 	
 	if (MECHANICS.zuiunCI && this.canZuiunCI && this.equiptypesB[B_MAINGUN]) {
-		let numZuiun = 0, num634 = 0;
-		for (let equip of this.equips) {
-			if (equip.type == SEAPLANEBOMBER && equip.nameJP.indexOf('瑞雲') != -1) numZuiun++;
-			if (equip.type == DIVEBOMBER && equip.nameJP.indexOf('六三四空') != -1) num634++;
-		}
-		if (num634 >= 2) this._astype.push(201);
-		if (numZuiun >= 2) this._astype.push(200);
+		if (this.canASZuiun(201)) this._astype.push(201);
+		if (this.canASZuiun(200)) this._astype.push(200);
 	}
 	
 	if (MECHANICS.CVCI && this.CVshelltype && !this.cannotCVCI) {
@@ -921,34 +943,36 @@ Ship.prototype.damageMod = function(isTorp) {
 	if (this.HP/this.maxHP <= .5) return .7;
 	return 1;
 }
-Ship.prototype.weightedAntiAir = function() {
+Ship.prototype.weightedAntiAir = function(isRaid) {
 	if (this._wAA === undefined) {
-		this._wAA = this.statsBase.AA;
-		if (this.side==1) this._wAA = 2*Math.sqrt(this._wAA);
+		this._wAA = this.statsBase.AA/2;
+		if (this.side==1) this._wAA = Math.sqrt(this.AA);
+		if (this.equips.length) this._wAA = Math.floor(this._wAA);
 		for (var i=0; i<this.equips.length; i++) {
 			var mod = 0;
 			switch (this.equips[i].atype) {
 				case A_HAGUN:
 				case A_HAFD:
 				case A_AAFD:
-					mod = 4; break;
+					mod = 2; break;
 				case A_AAGUN:
-					mod = 6; break;
-				case A_AIRRADAR:
 					mod = 3; break;
+				case A_AIRRADAR:
+					mod = 1.5; break;
 				default:
 					continue;
 			}
 			this._wAA += this.equips[i].AA * mod;
 		}
-		this._wAA += (this.improves.AAself)? 2*this.improves.AAself : 0;
-		if (this.fleet.combinedWith) {
-			if (this.isescort) this._wAA*=.48;
-			else this._wAA*=.72;
-		}
+		this._wAA += (this.improves.AAself)? this.improves.AAself : 0;
 		this._wAA = Math.max(0,this._wAA);
 	}
-	return this._wAA;
+	let wAA = this._wAA;
+	if (this.fleet.combinedWith) {
+		if (this.isescort) wAA *= .48;
+		else wAA *= (isRaid ? .72 : .8);
+	}
+	return wAA;
 }
 
 Ship.prototype.getAACItype = function(atypes) {
@@ -1008,8 +1032,9 @@ Ship.prototype.getAACItype = function(atypes) {
 	}
 	if (atypes[A_HAFD] >= 2 && atypes[A_AIRRADAR]) types.push(5);
 	if (add6) types.push(6);
-	if (atypes[A_HAFD] && atypes[A_AIRRADAR]) types.push(8); //changed 8 > 7 some time between 2018-04-21 - 2019-04-24, too minor for mechanic toggle
+	if (MECHANICS.aaci8Up && atypes[A_HAFD] && atypes[A_AIRRADAR]) types.push(8); //changed 8 > 7 some time between 2018-04-21 - 2019-04-24?
 	if (atypes[A_HAGUN] && atypes[A_AAFD] && atypes[A_AIRRADAR]) types.push(7);
+	if (!MECHANICS.aaci8Up && atypes[A_HAFD] && atypes[A_AIRRADAR]) types.push(8);
 	
 	if (this.mid == 546 && hasID[275] && atypes[A_AIRRADAR]) types.push(26); //Musashi Kai Ni
 	if ([82,88,553,554,148,546].indexOf(this.mid) != -1 && hasID[274] && atypes[A_AIRRADAR]) types.push(28); //Ise-class Kai + Musashi Kai
@@ -1594,6 +1619,14 @@ Equip.prototype.setImprovement = function(level) {
 	if (this.atype == A_HAFD) {
 		this.improves.AAfleet = 3*Math.sqrt(level);
 		this.improves.AAself = 1.5*Math.sqrt(level);
+	}
+	if (this.atype == A_AAGUN) {
+		let mod = this.AA >= 8 ? 3 : 2;
+		this.improves.AAself = mod*Math.sqrt(level);
+	}
+	if (this.atype == A_AAFD) {
+		let mod = this.AA >= 8 ? 1.5 : 1;
+		this.improves.AAself = mod*Math.sqrt(level);
 	}
 	
 	if ([12,234].includes(this.mid)) {
