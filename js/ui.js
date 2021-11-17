@@ -222,7 +222,7 @@ function showAdditionalStats(fleet) {
 	for (var i=0; i<ships.length; i++) {
 		var td = $('<td></td>'); tr.append(td);
 		td.append('Anti-Air:<br>');
-		td.append('<div style="margin-left:16px">Proportional: '+getAAShotProp(ships[i],100)+'%<br>Flat: '+Math.floor(getAAShotFlat(ships[i]))+'</div>');
+		td.append('<div style="margin-left:16px">Proportional: '+getAAShotProp(ships[i],10000)/100+'%<br>Flat: '+Math.floor(getAAShotFlat(ships[i]))+'</div>');
 		if (ships[i].AACItype.length) {
 			var chanceused = 0, chancemod = 1;
 			for (var j=0; j<ships[i].AACItype.length; j++) {
