@@ -1221,7 +1221,7 @@ CV.prototype.canAS = function() {
 		if(this.equips[i].type == DIVEBOMBER && this.planecount[i]) diveFlag = true;
 		if(this.equips[i].type == TORPBOMBER && this.planecount[i]) torpFlag = true;
 	}
-	return diveFlag && torpFlag;
+	return diveFlag && torpFlag && this.AStype();
 }
 CV.prototype.APweak = true;
 CV.prototype.canShell = function(isOASW) {
