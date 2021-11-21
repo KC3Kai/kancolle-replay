@@ -1178,8 +1178,8 @@ CAV.prototype.rocketBarrageChance = function() {
 		if (equip.canBarrage) num++;
 	}
 	if (num <= 0) return 0;
-	let base = 48, numBonus = 40 + 30*num, classBonus = 70*(this.sclass == 2);
-	return (this.weightedAntiAir() + .9*this.LUK)/(400 - (base + numBonus + classBonus));
+	let base = 48, numBonus = 30 + 40*num, classBonus = 70*(this.sclass == 2);
+	return (2*this.weightedAntiAir() + .9*this.LUK)/(400 - (base + numBonus + classBonus));
 }
 
 function BBV(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
