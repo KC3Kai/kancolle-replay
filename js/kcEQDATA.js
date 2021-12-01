@@ -5151,6 +5151,18 @@ var EQDATA = {
 		EV: 2,
 		RNG: 1,
 	},
+	444: {
+		name: 'Type 4 Heavy Bomber Hiryuu + No.1 Model 1A Guided Missile',
+		nameJP: '四式重爆 飛龍+イ号一型甲 誘導弾',
+		added: '2021-11-30',
+		type: LANDBOMBER,
+		DIVEBOMB: 20,
+		TP: 15,
+		AA: 5,
+		ACC: 1,
+		ASW: 3,
+		LOS: 4,
+	},
 	501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
@@ -6540,6 +6552,7 @@ var LBASDATA = {
 	434: { distance: 6, cost: 9 },
 	435: { distance: 6, cost: 9 },
 	437: { distance: 5, cost: 9 },
+	444: { distance: 5, cost: 15 },
 };
 
 

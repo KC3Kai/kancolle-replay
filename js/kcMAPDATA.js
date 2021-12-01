@@ -1764,6 +1764,44 @@ var MAPDATA = {
 			},
 		}
 	},
+	52: {
+		name: 'Fall 2021',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmDN: 189,
+				bgmNN: 189,
+				bgmDB: 92,
+				bgmNB: 92,
+				bossnode: ['N','R'],
+				overrideBGM: {
+					'M': { bgmDN: 81, bgmNN: 81 },
+					'R': { bgmDB: 91, bgmNB: 91 },
+				},
+			},
+			2: {
+				name: 'E2',
+				bgmDN: 191,
+				bgmNN: 191,
+				bgmDB: 192,
+				bgmNB: 192,
+				bossnode: ['Q','U'],
+			},
+			3: {
+				name: 'E3',
+				bgmDN: 191,
+				bgmNN: 191,
+				bgmDB: 192,
+				bgmNB: 192,
+				bossnode: ['I','R','Z'],
+				overrideBGM: {
+					'R2': { bgmDN: 192, bgmNN: 192 },
+					'R': { bgmDB: 193, bgmNB: 193 },
+					'Z': { bgmDB: 193, bgmNB: 193 },
+				},
+			},
+		}
+	},
 }
 
 //-------------------------------------
