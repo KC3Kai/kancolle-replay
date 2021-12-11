@@ -910,11 +910,12 @@ Ship.prototype.NBPower = function(target) {
 
 Ship.prototype.ASWPower = function() {
 	if (this._aswpower) return this._aswpower;
-	var equipASW = 0, hassonar = false, hasdc = false, hasdcP = false, hasdcO = false;
+	var equipASW = 0, hassonar = false, hassonarS = false, hasdc = false, hasdcP = false, hasdcO = false;
 	for (var i=0; i<this.equips.length; i++) {
 		if (!EQTDATA[this.equips[i].type].canASWDamage) continue;
 		if (this.equips[i].ASW) equipASW += this.equips[i].ASW;
 		if (this.equips[i].btype == B_SONAR) hassonar = true;
+		if (this.equips[i].type == SONARS) hassonarS = true;
 		if (this.equips[i].btype == B_DEPTHCHARGE) hasdc = true;
 		if (this.equips[i].isDCProjector) hasdcP = true;
 		if (this.equips[i].isDCOnly) hasdcO = true;
@@ -925,7 +926,7 @@ Ship.prototype.ASWPower = function() {
 	var bonus = (this.improves.Pasw)? Math.floor(this.improves.Pasw) : 0;
 	var synergyMod = 1;
 	if (MECHANICS.aswSynergy) {
-		if (hasdcP && hasdcO) synergyMod *= (hassonar ? 1.25 : 1.1);
+		if (hasdcP && hasdcO) synergyMod *= (hassonarS ? 1.25 : 1.1);
 		if (hassonar && hasdc) synergyMod *= 1.15;
 	}
 	let classASW = this.planeasw ? 8 : 13;

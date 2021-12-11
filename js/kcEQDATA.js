@@ -3297,6 +3297,7 @@ var EQDATA = {
 		nameJP: '彩雲(偵四)',
 		added: '2018-02-16',
 		type: CARRIERSCOUT,
+		noRedT: true,
 		AA: 2,
 		ACC: 2,
 		LOS: 10,
@@ -5163,6 +5164,26 @@ var EQDATA = {
 		ASW: 3,
 		LOS: 4,
 	},
+	445: {
+		name: 'Type 2 Two-seat Fighter Toryuu',
+		nameJP: '二式複戦 屠龍',
+		added: '2021-12-10',
+		type: INTERCEPTOR,
+		AA: 3,
+		AR: 1,
+		ACC: 4,
+		EV: 1,
+	},
+	446: {
+		name: 'Type 2 Two-seat Fighter Toryuu Model C',
+		nameJP: '二式複戦 屠龍 丙型',
+		added: '2021-12-10',
+		type: INTERCEPTOR,
+		AA: 3,
+		AR: 2,
+		ACC: 6,
+		EV: 2,
+	},
 	501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
@@ -6553,6 +6574,8 @@ var LBASDATA = {
 	435: { distance: 6, cost: 9 },
 	437: { distance: 5, cost: 9 },
 	444: { distance: 5, cost: 15 },
+	445: { distance: 3, cost: 8 },
+	446: { distance: 3, cost: 9 },
 };
 
 
