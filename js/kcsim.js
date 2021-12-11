@@ -2385,7 +2385,7 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 		if (ships1[i].retreated) continue;
 		if(ships1[i].isSub) subsalive1.push(ships1[i]);
 		else alive1.push(ships1[i]);
-		if (!ships1[i].HPprev || (BAPI && BAPI.source != 10)) ships1[i].HPprev = ships1[i].HP;
+		ships1[i].HPprev = ships1[i].HP;
 		if (!MECHANICS.morale) ships1[i].morale = 49;
 		if (ships1[i].isInstall) hasInstall1 = true;
 		ships1[i].morale -= (NBonly ? 2 : 3);
@@ -2395,7 +2395,7 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 		if (ships2[i].retreated) continue;
 		if(ships2[i].isSub) subsalive2.push(ships2[i]);
 		else alive2.push(ships2[i]);
-		if (!ships2[i].HPprev || (BAPI && BAPI.source != 10)) ships2[i].HPprev = ships2[i].HP;
+		ships2[i].HPprev = ships2[i].HP;
 		if (ships2[i].isInstall) hasInstall2 = true;
 	}
 	
