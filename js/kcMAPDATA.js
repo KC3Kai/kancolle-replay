@@ -359,12 +359,28 @@ var MAPDATA = {
 			},
 			2: {
 				name: '7-2',
-                bgmDN: 105, 
-                bgmNN: 105, 
-                bgmDB: 80, 
-                bgmNB: 81,
+				bgmDN: 105, 
+				bgmNN: 105, 
+				bgmDB: 80, 
+				bgmNB: 81,
 				bossnode: [7,13],
-            }
+			},
+			3: {
+				name: '7-3',
+				bgmDN: 11,
+				bgmNN: 11,
+				bgmDB: 91,
+				bgmNB: 91,
+				bossnode: ['E','P'],
+			},
+			4: {
+				name: '7-4',
+				bgmDN: 191,
+				bgmNN: 191,
+				bgmDB: 192,
+				bgmNB: 192,
+				bossnode: ['P'],
+			},
 		}
 	},
 	22: {
