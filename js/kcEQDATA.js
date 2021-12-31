@@ -5184,6 +5184,16 @@ var EQDATA = {
 		ACC: 6,
 		EV: 2,
 	},
+	447: {
+		name: 'Type 0 Fighter Model 64 (Two-seat w/ KMX)',
+		nameJP: '零式艦戦64型(複座KMX搭載機)',
+		added: '2021-12-28',
+		type: DIVEBOMBER,
+		DIVEBOMB: 3,
+		AA: 4,
+		ASW: 8,
+		LOS: 3,
+	},
 	501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
@@ -6380,6 +6390,36 @@ var EQDATA = {
 		LOS: 7,
 		RNG: 2,
 	},
+	620: {
+		name: 'Abyssal Two-seat Fighter-bomber Hawk',
+		nameJP: '深海戦爆複座鷹',
+		added: '2021-12-28',
+		type: DIVEBOMBER,
+		FP: 5,
+		DIVEBOMB: 12,
+		AA: 10,
+		AR: 3,
+		ACC: 10,
+		EV: 4,
+		ASW: 20,
+		LOS: 3,
+		RNG: 4,
+	},
+	621: {
+		name: 'Abyssal Two-seat Fighter-bomber Hawk Kai',
+		nameJP: '深海戦爆複座鷹改',
+		added: '2021-12-28',
+		type: DIVEBOMBER,
+		FP: 6,
+		DIVEBOMB: 16,
+		AA: 11,
+		AR: 3,
+		ACC: 12,
+		EV: 5,
+		ASW: 24,
+		LOS: 3,
+		RNG: 4,
+	},
 };
 
 var LBASDATA = {
@@ -6576,6 +6616,7 @@ var LBASDATA = {
 	444: { distance: 5, cost: 15 },
 	445: { distance: 3, cost: 8 },
 	446: { distance: 3, cost: 9 },
+	447: { distance: 4, cost: 5 },
 };
 
 
