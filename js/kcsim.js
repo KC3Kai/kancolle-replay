@@ -334,6 +334,10 @@ function shell(ship,target,APIhou,attackSpecial) {
 		} else {
 			acc = .42*acc + .24;
 			acc *= ship.ptAccMod || 1;
+
+			// Vanguard bonus: https://twitter.com/Divinity__123/status/1492264067809038343
+			// TODO: figure out why samples with sgun(s) are inconsistent
+			if (ship.fleet.formation.id == 6) acc *= 1.2;
 		}
 		if (BREAKPTIMPS && ship.type == 'DD') acc = 0;
 	}
@@ -1336,6 +1340,10 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 			if (!NERFPTIMPS) {
 				acc = .42*acc + .24;
 				acc *= .7;
+
+				// Vanguard bonus: https://twitter.com/Divinity__123/status/1492264067809038343
+				// TODO: verify later if it holds true for torpedo phase too
+				if (ship.fleet.formation.id == 6) acc *= 1.2;
 			}
 			if (BREAKPTIMPS && ship.type == 'DD') acc = 0;
 		}
@@ -3027,6 +3035,12 @@ function simStats(numsims,foptions) {
 		for (var j=0; j<FLEETS2.length; j++) {
 			var options = foptions[j];
 			for (let ship of FLEETS1[0].ships) {
+				// Acc/Eva bonus
+				if (ship.accBonusTemp) {
+					ship.bonusSpecialAcc = [{mod:ship.accBonusTemp}];
+					ship.bonusSpecialEv  = [{mod:ship.accBonusTemp}];
+				}
+				// FP bonus
 				let bonus = (j==FLEETS2.length-1 && ship.bonusBTemp)? ship.bonusBTemp : ship.bonusTemp;
 				if (bonus && options.bonus) ship.bonusSpecial = [{mod:bonus}];
 				else ship.bonusSpecial = null;

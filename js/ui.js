@@ -42,7 +42,7 @@ if (!HASURLDATA || HASURLDATA_CONFIG) {
 	$('#dialogselequiptype').append(table);
 }
 
-var STATNAMES = ['lvl','hp','fp','tp','aa','ar','ev','asw','los','luk','rng','spd','tacc','bonus','bonusB','bonusD'];
+var STATNAMES = ['lvl','hp','fp','tp','aa','ar','ev','asw','los','luk','rng','spd','tacc', 'accBonus', 'bonus','bonusB','bonusD'];
 var PREVEQS = {};
 var WROTESTATS = false;
 var TUTORIAL = false;
@@ -716,6 +716,25 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
 		for (var j=0; j<6; j++) {
 			var td = document.createElement('td');
 			td.setAttribute('colspan','2');
+			var desc = 'Historical Accuracy and Evasion Bonus';
+			var text = document.createElement('div'); text.setAttribute('title',desc);
+			text.setAttribute('style','float:left');
+			text.appendChild(document.createTextNode('Acc Bonus: '));
+			td.appendChild(text);
+			var input = document.createElement('input');
+			input.setAttribute('type','number'); input.setAttribute('id',tid+'accBonus'+j);
+			input.setAttribute('min','0'); input.setAttribute('max','99'); input.setAttribute('step','.01'); input.setAttribute('title',desc);
+			input.setAttribute('onchange','updateFleetCode('+fleetnum+')');
+			input.setAttribute('style','width:65px');
+			td.appendChild(input);
+			tr.appendChild(td);
+		}
+		t.appendChild(tr);
+
+		var tr = document.createElement('tr');
+		for (var j=0; j<6; j++) {
+			var td = document.createElement('td');
+			td.setAttribute('colspan','2');
 			var desc = 'Historical Bonus Multiplier';
 			var text = document.createElement('div'); text.setAttribute('title',desc);
 			text.setAttribute('style','float:left');
@@ -1294,6 +1313,9 @@ function loadIntoSim(fleet,side,isescort) {
 				var stat = parseInt(document.getElementById('T'+fleet+STATNAMES[j]+i).value);
 				s[STATNAMES[j]] = (stat)? stat : 0;
 			}
+			if (document.getElementById('T'+fleet+'accBonus'+i)) {
+				s.accBonus = parseFloat(document.getElementById('T'+fleet+'accBonus'+i).value) || 0;
+			}
 			if (document.getElementById('T'+fleet+'bonus'+i)) {
 				s.bonus = parseFloat(document.getElementById('T'+fleet+'bonus'+i).value) || 0;
 			}
@@ -1316,6 +1338,7 @@ function loadIntoSim(fleet,side,isescort) {
 			
 			var ship = new ShipType(mid,SHIPDATA[mid].name,side,s.lvl,s.hp,s.fp,s.tp,s.aa,s.ar,s.ev,s.asw,s.los,s.luk,s.rng,slots);
 			if (s.tacc != null) ship.TACC = s.tacc;
+			if (s.accBonus > 0) ship.accBonusTemp = s.accBonus;
 			if (s.bonus > 0) ship.bonusTemp = s.bonus;
 			if (s.bonusB > 0) ship.bonusBTemp = s.bonusB;
 			if (s.bonusD > 0) ship.bonusDTemp = s.bonusD;
