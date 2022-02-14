@@ -317,7 +317,7 @@ function shell(ship,target,APIhou,attackSpecial) {
 	var evFlat = 0;
 	if (target.fleet.formation.id == 6) {
 		evFlat += (target.type == 'DD') ? SIMCONSTS.vanguardEvShellDD[target.num-1] || 0 : SIMCONSTS.vanguardEvShellOther[target.num-1] || 0;
-		if (target.type == 'DD' && !isPlayable(target.mid) && accMod > 1) accMod = 1 + (accMod-1)/2;
+		if (target.type == 'DD' && !isPlayable(target.mid) && accMod > 1) accMod = 1 + (accMod-1)/2; // Div: Need to be changed?
 	}
 	evFlat += target.improves.EVshell || 0;
 	
@@ -327,6 +327,18 @@ function shell(ship,target,APIhou,attackSpecial) {
 	var acc = hitRate(ship,(ship.fleet.baseaccshell||90),accflat,accMod); //use global hit acc
 	if (MECHANICS.fitGun && ship.ACCfit) acc += ship.ACCfit*.01;
 	acc *= accMod2;
+
+
+	// Historical accuracy bonus that should be applied before PT accuracy formula
+	console.log(ship.bonusSpecialAcc);
+	if (ship.bonusSpecialAcc) {
+		let mod = 1;
+		for (var i=0; i<ship.bonusSpecialAcc.length; i++) {
+			if (ship.bonusSpecialAcc[i].pre) mod *= ship.bonusSpecialAcc[i].mod;
+		}
+		acc *= mod;
+	}
+
 	
 	if (target.isPT) {
 		if (NERFPTIMPS) {
@@ -576,6 +588,15 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 	if (searchlights[0]) acc += .07;
 	if (ship.ACCnbca) acc += ship.ACCnbca*.01;
 	acc *= accMod2;
+
+	// Historical accuracy bonus that should be applied before PT accuracy formula
+	if (ship.bonusSpecialAcc) {
+		let mod = 1;
+		for (var i=0; i<ship.bonusSpecialAcc.length; i++) {
+			if (ship.bonusSpecialAcc[i].pre) mod *= ship.bonusSpecialAcc[i].mod;
+		}
+		acc *= mod;
+	}
 	
 	if (target.isPT) {
 		if (NERFPTIMPS) {
@@ -761,6 +782,16 @@ function ASW(ship,target,isnight,APIhou,isOASW) {
 		evFlat += (target.type == 'DD') ? SIMCONSTS.vanguardEvShellDD[target.num-1] || 0 : SIMCONSTS.vanguardEvShellOther[target.num-1] || 0;
 	}
 	var acc = hitRate(ship,80,sonarAcc,accMod);
+
+	// Historical accuracy bonus
+	if (ship.bonusSpecialAcc) {
+		let mod = 1;
+		for (var i=0; i<ship.bonusSpecialAcc.length; i++) {
+			if (ship.bonusSpecialAcc[i].pre) mod *= ship.bonusSpecialAcc[i].mod;
+		}
+		acc *= mod;
+	}
+
 	var res = rollHit(accuracyAndCrit(ship,target,acc,target.getFormation().ASWev,evFlat,1.3,ship.planeasw && !isOASW),ship.planeasw && !isOASW ? ship.critdmgbonus : null);
 	var dmg = 0, realdmg = 0;
 	var premod = (isnight)? 0 : ship.getFormation().ASWmod*ENGAGEMENT*ship.damageMod();
@@ -1386,6 +1417,16 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 function airstrike(ship,target,slot,contactMod,issupport,isjetphase) {
 	if (!contactMod) contactMod = 1;
 	var acc = (issupport)? .85 : .95;
+
+	// Historical accuracy bonus that should be applied before PT accuracy formula
+	if (ship.bonusSpecialAcc) {
+		let mod = 1;
+		for (var i=0; i<ship.bonusSpecialAcc.length; i++) {
+			if (ship.bonusSpecialAcc[i].pre) mod *= ship.bonusSpecialAcc[i].mod;
+		}
+		acc *= mod;
+	}
+
 	var res = rollHit(accuracyAndCrit(ship,target,acc,target.getFormation().AAmod,0,.2,!issupport && 2),!issupport && ship.critdmgbonus);
 	var equip = ship.equips[slot];
 	var dmg = 0, realdmg = 0;
@@ -1467,6 +1508,7 @@ function accuracyAndCrit(ship,target,hit,evMod,evFlat,critMod,isPlanes,critBonus
 	if (ship.bonusSpecialAcc && isPlanes != 2) {
 		let mod = 1;
 		for (var i=0; i<ship.bonusSpecialAcc.length; i++) {
+			if (ship.bonusSpecialAcc[i].pre) continue; // Bonus that should be applied before PT accuracy calculation
 			if (ship.bonusSpecialAcc[i].type == 2) continue;
 			if (!ship.bonusSpecialAcc[i].on || ship.bonusSpecialAcc[i].on.indexOf(target.mid) != -1) {
 				mod *= ship.bonusSpecialAcc[i].mod;
@@ -3037,8 +3079,8 @@ function simStats(numsims,foptions) {
 			for (let ship of FLEETS1[0].ships) {
 				// Acc/Eva bonus
 				if (ship.accBonusTemp) {
-					ship.bonusSpecialAcc = [{mod:ship.accBonusTemp}];
-					ship.bonusSpecialEv  = [{mod:ship.accBonusTemp}];
+					ship.bonusSpecialAcc = [{mod:ship.accBonusTemp, pre:true}];
+					ship.bonusSpecialEv  = [{mod:ship.accBonusTemp, pre:true}];
 				}
 				// FP bonus
 				let bonus = (j==FLEETS2.length-1 && ship.bonusBTemp)? ship.bonusBTemp : ship.bonusTemp;
