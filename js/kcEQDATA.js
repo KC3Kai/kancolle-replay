@@ -5194,6 +5194,13 @@ var EQDATA = {
 		ASW: 8,
 		LOS: 3,
 	},
+	449: {
+		name: 'Toku Daihatsu Landing Craft + Type 1 Gun Tank',
+		nameJP: '特大発動艇+一式砲戦車',
+		added: '2021-12-31',
+		type: LANDINGCRAFT,
+		FP: 2,
+	},
 	501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',

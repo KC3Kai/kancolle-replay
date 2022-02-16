@@ -524,6 +524,10 @@ function simStatsCombined(numsims,type,foptions) {
 				if (!ship.bonusSpecial) ship.bonusSpecial = [];
 				ship.bonusSpecial.push({mod:ship.bonusDTemp,on:[FLEETS2[FLEETS2.length-1].ships[0].mid]});
 			}
+			if (ship.bonusAccTemp) {
+				ship.bonusSpecialAcc = [{mod:ship.bonusAccTemp}];
+				ship.bonusSpecialEv  = [{mod:ship.bonusAccTemp}];
+			}
 		}
 	}
 	
@@ -541,6 +545,13 @@ function simStatsCombined(numsims,type,foptions) {
 					if (ship.bonusDTemp) {
 						if (!ship.bonusSpecial) ship.bonusSpecial = [];
 						ship.bonusSpecial.push({mod:ship.bonusDTemp,on:[FLEETS2[FLEETS2.length-1].ships[0].mid]});
+					}
+					if (ship.bonusAccTemp && options.bonus) {
+						ship.bonusSpecialAcc = [{mod:ship.bonusAccTemp}];
+						ship.bonusSpecialEv  = [{mod:ship.bonusAccTemp}];
+					} else {
+						ship.bonusSpecialAcc = null;
+						ship.bonusSpecialEv  = null;
 					}
 				}
 			}

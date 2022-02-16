@@ -281,6 +281,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (eq.mid == 408) installeqs.soukoutei = installeqs.soukoutei + 1 || 1;
 		if (eq.mid == 409) installeqs.armedDaihatsu = installeqs.armedDaihatsu + 1 || 1;
 		if (eq.mid == 436) installeqs.panzer = installeqs.panzer + 1 || 1;
+		if (eq.mid == 449) installeqs.tokuT1 = installeqs.tokuT1 + 1 || 1;
 		if (eq.mid == 126) this.numWG = this.numWG + 1 || 1;
 		
 		if (eq.LOS) this.LOSeq += eq.LOS;
@@ -369,6 +370,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	else if (installeqs.rocket4) this.installFlat += 55;
 	if (installeqs.rocket4C >= 2) this.installFlat += 170;
 	else if (installeqs.rocket4C) this.installFlat += 80;
+	if (installeqs.tokuT1) this.installFlat += 150;
 	let numMortar = (installeqs.mortar || 0) + (installeqs.mortarC || 0);
 	let numRocket4 = (installeqs.rocket4 || 0) + (installeqs.rocket4C || 0);
 	
@@ -386,6 +388,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (installeqs.TDH11) this.softSkinMult *= 1.8;
 		if (installeqs.m4a1) this.softSkinMult *= 1.4 * 1.1;
 		if (installeqs.panzer) this.softSkinMult *= 1.5;
+		if (installeqs.tokuT1) this.softSkinMult *= 1.4;
 		if (installeqs.DH2 > 0) this.softSkinMult *= 1.5;
 		if (installeqs.DH2 >= 2) this.softSkinMult *= 1.3;
 		if (installbonus1 > 1) this.softSkinMult *= installbonus1;
@@ -413,6 +416,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (installeqs.TDH11) this.pillboxMult *= 1.8;
 		if (installeqs.m4a1) this.pillboxMult *= 1.4 * 2;
 		if (installeqs.panzer) this.pillboxMult *= 1.5;
+		if (installeqs.tokuT1) this.pillboxMult *= 1.5;
 		if (installeqs.DH2 > 0) this.pillboxMult *= 1.5;
 		if (installeqs.DH2 >= 2) this.pillboxMult *= 1.4;
 		if (installbonus1 > 1) this.pillboxMult *= installbonus1;
@@ -449,6 +453,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (installeqs.TDH11) this.isoMult *= 1.8;
 		if (installeqs.m4a1) this.isoMult *= 1.4 * 1.8;
 		if (installeqs.panzer) this.isoMult *= 1.2;
+		if (installeqs.tokuT1) this.isoMult *= 2;
 		if (installeqs.DH2 > 0) this.isoMult *= 1.2;
 		if (installeqs.DH2 >= 2) this.isoMult *= 1.4;
 		if (installbonus1 > 1) this.isoMult *= installbonus1;
@@ -513,8 +518,9 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (numMortar >= 2) this.supplyPostMult *= 1.2;
 		if (installeqs.DH1 || installeqs.DH2 || installeqs.TDH || installeqs.TDH11) this.supplyPostMult *= 1.7 * installbonus1;
 		if (installeqs.TDH) this.supplyPostMult *= 1.2;
-		if (installeqs.DH2) this.supplyPostMult *= 1.3 * installbonus1;
-		if (installeqs.DH2 >= 2) this.supplyPostMult *= 1.6;
+		let numDH2 = (installeqs.DH2 || 0) + (installeqs.tokuT1 || 0);
+		if (numDH2) this.supplyPostMult *= 1.3 * installbonus1;
+		if (numDH2 >= 2) this.supplyPostMult *= 1.6;
 		if (installeqs.m4a1) this.supplyPostMult *= 1.2;
 		if (installeqs.panzer) this.supplyPostMult *= 1.3;
 		if (installeqs.DH3) this.supplyPostMult *= 1.7 * installbonus3;
@@ -548,6 +554,9 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	if (installeqs.DB) this.anchoragePostMult *= 1.4;
 	if (installeqs.DB >= 2) this.anchoragePostMult *= 1.5;
 	
+	this.installPostMult = 1;
+	if (installeqs.tokuT1) this.installPostMult *= 1.05;
+	
 	this.ptDmgMod = 1;
 	let numGuns = (this.equiptypes[MAINGUNS] || 0) + (this.equiptypes[MAINGUNSAA] || 0);
 	if (numGuns) this.ptDmgMod *= 1.5;
@@ -565,15 +574,17 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	if (numAD >= 2) this.ptDmgMod *= 1.1;
 	
 	this.ptAccMod = .7;
-	if (this.type == 'DD') this.ptAccMod = 1;
+	if (this.type == 'DD' || this.type == 'DE') this.ptAccMod = 1;
 	if (this.type == 'CL' || this.type == 'CLT' || this.type == 'CT') this.ptAccMod = .82;
 	if (this.equiptypes[MAINGUNS]) this.ptAccMod *= 1.3;
-	if (this.equiptypes[SECGUN]) this.ptAccMod *= 1.5;
+	if (this.equiptypes[MAINGUNS] >= 2) this.ptAccMod *= 1.15;
+	if (this.equiptypes[SECGUN]) this.ptAccMod *= 1.55;
 	if (this.equiptypes[AAGUN]) this.ptAccMod *= 1.45;
+	if (this.equiptypes[AAGUN] >= 2) this.ptAccMod *= 1.35;
 	if (this.equiptypes[PICKET]) this.ptAccMod *= 1.75;
-	if (this.equiptypes[DIVEBOMBER]) this.ptAccMod *= 1.3;
-	if (this.equiptypes[SEAPLANEBOMBER]) this.ptAccMod *= 1.45;
-	if (numAD) this.ptAccMod *= 1.4;
+	if (this.equiptypes[DIVEBOMBER]) this.ptAccMod *= 1.4;
+	if (this.equiptypes[SEAPLANEBOMBER] || this.equiptypes[SEAPLANEFIGHTER]) this.ptAccMod *= 1.5;
+	if (numAD) this.ptAccMod *= 1.45;
 	
 	if (this.repairs) this.repairsOrig = this.repairs.slice();
 	
@@ -637,7 +648,7 @@ Ship.prototype.updateProficiencyBonus = function() {
 				else if (eq.rank == 3) mod = 3;
 				else if (eq.rank == 2) mod = 2;
 				else if (eq.rank == 1) mod = 1;
-				this.critratebonus += mod*.6; //x.75????
+				this.critratebonus += mod*((i==0)? .8 : .6);
 				this.critdmgbonus += Math.floor(Math.sqrt(eq.exp) + mod)/((i==0)? 100:200);
 				planeexp += eq.exp;
 			}
@@ -737,12 +748,15 @@ Ship.prototype.NBtypes = function() {
 			if (this.equiptypesB[B_NIGHTFIGHTER] >= 2 && this.equiptypesB[B_NIGHTBOMBER]) {
 				this._nbtypes.push(61);
 			}
-			if ((this.equiptypesB[B_NIGHTFIGHTER] && hasFuze) || (this.equiptypesB[B_NIGHTBOMBER] && hasFuze) || (this.equiptypesB[B_NIGHTFIGHTER] && this.equiptypesB[B_NIGHTBOMBER])) {
+			if (this.equiptypesB[B_NIGHTFIGHTER] && this.equiptypesB[B_NIGHTBOMBER]) {
 				this._nbtypes.push(62);
+			}
+			if ((this.equiptypesB[B_NIGHTFIGHTER] || this.equiptypesB[B_NIGHTBOMBER]) && hasFuze) {
+				this._nbtypes.push(63);
 			}
 			if (this.equiptypesB[B_NIGHTFIGHTER]) {
 				if ((this.equiptypesB[B_NIGHTFIGHTER] || 0) + (this.equiptypesB[B_NIGHTBOMBER] || 0) + (this.equiptypesB[B_NIGHTBOMBER2] || 0) >= 3) {
-					this._nbtypes.push(63);
+					this._nbtypes.push(64);
 				}
 			}
 		}
@@ -775,6 +789,7 @@ Ship.prototype.NBchance = function() {
 	if (this._nbchance === undefined) {
 		this._nbchance = (this.isflagship)? 15 : 0;
 		if (this.hasLookout) this._nbchance += 5;
+		if (['DD','CL','CLT'].includes(this.type) && this.equips.find(eq => eq.mid == 412)) this._nbchance += 4;
 		if (this.LUK >= 50) this._nbchance += Math.floor(65+Math.sqrt(this.LUK-50)+Math.sqrt(this.LVL)*.8);
 		else this._nbchance += Math.floor(this.LUK+15+Math.sqrt(this.LVL)*.75);
 	}
