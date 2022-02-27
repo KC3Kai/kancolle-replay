@@ -1818,6 +1818,35 @@ var MAPDATA = {
 			},
 		}
 	},
+	53: {
+		name: '',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmDN: 196,
+				bgmNN: 196,
+				bgmDB: 198,
+				bgmNB: 198,
+				bossnode: ['V3'],
+			},
+			2: {
+				name: 'E2',
+				bgmDN: 196,
+				bgmNN: 196,
+				bgmDB: 197,
+				bgmNB: 197,
+				bossnode: ['J2','X'],
+			},
+			3: {
+				name: 'E3',
+				bgmDN: 198,
+				bgmNN: 198,
+				bgmDB: 197,
+				bgmNB: 197,
+				bossnode: ['L','S','Z'],
+			},
+		}
+	},
 }
 
 //-------------------------------------
