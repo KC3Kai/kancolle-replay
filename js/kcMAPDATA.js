@@ -1819,7 +1819,7 @@ var MAPDATA = {
 		}
 	},
 	53: {
-		name: '',
+		name: 'Winter 2022',
 		maps: {
 			1: {
 				name: 'E1',
@@ -1844,6 +1844,25 @@ var MAPDATA = {
 				bgmDB: 197,
 				bgmNB: 197,
 				bossnode: ['L','S','Z'],
+			},
+			4: {
+				name: 'E4',
+				bgmDN: 198,
+				bgmNN: 198,
+				bgmDB: 197,
+				bgmNB: 197,
+				bossnode: ['F','O2','X'],
+				overrideBGM: {
+					'O2': { bgmDB: 192, bgmNB: 192 },
+				},
+			},
+			5: {
+				name: 'E5',
+				bgmDN: 197,
+				bgmNN: 197,
+				bgmDB: 200,
+				bgmNB: 200,
+				bossnode: ['G','N','Y'],
 			},
 		}
 	},
