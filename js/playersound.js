@@ -246,6 +246,7 @@ var BGMLIST = {
 	196: {url:'assets/music/196_8406.mp3'},
 	197: {url:'assets/music/197_7519.mp3'},
 	198: {url:'assets/music/198_2648.mp3'},
+	200: {url:'assets/music/200_8182.mp3'},
 	998: {url:'assets/music/savior of song.mp3',voldef:.25},
 	999: {url:'assets/music/Orel Cruising & LSC Song [ENG Sub].mp3',voldef:.3},
 	2001: {url:'assets/music/103v.ogg', voldef:.7},
