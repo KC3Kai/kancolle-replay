@@ -5199,6 +5199,7 @@ var EQDATA = {
 		nameJP: '特大発動艇+一式砲戦車',
 		added: '2021-12-31',
 		type: LANDINGCRAFT,
+		btype: B_LC2,
 		FP: 2,
 	},
 	450: {
