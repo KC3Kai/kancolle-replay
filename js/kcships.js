@@ -336,7 +336,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	
 	let installModAll = 1;
 	this.installFlat = 0;
-	if (installeqs.TDH11) {
+	if (installeqs.TDH11 || installeqs.tokuT1) {
 		installModAll *= 1.8;
 		this.installFlat *= 1.8;
 		this.installFlat += 25;
@@ -570,8 +570,6 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	if (installeqs.DB) this.anchoragePostMult *= 1.4;
 	if (installeqs.DB >= 2) this.anchoragePostMult *= 1.5;
 	
-	this.installPostMult = 1;
-	if (installeqs.tokuT1) this.installPostMult *= 1.05;
 	
 	this.ptDmgMod = 1;
 	let numGuns = (this.equiptypes[MAINGUNS] || 0) + (this.equiptypes[MAINGUNSAA] || 0);
