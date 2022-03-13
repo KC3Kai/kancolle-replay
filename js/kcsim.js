@@ -363,9 +363,6 @@ function shell(ship,target,APIhou,attackSpecial) {
 		cutin = attackSpecial;
 	}
 	
-	if (target.installtype) {
-		postMod *= ship.installPostMult;
-	}
 	if (target.isAnchorage) {
 		postMod *= ship.anchoragePostMult;
 	}
@@ -619,9 +616,6 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 		preMod *= getSpecialAttackMod(ship,attackSpecial);
 	}
 	
-	if (target.installtype) {
-		postMod *= ship.installPostMult;
-	}
 	if (target.isAnchorage) {
 		postMod *= ship.anchoragePostMult;
 	}
