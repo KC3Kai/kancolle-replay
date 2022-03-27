@@ -33,11 +33,11 @@ Fleet.prototype.loadShips = function(ships) {
 	this.ships[0].isflagship = true;
 	this.DMGTOTALS = this.ships.map(s => 0);
 }
-Fleet.prototype.fleetAirPower = function(jetonly,includeScout) {  //get air power
+Fleet.prototype.fleetAirPower = function(eqtFilter) {  //get air power
 	this.AP = 0;
 	for (var i=0; i<this.ships.length; i++) {
 		if (this.ships[i].HP <= 0 || this.ships[i].retreated) continue;
-		this.AP += this.ships[i].airPower(jetonly,includeScout);
+		this.AP += this.ships[i].airPower(eqtFilter);
 	}
 	return this.AP;
 }
@@ -1120,29 +1120,25 @@ Ship.prototype.reset = function(notHP,notMorale) {
 	if (this.retreated) this.retreated = false;
 	delete this._fuelUnderway;
 	delete this._ammoUnderway;
+	let found = false;
+	for (let eq of this.equips) {
+		if (eq.rank != eq.rankInit) { eq.setProficiency(eq.rankInit || 0); found = true; }
+	}
+	if (found) this.updateProficiencyBonus();
 	// this._wAA = undefined;
 }
 
 Ship.prototype.airState = function() { return this.fleet.AS; }
-Ship.prototype.airPower = function(jetonly,includeScout) {
+Ship.prototype.airPower = function(eqtFilter) {
+	eqtFilter = eqtFilter || 'isfighter';
 	var ap = 0;
 	for (var i=0; i<this.equips.length; i++) {
 		if (this.planecount[i] <= 0) continue;
-		if ((this.equips[i].isfighter && (!jetonly||this.equips[i].isjet)) || (includeScout && EQTDATA[this.equips[i].type].isPlane)) {
+		if (this.equips[i][eqtFilter]) {
 			ap += Math.floor(((this.equips[i].AA||0) + (this.equips[i].AAImprove||0)) * Math.sqrt(this.planecount[i]) + (this.equips[i].APbonus||0));
 		}
 	}
 	return Math.floor(ap);
-}
-Ship.prototype.numBombers = function () {
-	var planes = [];
-	for (var i=0; i<this.equips.length; i++) {
-		if (this.equips[i].isdivebomber || this.equips[i].istorpbomber || this.equips[i].isfighter) {
-			if (this.equips[i].b_image) planes.push(this.equips[i].b_image);
-			else planes.push((this.fleet.id==0)? 1 : 2);
-		}
-	}
-	return planes;
 }
 Ship.prototype.rocketBarrageChance = function() { return 0; }
 
@@ -1256,7 +1252,7 @@ CV.prototype.canShell = function(isOASW) {
 	if (this.HP <= 0) return false;
 	if (isOASW) return true;
 	for (let i=0; i<this.equips.length; i++) {
-		if ((this.equips[i].isdivebomber || this.equips[i].istorpbomber) && this.planecount[i] > 0) {
+		if ((this.equips[i].isdivebomber || this.equips[i].istorpbomber) && this.planecount[i] > 0 && !this.equips[i].isLB) {
 			return true;
 		}
 	}
@@ -1418,7 +1414,6 @@ AO.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		this.canShell = CV.prototype.canShell;
 		this.canStillShell = CV.prototype.canStillShell;
 		this.canStillShellDamage = CV.prototype.canStillShellDamage;
-		this.numBombers = CV.prototype.numBombers;
 	}
 }
 AO.prototype.canASW = DD.prototype.canASW;
@@ -1469,19 +1464,19 @@ function LandBase(equips,levels,profs) {
 	this.equips = [];
 	for (var i=0; i<equips.length; i++) {
 		this.equips.push(new Equip(equips[i],levels[i],profs[i],true));
-		this.equips[i].rankInit = profs[i];
 	}
 	this.AS = 0;
 }
 LandBase.prototype.airState = function() { return this.AS; }
-LandBase.prototype.airPower = function(jetonly) {
+LandBase.prototype.airPower = function(eqtFilter) {
+	eqtFilter = eqtFilter || 'isPlane';
 	var ap = 0, landscoutmod = 1;
 	for (var i=0; i<this.equips.length; i++) {
 		if (this.equips[i].type == LANDSCOUT) {
 			if (this.equips[i].ACC >= 3) landscoutmod = 1.18;
 			else if (this.equips[i].ACC <= 2 && landscoutmod < 1.15) landscoutmod = 1.15;
 		}
-		if (EQTDATA[this.equips[i].type].isPlane && (!jetonly||this.equips[i].isjet)) {
+		if (this.equips[i][eqtFilter]) {
 			var base = (this.equips[i].AA||0) + (this.equips[i].AAImprove||0);
 			if (this.equips[i].type == LANDBOMBER || this.equips[i].type == INTERCEPTOR) base += (this.equips[i].EV||0)*1.5;
 			ap += Math.floor(base * Math.sqrt(this.planecount[i]) + (this.equips[i].APbonus||0));
@@ -1493,7 +1488,7 @@ LandBase.prototype.fleetAirPower = LandBase.prototype.airPower;
 LandBase.prototype.airPowerDefend = function() {
 	var ap = 0, mod = 1;
 	for (var i=0; i<this.equips.length; i++) {
-		if (EQTDATA[this.equips[i].type].isPlane) {
+		if (this.equips[i].isPlane) {
 			var base = (this.equips[i].AA||0) + (this.equips[i].AAImprove||0);
 			if (this.equips[i].type == LANDBOMBER || this.equips[i].type == INTERCEPTOR) base += (this.equips[i].EV||0) + (this.equips[i].ACC||0)*2;
 			ap += Math.floor(base * Math.sqrt(this.planecount[i]) + (this.equips[i].APbonus||0));
@@ -1517,7 +1512,7 @@ LandBase.prototype.airPowerDefend = function() {
 LandBase.prototype.reset = function() {
 	this.planecount = this.PLANESLOTS.slice();
 	for (let eq of this.equips) {
-		if (eq.rank != eq.rankInit) eq.setProficiency(eq.rankInit);
+		if (eq.rank != eq.rankInit) eq.setProficiency(eq.rankInit || 0);
 	}
 }
 LandBase.prototype.getCost = function() {
@@ -1572,9 +1567,15 @@ function Equip(equipid,level,rank,forLBAS) {
 	this.statsEqBonus = {};
 	
 	var eq = EQDATA[equipid];
-	if (EQTDATA[eq.type].isfighter && eq.AA) this.isfighter = true;
+	if (EQTDATA[eq.type].isfighter) this.isfighter = true;
 	if (EQTDATA[eq.type].isdivebomber) this.isdivebomber = true;
 	if (EQTDATA[eq.type].istorpbomber) this.istorpbomber = true;
+	if (EQTDATA[eq.type].isjet) this.isjet = true;
+	if (EQTDATA[eq.type].isPlane) this.isPlane = true;
+	if (EQTDATA[eq.type].isLB) this.isLB = true;
+	if (EQTDATA[eq.type].canContact) this.canContact = true;
+	if (EQTDATA[eq.type].canDetect) this.canDetect = true;
+	if (EQTDATA[eq.type].canSupportASW && eq.ASW) this.canSupportASW = true;
 	
 	if (eq.btype == null && EQTDATA[eq.type].btype) {
 		this.btype = EQTDATA[eq.type].btype;
@@ -1588,7 +1589,10 @@ function Equip(equipid,level,rank,forLBAS) {
 	}
 	
 	if (level) this.setImprovement(level);
-	if (rank) this.setProficiency(rank,forLBAS);
+	if (rank) {
+		this.setProficiency(rank,forLBAS);
+		this.rankInit = rank;
+	}
 }
 Equip.prototype.setImprovement = function(level) {
 	this.level = level;
@@ -1711,5 +1715,4 @@ Equip.prototype.setProficiency = function(rank,forLBAS) {
 			if (!forLBAS) this.APbonus = 0;
 			break;
 	}
-	if (this.APbonus) this.isfighter = true;
 }
