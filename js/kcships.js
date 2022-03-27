@@ -29,6 +29,18 @@ Fleet.prototype.loadShips = function(ships) {
 			if (ships[i].equips[j].type == OILDRUM) this.numUnderwaySupply = this.numUnderwaySupply + 1 || 1;
 		}
 		if (this.isescort) ships[i].isescort = true;
+		
+		if (ships[i].isAntiPTShip) {
+			ships[i].isAntiPT = true;
+			ships[i].ptAccMod *= 1.25;
+			for (let ship of [ships[i-1],ships[i+1]]) {
+				if (!ship) continue;
+				if (ship.type == 'DD' || ship.type == 'DE') {
+					ship.isAntiPT = true;
+					ship.ptAccMod *= 1.2;
+				}
+			}
+		}
 	}
 	this.ships[0].isflagship = true;
 	this.DMGTOTALS = this.ships.map(s => 0);

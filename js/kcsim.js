@@ -878,6 +878,10 @@ function shellPhaseTarget(ship,alive,subsalive,isOASW) {
 				targets = [];
 				for (var j=0; j<alive.length; j++) if (alive[j].isInstall) targets.push(alive[j]);
 			} else targets = alive;
+			if (ship.isAntiPT) {
+				let targetsPT = alive.filter(ship => ship.isPT);
+				if (targetsPT.length) targets = targetsPT;
+			}
 			if (targets.length) {
 				result.type = 1;
 				result.target = choiceWProtect(targets);
@@ -1226,32 +1230,50 @@ function nightPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,NBonly,API
 				let k=0;
 				for (; k<ships.length; k++) {
 					if (alive2.length <= 0) break;
-					var target = choiceWProtect(alive2,slrerolls2);
+					var target = nightPhaseTarget(ships[k],alive2,[],slrerolls2,true).target;
 					if (NBattack(ships[k],target,NBonly,[[star1,star2],[light1,light2],[scout1,scout2]],APIhou,order1[i].attackSpecial)) alive2.splice(alive2.indexOf(target),1);
 				}
 				if (C) {
 					apiAdjustHougekiSpecial(APIhou,k);
 				}
-			} else if (subsalive2.length && order1[i].canASWNight() && (!order1[i].canNBAirAttack() || alive2.length <= 0)) {
-				var target = choiceWProtect(subsalive2);
-				if (ASW(order1[i],target,(!NBonly&&!order1[i].isescort),APIhou)) subsalive2.splice(subsalive2.indexOf(target),1);
-			} else if (alive2.length) {
-				var target = choiceWProtect(alive2,slrerolls2);
-				if (NBattack(order1[i],target,NBonly,[[star1,star2],[light1,light2],[scout1,scout2]],APIhou)) alive2.splice(alive2.indexOf(target),1);
+			} else {
+				let target = nightPhaseTarget(order1[i],alive2,subsalive2,slrerolls2,light2).target;
+				if (target) {
+					if (target.isSub) {
+						if (ASW(order1[i],target,(!NBonly&&!order1[i].isescort),APIhou)) subsalive2.splice(subsalive2.indexOf(target),1);
+					} else {
+						if (NBattack(order1[i],target,NBonly,[[star1,star2],[light1,light2],[scout1,scout2]],APIhou)) alive2.splice(alive2.indexOf(target),1);
+					}
+				}
 			}
 		}
 		if (alive2.length+subsalive2.length <= 0) break;
 		if (i < order2.length && order2[i].canNB()) {
-			if (subsalive1.length && order2[i].canASWNight() && (!order2[i].canNBAirAttack() || alive1.length <= 0)) {
-				var target = choiceWProtect(subsalive1);
-				if (ASW(order2[i],target,(!NBonly&&!order2[i].isescort),APIhou)) subsalive1.splice(subsalive1.indexOf(target),1);
-			} else if (alive1.length && (order2[i].nightattack != 3 || light1)) {
-				var target = choiceWProtect(alive1,slrerolls1);
-				if (NBattack(order2[i],target,NBonly,[[star2,star1],[light2,light1],[scout2,scout1]],APIhou)) alive1.splice(alive1.indexOf(target),1);
+			let target = nightPhaseTarget(order2[i],alive1,subsalive1,slrerolls1,light1).target;
+			if (target) {
+				if (target.isSub) {
+					if (ASW(order2[i],target,(!NBonly&&!order2[i].isescort),APIhou)) subsalive1.splice(subsalive1.indexOf(target),1);
+				} else {
+					if (NBattack(order2[i],target,NBonly,[[star2,star1],[light2,light1],[scout2,scout1]],APIhou)) alive1.splice(alive1.indexOf(target),1);
+				}
 			}
 		}
 		if (alive1.length+subsalive1.length <= 0) break;
 	}
+}
+
+function nightPhaseTarget(ship,alive,subsalive,slrerolls,light) {
+	if (subsalive.length && ship.canASWNight() && (!ship.canNBAirAttack() || alive.length <= 0)) {
+		return { type: 2, target: choiceWProtect(subsalive) };
+	} else if (alive.length && (ship.nightattack != 3 || light)) {
+		let targets = alive;
+		if (ship.isAntiPT) {
+			let targetsPT = alive.filter(ship => ship.isPT);
+			if (targetsPT.length) targets = targetsPT;
+		}
+		return { type: 1, target: choiceWProtect(targets,slrerolls) };
+	}
+	return { type: 0, target: null };
 }
 
 function apiAdjustHougekiSpecial(APIhou,numAttack) {
@@ -3619,15 +3641,15 @@ function friendFleetPhase(fleet1,fleet2,alive2,subsalive2,BAPI) {
 					ship.protection = true;
 					ship.protectionFF = true;
 				}
-				
-				if (subsalive2.length && attacker.canASWNight() && (!attacker.canNBAirAttack() || alive2.length <= 0)) {
-					let target = choiceWProtect(subsalive2);
-					ASW(attacker,target,false,APIhou);
-					removeSunk(subsalive2);
-				} else if (alive2.length) {
-					let target = choiceWProtect(alive2,nightEquips[3][1]);
-					NBattack(attacker,target,false,nightEquips,APIhou);
-					removeSunk(alive2);
+				let target = nightPhaseTarget(attacker,alive2,subsalive2,nightEquips[3][1],nightEquips[1][1]).target;
+				if (target) {
+					if (target.isSub) {
+						ASW(attacker,target,false,APIhou);
+						removeSunk(subsalive2);
+					} else {
+						NBattack(attacker,target,false,nightEquips,APIhou);
+						removeSunk(alive2);
+					}
 				}
 			}
 			ind1++;
@@ -3639,14 +3661,15 @@ function friendFleetPhase(fleet1,fleet2,alive2,subsalive2,BAPI) {
 		}
 		if (ind2 < ships2.length) {
 			let attacker = ships2[ind2];
-			if (subsalive1.length && attacker.canASWNight() && (!attacker.canNBAirAttack() || alive1.length <= 0)) {
-				let target = choiceWProtect(subsalive1);
-				ASW(attacker,target,false,APIhou);
-				removeSunk(subsalive1);
-			} else if (alive1.length) {
-				let target = choiceWProtect(alive1,nightEquips[3][0]);
-				NBattack(attacker,target,false,nightEquips,APIhou);
-				removeSunk(alive1);
+			let target = nightPhaseTarget(attacker,alive1,subsalive1,nightEquips[3][0],true).target;
+			if (target) {
+				if (target.isSub) {
+					ASW(attacker,target,false,APIhou);
+					removeSunk(subsalive1);
+				} else {
+					NBattack(attacker,target,false,nightEquips,APIhou);
+					removeSunk(alive1);
+				}
 			}
 			ind2++;
 		}
