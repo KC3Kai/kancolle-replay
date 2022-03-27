@@ -254,11 +254,12 @@ EQTDATA[TORPBOMBER] = {
 	canequipS: [352],
 	cannotequipS: [521],
 	isPlane: true,
-	canContact: true,
 	isfighter: true,
 	istorpbomber: true,
+	canContact: true,
 	isASWPlane: true,
 	canASWDamage: true,
+	canSupportASW: true,
 };
 EQTDATA[DIVEBOMBER] = {
 	name: 'Dive Bomber',
@@ -270,6 +271,7 @@ EQTDATA[DIVEBOMBER] = {
 	isdivebomber: true,
 	isASWPlane: true,
 	canASWDamage: true,
+	canSupportASW: true,
 };
 EQTDATA[SEAPLANE] = {
 	name: 'Recon Seaplane',
@@ -281,6 +283,8 @@ EQTDATA[SEAPLANE] = {
 	cannotequipS: [477, 478, 622, 623, 624, 645, 650, 657, 699],
 	isPlane: true,
 	canContact: true,
+	canDetect: true,
+	canSupportASW: true,
 };
 EQTDATA[SEAPLANEBOMBER] = {
 	name: 'Seaplane Bomber',
@@ -289,12 +293,14 @@ EQTDATA[SEAPLANEBOMBER] = {
 	improve: {LOS:1.15},
 	canequip: ['CAV','BBV','SSV','AV','AO','LandBase'],
 	canequipS: [305, 306, 307, 314, 358, 361, 392, 446, 447, 488, 496, 547, 574, 579, 591, 626, 630, 639, 640, 652, 662, 663, 668, 879],
+	cannotequipS: [645, 650, 699],
 	isPlane: true,
 	isfighter: true,
 	isdivebomber: true,
+	canDetect: true,
 	isASWPlane: true,
 	canASWDamage: true,
-	cannotequipS: [645, 650, 699],
+	canSupportASW: true,
 };
 EQTDATA[CARRIERSCOUT] = {
 	name: 'Scout Plane',
@@ -304,6 +310,7 @@ EQTDATA[CARRIERSCOUT] = {
 	cannotequipS: [380, 381, 521, 526, 534],
 	isPlane: true,
 	canContact: true,
+	canDetect: true,
 };
 EQTDATA[CARRIERSCOUT2] = {
 	name: 'Scout Plane',
@@ -312,6 +319,7 @@ EQTDATA[CARRIERSCOUT2] = {
 	canequip: ['CVB','LandBase'],
 	isPlane: true,
 	canContact: true,
+	canDetect: true,
 };
 EQTDATA[AUTOGYRO] = {
 	name: 'Anti-Sub Plane',
@@ -319,9 +327,9 @@ EQTDATA[AUTOGYRO] = {
 	canequip: ['CAV','BBV','CVL','AS','AO','AR','LHA'],
 	canequipS: [372, 477, 478, 491, 546, 547, 573, 574, 586, 630, 646, 652, 662, 663, 668, 690, 713, 885],
 	cannotequipS: [380, 381, 521, 526, 534, 621, 645, 699],
-	isPlane: true,
 	isASWPlane: true,
 	canASWDamage: true,
+	canSupportASW: true,
 };
 EQTDATA[ASWPLANE] = {
 	name: 'Anti-Sub Plane',
@@ -329,9 +337,9 @@ EQTDATA[ASWPLANE] = {
 	canequip: ['CVL','LHA'],
 	canequipS: [553, 554, 646],
 	cannotequipS: [521, 526, 534, 621, 626],
-	isPlane: true,
 	isASWPlane: true,
 	canASWDamage: true,
+	canSupportASW: true,
 };
 EQTDATA[RADARS] = {
 	name: 'Radar (S)',
@@ -461,7 +469,9 @@ EQTDATA[FLYINGBOAT] = {
 	canequipS: [445, 450, 500, 586, 690],
 	isPlane: true,
 	canContact: true,
+	canDetect: true,
 	isASWPlane: true,
+	canSupportASW: true,
 };
 EQTDATA[REPAIR] = {
 	name: 'Misc',
@@ -478,9 +488,10 @@ EQTDATA[SEAPLANEFIGHTER] = {
 	image: 43,
 	canequip: ['CAV','BBV','SSV','AS','AV','AO','LandBase'],
 	canequipS: [136, 148, 275, 276, 358, 361, 446, 447, 488, 496, 541, 546, 547, 573, 592, 621, 626, 652, 668, 879],
+	cannotequipS: [645, 650, 699],
 	isPlane: true,
 	isfighter: true,
-	cannotequipS: [645, 650, 699],
+	canSupportASW: true,
 };
 EQTDATA[LANDINGTANK] = {
 	name: 'Misc',
@@ -501,7 +512,6 @@ EQTDATA[LANDBOMBER] = {
 	image: 37,
 	canequip: ['LandBase'],
 	isPlane: true,
-	isfighter: true,
 	isdivebomber: true,
 	istorpbomber: true,
 	isLB: true,
@@ -511,7 +521,6 @@ EQTDATA[INTERCEPTOR] = {
 	image: 38,
 	canequip: ['LandBase'],
 	isPlane: true,
-	isfighter: true,
 	isLB: true,
 };
 EQTDATA[LANDSCOUT] = {
@@ -538,7 +547,6 @@ EQTDATA[LANDBOMBERL] = {
 	image: 49,
 	canequip: ['LandBase'],
 	isPlane: true,
-	isfighter: true,
 	isdivebomber: true,
 	istorpbomber: true,
 	isLB: true,
@@ -551,6 +559,7 @@ EQTDATA[JETBOMBER] = {
 	isPlane: true,
 	isfighter: true,
 	isdivebomber: true,
+	isjet: true,
 };
 EQTDATA[OTHER] = {
 	name: 'Misc',
@@ -2513,7 +2522,6 @@ var EQDATA = {
 		added: '2016-12-09',
 		b_image: 14,
 		type: JETBOMBER,
-		isjet: true,
 		aaResistShip: .5,
 		aaResistFleet: .7,
 		DIVEBOMB: 15,
@@ -2528,7 +2536,6 @@ var EQDATA = {
 		added: '2016-12-09',
 		b_image: 14,
 		type: JETBOMBER,
-		isjet: true,
 		aaResistShip: .5,
 		aaResistFleet: .5,
 		DIVEBOMB: 11,
@@ -6506,7 +6513,7 @@ var EQDATA = {
 		RNG: 1,
 	},
 	630: {
-		name: 'Aybssal Sky Super Fortress',
+		name: 'Abyssal Sky Super Fortress',
 		nameJP: '深海空超要塞',
 		added: '2022-03-05',
 		type: LANDBOMBER,

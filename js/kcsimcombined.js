@@ -134,7 +134,7 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		}
 		var jetLBAS = LandBase.createJetLandBase(uniqueLBs);
 		if (jetLBAS.equips.length) {
-			compareAP(jetLBAS,F2,true,false,true);
+			compareAP(jetLBAS,F2,'isjet');
 			LBASPhase(jetLBAS,alive2,subsalive2,true,(C)?BAPI.data.api_air_base_injection:undefined);
 			removeSunk(alive2); removeSunk(subsalive2);
 			if (C) {
@@ -149,7 +149,7 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	//jet airstrike
 	if (!NBonly && !bombing && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length > 0) {
 		if (C) BAPI.data.api_injection_kouku = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null,api_stage3_combined:null};
-		compareAP(F1,F2,true);
+		compareAP(F1,F2,'isjet');
 		airPhase(alive1.concat(alive1C),subsalive1.concat(subsalive1C),alive2,subsalive2,(C)? BAPI.data.api_injection_kouku:undefined,true);
 		if (C) {
 			if (!BAPI.data.api_injection_kouku.api_stage1) BAPI.data.api_injection_kouku = null;
@@ -174,7 +174,7 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 			if (LBASwaves[i].equips.length <= 0) continue;
 			if (alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length > 0) {
 				LBASwaves[i].planecount = LBASwaves[i]._currentSlots.slice();
-				compareAP(LBASwaves[i],F2,false,false,true);
+				compareAP(LBASwaves[i],F2,'isPlane');
 				var LBAPI = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null};
 				LBASPhase(LBASwaves[i],alive2,subsalive2,false,(C)?LBAPI:undefined);
 				removeSunk(alive2); removeSunk(subsalive2);
@@ -832,7 +832,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 		}
 		var jetLBAS = LandBase.createJetLandBase(uniqueLBs);
 		if (jetLBAS.equips.length) {
-			compareAP(jetLBAS,F2,true,true,true);
+			compareAP(jetLBAS,F2,'isjet',true);
 			LBASPhase(jetLBAS,alive2.concat(alive2C),subsalive2.concat(subsalive2C),true,(C)?BAPI.data.api_air_base_injection:undefined);
 			removeSunk(alive2); removeSunk(alive2C);
 			removeSunk(subsalive2); removeSunk(subsalive2C);
@@ -848,7 +848,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	//jet airstrike
 	if (!NBonly && !bombing && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
 		if (C) BAPI.data.api_injection_kouku = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null,api_stage3_combined:null};
-		compareAP(F1,F2,true,true);
+		compareAP(F1,F2,'isjet',true);
 		airPhase(alive1,subsalive1,alive2.concat(alive2C),subsalive2.concat(subsalive2C),(C)? BAPI.data.api_injection_kouku:undefined,true,false,true);
 		if (C) {
 			if (!BAPI.data.api_injection_kouku.api_stage1) BAPI.data.api_injection_kouku = null;
@@ -867,7 +867,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 			if (LBASwaves[i].equips.length <= 0) continue;
 			if (alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
 				LBASwaves[i].planecount = LBASwaves[i]._currentSlots.slice();
-				compareAP(LBASwaves[i],F2,false,true,true);
+				compareAP(LBASwaves[i],F2,'isPlane',true);
 				var LBAPI = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null};
 				LBASPhase(LBASwaves[i],alive2.concat(alive2C),subsalive2.concat(subsalive2C),false,(C)?LBAPI:undefined);
 				removeSunk(alive2); removeSunk(alive2C);
@@ -902,7 +902,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	//opening airstrike
 	if (!NBonly && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
 		if (C) BAPI.data.api_kouku = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null,api_stage3_combined:null};
-		compareAP(F1,F2,false,true);
+		compareAP(F1,F2,null,true);
 		F2C.AS = F2.AS;
 		F2.airstrikeMod = -10; F2C.airstrikeMod = -20;
 		airPhase(alive1,subsalive1,alive2.concat(alive2C),subsalive2.concat(subsalive2C),(C)? BAPI.data.api_kouku:undefined,false,bombing,true);
@@ -918,7 +918,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	
 	//second airphase
 	if (!NBonly && aironly && !bombing && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length > 0) {
-		compareAP(F1,F2,false,true);
+		compareAP(F1,F2,null,true);
 		F2C.AS = F2.AS;
 		if (C) BAPI.data.api_kouku2 = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null};
 		airPhase(alive1,subsalive1,alive2.concat(alive2C),subsalive2.concat(subsalive2C),(C)? BAPI.data.api_kouku2:undefined,false,false,true);
@@ -1297,7 +1297,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		}
 		var jetLBAS = LandBase.createJetLandBase(uniqueLBs);
 		if (jetLBAS.equips.length) {
-			compareAP(jetLBAS,F2,false,true,true);
+			compareAP(jetLBAS,F2,'isjet',true);
 			LBASPhase(jetLBAS,alive2.concat(alive2C),subsalive2.concat(subsalive2C),true,(C)?BAPI.data.api_air_base_injection:undefined);
 			removeSunk(alive2); removeSunk(alive2C);
 			removeSunk(subsalive2); removeSunk(subsalive2C);
@@ -1313,7 +1313,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	//jet airstrike
 	if (!NBonly && !bombing && alive1.length+subsalive1.length+alive2C.length+subsalive1C.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
 		if (C) BAPI.data.api_injection_kouku = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null,api_stage3_combined:null};
-		compareAP(F1,F2,true,true);
+		compareAP(F1,F2,'isjet',true);
 		airPhase(alive1.concat(alive1C),subsalive1.concat(subsalive1C),alive2.concat(alive2C),subsalive2.concat(subsalive2C),(C)? BAPI.data.api_injection_kouku:undefined,true,false,true);
 		if (C) {
 			if (!BAPI.data.api_injection_kouku.api_stage1) BAPI.data.api_injection_kouku = null;
@@ -1331,7 +1331,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 			if (LBASwaves[i].equips.length <= 0) continue;
 			if (alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
 				LBASwaves[i].planecount = LBASwaves[i]._currentSlots.slice();
-				compareAP(LBASwaves[i],F2,false,true,true);
+				compareAP(LBASwaves[i],F2,'isPlane',true);
 				var LBAPI = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null};
 				LBASPhase(LBASwaves[i],alive2.concat(alive2C),subsalive2.concat(subsalive2C),false,(C)?LBAPI:undefined);
 				removeSunk(alive2); removeSunk(alive2C);
@@ -1366,7 +1366,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	//opening airstrike
 	if (!NBonly && alive1.length+subsalive1.length+alive2C.length+subsalive1C.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
 		if (C) BAPI.data.api_kouku = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null,api_stage3_combined:null};
-		compareAP(F1,F2,false,true);
+		compareAP(F1,F2,null,true);
 		F1C.AS = F1.AS;
 		F2C.AS = F2.AS;
 		F2.airstrikeMod = -10; F2C.airstrikeMod = -20;
@@ -1382,7 +1382,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	
 	//second airphase
 	if (!NBonly && aironly && !bombing && alive1.length+subsalive1.length+alive2C.length+subsalive1C.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
-		compareAP(F1,F2,false,true);
+		compareAP(F1,F2,null,true);
 		if (C) BAPI.data.api_kouku2 = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null};
 		airPhase(alive1.concat(alive1C),subsalive1.concat(subsalive1C),alive2.concat(alive2C),subsalive2.concat(subsalive2C),(C)? BAPI.data.api_kouku2:undefined,false,false,true);
 		if (C) {

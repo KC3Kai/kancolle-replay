@@ -1589,11 +1589,12 @@ function softCap(num,cap) {
 	return (num > cap)? cap+Math.sqrt(num-cap) : num;
 }
 
-function compareAP(fleet1,fleet2,isjetphase,includeEscort,includeScout) {
-	var ap1 = fleet1.fleetAirPower(isjetphase,includeScout), ap2 = fleet2.fleetAirPower(isjetphase,includeScout);
+function compareAP(fleet1,fleet2,eqtFilter1,includeEscort,eqtFilter2) {
+	eqtFilter2 = eqtFilter2 || eqtFilter1;
+	var ap1 = fleet1.fleetAirPower(eqtFilter1), ap2 = fleet2.fleetAirPower(eqtFilter2);
 	if (includeEscort) {
-		if (fleet1.combinedWith) ap1 += fleet1.combinedWith.fleetAirPower(isjetphase,includeScout);
-		if (fleet2.combinedWith) ap2 += fleet2.combinedWith.fleetAirPower(isjetphase,includeScout);
+		if (fleet1.combinedWith) ap1 += fleet1.combinedWith.fleetAirPower(eqtFilter1);
+		if (fleet2.combinedWith) ap2 += fleet2.combinedWith.fleetAirPower(eqtFilter2);
 	}
 	if (ap1 == 0 && ap2 == 0) { fleet1.AS = fleet2.AS = 0; }
 	else if (ap1 >= ap2*3) { fleet1.AS = 2; fleet2.AS = -2; }
@@ -1636,13 +1637,14 @@ function choiceWProtect(targets,searchlightRerolls) {
 	return target;
 }
 
-function AADefenceFighters(carriers,showplanes,APIkouku,isjetphase) {
+function AADefenceFighters(carriers,showplanes,APIkouku,eqtFilter) {
+	eqtFilter = eqtFilter || 'isfighter';
 	for (var i=0; i<carriers.length; i++) {
 		var ship = carriers[i], hasfighter = false;
 		for (var j=0; j<ship.equips.length; j++) {
-			if ((ship.equips[j].isfighter||ship.equips[j].isdivebomber||ship.equips[j].istorpbomber)&&(!isjetphase||ship.equips[j].isjet)) {
+			if (ship.equips[j][eqtFilter]) {
 				var lostcount;
-				if (ship.side==0) {
+				if (ship.side != 1) {
 					var rmin, rplus;
 					switch(ship.airState()) {
 						case 2: rmin = .025; rplus = .0333; break;
@@ -1782,7 +1784,7 @@ function getContact(carriers) {
 		var ship = carriers[i];
 		for (var j=0; j<ship.equips.length; j++) {
 			var e = ship.equips[j];
-			if (e.LOS && EQTDATA[e.type].isPlane) losPower += Math.floor(Math.sqrt(ship.planecount[j])*e.LOS);
+			if (e.LOS && EQTDATA[e.type].isPlane && e.type != TORPBOMBER) losPower += Math.floor(Math.sqrt(ship.planecount[j])*e.LOS);
 		}
 	}
 	var chance, cmod;
@@ -1820,7 +1822,7 @@ function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupp
 		bombers.push([]);
 		for (var j=0; j<ship.equips.length; j++) {
 			var e = ship.equips[j];
-			if ((e.istorpbomber || e.isdivebomber) && ship.planecount[j]>0 && (!isjetphase||e.isjet)) {
+			if ((e.istorpbomber || e.isdivebomber) && ship.planecount[j]>0 && (!isjetphase||e.isjet) && !e.isLB) {
 				bombers[i].push(j);
 				hasbomber = true;
 				var side = (ship.side == 2 || ship.side == 3)? 0 : ship.side;
@@ -1944,8 +1946,9 @@ function airPhase(alive1,subsalive1,alive2,subsalive2,APIkouku,isjetphase,isbomb
 		}
 		
 		//fighter defence
-		AADefenceFighters(carriers1,alive2.length,APIkouku,isjetphase);
-		AADefenceFighters(carriers2,alive1.length,APIkouku,isjetphase);
+		let filter = isjetphase ? 'isjet' : 'isfighter';
+		AADefenceFighters(carriers1,alive2.length,APIkouku,filter);
+		AADefenceFighters(carriers2,alive1.length,APIkouku,filter);
 		
 		//bomber defence
 		if (!isbombing) AADefenceBombersAndAirstrike(carriers1,alive2,alive2.concat(subsalive2),APIkouku,false,isjetphase,includeEscort);
@@ -1987,9 +1990,9 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 			apiSupport.api_undressing_flag.push(+(ship.HP/ship.maxHP <= .5));
 		}
 	}
-	if (MECHANICS.LBASBuff && suptype == 1 && subsalive2.length) {
+	if (MECHANICS.LBASBuff && suptype == 1 && subsalive2.length && shipsS.find(ship => ship.type == 'CVL')) {
 		for (let ship of shipsS) {
-			if (ship.CVshelltype) {
+			if (ship.equips.find(eq => eq.canSupportASW)) {
 				suptype = 4;
 				break;
 			}
@@ -2059,7 +2062,9 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 	} else if (suptype == 1 || suptype == 4) {
 		for (var i=0; i<shipsS.length; i++) shipsS[i].id = 1;
 		if (suptype == 4) {
-			supportASW(shipsS,subsalive2,subsalive2,(C)? BAPI.data.api_support_info.api_support_airatack : null,subsalive2[0].fleet.combinedWith);
+			compareAP(shipsS[0].fleet,alive2[0].fleet,'canSupportASW',false,'isfighter');
+			AADefenceFighters(shipsS,false,(C)? BAPI.data.api_support_info.api_support_airatack : null,'canSupportASW');
+			supportASW(shipsS,subsalive2,alive2.concat(subsalive2),(C)? BAPI.data.api_support_info.api_support_airatack : null,subsalive2[0].fleet.combinedWith);
 		} else {
 			var prevAS = alive2[0].fleet.AS;
 			compareAP(shipsS[0].fleet,alive2[0].fleet);
@@ -2094,7 +2099,7 @@ function supportASW(carriers,targets,defenders,APIkouku,combinedAll) {
 		bombers.push([]);
 		for (var j=0; j<ship.equips.length; j++) {
 			var e = ship.equips[j];
-			if (EQTDATA[e.type].isPlane && e.type != FIGHTER && ship.planecount[j]>0) {
+			if (e.canSupportASW && ship.planecount[j]>0) {
 				bombers[i].push(j);
 				hasbomber = true;
 				var side = (ship.side == 2 || ship.side == 3)? 0 : ship.side;
@@ -2198,7 +2203,7 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 		APIkouku[apiname] = [];
 		for (var i=0; i<lbas.equips.length; i++) {
 			var eq = lbas.equips[i];
-			if (!eq.isdivebomber && !eq.istorpbomber && !eq.isfighter) continue;
+			if (!eq.isPlane) continue;
 			var d = {api_mst_id:0, api_count:0};
 			d.api_mst_id = lbas.equips[i].mid;
 			d.api_count = lbas.planecount[i];
@@ -2212,8 +2217,9 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 	}
 	
 	//fighter defence
-	AADefenceFighters([lbas],true,APIkouku,isjetphase);
-	AADefenceFighters(carriers2,true,APIkouku,isjetphase);
+	let filter = isjetphase ? 'isjet' : 'isPlane';
+	AADefenceFighters([lbas],true,APIkouku,filter);
+	AADefenceFighters(carriers2,true,APIkouku,filter);
 	
 	//bomber defence
 	var defenders = [];
@@ -2500,7 +2506,7 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 		}
 		var jetLBAS = LandBase.createJetLandBase(uniqueLBs);
 		if (jetLBAS.equips.length) {
-			compareAP(jetLBAS,F2,true,false,true);
+			compareAP(jetLBAS,F2,'isjet');
 			LBASPhase(jetLBAS,alive2,subsalive2,true,(C)?BAPI.data.api_air_base_injection:undefined);
 			removeSunk(alive2); removeSunk(subsalive2);
 			if (C) {
@@ -2515,7 +2521,7 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 	//jet airstrike
 	if (!NBonly && !bombing && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length > 0) {
 		if (C) BAPI.data.api_injection_kouku = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null};
-		compareAP(F1,F2,true);
+		compareAP(F1,F2,'isjet');
 		airPhase(alive1,subsalive1,alive2,subsalive2,(C)? BAPI.data.api_injection_kouku:undefined,true);
 		if (C) {
 			if (!BAPI.data.api_injection_kouku.api_stage1) delete BAPI.data.api_injection_kouku;
@@ -2538,7 +2544,7 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 			if (LBASwaves[i].equips.length <= 0) continue;
 			if (alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length > 0) {
 				LBASwaves[i].planecount = LBASwaves[i]._currentSlots.slice();
-				compareAP(LBASwaves[i],F2,false,false,true);
+				compareAP(LBASwaves[i],F2,'isPlane');
 				var LBAPI = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null};
 				LBASPhase(LBASwaves[i],alive2,subsalive2,false,(C)?LBAPI:undefined);
 				removeSunk(alive2); removeSunk(subsalive2);
@@ -3223,7 +3229,7 @@ function simLBRaid(F1,F2,BAPI) {
 		}
 		ap1 = Math.floor(ap1);
 	}
-	var ap2 = F2.fleetAirPower(false,true);
+	var ap2 = F2.fleetAirPower('isPlane');
 	if (ap1 == 0 && ap2 == 0) { F1.AS = F2.AS = 0; }
 	else if (ap1 >= ap2*3) { F1.AS = 2; F2.AS = -2; }
 	else if (ap1 >= ap2*1.5) { F1.AS = 1; F2.AS = -1; }
@@ -3249,11 +3255,11 @@ function simLBRaid(F1,F2,BAPI) {
 		}
 	}
 	for (let lbas of lbas1) lbas.AS = F1.AS;
-	AADefenceFighters(lbas1,true,APIkouku);
+	AADefenceFighters(lbas1,true,APIkouku,'isPlane');
 	for (let ship of ships2) {
 		let lbSlot = 0, hasfighter;
 		for (let j=0; j<ship.equips.length; j++) {
-			if (ship.equips[j].isfighter||ship.equips[j].isdivebomber||ship.equips[j].istorpbomber) {
+			if (ship.equips[j].isPlane) {
 				hasfighter = true;
 				let interceptor = null;
 				for (; lbSlot < 4; lbSlot++) {
