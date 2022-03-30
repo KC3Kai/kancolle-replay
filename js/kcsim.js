@@ -2364,7 +2364,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 		critratebonus = critval*.6;
 	}
 	if (MECHANICS.LBASBuff) {
-		ACCplane += 12*Math.sqrt(equip.ACC || 0);
+		acc += .07*(equip.ACC || 0);
 	}
 	lbas.critratebonus = critratebonus; lbas.ACCplane = ACCplane;
 	var res = rollHit(accuracyAndCrit(lbas,target,acc,target.getFormation().AAmod,0,.2,true),critdmgbonus);
@@ -2381,6 +2381,9 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 	if (res) {
 		if (equip.mid == 405 && !target.isInstall) {
 			if (['DD'].indexOf(target.type) != -1) planebase *= 1.1;
+		}
+		if (equip.mid == 444 && !target.isInstall) {
+			if (['DD','CL','CLT','CVL','FBB','BB','BBV'].includes(target.type)) planebase *= 1.15;
 		}
 		var dmgbase = 25+planebase*Math.sqrt(1.8*lbas.planecount[slot]);
 		var preMod = (equip.type == LANDBOMBER)? .8 : 1;
