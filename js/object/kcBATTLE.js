@@ -844,7 +844,7 @@ var BATTLE = (function() {
 			hourai();
 		if (dbattle.api_name == 'ld_shooting' || dbattle.api_name == 'fc_ld_shooting')
 			ldShooting();
-		if ((dbattle.api_midnight_flag && nightBattle.length && nightBattle.length != 0) || (!dbattle.length && nightBattle.api_deck_id))
+		if (Object.keys(nightBattle).length)
 			yasen();
 	};
 
