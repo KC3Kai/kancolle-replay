@@ -6769,10 +6769,13 @@ var LBASDATA = {
 
 var EQUIPBONUSDATA = [];
 function initEQDATA(callback) {
-	$.getJSON('js/data/mst_slotitem_bonus.json', data => {
-		EQUIPBONUSDATA = data;
-		callback();
-	});
+	let xhr = new XMLHttpRequest();
+	xhr.open('GET', 'js/data/mst_slotitem_bonus.json');
+	xhr.onload = () => {
+		EQUIPBONUSDATA = JSON.parse(xhr.response);
+		callback && callback();
+	};
+	xhr.send();
 }
 
 function getBaseId(mid) {

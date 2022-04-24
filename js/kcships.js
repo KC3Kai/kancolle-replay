@@ -162,6 +162,68 @@ Fleet.prototype.setFormation = function(formNum,combineType) {
 		this.formation = ALLFORMATIONS[formNum];
 	}
 }
+Fleet.prototype.getSupportType = function() {
+	if (this.supportType != null) return this.supportType;
+	let numDD = 0, numCV = 0, numAir1 = 0, numAir2 = 0, numShell = 0, numBB = 0, numCA = 0, numTorpedo = 0, hasBomber = false;
+	for (let ship of this.ships) {
+		if (ship.type == 'DD') numDD++;
+		if (['CVL','CV','CVB'].includes(ship.type)) numCV++;
+		if (['AV','LHA'].includes(ship.type)) numAir1++;
+		if (['BBV','CAV','AO'].includes(ship.type)) numAir2++;
+		if (['BB','FBB','CA'].includes(ship.type)) numShell++;
+		if (['BB','FBB','BBV'].includes(ship.type)) numBB++;
+		if (['CA','CAV'].includes(ship.type)) numCA++;
+		if (['DD','CL','CLT'].includes(ship.type)) numTorpedo++;
+		if (!hasBomber && ['CVL','CV','CVB','AV','LHA','BBV','CAV','AO'].includes(ship.type)) {
+			if (ship.equips.find(eq => (eq.isdivebomber || eq.istorpbomber) && !eq.isLB)) hasBomber = true;
+		}
+	}
+	if (!MECHANICS.LBASBuff) {
+		if (numCV + numAir1 >= 3) return this.supportType = 1;
+		if (numTorpedo >= 4) return this.supportType = 3;
+		return this.supportType = 2;
+	}
+	if (numDD < 2) return this.supportType = 0;
+	if (numShell <= 0 && (numCV || numAir1 >= 2 || numAir2 >= 2)) return this.supportType = (hasBomber ? 1 : 0);
+	if (numShell && numCV + numAir1 >= 2) return this.supportType = (hasBomber ? 1 : 0);
+	if (numBB >= 2) return this.supportType = 2;
+	if (numBB + numCA >= 4) return this.supportType = 2;
+	return this.supportType = 3;
+}
+Fleet.prototype.fleetELoS = function(coef,hq=120) {
+	let elos = 0;
+	let numShips = 0;
+	for (let ship of this.ships) {
+		if (ship.HP <= 0 || ship.retreated) continue;
+		numShips++;
+		let losShip = ship.statsBase.LOS + (ship.statsEqBonus.LOS || 0);
+		let equipsNoBonus = ship.equips.filter(eq => [315].includes(eq.mid));
+		losShip -= getBonusStats(ship.mid,equipsNoBonus.map(eq => eq.mid),equipsNoBonus.map(eq => eq.improve || 0)).LOS || 0;
+		elos += Math.sqrt(losShip);
+		
+		for (let equip of ship.equips) {
+			let mod = { 8: .8, 9: 1, 10: 1.2, 11: 1.1, 94: 1 }[equip.type] || .6;
+			elos += coef*mod*((equip.LOS || 0) + (equip.improves.LOS || 0));
+		}
+	}
+	elos -= Math.ceil(.4*hq);
+	elos += 2*(6-numShips);
+	return elos;
+}
+Fleet.prototype.isTorpedoSquadron = function() {
+	if (this._isTS != null) return this._isTS;
+	if (!this.ships[0]) return null;
+	if (this.ships[0].type == 'CL' || this.ships[0].type == 'DD') {
+		let numDD = 0, numCLT = 0, numShips = 0;
+		for (let i=1; i<this.ships.length; i++) {
+			if (this.ships[i].type == 'DD') numDD++;
+			if (this.ships[i].type == 'CLT') numCLT++;
+			numShips++;
+		}
+		if (numDD + numCLT >= numShips && numCLT <= 3 && numDD + +(this.ships[0].type == 'DD')) return this._isTS = true;
+	}
+	return this._isTS = false;
+}
 //----------
 
 function Ship(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
@@ -250,7 +312,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (eq.isnightscout) this.hasNightScout = true;
 		if (eq.type == PICKET) this.hasLookout = true;
 		if ((eq.type == DIVEBOMBER || eq.type == JETBOMBER) && this.CVshelltype) this.hasDivebomber = true;
-		if (eq.type == FCF) this.hasFCF = equips[i];
+		if (eq.type == FCF) !this.hasFCF && (this.hasFCF = {}), this.hasFCF[equips[i]] = 1;
 		if (eq.type == SUBRADAR) this.hasSubRadar = true;
 		if (eq.specialCutIn) this.numSpecialTorp = this.numSpecialTorp+1 || 1;
 		if (eq.type == REPAIR) {
@@ -639,6 +701,11 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 			bonusesPrev = bonuses;
 		}
 		this.statsEqBonus = bonusesPrev;
+		if (addstats) {
+			for (let stat in this.statsEqBonus) {
+				this[stat] += this.statsEqBonus[stat];
+			}
+		}
 	}
 	
 	for (let stat of ['FP','TP','AA','AR','EV','ASW','LOS']) {
@@ -715,6 +782,14 @@ Ship.prototype.getFormation = function() {
 	if (this.fleet.formation.id != 6) return this.fleet.formation;
 	let threshold = Math.floor(this.fleet.ships.length/2);
 	return (this.num <= threshold)? VANGUARD1 : VANGUARD2;
+}
+Ship.prototype.addJetSteelCost = function() {
+	this.jetSteelCost = this.jetSteelCost || 0;
+	for (let i=0; i<this.equips.length; i++) {
+		let equip = this.equips[i];
+		if (!equip.isjet) continue;
+		this.jetSteelCost += Math.round(this.planecount[i]*LBASDATA[equip.mid].cost*.2);
+	}
 }
 
 Ship.prototype.canShell = function() { return (this.HP > 0); }
@@ -1137,6 +1212,7 @@ Ship.prototype.reset = function(notHP,notMorale) {
 		if (eq.rank != eq.rankInit) { eq.setProficiency(eq.rankInit || 0); found = true; }
 	}
 	if (found) this.updateProficiencyBonus();
+	if (this.jetSteelCost) this.jetSteelCost = 0;
 	// this._wAA = undefined;
 }
 
@@ -1490,7 +1566,7 @@ LandBase.prototype.airPower = function(eqtFilter) {
 		}
 		if (this.equips[i][eqtFilter]) {
 			var base = (this.equips[i].AA||0) + (this.equips[i].AAImprove||0);
-			if (this.equips[i].type == LANDBOMBER || this.equips[i].type == INTERCEPTOR) base += (this.equips[i].EV||0)*1.5;
+			if (this.equips[i].type == INTERCEPTOR) base += (this.equips[i].EV||0)*1.5;
 			ap += Math.floor(base * Math.sqrt(this.planecount[i]) + (this.equips[i].APbonus||0));
 		}
 	}
@@ -1502,11 +1578,11 @@ LandBase.prototype.airPowerDefend = function() {
 	for (var i=0; i<this.equips.length; i++) {
 		if (this.equips[i].isPlane) {
 			var base = (this.equips[i].AA||0) + (this.equips[i].AAImprove||0);
-			if (this.equips[i].type == LANDBOMBER || this.equips[i].type == INTERCEPTOR) base += (this.equips[i].EV||0) + (this.equips[i].ACC||0)*2;
+			if (this.equips[i].type == INTERCEPTOR) base += (this.equips[i].EV||0) + (this.equips[i].ACC||0)*2;
 			ap += Math.floor(base * Math.sqrt(this.planecount[i]) + (this.equips[i].APbonus||0));
 		}
 		var newmod = 1;
-		if (this.equips[i].type == SEAPLANE) {
+		if (this.equips[i].type == SEAPLANE || this.equips[i].type == FLYINGBOAT) {
 			if (this.equips[i].LOS >= 9) newmod = 1.16;
 			else if (this.equips[i].LOS == 8) newmod = 1.13;
 			else newmod = 1.1;
@@ -1514,7 +1590,7 @@ LandBase.prototype.airPowerDefend = function() {
 			if (this.equips[i].LOS >= 9) newmod = 1.3;
 			else newmod = 1.2;
 		} else if (this.equips[i].type == LANDSCOUT) {
-			if (this.equips[i].ACC >= 3) newmod = 1.24;
+			if (this.equips[i].ACC >= 3) newmod = 1.23;
 			else if (this.equips[i].ACC <= 2) newmod = 1.18;
 		}
 		if (newmod > mod) mod = newmod;
@@ -1534,20 +1610,16 @@ LandBase.prototype.getCost = function() {
 		//sortie cost
 		switch(eq.type) {
 			case LANDBOMBER:
-			case INTERCEPTOR:
-				cost[0] += Math.floor(1.5*this.PLANESLOTS[i]);
-				cost[1] += Math.floor(2*this.PLANESLOTS[i]/3);
+				cost[0] += Math.ceil(1.5*this.PLANESLOTS[i]);
+				cost[1] += Math.floor(.7*this.PLANESLOTS[i]);
 				break;
-			case SEAPLANE:
-			case CARRIERSCOUT:
-			case FLYINGBOAT:
-			case LANDSCOUT:
-				cost[0] += Math.floor(this.PLANESLOTS[i]);
-				cost[1] += Math.floor(.75*this.PLANESLOTS[i]);
+			case LANDBOMBERL:
+				cost[0] += Math.ceil(2*this.PLANESLOTS[i]);
+				cost[1] += Math.ceil(2*this.PLANESLOTS[i]);
 				break;
 			default:
-				cost[0] += Math.floor(this.PLANESLOTS[i]);
-				cost[1] += Math.floor(.66*this.PLANESLOTS[i]);
+				cost[0] += Math.ceil(this.PLANESLOTS[i]);
+				cost[1] += Math.ceil(.6*this.PLANESLOTS[i]);
 		}
 		//resupply cost
 		cost[0] += (this.PLANESLOTS[i] - this.planecount[i])*3;
