@@ -788,7 +788,8 @@ var UI_BACKUP = Vue.createApp({
 		},
 		
 		onclickDownload: function() {
-			let save = { data: JSON.stringify(CONVERT.uiToSave(UI_MAIN)), source: CONST.simSaveKey };
+			let data = this.isReplayImport ? localStorage.sim2 : JSON.stringify(CONVERT.uiToSave(UI_MAIN));
+			let save = { data: data, source: CONST.simSaveKey };
 			
 			let filename = 'KanColle_Sortie_Simulator_Backup_' + (new Date).toISOString().slice(0,10) + '.kcsim';
 
