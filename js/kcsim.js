@@ -168,7 +168,7 @@ var SIMCONSTS = {
 	airRaidCostW6: false,
 	enableEnemyAACI: true,
 	enableEnemyAACILBAS: false,
-	enablePlaneBonus: false,
+	enablePlaneBonus: true,
 	enableModSummerBB: true,
 	enableModSummerCA: true,
 	enableModFrenchBB: true,
@@ -223,10 +223,10 @@ var MECHANICS = {
 	hayabusa65Buff: true,
 	subFleetAttack: true,
 	kongouSpecialBuff: true,
-	eqBonus: false,
-	eqBonusTorp: false,
+	eqBonus: true,
+	eqBonusTorp: true,
 	anchorageTorpNerf: true,
-	eqBonusASW: false,
+	eqBonusASW: true,
 	coloradoSpecialFix: true,
 };
 var NERFPTIMPS = false;

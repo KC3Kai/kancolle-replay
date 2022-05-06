@@ -5660,7 +5660,7 @@ var SHIPDATA = {
 	230: {
 		name: 'Oboro Kai',
 		nameJP: '朧改',
-		image: 'KOboroKai.jpg',
+		image: 'K230.jpg',
 		type: 'DD', sclass: 1,
 		nid: 1330,
 		added: '2013-04-17',
@@ -5685,7 +5685,7 @@ var SHIPDATA = {
 	231: {
 		name: 'Akebono Kai',
 		nameJP: '曙改',
-		image: 'KAkebonoKai.png',
+		image: 'K231.jpg',
 		type: 'DD', sclass: 1,
 		nid: 1331,
 		added: '2013-04-17',
@@ -5710,7 +5710,7 @@ var SHIPDATA = {
 	232: {
 		name: 'Sazanami Kai',
 		nameJP: '漣改',
-		image: 'KSazanamiKai.png',
+		image: 'K232.jpg',
 		type: 'DD', sclass: 1,
 		nid: 1332,
 		added: '2013-04-17',
@@ -8265,7 +8265,7 @@ var SHIPDATA = {
 	345: {
 		name: 'Takanami Kai',
 		nameJP: '高波改',
-		image: 'KTakanamiKai.jpg',
+		image: 'K345.jpg',
 		type: 'DD', sclass: 38,
 		nid: 1425,
 		added: '2015-04-28',
@@ -9221,7 +9221,7 @@ var SHIPDATA = {
 	383: {
 		name: 'Etorofu Kai',
 		nameJP: '択捉改',
-		image: 'KEtorofuKai.jpg',
+		image: 'K383.jpg',
 		type: 'DE', sclass: 77,
 		nid: 1463,
 		added: '2017-05-02',
@@ -9346,7 +9346,7 @@ var SHIPDATA = {
 	390: {
 		name: 'Amagiri Kai',
 		nameJP: '天霧改',
-		image: 'K390.jpg',
+		image: 'K390_new.jpg',
 		type: 'DD', sclass: 1,
 		nid: 1470,
 		added: '2017-08-10',

@@ -1,0 +1,396 @@
+div.fleetSection {
+	margin: 35px 0;
+}
+
+div.fleet {
+	border: 1px solid black;
+	width: fit-content;
+	background-color: white;
+}
+div.fleet div.preview {
+	cursor: pointer;
+}
+div.fleet div.header {
+	display: flex;
+	font-weight: bold;
+}
+div.fleet.main div.header {
+	background-color: #90EE90;
+}
+div.fleet.escort div.header {
+	background-color: #89C6FF;
+}
+div.fleet.support div.header {
+	background-color: #AACCEE;
+}
+div.fleet.friend div.header {
+	background-color: #CCEEAA;
+}
+div.fleet.lbas div.header {
+	background-color: #556B2F;
+}
+div.fleet.enemy div.header {
+	background-color: #FFAAAA;
+}
+div.fleet.enemyEscort div.header {
+	background-color: #FFDDDD;
+}
+div.bonusMarker.main {
+	color: #90EE90;
+}
+div.bonusMarker.friend {
+	color: #CCEEAA;
+}
+div.bonusMarker.lbas {
+	color: #556B2F;
+}
+div.fleet div.header div.expand {
+	margin-left: auto;
+}
+div.fleet div.iconsWrap {
+	display: flex;
+}
+div.fleet div.icon {
+	border: 1px solid black;
+	margin-right: -1px;
+	margin-bottom: -1px;
+}
+div.fleet div.iconForm {
+	border-top: 1px solid black;
+}
+div.fleet div.iconForm img {
+	height: 40px;
+}
+
+#divBattles {
+	width: fit-content;
+}
+#divBattles div.battleWrap {
+	border: 1px solid black;
+	width: fit-content;
+}
+#divBattles span.headerMain {
+	font-weight: bold;
+	font-size: 1.1em;
+}
+#divBattles div.battleWrap.normal {
+	background-color: white;
+}
+#divBattles div.battleWrap.night {
+	background-color: lightblue;
+}
+#divBattles div.battleWrap.raid {
+	background-color: #A7D8A9;
+}
+#divBattles div.battleWrap.air {
+	background-color: #C8F7C8;
+}
+#divBattles div.deleteB {
+	float: right;
+	width: 25px;
+	height: 25px;
+}
+#divBattles div.deleteB > div {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+#divBattles div.deleteB:hover {
+	background-color: #FFA0A0;
+	cursor: pointer;
+}
+#divBattles div.settings {
+	margin: 5px;
+}
+#divBattles div.settings > div {
+	display: flex;
+	align-items: center;
+	margin-bottom: 5px;
+}
+#divBattles div.settings > div > div {
+	margin-right: 10px;
+}
+#divBattles div.settings label {
+	display: flex;
+	align-items: center;
+}
+#divBattles div.settings div.space {
+	margin-left: 30px;
+}
+#divBattles div.settings span.header {
+	font-weight: bold;
+}
+#divBattles div.settings span.header img {
+	vertical-align: middle;
+}
+#divBattles div.settings div.nodeTypeWrap {
+	display: flex;
+	align-items: center;
+}
+#divBattles div.settings div.nodeTypeWrap label {
+	margin-right: 10px;
+}
+#divBattles div.settings div.nodeTypeWrap img {
+	max-height: 30px;
+}
+#divBattles div.settings div.extra {
+	display: flex;
+	margin-right: 30px;
+}
+#divBattles div.settings div.extra label {
+	margin-left: 25px;
+}
+#divBattles div.settings div.formationsWrap {
+	display: flex;
+	align-items: center;
+}
+#divBattles div.settings div.formationsWrap label {
+	margin-right: 5px;
+}
+div.fleetComp {
+	display: flex;
+	align-items: center;
+	margin-top: 5px;
+	margin-right: 5px;
+}
+div.fleetComp div.rate {
+	margin-left: 5px;
+}
+div.fleetComp div.rate input {
+	width: 50px;
+}
+div.fleetCompAdd {
+	display: flex;
+	width: 968px;
+	margin-bottom: 5px;
+}
+div.fleetCompAdd > div {
+	margin-left: auto;
+}
+#divBattles div.battleNext {
+	display: flex;
+	margin: 5px 0;
+}
+#divBattles div.battleNext input {
+	margin-left: auto;
+}
+
+#divSettings img {
+	vertical-align: middle;
+}
+#divSettings span.subheader {
+	font-weight: bold;
+}
+#divSettings > div {
+	margin-bottom: 25px;
+}
+#divSettingsAdvanced > div {
+	margin-bottom: 15px;
+}
+
+#divSimStatsButtons {
+	margin-top: 10px;
+	display: flex;
+}
+#divSimStatsButtons input {
+	margin-right: 10px;
+}
+div.progressBarOuter {
+	width: 100px;
+	height: 16px;
+	border: 1px solid black;
+}
+div.progressBarInner {
+	height: 100%;
+	background-color: #3875D7;
+}
+#divSimWatch {
+	margin-bottom: 20px;
+}
+
+#divResultsOuter {
+	margin-bottom: 30px;
+	display: block !important;
+}
+#divResultsErrors {
+	margin-top: 10px;
+	color: red;
+}
+#divResultsWarnings {
+	margin-top: 10px;
+	color: orange;
+}
+#divResults div.note {
+	color: red;
+}
+#divResults div.noteBold {
+	color: red;
+	font-weight: bold;
+}
+#divResultColsWrap {
+	margin-top: 20px;
+	display: flex;
+}
+#divResultColsWrap div.resultCol {
+	margin-right: 20px;
+}
+#divResultColsWrap div.resultCol > div {
+	margin-bottom: 20px;
+}
+#divResults h3 {
+	margin-bottom: 0;
+	padding: 0;
+}
+#divResults img {
+	vertical-align: middle;
+}
+#divResults span.resultBold {
+	font-weight: bold;
+}
+#divResults span.air {
+	font-weight: bold;
+	font-size: 1.1em;
+}
+#divResults span.air.good {
+	color: green;
+}
+#divResults span.air.bad {
+	color: red;
+}
+#divResults table {
+	border-collapse: collapse;
+}
+#divResults table td {
+	min-width: 36px;
+}
+#divResults table.multi td {
+	border-left: 1px solid black;
+	padding: 1px 3px;
+}
+#divResults tr.tableSpace {
+	height: 10px;
+}
+
+#divBonusEditorMain {
+	background-color: #DDEEFF;
+	/* width: 1200px; */
+	/* height: 280px; */
+	border: 1px solid transparent;
+	box-shadow: 0 0 5px black;
+}
+#divBonusEditor div.shipWrap {
+	display: flex;
+	margin: 20px;
+}
+#divBonusEditor div.bonusWrap {
+	text-align: right;
+}
+#divBonusEditor div.bonusWrap input {
+	width: 70px;
+}
+#divBonusEditor span.statDebuff {
+	color: darkred;
+	font-size: .9em;
+	text-decoration: underline;
+	cursor: help;
+}
+
+#divChangeLog {
+	margin-top: 20px;
+	font-size: 14px;
+}
+#divChangeLog span.header {
+	font-weight: bold;
+}
+#divFooter {
+	margin-top: 20px;
+	font-size: 14px;
+}
+
+div.overlayDark {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: black;
+	opacity: .3;
+	cursor: pointer;
+}
+div.modalContent {
+	position: fixed;
+	top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+	outline: none;
+}
+
+#divDeckbuilderImporterMain {
+	background-color: #DCDCDC;
+	border: 1px solid transparent;
+	box-shadow: 0 0 5px black;
+	padding: 20px;
+}
+#divDeckbuilderImporterMain > div {
+	margin-bottom: 5px;
+}
+#divDeckbuilderImporterMain div.header {
+	font-weight: bold;
+}
+#divDeckbuilderImporterMain textarea {
+	resize: none;
+}
+#divDeckbuilderImporterMain div.sectionWrap {
+	display: flex;
+}
+#divDeckbuilderImporterMain div.sectionLeft {
+	border-right: 1px solid black;
+	padding-right: 10px;
+	margin-right: 10px;
+}
+
+#divKCNavCompImporterMain {
+	background-color: #CCCCE7;
+	border: 1px solid transparent;
+	box-shadow: 0 0 5px black;
+	padding: 20px;
+}
+#divKCNavCompImporterMain span.note {
+	color: red;
+	margin-left: 10px;
+}
+#divKCNavCompImporterSettingsWrap {
+	display: flex;
+	margin-bottom: 20px;
+}
+#divKCNavCompImporterSettingsWrap > div {
+	margin-right: 40px;
+}
+#divKCNavCompImporterSettingsWrap table input {
+	width: 80px;
+}
+#divKCNavCompImporterSettingsWrap select.suggestion {
+	width: 30px;
+}
+
+#divSimBackupMain {
+	background-color: #DDEEFF;
+	border: 1px solid transparent;
+	box-shadow: 0 0 5px black;
+	padding: 20px;
+}
+#divSimBackupMain div.sectionWrap > div {
+	margin-bottom: 20px;
+}
+#divSimBackupMain span.header {
+	font-weight: bold;
+}
+#divSimBackupMain span.error {
+	color: red;
+}
+#divSimBackupMain div.footer {
+	display: flex;
+}
+#divSimBackupMain div.footer > input {
+	margin-left: auto;
+}

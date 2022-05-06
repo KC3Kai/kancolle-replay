@@ -1,0 +1,137 @@
+#divShipSelMain, #divEquipSelMain {
+	background-color: #EDE6D8;
+	width: 720px;
+	height: 560px;
+	border: 1px solid transparent;
+	box-shadow: 0 0 5px black;
+}
+#divShipSelSearch, #divEquipSelSearch {
+	margin-left: 30px;
+	margin-top: 15px;
+}
+#divShipSelResults, #divEquipSelResults {
+	overflow-y: scroll;
+	height: 504px;
+}
+div.selectResult:hover {
+	cursor: pointer;
+}
+div.selectResult.selected {
+	background-color: #3875D7;
+	color: white;
+}
+div.selectResult span.underlined {
+	text-decoration: underline;
+}
+div.selectResult img {
+	height: 18px;
+}
+
+#divShipSelButtonsCat {
+	margin: 30px;
+	font-weight: bold;
+	font-family: Verdana,Arial,sans-serif;
+    font-size: 1.1em;
+}
+#divEquipSelButtonsCat {
+	margin: 30px;
+	font-family: Verdana,Arial,sans-serif;
+    font-size: 15px;
+}
+#divShipSelButtonsCat div.buttonWrap, #divEquipSelButtonsCat div.buttonWrap {
+	display: flex;
+	flex-basis: 0;
+	flex-wrap: wrap;
+	margin-bottom: 30px;
+}
+
+div.selButton {
+	width: 160px;
+	background-color: #EEEEEE;
+	border: 1px solid black;
+	text-align: center;
+	padding-bottom: 2px;
+}
+div.selButton.secret {
+	opacity: .03;
+	margin-left: auto;
+	margin-right: 12px;
+}
+div.selButton:hover {
+	background-color: #78BEB5;
+	cursor: pointer;
+}
+div.selButton.secret:hover {
+	opacity: .5;
+}
+
+div.selButtonBack {
+	display: flex;
+	padding-top: 10px;
+	padding-right: 10px;
+}
+div.selButtonBack > :last-child {
+	margin-left: auto;
+}
+
+#divShipSelButtonsShip {
+	max-height: 500px;
+	overflow-y: scroll;
+	margin-left: 30px;
+	margin-top: 15px;
+	display: flex;
+	flex-basis: 0;
+	flex-wrap: wrap;
+	font-family: Verdana,Arial,sans-serif;
+    font-size: 1.1em;
+}
+#divShipSelButtonsShip div.remodelButtonWrap {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	cursor: auto;
+}
+#divShipSelButtonsShip div.remodelButton {
+	font-size: 14px;
+	text-decoration: underline;
+	margin: 2px 7px;
+}
+#divShipSelButtonsShip div.remodelButton:hover {
+	color: blue;
+	cursor: pointer;
+}
+
+#divEquipSelButtonsEquip {
+	max-height: 500px;
+	overflow-y: scroll;
+	margin: 15px 30px;
+	font-family: Verdana,Arial,sans-serif;
+    font-size: 1.1em;
+}
+#divEquipSelButtonsEquip div.equipButtonWrap {
+	display: flex;
+	flex-direction: column;
+	flex-basis: 0;
+	margin-bottom: 30px;
+	font-size: 14px;
+}
+#divEquipSelButtonsEquip div.equipButton {
+	display: flex;
+	border: 1px solid black;
+	margin: 1px;
+	padding-bottom: 2px;
+	background-color: white;
+}
+#divEquipSelButtonsEquip div.equipButton:hover {
+	background-color: #78BEB5;
+	cursor: pointer;
+}
+#divEquipSelButtonsEquip div.equipButton img {
+	vertical-align: middle;
+	margin-left: 12px;
+	margin-right: 2px;
+}
+#divEquipSelButtonsEquip div.equipButton span {
+	vertical-align: middle;
+}
+
