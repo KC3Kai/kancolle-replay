@@ -5278,6 +5278,19 @@ var EQDATA = {
 		ACC: 2,
 		RNG: 1,
 	},
+	456: {
+		name: 'SG Radar (Late Model)',
+		nameJP: 'SG レーダー(後期型)',
+		added: '2022-04-28',
+		type: RADARS,
+		FP: 2,
+		AA: 3,
+		ACC: 10,
+		EV: 6,
+		ASW: 4,
+		LOS: 9,
+		RNG: 2,
+	},
 	501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
@@ -6852,7 +6865,7 @@ function getBonusStats(mid,eqids,improves) {
 			}
 			if (bonusData.num && bonusData.num > num) continue;
 			
-			if (bonusData.num || bonusData.requires) num = 1;
+			if (bonusData.num || bonusData.requires || bonusData.requiresType) num = 1;
 			for (let stat in bonusData.bonus) {
 				bonusTotal[stat] += bonusData.bonus[stat] * num;
 			}

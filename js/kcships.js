@@ -197,8 +197,8 @@ Fleet.prototype.fleetELoS = function(coef,hq=120) {
 		if (ship.HP <= 0 || ship.retreated) continue;
 		numShips++;
 		let losShip = ship.statsBase.LOS + (ship.statsEqBonus.LOS || 0);
-		let equipsNoBonus = ship.equips.filter(eq => [315].includes(eq.mid));
-		losShip -= getBonusStats(ship.mid,equipsNoBonus.map(eq => eq.mid),equipsNoBonus.map(eq => eq.improve || 0)).LOS || 0;
+		// let equipsNoBonus = ship.equips.filter(eq => [315].includes(eq.mid));
+		// losShip -= getBonusStats(ship.mid,equipsNoBonus.map(eq => eq.mid),equipsNoBonus.map(eq => eq.improve || 0)).LOS || 0;
 		elos += Math.sqrt(losShip);
 		
 		for (let equip of ship.equips) {
@@ -1670,6 +1670,7 @@ function Equip(equipid,level,rank,forLBAS) {
 		if (this.image == 16) this.atype = A_HAGUN;
 		if (this.atype == A_HAGUN && this.AA >= 8) this.atype = A_HAFD;
 		if (this.atype == A_AAGUN && this.AA >= 9) this.isconcentrated = true;
+		if (this.atype == A_AAGUN && this.AA <= 2) this.atype = 0;
 	}
 	
 	if (level) this.setImprovement(level);

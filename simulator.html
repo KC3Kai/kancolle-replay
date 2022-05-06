@@ -1,500 +1,994 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
-		<title>KanColle Sortie Simulator</title>
-		<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-		<meta content="utf-8" http-equiv="encoding">
-		<script src="js/jquery-1.11.3.min.js"></script>
-		<script src="js/chosen.jquery.js"></script>
-		<link rel="stylesheet" href="css/chosen.css"/>
-		<script src="js/util/jquery-ui/jquery-ui.min.js"></script>
-		<link rel="stylesheet" href="js/util/jquery-ui/jquery-ui.css">
-		<script src="js/kcSHIPDATA.js"></script>
-		<script src="js/kcEQDATA.js"></script>
-		<script src="js/kcENEMYCOMP.js"></script>
-		<script src="js/shared.js"></script>
-		<script src="js/kcships.js"></script>
-		<script src="js/kcsim.js"></script>
-		<script src="js/kcsimcombined.js"></script>
-		<script src="js/pixi.min.js"></script>
-		<script src="js/howler.min.js"></script>
-		<script src="js/playersound.js"></script>
-		<script src="js/playersound2.js"></script>
-		<link rel="stylesheet" href="css/simulator.css"/>
-	</head>
-	<body style="display:none">
-		<h1 title="Boat Cockfight Simulator">Kancolle Sortie Simulator</h1>
-		<span style="color:red">v1.0 Beta 5.0 <span style="margin-left:20px;font-style:italic">(Last updated: 2022-02-16)</span></span>
-		<br><br><br>
-		<input type="radio" id="radJP" name="lang" onchange="transNames('JP')"/><label for="radJP">JP</label>
-		<input type="radio" id="radEN" name="lang" onchange="transNames('EN')" checked /><label for="radEN">EN</label>
-		<br><br>
-		<div id="fleetspace1" style="clear:both"></div>
-		<br>
-		<div style="width:1000px">
-			<div style="width:200px;margin:auto">
-			<input type="button" id="btnAddComb" value="Add Combined Fleet" onClick="clickedAddComb(true)"/>
-			<input type="button" id="btnDelComb" value="Remove Combined Fleet" style="display:none" onClick="clickedDelComb()"/>
-			</div>
-		</div>
-		<br><br>
-		<div id="fleetspace1SN"></div>
-		<br>
-		<div style="width:1000px">
-			<div style="width:200px;margin:auto">
-			<input type="button" id="btnAddSupN" value="Add Normal Support" onClick="clickedAddSupportN(true)"/>
-			<input type="button" id="btnDelSupN" value="Remove Normal Support" style="display:none" onClick="clickedDelSupportN()"/>
-			</div>
-		</div>
-		<br>
-		<div id="fleetspace1SB"></div>
-		<br>
-		<div style="width:1000px">
-			<div style="width:200px;margin:auto">
-			<input type="button" id="btnAddSupB" value="Add Boss Support" onClick="clickedAddSupportB(true)"/>
-			<input type="button" id="btnDelSupB" value="Remove Boss Support" style="display:none" onClick="clickedDelSupportB()"/>
-			</div>
-		</div>
-		<br>
-		<div id="lbasspace">
-			<div class="fleet" id="TLB" style="width:490px; border:1px solid black; display:none">
-				<div style="background-color:#556b2f"><span style="font-weight:bold">Land Base Aerial Support</span></div>
-				<table class="t1">
-					<tr>
-						<td style="width:160px"><img src="assets/icons/LBAS1.png" /></td>
-						<td style="width:160px"><img src="assets/icons/LBAS2.png" /></td>
-						<td style="width:160px"><img src="assets/icons/LBAS3.png" /></td>
-					</tr>
-					<tr><td id="TLB00"></td><td id="TLB10"></td><td id="TLB20"></td></tr>
-					<tr><td id="TLB01"></td><td id="TLB11"></td><td id="TLB21"></td></tr>
-					<tr><td id="TLB02"></td><td id="TLB12"></td><td id="TLB22"></td></tr>
-					<tr><td id="TLB03"></td><td id="TLB13"></td><td id="TLB23"></td></tr>
-				</table>
-			</div>
-		</div>
-		<br>
-		<div style="width:1000px">
-			<div style="width:200px;margin:auto">
-			<input type="button" id="btnAddLBAS" value="Add LBAS" onClick="clickedAddLBAS(true)"/>
-			<input type="button" id="btnDelLBAS" value="Remove LBAS" style="display:none" onClick="clickedDelLBAS()"/>
-			</div>
-		</div>
-		<br>
-		<div id="fleetspace1FF"></div>
-		<br>
-		<div style="width:1000px">
-			<div style="width:200px;margin:auto">
-			<input type="button" id="btnAddFF" value="Add Friend Fleet" onClick="clickedAddFriendFleet(true)"/>
-			<input type="button" id="btnDelFF" value="Remove Friend Fleet" style="display:none" onClick="clickedDelFriendFleet()"/>
-			</div>
-		</div>
-		<br><hr><br><br>
-		<div id="fleetspace2"></div>
-		<br>
-		<div style="width:1000px">
-			<div style="width:200px;margin:auto">
-			<input type="button" id="btnAddNode" value="Add Node" onClick="clickedAddNode(true)"/>
-			<input type="button" id="btnDelNode" value="Remove Node" style="visibility:hidden" onClick="clickedDelNode()"/>
-			</div>
-		</div>
-		<br>
-		<hr>
+<head>
+	<title>KanColle Sortie Simulator</title>
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+	<meta content="utf-8" http-equiv="encoding">
+
+	<link rel="stylesheet" href="css/simulator-ui/main.css"/>
+	<link rel="stylesheet" href="css/simulator-ui/fleet-editor.css"/>
+	<link rel="stylesheet" href="css/simulator-ui/selector.css"/>
+
+	<script src="js/kcSHIPDATA.js"></script>
+	<script src="js/kcEQDATA.js"></script>
+	<script src="js/kcMAPDATA.js"></script>
+	<script src="js/kcEDGES.js"></script>
+	<script src="js/kcENEMYCOMP.js"></script>
+	<script src="js/shared.js"></script>
+	<script src="js/kcships.js"></script>
+	<script src="js/kcsim.js"></script>
+	<script src="js/kcsimcombined.js"></script>
+	<script src="js/vue.global.prod.js"></script>
+	<script src="js/vue-i18n.global.js"></script>
+	<script src="reader/lz-string.js"></script>
+	<script src="js/simulator-ui/common.js"></script>
+</head>
+<body style="display:none">
+	<div id="divMain">
+		<h1>KanColle Sortie Simulator</h1>
 		
-		<h2>Settings</h2>
 		<div>
-			<input type="checkbox" id="cbredretr" checked="true" onchange="changedCBRedRetr(this.checked);raiseFleetChange()"/>
-			<label for="cbredretr">Retreat on <img src="assets/stats/taiha.png" style="vertical-align:middle"/>?</label>
-			<img src="assets/stats/kuso.png" id="redretrkuso" style="display:none;vertical-align:middle"/>
-			<br><br>
-			<span style="font-weight:bold">Mechanics:</span><br>
-			<input type="checkbox" checked id="mech5" onchange="MECHANICS.morale=this.checked"/><label for="mech5">Morale</label><br>
-			<input type="checkbox" checked id="mech1" onchange="MECHANICS.artillerySpotting=this.checked"/><label for="mech1">Artillery Spotting</label><br>
-			<input type="checkbox" checked id="mech2" onchange="MECHANICS.AACI=this.checked"/><label for="mech2">Anti-Air Cut-In</label><br>
-			<input type="checkbox" checked id="mech3" onchange="MECHANICS.fitGun=this.checked"/><label for="mech3">Fit Gun</label><br>
-			<input type="checkbox" checked id="mech4" onchange="MECHANICS.OASW=this.checked"/><label for="mech4">Opening ASW</label><br>
-			<input type="checkbox" checked id="mech6" onchange="MECHANICS.CVCI=this.checked"/><label for="mech6">Carrier Cut-In</label><br>
-			<input type="checkbox" checked id="mech7" onchange="MECHANICS.destroyerNBCI=this.checked"/><label for="mech7">Destroyer NB Cut-In</label><br>
-			<input type="checkbox" checked id="mech8" onchange="MECHANICS.LBASBuff=this.checked"/><label for="mech8">LBAS/Support Revamp (Fall 17)</label><br>
-			<input type="checkbox" checked id="mech9" onchange="MECHANICS.installRevamp=this.checked"/><label for="mech9">New Soft-Skin Installation Mods</label><br>
-			<input type="checkbox" checked id="mech10" onchange="MECHANICS.newSupply=this.checked"/><label for="mech10">New Fuel/Ammo Node Costs</label><br>
-			<input type="checkbox" checked id="mech11" onchange="toggleEchelon($(this).prop('checked'))"/><label for="mech11">New Echelon Mods</label><br>
-			<!--<input type="checkbox" checked id="mech12" onchange="MECHANICS.zuiunCI=this.checked"/><label for="mech12">Zuiun/Suisei Cut-In</label><br>-->
-			<input type="checkbox" checked id="mech13" onchange="MECHANICS.aaResist=this.checked"/><label for="mech13">Anti-Air Resist</label><br>
-			<input type="checkbox" checked id="mech14" onchange="MECHANICS.divebomberInstall=this.checked"/><label for="mech14">Divebomber Installation Targeting</label><br>
-			<input type="checkbox" checked id="mech15" onchange="toggleDDCIBuff(this.checked)"/><label for="mech15">Destroyer NB Cut-In Buff (Double Hit)</label><br>
-			<input type="checkbox" checked id="mech16" onchange="MECHANICS.subFleetAttack=this.checked"/><label for="mech16">Submarine Fleet Attack</label><br>
-			<input type="checkbox" checked id="mech17" onchange="MECHANICS.kongouSpecialBuff=this.checked"/><label for="mech17">Kongou Special Buff</label><br>
-			<input type="checkbox" checked id="mech18" onchange="MECHANICS.coloradoSpecialFix=this.checked"/><label for="mech18">Colorado Special Fix</label><br>
-			<br>
-			<table>
-			<tr><td><label for="mechshelldmg">Day Shelling Soft-Cap: </label></td><td><input id="mechshelldmg" type="number" min="0" max="9999" value="220" style="width:50px" onchange="setConst('shellDmgCap',this.value);raiseFleetChange()" /></td></tr>
-			<tr><td><label for="mechaswdmg">ASW Soft-Cap: </label></td><td><input id="mechaswdmg" type="number" min="0" max="9999" value="170" style="width:50px" onchange="setConst('aswDmgCap',this.value);raiseFleetChange()" /></td></tr>
-			<tr><td><label for="mechtorpedodmg">Torpedo Soft-Cap: </label></td><td><input id="mechtorpedodmg" type="number" min="0" max="9999" value="180" style="width:50px" onchange="setConst('torpedoDmgCap',this.value);raiseFleetChange()" /></td></tr>
-			<tr><td><label for="mechnightdmg">Night Soft-Cap: </label></td><td><input id="mechnightdmg" type="number" min="0" max="9999" value="360" style="width:50px" onchange="setConst('nightDmgCap',this.value);raiseFleetChange()" /></td></tr>
-			<tr><td><label for="mechairdmg">Air Soft-Cap: </label></td><td><input id="mechairdmg" type="number" min="0" max="9999" value="170" style="width:50px" onchange="setConst('airDmgCap',this.value);raiseFleetChange()" /></td></tr>
-			<tr><td><label for="mechsupportdmg">Support Soft-Cap: </label></td><td><input id="mechsupportdmg" type="number" min="0" max="9999" value="170" style="width:50px" onchange="setConst('supportDmgCap',this.value);raiseFleetChange()" /></td></tr>
-			</table>
-			<br>
-			<input type="checkbox" id="advCostW6" onchange="SIMCONSTS.airRaidCostW6=this.checked;raiseFleetChange()" /><label for="advCostW6">Use World 6 costs for Air Raid (4% <img src="assets/stats/fuel.png" /> 8% <img src="assets/stats/ammo.png" />)</label><br>
-			<br>
-			<input type="button" value="Show Advanced" onclick="$('#optionsadvanced').toggle()" />
-			<div id="optionsadvanced" style="display:none">
-				<!-- <span>Override Base Shell Power for Enemy Combined Fleet:</span><br>
-				<table>
-				<tr>
-					<td>Main:</td>
-					<td>Player:<td><td><input id="advshellMF" type="number" min="-999" max="999" style="width:50px" onchange="setConst('shellEcMF',this.value)"/></td>
-					<td>Enemy:<td><td><input id="advshellME" type="number" min="-999" max="999" style="width:50px" onchange="setConst('shellEcME',this.value)" /></td>
-				</tr>
-				<tr>
-					<td>Escort:</td>
-					<td>Player:<td><td><input id="advshellEF" type="number" min="-999" max="999" style="width:50px" onchange="setConst('shellEcEF',this.value)" /></td>
-					<td>Enemy:<td><td><input id="advshellEE" type="number" min="-999" max="999" style="width:50px" onchange="setConst('shellEcEE',this.value)" /></td>
-				</tr>
-				</table>
-				<br>
-				<span>Override Base Accuracy for Enemy Combined Fleet:</span><br>
-				<span style="color:red">Values default to 90 (normal value in standard 6vs6 battles)</span><br>
-				<table>
-				<tr>
-					<td>Main:</td>
-					<td>Player:<td><td><input id="advaccMF" type="number" min="1" max="999" style="width:50px" onchange="setConst('accEcMF',this.value)"/></td>
-					<td>Enemy:<td><td><input id="advaccME" type="number" min="1" max="999" style="width:50px" onchange="setConst('accEcME',this.value)" /></td>
-				</tr>
-				<tr>
-					<td>Escort:</td>
-					<td>Player:<td><td><input id="advaccEF" type="number" min="1" max="999" style="width:50px" onchange="setConst('accEcEF',this.value)" /></td>
-					<td>Enemy:<td><td><input id="advaccEE" type="number" min="1" max="999" style="width:50px" onchange="setConst('accEcEE',this.value)" /></td>
-				</tr>
-				</table>
-				<br> -->
-				<span>Override Day CVCI Modifiers:</span><br>
-				<table>
-				<tr>
-					<td>FBA:</td>
-					<td>Accuracy:</td><td><input type="number" min=".01" max="999" value="1.2" step=".01" style="width:50px" onchange="ARTILLERYSPOTDATA[71].accMod = parseFloat(this.value) || 1.2" /></td>
-					<td>Chance:</td><td><input type="number" min=".01" max="999" value="1.25" step=".01" style="width:50px" onchange="ARTILLERYSPOTDATA[71].chanceMod = parseFloat(this.value) || 1.25" /></td>
-				</tr>
-				<tr>
-					<td>BBA:</td>
-					<td>Accuracy:</td><td><input type="number" min=".01" max="999" value="1.2" step=".01" style="width:50px" onchange="ARTILLERYSPOTDATA[72].accMod = parseFloat(this.value) || 1.2" /></td>
-					<td>Chance:</td><td><input type="number" min=".01" max="999" value="1.4" step=".01" style="width:50px" onchange="ARTILLERYSPOTDATA[72].chanceMod = parseFloat(this.value) || 1.4" /></td>
-				</tr>
-				<tr>
-					<td>BA:</td>
-					<td>Accuracy:</td><td><input type="number" min=".01" max="999" value="1.2" step=".01" style="width:50px" onchange="ARTILLERYSPOTDATA[73].accMod = parseFloat(this.value) || 1.2" /></td>
-					<td>Chance:</td><td><input type="number" min=".01" max="999" value="1.55" step=".01" style="width:50px" onchange="ARTILLERYSPOTDATA[73].chanceMod = parseFloat(this.value) || 1.55" /></td>
-				</tr>
-				</table>
-				<br>
-				<span>Vanguard Evasion Bonus:</span><br>
-				<table>
-					<tr><td></td><td>Shelling</td><td>Torpedo</td></tr>
-					<tr><td>DD 1:</td><td><input type="number" min="0" max="99" value="7" onchange="SIMCONSTS.vanguardEvShellDD[0] = +this.value || 7" /></td><td><input type="number" min="0" max="99" value="15" onchange="SIMCONSTS.vanguardEvTorpDD[0] = +this.value || 15" /></td></tr>
-					<tr><td>DD 2:</td><td><input type="number" min="0" max="99" value="7" onchange="SIMCONSTS.vanguardEvShellDD[1] = +this.value || 7" /></td><td><input type="number" min="0" max="99" value="15" onchange="SIMCONSTS.vanguardEvTorpDD[1] = +this.value || 15" /></td></tr>
-					<tr><td>DD 3:</td><td><input type="number" min="0" max="99" value="20" onchange="SIMCONSTS.vanguardEvShellDD[2] = +this.value || 20" /></td><td><input type="number" min="0" max="99" value="45" onchange="SIMCONSTS.vanguardEvTorpDD[2] = +this.value || 45" /></td></tr>
-					<tr><td>DD 4:</td><td><input type="number" min="0" max="99" value="20" onchange="SIMCONSTS.vanguardEvShellDD[3] = +this.value || 20" /></td><td><input type="number" min="0" max="99" value="50" onchange="SIMCONSTS.vanguardEvTorpDD[3] = +this.value || 50" /></td></tr>
-					<tr><td>DD 5:</td><td><input type="number" min="0" max="99" value="35" onchange="SIMCONSTS.vanguardEvShellDD[4] = +this.value || 35" /></td><td><input type="number" min="0" max="99" value="65" onchange="SIMCONSTS.vanguardEvTorpDD[4] = +this.value || 65" /></td></tr>
-					<tr><td>DD 6:</td><td><input type="number" min="0" max="99" value="40" onchange="SIMCONSTS.vanguardEvShellDD[5] = +this.value || 40" /></td><td><input type="number" min="0" max="99" value="75" onchange="SIMCONSTS.vanguardEvTorpDD[5] = +this.value || 75" /></td></tr>
-					<tr><td>Other 1:</td><td><input type="number" min="0" max="99" value="7" onchange="SIMCONSTS.vanguardEvShellOther[0] = +this.value || 7" /></td><td><input type="number" min="0" max="99" value="15" onchange="SIMCONSTS.vanguardEvTorpOther[0] = +this.value || 15" /></td></tr>
-					<tr><td>Other 2:</td><td><input type="number" min="0" max="99" value="7" onchange="SIMCONSTS.vanguardEvShellOther[1] = +this.value || 7" /></td><td><input type="number" min="0" max="99" value="15" onchange="SIMCONSTS.vanguardEvTorpOther[1] = +this.value || 15" /></td></tr>
-					<tr><td>Other 3:</td><td><input type="number" min="0" max="99" value="7" onchange="SIMCONSTS.vanguardEvShellOther[2] = +this.value || 7" /></td><td><input type="number" min="0" max="99" value="20" onchange="SIMCONSTS.vanguardEvTorpOther[2] = +this.value || 20" /></td></tr>
-					<tr><td>Other 4:</td><td><input type="number" min="0" max="99" value="7" onchange="SIMCONSTS.vanguardEvShellOther[3] = +this.value || 7" /></td><td><input type="number" min="0" max="99" value="45" onchange="SIMCONSTS.vanguardEvTorpOther[3] = +this.value || 45" /></td></tr>
-					<tr><td>Other 5:</td><td><input type="number" min="0" max="99" value="15" onchange="SIMCONSTS.vanguardEvShellOther[4] = +this.value || 15" /></td><td><input type="number" min="0" max="99" value="45" onchange="SIMCONSTS.vanguardEvTorpOther[4] = +this.value || 45" /></td></tr>
-					<tr><td>Other 6:</td><td><input type="number" min="0" max="99" value="20" onchange="SIMCONSTS.vanguardEvShellOther[5] = +this.value || 20" /></td><td><input type="number" min="0" max="99" value="60" onchange="SIMCONSTS.vanguardEvTorpOther[5] = +this.value || 60" /></td></tr>
-				</table>
-				<!--<span>Preset 12vs6 values: </span>
-				<input type="button" value="CTF" onclick="clickedAdvDefault('acc',90,90,55,55)" />
-				<input type="button" value="STF" onclick="clickedAdvDefault('acc',50,65,75,75)" />
-				<input type="button" value="TTF" onclick="clickedAdvDefault('acc',50,50,75,75)" />
-				<input type="button" value="Clear" onclick="clickedAdvDefault('acc',null,null,null,null)" />
-				<br>-->
-				<br>
-				<span>Nelson/Nagato Special Activation Rate:</span><br>
-				<table>
-				<tr><td>Nelson Touch:</td><td><input type="number" min="0" max="100" value="60" onchange="SIMCONSTS.nelsonTouchRate = +this.value" />%</td></tr>
-				<tr><td>Nagato Cut-In:</td><td><input type="number" min="0" max="100" value="60" onchange="SIMCONSTS.nagatoSpecialRate = +this.value" />%</td></tr>
-				<tr><td>Mutsu Cut-In:</td><td><input type="number" min="0" max="100" value="60" onchange="SIMCONSTS.mutsuSpecialRate = +this.value" />%</td></tr>
-				<tr><td>Colorado Cut-In:</td><td><input type="number" min="0" max="100" value="60" onchange="SIMCONSTS.coloradoSpecialRate = +this.value" />%</td></tr>
-				<tr><td>Kongou Cut-In:</td><td><input type="number" min="0" max="100" onchange="SIMCONSTS.kongouSpecialRate = +this.value" />%</td></tr>
-				</table>
-				<br>
+			<label><input type="radio" value="en" v-model="$i18n.locale" @change="onchangeLang"/>EN</label> <label><input type="radio" value="ja" v-model="$i18n.locale" @change="onchangeLang"/>JP (艦船/装備)</label>
+		</div>
+		
+		<div id="divPlayer">
+			<div class="fleetSection">
+				<input type="button" value="Save/Load Simulator Backup" @click="onclickBackup"/>
 			</div>
-			<br><br>
-			<table id="optionstable">
-			
-			</table>
-			<br>
-			<span><img src="assets/stats/bucket.png" alt="Bucket"/>:</span>
-			<span>Use if HP &le; <input type="number" id="numbucketpercent" min="0" max="100" value="50" style="width:50px"/>%</span>
-			<span>OR if Repair Time &gt; <input type="number" id="numbucketrepair" min="0" max="99" value="99" step=".1" style="width:50px"/> hours</span><br>
-			<input type="checkbox" id="inpCarryOverHP" onchange="CARRYOVERHP=this.checked;raiseFleetChange()" /><label for="inpCarryOverHP"> Carry over ship HP between sims unless <img src="assets/stats/bucket.png" alt="Bucket"/> conditions?</label><br>
-			<input type="checkbox" id="inpCarryOverMorale" onchange="CARRYOVERMORALE=this.checked;raiseFleetChange()" /><label for="inpCarryOverMorale"> Carry over ship morale between sims?</label><br>
-		</div><br>
-		<div>Simulate <input type="number" value="10000" max="100000" min="1" id="simnum" style="width:60px" onChange="changedSimNumber()"/> times and show statistics:<br><input type="button" id="simgo" value="Go" onClick="clickedSimGo()"/></div>
-		<br>
-		<span id="simnotespace" style="color:#FF0000"></span>
-		<br><br>
-		<div id="divDataError"></div>
-		<div id="divDataWarn"></div>
-		<div id="divDataLoad">Calculating...</div>
-		<div id="resultspace" style="display:none">
-			
-			<h3>Statistics</h3>
-			<span style="color:red;font-size:14px">Accuracy of calculations is a work in progress and will be improved as new information is discovered. Please note that values are rough and may not exactly reflect real in-game rates.</span><br>
-			<div id="warnecombined"><span style="color:red;font-size:14px;font-weight:bold">Warning: Enemy combined fleet calculations are extremely tentative, so these results are especially rough. See Show Advanced for settings.</span><br></div>
-			<div>Number of runs: <span id="rnumruns">0</span></div><br>
-			<div class="rescolumn">
-				<div class="ressingle">Rank Rate:<br></div>
-				<div class="resmulti">Final Rank Rate:<br></div>
-				<img src="assets/stats/S.png"></img> <span id="rankS" style="font-weight:bold">0</span><br>
-				<img src="assets/stats/A.png"></img> <span id="rankA">0</span><br>
-				<img src="assets/stats/B.png"></img> <span id="rankB">0</span><br>
-				<img src="assets/stats/C.png"></img> <span id="rankC">0</span><br>
-				<img src="assets/stats/D.png"></img> <span id="rankD">0</span><br>
-				<img src="assets/stats/E.png"></img> <span id="rankE">0</span><br>
-				<div class="resmulti"><img src="assets/stats/retreat.png"></img> <span id="rankNone">0</span><br></div>
-				<br>
-				Enemy Flagship Sunk Rate:<br>
-				<img src="assets/stats/flagsunk.png"></img> <span id="rsunkfs" style="font-weight:bold">0</span><br>
-				 (Avg <span style="font-weight:bold">-<span id="rsunkfsHP"></span></span> HP per run)<br>
-				 (Avg <span style="font-weight:bold">-<span id="rsunkfsHPB"></span></span> HP per boss)<br>
-				<br>
-				<div class="resmulti">
-					<span>Rank Per Battle:</span>
-					<table id="ranktab" class="stattable"></table>
-				</div>
+			<div class="fleetSection">
+				<vfleet :fleet="fleetFMain" fleetname="Main Fleet"></vfleet>
 			</div>
-			<div class="rescolumn">
-				<div class="ressingle">
-					<span><img src="assets/stats/MVP.png"> Rate:</span><br>
-					<span class="rescombined"><br>Main<br></span>
-					<img src="assets/stats/F1.png"></img> <span id="mvp1">0</span><br>
-					<img src="assets/stats/F2.png"></img> <span id="mvp2">0</span><br>
-					<img src="assets/stats/F3.png"></img> <span id="mvp3">0</span><br>
-					<img src="assets/stats/F4.png"></img> <span id="mvp4">0</span><br>
-					<img src="assets/stats/F5.png"></img> <span id="mvp5">0</span><br>
-					<img src="assets/stats/F6.png"></img> <span id="mvp6">0</span><br>
-					<div class="rescombined">
-						<br>
-						<span>Escort</span><br>
-						<img src="assets/stats/F1.png"></img> <span id="mvpc1">0</span><br>
-						<img src="assets/stats/F2.png"></img> <span id="mvpc2">0</span><br>
-						<img src="assets/stats/F3.png"></img> <span id="mvpc3">0</span><br>
-						<img src="assets/stats/F4.png"></img> <span id="mvpc4">0</span><br>
-						<img src="assets/stats/F5.png"></img> <span id="mvpc5">0</span><br>
-						<img src="assets/stats/F6.png"></img> <span id="mvpc6">0</span><br>
+			<div class="fleetSection">
+				<vfleet :fleet="fleetFSupportN" fleetname="Support Fleet (Normal)"></vfleet>
+				<label><input type="checkbox" v-model="useSupportN"/> Use Normal Support</label>
+			</div>
+			<div class="fleetSection">
+				<vfleet :fleet="fleetFSupportB" fleetname="Support Fleet (Boss)"></vfleet>
+				<label><input type="checkbox" v-model="useSupportB"/> Use Boss Support</label>
+			</div>
+			<div class="fleetSection">
+				<div class="fleet lbas">
+					<div class="preview" @click="lbExpanded=!lbExpanded">
+						<div class="header" ref="header">
+							<div>Land Base Aerial Support</div>
+							<div class="expand">
+								<span v-show="!lbExpanded">[+]</span>
+								<span v-show="lbExpanded">[&#8722;]</span>
+							</div>
+						</div>
+						<div class="iconsWrap">
+							<div v-for="base in landBases" class="icon">
+								<img :src="'assets/icons/LBAS' + (base.ind+1) + '.png'"/>
+							</div>
+						</div>
+					</div>
+					<div v-show="lbExpanded">
+						<vlbaseditor :bases="landBases"></vlbaseditor>
 					</div>
 				</div>
-				<div class="resmulti">
-					<span><img src="assets/stats/MVP.png"> Rate Per Battle:</span>
-					<table id="mvptab" class="stattable"></table>
+			</div>
+			<div class="fleetSection">
+				<vfleetcomps :comps="fleetsFFriend" fleetname="Friend Fleet" canimportkcnav="1" isfriendfleet="1"></vfleetcomps>
+				<label><input type="checkbox" v-model="useFF"/> Use Friend Fleet</label>
+			</div>
+			
+			<div class="fleetSection">
+				<input type="button" value="Import/Export DeckBuilder Format" @click="onclickDeckbuilder"/>
+			</div>
+		</div>
+		
+		<hr>
+		<div id="divBattles">
+			<div class="battleNext">
+				<input type="button" value="Insert Node" @click="onclickInsertBattle(0)" />
+			</div>
+			<div v-for="battle in battles" :key="battle.id">
+				<vbattle :battle="battle" :candelete="canDeleteBattles"></vbattle>
+				<div class="battleNext">
+					<input type="button" value="Insert Node" @click="onclickInsertBattle(battle.ind+1)" />
 				</div>
-				<br><br>
-				<div class="ressingle">
-					Air State Rate:
+			</div>
+		</div>
+		
+		<hr>
+		<div id="divSettings">
+			<h2>Settings</h2>
+			<div>
+				<label><input type="checkbox" v-model="settings.retreatOnTaiha" /> Retreat on <img src="assets/stats/taiha.png" /> ?</label> <img v-show="!settings.retreatOnTaiha" src="assets/stats/kuso.png" />
+			</div>
+			<div id="divSettingsMechanics">
+				<span class="subheader">Mechanics:</span>
+				<div v-for="mechanic in settings.mechanics">
+					<label><input type="checkbox" v-model="mechanic.enabled" @change="onchangeMechanic(mechanic)"/> {{mechanic.name}}</label>
+				</div>
+			</div>
+			<div>
+				<table>
+				<tr><td><label for="mechShellDmgCap">Day Shelling Soft-Cap:</label></td><td><input id="mechShellDmgCap" type="number" v-model="settings.shellDmgCap" min="0" max="9999" /></td></tr>
+				<tr><td><label for="mechASWDmgCap">ASW Soft-Cap:</label></td><td><input id="mechASWDmgCap" type="number" v-model="settings.aswDmgCap" min="0" max="9999" /></td></tr>
+				<tr><td><label for="mechTorpedoDmgCap">Torpedo Soft-Cap:</label></td><td><input id="mechTorpedoDmgCap" type="number" v-model="settings.torpedoDmgCap" min="0" max="9999" /></td></tr>
+				<tr><td><label for="mechNightDmgCap">Night Soft-Cap:</label></td><td><input id="mechNightDmgCap" type="number" v-model="settings.nightDmgCap" min="0" max="9999" /></td></tr>
+				<tr><td><label for="mechAirDmgCap">Air Soft-Cap:</label></td><td><input id="mechAirDmgCap" type="number" v-model="settings.airDmgCap" min="0" max="9999" /></td></tr>
+				<tr><td><label for="mechSupportDmgCap">Support Soft-Cap:</label></td><td><input id="mechSupportDmgCap" type="number" v-model="settings.supportDmgCap" min="0" max="9999" /></td></tr>
+				</table>
+			</div>
+			<div>
+				<label><input type="checkbox" v-model="settings.airRaidCostW6" /> Use default World 6 costs for Air Raid (4% <img src="assets/stats/fuel.png" /> 8% <img src="assets/stats/ammo.png" />)</label>
+			</div>
+			<div>
+				<div><img src="assets/stats/bucket.png" />: Count use if HP &leq; <input type="number" min="0" max="100" v-model="settings.bucketPercent" />% OR repair time &gt; <input type="number" min="0" max="100" v-model="settings.bucketTime" /> hours</div>
+				<div><label><input type="checkbox" v-model="settings.carryOverHP" />Carry over ship HP between sims unless <img src="assets/stats/bucket.png" /> conditions</label></div>
+				<div><label><input type="checkbox" v-model="settings.carryOverMorale" />Carry over ship morale between sims</label></div>
+			</div>
+			<div id="divSettingsAdvanced">
+				<div><input type="button" value="Show Advanced" @click="settings.showAdvanced=!settings.showAdvanced" /></div>
+				<div v-show="settings.showAdvanced">
+					<span class="subheader">Vanguard Evasion Bonus:</span>
 					<table>
-					<tr><th><span style="color:green">AS+</span></th><td><span id="tabAirState1"></span></td></tr>
-					<tr><th><span style="color:green">AS</span></th><td><span id="tabAirState2"></span></td></tr>
-					<tr><th><span>AP</span></th><td><span id="tabAirState3"></span></td></tr>
-					<tr><th><span style="color:red">AD</span></th><td><span id="tabAirState4"></span></td></tr>
-					<tr><th><span style="color:red">AI</span></th><td><span id="tabAirState5"></span></td></tr>
+					<tr><td></td><td>Shelling</td><td>Torpedo</td></tr>
+					<tr><td>DD 1:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[0]" /></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[0]" /></td></tr>
+					<tr><td>DD 2:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[1]" /></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[1]" /></td></tr>
+					<tr><td>DD 3:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[2]" /></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[2]" /></td></tr>
+					<tr><td>DD 4:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[3]" /></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[3]" /></td></tr>
+					<tr><td>DD 5:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[4]" /></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[4]" /></td></tr>
+					<tr><td>DD 6:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[5]" /></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[5]" /></td></tr>
+					<tr><td>DD 7:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[6]" /></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[6]" /></td></tr>
+					<tr><td>Other 1:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[0]" /></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[0]" /></td></tr>
+					<tr><td>Other 2:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[1]" /></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[1]" /></td></tr>
+					<tr><td>Other 3:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[2]" /></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[2]" /></td></tr>
+					<tr><td>Other 4:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[3]" /></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[3]" /></td></tr>
+					<tr><td>Other 5:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[4]" /></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[4]" /></td></tr>
+					<tr><td>Other 6:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[5]" /></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[5]" /></td></tr>
+					<tr><td>Other 7:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[6]" /></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[6]" /></td></tr>
+					</table>
+					<!-- <label><input type="checkbox" /> Use Experimental Formula (overrides above)</label> -->
+				</div>
+				<div v-show="settings.showAdvanced">
+					<span class="subheader">Special Attack Activation Rate:</span>
+					<table>
+					<tr><td>Nelson Touch:</td><td><input type="number" min="0" max="100" v-model="settings.nelsonTouchRate" />%</td></tr>
+					<tr><td>Nagato Special:</td><td><input type="number" min="0" max="100" v-model="settings.nagatoSpecialRate" />%</td></tr>
+					<tr><td>Mutsu Special:</td><td><input type="number" min="0" max="100" v-model="settings.mutsuSpecialRate" />%</td></tr>
+					<tr><td>Colorado Special:</td><td><input type="number" min="0" max="100" v-model="settings.coloradoSpecialRate" />%</td></tr>
+					<tr><td>Kongou Special:</td><td><input type="number" min="0" max="100" v-model="settings.kongouSpecialRate" />%</td></tr>
 					</table>
 				</div>
-				<div class="resmulti">
-					Air State Rate Per Battle:
-					<table id="tabAirState" class="stattable"></table>
-				</div>
 			</div>
-			<div class="rescolumn">
-				<div class="ressingle">
-					<img src="assets/stats/taiha.png"> Rate: <span id="rredany" style="font-weight:bold">0</span><br>
-					<br>
-					Individual <img src="assets/stats/taiha.png">:<br>
-					<span class="rescombined">Main<br></span>
-					<img src="assets/stats/F1.png"></img> <span id="red1">0</span><br>
-					<img src="assets/stats/F2.png"></img> <span id="red2">0</span><br>
-					<img src="assets/stats/F3.png"></img> <span id="red3">0</span><br>
-					<img src="assets/stats/F4.png"></img> <span id="red4">0</span><br>
-					<img src="assets/stats/F5.png"></img> <span id="red5">0</span><br>
-					<img src="assets/stats/F6.png"></img> <span id="red6">0</span><br>
-					<div class="rescombined">
-						<br>
-						<span>Escort</span><br>
-						<img src="assets/stats/F1.png"></img> <span id="redc1">0</span><br>
-						<img src="assets/stats/F2.png"></img> <span id="redc2">0</span><br>
-						<img src="assets/stats/F3.png"></img> <span id="redc3">0</span><br>
-						<img src="assets/stats/F4.png"></img> <span id="redc4">0</span><br>
-						<img src="assets/stats/F5.png"></img> <span id="redc5">0</span><br>
-						<img src="assets/stats/F6.png"></img> <span id="redc6">0</span><br>
-					</div>
-					<br>
-					No Medium Damage:<br>
-					<span id="rnodam">0</span><br>
-				</div>
-				<div class="resmulti">
-					<img src="assets/stats/taiha.png"> Rate Per Battle:<br>
-					<div id="dmglist"></div><br>
-					<br>
-					Individual <img src="assets/stats/taiha.png">:<br>
-					<table id="dmgtab" class="stattable"></table><br>
-					<br>
-					No Medium Damage After Battle:<br>
-					<div id="nodmglist"></div><br>
-				</div>
-				<br>
-			</div>
-			<div class="rescolumn">
-				Avg Resupply:<br>
-				<img src="assets/stats/fuel.png"></img> <span id="rfsup">0</span><br>
-				<img src="assets/stats/ammo.png"></img> <span id="rasup">0</span><br>
-				<img src="assets/stats/baux.png"></img> <span id="rbsup">0</span><br><br>
-				Avg Repair:<br>
-				<img src="assets/stats/fuel.png"></img> <span id="rfrep">0</span><br>
-				<img src="assets/stats/steel.png"></img> <span id="rsrep">0</span><br>
-				<img src="assets/stats/bucket.png"></img> <span id="bucketrep">0</span><br><br>
-				Avg Resource Per <img src="assets/stats/S.png" style="vertical-align:middle" />:<br>
-				<img src="assets/stats/fuel.png"></img> <span id="rfpS" style="font-weight:bold">0</span><br>
-				<img src="assets/stats/ammo.png"></img> <span id="rapS" style="font-weight:bold">0</span><br>
-				<img src="assets/stats/steel.png"></img> <span id="rspS" style="font-weight:bold">0</span><br>
-				<img src="assets/stats/baux.png"></img> <span id="rbpS" style="font-weight:bold">0</span><br>
-				<img src="assets/stats/bucket.png"></img> <span id="bucketpS" style="font-weight:bold">0</span><br><br>
-				Avg Resource Per <img src="assets/stats/flagsunk.png" style="vertical-align:middle" />:<br>
-				<img src="assets/stats/fuel.png"></img> <span id="rfpF" style="font-weight:bold">0</span><br>
-				<img src="assets/stats/ammo.png"></img> <span id="rapF" style="font-weight:bold">0</span><br>
-				<img src="assets/stats/steel.png"></img> <span id="rspF" style="font-weight:bold">0</span><br>
-				<img src="assets/stats/baux.png"></img> <span id="rbpF" style="font-weight:bold">0</span><br>
-				<img src="assets/stats/bucket.png"></img> <span id="bucketpF" style="font-weight:bold">0</span><br>
-				<br>
-				Avg Emptied Plane Slots: <span id="rEmptiedPlanes">0</span><br>
-				Avg Emptied LBAS Slots: <span id="rEmptiedPlanesLB">0</span>
-				<br>
-			</div>
-			
-			
 		</div>
-		<br style="clear:both">
 		<hr>
-		
-		
-		<div>
-			<div>
-				<div style="width:150px;float:left">
-					<input type="button" id="btnWatch" value="Watch Battle" onClick="clickedWatchBattle()"/>
-				</div>
-				<div style="float:left;width:150px">
-					<!--<input type="button" value="&lt; Back" onclick="clickedBack()" />-->
-					<input type="button" value="Pause" onclick="if(started) {PAUSE=!PAUSE;$(this).css('background-color',(PAUSE)?'grey':'');}" />
-					<!--<input type="button" value="Skip &gt;" onclick="clickedSkip()" />-->
-					<input type="button" value="Restart" onclick="if(started)reset(function(){processAPI(API);})" />
-				</div>
-				<div style="float:left;width:400px">
-					<input type="range" value="40" min="0" max="80" oninput="var num=parseInt(this.value);RATE=(num<40)?num/40:(num-40)/10+1;$('#speednum').text('x'+RATE)"/>
-					<span id="speednum">x1</span>
-				</div>
-				<div style="float:left">
-					<input type="button" value="&#128266;" style="width:30px" onclick="if(!Howler._muted){Howler.mute(true);this.value='&#128263;'}else{Howler.mute(false);this.value='&#128266;';Howler.volume(parseFloat($('#rngvol').val()))}" />
-					<input id="rngvol" type="range" value=".6" step=".01" min="0" max="1" style="width:100px" oninput="if(!Howler._muted)Howler.volume(parseFloat(this.value))" />
-				</div>
+		<div id="divSimWatch">
+			<input type="button" value="Watch a Sortie" :disabled="!canSim" @click="onclickWatch"/> (Opens in Replayer)
+		</div>
+		<div id="divSimStats">
+			<div>Simulate <input type="number" min="1" max="99999" v-model="numSim" /> times and show statistics:</div>
+			<div id="divSimStatsButtons">
+				<input type="button" value="Go" :disabled="!canSim" @click="onclickGo"/>
+				<input type="button" value="Clear" v-show="results.active&&canSim" @click="onclickClear"/>
 			</div>
-			<div style="width:800px;height:100px;padding-top:20px;clear:both">
-				<div style="float:left;width:240px">
-					<br><br>
-					Air Battle: <span id="plAS1" style="font-weight:bold;font-size:20px"></span><br><br>
-					<canvas id="plHP1" width="240px" height="10px" style="border:1px solid black;border-radius:5px"></canvas>
-				</div>
-				<div style="float:left;width:320px;text-align:center">
-					<br><br>
-					Engagement:<br>
-					<span id="plEngage" style="font-size:20px"></span> <span id="plEngageT" style="font-size:18px;font-weight:bold"></span>
-				</div>
-				<div style="float:right;width:240px;align:right">
-					<br><br>
-					Air Battle: <span id="plAS2" style="font-weight:bold;font-size:20px"></span><br><br>
-					<canvas id="plHP2" width="240px" height="10px" style="border:1px solid black;border-radius:5px"></canvas>
-				</div>
+		</div>
+		<div id="divResultsOuter">
+			<div class="progressBarOuter" v-show="!canSim"><div class="progressBarInner" :style="{width:simProgress+'%'}"></div></div>
+			<div id="divResultsErrors">
+				<div v-for="error in results.errors">{{error}}</div>
 			</div>
-			<!--<input type="button" id="startb" value="Start" onClick="startPlayer()" />
-			<input type="button" id="hideb" value="Show" onClick="hidePlayer()" />-->
-			<div id="movie"><div id="battlespace"></div><script src="js/player.js"></script></div>
+			<div id="divResultsWarnings">
+				<div v-for="warning in results.warnings">{{warning}}</div>
+			</div>
 			
+			<div id="divResults" v-show="results.active">
+				<h3>Statistics</h3>
+				<div class="note">Accuracy of calculations is a work in progress and will be improved as new information is discovered. Please note that values are rough and may not exactly reflect real in-game rates.</div>
+				<div class="noteBold" v-show="results.showCFWarning">Warning: Combined fleet and vanguard calculations are extremely tentative, so these results are especially rough. See Show Advanced for settings.</div>
+				<div>Number of runs: {{results.totalNum}}</div>
+				<div id="divResultColsWrap">
+					<div class="resultCol">
+						<div>
+							<div>Final Rank Rate:</div>
+							<table>
+							<tr><th><img src="assets/stats/S.png"/></th><td><span class="resultBold">{{results.rankS}}</span></td></tr>
+							<tr><th><img src="assets/stats/A.png"/></th><td>{{results.rankA}}</td></tr>
+							<tr><th><img src="assets/stats/B.png"/></th><td>{{results.rankB}}</td></tr>
+							<tr><th><img src="assets/stats/C.png"/></th><td>{{results.rankC}}</td></tr>
+							<tr><th><img src="assets/stats/D.png"/></th><td>{{results.rankD}}</td></tr>
+							<tr><th><img src="assets/stats/E.png"/></th><td>{{results.rankE}}</td></tr>
+							<tr><th><img src="assets/stats/retreat.png"/></th><td>{{results.retreat}}</td></tr>
+							</table>
+						</div>
+						<div>
+							<div>Enemy Flagship Sunk Rate:</div>
+							<table>
+							<tr><th><img src="assets/stats/flagsunk.png"/></th><td><span class="resultBold">{{results.flagSunk}}</span></td></tr>
+							</table>
+							<div>Avg <span class="resultBold">-{{results.flagSunkHP}}</span> HP per run</div>
+							<div>Avg <span class="resultBold">-{{results.flagSunkHPBoss}}</span> HP per boss</div>
+						</div>
+						<div v-show="results.numNodes>1">
+							<div>Rank Per Battle:</div>
+							<table class="multi">
+							<tr><th></th><th v-for="n in results.numNodes">{{n}}</th></tr>
+							<tr><th><img src="assets/stats/S.png"/></th><td v-for="stat in results.rankSNode">{{stat}}</td></tr>
+							<tr><th><img src="assets/stats/A.png"/></th><td v-for="stat in results.rankANode">{{stat}}</td></tr>
+							<tr><th><img src="assets/stats/B.png"/></th><td v-for="stat in results.rankBNode">{{stat}}</td></tr>
+							<tr><th><img src="assets/stats/C.png"/></th><td v-for="stat in results.rankCNode">{{stat}}</td></tr>
+							<tr><th><img src="assets/stats/D.png"/></th><td v-for="stat in results.rankDNode">{{stat}}</td></tr>
+							<tr><th><img src="assets/stats/E.png"/></th><td v-for="stat in results.rankENode">{{stat}}</td></tr>
+							<tr><th><img src="assets/stats/flagsunk.png"/></th><td v-for="stat in results.flagSunkNode">{{stat}}</td></tr>
+							</table>
+						</div>
+					</div>
+					<div class="resultCol">
+						<div>
+							<div><img src="assets/stats/MVP.png"/> Rate Per Battle:</div>
+							<table class="multi">
+							<tr v-show="results.numNodes>1"><th></th><th v-for="n in results.numNodes">{{n}}</th></tr>
+							<tr v-for="n in 7" v-show="results.hasSF||n<7"><th><img :src="'assets/stats/F' + n + '.png'"/></th><td v-for="stat in results['mvp'+n]">{{stat}}</td></tr>
+							<tr class="tableSpace" v-show="results.hasCF"></tr>
+							<tr v-for="n in 6" v-show="results.hasCF"><th><img :src="'assets/stats/F' + n + '.png'"/></th><td v-for="stat in results['mvpE'+n]">{{stat}}</td></tr>
+							</table>
+						</div>
+						<div>
+							<div>Air State Rate Per Battle:</div>
+							<table class="multi">
+							<tr v-show="results.numNodes>1"><th></th><th v-for="n in results.numNodes">{{n}}</th></tr>
+							<tr><th><span class="air good">AS+</span></th><td v-for="stat in results.airASP">{{stat}}</td></tr>
+							<tr><th><span class="air good">AS</span></th><td v-for="stat in results.airAS">{{stat}}</td></tr>
+							<tr><th><span class="air">AP</span></th><td v-for="stat in results.airAP">{{stat}}</td></tr>
+							<tr><th><span class="air bad">AD</span></th><td v-for="stat in results.airAD">{{stat}}</td></tr>
+							<tr><th><span class="air bad">AI</span></th><td v-for="stat in results.airAI">{{stat}}</td></tr>
+							</table>
+						</div>
+					</div>
+					<div class="resultCol">
+						<div>
+							<div><img src="assets/stats/taiha.png"/> Rate Per Battle:</div>
+							<table class="multi">
+							<tr v-show="results.numNodes>1"><th></th><th v-for="n in results.numNodes">{{n}}</th></tr>
+							<tr><th>Any</th><td v-for="stat in results.taiha"><span class="resultBold">{{stat}}</span></td></tr>
+							<tr class="tableSpace"></tr>
+							<tr v-for="n in 7" v-show="results.hasSF||n<7"><th><img :src="'assets/stats/F' + n + '.png'"/></th><td v-for="stat in results['taiha'+n]">{{stat}}</td></tr>
+							<tr class="tableSpace" v-show="results.hasCF"></tr>
+							<tr v-for="n in 6" v-show="results.hasCF"><th><img :src="'assets/stats/F' + n + '.png'"/></th><td v-for="stat in results['taihaE'+n]">{{stat}}</td></tr>
+							</table>
+						</div>
+						<div>
+							<div>No <img src="assets/stats/chuuha.png"/> After Battle:</div>
+							<table class="multi">
+							<tr v-show="results.numNodes>1"><th></th><th v-for="n in results.numNodes">{{n}}</th></tr>
+							<tr><th>All</th><td v-for="stat in results.noChuuha">{{stat}}</td></tr>
+							</table>
+						</div>
+					</div>
+					<div class="resultCol">
+						<div>
+							<div>Avg Resupply:</div>
+							<table>
+							<tr><th><img src="assets/stats/fuel.png"/></th><td>{{results.fuelSupply}}</td></tr>
+							<tr><th><img src="assets/stats/ammo.png"/></th><td>{{results.ammoSupply}}</td></tr>
+							<tr><th><img src="assets/stats/baux.png"/></th><td>{{results.bauxSupply}}</td></tr>
+							</table>
+						</div>
+						<div>
+							<div>Avg Repair:</div>
+							<table>
+							<tr><th><img src="assets/stats/fuel.png"/></th><td>{{results.fuelRepair}}</td></tr>
+							<tr><th><img src="assets/stats/steel.png"/></th><td>{{results.steelRepair}}</td></tr>
+							<tr><th><img src="assets/stats/bucket.png"/></th><td>{{results.bucket}}</td></tr>
+							<tr><th><img src="assets/items/14.png"/></th><td>{{results.damecon}}</td></tr>
+							</table>
+						</div>
+						<div>
+							<div>Avg Resource Per <img src="assets/stats/S.png"/>:</div>
+							<table>
+							<tr><th><img src="assets/stats/fuel.png"/></th><td><span class="resultBold">{{results.fuelS}}</span></td></tr>
+							<tr><th><img src="assets/stats/ammo.png"/></th><td><span class="resultBold">{{results.ammoS}}</span></td></tr>
+							<tr><th><img src="assets/stats/steel.png"/></th><td><span class="resultBold">{{results.steelS}}</span></td></tr>
+							<tr><th><img src="assets/stats/baux.png"/></th><td><span class="resultBold">{{results.bauxS}}</span></td></tr>
+							<tr><th><img src="assets/stats/bucket.png"/></th><td><span class="resultBold">{{results.bucketS}}</span></td></tr>
+							<tr><th><img src="assets/items/14.png"/></th><td><span class="resultBold">{{results.dameconS}}</span></td></tr>
+							</table>
+						</div>
+						<div>
+							<div>Avg Resource Per <img src="assets/stats/flagsunk.png"/>:</div>
+							<table>
+							<tr><th><img src="assets/stats/fuel.png"/></th><td><span class="resultBold">{{results.fuelSunk}}</span></td></tr>
+							<tr><th><img src="assets/stats/ammo.png"/></th><td><span class="resultBold">{{results.ammoSunk}}</span></td></tr>
+							<tr><th><img src="assets/stats/steel.png"/></th><td><span class="resultBold">{{results.steelSunk}}</span></td></tr>
+							<tr><th><img src="assets/stats/baux.png"/></th><td><span class="resultBold">{{results.bauxSunk}}</span></td></tr>
+							<tr><th><img src="assets/stats/bucket.png"/></th><td><span class="resultBold">{{results.bucketSunk}}</span></td></tr>
+							<tr><th><img src="assets/items/14.png"/></th><td><span class="resultBold">{{results.dameconSunk}}</span></td></tr>
+							</table>
+						</div>
+						<div>
+							<div>Avg Emptied Plane Slot: {{results.emptiedPlane}}</div>
+							<div>Avg Emptied LBAS Slot: {{results.emptiedLBAS}}</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
+		
+		<hr>
+	</div>
+	
+	<div id="divOther">
+	<div id="divChangeLog">
+		<div><span class="header">Change Log:</span></div>
+		<div>2022-05-06 - New UI: strike force, multiple enemy/friend-fleet comps, equipment bonus, override historical bonus per node, LBAS historical bonus damage, add maelstrom cost per node, KCNav enemy/FF comp import, noro6 LBAS Sim import/export, download save backup file</div>
+		<div>2022-02-16 - Historical Accuracy + Evasion config</div>
+		<div>2021-10-17 - <a href="https://twitter.com/Xe_UCH/status/1426851469945294848">PT Imp acc mods</a>, <a href="https://twitter.com/Divinity__123/status/1447941755182227458">Combined Fleet acc bases/mods</a>, <a href="https://docs.google.com/spreadsheets/d/14uCat5nahv3A0Zq6d263Ye3U_f1nBYpIMEc9ALegyNA/edit#gid=0">Vanguard evasion values</a></div>
+		<div>2021-07-27 - Mechanics: DDCI Buff + Submarine Fleet Attack, add Torpedo Squadron Command Facility use, update anti-installation/anti-PT mods, update Echelon mods</div>
+		<div>2021-03-03 - Options for new soft caps (torpedo, night, air)</div>
+		<div>2019-12-18 - Additional Historical Bonus settings (boss node, boss flagship)</div>
+		<div>2019-09-18 - Provisional Anchorage Water Demon mods, underway resupply (applied on last node if equipped)</div>
+		<div>2019-08-25 - <a href="https://cdn.discordapp.com/attachments/425302689887289344/614879250419417132/ECrra66VUAAzYMc.jpg_orig.jpg">Mortar/Rocket anti-installation mods</a></div>
+		<div>2019-05-30 - Add Friend Fleet, updated calculations: anti-installation mods, rocket barrage chance, non-maxed plane proficiency</div>
+		<div>2019-05-16 - Update AACI <a href="https://docs.google.com/spreadsheets/d/1YUppVErQj7P9f9-ddpdR-e7fTaycjSK9-x4GE9ibCrA">activation rates</a> + <a href="https://gist.github.com/Nishisonic/62cead1f57a323c737019d6b630fa4a5">priorities</a></div>
+		<div>2019-05-10 - Mechanics: <a href="https://twitter.com/muu_1106/status/1124658313428213760?s=19" target="_blank">Anti-Air Resist</a>, Divebomber Installation Targeting</div>
+		<div>2019-04-21 - Nelson/Nagato/Mutsu specials night</div>
+		<div>2019-04-05 - Carry over HP/Morale option, update presets to Phase 2 comps, vanguard formation</div>
+		<div>2019-03-11 - Historical Bonus config, Nelson/Nagato/Mutsu specials (day only currently), new mechanics: new installation mods/new resource costs/new echelon mods</div>
+		<div>2018-11-26 - <a href="simulator-import-help.html" target="_blank">Sim from Data Import</a>, enemy combined improvements, LBAS improvements, PT Imp improvements</div>
+		<div>2018-08-14 - CVCI, DD NBCI, ASW soft cap config, rocket barrage</div>
+		<div>2017-08-08 - Enemy combined fleet, LBAS</div>
+		<div>2017-03-23 - Fifth slot, separate plane improvement and proficiency, changed save/load code, day soft-cap option</div>
+		<div>2016-10-25 - Major reworking and improving of calculations. Added calculations explanations.</div>
+	</div>
+	<div id="divFooter">
+		<div>Bug reports/feature requests: <a href="https://github.com/KC3Kai/kancolle-replay/issues">Github</a></div>
+	</div>
+	</div>
+	
+	<template id="tmpBattle">
+		<div class="battleWrap" :class="battleClass">
+			<div class="deleteB" v-show="candelete" @click="onclickDeleteBattle"><div>&#10006;</div></div>
+			<div><span class="headerMain">Node {{(battle.ind+1)}}</span></div>
+			<div class="settings">
+				<div>
+					<div><span class="header">Battle Type:</span></div>
+					<div class="nodeTypeWrap">
+						<label><input type="radio" value="1" v-model="battle.nodeType" /><img src="assets/maps/nodeR.png" title="Normal" /></label>
+						<label><input type="radio" value="2" v-model="battle.nodeType" /><img src="assets/maps/nodeN.png" title="Night Only" /></label>
+						<label><input type="radio" value="6" v-model="battle.nodeType" /><img src="assets/maps/nodeRaid.png" title="Air Raid" /></label>
+						<label><input type="radio" value="4" v-model="battle.nodeType" /><img src="assets/maps/nodeAir.png" title="Air Only" /></label>
+					</div>
+					<div v-show="hasNB"><label><input type="checkbox" v-model="battle.doNB" />Night Battle?</label></div>
+				</div>
+				<div>
+					<div><span class="header">Resupply Cost:</span></div>
+					<div><label><input type="checkbox" v-model="battle.subOnly"/>Submarine Only</label></div>
+					<div class="space"><span class="header">Add Cost (before battle):</span></div>
+					<div><label><img src="assets/stats/fuel.png" /><input type="number" min="0" max="100" v-model="battle.addCostFuel"/>%</label></div>
+					<div><label><img src="assets/stats/ammo.png" /><input type="number" min="0" max="100" v-model="battle.addCostAmmo"/>%</label></div>
+				</div>
+				<div>
+					<div><span class="header">Player Formation:</span></div>
+					<div class="formationsWrap" v-show="!hasCombinedFormations">
+						<label><input type="radio" value="1" v-model="battle.formation" /><img src="assets/stats/form1.jpg" /></label>
+						<label><input type="radio" value="2" v-model="battle.formation" /><img src="assets/stats/form2.jpg" /></label>
+						<label><input type="radio" value="3" v-model="battle.formation" /><img src="assets/stats/form3.jpg" /></label>
+						<label><input type="radio" value="4" v-model="battle.formation" /><img src="assets/stats/form4.jpg" /></label>
+						<label><input type="radio" value="5" v-model="battle.formation" /><img src="assets/stats/form5.jpg" /></label>
+						<label><input type="radio" value="6" v-model="battle.formation" /><img src="assets/stats/form6.jpg" /></label>
+					</div>
+					<div class="formationsWrap" v-show="hasCombinedFormations">
+						<label><input type="radio" value="11" v-model="battle.formation" /><img src="assets/stats/form11.png" /></label>
+						<label><input type="radio" value="12" v-model="battle.formation" /><img src="assets/stats/form12.png" /></label>
+						<label><input type="radio" value="13" v-model="battle.formation" /><img src="assets/stats/form13.png" /></label>
+						<label><input type="radio" value="14" v-model="battle.formation" /><img src="assets/stats/form14.png" /></label>
+					</div>
+				</div>
+				<div>
+					<div><span class="header">LBAS Waves:</span></div>
+					<div>1 <input type="checkbox" v-model="battle.lbasWaves[0]" /><input type="checkbox" v-model="battle.lbasWaves[1]" /></div>
+					<div>2 <input type="checkbox" v-model="battle.lbasWaves[2]" /><input type="checkbox" v-model="battle.lbasWaves[3]" /></div>
+					<div>3 <input type="checkbox" v-model="battle.lbasWaves[4]" /><input type="checkbox" v-model="battle.lbasWaves[5]" /></div>
+				</div>
+				<div>
+					<div><span class="header">Override Historical Bonuses:</span></div>
+					<div><input type="button" value="Set Bonuses" @click="onclickSetBonus"/></div>
+					<div v-show="hasBonusMain()" class="bonusMarker main" title="Main Fleet set">&#11044;</div>
+					<div v-show="hasBonusLBAS()" class="bonusMarker lbas" title="Land Base Aerial Support set">&#11044;</div>
+					<div v-show="hasBonusFF()" class="bonusMarker friend" title="Friend Fleet set">&#11044;</div>
+				</div>
+			</div>
+			<div ref="comps"><vfleetcomps :comps="battle.enemyComps" fleetname="Enemy Fleet" canimportkcnav="1"></vfleetcomps></div>
+		</div>
+	</template>
+	
+	<template id="tmpFleetComps">
 		<div>
-			<textarea id="code" cols="40" rows="5"></textarea>
-			<br/>
-			<input id="codeb" type="button" value="Load" onClick="loadCode()" />
-			<span id="error" style="color:red"></span>
+			<div v-for="comp in comps" class="fleetComp" :ref="'comp'+comp.num">
+				<vfleet :fleet="comp.fleet" :fleetname="getCompName(comp)"></vfleet>
+				<div class="rate">
+					<div><input type="number" v-model="comp.rate" min="0" title="Weight"/></div>
+					<div>({{getCompPercent(comp)}}%)</div>
+				</div>
+			</div>
 		</div>
-		<br/><br/>
-		<div id="dialogselclass" style="display:none">
-			<span style="font-weight:bold;text-decoration:underline">Shipgirls</span><br>
-			<table class="dialog1">
-				<tr><td onclick="dialogShip(['DD'],0)"><img src="assets/icons/KFubuki.jpg"/><br><span style="font-weight:bold">DD</span></td>
-					<td onclick="dialogShip(['CL','CLT'],0)"><img src="assets/icons/KSendai.png"/><br><span style="font-weight:bold">CL(T)</span></td>
-					<td onclick="dialogShip(['CA','CAV'],0)"><img src="assets/icons/KTakao.jpg"/><br><span style="font-weight:bold">CA(V)</span></td>
-					<td onclick="dialogShip(['BB','BBV','FBB'],0)"><img src="assets/icons/KNagato.png"/><br><span style="font-weight:bold">BB(V)</span></td></tr>
-				<tr><td onclick="dialogShip(['CVL'],0)"><img src="assets/icons/KHoushou.jpg"/><br><span style="font-weight:bold">CVL</span></td>
-					<td onclick="dialogShip(['CV','CVB'],0)"><img src="assets/icons/KAkagi.png"/><br><span style="font-weight:bold">CV</span></td>
-					<td onclick="dialogShip(['SS','SSV'],0)"><img src="assets/icons/KI-168.jpg"/><br><span style="font-weight:bold">SS</span></td>
-					<td onclick="dialogShip(['AV','AS','AR','CT','AO','LHA','DE'],0)"><img src="assets/icons/KAkashi.jpg"/><br><span style="font-weight:bold">Other</span></td></tr>
+		<div class="fleetCompAdd">
+			<div>
+				<input type="button" value="Import KCNav" @click="onclickImportKCNav" v-show="canimportkcnav"/>&nbsp;
+				<input type="button" value="+" :style="{visibility:canAddComp?'':'hidden'}" @click="onclickAddComp"/><input type="button" value="&#8722;" :style="{visibility:comps.length>1?'':'hidden'}" @click="onclickRemoveComp"/>
+			</div>
+		</div>
+	</template>
+	
+	<template id="tmpFleet">
+		<div class="fleet" :class="fleetClass">
+			<div class="preview" @click="onclickExpand">
+				<div class="header" ref="header">
+					<div>{{fleetname}}</div>
+					<div class="expand">
+						<span v-show="!expanded">[+]</span>
+						<span v-show="expanded">[&#8722;]</span>
+					</div>
+				</div>
+				<div class="iconsWrap" v-show="!expanded">
+					<div v-for="ship in fleet.ships" class="icon" v-show="ship.ind<numShipShow">
+						<img :src="'assets/icons/' + ship.imgName" />
+					</div>
+					<div class="iconForm" v-show="!expanded&&fleet.isEnemy">
+						<img v-if="!fleet.combined" :src="'assets/stats/form'+fleet.formation+'.jpg'"/>
+						<img v-if="fleet.combined" :src="'assets/stats/form'+fleet.formation+'.png'"/>
+					</div>
+				</div>
+				<div class="iconsWrap" v-show="!expanded && fleet.combined" v-if="fleet.shipsEscort">
+					<div v-for="ship in fleet.shipsEscort" class="icon" v-show="ship.ind<numShipShow">
+						<img :src="'assets/icons/' + ship.imgName" />
+					</div>
+				</div>
+			</div>
+			<div class="editor" ref="editor"></div>
+		</div>
+	</template>
+	
+	
+	
+	
+	<div id="divFleetEditorTemp"><div id="divFleetEditor" class="fleetEditor">
+	<div v-show="active">
+		<div id="divFleetEditorImport">
+			<div class="headerImport">Load options:</div>
+			<div>
+				<div class="headerSubImport">From text:</div>
+				<div><textarea cols="20" rows="2" autocomplete="off" v-model="loadCode" @focus="onfocusCode" title="Can use: Simulator's default JSON, Deckbuilder JSON, KC3 Replay JSON"></textarea></div>
+				<div><input type="button" value="Load" @click="onclickLoadCode"/></div>
+			</div>
+			<div>
+				<div class="headerSubImport">From .kc3 file (<a href="#" @click.prevent="showKC3ProfileHelp=true">?</a>):</div>
+				<div><input type="file" accept=".kc3" ref="inputLoadKC3" @change="onchangeFileKC3"/></div>
+				<div>Fleet: <select v-model="loadKC3Fleet"><option v-for="n in 4" :value="n">{{n}}</option><option value="10" v-show="canCF">1+2</option></select> <input type="button" value="Load" @click="onclickLoadKC3"/></div>
+			</div>
+			<div class="importPreset">
+				<div class="headerSubImport">From preset:</div>
+				<div>
+					<select v-model="loadPresetArea" @change="onchangePresetArea">
+						<option></option>
+						<optgroup v-for="g in presetListArea" :label="g.name"><option v-for="o in g.options" :value="o.value">{{o.name}}</option></optgroup>
+					</select>
+					<select v-model="loadPresetNode" v-show="loadPresetArea" @change="onchangePresetNode"><option v-for="o in presetListNode" :value="o.value">{{o.name}}</option></select>
+					<select v-model="loadPresetComp" v-show="loadPresetArea" @change="onchangePreset"><option v-for="o in presetListComp" :value="o.value">{{o.name}}</option></select>
+				</div>
+			</div>
+			<div class="importOther">
+				<div><input type="button" value="Clear All" @click="onclickReset"/></div>
+				<div class="importBottom"><input type="button" value="Export DeckBuilder" @click="onclickExportDb"/></div>
+			</div>
+		</div>
+		
+		<div v-for="keyS in ['ships','shipsEscort']"><div v-if="fleet[keyS]" v-show="keyS=='ships' || fleet.combined">
+			<div class="shipWrap">
+				<div v-for="ship in fleet[keyS]" :class="{shipMain:1,even:ship.ind%2}" v-show="ship.ind<numShipShow">
+					<div class="shipHeader"><img :src="'assets/stats/F' + (ship.ind+1) + '.png'" /></div>
+					<div class="shipName">
+						<input :value="$t('ship_name_'+(ship.name||'0'))" :ref="keyS+ship.ind" :title="$t('ship_name_'+(ship.name||'0')) + ' (' + ship.mstId + ')'" tabindex="10" spellcheck="false" readonly @click="onclickShip(ship,keyS)" @keypress="onkeypressShip($event,ship,keyS)" @dragover.prevent="" />
+						<div class="delete" @click="onclickDeleteShip(ship,keyS)">&#10006;</div>
+					</div>
+					<div class="shipBanner"><img :src="'assets/icons/' + ship.imgName" @dragstart="ondragstartShip(ship,keyS)" @dragover.prevent="" @drop.prevent="ondropShip(ship,keyS)" @dragend="ondragendShip" /></div>
+					<div class="shipStatWrap" v-if="ship.mstId">
+						<div class="statHalf"><img src="assets/stats/lv.png" title="Level"/><input type="number" v-model.number="ship.level" min="1" max="999" @change="onchangeStat($event,ship,'level');onchangeLevel(ship)"/></div>
+						<div class="statHalf"><img src="assets/stats/hp.png" title="HP"/><input type="number" v-model.number="ship.hp" min="1" max="9999" @change="onchangeStat($event,ship,'hp')"/></div>
+						<div v-for="stat in statBList" class="statHalf">
+							<img :src="'assets/stats/' + stat.key + '.png'" :title="stat.name"/>
+							<input type="number" v-model.number="ship.statsBase[stat.key]" min="0" max="999"
+								:class="{unknown:!!ship.statsUnknown[stat.key]}" :title="ship.statsUnknown[stat.key]"
+								@change="onchangeStat($event,ship.statsBase,stat.key)"/>
+							<span v-show="showStatTotal">
+								<span>{{getStatTotal(ship,stat.key)}}</span>
+								<span class="statBonus" v-show="showEquipBonus && ship.statsBonus[stat.key] > 0">(+{{ship.statsBonus[stat.key]}})</span>
+								<span class="statBonus negative" v-show="showEquipBonus && ship.statsBonus[stat.key] < 0">({{ship.statsBonus[stat.key]}})</span>
+							</span>
+						</div>
+						<div class="statHalf"><img src="assets/stats/lk.png" title="Luck"/><input type="number" v-model.number="ship.statsBase.luk" min="0" max="999"
+							:class="{unknown:!!ship.statsUnknown.luk}" :title="ship.statsUnknown.luk"
+							@change="onchangeStat($event,ship.statsBase,'luk')"/></div>
+						<div class="statHalf">
+							<img src="assets/stats/rn.png" title="Range"/><input type="number" v-model.number="ship.statsBase.range" min="0" max="9" @change="onchangeStat($event,ship.statsBase,'range')"/>
+							<span v-show="showStatTotal">
+								<span>{{getStatTotal(ship,'range')}}</span>
+								<span class="statBonus" v-show="showEquipBonus && ship.statsBonus.range">(+{{ship.statsBonus.range}})</span>
+							</span>
+						</div>
+						<div class="statHalf">
+							<img src="assets/stats/rm.png" title="Torpedo Accuracy"/>
+							<input type="number" v-model.number="ship.statsBase.tacc" min="0" max="999" :class="{unknown:!!ship.statsUnknown.tacc}" :title="ship.statsUnknown.tacc" @change="onchangeStat($event,ship.statsBase,'tacc')"/>
+						</div>
+						
+						<div class="bonusWrap" v-show="canBonus">
+							<div class="statWide"><span title="Mapwide Historical Damage Bonus Multiplier">Bonus Dmg</span>:<input type="number" v-model.number="ship.bonusDmg" min="0" max="99" step=".1" @change="onchangeStat($event,ship,'bonusDmg',1)"/></div>
+							<div class="statWide"><span title="Mapwide Historical Accuracy Bonus Multiplier">Bonus Acc</span>:<input type="number" v-model.number="ship.bonusAcc" min="0" max="99" step=".1" @change="onchangeStat($event,ship,'bonusAcc',1)"/></div>
+							<div class="statWide"><span title="Mapwide Historical Evasion Bonus Multiplier">Bonus Eva</span>:<input type="number" v-model.number="ship.bonusEva" min="0" max="99" step=".1" @change="onchangeStat($event,ship,'bonusEva',1)"/></div>
+							<div class="statWide" v-show="fleet.isFriend"><span class="statDebuff" title="Multiplier applied to LAST NODE FLAGSHIP only, stacks with above">Debuff Dmg</span>:<input type="number" v-model.number="ship.bonusDmgDebuff" min="0" max="99" step=".1" @change="onchangeStat($event,ship,'bonusDmgDebuff',1)"/></div>
+						</div>
+						
+						<div class="equipWrap">
+							<div v-for="equip in ship.equips">
+								<div class="equipName">
+									<input :value="$t('equip_name_'+(equip.name||'0'))" :ref="keyS+ship.ind+'_'+equip.ind" :title="$t('equip_name_'+(equip.name||'0')) + ' (' + equip.mstId + ')'" spellcheck="false" readonly @click="onclickEquip(ship,equip,keyS)" @keypress="onkeypressEquip($event,ship,equip,keyS)" @dragover.prevent="" />
+									<div class="delete" @click="onclickDeleteEquip(ship,equip,keyS)">&#10006;</div>
+								</div>
+								<div class="equipOptions">
+									<img src="assets/items/0.png" />
+									<img class="equipIcon" :src="'assets/items/' + equip.imgName + '.png'" @dragstart="ondragstartEquip(ship,equip,keyS)" @dragover.prevent="" @drop.prevent="ondropEquip(ship,equip)" @dragend="ondragendEquip"/>
+									<input class="equipCarry" type="number" v-model.number="ship.slots[equip.ind]" min="0" max="999" title="Slot Size" @change="onchangeStat($event,ship.slots,equip.ind)"/>
+									<select :class="{equipRank:1,rankBlue:equip.rank&&equip.rank<4,rankGold:equip.rank>=4}" v-show="equip.mstId && equip.isPlane" v-model.number="equip.rank" title="Proficiency">
+										<option value="0"></option>
+										<option value="1" class="rankBlue">|</option>
+										<option value="2" class="rankBlue">||</option>
+										<option value="3" class="rankBlue">|||</option>
+										<option value="4" class="rankGold">\</option>
+										<option value="5" class="rankGold">\\</option>
+										<option value="6" class="rankGold">\\\</option>
+										<option value="7" class="rankGold">&gt;&gt;</option>
+									</select>
+									<div class="equipLevel" v-show="equip.mstId"><span>&#9733;</span><select v-model.number="equip.level" title="Improvement" @change="onchangeEquipLevel(ship)"><option value="0"></option><option v-for="n in 10" :value="n">{{n}}</option></select></div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="statWide"><img src="assets/stats/hp.png" title="HP Init"/> Init: <input type="number" v-model.number="ship.hpInit" min="1" :max="ship.hp" :class="getClassHP(ship)" @change="onchangeStat($event,ship,'hpInit')"/></div>
+						<div class="statWide">Morale: <input type="number" v-model.number="ship.morale" min="0" max="100" :class="getClassMorale(ship)" @change="onchangeStat($event,ship,'morale')"/></div>
+						<div class="statHalf"><img src="assets/stats/fuel.png" title="Fuel Percent"/><input type="number" v-model.number="ship.fuelInit" min="0" max="100" @change="onchangeStat($event,ship,'fuelInit')"/></div>
+						<div class="statHalf"><img src="assets/stats/ammo.png" title="Ammo Percent"/><input type="number" v-model.number="ship.ammoInit" min="0" max="100" @change="onchangeStat($event,ship,'ammoInit')"/></div>
+					</div>
+				</div>
+			</div>
+			<div class="fleetEditorAddl">
+				<label><input type="checkbox" v-model="showStatTotal"/>Show Equipped Stats</label>
+				<label><input type="checkbox" v-model="autoScaleStats"/>Auto-Scale <img src="assets/stats/hp.png"/>/<img src="assets/stats/ev.png"/>/<img src="assets/stats/asw.png"/>/<img src="assets/stats/los.png"/> with <img src="assets/stats/lv.png"/></label>
+				<input type="button" value="Show Additional Stats" @click="onclickAdditionalStats(keyS)" />
+			</div>
+		</div></div>
+		<div id="divFleetEditorFleet" v-show="!fleet.isSupport">
+			<div id="divFleetEditorType">
+				<label><input type="radio" value="0" v-model="fleet.type" @change="onchangeType" /><img src="assets/maps/ship.png" title="Single Fleet" /></label>
+				<label v-show="canCF"><input type="radio" value="1" v-model="fleet.type" @change="onchangeType" /><img src="assets/stats/combine1.png" :title="fleet.isEnemy?'Combined Fleet':'Carrier Task Force'" /></label>
+				<label v-show="canCFAll"><input type="radio" value="2" v-model="fleet.type" @change="onchangeType" /><img src="assets/stats/combine2.png" title="Surface Task Force" /></label>
+				<label v-show="canCFAll"><input type="radio" value="3" v-model="fleet.type" @change="onchangeType" /><img src="assets/stats/combine3.png" title="Transport Combined Fleet" /></label>
+				<label v-show="canSF"><input type="radio" value="7" v-model="fleet.type" @change="onchangeType" /><img src="assets/maps/shipIconSF.png" title="Strike Force" /></label>
+			</div>
+			<div id="divFleetEditorForm" v-show="canFormation">
+				<label v-show="!fleet.combined"><input type="radio" value="1" v-model="fleet.formation" /><img src="assets/stats/form1.jpg" /></label>
+				<label v-show="!fleet.combined"><input type="radio" value="2" v-model="fleet.formation" /><img src="assets/stats/form2.jpg" /></label>
+				<label v-show="!fleet.combined"><input type="radio" value="3" v-model="fleet.formation" /><img src="assets/stats/form3.jpg" /></label>
+				<label v-show="!fleet.combined"><input type="radio" value="4" v-model="fleet.formation" /><img src="assets/stats/form4.jpg" /></label>
+				<label v-show="!fleet.combined"><input type="radio" value="5" v-model="fleet.formation" /><img src="assets/stats/form5.jpg" /></label>
+				<label v-show="!fleet.combined"><input type="radio" value="6" v-model="fleet.formation" /><img src="assets/stats/form6.jpg" /></label>
+				<label v-show="fleet.combined"><input type="radio" value="11" v-model="fleet.formation" /><img src="assets/stats/form11.png" /></label>
+				<label v-show="fleet.combined"><input type="radio" value="12" v-model="fleet.formation" /><img src="assets/stats/form12.png" /></label>
+				<label v-show="fleet.combined"><input type="radio" value="13" v-model="fleet.formation" /><img src="assets/stats/form13.png" /></label>
+				<label v-show="fleet.combined"><input type="radio" value="14" v-model="fleet.formation" /><img src="assets/stats/form14.png" /></label>
+			</div>
+		</div>
+	</div>
+	<div v-show="showKC3ProfileHelp">
+		<vmodal @vclose="showKC3ProfileHelp=false">
+		<div id="divKC3ProfileHelp">
+			<div>You can import your in-game fleet using KC3Kai's Basic Profile file.</div>
+			<div>1. Set up your fleet in-game.</div>
+			<div>2. <span class="bold">Return to secretary screen.</span></div>
+			<div>3. Refresh Strategy Room.</div>
+			<div>4. On the Profile tab, click <span class="bold">Export basic profile to KC3 file</span></div>
+			<div>5. Upload your file here.</div>
+		</div>
+		</vmodal>
+	</div>
+	</div></div>
+	
+	
+	<template id="tmpLBASEditor">
+		<div class="fleetEditor">
+			<div class="shipWrap">
+				<div v-for="base in bases" :class="{shipMain:1,even:base.ind%2}">
+					<div class="equipWrap">
+						<div v-for="equip in base.equips">
+							<div class="equipName">
+								<input :value="$t('equip_name_'+(equip.name||'0'))" :ref="base.ind+'_'+equip.ind" :title="$t('equip_name_'+(equip.name||'0')) + ' (' + equip.mstId + ')'" spellcheck="false" readonly @click="onclickEquip(base,equip)" @keypress="onkeypressEquip($event,base,equip)" @dragover.prevent="" />
+								<div class="delete" @click="onclickDeleteEquip(base,equip)">&#10006;</div>
+							</div>
+							<div class="equipOptions">
+								<img src="assets/items/0.png" />
+								<img class="equipIcon" :src="'assets/items/' + equip.imgName + '.png'" @dragstart="ondragstartEquip(base,equip)" @dragover.prevent="" @drop.prevent="ondropEquip(base,equip)" @dragend="ondragendEquip"/>
+								<input class="equipCarry" type="number" v-model.number="base.slots[equip.ind]" min="0" max="999" title="Slot Size" @change="onchangeStat($event,base.slots,equip.ind)"/>
+								<select :class="{equipRank:1,rankBlue:equip.rank&&equip.rank<4,rankGold:equip.rank>=4}" v-show="equip.mstId && equip.isPlane" v-model.number="equip.rank" title="Proficiency">
+									<option value="0"></option>
+									<option value="1" class="rankBlue">|</option>
+									<option value="2" class="rankBlue">||</option>
+									<option value="3" class="rankBlue">|||</option>
+									<option value="4" class="rankGold">\</option>
+									<option value="5" class="rankGold">\\</option>
+									<option value="6" class="rankGold">\\\</option>
+									<option value="7" class="rankGold">&gt;&gt;</option>
+								</select>
+								<div class="equipLevel" v-show="equip.mstId"><span>&#9733;</span><select v-model.number="equip.level" title="Improvement"><option value="0"></option><option v-for="n in 10" :value="n">{{n}}</option></select></div>
+							</div>
+							<div class="shipStatWrap"><div class="bonusWrap">
+								<div class="statWide"><span title="Mapwide Historical Damage Bonus Multiplier">Bonus Dmg</span>:<input type="number" v-model.number="equip.bonusDmg" min="0" max="99" step=".1" :disabled="!equip.mstId" @change="onchangeStat($event,equip,'bonusDmg',1)"/></div>
+							</div></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="fleetEditorAddl">
+			<input type="button" value="Show Additional Stats" @click="onclickAdditionalStats"/>
+		</div>
+	</template>
+	
+	
+	<div id="divShipSel"><div v-show="active">
+		<vmodal @vclose="doClose">
+		<div id="divShipSelMain">
+			<div id="divShipSelSearch" @keydown="onkeydownSearch" v-show="!buttonsChoice">
+				<div><input ref="inputShipSelSearch" v-model="searchName" @input="oninputSearch" :placeholder="$t('ui_search')" /></div>
+				<div id="divShipSelResults" v-show="searchResults.length">
+					<div v-for="result in searchResults" :ref="result.ref" :class="{selectResult:1,selected:searchSelected==result.id}" @mouseover="onmouseoverResult(result)" @click="onclickResult(result)">
+						{{result.namePre}}<span class="underlined">{{result.nameUnderline}}</span>{{result.namePost}}
+					</div>
+				</div>
+			</div>
+			<div id="divShipSelButtonsCat" v-show="!searchName.length && !buttonsChoice">
+				<div>{{$t('selector.ship_section_Shipgirls')}}</div>
+				<div class="buttonWrap">
+					<div v-for="btn in buttonsCat1" class="selButton" @click="onclickButtonCat(btn)">
+						<div><img :src="'assets/icons/' + btn.imgName" /></div>
+						<div>{{$t('selector.ship_cat_'+btn.name)}}</div>
+					</div>
+				</div>
+				<div>{{$t('selector.ship_section_Abyssals')}}</div>
+				<div class="buttonWrap">
+					<div v-for="btn in buttonsCat2" class="selButton" @click="onclickButtonCat(btn)">
+						<div><img :src="'assets/icons/' + btn.imgName" /></div>
+						<div>{{$t('selector.ship_cat_'+btn.name)}}</div>
+					</div>
+				</div>
+				<div>{{$t('selector.ship_section_Extra')}}</div>
+				<div class="buttonWrap">
+					<div v-for="btn in buttonsCat3" :class="{selButton:1,secret:btn.secret}" @click="onclickButtonCat(btn)">
+						<div v-if="btn.imgName"><img :src="'assets/icons/' + btn.imgName" /></div>
+						<div>{{$t('selector.ship_cat_'+btn.name)}}</div>
+					</div>
+				</div>
+			</div>
+			<div v-show="!searchName.length && buttonsChoice">
+				<div class="selButtonBack"><input type="button" :value="$t('ui_back')" @click="onclickBack"/></div>
+				<div id="divShipSelButtonsShip">
+					<div v-for="btn in buttonsChoice" class="selButton">
+						<div @click="onclickButtonShip(btn)">
+							<div><img :src="'assets/icons/' + btn.imgName" /></div>
+							<div>{{btn.name}}</div>
+						</div>
+						<div class="remodelButtonWrap" v-if="btn.remodels">
+							<div v-for="remodel in btn.remodels" class="remodelButton" @click="onclickButtonShipR(remodel)">{{remodel.name}}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</vmodal>
+	</div></div>
+	
+	<div id="divEquipSel"><div v-show="active">
+		<vmodal @vclose="doClose">
+		<div id="divEquipSelMain">
+			<div id="divEquipSelSearch" @keydown="onkeydownSearch" v-show="!buttonsChoice">
+				<div><input ref="inputEquipSelSearch" v-model="searchName" @input="oninputSearch" :placeholder="$t('ui_search')" /></div>
+				<div id="divEquipSelResults" v-show="searchResults.length">
+					<div v-for="result in searchResults" :ref="result.ref" :class="{selectResult:1,selected:searchSelected==result.id}" @mouseover="onmouseoverResult(result)" @click="onclickResult(result)">
+						<img :src="'assets/items/'+result.imgName+'.png'"/>{{result.namePre}}<span class="underlined">{{result.nameUnderline}}</span>{{result.namePost}}
+					</div>
+				</div>
+			</div>
+			<div id="divEquipSelButtonsCat" v-show="!searchName.length && !buttonsChoice">
+				<div class="buttonWrap">
+					<div v-for="btn in buttonsCat" class="selButton" @click="onclickButtonCat(btn)">
+						<div><img v-for="imgName in btn.imgNames" :src="'assets/items/' + imgName + '.png'" /></div>
+						<div>{{$t('selector.equip_cat_'+btn.name)}}</div>
+					</div>
+				</div>
+			</div>
+			<div v-show="buttonsChoice">
+				<div class="selButtonBack"><input type="button" :value="$t('ui_back')" @click="onclickBack"/></div>
+				<div id="divEquipSelButtonsEquip" v-if="buttonsChoice">
+					<div>{{$t('selector.equip_section_Player')}}</div>
+					<div class="equipButtonWrap">
+						<div v-for="btn in buttonsChoice.player" class="equipButton" class="equipButton" @click="onclickButtonEquip(btn)">
+							<div><img :src="'assets/items/' + btn.imgName + '.png'" /></div>
+							<div>
+								<div>{{$t('equip_name_'+btn.name)}}</div>
+								<span v-for="stat in btn.stats"><img :src="'assets/stats/' + stat.name + '.png'" />{{stat.num}}</span>
+							</div>
+						</div>
+					</div>
+					<div>{{$t('selector.equip_section_Abyssal')}}</div>
+					<div class="equipButtonWrap">
+						<div v-for="btn in buttonsChoice.enemy" class="equipButton" @click="onclickButtonEquip(btn)">
+							<div><img :src="'assets/items/' + btn.imgName + '.png'" /></div>
+							<div>
+								<div>{{$t('equip_name_'+btn.name)}}</div>
+								<span v-for="stat in btn.stats"><img :src="'assets/stats/' + stat.name + '.png'" />{{stat.num}}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</vmodal>
+	</div></div>
+	
+	<div id="divBonusEditor"><div v-show="active">
+		<vmodal :active="active" @vclose="doClose">
+			<div id="divBonusEditorMain">
+				<div v-show="shipGroups.length">
+					<div v-for="ships in shipGroups" class="shipWrap">
+						<div v-for="ship in ships" class="ship">
+							<div><img :src="'assets/icons/' + ship.imgName"/></div>
+							<div class="bonusWrap" v-if="ship.bonusByNode[nodeId]">
+								<div><label>Bonus Dmg: <input type="number" min="0" max="99" step=".1" :placeholder="ship.bonusDmg" v-model.number="ship.bonusByNode[nodeId].bonusDmg"/></label></div>
+								<div><label>Bonus Acc: <input type="number" min="0" max="99" step=".1" :placeholder="ship.bonusAcc" v-model.number="ship.bonusByNode[nodeId].bonusAcc"/></label></div>
+								<div><label>Bonus Eva: <input type="number" min="0" max="99" step=".1" :placeholder="ship.bonusEva" v-model.number="ship.bonusByNode[nodeId].bonusEva"/></label></div>
+								<div v-show="isBossNode"><label><span class="statDebuff" title="Multiplier applied to LAST NODE FLAGSHIP only, stacks with above">Debuff Dmg:</span> <input type="number" min="0" max="99" step=".1" v-model.number="ship.bonusDmgDebuff"/></label></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</vmodal>
+	</div></div>
+	
+	
+	<div id="divAdditionalStats"><div v-show="active">
+		<vmodal :active="active" @vclose="doClose">
+		<div id="divAdditionalStatsMain" class="additionalStatsMain">
+			<div>Fleet Air Power: {{fleet.airPower}} (<span v-show="fleet.airPowerCombined">combined = {{fleet.airPowerCombined}}, </span>vs LBAS = {{fleet.airPowerLB}})</div>
+			<div>Effective LoS (HQ120): C1 = {{fleet.los1}}, C2 = {{fleet.los2}}, C3 = {{fleet.los3}}, C4 = {{fleet.los4}}</div>
+			<table>
+			<tr><td v-for="s in ships"><img :src="'assets/icons/' + s.imgName"/></td></tr>
+			<tr><td v-for="s in ships"><div v-show="s.shellPower!=null">Shell Power: {{s.shellPower}}</div></td></tr>
+			<tr><td v-for="s in ships"><div v-show="s.nbPower!=null">NB Power: {{s.nbPower}}</div></td></tr>
+			<tr><td v-for="s in ships"><div v-show="s.aswPower!=null">ASW Power: {{s.aswPower}}</div></td></tr>
+			<tr><td v-for="s in ships"><div v-show="s.canOASW">Can OASW</div></td></tr>
+			<tr><td v-for="s in ships"><div v-show="s.accBasic!=null">Standard Accuracy: {{s.accBasic}}</div></td></tr>
+			<tr><td v-for="s in ships"><div v-show="s.accFit!=null">Fit Accuracy: {{s.accFit}}</div></td></tr>
+			<tr><td v-for="s in ships"><div v-show="s.accFitNight!=null">Fit Accuracy Night: {{s.accFitNight}}</div></td></tr>
+			<tr><td v-for="s in ships"><div v-show="s.asTypes!=null">
+				<div>Artillery Spot Rate:</div>
+				<div class="sub">(in AS+ / AS)</div>
+				<div v-for="type in s.asTypes" class="sub">{{type.name}}: {{type.rateASP}}% / {{type.rateAS}}%</div>
+			</div></td></tr>
+			<tr><td v-for="s in ships"><div v-show="s.nbTypes!=null">
+				<div>Night Attack:</div>
+				<div v-for="type in s.nbTypes" class="sub">{{type.name}}: {{type.rate}}%</div>
+			</div></td></tr>
+			<tr><td v-for="s in ships"><div>
+				<div>Anti-Air:</div>
+				<div class="sub" v-show="s.aaProp!=null">Proportional: {{s.aaProp}}%</div>
+				<div class="sub" v-show="s.aaFlat!=null">Flat: {{s.aaFlat}}</div>
+				<div v-for="type in s.aaciTypes">
+					<div>AACI #{{type.id}}:</div>
+					<div class="sub">Planes: {{type.num}}</div>
+					<div class="sub">Rate: {{type.rate}}%</div>
+					<div class="sub">Multipier: {{type.mod}}</div>
+				</div>
+				<div v-show="s.rocketBarrage!=null">Rocket Barrage: {{s.rocketBarrage}}%</div>
+			</div></td></tr>
+			<tr><td v-for="s in ships"><div v-show="s.profAcc||s.profAir">
+				<div>Plane Proficiency:</div>
+				<div class="sub" v-show="s.profAcc!=null">Acc Bonus: {{s.profAcc}}</div>
+				<div class="sub" v-show="s.profCritRate!=null">Crit Rate Bonus: {{s.profCritRate}}%</div>
+				<div class="sub" v-show="s.profCritMult!=null">Crit Multiplier: {{s.profCritMult}}</div>
+				<div class="sub" v-show="s.profAir!=null">Air Power: {{s.profAir}}</div>
+			</div></td></tr>
+			<tr><td v-for="s in ships"><div v-show="s.hasImprove">
+				<div>Improvement:</div>
+				<div class="sub" v-show="s.imprShellPow!=null">Shelling Power: {{s.imprShellPow}}</div>
+				<div class="sub" v-show="s.imprShellAcc!=null">Shelling Acc: {{s.imprShellAcc}}</div>
+				<div class="sub" v-show="s.imprShellEva!=null">Shelling Evade: {{s.imprShellEva}}</div>
+				<div class="sub" v-show="s.imprNightPow!=null">Night Power: {{s.imprNightPow}}</div>
+				<div class="sub" v-show="s.imprNightAcc!=null">Night Acc: {{s.imprNightAcc}}</div>
+				<div class="sub" v-show="s.imprTorpedoPow!=null">Torpedo Power: {{s.imprTorpedoPow}}</div>
+				<div class="sub" v-show="s.imprTorpedoAcc!=null">Torpedo Acc: {{s.imprTorpedoAcc}}</div>
+				<div class="sub" v-show="s.imprTorpedoEva!=null">Torpedo Evade: {{s.imprTorpedoEva}}</div>
+				<div class="sub" v-show="s.imprASWPow!=null">ASW Power: {{s.imprASWPow}}</div>
+				<div class="sub" v-show="s.imprASWAcc!=null">ASW Acc: {{s.imprASWAcc}}</div>
+				<div class="sub" v-show="s.imprAR!=null">Armour: {{s.imprAR}}</div>
+			</div></td></tr>
+			<tr><td v-for="s in ships"><div v-show="s.hasInstall">
+				<div>VS Installation Power:</div>
+				<div class="sub" v-show="s.vsSoftSkin!=null">Soft-skin: {{s.vsSoftSkin}}</div>
+				<div class="sub" v-show="s.vsPillbox!=null">Pillbox: {{s.vsPillbox}}</div>
+				<div class="sub" v-show="s.vsIso!=null">Iso Hime: {{s.vsIso}}</div>
+				<div class="sub" v-show="s.vsHarbourSummer!=null">Harbour Summer: {{s.vsHarbourSummer}}</div>
+				<div class="sub" v-show="s.modSupply!=null">Supply Post-mod: {{s.modSupply}}</div>
+				<div class="sub" v-show="s.modAnchorage!=null">Anchorage Post-mod: {{s.modAnchorage}}</div>
+			</div></td></tr>
 			</table>
-			<br><br>
-			<span style="font-weight:bold;text-decoration:underline">Abyssals</span><br>
-			<table class="dialog1">
-				<tr><td onclick="dialogShip(['DD'],1)"><img src="assets/icons/SI.jpg"/><br><span style="font-weight:bold">DD</span></td>
-					<td onclick="dialogShip(['CL','CLT'],1)"><img src="assets/icons/SHo.jpg"/><br><span style="font-weight:bold">CL(T)</span></td>
-					<td onclick="dialogShip(['CA','CAV'],1)"><img src="assets/icons/SRi.png"/><br><span style="font-weight:bold">CA</span></td>
-					<td onclick="dialogShip(['BB','BBV','FBB'],1)"><img src="assets/icons/SRu.png"/><br><span style="font-weight:bold">BB</span></td></tr>
-				<tr><td onclick="dialogShip(['CVL','CV'],1)"><img src="assets/icons/SWo.png"/><br><span style="font-weight:bold">CV(L)</span></td>
-					<td onclick="dialogShip(['SS'],1)"><img src="assets/icons/SKa.jpg"/><br><span style="font-weight:bold">SS</span></td>
-					<td onclick="dialogShip(['AO','AV','AS','AR','CT','LHA','DE'],1)"><img src="assets/icons/SWa.jpg"/><br><span style="font-weight:bold">Other</span></td>
-					<td onclick="dialogShip([],1,true)"><img src="assets/icons/SAirH.jpg"/><br><span style="font-weight:bold">Installation</span></td></tr>
+		</div>
+		</vmodal>
+	</div></div>
+	
+	<div id="divAdditionalStatsLBAS"><div v-show="active">
+		<vmodal :active="active" @vclose="doClose">
+		<div id="divAdditionalStatsLBASMain" class="additionalStatsMain">
+			<table>
+			<tr><td v-for="b in bases"><img :src="'assets/icons/' + b.imgName"/></td></tr>
+			<tr><td v-for="b in bases"><div v-show="b.airPowerSortie!=null">Sortie Air Power: {{b.airPowerSortie}}</div></td></tr>
+			<tr><td v-for="b in bases">
+				<div v-show="b.airPowerDefend!=null">Defence Air Power: {{b.airPowerDefend}}</div>
+				<div class="sub" v-show="b.airPowerDefendHA!=null">High-Altitude: {{b.airPowerDefendHA}}</div>
+			</td></tr>
+			<tr><td v-for="b in bases"><div v-show="b.range!=null">Range: {{b.range}}<span v-show="b.rangePlus"> +{{b.rangePlus}}</span></div></td></tr>
+			<tr><td v-for="b in bases">
+				<div v-show="b.costFuel!=null||b.costAmmo!=null">Sortie Cost:</div>
+				<div class="sub" v-show="b.costFuel!=null">Fuel: {{b.costFuel}}</div>
+				<div class="sub" v-show="b.costFuel!=null">Ammo: {{b.costAmmo}}</div>
+			</td></tr>
 			</table>
-			<br><br>
-			<span style="font-weight:bold;text-decoration:underline">Extra</span><br>
-			<table class="dialog1">
-				<tr><td onclick="dialogShipFog()"><img src="assets/icons/AIona.png"/><br><span style="font-weight:bold">Arpeggio</span></td><tr>
-			</table>
-			<div class="secret" onclick="dialogShipSecret()">???</div>
 		</div>
-		<div id="dialogselship" style="background-color:#EDE6D8;display:none"></div>
-		<div id="dialogselequiptype" style="background-color:#EDE6D8;display:none"></div>
-		<div id="dialogselequip" style="background-color:#EDE6D8;display:none"></div>
-		<div id="dialogkc3file" style="display:none;background-color:#DDEEFF">
-			<p>You can import your in-game fleet using KC3Kai's Quick Data file.<br><br>
-			1. Set up your fleet in-game.<br><br>
-			2. <b>Return to secretary screen.</b><br><br>
-			3. Refresh Strategy Room.<br><br>
-			4. On the Profile tab, click <span style="color:#337AB7">Export Quick Data to a file</span><br><br>
-			5. Select the fleet number you want and upload your file here.<br><br></p>
+		</vmodal>
+	</div></div>
+	
+	<div id="divDeckbuilderImporter"><div v-show="active">
+		<vmodal :active="active" @vclose="active=false">
+		<div id="divDeckbuilderImporterMain">
+			<div>
+				Import/Export data format used by <a href="http://kancolle-calc.net/deckbuilder.html" target="_blank">DeckBuilder</a> and <a href="https://noro6.github.io/kc-web/#/" target="_blank">LBAS Simulator</a>.<br>
+				Note: Can also import to specific fleet by pasting DeckBuilder format in fleet editor's From Text.
+			</div>
+			<div class="sectionWrap">
+				<div class="sectionLeft">
+					<div><textarea ref="textImport" cols="30" rows="2" autocomplete="off" v-model="textImport"></textarea></div>
+					<div>
+						<div><input type="button" value="Import" @click="onclickImport"/></div>
+						<div class="sectionWrap">
+							<div>
+								<div><label><input type="checkbox" v-model="importMain"/>Main Fleet: </label><select v-model="fleetNumMain"><option>1+2</option><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
+								<div><label><input type="checkbox" v-model="importLBAS"/>LBAS</label></div>
+							</div>
+							<div>
+								<div><label><input type="checkbox" v-model="importSupportN"/>Support (Normal): </label><select v-model="fleetNumSupportN"><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
+								<div><label><input type="checkbox" v-model="importSupportB"/>Support (Boss): </label><select v-model="fleetNumSupportB"><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div>
+					<div><textarea ref="textExport" cols="30" rows="2" autocomplete="off" v-model="textExport"></textarea></div>
+					<div><input type="button" value="Export Text" @click="onclickExport"/></div>
+					<div><input type="button" value="Open in DeckBuilder" @click="onclickOpenDb"/><input type="button" value="Open in LBAS Sim" @click="onclickOpenLBASSim"/></div>
+				</div>
+			</div>
 		</div>
-		<div id="dialogadvstats" style="font-size:12px;background-color:#DDEEFF">
+		</vmodal>
+	</div></div>
+	
+	<div id="divKCNavCompImporter"><div v-show="active">
+		<vmodal :active="active" @vclose="canClose&&(active=false)">
+		<div id="divKCNavCompImporterMain">
+			<div id="divKCNavCompImporterSettingsWrap">
+				<div>
+					<table>
+					<tr>
+						<td><label for="inputNavImportWorld">World:</label></td>
+						<td><input id="inputNavImportWorld" required ref="inputWorld" type="number" min="1" max="99" v-model="world" @change="onchangeWorldMap"/></td>
+						<td><select class="suggestion" v-model="selectWorld" @change="onchangeSelectWorld"><option value="0"></option><option v-for="option in optionsWorld" :value="option.id">{{option.name}}</option></select></td>
+					</tr>
+					<tr>
+						<td><label for="inputNavImportMapnum">Map:</label></td>
+						<td><input id="inputNavImportMapnum" required ref="inputMapnum" type="number" min="1" max="9" v-model="mapnum" @change="onchangeWorldMap"/></td>
+					</tr>
+					<tr>
+						<td><label for="inputNavImportEdges" title="e.g. 1,2,3">Edges:</label></td>
+						<td><input id="inputNavImportEdges" required ref="inputEdges" type="text" v-model="edges"/></td>
+						<td><select class="suggestion" v-model="selectLetter" @change="onchangeSelectLetter"><option value="0"></option><option v-for="option in optionsLetter" :value="option.edges">{{option.letter}}</option></select></td>
+					</tr>
+					</table>
+				</div>
+				<div>
+					<table v-show="!isFriendFleet">
+					<tr>
+						<td><label for="inputNavImportGaugeNum">Phase:</label></td>
+						<td><input id="inputNavImportGaugeNum" type="number" min="1" max="4" v-model="gaugeNum"/></td>
+					</tr>
+					<tr>
+						<td><label>Map HP:</label></td>
+						<td><input type="number" min="0" max="99999" v-model="gaugeHPMin"/>~<input type="number" min="0" max="99999" v-model="gaugeHPMax"/></td>
+					</tr>
+					<tr>
+						<td><label for="selNavImportDiff">Difficulty:</label>
+						<td><select id="selNavImportDiff" v-model="diff">
+							<option value="0">All</option>
+							<option value="4">Hard</option>
+							<option value="3">Normal</option>
+							<option value="2">Easy</option>
+							<option value="1">Casual</option>
+						</select></td>
+					</tr>
+					<tr>
+						<td><label>HQ Level:</label></td>
+						<td><input type="number" min="1" max="120" v-model="hqMin"/>~<input type="number" min="1" max="120" v-model="hqMax"/></td>
+					</tr>
+					</table>
+					<div v-show="isFriendFleet"><label><input type="checkbox" v-model="ffStrong"/><img src="assets/stats/ibuild.png"/>?</label></div>
+					<div v-show="isFriendFleet"><label><input type="checkbox" v-model="ffSkipSame"/>Skip comps with same ship in Main Fleet?</label></div>
+				</div>
+			</div>
+			<input type="button" value="Submit" :disabled="!canClose" @click="onclickLoad" />
+			<span v-show="txtLoading">{{txtLoading}}</span>
+			<span class="note" v-show="showNoData">No Comps Found</span>
+			<span class="note" v-show="showError">KCNav Error</span>
+			<span class="note" v-show="showTimeout">KCNav timed out</span>
 		</div>
-		<br><hr><br>
-		<div style="font-size:14px">
-			<span style="font-weight:bold">Change Log:</span><br>
-			<span>2022-02-16 - Historical Accuracy + Evasion config<br>
-			<span>2021-10-17 - <a href="https://twitter.com/Xe_UCH/status/1426851469945294848">PT Imp acc mods</a>, <a href="https://twitter.com/Divinity__123/status/1447941755182227458">Combined Fleet acc bases/mods</a>, <a href="https://docs.google.com/spreadsheets/d/14uCat5nahv3A0Zq6d263Ye3U_f1nBYpIMEc9ALegyNA/edit#gid=0">Vanguard evasion values</a></span><br>
-			<span>2021-07-27 - Mechanics: DDCI Buff + Submarine Fleet Attack, add Torpedo Squadron Command Facility use, update anti-installation/anti-PT mods, update Echelon mods</span><br>
-			<span>2021-03-03 - Options for new soft caps (torpedo, night, air)</span><br>
-			<span>2019-12-18 - Additional Historical Bonus settings (boss node, boss flagship)</span><br>
-			<span>2019-09-18 - Provisional Anchorage Water Demon mods, underway resupply (applied on last node if equipped)</span><br>
-			<span>2019-08-25 - <a href="https://cdn.discordapp.com/attachments/425302689887289344/614879250419417132/ECrra66VUAAzYMc.jpg_orig.jpg">Mortar/Rocket anti-installation mods</a></span><br>
-			<span>2019-05-30 - Add Friend Fleet, updated calculations: anti-installation mods, rocket barrage chance, non-maxed plane proficiency</span><br>
-			<span>2019-05-16 - Update AACI <a href="https://docs.google.com/spreadsheets/d/1YUppVErQj7P9f9-ddpdR-e7fTaycjSK9-x4GE9ibCrA">activation rates</a> + <a href="https://gist.github.com/Nishisonic/62cead1f57a323c737019d6b630fa4a5">priorities</a></span><br>
-			<span>2019-05-10 - Mechanics: <a href="https://twitter.com/muu_1106/status/1124658313428213760?s=19" target="_blank">Anti-Air Resist</a>, Divebomber Installation Targeting</span><br>
-			<span>2019-04-21 - Nelson/Nagato/Mutsu specials night</span><br>
-			<span>2019-04-05 - Carry over HP/Morale option, update presets to Phase 2 comps, vanguard formation</span><br>
-			<span>2019-03-11 - Historical Bonus config, Nelson/Nagato/Mutsu specials (day only currently), new mechanics: new installation mods/new resource costs/new echelon mods</span><br>
-			<span>2018-11-26 - <a href="simulator-import-help.html" target="_blank">Sim from Data Import</a>, enemy combined improvements, LBAS improvements, PT Imp improvements</span><br>
-			<span>2018-08-14 - CVCI, DD NBCI, ASW soft cap config, rocket barrage</span><br>
-			<span>2017-08-08 - Enemy combined fleet, LBAS</span><br>
-			<span>2017-03-23 - Fifth slot, separate plane improvement and proficiency, changed save/load code, day soft-cap option</span><br>
-			<span>2016-10-25 - Major reworking and improving of calculations. Added calculations explanations.</span><br>
-			<br>
-			<span><a href="sources.html">See Calculations Used</a></span><br><br>
-			<span>Bug report, feature request, or game mechanic article you want to share? Leave an issue on <a href="https://github.com/KC3Kai/kancolle-replay/issues">Github</a> or post on my <a href="http://kancolle.wikia.com/wiki/Message_Wall:Fouryuu">wiki page</a>!</span>
+		</vmodal>
+	</div></div>
+	
+	<div id="divSimBackup"><div v-show="active">
+		<vmodal :active="active" @vclose="canClose&&(active=false)">
+		<div id="divSimBackupMain">
+			<div v-show="isReplayImport">Warning: Replay import will overwrite existing data.<br>Download backup of current fleet and node data?</div>
+			<div v-show="!isReplayImport"><span class="header">Download a backup of current fleet and node data to a file.</span></div>
+			<div class="sectionWrap">
+				<div>
+					<div><input type="button" value="Download" @click="onclickDownload"/></div>
+				</div>
+				<div v-show="!isReplayImport">
+					<hr>
+					<div><span class="header">Load Backup:</span> <input type="file" accept=".kcsim" @change="onchangeFileBackup"/> <span class="error" v-show="showImportError">Error</span></div>
+					<div>
+						<input type="button" value="Import All (Reloads Page)" @click="onclickImportAll"/>&nbsp;
+						<input type="button" value="Import Player Fleets + LBAS Only" @click="onclickImportPlayer"/>
+					</div>
+				</div>
+				<div v-show="!isReplayImport">
+					<hr>
+					<input type="button" value="Reset All Data (Reloads Page)" @click="onclickResetAll"/><label><input type="checkbox" v-model="confirmReset">Confirm</label>
+				</div>
+			</div>
+			<div class="footer" v-show="isReplayImport">
+				<input type="button" value="Continue" @click="onclickContinue"/>
+			</div>
 		</div>
-		<script src='js/ui.js'></script>
-	</body>
+		</vmodal>
+	</div></div>
+	
+	<template id="tmpModal">
+		<div class="overlayDark" tabindex="1" @focus.prevent="focusContentTop" @click="$emit('vclose')"></div>
+		<div class="modalContent" tabindex="-1" ref="content" @keydown="onkeypressClose">
+			<div tabindex="0" @focus.prevent="focusContentBottom"></div>
+			<div tabindex="-1" ref="contentTop"></div>
+			<slot></slot>
+			<div tabindex="-1" ref="contentBottom"></div>
+			<div tabindex="0" @focus.prevent="focusContentTop"></div>
+		</div>
+	</template>
+	
+	
+	
+	<script src="js/simulator-ui/cmp.js"></script>
+	<script src="js/simulator-ui/fleet-editor.js"></script>
+	<script src="js/simulator-ui/selector.js"></script>
+	<script src="js/simulator-ui/convert.js"></script>
+	<script src="js/simulator-ui/sim-interface.js"></script>
+	<script src="js/simulator-ui/ui-main.js"></script>
+</body>
 </html>

@@ -2958,3 +2958,19 @@ function getIcon(id) {
 	if (!EQDATA[id]) return 0;
 	return EQDATA[id].image || EQTDATA[EQDATA[id].type].image;
 }
+
+MECHANICS.eqBonus = MECHANICS.eqBonusTorp = MECHANICS.eqBonusASW = false;
+SIMCONSTS.enablePlaneBonus = false;
+for (let worldname in ENEMYCOMPS) {
+	for (let mapname in ENEMYCOMPS[worldname]) {
+		for (let letter in ENEMYCOMPS[worldname][mapname]) {
+			for (let compname in ENEMYCOMPS[worldname][mapname][letter]) {
+				let comp = ENEMYCOMPS[worldname][mapname][letter][compname];
+				if (comp.ce) {
+					ENEMYCOMPS[worldname][mapname][letter][compname+'E'] = { c:comp.ce, f:comp.f };
+					delete comp.ce;
+				}
+			}
+		}
+	}
+}

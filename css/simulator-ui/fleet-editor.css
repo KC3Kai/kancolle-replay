@@ -1,0 +1,250 @@
+div.fleetEditor {
+	background-color: white;
+}
+div.fleetEditor div.shipWrap {
+	display: flex;
+	flex-wrap: wrap;
+	flex-basis: 0;
+}
+div.fleetEditor div.shipMain {
+	margin-left: 1px;
+	width: 160px;
+	background-color: #EDE6D8;
+}
+div.fleetEditor div.shipMain.even {
+	background-color: #F4F0EC;
+}
+div.fleetEditor div.shipHeader {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 30px;
+}
+div.fleetEditor div.shipName {
+	display: flex;
+}
+div.fleetEditor div.shipName input {
+	width: 140px;
+	cursor: pointer;
+}
+div.fleetEditor div.shipBanner img {
+	cursor: move;
+}
+div.fleetEditor div.delete {
+	width: 20px;
+	text-align: center;
+}
+div.fleetEditor div.delete:hover {
+	cursor: pointer;
+	background-color: #FFA0A0;
+}
+div.fleetEditor div.shipStatWrap {
+	display: flex;
+	flex-wrap: wrap;
+}
+div.fleetEditor div.shipStatWrap img {
+	vertical-align: middle;
+}
+div.fleetEditor div.statWide {
+	display: flex;
+	width: 160px;
+}
+div.fleetEditor div.statWide input {
+	width: 80px;
+	margin-left: auto;
+}
+div.fleetEditor div.statHalf {
+	margin: 0 1px;
+}
+div.fleetEditor div.statHalf input {
+	width: 60px;
+}
+div.fleetEditor div.statHalf span {
+	margin-left: 5px;
+	color: darkblue;
+}
+div.fleetEditor span.statBonus {
+	color: #0C8E92 !important;
+	font-size: .8em;
+}
+div.fleetEditor span.statBonus.negative {
+	color: red !important;
+}
+div.fleetEditor span.statDebuff {
+	color: darkred;
+}
+div.fleetEditor input.unknown {
+	background-color: yellow;
+}
+div.fleetEditor div.bonusWrap {
+	font-size: 14px;
+}
+div.fleetEditor div.bonusWrap span {
+	text-decoration: underline;
+	cursor: help;
+}
+div.fleetEditor input.damage.light {
+	background-color: #FFFF80;
+}
+div.fleetEditor input.damage.medium {
+	background-color: #FFD280;
+}
+div.fleetEditor input.damage.heavy {
+	background-color: #FF8080;
+}
+div.fleetEditor input.morale.sparkled {
+	background-color: #FFFF80;
+}
+div.fleetEditor input.morale.orange {
+	background-color: #FFD280;
+}
+div.fleetEditor input.morale.red {
+	background-color: #FF8080;
+}
+
+div.fleetEditor div.equipWrap > div {
+	border-bottom: 1px solid grey;
+}
+div.fleetEditor div.equipName {
+	display: flex;
+}
+div.fleetEditor div.equipName input {
+	width: 140px;
+	cursor: pointer;
+}
+div.fleetEditor div.equipOptions {
+	display: flex;
+	height: 24px;
+}
+div.fleetEditor div.equipOptions img.equipIcon {
+	position: absolute;
+	width: 24px;
+	height: 24px;
+	cursor: move;
+}
+div.fleetEditor div.equipOptions input.equipCarry {
+	width: 40px;
+}
+div.fleetEditor div.equipOptions select.equipRank {
+	width: 40px;
+}
+div.fleetEditor div.equipOptions div.equipLevel {
+	margin-left: auto;
+}
+div.fleetEditor div.equipOptions div.equipLevel select {
+	height: 100%;
+	width: 40px;
+}
+div.fleetEditor div.equipOptions div.equipLevel span {
+	color: #45A9A5;
+	font-size: 12px;
+}
+div.fleetEditor div.equipOptions .rankBlue {
+	color: #4A84B5;
+}
+div.fleetEditor div.equipOptions .rankGold {
+	color: #D49C0A;
+}
+
+div.fleetEditorAddl {
+	display: flex;
+	align-items: center;
+}
+div.fleetEditorAddl label {
+	display: flex;
+	align-items: center;
+	margin-right: 20px;
+}
+div.fleetEditorAddl img {
+	margin: 0 2px;
+}
+div.fleetEditorAddl > :last-child {
+	margin: 5px;
+	margin-left: auto;
+}
+
+#divFleetEditorFleet {
+	display: flex;
+	align-items: center;
+}
+#divFleetEditorForm, #divFleetEditorType {
+	margin: 10px;
+	margin-right: 20px;
+	display: flex;
+}
+#divFleetEditorForm label, #divFleetEditorType label {
+	margin-right: 5px;
+	display: flex;
+	align-items: center;
+}
+
+#divFleetEditorImport {
+	display: flex;
+	margin-bottom: 5px;
+}
+#divFleetEditorImport > div {
+	width: 240px;
+}
+#divFleetEditorImport > div.importPreset {
+	width: 204px;
+}
+#divFleetEditorImport > div.importOther {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	justify-content: space-evenly;
+	width: 120px;
+}
+div.fleetEditor div.importBottom :last-child {
+	margin-left: auto;
+}
+#divFleetEditorImport div.headerImport {
+	display: flex;
+	align-items: center;
+	width: 160px;
+}
+#divFleetEditorImport div.headerSubImport {
+	font-weight: bold;
+}
+#divFleetEditorImport textarea {
+	resize: none;
+}
+
+#divAdditionalStatsMain {
+	min-width: 1000px;
+}
+div.additionalStatsMain {
+	width: fit-content;
+	height: 500px;
+	background-color: #DDEEFF;
+	border: 1px solid transparent;
+	box-shadow: 0 0 5px black;
+	padding: 5px;
+	overflow-y: scroll;
+	font-family: Verdana,Arial,sans-serif;
+	font-size: 12px;
+}
+div.additionalStatsMain table {
+	font-family: Verdana,Arial,sans-serif;
+	font-size: 12px;
+}
+div.additionalStatsMain td {
+	vertical-align: top;
+}
+div.additionalStatsMain div.sub {
+	margin-left: 16px;
+}
+
+#divKC3ProfileHelp {
+	padding: 30px;
+	font-size: 18px;
+	font-family: Verdana,Arial,sans-serif;
+	background-color: #DDEEFF;
+	box-shadow: 0 0 5px black;
+}
+#divKC3ProfileHelp > div {
+	margin-bottom: 10px;
+}
+#divKC3ProfileHelp span.bold {
+	font-weight: bold;
+}
