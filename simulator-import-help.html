@@ -45,7 +45,18 @@ If ship/equip "masterId" not in simulator's database, "stats" is required.
 					FP/TP/AA/AR/EV/ASW/LOS/ACC/DIVEBOMB/RNG: &lt;int&gt;
 				}
 			}],
-			includesEquipStats: &lt;bool&gt; if 1, specified ship stats are treated as already including equipment stats (default 0)
+			includesEquipStats: &lt;bool&gt; if 1, specified ship stats are treated as already including equipment stats (default 0),
+			bonuses: mapwide historical bonus (optional) {
+				bonusDmg: &lt;float&gt;,
+				bonusAcc: &lt;float&gt;,
+				bonusEva: &lt;float&gt;
+			},
+			bonusesByNode: override values of "bonuses" on specified nodes (optional) {
+				&lt;node index&gt;: &lt;same format as bonuses&gt;, excluded keys default to "bonuses" if any
+			},
+			bonusesDebuff: historical bonus applied to last node flagship only (optional) {
+				bonusDmg: &lt;float&gt;
+			}
 		}],
 		combineType: &lt;int&gt; 1=CTF, 2=STF, 3=TCF (optional),
 		shipsC: [&lt;same as ships&gt;] (optional),
@@ -55,17 +66,31 @@ If ship/equip "masterId" not in simulator's database, "stats" is required.
 	fleetSupportB: {&lt;same format as fleetF&gt;} applies to last node only,
 	lbas: [{
 		slots: [<int>] (default [18,18,18,18]),
-		equips: {&lt;same format as fleetF.ships[x].equips&gt;}
+		equips: &lt;same format as fleetF.ships[x].equips&gt;, plus: {
+			bonuses: mapwide historical bonus (optional) {
+				bonusDmg: &lt;float&gt;
+			}
+		}
 	}] (max 3),
+	fleetFriendComps: (optional) [{
+		weight: &lt;int&gt; selection ratio of comp (e.g. weights 2,3 -> 40%,60%)
+		fleet: &lt;same format as fleetF&gt;,
+	}],
 	nodes: [{
-		fleetE: &lt;same format as fleetF&gt;,
+		fleetE: &lt;same format as fleetF&gt; (either fleetE or fleetEComps required),
+		fleetEComps: [{
+			weight: &lt;int&gt; selection ratio of comp (e.g. weights 2,3 -> 40%,60%)
+			fleet: &lt;same format as fleetF&gt;,
+		}],
 		doNB: &lt;bool&gt; (default 0),
 		NBOnly: &lt;bool&gt; (default 0),
 		airOnly: &lt;bool&gt; (default 0),
 		airRaid: &lt;bool&gt; (default 0),
 		noAmmo: &lt;bool&gt; (default 0),
 		formationOverride: &lt;int&gt; overrides value in fleetF (optional),
-		lbas: [&lt;int&gt;] waves to send, e.g. [1,1,2,2] (optional)
+		lbas: [&lt;int&gt;] waves to send, e.g. [1,1,2,2] (optional),
+		addCostFuel: &lt;float&gt; 0-1 percent, additional fuel per ship subtracted before battle (optional),
+		addCostAmmo: &lt;float&gt; 0-1 percent, additional ammo per ship subtracted before battle (optional)
 	}],
 	continueOnTaiha: &lt;bool&gt; (default 0),
 	bucketHPPercent: &lt;int&gt; if HP percent &lt;= bucketHPPercent, report as bucket used (default 0),
