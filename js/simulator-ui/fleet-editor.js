@@ -775,6 +775,7 @@ var UI_ADDITIONALSTATS = Vue.createApp({
 					accBasic: Math.round(10*(2*Math.sqrt(ship.LVL) + 1.5*Math.sqrt(ship.LUK) + ship.equips.reduce((a,b) => a + (b.ACC || 0),0)))/10,
 					accFit: ship.ACCfit != null ? Math.round(100*ship.ACCfit)/100 : null,
 					accFitNight: ship.ACCfitN != null ? Math.round(100*ship.ACCfitN)/100 : null,
+					evaBasic: Math.round(10*(ship.EV + Math.sqrt(2*ship.LUK)))/10,
 					asTypes: null,
 					nbTypes: null,
 					aaProp: getAAShotProp(ship,10000)/100,
