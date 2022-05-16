@@ -1418,20 +1418,29 @@ var SHOW = false;
 var statechangefunc = null;
 var STEPBYFRAME = false;
 var RATE = 1, RCOUNTER = 0;
+var TARGETFRAMETIME = 1000/60;
 
-var prevtime = Date.now(), currtime = Date.now(), timeelapsed = 0, frameselapsed = 0;
-function animate() {
+var prevtime = 0, timeelapsedFPS = 0, frameselapsed = 0, timeelapsedFrame = 0;
+function animate(currtime=TARGETFRAMETIME) {
 	if (END) return;
     requestAnimationFrame(animate);
 	
 	if (!ALLLOADED || !SHIPSLOADED) return; //??????
 	if (HASLOADTEXT) { $('#error').text(''); HASLOADTEXT = false; }
 	
+	let timeDiff = currtime - prevtime;
+	prevtime = currtime;
+	timeelapsedFrame += timeDiff;
+	timeelapsedFPS += timeDiff;
+	if (timeelapsedFrame >= TARGETFRAMETIME) {
+		timeelapsedFrame = timeelapsedFrame % TARGETFRAMETIME;
+	} else {
+		return;
+	}
+	
 	frameselapsed++;
-	currtime = Date.now();
-	timeelapsed += currtime - prevtime;
-	if (timeelapsed >= 1000) {
-		timeelapsed = timeelapsed % 1000;
+	if (timeelapsedFPS >= 1000) {
+		timeelapsedFPS = timeelapsedFPS % 1000;
 		$('#FPS').text(frameselapsed);
 		frameselapsed = 0;
 	}
