@@ -349,27 +349,43 @@ div.modalContent {
 	margin-right: 10px;
 }
 
-#divKCNavCompImporterMain {
+#divKCNavCompImporterMain, #divBonusImporterMain {
 	background-color: #CCCCE7;
 	border: 1px solid transparent;
 	box-shadow: 0 0 5px black;
 	padding: 20px;
 }
-#divKCNavCompImporterMain span.note {
+#divBonusImporterMain {
+	width: 650px;
+	max-height: 400px;
+	overflow-y: auto;
+}
+#divBonusImporterMain table.bonusTable {
+	width: 100%;
+	margin-bottom: 10px;
+}
+#divBonusImporterMain table.bonusTable td {
+	text-align: center;
+}
+div.kcnavImporter div.header {
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+div.kcnavImporter span.note {
 	color: red;
 	margin-left: 10px;
 }
-#divKCNavCompImporterSettingsWrap {
+div.kcnavImporterSettingsWrap {
 	display: flex;
 	margin-bottom: 20px;
 }
-#divKCNavCompImporterSettingsWrap > div {
+div.kcnavImporterSettingsWrap > div {
 	margin-right: 40px;
 }
-#divKCNavCompImporterSettingsWrap table input {
+div.kcnavImporterSettingsWrap table input {
 	width: 80px;
 }
-#divKCNavCompImporterSettingsWrap select.suggestion {
+div.kcnavImporterSettingsWrap select.suggestion {
 	width: 30px;
 }
 

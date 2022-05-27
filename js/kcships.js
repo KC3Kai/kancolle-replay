@@ -404,6 +404,8 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (fitcounts[101]) { this.ACCfit += 4*Math.sqrt(fitcounts[101]); this.FPfit += Math.sqrt(fitcounts[101]); }
 		if (fitcounts[102]) { this.ACCfit += 3*Math.sqrt(fitcounts[102]); this.FPfit += 2*Math.sqrt(fitcounts[102]); }
 	}
+	let accFit = this.getFit();
+	if (accFit) this.ACCfit = accFit;
 	
 	var installbonus1 = 1 + (installeqs.DH1stars / (installeqs.DH1+installeqs.DH2))/50;
 	var installbonus3 = 1 + (installeqs.DH3stars / installeqs.DH3)/30;
@@ -716,6 +718,26 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		this.statsBase[stat] -= this.statsEqBonus[stat] || 0;
 		this.statsBase[stat] = Math.max(0,this.statsBase[stat]);
 	}
+}
+Ship.prototype.getFit = function() {
+	if (this.sclass == 81 || this.mid == 147) { //tashkent/verniy
+		let num = this.equips.filter(eq => eq.mid == 282).length;
+		return 5*Math.sqrt(num);
+	}
+	if (this.sclass == 82) { //j-class
+		let numGun = this.equips.filter(eq => eq.mid == 280).length;
+		let numASDIC = this.equips.filter(eq => [260,261,262].includes(eq.mid)).length;
+		return 3*Math.sqrt(numGun) + 3*Math.sqrt(numASDIC);
+	}
+	if (this.sclass == 87 || this.sclass == 91) { //johncbutler/fletcher
+		let num = this.equips.filter(eq => [284,308,313].includes(eq.mid)).length;
+		return 4*Math.sqrt(num);
+	}
+	if (this.sclass == 28) { //mutsuki
+		let num = this.equips.filter(eq => [293].includes(eq.mid)).length;
+		return 5*Math.sqrt(num);
+	}
+	return 0;
 }
 Ship.prototype.updateProficiencyBonus = function() {
 	delete this.APbonus;

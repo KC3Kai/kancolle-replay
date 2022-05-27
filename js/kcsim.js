@@ -8,8 +8,8 @@ var VANGUARD2 = {shellmod:1,torpmod:1,ASWmod:.6,AAmod:1.1, shellacc:1.2,torpacc:
 
 var COMBINEDCF1 = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellacc:.9,torpacc:.6,NBacc:1,ASWacc:1.25, shellev:1,torpev:1,NBev:1,ASWev:1, id:11};
 var COMBINEDCF2 = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1, shellacc:1,torpacc:1,NBacc:1,ASWacc:1, shellev:1.2,torpev:1,NBev:1,ASWev:1, id:12};
-var COMBINEDCF3 = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellacc:.8,torpacc:.4,NBacc:1,ASWacc:1, shellev:1.1,torpev:1,NBev:1,ASWev:1, id:13};
-var COMBINEDCF4 = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellacc:1.1,torpacc:1.2,NBacc:1,ASWacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:14};
+var COMBINEDCF3 = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellacc:.8,torpacc:.4,NBacc:1,ASWacc:1.1, shellev:1.1,torpev:1,NBev:1,ASWev:1, id:13};
+var COMBINEDCF4 = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellacc:1.1,torpacc:1.2,NBacc:1,ASWacc:.7, shellev:1,torpev:1,NBev:1,ASWev:1, id:14};
 
 var COMBINEDCONSTS = {
 	0: {
@@ -21,10 +21,10 @@ var COMBINEDCONSTS = {
 	1: {
 		'esingle': {
 			'main': { 'shellDmgF': 2, 'shellDmgE': 10, 'shellAccF': 78, 'shellAccE': 90 },
-			'escort': { 'shellDmgF': 10, 'shellDmgE': 5, 'shellAccF': 45, 'shellAccE': 60 },
+			'escort': { 'shellDmgF': 10, 'shellDmgE': 5, 'shellAccF': 45, 'shellAccE': 65 },
 		},
 		'ecombined': {
-			'main': { 'shellDmgF': 2, 'shellDmgE': 10, 'shellAccF': 77, 'shellAccE': 90 },
+			'main': { 'shellDmgF': 2, 'shellDmgE': 10, 'shellAccF': 78, 'shellAccE': 90 },
 			'escort': { 'shellDmgF': -5, 'shellDmgE': -5, 'shellAccF': 67, 'shellAccE': 75 },
 		},
 	},
@@ -34,14 +34,14 @@ var COMBINEDCONSTS = {
 			'escort': { 'shellDmgF': -5, 'shellDmgE': -5, 'shellAccF': 67, 'shellAccE': 78 },
 		},
 		'ecombined': {
-			'main': { 'shellDmgF': 2, 'shellDmgE': 10, 'shellAccF': 77, 'shellAccE': 90 },
+			'main': { 'shellDmgF': 2, 'shellDmgE': 10, 'shellAccF': 78, 'shellAccE': 90 },
 			'escort': { 'shellDmgF': -5, 'shellDmgE': -5, 'shellAccF': 67, 'shellAccE': 75 },
 		},
 	},
 	3: {
 		'esingle': {
 			'main': { 'shellDmgF': -5, 'shellDmgE': 10, 'shellAccF': 54, 'shellAccE': 90 },
-			'escort': { 'shellDmgF': 10, 'shellDmgE': 5, 'shellAccF': 45, 'shellAccE': 60 },
+			'escort': { 'shellDmgF': 10, 'shellDmgE': 5, 'shellAccF': 45, 'shellAccE': 65 },
 		},
 		'ecombined': {
 			'main': { 'shellDmgF': -5, 'shellDmgE': 10, 'shellAccF': 54, 'shellAccE': 90 },
