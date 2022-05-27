@@ -11,6 +11,7 @@ var CONST = window.COMMON.getConst({
 	urlLBASSim: 'https://noro6.github.io/kc-web?predeck=',
 	urlKCNavEnemyComps: 'https://tsunkit.net/api/routing/enemycomps',
 	urlKCNavFriendFleets: 'https://tsunkit.net/api/routing/friendfleets',
+	urlKCNavAbnormalDamage: 'https://tsunkit.net/api/routing/abnormaldamage',
 	kcnavEventFirst: 42,
 	// kcnavDaysMax: 30,
 	kcnavDateStart: '2019-03-22',
@@ -364,6 +365,10 @@ var UI_MAIN = Vue.createApp({
 			UI_DECKBUILDERIMPORTER.doOpen();
 		},
 		
+		onclickBonusImporter: function() {
+			UI_BONUSIMPORTER.doOpen();
+		},
+		
 		onclickBackup: function() {
 			UI_BACKUP.doOpen();
 		},
@@ -420,6 +425,9 @@ var UI_MAIN = Vue.createApp({
 		},
 		onclickSetBonus: function() {
 			UI_BONUSEDITOR.doOpen(this.battle.id,this.battle.ind == UI_MAIN.battles.length-1);
+		},
+		onclickImportBonus: function() {
+			UI_BONUSIMPORTER.doOpen(this.battle.id);
 		},
 	},
 	watch: {
@@ -761,6 +769,195 @@ var UI_KCNAVCOMPIMPORTER = Vue.createApp({
 		},
 	},
 }).component('vmodal',COMMON.CMP_MODAL).mount('#divKCNavCompImporter');
+
+
+var UI_BONUSIMPORTER = Vue.createApp({
+	data: () => ({
+		active: false,
+		canClose: true,
+		showNoData: false,
+		showError: false,
+		showTimeout: false,
+		showNoMatches: false,
+		txtLoading: '',
+		
+		world: null,
+		mapnum: null,
+		letter: null,
+		
+		selectWorld: 0,
+		selectLetter: 0,
+		optionsWorld: [],
+		optionsLetter: [],
+		
+		forNode: null,
+		includeMain: true,
+		includeFF: true,
+		bonusData: [],
+	}),
+	mounted: function() {
+		let keys = [1,2,3,7,4,5,6].concat(Object.keys(MAPDATA).filter(id => +id > 7 && +id >= CONST.kcnavEventFirst).sort((a,b) => +a-+b));
+		for (let id of keys) {
+			this.optionsWorld.push({ id: +id, name: MAPDATA[id].name.replace('Event ','') });
+		}
+	},
+	methods: {
+		doOpen: function(forNode) {
+			this.active = true;
+			this.canClose = true;
+			this.showNoData = this.showError = this.showTimeout = this.showNoMatches = false;
+			this.forNode = forNode || null;
+			this.bonusData = [];
+		},
+		
+		onchangeWorldMap: function() {
+			this.optionsLetter = [];
+			let key = 'World ' + this.world + '-' + this.mapnum;
+			if (!EDGES[key]) return;
+			let letterToEdges = {};
+			for (let edgeId in EDGES[key]) {
+				let letter = EDGES[key][edgeId][1];
+				if (letter.indexOf('Start') == 0) continue;
+				if (!letterToEdges[letter]) letterToEdges[letter] = [];
+				letterToEdges[letter].push(edgeId);
+			}
+			for (let letter of Object.keys(letterToEdges).sort()) {
+				this.optionsLetter.push({ letter: letter, edges: letterToEdges[letter].join(',') });
+			}
+		},
+		onchangeSelectWorld: function() {
+			if (this.selectWorld) {
+				this.world = this.selectWorld;
+				this.onchangeWorldMap();
+			}
+			this.selectWorld = 0;
+		},
+		onchangeSelectLetter: function() {
+			if (this.selectLetter) {
+				this.letter = this.selectLetter;
+			}
+			this.selectLetter = 0;
+		},
+		
+		onclickLoad: function() {
+			this.showNoData = this.showError = this.showTimeout = this.showNoMatches = false;
+			if (!this.world) {
+				this.$refs.inputWorld.focus();
+				return;
+			}
+			if (!this.mapnum) {
+				this.$refs.inputMapnum.focus();
+				return;
+			}
+			if (!this.letter) {
+				this.$refs.inputNode.focus();
+				return;
+			}
+			this.canClose = false;
+			
+			let url = CONST.urlKCNavAbnormalDamage;
+			url += '?map=' + this.world + '-' + this.mapnum;
+			url += '&node=' + this.letter;
+			
+			this.txtLoading = ' •';
+			this.updateLoading();
+			
+			let xhr = new XMLHttpRequest();
+			xhr.open('GET',url);
+			xhr.onload = function() {
+				this.txtLoading = '';
+				this.canClose = true;
+				if (xhr.status >= 500 && xhr.status < 600) {
+					this.showTimeout = true;
+					return;
+				}
+				let data = JSON.parse(xhr.response);
+				if (!data.result || data.result.length <= 0) {
+					this.showNoData = true;
+					return;
+				}
+				let ids = [];
+				if (this.forNode || this.includeMain) {
+					ids = ids.concat(UI_MAIN.fleetFMain.ships.filter(ship => !FLEET_MODEL.shipIsEmpty(ship)).map(ship => ship.mstId));
+					if (UI_MAIN.fleetFMain.combined) ids = ids.concat(UI_MAIN.fleetFMain.shipsEscort.filter(ship => !FLEET_MODEL.shipIsEmpty(ship)).map(ship => ship.mstId));
+				}
+				if (!this.forNode && this.includeFF) {
+					for (let comp of UI_MAIN.fleetsFFriend) {
+						ids = ids.concat(comp.fleet.ships.filter(ship => !FLEET_MODEL.shipIsEmpty(ship)).map(ship => ship.mstId));
+					}
+				}
+				this.bonusData = [];
+				for (let obj of data.result) {
+					if (!ids.includes(obj.id)) continue;
+					let bonusShip = {
+						id: obj.id,
+						count: obj.count,
+						max: Math.round(1000*obj.max)/1000,
+						min: Math.round(1000*obj.min)/1000,
+						name: (COMMON.i18n.global.locale == 'en' ? obj.name_en : obj.name),
+						value: null,
+					};
+					this.bonusData.push(bonusShip);
+				}
+				this.onclickSetAll('avg');
+				if (!this.bonusData.length) {
+					this.showNoMatches = true;
+				}
+				
+			}.bind(this);
+			xhr.onerror = function() {
+				this.txtLoading = '';
+				this.canClose = true;
+				this.showError = true;
+			}.bind(this);
+			xhr.send();
+		},
+		
+		onclickSetAll: function(type) {
+			for (let bonusShip of this.bonusData) {
+				let value = type == 'max' ? bonusShip.max : type == 'min' ? bonusShip.min : (bonusShip.max+bonusShip.min)/2;
+				bonusShip.value = Math.round(1000*value)/1000;
+				if (bonusShip.value < 1.02) bonusShip.value = 1;
+			}
+		},
+		onclickConfirm: function() {
+			let idToBonus = {};
+			for (let bonusShip of this.bonusData) {
+				idToBonus[bonusShip.id] = bonusShip.value;
+			}
+			let ships = [];
+			if (this.forNode || this.includeMain) {
+				ships = ships.concat(UI_MAIN.fleetFMain.ships.filter(ship => !FLEET_MODEL.shipIsEmpty(ship)));
+				if (UI_MAIN.fleetFMain.combined) ships = ships.concat(UI_MAIN.fleetFMain.shipsEscort.filter(ship => !FLEET_MODEL.shipIsEmpty(ship)));
+			}
+			if (!this.forNode && this.includeFF) {
+				for (let comp of UI_MAIN.fleetsFFriend) {
+					ships = ships.concat(comp.fleet.ships.filter(ship => !FLEET_MODEL.shipIsEmpty(ship)));
+				}
+			}
+			if (!this.forNode) COMMON.global.fleetEditorMoveTemp();
+			for (let ship of ships) {
+				if (!idToBonus[ship.mstId]) continue;
+				if (this.forNode) {
+					if (!ship.bonusByNode[this.forNode]) ship.bonusByNode[this.forNode] = {};
+					ship.bonusByNode[this.forNode].bonusDmg = idToBonus[ship.mstId];
+				} else {
+					ship.bonusDmg = idToBonus[ship.mstId];
+				}
+			}
+			this.active = false;
+		},
+		
+		updateLoading: function() {
+			setTimeout(function() {
+				if (!this.txtLoading) return;
+				this.txtLoading += ' •';
+				if (this.txtLoading.length > 6) this.txtLoading = ' •';
+				this.updateLoading();
+			}.bind(this),500);
+		},
+	},
+}).component('vmodal',COMMON.CMP_MODAL).mount('#divBonusImporter');
 
 
 var UI_BACKUP = Vue.createApp({

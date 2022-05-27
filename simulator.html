@@ -74,6 +74,10 @@
 			<div class="fleetSection">
 				<input type="button" value="Import/Export DeckBuilder Format" @click="onclickDeckbuilder"/>
 			</div>
+			
+			<div class="fleetSection">
+				<input type="button" value="Import Mapwide Historical Bonuses" @click="onclickBonusImporter"/>
+			</div>
 		</div>
 		
 		<hr>
@@ -312,6 +316,7 @@
 	<div id="divOther">
 	<div id="divChangeLog">
 		<div><span class="header">Change Log:</span></div>
+		<div>2022-05-28 - KCNav historical bonus import</div>
 		<div>2022-05-06 - New UI: strike force, multiple enemy/friend-fleet comps, equipment bonus, override historical bonus per node, LBAS historical bonus damage, add maelstrom cost per node, KCNav enemy/FF comp import, noro6 LBAS Sim import/export, download save backup file</div>
 		<div>2022-02-16 - Historical Accuracy + Evasion config</div>
 		<div>2021-10-17 - <a href="https://twitter.com/Xe_UCH/status/1426851469945294848">PT Imp acc mods</a>, <a href="https://twitter.com/Divinity__123/status/1447941755182227458">Combined Fleet acc bases/mods</a>, <a href="https://docs.google.com/spreadsheets/d/14uCat5nahv3A0Zq6d263Ye3U_f1nBYpIMEc9ALegyNA/edit#gid=0">Vanguard evasion values</a></div>
@@ -388,6 +393,7 @@
 					<div v-show="hasBonusMain()" class="bonusMarker main" title="Main Fleet set">&#11044;</div>
 					<div v-show="hasBonusLBAS()" class="bonusMarker lbas" title="Land Base Aerial Support set">&#11044;</div>
 					<div v-show="hasBonusFF()" class="bonusMarker friend" title="Friend Fleet set">&#11044;</div>
+					<div><input type="button" value="Import Bonuses" @click="onclickImportBonus"/></div>
 				</div>
 			</div>
 			<div ref="comps"><vfleetcomps :comps="battle.enemyComps" fleetname="Enemy Fleet" canimportkcnav="1"></vfleetcomps></div>
@@ -711,7 +717,7 @@
 				<div id="divEquipSelButtonsEquip" v-if="buttonsChoice">
 					<div>{{$t('selector.equip_section_Player')}}</div>
 					<div class="equipButtonWrap">
-						<div v-for="btn in buttonsChoice.player" class="equipButton" class="equipButton" @click="onclickButtonEquip(btn)">
+						<div v-for="btn in buttonsChoice.player" class="equipButton" @click="onclickButtonEquip(btn)">
 							<div><img :src="'assets/items/' + btn.imgName + '.png'" /></div>
 							<div>
 								<div>{{$t('equip_name_'+btn.name)}}</div>
@@ -884,8 +890,8 @@
 	
 	<div id="divKCNavCompImporter"><div v-show="active">
 		<vmodal :active="active" @vclose="canClose&&(active=false)">
-		<div id="divKCNavCompImporterMain">
-			<div id="divKCNavCompImporterSettingsWrap">
+		<div id="divKCNavCompImporterMain" class="kcnavImporter">
+			<div id="divKCNavCompImporterSettingsWrap" class="kcnavImporterSettingsWrap">
 				<div>
 					<table>
 					<tr>
@@ -938,6 +944,65 @@
 			<span class="note" v-show="showNoData">No Comps Found</span>
 			<span class="note" v-show="showError">KCNav Error</span>
 			<span class="note" v-show="showTimeout">KCNav timed out</span>
+		</div>
+		</vmodal>
+	</div></div>
+	
+	<div id="divBonusImporter"><div v-show="active">
+		<vmodal :active="active" @vclose="canClose&&(active=false)">
+		<div id="divBonusImporterMain">
+			<div class="kcnavImporter" v-show="bonusData.length<=0">
+				<div class="header">Import Bonuses from KCNav:</div>
+				<div class="kcnavImporterSettingsWrap">
+					<div>
+						<table>
+						<tr>
+							<td><label for="inputNavImportWorldB">World:</label></td>
+							<td><input id="inputNavImportWorldB" required ref="inputWorld" type="number" min="1" max="99" v-model="world" @change="onchangeWorldMap"/></td>
+							<td><select class="suggestion" v-model="selectWorld" @change="onchangeSelectWorld"><option value="0"></option><option v-for="option in optionsWorld" :value="option.id">{{option.name}}</option></select></td>
+						</tr>
+						<tr>
+							<td><label for="inputNavImportMapnumB">Map:</label></td>
+							<td><input id="inputNavImportMapnumB" required ref="inputMapnum" type="number" min="1" max="9" v-model="mapnum" @change="onchangeWorldMap"/></td>
+						</tr>
+						<tr>
+							<td><label for="inputNavImportNodeB">Node:</label></td>
+							<td><input id="inputNavImportNodeB" required ref="inputNode" type="text" v-model="letter"/></td>
+							<td><select class="suggestion" v-model="selectLetter" @change="onchangeSelectLetter"><option value="0"></option><option v-for="option in optionsLetter" :value="option.letter">{{option.letter}}</option></select></td>
+						</tr>
+						</table>
+					</div>
+					<div v-show="!forNode">
+						<div><label><input type="checkbox" v-model="includeMain"/>Main Fleet</label></div>
+						<div><label><input type="checkbox" v-model="includeFF"/>Friend Fleets</label></div>
+					</div>
+				</div>
+				<input type="button" value="Submit" :disabled="!canClose" @click="onclickLoad" />
+				<span v-show="txtLoading">{{txtLoading}}</span>
+				<span class="note" v-show="showNoData">No Data Found</span>
+				<span class="note" v-show="showNoMatches">No Ship Matches Found</span>
+				<span class="note" v-show="showError">KCNav Error</span>
+				<span class="note" v-show="showTimeout">KCNav timed out</span>
+			</div>
+			<div v-show="bonusData.length">
+				<table class="bonusTable">
+					<tr><th>Ship</th><th>Count</th><th>Max Low</th><th>Min High</th><th>Import Value</th></tr>
+					<tr v-for="bonusShip in bonusData" :key="bonusShip.id">
+						<td>{{bonusShip.name}}</td>
+						<td>{{bonusShip.count}}</td>
+						<td>{{bonusShip.min}}</td>
+						<td>{{bonusShip.max}}</td>
+						<td><input type="number" v-model.number="bonusShip.value" min="0" max="99" step=".01"/></td>
+					</tr>
+				</table>
+				<div>
+					<input type="button" value="Low All" @click="onclickSetAll('min')"/>
+					<input type="button" value="High All" @click="onclickSetAll('max')"/>
+					<input type="button" value="Average All" @click="onclickSetAll('avg')"/>
+					&nbsp;&nbsp;&nbsp;
+					<input type="button" value="Confirm" @click="onclickConfirm"/>
+				</div>
+			</div>
 		</div>
 		</vmodal>
 	</div></div>
