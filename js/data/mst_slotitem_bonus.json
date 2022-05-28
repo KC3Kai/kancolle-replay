@@ -4549,5 +4549,45 @@
 				"num": 1
 			}
 		]
+	},
+	{
+		"ids": [457],
+		"bonuses": [
+			{
+				"bonus": { "raig": 3, "kaih": 3 },
+				"shipClass": [109],
+				"num": 1
+			},
+			{
+				"bonus": { "raig": 2, "kaih": 2 },
+				"shipClass": [71,103],
+				"num": 1
+			},
+			{
+				"bonus": { "raig": 1, "kaih": 4 },
+				"shipClass": [44],
+				"num": 1
+			}
+		]
+	},
+	{
+		"ids": [458],
+		"bonuses": [
+			{
+				"bonus": { "raig": 3, "kaih": 6 },
+				"shipClass": [109],
+				"num": 1
+			},
+			{
+				"bonus": { "raig": 3, "kaih": 4 },
+				"shipClass": [71,103],
+				"num": 1
+			},
+			{
+				"bonus": { "raig": 3, "kaih": 3 },
+				"shipClass": [44],
+				"num": 1
+			}
+		]
 	}
 ]

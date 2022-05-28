@@ -12,6 +12,7 @@ var CONST = window.COMMON.getConst({
 	urlKCNavEnemyComps: 'https://tsunkit.net/api/routing/enemycomps',
 	urlKCNavFriendFleets: 'https://tsunkit.net/api/routing/friendfleets',
 	urlKCNavAbnormalDamage: 'https://tsunkit.net/api/routing/abnormaldamage',
+	urlDewyAbnormalDamage: 'https://raw.githubusercontent.com/sorewachigauyo/kc-event-bonus/master',
 	kcnavEventFirst: 42,
 	// kcnavDaysMax: 30,
 	kcnavDateStart: '2019-03-22',
@@ -839,7 +840,7 @@ var UI_BONUSIMPORTER = Vue.createApp({
 			this.selectLetter = 0;
 		},
 		
-		onclickLoad: function() {
+		onclickLoad: function(source='kcnav') {
 			this.showNoData = this.showError = this.showTimeout = this.showNoMatches = false;
 			if (!this.world) {
 				this.$refs.inputWorld.focus();
@@ -855,9 +856,16 @@ var UI_BONUSIMPORTER = Vue.createApp({
 			}
 			this.canClose = false;
 			
-			let url = CONST.urlKCNavAbnormalDamage;
-			url += '?map=' + this.world + '-' + this.mapnum;
-			url += '&node=' + this.letter;
+			let url;
+			if (source == 'dewy') {
+				url = CONST.urlDewyAbnormalDamage;
+				url += '/' + this.world + '-' + this.mapnum;
+				url += '/' + this.letter + '.json';
+			} else {
+				url = CONST.urlKCNavAbnormalDamage;
+				url += '?map=' + this.world + '-' + this.mapnum;
+				url += '&node=' + this.letter;
+			}
 			
 			this.txtLoading = ' •';
 			this.updateLoading();
@@ -871,10 +879,32 @@ var UI_BONUSIMPORTER = Vue.createApp({
 					this.showTimeout = true;
 					return;
 				}
-				let data = JSON.parse(xhr.response);
-				if (!data.result || data.result.length <= 0) {
-					this.showNoData = true;
+				if (xhr.status >= 400 && xhr.status < 500) {
+					this.showError = true;
 					return;
+				}
+				let data = JSON.parse(xhr.response), result;
+				if (source == 'dewy') {
+					if (!Object.keys(data).length) {
+						this.showNoData = true;
+						return;
+					}
+					result = [];
+					for (let id in data) {
+						let obj = { id: +id, count: data[id][2], min: data[id][0], max: data[id][1] };
+						if (SHIPDATA[id]) {
+							obj.name = SHIPDATA[id].nameJP;
+							obj.name_en = SHIPDATA[id].name;
+						}
+						result.push(obj);
+					}
+					result.sort((a,b) => b.count - a.count);
+				} else {
+					if (!data.result || data.result.length <= 0) {
+						this.showNoData = true;
+						return;
+					}
+					result = data.result;
 				}
 				let ids = [];
 				if (this.forNode || this.includeMain) {
@@ -887,7 +917,7 @@ var UI_BONUSIMPORTER = Vue.createApp({
 					}
 				}
 				this.bonusData = [];
-				for (let obj of data.result) {
+				for (let obj of result) {
 					if (!ids.includes(obj.id)) continue;
 					let bonusShip = {
 						id: obj.id,

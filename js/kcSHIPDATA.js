@@ -30204,7 +30204,7 @@ var SHIPDATA = {
 		EQUIPS: [600, 600, 593, 564],
 	},
 	2091: {
-		name: 'Airfield Princess (哨戒機配備)',
+		name: 'Airfield Princess (Patrol Aircraft Deployment) 1',
 		nameJP: '飛行場姫(哨戒機配備)',
 		image: 'S2091.jpg',
 		type: 'BBV',
@@ -30225,7 +30225,7 @@ var SHIPDATA = {
 		EQUIPS: [],
 	},
 	2092: {
-		name: 'Airfield Princess (哨戒機配備)',
+		name: 'Airfield Princess (Patrol Aircraft Deployment) 2',
 		nameJP: '飛行場姫(哨戒機配備)',
 		image: 'S2091.jpg',
 		type: 'BBV',
@@ -30246,7 +30246,7 @@ var SHIPDATA = {
 		EQUIPS: [],
 	},
 	2093: {
-		name: 'Airfield Princess (哨戒機配備)',
+		name: 'Airfield Princess (Patrol Aircraft Deployment) 3',
 		nameJP: '飛行場姫(哨戒機配備)',
 		image: 'S2091.jpg',
 		type: 'BBV',
@@ -30330,7 +30330,7 @@ var SHIPDATA = {
 		EQUIPS: [],
 	},
 	2097: {
-		name: '外南洋駆逐棲姫',
+		name: 'Outer Southern Sea Destroyer Princess 1',
 		nameJP: '外南洋駆逐棲姫',
 		image: 'S2097.jpg',
 		type: 'BBV',
@@ -30350,7 +30350,7 @@ var SHIPDATA = {
 		EQUIPS: [],
 	},
 	2098: {
-		name: '外南洋駆逐棲姫',
+		name: 'Outer Southern Sea Destroyer Princess 2',
 		nameJP: '外南洋駆逐棲姫',
 		image: 'S2097.jpg',
 		type: 'BBV',
@@ -30370,7 +30370,7 @@ var SHIPDATA = {
 		EQUIPS: [],
 	},
 	2099: {
-		name: '外南洋駆逐棲姫-壊',
+		name: 'Outer Southern Sea Destroyer Princess - Damaged 1',
 		nameJP: '外南洋駆逐棲姫-壊',
 		image: 'S2099.jpg',
 		type: 'BBV',
@@ -30390,7 +30390,7 @@ var SHIPDATA = {
 		EQUIPS: [],
 	},
 	2100: {
-		name: '外南洋駆逐棲姫-壊',
+		name: 'Outer Southern Sea Destroyer Princess - Damaged 2',
 		nameJP: '外南洋駆逐棲姫-壊',
 		image: 'S2099.jpg',
 		type: 'BBV',
