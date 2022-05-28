@@ -5292,7 +5292,7 @@ var EQDATA = {
 		RNG: 2,
 	},
 	457: {
-		name: '後期型艦首魚雷(4門)',
+		name: 'Late Model Bow Torpedo Mount (4 tubes)',
 		nameJP: '後期型艦首魚雷(4門)',
 		added: '2022-05-28',
 		type: TORPEDOSS,
@@ -5303,7 +5303,7 @@ var EQDATA = {
 		RNG: 1,
 	},
 	458: {
-		name: '後期型電探&逆探+シュノーケル装備',
+		name: 'Late Model Radar & Passive Radiolocator + Snorkel Equipment',
 		nameJP: '後期型電探&逆探+シュノーケル装備',
 		added: '2022-05-28',
 		type: SUBRADAR,
@@ -6586,7 +6586,7 @@ var EQDATA = {
 		RNG: 1,
 	},
 	625: {
-		name: '深海双発陸爆',
+		name: 'Abyssal Twin-engine Land-based Dive Bomber',
 		nameJP: '深海双発陸爆',
 		added: '2022-05-28',
 		type: DIVEBOMBER,
@@ -6598,7 +6598,7 @@ var EQDATA = {
 		LOS: 3,
 	},
 	626: {
-		name: '深海双発陸爆Ace',
+		name: 'Abyssal Twin-engine Land-based Dive Bomber Ace',
 		nameJP: '深海双発陸爆Ace',
 		added: '2022-05-28',
 		type: DIVEBOMBER,

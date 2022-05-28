@@ -1866,6 +1866,41 @@ var MAPDATA = {
 			},
 		}
 	},
+	54: {
+		name: 'Spring 2022',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmDN: 202,
+				bgmNN: 202,
+				bgmDB: 203,
+				bgmNB: 203,
+				bossnode: ['R'],
+			},
+			2: {
+				name: 'E2',
+				bgmDN: 202,
+				bgmNN: 202,
+				bgmDB: 203,
+				bgmNB: 203,
+				bossnode: ['O','T2','W2'],
+				overrideBGM: {
+					'W2': { bgmDB: 159, bgmNB: 159 },
+				},
+			},
+			3: {
+				name: 'E3',
+				bgmDN: 203,
+				bgmNN: 203,
+				bgmDB: 204,
+				bgmNB: 204,
+				bossnode: ['Q','U','Y'],
+				overrideBGM: {
+					'Q': { bgmDB: 114, bgmNB: 114 },
+				},
+			},
+		}
+	},
 }
 
 //-------------------------------------
