@@ -101,7 +101,7 @@ EQTDATA[MAINGUNS] = {
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['DD','CL','CT','CLT','AS','AV','AO','AR','LHA','DE'],
 	canequipS: [541],
-	cannotequipS: [645, 650, 699],
+	cannotequipS: [645, 650, 699, 717, 900],
 };
 EQTDATA[MAINGUNSAA] = {
 	name: 'Main Gun (S)',
@@ -111,7 +111,7 @@ EQTDATA[MAINGUNSAA] = {
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3,AAfleet:2,AAself:1},
 	canequip: ['DD','CL','CT','CLT','AS','AV','AO','AR','LHA','DE'],
 	canequipS: [541],
-	cannotequipS: [645, 650, 699],
+	cannotequipS: [645, 650, 699, 717, 900],
 };
 EQTDATA[MAINGUNM] = {
 	name: 'Main Gun (M)',
@@ -147,7 +147,7 @@ EQTDATA[SECGUN] = {
 	atype: A_GUN,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AS','AV','AR','LHA'],
-	canequipS: [500],
+	canequipS: [500, 717],
 	cannotequipS: [477, 478, 622, 623, 624],
 };
 EQTDATA[SECGUNAA] = {
@@ -157,7 +157,7 @@ EQTDATA[SECGUNAA] = {
 	atype: A_HAGUN,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3,AAfleet:2,AAself:1},
 	canequip: ['CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AS','AV','AR','LHA'],
-	canequipS: [500],
+	canequipS: [500, 717],
 	cannotequipS: [477, 478, 622, 623, 624],
 };
 EQTDATA[APSHELL] = {
@@ -215,7 +215,7 @@ EQTDATA[SONARS] = {
 	btype: B_SONAR,
 	improve: {Pshell:.75,Pasw:1,ACCasw:1.3,EVtorp:1.5},
 	canequip: ['DD','CL','CT','CLT','SS','SSV','DE'],
-	canequipS: [352, 372, 380, 381, 450, 491, 500, 529, 534, 536, 546, 554, 586, 591, 592, 626, 645, 650, 690, 699, 707, 713, 879, 885],
+	canequipS: [352, 372, 380, 381, 382, 450, 491, 500, 529, 534, 536, 546, 554, 586, 591, 592, 626, 645, 650, 690, 699, 707, 713, 717, 879, 885, 889, 900],
 	canASWDamage: true,
 };
 EQTDATA[SONARL] = {
@@ -224,8 +224,8 @@ EQTDATA[SONARL] = {
 	btype: B_SONAR,
 	improve: {Pshell:.75,Pasw:1,ACCasw:1.3,EVtorp:1.5},
 	canequip: ['CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AS','AV','LHA'],
-	canequipS: [330, 346, 357, 500, 537, 624, 629, 650, 662, 663, 668],
-	cannotequipS: [380, 381, 521, 526, 534, 581, 877],
+	canequipS: [330, 346, 357, 500, 537, 538, 624, 629, 650, 662, 663, 668, 717],
+	cannotequipS: [380, 381, 382, 521, 522, 526, 534, 581, 877, 884],
 	canASWDamage: true,
 };
 EQTDATA[DEPTHCHARGE] = {
@@ -234,7 +234,7 @@ EQTDATA[DEPTHCHARGE] = {
 	btype: B_DEPTHCHARGE,
 	improve: {Pshell:.75,Pasw:1,ACCasw:1.3},
 	canequip: ['DD','CL','CT','CLT','AV','DE'],
-	canequipS: [380, 381, 500, 529, 534, 536, 699],
+	canequipS: [380, 381, 382, 500, 529, 534, 536, 699, 717, 889, 900],
 	cannotequipS: [372, 491, 581, 586, 690],
 	canASWDamage: true,
 };
@@ -242,7 +242,7 @@ EQTDATA[FIGHTER] = {
 	name: 'Fighter',
 	image: 6,
 	canequip: ['CVL','CV','CVB','LHA','LandBase'],
-	canequipS: [553, 554],
+	canequipS: [553, 554, 717],
 	cannotequipS: [621, 626],
 	isPlane: true,
 	isfighter: true,
@@ -265,7 +265,7 @@ EQTDATA[DIVEBOMBER] = {
 	name: 'Dive Bomber',
 	image: 7,
 	canequip: ['CVL','CV','CVB','LandBase'],
-	canequipS: [553, 554],
+	canequipS: [553, 554, 717],
 	isPlane: true,
 	isfighter: true,
 	isdivebomber: true,
@@ -280,7 +280,7 @@ EQTDATA[SEAPLANE] = {
 	improve: {LOS:1.2},
 	canequip: ['CL','CT','CA','CAV','FBB','BB','BBV','SSV','AS','AV','AO','LandBase'],
 	canequipS: [621, 626],
-	cannotequipS: [477, 478, 622, 623, 624, 645, 650, 657, 699],
+	cannotequipS: [477, 478, 622, 623, 624, 645, 650, 657, 699, 717, 900],
 	isPlane: true,
 	canContact: true,
 	canDetect: true,
@@ -293,7 +293,7 @@ EQTDATA[SEAPLANEBOMBER] = {
 	improve: {LOS:1.15},
 	canequip: ['CAV','BBV','SSV','AV','AO','LandBase'],
 	canequipS: [305, 306, 307, 314, 358, 361, 392, 446, 447, 488, 496, 547, 574, 579, 591, 626, 630, 639, 640, 652, 662, 663, 668, 879],
-	cannotequipS: [645, 650, 699],
+	cannotequipS: [645, 650, 699, 717, 900],
 	isPlane: true,
 	isfighter: true,
 	isdivebomber: true,
@@ -307,7 +307,7 @@ EQTDATA[CARRIERSCOUT] = {
 	image: 9,
 	canequip: ['CVL','CV','CVB','LandBase'],
 	canequipS: [553, 554],
-	cannotequipS: [380, 381, 521, 526, 534],
+	cannotequipS: [380, 381, 382, 521, 522, 526, 534, 884],
 	isPlane: true,
 	canContact: true,
 	canDetect: true,
@@ -326,7 +326,7 @@ EQTDATA[AUTOGYRO] = {
 	image: 21,
 	canequip: ['CAV','BBV','CVL','AS','AO','AR','LHA'],
 	canequipS: [372, 477, 478, 491, 546, 547, 573, 574, 586, 630, 646, 652, 662, 663, 668, 690, 713, 885],
-	cannotequipS: [380, 381, 521, 526, 534, 621, 645, 699],
+	cannotequipS: [380, 381, 382, 521, 522, 526, 534, 621, 645, 699, 884, 889, 900],
 	isASWPlane: true,
 	canASWDamage: true,
 	canSupportASW: true,
@@ -335,8 +335,8 @@ EQTDATA[ASWPLANE] = {
 	name: 'Anti-Sub Plane',
 	image: 22,
 	canequip: ['CVL','LHA'],
-	canequipS: [553, 554, 646],
-	cannotequipS: [521, 526, 534, 621, 626],
+	canequipS: [553, 554, 646, 717, 900],
+	cannotequipS: [521, 522, 526, 534, 621, 626, 884],
 	isASWPlane: true,
 	canASWDamage: true,
 	canSupportASW: true,
@@ -354,13 +354,14 @@ EQTDATA[RADARL] = {
 	btype: B_RADAR,
 	improve: {ACCshell:1,ACCnb:1.3,LOS:1.4},
 	canequip: ['CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AV'],
-	canequipS: [330, 346, 352, 357, 419, 421, 422, 423, 470, 532, 537, 626, 645, 650, 699],
-	cannotequipS: [477, 478, 521, 574, 623, 624, 877],
+	canequipS: [330, 346, 352, 357, 419, 421, 422, 423, 470, 532, 533, 537, 538, 626, 645, 650, 699, 717],
+	cannotequipS: [477, 478, 521, 522, 574, 623, 624, 877],
 };
 EQTDATA[RADARXL] = {
 	name: 'Radar (L)',
 	image: 11,
 	btype: B_RADAR,
+	improve: {ACCshell:1,ACCnb:1.3,LOS:1.4},
 	canequip: ['FBB','BB','BBV'],
 	cannotequipS: [877],
 };
@@ -382,7 +383,7 @@ EQTDATA[BULGEM] = {
 	name: 'Torpedo Bulge',
 	image: 23,
 	canequip: ['CT','CA','CAV','CVL','AS','AV','AR'],
-	canequipS: [146, 147, 216, 217, 305, 306, 307, 314, 330, 346, 357, 500, 537, 542, 543, 547, 563, 564, 566, 567, 568, 569, 578, 579, 621, 622, 623, 624, 626, 629, 630, 645, 649, 650, 652, 656, 657, 662, 663, 668, 670, 699],
+	canequipS: [146, 147, 216, 217, 305, 306, 307, 314, 330, 346, 357, 500, 537, 538, 542, 543, 547, 563, 564, 566, 567, 568, 569, 578, 579, 621, 622, 623, 624, 626, 629, 630, 645, 649, 650, 652, 656, 657, 662, 663, 668, 670, 699, 717, 900],
 };
 EQTDATA[BULGEL] = {
 	name: 'Torpedo Bulge',
@@ -396,7 +397,7 @@ EQTDATA[LANDINGCRAFT] = {
 	btype: B_LC1,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['AV','LHA'],
-	canequipS: [147, 198, 199, 200, 260, 352, 418, 419, 434, 435, 464, 468, 469, 470, 478, 487, 488, 489, 490, 498, 500, 506, 541, 547, 548, 563, 587, 623, 630, 645, 650, 657, 667, 699, 703, 707],
+	canequipS: [147, 198, 199, 200, 260, 352, 382, 418, 419, 434, 435, 464, 468, 469, 470, 478, 487, 488, 489, 490, 498, 500, 506, 541, 547, 548, 563, 587, 623, 630, 645, 647, 650, 657, 666, 667, 699, 703, 707, 716, 718, 720, 889, 908],
 	cannotequipS: [445, 491],
 };
 EQTDATA[SEARCHLIGHTS] = {
@@ -424,7 +425,7 @@ EQTDATA[PICKET] = {
 	image: 32,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['DD','CL','CT','CLT','CA','CAV','FBB','BB','BBV','AS','AV','DE'],
-	canequipS: [381, 500, 529, 536, 621, 626, 699],
+	canequipS: [381, 500, 529, 536, 621, 626, 699, 889],
 };
 EQTDATA[WG42] = {
 	name: 'Misc',
@@ -445,14 +446,15 @@ EQTDATA[FCF] = {
 	image: 28,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AS','AV','LHA'],
-	canequipS: [330, 346, 357, 419, 421, 422, 423, 464, 497, 498, 500, 532, 537, 542, 543, 567, 587, 628, 629, 645, 649, 650, 651, 656, 667, 699],
-	cannotequipS: [521, 877],
+	canequipS: [330, 346, 357, 419, 421, 422, 423, 464, 497, 498, 500, 532, 533, 537, 538, 542, 543, 567, 587, 628, 629, 645, 649, 650, 651, 656, 667, 699, 720],
+	cannotequipS: [521, 522, 877],
 };
 EQTDATA[DRUM] = {
 	name: 'Misc',
 	image: 25,
 	canequip: ['DD','CL','CAV','AV','AO','LHA'],
 	canequipS: [530, 539, 605, 707],
+	cannotequipS: [717, 900],
 };
 EQTDATA[SCAMP] = {
 	name: 'Misc',
@@ -488,7 +490,7 @@ EQTDATA[SEAPLANEFIGHTER] = {
 	image: 43,
 	canequip: ['CAV','BBV','SSV','AS','AV','AO','LandBase'],
 	canequipS: [136, 148, 275, 276, 358, 361, 446, 447, 488, 496, 541, 546, 547, 573, 592, 621, 626, 652, 668, 879],
-	cannotequipS: [645, 650, 699],
+	cannotequipS: [645, 650, 699, 717, 900],
 	isPlane: true,
 	isfighter: true,
 	canSupportASW: true,
@@ -499,7 +501,7 @@ EQTDATA[LANDINGTANK] = {
 	btype: B_LC3,
 	improve: {Pshell:1,Pnb:1},
 	canequip: ['SS','SSV','AV','LHA'],
-	canequipS: [147, 198, 199, 200, 352, 418, 464, 468, 470, 478, 487, 488, 489, 490, 497, 500, 506, 541, 547, 548, 564, 568, 569, 573, 578, 587, 588, 623, 656, 657, 662, 663, 667, 668, 670],
+	canequipS: [147, 198, 199, 200, 352, 418, 464, 468, 470, 478, 487, 488, 489, 490, 497, 500, 506, 541, 547, 548, 564, 568, 569, 573, 578, 587, 588, 623, 647, 656, 657, 662, 663, 666, 667, 668, 670, 908],
 	cannotequipS: [445, 491, 581],
 };
 EQTDATA[OILDRUM] = {
@@ -534,7 +536,7 @@ EQTDATA[TRANSPORTITEM] = {
 	name: 'Transportation Material',
 	image: 41,
 	canequip: ['CAV','BBV','CVL','CV','CVB','SSV','AV','AR','LHA'],
-	canequipS: [500, 530, 539, 605, 645, 650, 699],
+	canequipS: [500, 530, 539, 605, 645, 650, 699, 717, 900],
 	cannotequipS: [621, 626],
 };
 EQTDATA[SUBRADAR] = {
@@ -5296,6 +5298,7 @@ var EQDATA = {
 		nameJP: '後期型艦首魚雷(4門)',
 		added: '2022-05-28',
 		type: TORPEDOSS,
+		specialCutIn: true,
 		TP: 12,
 		AR: 1,
 		ACC: 3,
@@ -5323,6 +5326,18 @@ var EQDATA = {
 		TP: 8,
 		AA: 4,
 		LOS: 4,
+	},
+	460: {
+		name: '15m Duplex Rangefinder Kai + Type 21 Radar Kai Ni + Skilled Fire Direction Center',
+		nameJP: '15m二重測距儀改+21号電探改二+熟練射撃指揮所',
+		added: '2022-05-31',
+		type: RADARXL,
+		FP: 4,
+		AA: 8,
+		AR: 1,
+		ACC: 10,
+		EV: 2,
+		LOS: 8,
 	},
 	501: {
 		name: '5inch Single Cannon',
