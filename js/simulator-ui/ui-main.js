@@ -349,7 +349,7 @@ var UI_MAIN = Vue.createApp({
 			let replay = CONVERT.uiToReplay(this);
 			let errors = SIM.runReplay(CONVERT.uiToSimInput(this),replay);
 			if (errors) {
-				this.results.errors = errors;
+				this.results.errors = errors.filter(obj => this.results.isFromImport || !obj.excludeClient).map(obj => obj.txt);;
 				return;
 			}
 			console.log(replay)
