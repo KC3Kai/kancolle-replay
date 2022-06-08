@@ -14,37 +14,37 @@ var COMBINEDCF4 = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellacc:1.1,torpac
 var COMBINEDCONSTS = {
 	0: {
 		'ecombined': {
-			'main': { 'shellDmgF': 5, 'shellDmgE': 10, 'shellAccF': 80, 'shellAccE': 90 },
+			'main': { 'shellDmgF': 5, 'shellDmgE': 10, 'shellAccF': 80, 'shellAccE': 88 },
 			'escort': { 'shellDmgF': 5, 'shellDmgE': -5, 'shellAccF': 80, 'shellAccE': 75 },
 		},
 	},
 	1: {
 		'esingle': {
-			'main': { 'shellDmgF': 2, 'shellDmgE': 10, 'shellAccF': 78, 'shellAccE': 90 },
+			'main': { 'shellDmgF': 2, 'shellDmgE': 10, 'shellAccF': 78, 'shellAccE': 88 },
 			'escort': { 'shellDmgF': 10, 'shellDmgE': 5, 'shellAccF': 45, 'shellAccE': 65 },
 		},
 		'ecombined': {
-			'main': { 'shellDmgF': 2, 'shellDmgE': 10, 'shellAccF': 78, 'shellAccE': 90 },
+			'main': { 'shellDmgF': 2, 'shellDmgE': 10, 'shellAccF': 78, 'shellAccE': 88 },
 			'escort': { 'shellDmgF': -5, 'shellDmgE': -5, 'shellAccF': 67, 'shellAccE': 75 },
 		},
 	},
 	2: {
 		'esingle': {
-			'main': { 'shellDmgF': 10, 'shellDmgE': 5, 'shellAccF': 45, 'shellAccE': 67 },
-			'escort': { 'shellDmgF': -5, 'shellDmgE': -5, 'shellAccF': 67, 'shellAccE': 78 },
+			'main': { 'shellDmgF': 10, 'shellDmgE': 5, 'shellAccF': 45, 'shellAccE': 65 },
+			'escort': { 'shellDmgF': -5, 'shellDmgE': -5, 'shellAccF': 67, 'shellAccE': 75 },
 		},
 		'ecombined': {
-			'main': { 'shellDmgF': 2, 'shellDmgE': 10, 'shellAccF': 78, 'shellAccE': 90 },
+			'main': { 'shellDmgF': 2, 'shellDmgE': 10, 'shellAccF': 78, 'shellAccE': 88 },
 			'escort': { 'shellDmgF': -5, 'shellDmgE': -5, 'shellAccF': 67, 'shellAccE': 75 },
 		},
 	},
 	3: {
 		'esingle': {
-			'main': { 'shellDmgF': -5, 'shellDmgE': 10, 'shellAccF': 54, 'shellAccE': 90 },
+			'main': { 'shellDmgF': -5, 'shellDmgE': 10, 'shellAccF': 54, 'shellAccE': 88 },
 			'escort': { 'shellDmgF': 10, 'shellDmgE': 5, 'shellAccF': 45, 'shellAccE': 65 },
 		},
 		'ecombined': {
-			'main': { 'shellDmgF': -5, 'shellDmgE': 10, 'shellAccF': 54, 'shellAccE': 90 },
+			'main': { 'shellDmgF': -5, 'shellDmgE': 10, 'shellAccF': 54, 'shellAccE': 88 },
 			'escort': { 'shellDmgF': -5, 'shellDmgE': -5, 'shellAccF': 67, 'shellAccE': 75 },
 		},
 	},
@@ -210,10 +210,12 @@ var MECHANICS = {
 	fitGun: true,
 	morale: true,
 	fixFleetAA: true,
+	fitGunUpdate1: true,
 	newSupply: true,
 	CVCI: true,
 	destroyerNBCI: true,
 	LBASBuff: true,
+	fitGunUpdate2: true,
 	aaci8Up: true,
 	installRevamp: true,
 	zuiunCI: true,
@@ -2378,6 +2380,17 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 	if (MECHANICS.LBASBuff) {
 		acc += .07*(equip.ACC || 0);
 	}
+	if (equip.mid == 444) {
+		if (target.type == 'DD') acc -= .07;
+		if (target.type == 'CL') acc += .07;
+	}
+	if (equip.mid == 453) {
+		if (target.type == 'DD') acc += .07;
+	}
+	if (equip.mid == 454) {
+		if (target.type == 'DD') acc -= .15;
+		if (target.type == 'CL') acc += .07;
+	}
 	lbas.critratebonus = critratebonus; lbas.ACCplane = ACCplane;
 	var res = rollHit(accuracyAndCrit(lbas,target,acc,target.getFormation().AAmod,0,.2,true),critdmgbonus);
 	lbas.critratebonus = 0; lbas.ACCplane = 0;
@@ -2396,6 +2409,9 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 		}
 		if (equip.mid == 444 && !target.isInstall) {
 			if (['DD','CL','CLT','CVL','FBB','BB','BBV'].includes(target.type)) planebase *= 1.15;
+		}
+		if (equip.mid == 459 && !target.isInstall) {
+			if (['DD'].includes(target.type)) planebase = 19;
 		}
 		var dmgbase = 25+planebase*Math.sqrt(1.8*lbas.planecount[slot]);
 		var preMod = (equip.type == LANDBOMBER)? .8 : 1;

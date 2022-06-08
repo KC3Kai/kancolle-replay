@@ -404,8 +404,10 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (fitcounts[101]) { this.ACCfit += 4*Math.sqrt(fitcounts[101]); this.FPfit += Math.sqrt(fitcounts[101]); }
 		if (fitcounts[102]) { this.ACCfit += 3*Math.sqrt(fitcounts[102]); this.FPfit += 2*Math.sqrt(fitcounts[102]); }
 	}
-	let accFit = this.getFit();
-	if (accFit) this.ACCfit = accFit;
+	if (MECHANICS.fitGunUpdate1 && isPlayable(this.mid)) {
+		let accFit = this.getFit();
+		if (accFit || this.ACCfit) this.ACCfit = accFit;
+	}
 	
 	var installbonus1 = 1 + (installeqs.DH1stars / (installeqs.DH1+installeqs.DH2))/50;
 	var installbonus3 = 1 + (installeqs.DH3stars / installeqs.DH3)/30;
@@ -720,6 +722,64 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	}
 }
 Ship.prototype.getFit = function() {
+	// MECHANICS.fitGunUpdate1 2017-06-23
+	let IDS_14_152 = [4,119,310,65,139,407,303,359,360,361];
+	let IDS_152 = [65,139,407,303,359,360,361];
+	
+	if (['CL','CLT','CT'].includes(this.type)) {
+		let numM = this.equips.filter(eq => eq.type == MAINGUNM).length;
+		let num14_152 = this.equips.filter(eq => IDS_14_152.includes(eq.mid)).length;
+		let num8inch = this.equips.filter(eq => [356,357].includes(eq.mid)).length;
+		
+		let fit = 0;
+		fit += 4*Math.sqrt(num14_152);
+		fit -= 6*num8inch;
+		if (this.sclass == 41) { //agano
+			let num152 = this.equips.filter(eq => IDS_152.includes(eq.mid)).length;
+			fit -= 1*numM;
+			fit += 3*Math.sqrt(num152);
+			if (MECHANICS.fitGunUpdate2) { //2017-12-11, guess
+				if (num152) fit += 3;
+			}
+		}
+		if (this.sclass == 52) { //ooyodo
+			let num155 = this.equips.filter(eq => [5,235].includes(eq.mid)).length;
+			fit -= 2*numM;
+			fit += 4*num155;
+		}
+		if (this.sclass == 99) { //atlanta
+			let numAtlanta = this.equips.filter(eq => [362,363].includes(eq.mid)).length;
+			fit += 3*numAtlanta;
+		}
+		
+		if (this.mid == 488) { //yura kai ni
+			let num = this.equips.filter(eq => [229].includes(eq.mid)).length;
+			fit += 10*Math.sqrt(num); //from KC3
+		}
+		
+		let penalty = 3*numM;
+		penalty += 2*num8inch;
+		if (this.LVL >= 100) penalty *= .6;
+		fit -= penalty;
+		
+		return fit;
+	}
+	
+	if (this.type == 'AV') {
+		let numM = this.equips.filter(eq => eq.type == MAINGUNM).length;
+		if (!numM) return 0;
+		let num14_152 = this.equips.filter(eq => IDS_14_152.includes(eq.mid)).length;
+		let numOther = numM - num14_152;
+		let fit = num14_152 ? -6 * num14_152 : -8;
+		fit += -10 * numOther;
+		return fit;
+	}
+	
+	if (this.sclass == 9) { //mogami
+		let num = this.equips.filter(eq => [5,235].includes(eq.mid)).length;
+		return 4*Math.sqrt(num);
+	}
+	
 	if (this.sclass == 81 || this.mid == 147) { //tashkent/verniy
 		let num = this.equips.filter(eq => eq.mid == 282).length;
 		return 5*Math.sqrt(num);
@@ -729,14 +789,21 @@ Ship.prototype.getFit = function() {
 		let numASDIC = this.equips.filter(eq => [260,261,262].includes(eq.mid)).length;
 		return 3*Math.sqrt(numGun) + 3*Math.sqrt(numASDIC);
 	}
-	if (this.sclass == 87 || this.sclass == 91) { //johncbutler/fletcher
-		let num = this.equips.filter(eq => [284,308,313].includes(eq.mid)).length;
+	if (this.sclass == 87) { //johncbutler
+		let num = this.equips.filter(eq => [308,313].includes(eq.mid)).length;
 		return 4*Math.sqrt(num);
 	}
+	if (this.sclass == 91) { //fletcher
+		let num = this.equips.filter(eq => [284,308,313].includes(eq.mid)).length;
+		let fit = 4*Math.sqrt(num);
+		if (this.equips.filter(eq => [284].includes(eq.mid)).length >= 2) fit += 4;
+		return fit;
+	}
 	if (this.sclass == 28) { //mutsuki
-		let num = this.equips.filter(eq => [293].includes(eq.mid)).length;
+		let num = this.equips.filter(eq => [229,293].includes(eq.mid)).length;
 		return 5*Math.sqrt(num);
 	}
+	
 	return 0;
 }
 Ship.prototype.updateProficiencyBonus = function() {
