@@ -2602,6 +2602,7 @@ var VOICES = {
 		damage1: "assets/voice/Musashi-Minor_Damage_1.ogg",
 		damage2: "assets/voice/Musashi-Minor_Damage_2.ogg",
 		damage3: "assets/voice/Musashi-Major_Damage.ogg",
+		special: "assets/voice/546_900.mp3",
 	},
 	153: {
 		start: "assets/voice/Taihou-Battle_Start.ogg",
@@ -6585,6 +6586,14 @@ var VOICES = {
 	},
 	639: {
 		special: "assets/voice/634_900.mp3",
+	},
+	911: {
+		special: "assets/voice/911_901.mp3",
+		special2: "assets/voice/911_900.mp3",
+	},
+	916: {
+		special: "assets/voice/911_901.mp3",
+		special2: "assets/voice/911_900.mp3",
 	},
 }
 
