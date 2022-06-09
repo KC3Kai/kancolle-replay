@@ -5367,7 +5367,7 @@ var EQDATA = {
 		name: 'Prototype 51cm Triple Gun Mount',
 		nameJP: '試製51cm三連装砲',
 		added: '2022-06-08',
-		type: MAINGUNL,
+		type: MAINGUNXL,
 		FP: 36,
 		AA: 5,
 		AR: 2,

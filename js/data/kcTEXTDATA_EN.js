@@ -300,6 +300,8 @@ var TEXTDATA_EN = {
 				300: "Submarine Fleet Special ",
 				301: "Submarine Fleet Special ",
 				302: "Submarine Fleet Special ",
+				400: "Yamato Special (3 ship) ",
+				401: "Yamato Special (2 ship) ",
 			}
 		}
 	},
@@ -386,9 +388,11 @@ var TEXTDATA_EN = {
 				102: "Mutsu Special",
 				103: "Colorado Special",
 				104: "Kongou Special",
-				300: "Submarine Fleet Special ",
-				301: "Submarine Fleet Special ",
-				302: "Submarine Fleet Special ",
+				300: "Submarine Fleet Special",
+				301: "Submarine Fleet Special",
+				302: "Submarine Fleet Special",
+				400: "Yamato Special (3 ship)",
+				401: "Yamato Special (2 ship)",
 			}
 		}
 	},
