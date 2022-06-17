@@ -404,7 +404,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (fitcounts[101]) { this.ACCfit += 4*Math.sqrt(fitcounts[101]); this.FPfit += Math.sqrt(fitcounts[101]); }
 		if (fitcounts[102]) { this.ACCfit += 3*Math.sqrt(fitcounts[102]); this.FPfit += 2*Math.sqrt(fitcounts[102]); }
 	}
-	if (MECHANICS.fitGunUpdate1 && isPlayable(this.mid)) {
+	if (MECHANICS.fitGunUpdate1) {
 		let accFit = this.getFit();
 		if (accFit || this.ACCfit) this.ACCfit = accFit;
 	}
@@ -1227,6 +1227,16 @@ Ship.prototype.getAACItype = function(atypes) {
 		if ((hasID[363] || 0) + (hasID[362] || 0) >= 2) types.push(41);
 	}
 	
+	if ([546,911,916].includes(this.mid)) { //Yamato-class Kai Ni
+		let numDuplex = (hasID[142] || 0) + (hasID[460] || 0);
+		let numAAGunHigh = this.equips.filter(eq => eq.type == AAGUN && eq.AA >= 6).length;
+		let numSecHA = hasID[464] || 0;
+		if (numSecHA >= 2 && numDuplex && numAAGunHigh) types.push(42);
+		if (numSecHA >= 2 && numDuplex) types.push(43);
+		if (numSecHA && numDuplex && numAAGunHigh) types.push(44);
+		if (numSecHA && numDuplex) types.push(45);
+	}
+	
 	var add6 = false;
 	if (this.type=='BB'||this.type=='BBV'||this.type=='FBB') {  //is BB
 		if (atypes[A_GUN] && atypes[A_TYPE3SHELL] && atypes[A_AAFD]) {
@@ -1240,7 +1250,7 @@ Ship.prototype.getAACItype = function(atypes) {
 	if (atypes[A_HAGUN] && atypes[A_AAFD] && atypes[A_AIRRADAR]) types.push(7);
 	if (!MECHANICS.aaci8Up && atypes[A_HAFD] && atypes[A_AIRRADAR]) types.push(8);
 	
-	if (this.mid == 546 && hasID[275] && atypes[A_AIRRADAR]) types.push(26); //Musashi Kai Ni
+	if ([546,911,916].includes(this.mid) && hasID[275] && atypes[A_AIRRADAR]) types.push(26); //Musashi/Yamato Kai Ni
 	if ([82,88,553,554,148,546].indexOf(this.mid) != -1 && hasID[274] && atypes[A_AIRRADAR]) types.push(28); //Ise-class Kai + Musashi Kai
 	if ((this.mid == 557 || this.mid == 558) && atypes[A_HAGUN] && atypes[A_AIRRADAR]) types.push(29); //Isokaze+Hamakaze B Kai
 	

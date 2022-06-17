@@ -97,6 +97,10 @@ var AACIDATA = {
 	39:{num:10,rate:.57,mod:1.7,equip:'BB',rollIndiv:true,num1:5},
 	40:{num:10,rate:.56,mod:1.7,equip:'BBR',rollIndiv:true,num1:5},
 	41:{num:9,rate:.55,mod:1.65,equip:'BB',rollIndiv:true,num1:5},
+	42:{num:10,rate:.6,mod:1.65,equip:'HHRG',num1:1},
+	43:{num:8,rate:.55,mod:1.6,equip:'HHR',num1:1},
+	44:{num:6,rate:.55,mod:1.6,equip:'HRG',num1:1},
+	45:{num:5,rate:.5,mod:1.55,equip:'HR',num1:1},
 };
 
 var ARTILLERYSPOTDATA = {
@@ -165,6 +169,8 @@ var SIMCONSTS = {
 	mutsuSpecialRate: 60,
 	coloradoSpecialRate: 60,
 	kongouSpecialRate: null,
+	yamatoSpecial3Rate: 60,
+	yamatoSpecial2Rate: 60,
 	airRaidCostW6: false,
 	enableEnemyAACI: true,
 	enableEnemyAACILBAS: false,
@@ -230,6 +236,7 @@ var MECHANICS = {
 	anchorageTorpNerf: true,
 	eqBonusASW: true,
 	coloradoSpecialFix: true,
+	kongouSpecialBuff2: true,
 };
 var NERFPTIMPS = false;
 var BREAKPTIMPS = false;
@@ -930,6 +937,37 @@ function canSpecialAttack(ship,isNB) {
 		}
 		return false;
 	}
+	if ([546,911,916].includes(ship.mid)) {
+		if (ship.fleet.didSpecial) return false;
+		if (ship.fleet.ships[0] != ship || (!isNB && ship.isescort)) return false;
+		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated && !ship.isSub).length < 6) return false;
+		if (ship.fleet.formation.id != 14 && ship.fleet.formation.id != 4) return false;
+		if (ship.HP/ship.maxHP <= .5) return false;
+		let ship2 = ship.fleet.ships[1], ship3 = ship.fleet.ships[2];
+		if (ship2.HP/ship2.maxHP <= .5) return false;
+		if ([911,916].includes(ship.mid) && ship3.HP/ship3.maxHP > .5) {
+			let groups = [[541,573], [553,554], [411,412], [364,576], [591,592], [697,659], [446,447]];
+			let group = groups.find(group => group.includes(ship2.mid) && group.includes(ship3.mid));
+			if (group || (ship2.mid == 546 && [541,573].includes(ship3.mid))) {
+				let rate = SIMCONSTS.yamatoSpecial3Rate;
+				if (Math.random() < rate/100) {
+					ship.fleet.didSpecial = 1;
+					if (ship.fleet.combinedWith) ship.fleet.combinedWith.didSpecial = 2;
+					ship.attackSpecial = 400;
+					return true;
+				}
+			}
+		}
+		if (([911,916].includes(ship.mid) && [546,178,360,392].includes(ship2.mid)) || (ship.mid == 546 && [911,916].includes(ship2.mid))) {
+			let rate = SIMCONSTS.yamatoSpecial2Rate;
+			if (Math.random() < rate/100) {
+				ship.fleet.didSpecial = 1;
+				if (ship.fleet.combinedWith) ship.fleet.combinedWith.didSpecial = 2;
+				ship.attackSpecial = 401;
+				return true;
+			}
+		}
+	}
 	
 	if (ship.attackSpecial == 100) {
 		if (ship.fleet.didSpecial) return false;
@@ -1027,6 +1065,10 @@ function getSpecialAttackShips(ships,attackSpecial) {
 		attackers = [ships[2], ships[3], ships[2], ships[3]];
 	} else if (attackSpecial == 302) {
 		attackers = [ships[1], ships[3], ships[1], ships[3]];
+	} else if (attackSpecial == 400) {
+		attackers = [ships[0], ships[1], ships[2]];
+	} else if (attackSpecial == 401) {
+		attackers = [ships[0], ships[0], ships[1]];
 	}
 	return attackers;
 }
@@ -1086,11 +1128,41 @@ function getSpecialAttackMod(ship,attackSpecial) {
 			if (ship.equiptypesB[B_RADAR]) mod *= 1.15;
 		}
 	} else if (attackSpecial == 104) {
-		mod = 1.9;
+		mod = MECHANICS.kongouSpecialBuff2 ? 2.2 : 1.9;
 		if (ENGAGEMENT == 1.2) mod *= 1.25;
-		else if (ENGAGEMENT == .6) mod *= .75;
+		else if (ENGAGEMENT == .6) mod *= MECHANICS.kongouSpecialBuff2 ? .8 : .75;
 	} else if (attackSpecial == 300 || attackSpecial == 301 || attackSpecial == 302) {
 		mod = 1.2 + 0.04*Math.sqrt(ship.LVL);
+	} else if (attackSpecial == 400) {
+		mod = 1.5;
+		let ship2 = ship.fleet.ships[1], ship3 = ship.fleet.ships[2];
+		if (ship.isflagship) {
+			if (ship2.mid == 546) mod *= 1.1;
+			if ([541,573].includes(ship2.mid) && [541,573].includes(ship3.mid)) mod *= 1.1;
+			if ([553,554].includes(ship2.mid) && [553,554].includes(ship3.mid)) mod *= 1.1;
+			if (ship.equips.find(eq => [142,460].includes(eq.mid))) mod *= 1.1;
+		} else if (ship.num == 2) {
+			if (ship2.mid == 546) mod *= 1.2;
+			if ([541,573].includes(ship2.mid) && [541,573].includes(ship3.mid)) mod *= 1.1;
+			if ([553,554].includes(ship2.mid) && [553,554].includes(ship3.mid)) mod *= 1.05;
+			if (ship.equips.find(eq => [142,460].includes(eq.mid))) mod *= 1.1;
+		} else if (ship.num == 3) {
+			mod *= 1.1;
+		}
+		if (ship.equiptypesB[B_APSHELL]) mod *= 1.35;
+		if (ship.equips.find(eq => eq.btype == B_RADAR && eq.LOS >= 5)) mod *= 1.15;
+	} else if (attackSpecial == 401) {
+		mod = 1.4;
+		let ship1 = ship.fleet.ships[0], ship2 = ship.fleet.ships[1];
+		if (ship.isflagship) {
+			if (ship1.mid == 546 || ship2.mid == 546) mod *= 1.1;
+		} else if (ship.num == 2) {
+			mod = 1.55;
+			if (ship1.mid == 546 || ship2.mid == 546) mod *= 1.2;
+		}
+		if (ship.equips.find(eq => [142,460].includes(eq.mid))) mod *= 1.1;
+		if (ship.equiptypesB[B_APSHELL]) mod *= 1.35;
+		if (ship.equips.find(eq => eq.btype == B_RADAR && eq.LOS >= 5)) mod *= 1.15;
 	}
 	return mod;
 }
@@ -3028,6 +3100,8 @@ function updateSupply(ships,didNB,NBonly,bombing,noammo,isECombined) {
 	if (ships[0].fleet.didSpecial == 1) {
 		if (ships[0].attackSpecial == 101 || ships[0].attackSpecial == 102) costSpecial = 1.5;
 		else if (ships[0].attackSpecial == 104) costSpecial = MECHANICS.kongouSpecialBuff ? 1.2 : 1.3;
+		else if (ships[0].attackSpecial == 400) costSpecial = 1.8;
+		else if (ships[0].attackSpecial == 401) costSpecial = 1.6;
 		if (costSpecial) shipsSpecial = getSpecialAttackShips(ships,ships[0].attackSpecial);
 		ships[0].fleet.didSpecial = 2;
 	}
