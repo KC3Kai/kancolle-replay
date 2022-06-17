@@ -844,7 +844,7 @@ var UI_ADDITIONALSTATS = Vue.createApp({
 					let chanceUsed = 0, chanceMod = 1;
 					for (let id of ship.AACItype) {
 						let d = AACIDATA[id];
-						if (chanceUsed > d.rate) continue;
+						if (chanceUsed >= d.rate) continue;
 						stats.aaciTypes.push({ id: id, num: d.num, mod: d.mod, rate: Math.round((d.rate-chanceUsed)*chanceMod*100) });
 						if (d.rollIndiv) chanceMod *= 1-d.rate;
 						else chanceUsed = d.rate;

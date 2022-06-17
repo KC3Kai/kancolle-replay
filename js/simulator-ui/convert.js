@@ -678,7 +678,7 @@ window.CONVERT = {
 		for (let obj of dataUI.settings.mechanics) {
 			mechInput.mechanics[obj.key] = obj.enabled;
 		}
-		for (let key of ['shellDmgCap','aswDmgCap','torpedoDmgCap','nightDmgCap','airDmgCap','supportDmgCap','airRaidCostW6','nelsonTouchRate','nagatoSpecialRate','mutsuSpecialRate','coloradoSpecialRate','kongouSpecialRate']) {
+		for (let key of ['shellDmgCap','aswDmgCap','torpedoDmgCap','nightDmgCap','airDmgCap','supportDmgCap','airRaidCostW6','nelsonTouchRate','nagatoSpecialRate','mutsuSpecialRate','coloradoSpecialRate','kongouSpecialRate','yamatoSpecial3Rate','yamatoSpecial2Rate']) {
 			mechInput.consts[key] = dataUI.settings[key];
 		}
 		for (let key of ['vanguardEvShellDD','vanguardEvTorpDD','vanguardEvShellOther','vanguardEvTorpOther']) {
