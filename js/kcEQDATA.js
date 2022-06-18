@@ -3229,6 +3229,16 @@ var EQDATA = {
 		ACC: 2,
 		EV: 4,
 	},
+	264: {
+		name: 'Shiden Kai (343 Air Group) 701st Fighter Squadron',
+		nameJP: '紫電改(三四三空) 戦闘701',
+		added: '2022-06-17',
+		type: INTERCEPTOR,
+		AA: 11,
+		AR: 2,
+		ACC: 2,
+		EV: 4,
+	},
 	266: {
 		name: '12.7cm Twin Gun Mount Model C Kai 2',
 		nameJP: '12.7cm連装砲C型改二',
@@ -5375,6 +5385,30 @@ var EQDATA = {
 		EV: -10,
 		RNG: 4,
 	},
+	466: {
+		name: 'Ryuusei Kai (Skilled)',
+		nameJP: '流星改(熟練)',
+		added: '2022-06-17',
+		type: TORPBOMBER,
+		aaResistShip: .6,
+		TP: 13,
+		AA: 3,
+		ACC: 1,
+		ASW: 6,
+		LOS: 5,
+	},
+	467: {
+		name: '5inch Twin Gun Mount (Secondary Armament) Concentrated Deployment',
+		nameJP: '5inch連装砲(副砲配置) 集中配備',
+		added: '2022-06-17',
+		type: SECGUN, image: 16,
+		FP: 5,
+		AA: 11,
+		AR: 1,
+		ACC: 4,
+		EV: 3,
+		RNG: 1,
+	},
 	501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
@@ -6898,6 +6932,8 @@ var LBASDATA = {
 	453: { distance: 4, cost: 9 },
 	454: { distance: 3, cost: 12 },
 	459: { distance: 7, cost: 13 },
+	264: { distance: 4, cost: 6 },
+	466: { distance: 6, cost: 9 },
 };
 
 

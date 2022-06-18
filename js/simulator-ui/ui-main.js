@@ -83,6 +83,7 @@ var UI_MAIN = Vue.createApp({
 			bucketTime: BUCKETTIME/3600,
 			carryOverHP: CARRYOVERHP,
 			carryOverMorale: CARRYOVERMORALE,
+			enableSkipTorpBonus: SIMCONSTS.enableSkipTorpBonus,
 		},
 		
 		canSim: true,

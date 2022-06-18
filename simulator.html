@@ -158,6 +158,9 @@
 					<tr><td>Yamato Special (2-ship):</td><td><input type="number" min="0" max="100" v-model="settings.yamatoSpecial2Rate" />%</td></tr>
 					</table>
 				</div>
+				<div v-show="settings.showAdvanced">
+					<label><input type="checkbox" v-model="settings.enableSkipTorpBonus"/>Use provisional B-25 bonuses for Abyssal skip bomb airstrikes (+21 acc, increase damage)</label>
+				</div>
 			</div>
 		</div>
 		<hr>
