@@ -178,6 +178,7 @@ var SIMCONSTS = {
 	enableModSummerBB: true,
 	enableModSummerCA: true,
 	enableModFrenchBB: true,
+	enableSkipTorpBonus: false,
 	echelonOld: {shellmod:.6,torpmod:.6,ASWmod:1,AAmod:1, shellacc:1.2,torpacc:.6,NBacc:.8, shellev:1.2,torpev:1.3,NBev:1.1,ASWev:1.3, id:4},
 	echelonNew: {shellmod:.75,torpmod:.6,ASWmod:1.1,AAmod:1, shellacc:1.2,torpacc:.75,NBacc:.9, shellev:1.4,torpev:1.3,NBev:1.3,ASWev:1.3, id:4},
 	nbattack7Old: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.3, name: 'DDCI (GTR)' },
@@ -1499,10 +1500,13 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 
 function airstrike(ship,target,slot,contactMod,issupport,isjetphase) {
 	if (!contactMod) contactMod = 1;
+	var equip = ship.equips[slot];
 	var acc = (issupport)? .85 : .95;
 	if (ship.bonusSpecialAcc) acc *= getBonusAcc(ship,true);
+	if (SIMCONSTS.enableSkipTorpBonus && [459,625,626].includes(equip.mid)) {
+		acc += .21;
+	}
 	var res = rollHit(accuracyAndCrit(ship,target,acc,target.getFormation().AAmod,0,.2,!issupport && 2),!issupport && ship.critdmgbonus);
-	var equip = ship.equips[slot];
 	var dmg = 0, realdmg = 0;
 	var planebase = (equip.isdivebomber)? equip.DIVEBOMB + (equip.airstrikePowerImprove || 0) : (target.isInstall)? 0 : equip.TP + (equip.airstrikePowerImprove || 0);
 	planebase = planebase || 0;
@@ -1513,6 +1517,13 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase) {
 			if (d && slot == d.slot) {
 				planebase += d.bonus;
 			}
+		}
+		if (SIMCONSTS.enableSkipTorpBonus && [459,625,626].includes(equip.mid) && !target.isInstall) {
+			if (['DD'].includes(target.type)) planebase *= 2.45;
+			if (['CL','CLT'].includes(target.type)) planebase *= 2.25;
+			if (['CA','CAV'].includes(target.type)) planebase *= 2;
+			if (['FBB','BB','BBV'].includes(target.type)) planebase *= 1.5;
+			if (['CVL','CV'].includes(target.type)) planebase *= 1.5;
 		}
 		var base = (issupport)? 3 : 25;
 		if (target.fleet.airstrikeMod) base += target.fleet.airstrikeMod; //in enemy combined, main gets -10, escort -20
@@ -2463,6 +2474,9 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 		if (target.type == 'DD') acc -= .15;
 		if (target.type == 'CL') acc += .07;
 	}
+	if (equip.mid == 459) {
+		acc += .21;
+	}
 	lbas.critratebonus = critratebonus; lbas.ACCplane = ACCplane;
 	var res = rollHit(accuracyAndCrit(lbas,target,acc,target.getFormation().AAmod,0,.2,true),critdmgbonus);
 	lbas.critratebonus = 0; lbas.ACCplane = 0;
@@ -2483,7 +2497,11 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 			if (['DD','CL','CLT','CVL','FBB','BB','BBV'].includes(target.type)) planebase *= 1.15;
 		}
 		if (equip.mid == 459 && !target.isInstall) {
-			if (['DD'].includes(target.type)) planebase = 19;
+			if (['DD'].includes(target.type)) planebase *= 2.45;
+			if (['CL','CLT'].includes(target.type)) planebase *= 2.25;
+			if (['CA','CAV'].includes(target.type)) planebase *= 2;
+			if (['FBB','BB','BBV'].includes(target.type)) planebase *= 1.5;
+			if (['CVL','CV'].includes(target.type)) planebase *= 1.5;
 		}
 		var dmgbase = 25+planebase*Math.sqrt(1.8*lbas.planecount[slot]);
 		var preMod = (equip.type == LANDBOMBER)? .8 : 1;

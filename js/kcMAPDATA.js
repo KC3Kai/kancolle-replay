@@ -1899,6 +1899,29 @@ var MAPDATA = {
 					'Q': { bgmDB: 114, bgmNB: 114 },
 				},
 			},
+			4: {
+				name: 'E4',
+				bgmDN: 203,
+				bgmNN: 203,
+				bgmDB: 204,
+				bgmNB: 204,
+				bossnode: ['M','W','Z'],
+				overrideBGM: {
+					'M': { bgmDB: 206, bgmNB: 206 },
+				},
+			},
+			5: {
+				name: 'E5',
+				bgmDN: 206,
+				bgmNN: 206,
+				bgmDB: 207,
+				bgmNB: 207,
+				bossnode: ['G','P','V','Z'],
+				overrideBGM: {
+					'G': { bgmDB: 203, bgmNB: 203 },
+					'P': { bgmDB: 204, bgmNB: 204 },
+				},
+			},
 		}
 	},
 }
