@@ -6,7 +6,7 @@ var CONST = window.COMMON.getConst({});
 window.CONVERT = {
 	_fleetPropsSaved: ['type','formation'],
 	_shipPropsSaved: ['mstId','level','hp','hpInit','morale','fuelInit','ammoInit','statsBase','slots','bonusDmg','bonusAcc','bonusEva','bonusDmgDebuff'],
-	_equipPropsSaved: ['mstId','level','rank','bonusDmg'],
+	_equipPropsSaved: ['mstId','level','rank','bonusDmg','bonusAcc'],
 	
 	_UI_MAIN: null,
 	_dataKC3: null,
@@ -578,7 +578,7 @@ window.CONVERT = {
 					LUK: shipUI.statsBase.luk,
 					RNG: shipUI.statsBase.range,
 					SLOTS: [],
-					TACC: shipUI.tacc,
+					TACC: shipUI.statsBase.tacc,
 				},
 				HPInit: shipUI.hpInit,
 				fuelInit: shipUI.fuelInit/100,
@@ -651,9 +651,14 @@ window.CONVERT = {
 					improve: equipUI.level,
 					proficiency: equipUI.rank,
 				};
+				let bonuses = {};
 				if (equipUI.bonusDmg && equipUI.bonusDmg != 1) {
-					equipInput.bonuses = { bonusDmg: equipUI.bonusDmg };
+					bonuses.bonusDmg = equipUI.bonusDmg;
 				}
+				if (equipUI.bonusAcc && equipUI.bonusAcc != 1) {
+					bonuses.bonusAcc = equipUI.bonusAcc;
+				}
+				if (Object.keys(bonuses).length) equipInput.bonuses = bonuses;
 				baseInput.equips.push(equipInput);
 				baseInput.slots.push(baseUI.slots[i]);
 			}

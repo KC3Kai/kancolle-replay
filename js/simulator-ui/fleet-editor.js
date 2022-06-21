@@ -179,7 +179,10 @@ var FLEET_MODEL = {
 				obj.rank = ship && !COMMON.isShipIdPlayable(ship.mstId) ? 0 : 7;
 				if (CONST.rankDefaultSpecial[mstId] != null) obj.rank = CONST.rankDefaultSpecial[mstId];
 			}
-			if (ship == null) obj.bonusDmg = 1;
+			if (ship == null) {
+				obj.bonusDmg = 1;
+				obj.bonusAcc = 1;
+			}
 		}
 		return obj;
 	},
