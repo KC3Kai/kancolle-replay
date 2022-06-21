@@ -8,7 +8,7 @@ var VANGUARD2 = {shellmod:1,torpmod:1,ASWmod:.6,AAmod:1.1, shellacc:1.2,torpacc:
 
 var COMBINEDCF1 = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellacc:.9,torpacc:.6,NBacc:1,ASWacc:1.25, shellev:1,torpev:1,NBev:1,ASWev:1, id:11};
 var COMBINEDCF2 = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1, shellacc:1,torpacc:1,NBacc:1,ASWacc:1, shellev:1.2,torpev:1,NBev:1,ASWev:1, id:12};
-var COMBINEDCF3 = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellacc:.8,torpacc:.4,NBacc:1,ASWacc:1.1, shellev:1.1,torpev:1,NBev:1,ASWev:1, id:13};
+var COMBINEDCF3 = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellacc:.8,torpacc:.35,NBacc:1,ASWacc:1.1, shellev:1.1,torpev:1,NBev:1,ASWev:1, id:13};
 var COMBINEDCF4 = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellacc:1.1,torpacc:1.2,NBacc:1,ASWacc:.7, shellev:1,torpev:1,NBev:1,ASWev:1, id:14};
 
 var COMBINEDCONSTS = {
@@ -1504,7 +1504,9 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase) {
 	var acc = (issupport)? .85 : .95;
 	if (ship.bonusSpecialAcc) acc *= getBonusAcc(ship,true);
 	if (SIMCONSTS.enableSkipTorpBonus && [459,625,626].includes(equip.mid)) {
-		acc += .21;
+		if (['FBB','BB','BBV','CVL','CV'].includes(target.type)) acc += .28;
+		else if (['CA','CAV'].includes(target.type)) acc += .21;
+		else acc += .14;
 	}
 	var res = rollHit(accuracyAndCrit(ship,target,acc,target.getFormation().AAmod,0,.2,!issupport && 2),!issupport && ship.critdmgbonus);
 	var dmg = 0, realdmg = 0;
@@ -2475,7 +2477,12 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 		if (target.type == 'CL') acc += .07;
 	}
 	if (equip.mid == 459 || (SIMCONSTS.enableSkipTorpBonus && [625,626].includes(equip.mid))) {
-		acc += .21;
+		if (['FBB','BB','BBV','CVL','CV'].includes(target.type)) acc += .28;
+		else if (['CA','CAV'].includes(target.type)) acc += .21;
+		else acc += .14;
+	}
+	if (SIMCONSTS.enablePlaneBonus && equip.bonusSpecialAccP) {
+		for (let group in equip.bonusSpecialAccP) acc *= equip.bonusSpecialAccP[group];
 	}
 	lbas.critratebonus = critratebonus; lbas.ACCplane = ACCplane;
 	var res = rollHit(accuracyAndCrit(lbas,target,acc,target.getFormation().AAmod,0,.2,true),critdmgbonus);

@@ -252,7 +252,7 @@ var SIM = {
 	_getSimShips: function(shipsInput,side) {
 		let shipsSim = [];
 		for (let shipInput of shipsInput) {
-			let stats = { HP: 0, FP: 0, TP: 0, AA: 0, AR: 0, LUK: 0, EV: 0, ASW: 0, LOS: 0, RNG: 0, SPD: 0, SLOTS: [] };
+			let stats = { HP: 0, FP: 0, TP: 0, AA: 0, AR: 0, LUK: 0, EV: 0, ASW: 0, LOS: 0, RNG: 0, SPD: 0, TACC: null, SLOTS: [] };
 			let sdata = SHIPDATA[shipInput.masterId];
 			let ShipType = null;
 			let level = Math.max(0,shipInput.LVL) || (COMMON.isShipIdPlayable(shipInput.masterId) ? 99 : 1);
@@ -364,8 +364,10 @@ var SIM = {
 							baseSim.planecount = baseInput.slots.slice();
 						}
 						for (let i=0; i<baseSim.equips.length; i++) {
-							if (!baseInput.equips[i].bonuses) continue;
-							baseSim.equips[i].bonusSpecialP = { 1: baseInput.equips[i].bonuses.bonusDmg };
+							let bonuses = baseInput.equips[i].bonuses;
+							if (!bonuses) continue;
+							if (bonuses.bonusDmg) baseSim.equips[i].bonusSpecialP = { 1: bonuses.bonusDmg };
+							if (bonuses.bonusAcc) baseSim.equips[i].bonusSpecialAccP = { 1: bonuses.bonusAcc };
 						}
 					}
 				}

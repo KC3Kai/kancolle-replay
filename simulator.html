@@ -159,7 +159,7 @@
 					</table>
 				</div>
 				<div v-show="settings.showAdvanced">
-					<label><input type="checkbox" v-model="settings.enableSkipTorpBonus"/>Use provisional B-25 bonuses for Abyssal skip bomb airstrikes (+21 acc, increase damage)</label>
+					<label><input type="checkbox" v-model="settings.enableSkipTorpBonus"/>Use provisional B-25 bonuses for Abyssal skip bomb airstrikes</label>
 				</div>
 			</div>
 		</div>
@@ -321,6 +321,7 @@
 	<div id="divOther">
 	<div id="divChangeLog">
 		<div><span class="header">Change Log:</span></div>
+		<div>2022-06-21 - LBAS historical accuracy bonus settings</div>
 		<div>2022-05-28 - KCNav/<a href="https://github.com/sorewachigauyo/kc-event-bonus">Dewy</a> historical bonus import</div>
 		<div>2022-05-06 - New UI: strike force, multiple enemy/friend-fleet comps, equipment bonus, override historical bonus per node, LBAS historical bonus damage, add maelstrom cost per node, KCNav enemy/FF comp import, noro6 LBAS Sim import/export, download save backup file</div>
 		<div>2022-02-16 - Historical Accuracy + Evasion config</div>
@@ -634,6 +635,9 @@
 							</div>
 							<div class="shipStatWrap"><div class="bonusWrap">
 								<div class="statWide"><span title="Mapwide Historical Damage Bonus Multiplier">Bonus Dmg</span>:<input type="number" v-model.number="equip.bonusDmg" min="0" max="99" step=".1" :disabled="!equip.mstId" @change="onchangeStat($event,equip,'bonusDmg',1)"/></div>
+							</div></div>
+							<div class="shipStatWrap"><div class="bonusWrap">
+								<div class="statWide"><span title="Mapwide Historical Accuracy Bonus Multiplier">Bonus Acc</span>:<input type="number" v-model.number="equip.bonusAcc" min="0" max="99" step=".1" :disabled="!equip.mstId" @change="onchangeStat($event,equip,'bonusAcc',1)"/></div>
 							</div></div>
 						</div>
 					</div>
