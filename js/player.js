@@ -473,7 +473,7 @@ function processAPI(root) {
 			var letter, edges = EDGES['World '+root.world+'-'+root.mapnum];
 			if (root.world < 7 && root.time*1000 < Date.UTC(2018,7,16)) edges = EDGES.old['World '+root.world+'-'+root.mapnum]; //old node letters pre-Phase 2
 			if (edges && edges[root.battles[i].node]) letter = edges[root.battles[i].node][1];
-			else letter = root.battles[i].node.toString();
+			else letter = root.battles[i].node;
 			bspace.append(() => {
 				return $('<input>')
 					.attr('type', 'button')
