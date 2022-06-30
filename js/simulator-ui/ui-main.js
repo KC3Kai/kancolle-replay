@@ -100,7 +100,7 @@ var UI_MAIN = Vue.createApp({
 			hasSF: false,
 			totalNum: 0,
 			rankS: 0, rankA: 0, rankB: 0, rankC: 0, rankD: 0, rankE: 0, retreat: 0,
-			flagSunk: 0, flagSunkHP: 0, flagSunkHPBoss: 0,
+			flagSunk: 0, flagSunkHP: 0, flagSunkHPBoss: 0, transport: 0,
 			rankSNode: [], rankANode: [], rankBNode: [], rankCNode: [], rankDNode: [], rankENode: [], flagSunkNode: [],
 			mvp1: [], mvp2: [], mvp3: [], mvp4: [], mvp5: [], mvp6: [], mvp7: [],
 			mvpE1: [], mvpE2: [], mvpE3: [], mvpE4: [], mvpE5: [], mvpE6: [],
@@ -249,6 +249,7 @@ var UI_MAIN = Vue.createApp({
 			this.results.flagSunk = formatNum(nodeLast.flagsunk / totalNum);
 			this.results.flagSunkHP = formatNum(resultSim.totalGaugeDamage / totalNum);
 			this.results.flagSunkHPBoss = formatNum(resultSim.totalGaugeDamage / nodeLast.num);
+			this.results.transport = formatNum(resultSim.totalTransport / totalNum);
 			
 			this.results.fuelSupply = formatNum(resultSim.totalFuelS / totalNum);
 			this.results.ammoSupply = formatNum(resultSim.totalAmmoS / totalNum);
