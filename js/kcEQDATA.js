@@ -55,6 +55,7 @@ const JETBOMBER = 57;
 const JETSCOUT = 59;
 const RADARXL = 93;
 const CARRIERSCOUT2 = 94;
+const SECGUNL = 95;
 const OTHER = 99;
 
 //artillery spot/night battle/other combat type
@@ -149,6 +150,14 @@ EQTDATA[SECGUN] = {
 	canequip: ['CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AS','AV','AR','LHA'],
 	canequipS: [500, 717],
 	cannotequipS: [477, 478, 622, 623, 624],
+};
+EQTDATA[SECGUNL] = {
+	name: 'Secondary Gun',
+	image: 4,
+	btype: B_SECGUN,
+	atype: A_GUN,
+	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
+	canequip: ['CA','FBB','BB','BBV','CV','CVB'],
 };
 EQTDATA[SECGUNAA] = {
 	name: 'Secondary Gun',
@@ -1522,7 +1531,7 @@ var EQDATA = {
 		name: 'Type 98 Recon Seaplane (Night Scout)',
 		nameJP: '九八式水上偵察機(夜偵)',
 		added: '2014-06-06',
-		type: SEAPLANE,
+		type: SEAPLANE, image: 50,
 		isnightscout: true,
 		ASW: 1,
 		LOS: 3,
@@ -5401,13 +5410,36 @@ var EQDATA = {
 		name: '5inch Twin Gun Mount (Secondary Armament) Concentrated Deployment',
 		nameJP: '5inch連装砲(副砲配置) 集中配備',
 		added: '2022-06-17',
-		type: SECGUN, image: 16,
+		type: SECGUNL, image: 16,
 		FP: 5,
 		AA: 11,
 		AR: 1,
 		ACC: 4,
 		EV: 3,
 		RNG: 1,
+	},
+	468: {
+		name: '38cm Quadruple Gun Mount Kai Deux',
+		nameJP: '38cm四連装砲改 deux',
+		added: '2022-06-30',
+		type: MAINGUNL,
+		FP: 24,
+		AA: 5,
+		AR: 1,
+		ACC: 4,
+		RNG: 2,
+	},
+	469: {
+		name: 'Type 0 Reconnaissance Seaplane Model 11B Kai (Night Recon)',
+		nameJP: '零式水上偵察機11型乙改(夜偵)',
+		added: '2022-06-30',
+		type: SEAPLANE, image: 50,
+		isnightscout: true,
+		FP: 1,
+		AA: 1,
+		ACC: 2,
+		ASW: 6,
+		LOS: 5,
 	},
 	501: {
 		name: '5inch Single Cannon',
@@ -6934,6 +6966,7 @@ var LBASDATA = {
 	459: { distance: 7, cost: 13 },
 	264: { distance: 4, cost: 6 },
 	466: { distance: 6, cost: 9 },
+	469: { distance: 7, cost: 5 },
 };
 
 

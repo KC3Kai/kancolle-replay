@@ -82,6 +82,7 @@ var SIM = {
 			totalGaugeDamage: 0,
 			totalEmptiedPlanes: 0,
 			totalEmptiedLBAS: 0,
+			totalTransport: 0,
 			nodes: [],
 		};
 		for (let n=0; n<numNodes; n++) {
@@ -117,6 +118,12 @@ var SIM = {
 		}
 		rNode.undamaged += +!!resultSim.undamaged;
 		rNode.airStates[FLEETS1[0].AS+2] += 1;
+		if (battleInd == this._results.nodes.length-1 && (resultSim.rank == 'S' || resultSim.rank == 'A')) {
+			let tp = FLEETS1[0].getTransport();
+			if (FLEETS1[1]) tp += FLEETS1[1].getTransport();
+			if (resultSim.rank == 'A') tp = Math.floor(tp*.7);
+			this._results.totalTransport += tp;
+		}
 	},
 	_updateResultsTotal: function() {
 		this._results.totalnum++;

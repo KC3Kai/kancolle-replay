@@ -224,6 +224,33 @@ Fleet.prototype.isTorpedoSquadron = function() {
 	}
 	return this._isTS = false;
 }
+Fleet.prototype.getTransport = function() {
+	let tp = 0;
+	let shipTP = {
+		DD: 5,
+		CL: 2,
+		CT: 6,
+		CAV: 4,
+		BBV: 7,
+		AV: 9,
+		LHA: 12,
+		AO: 15,
+		AS: 7,
+		SSV: 1,
+	};
+	for (let ship of this.ships) {
+		if (ship.HP <= 0 || ship.retreated) continue;
+		tp += shipTP[ship.type] || 0;
+		if (ship.mid == 487) tp += 8;
+		for (let eq of ship.equips) {
+			if (eq.type == DRUM) tp += 5;
+			if (eq.type == LANDINGCRAFT) tp += 8;
+			if (eq.type == RATION) tp += 1;
+			if (eq.type == LANDINGTANK) tp += 2;
+		}
+	}
+	return tp;
+}
 //----------
 
 function Ship(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
@@ -653,7 +680,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	let numGuns = (this.equiptypes[MAINGUNS] || 0) + (this.equiptypes[MAINGUNSAA] || 0);
 	if (numGuns) this.ptDmgMod *= 1.5;
 	if (numGuns >= 2) this.ptDmgMod *= 1.4;
-	if (this.equiptypes[SECGUN]) this.ptDmgMod *= 1.3;
+	if (this.equiptypesB[B_SECGUN]) this.ptDmgMod *= 1.3;
 	let numDB = Math.max(this.equiptypes[DIVEBOMBER] || 0, this.equiptypes[JETBOMBER] || 0);
 	if (numDB) this.ptDmgMod *= 1.4;
 	if (numDB >= 2) this.ptDmgMod *= 1.3;
@@ -670,7 +697,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	if (this.type == 'CL' || this.type == 'CLT' || this.type == 'CT') this.ptAccMod = .82;
 	if (this.equiptypes[MAINGUNS]) this.ptAccMod *= 1.3;
 	if (this.equiptypes[MAINGUNS] >= 2) this.ptAccMod *= 1.15;
-	if (this.equiptypes[SECGUN]) this.ptAccMod *= 1.55;
+	if (this.equiptypesB[B_SECGUN]) this.ptAccMod *= 1.55;
 	if (this.equiptypes[AAGUN]) this.ptAccMod *= 1.45;
 	if (this.equiptypes[AAGUN] >= 2) this.ptAccMod *= 1.35;
 	if (this.equiptypes[PICKET]) this.ptAccMod *= 1.75;
