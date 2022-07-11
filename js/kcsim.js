@@ -347,7 +347,7 @@ function shell(ship,target,APIhou,attackSpecial) {
 	if (MECHANICS.fitGun && ship.ACCfit) acc += ship.ACCfit*.01;
 	acc *= accMod2;
 	
-	if (ship.bonusSpecialAcc && evFlat < 20) acc *= getBonusAcc(ship);
+	if (ship.bonusSpecialAcc && evFlat < 20) acc *= getBonusAcc(ship,target);
 	
 	if (target.isPT) {
 		if (NERFPTIMPS) {
@@ -622,7 +622,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 	if (ship.ACCnbca) acc += ship.ACCnbca*.01;
 	acc *= accMod2;
 	
-	if (ship.bonusSpecialAcc && evFlat < 20) acc *= getBonusAcc(ship);
+	if (ship.bonusSpecialAcc && evFlat < 20) acc *= getBonusAcc(ship,target);
 	
 	if (target.isPT) {
 		if (NERFPTIMPS) {
@@ -801,7 +801,7 @@ function ASW(ship,target,isnight,APIhou,isOASW) {
 		evFlat += (target.type == 'DD') ? SIMCONSTS.vanguardEvShellDD[target.num-1] || 0 : SIMCONSTS.vanguardEvShellOther[target.num-1] || 0;
 	}
 	var acc = hitRate(ship,80,sonarAcc,accMod);
-	if (ship.bonusSpecialAcc) acc *= getBonusAcc(ship);
+	if (ship.bonusSpecialAcc) acc *= getBonusAcc(ship,target);
 	var res = rollHit(accuracyAndCrit(ship,target,acc,target.getFormation().ASWev,evFlat,1.3,ship.planeasw && !isOASW),ship.planeasw && !isOASW ? ship.critdmgbonus : null);
 	var dmg = 0, realdmg = 0;
 	var premod = (isnight)? 0 : ship.getFormation().ASWmod*ENGAGEMENT*ship.damageMod();
@@ -844,7 +844,7 @@ function laser(ship,targets,APIhou) {
 	var accMod = ship.moraleMod();
 	if (!formationCountered(ship.fleet.formation.id,targets[0].fleet.formation.id)) accMod *= ship.getFormation().shellacc;
 	var acc = hitRate(ship,90,0,accMod);
-	if (ship.bonusSpecialAcc) acc *= getBonusAcc(ship);
+	if (ship.bonusSpecialAcc) acc *= getBonusAcc(ship,targets[0]);
 	var evMod = ship.getFormation().shellev;
 	var targetids = [], damages = [], crits = [];
 	for (var i=0; i<targets.length; i++) {
@@ -1466,7 +1466,7 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 		}
 		
 		var acc = hitRate(ship,85,accflat,accMod);
-		if (ship.bonusSpecialAcc) acc *= getBonusAcc(ship);
+		if (ship.bonusSpecialAcc) acc *= getBonusAcc(ship,target);
 		if (target.isPT) {
 			if (!NERFPTIMPS) {
 				acc = .42*acc + .24;
@@ -1514,7 +1514,7 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase) {
 	if (!contactMod) contactMod = 1;
 	var equip = ship.equips[slot];
 	var acc = (issupport)? .85 : .95;
-	if (ship.bonusSpecialAcc) acc *= getBonusAcc(ship,true);
+	if (ship.bonusSpecialAcc) acc *= getBonusAcc(ship,target,true);
 	if (SIMCONSTS.enableSkipTorpBonus && [459,625,626].includes(equip.mid)) {
 		if (['FBB','BB','BBV','CVL','CV'].includes(target.type)) acc += .28;
 		else if (['CA','CAV'].includes(target.type)) acc += .21;
@@ -1626,7 +1626,7 @@ function rollHit(accCrit,critdmgbonus) {
 	return 0;  //miss
 }
 
-function getBonusAcc(ship,isAir) {
+function getBonusAcc(ship,target,isAir) {
 	let mod = 1;
 	for (var i=0; i<ship.bonusSpecialAcc.length; i++) {
 		if (isAir && ship.bonusSpecialAcc[i].type != 'air') continue;
@@ -2401,7 +2401,7 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 		}
 		lbas.planecount[i] = Math.max(0,lbas.planecount[i]-shotProp-shotFlat-shotFix);
 		if (lbas.planecount[i] <= 0) {
-			lbas.equips[i].setProficiency(0);
+			lbas.equips[i].emptied = true;
 			continue;
 		}
 		
@@ -3064,6 +3064,12 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 		if (ships1[i].HP/ships1[i].maxHP <= .5) results.undamaged = false;
 		if (ships1[i].HP/ships1[i].maxHP <= BUCKETPERCENT || getRepairTime(ships1[i]) > BUCKETTIME) results.buckets++;
 		//if (ships1[i].repairsOrig && ships1[i].repairsOrig.length > ships1[i]
+	}
+	for (let base of LBAS) {
+		if (!base) continue;
+		for (let equip of base.equips) {
+			if (equip.emptied) equip.setProficiency(0);
+		}
 	}
 	results.MVP = F1.getMVP();
 	if (didNB) results.didNB = true;

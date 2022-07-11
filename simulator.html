@@ -947,6 +947,7 @@
 					</table>
 					<div v-show="isFriendFleet"><label><input type="checkbox" v-model="ffStrong"/><img src="assets/stats/ibuild.png"/>?</label></div>
 					<div v-show="isFriendFleet"><label><input type="checkbox" v-model="ffSkipSame"/>Skip comps with same ship in Main Fleet?</label></div>
+					<div v-show="isFriendFleet"><label>Start Date: <input type="date" v-model="ffDateStart"/></label></div>
 				</div>
 			</div>
 			<input type="button" value="Submit" :disabled="!canClose" @click="onclickLoad" />
@@ -962,7 +963,7 @@
 		<vmodal :active="active" @vclose="canClose&&(active=false)">
 		<div id="divBonusImporterMain">
 			<div class="kcnavImporter" v-show="bonusData.length<=0">
-				<div class="header">Import Bonuses from <a href="https://github.com/sorewachigauyo/kc-event-bonus">Dewy</a> or KCNav:</div>
+				<div class="header">Import Bonuses from <a href="https://github.com/sorewachigauyo/kc-event-bonus">Dewy</a>:</div>
 				<div class="kcnavImporterSettingsWrap">
 					<div>
 						<table>
@@ -982,13 +983,18 @@
 						</tr>
 						</table>
 					</div>
+					<div>
+						<div><label><input type="checkbox" v-model="fromDebuffed"/>Debuffed</label></div>
+						<div><label><input type="checkbox" v-model="fromFF"/>From Friend Fleet</label></div>
+						<div><label><input type="checkbox" v-model="fromBoss"/>From Targeting Boss</label></div>
+					</div>
 					<div v-show="!forNode">
 						<div><label><input type="checkbox" v-model="includeMain"/>Import to Main Fleet</label></div>
 						<div><label><input type="checkbox" v-model="includeFF"/>Import to Friend Fleets</label></div>
 					</div>
 				</div>
 				<input type="button" value="Load from Dewy" :disabled="!canClose" @click="onclickLoad('dewy')" />
-				<input type="button" value="Load from KCNav" :disabled="!canClose" @click="onclickLoad('kcnav')" />
+				<!-- <input type="button" value="Load from KCNav" :disabled="!canClose" @click="onclickLoad('kcnav')" /> -->
 				<span v-show="txtLoading">{{txtLoading}}</span>
 				<span class="note" v-show="showNoData">No Data Found</span>
 				<span class="note" v-show="showNoMatches">No Ship Matches Found</span>

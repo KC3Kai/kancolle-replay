@@ -1727,6 +1727,7 @@ LandBase.prototype.reset = function() {
 	this.planecount = this.PLANESLOTS.slice();
 	for (let eq of this.equips) {
 		if (eq.rank != eq.rankInit) eq.setProficiency(eq.rankInit || 0);
+		delete eq.emptied;
 	}
 }
 LandBase.prototype.getCost = function() {

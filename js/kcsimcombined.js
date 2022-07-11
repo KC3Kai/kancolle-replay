@@ -414,6 +414,12 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		if (ships1C[i].HP/ships1C[i].maxHP <= .5) results.undamaged = false;
 		if (ships1C[i].HP/ships1C[i].maxHP <= BUCKETPERCENT || getRepairTime(ships1C[i]) > BUCKETTIME) results.buckets++;
 	}
+	for (let base of LBAS) {
+		if (!base) continue;
+		for (let equip of base.equips) {
+			if (equip.emptied) equip.setProficiency(0);
+		}
+	}
 	results.MVP = F1.getMVP();
 	results.MVPC = F1C.getMVP();
 	if (didNB) results.didNB = true;
@@ -1025,6 +1031,12 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 		if (ships1[i].HP/ships1[i].maxHP <= .5) results.undamaged = false;
 		if (ships1[i].HP/ships1[i].maxHP <= BUCKETPERCENT || getRepairTime(ships1[i]) > BUCKETTIME) results.buckets++;
 	}
+	for (let base of LBAS) {
+		if (!base) continue;
+		for (let equip of base.equips) {
+			if (equip.emptied) equip.setProficiency(0);
+		}
+	}
 	results.MVP = F1.getMVP();
 	if (didNB) results.didNB = true;
 	
@@ -1496,6 +1508,12 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		}
 		if (ships1C[i].HP/ships1C[i].maxHP <= .5) results.undamaged = false;
 		if (ships1C[i].HP/ships1C[i].maxHP <= BUCKETPERCENT || getRepairTime(ships1C[i]) > BUCKETTIME) results.buckets++;
+	}
+	for (let base of LBAS) {
+		if (!base) continue;
+		for (let equip of base.equips) {
+			if (equip.emptied) equip.setProficiency(0);
+		}
 	}
 	results.MVP = F1.getMVP();
 	results.MVPC = F1C.getMVP();

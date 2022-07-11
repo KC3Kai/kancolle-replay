@@ -621,6 +621,7 @@ var UI_KCNAVCOMPIMPORTER = Vue.createApp({
 		hqMax: null,
 		ffSkipSame: true,
 		ffStrong: true,
+		ffDateStart: null,
 		
 		selectWorld: 0,
 		selectLetter: 0,
@@ -701,6 +702,7 @@ var UI_KCNAVCOMPIMPORTER = Vue.createApp({
 				if (this.hqMin) url += '&minHqLvl=' + this.hqMin;
 				if (this.hqMax) url += '&maxHqLvl=' + this.hqMax;
 			} else {
+				if (this.ffDateStart) url += '&start=' + this.ffDateStart;
 				url += '&minGauge=1&maxGauge=4';
 			}
 			if (+this.world < 10) {
@@ -798,6 +800,9 @@ var UI_BONUSIMPORTER = Vue.createApp({
 		forNode: null,
 		includeMain: true,
 		includeFF: true,
+		fromDebuffed: false,
+		fromFF: false,
+		fromBoss: false,
 		bonusData: [],
 	}),
 	mounted: function() {
@@ -864,7 +869,11 @@ var UI_BONUSIMPORTER = Vue.createApp({
 			if (source == 'dewy') {
 				url = CONST.urlDewyAbnormalDamage;
 				url += '/' + this.world + '-' + this.mapnum;
-				url += '/' + this.letter + '.json';
+				url += '/' + this.letter;
+				if (this.fromFF) url += '_friendlyfleet';
+				if (this.fromDebuffed) url += '_debuffed';
+				if (this.fromBoss) url += '_vsboss';
+				url += '.json';
 			} else {
 				url = CONST.urlKCNavAbnormalDamage;
 				url += '?map=' + this.world + '-' + this.mapnum;
