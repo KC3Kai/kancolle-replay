@@ -175,7 +175,7 @@ var SIM = {
 			this._results.totalAmmoS += cost[1];
 			this._results.totalBauxS += cost[2];
 			for (let equip of base.equips) {
-				if (equip.rank <= 0 && equip.rank != equip.rankInit) this._results.totalEmptiedLBAS++;
+				if (equip.emptied) this._results.totalEmptiedLBAS++;
 			}
 		}
 		let shipBossFlag = FLEETS2.at(-1).ships[0];
