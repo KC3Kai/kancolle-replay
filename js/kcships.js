@@ -734,6 +734,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		this.statsEqBonus = bonusesPrev;
 		if (addstats) {
 			for (let stat in this.statsEqBonus) {
+				if (stat == 'ACC') continue;
 				this[stat] += this.statsEqBonus[stat];
 			}
 		}
