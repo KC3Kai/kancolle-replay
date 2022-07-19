@@ -521,6 +521,14 @@
 								<span class="statBonus" v-show="showEquipBonus && ship.statsBonus.range">(+{{ship.statsBonus.range}})</span>
 							</span>
 						</div>
+						<div class="statHalf" v-show="showStatTotal">
+							<img src="assets/stats/acc.png" title="Accuracy"/><input style="visibility:hidden"/>
+							<span>
+								<span>{{getStatTotal(ship,'acc')}}</span>
+								<span class="statBonus" v-show="showEquipBonus && ship.statsBonus.acc > 0">(+{{ship.statsBonus.acc}})</span>
+								<span class="statBonus negative" v-show="showEquipBonus && ship.statsBonus.acc < 0">({{ship.statsBonus.acc}})</span>
+							</span>
+						</div>
 						<div class="statHalf">
 							<img src="assets/stats/rm.png" title="Torpedo Accuracy"/>
 							<input type="number" v-model.number="ship.statsBase.tacc" min="0" max="999" :class="{unknown:!!ship.statsUnknown.tacc}" :title="ship.statsUnknown.tacc" @change="onchangeStat($event,ship.statsBase,'tacc')"/>

@@ -137,6 +137,7 @@ var FLEET_MODEL = {
 				asw: 0,
 				los: 0,
 				range: sdata.RNG || 0,
+				acc: 0,
 			},
 			statsBonus: {
 				
