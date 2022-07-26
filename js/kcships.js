@@ -1874,11 +1874,13 @@ Equip.prototype.setImprovement = function(level) {
 		this.improves.AAself = mod*Math.sqrt(level);
 	}
 	
-	if ([12,234].includes(this.mid)) {
+	if ([12,234,247,467].includes(this.mid)) {
 		this.improves.Pshell = .3*level;
+		this.improves.Pnb = .3*level;
 	}
 	if ([10,66,220,275,358].includes(this.mid)) {
 		this.improves.Pshell = .2*level;
+		this.improves.Pnb = .2*level;
 	}
 	
 	if (this.type == RADARS || this.type == RADARL) {
