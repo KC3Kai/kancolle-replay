@@ -433,7 +433,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	}
 	if (MECHANICS.fitGunUpdate1) {
 		let accFit = this.getFit();
-		if (accFit || this.ACCfit) this.ACCfit = accFit;
+		if (accFit || (this.ACCfit && this.fitclass == 100)) this.ACCfit = accFit;
 	}
 	
 	var installbonus1 = 1 + (installeqs.DH1stars / (installeqs.DH1+installeqs.DH2))/50;

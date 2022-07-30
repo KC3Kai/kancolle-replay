@@ -5358,6 +5358,18 @@ var EQDATA = {
 		EV: 2,
 		LOS: 8,
 	},
+	461: {
+		name: 'Skilled Sonar Personnel + Late Model Bow Torpedo Mount (4 tubes)',
+		nameJP: '熟練聴音員+後期型艦首魚雷(4門)',
+		added: '2022-07-28',
+		type: TORPEDOSS,
+		specialCutIn: true,
+		TP: 13,
+		AR: 1,
+		ACC: 5,
+		EV: 5,
+		RNG: 1,
+	},
 	463: {
 		name: '15.5cm Triple Secondary Gun Mount Kai Ni',
 		nameJP: '15.5cm三連装副砲改二',
@@ -5453,6 +5465,16 @@ var EQDATA = {
 		EV: 1,
 		ASW: 3,
 		RNG: 1,
+	},
+	471: {
+		name: 'Loire 130M',
+		nameJP: 'Loire 130M',
+		added: '2022-07-28',
+		type: SEAPLANE, image: 50,
+		isnightscout: true,
+		ACC: 2,
+		ASW: 3,
+		LOS: 3,
 	},
 	501: {
 		name: '5inch Single Cannon',
@@ -6980,6 +7002,7 @@ var LBASDATA = {
 	264: { distance: 4, cost: 6 },
 	466: { distance: 6, cost: 9 },
 	469: { distance: 7, cost: 5 },
+	471: { distance: 3, cost: 9 },
 };
 
 
