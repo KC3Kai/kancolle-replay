@@ -169,8 +169,8 @@ var SIMCONSTS = {
 	mutsuSpecialRate: 60,
 	coloradoSpecialRate: 60,
 	kongouSpecialRate: null,
-	yamatoSpecial3Rate: 60,
-	yamatoSpecial2Rate: 60,
+	yamatoSpecial3Rate: 80,
+	yamatoSpecial2Rate: 80,
 	airRaidCostW6: false,
 	enableEnemyAACI: true,
 	enableEnemyAACILBAS: false,
@@ -1695,8 +1695,8 @@ function damage(ship,target,base,preMod,postMod,cap,isAirstrike,isSupport) {
 	}
 	if (C) console.log('	before def: '+dmg);
 	var ar = target.AR + (target.improves.AR || 0);
+	if (target.isSub && ship.aswPenetrate) ar = Math.max(1,ar-ship.aswPenetrate);
 	dmg -= .7*ar+.6*Math.floor(Math.random()*ar) - (target.debuff||0);
-	if (target.isSub && ship.aswPenetrate) dmg += ship.aswPenetrate;
 	if (C) console.log('	after def: '+dmg);
 	
 	if (ship.ammoleft < 5) dmg *= .2*ship.ammoleft;
@@ -1731,7 +1731,7 @@ function compareAP(fleet1,fleet2,eqtFilter1,includeEscort,eqtFilter2) {
 	if (C) console.log('AS: '+ap1+' '+ap2+' '+fleet1.AS + ' '+fleet2.AS);
 }
 
-function choiceWProtect(targets,searchlightRerolls,includeEscort) {
+function choiceWProtect(targets,searchlightRerolls,includeEscort,ignoreVanguard) {
 	DIDPROTECT = false; //disgusting hack, rework later?
 	var target = targets[Math.floor(Math.random()*targets.length)];
 	if (searchlightRerolls) {
@@ -1740,7 +1740,7 @@ function choiceWProtect(targets,searchlightRerolls,includeEscort) {
 			target = targets[Math.floor(Math.random()*targets.length)];
 		}
 	}
-	if (target.getFormation() == VANGUARD1) {
+	if (!ignoreVanguard && target.getFormation() == VANGUARD1) {
 		target = targets[Math.floor(Math.random()*targets.length)];
 	}
 	if (!target.isflagship || target.isInstall || target.isescort || !MECHANICS.flagProtect) return target;
@@ -2144,9 +2144,9 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 				}
 				if (!targetsE.length) targets = targetsM;
 				else if (!targetsM.length) targets = targetsE;
-				else targets = (Math.random() < .5)? targetsM : targetsE;
+				else targets = (Math.random() < .4)? targetsM : targetsE;
 			}
-			var target = choiceWProtect(targets);
+			var target = choiceWProtect(targets,null,null,true);
 			var evFlat = 0;
 			if (target.fleet.formation.id == 6) {
 				evFlat += (target.type == 'DD') ? SIMCONSTS.vanguardEvShellDD[target.num-1] || 0 : SIMCONSTS.vanguardEvShellOther[target.num-1] || 0;
@@ -2156,12 +2156,22 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 				if (!ship.canTorp()) continue;
 				torpDmg = ship.TP;
 				torpDmg += 8;
-				accCrit = accuracyAndCrit(ship,target,hitRate(ship,54,ship.ACC/*+torpDmg*.35*/,ship.moraleMod(true)),target.getFormation().torpev,evFlat,1.2);
+				let formMod = 1;
+				if (FLEETS1[0] && FLEETS1[0].formation && !FLEETS1[0].combinedWith && !target.fleet.combinedWith) {
+					formMod = FLEETS1[0].formation.torpacc;
+					if (FLEETS1[0].formation.id == 6 && target.type == 'DD') formMod *= 1.2;
+				}
+				accCrit = accuracyAndCrit(ship,target,hitRate(ship,54,ship.ACC/*+torpDmg*.35*/,ship.moraleMod(true)*formMod),target.getFormation().torpev,evFlat,1.2);
 			} else if (suptype == 2) {
 				var baseacc;
 				if (isboss) baseacc = (SIMCONSTS.supportShellB != null)? SIMCONSTS.supportShellB : 64;
 				else baseacc = (SIMCONSTS.supportShellN != null)? SIMCONSTS.supportShellN : 64;
-				accCrit = accuracyAndCrit(ship,target,hitRate(ship,baseacc,ship.ACC,ship.moraleMod()),target.getFormation().shellev,evFlat,1);
+				let formMod = 1;
+				if (FLEETS1[0] && FLEETS1[0].formation && !FLEETS1[0].combinedWith && !target.fleet.combinedWith && !formationCountered(FLEETS1[0].formation.id,target.getFormation().id)) {
+					formMod = FLEETS1[0].formation.shellacc;
+					if (FLEETS1[0].formation.id == 6 && target.type == 'DD') formMod *= 1.1;
+				}
+				accCrit = accuracyAndCrit(ship,target,hitRate(ship,baseacc,ship.ACC,ship.moraleMod()*formMod),target.getFormation().shellev,evFlat,1);
 			} else {
 				if (!ship.CVshelltype || !ship.canASW()) continue;
 				var baseacc;
