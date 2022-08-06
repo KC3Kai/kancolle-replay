@@ -139,8 +139,8 @@ var SIM = {
 				if (useBucket) this._results.totalBuckets++;
 				let fuelleft = ship.fuelleft - (ship._fuelUnderway || 0);
 				let ammoleft = ship.ammoleft - (ship._ammoUnderway || 0);
-				this._results.totalFuelS += Math.floor(ship.fuel * (10-fuelleft)/10);
-				this._results.totalAmmoS += Math.floor(ship.ammo * (10-ammoleft)/10);
+				this._results.totalFuelS += Math.round(ship.fuel * (10-fuelleft)/10);
+				this._results.totalAmmoS += Math.round(ship.ammo * (10-ammoleft)/10);
 				for (let i=0; i<ship.PLANESLOTS.length; i++) {
 					this._results.totalBauxS += 5*(ship.PLANESLOTS[i]-ship.planecount[i]);
 					this._results.totalEmptiedPlanes += +!!(ship.PLANESLOTS[i] && ship.planecount[i] <= 0);
@@ -566,8 +566,8 @@ var SIM = {
 				for (let fleet of [fleetF,fleetF.combinedWith]) {
 					if (!fleet) continue;
 					for (let ship of fleet.ships) {
-						ship.fuelleft -= 10*Math.floor(ship.fuel*(node.addCostFuel || 0))/ship.fuel;
-						ship.ammoleft -= 10*Math.floor(ship.ammo*(node.addCostAmmo || 0))/ship.ammo;
+						ship.fuelleft -= 10*Math.floor(Math.round(ship.fuel*(ship.fuelleft/10))*(node.addCostFuel || 0))/ship.fuel;
+						ship.ammoleft -= 10*Math.floor(Math.round(ship.ammo*(ship.ammoleft/10))*(node.addCostAmmo || 0))/ship.ammo;
 					}
 				}
 			}

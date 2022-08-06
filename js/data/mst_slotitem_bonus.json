@@ -5014,5 +5014,85 @@
 				"level": 10
 			}
 		]
+	},
+	{
+		"ids": [472],
+		"bonuses": [
+			{
+				"bonus": { "tais": 2 },
+				"shipClass": [65,69,83,84,87,91,93,95,99,102,105,106,107,110,114]
+			},
+			{
+				"bonus": { "tais": 1 },
+				"shipClass": [67,78,82,88,108,112]
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"shipType": [1]
+			},
+			{
+				"bonus": { "tais": 1, "kaih": 1, "houm": 1 },
+				"shipX": [920],
+				"num": 1
+			}
+		]
+	},
+	{
+		"ids": [227],
+		"bonuses": [
+			{
+				"bonus": { "tais": 1 },
+				"level": 8
+			},
+			{
+				"bonus": { "tais": 1 },
+				"level": 10
+			}
+		]
+	},
+	{
+		"ids": [132],
+		"bonuses": [
+			{
+				"bonus": { "kaih": 1 },
+				"level": 3,
+				"num": 1
+			},
+			{
+				"bonus": { "tais": 1 },
+				"level": 5,
+				"num": 1
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"level": 7,
+				"num": 1
+			},
+			{
+				"bonus": { "tais": 1 },
+				"level": 8,
+				"num": 1
+			},
+			{
+				"bonus": { "houm": 1 },
+				"level": 9,
+				"num": 1
+			},
+			{
+				"bonus": { "tais": 1 },
+				"level": 10,
+				"num": 1
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"shipX": [546,911,916],
+				"num": 1
+			},
+			{
+				"bonus": { "kaih": 2 },
+				"shipX": [156,461,462,466,467],
+				"num": 1
+			}
+		]
 	}
 ]
