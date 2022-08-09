@@ -1907,12 +1907,12 @@ function getAACI(defenders,APIkouku) {
 
 function getContact(carriers) {
 	if (!MECHANICS.artillerySpotting) return null;
-	var losPower = 0;
+	var losPower = 1;
 	for (var i=0; i<carriers.length; i++) {
 		var ship = carriers[i];
 		for (var j=0; j<ship.equips.length; j++) {
 			var e = ship.equips[j];
-			if (e.LOS && EQTDATA[e.type].isPlane && e.type != TORPBOMBER) losPower += Math.floor(Math.sqrt(ship.planecount[j])*e.LOS);
+			if (e.LOS && EQTDATA[e.type].canContact && e.type != TORPBOMBER) losPower += Math.floor(Math.sqrt(ship.planecount[j])*e.LOS);
 		}
 	}
 	var chance, cmod;
