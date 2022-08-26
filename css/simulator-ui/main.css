@@ -187,6 +187,9 @@ div.fleetCompAdd > div {
 #divSettingsAdvanced > div {
 	margin-bottom: 15px;
 }
+#divSettings input.changed {
+	background-color: yellow;
+}
 
 #divSimStatsButtons {
 	margin-top: 10px;

@@ -1924,6 +1924,38 @@ var MAPDATA = {
 			},
 		}
 	},
+	55: {
+		name: 'Summer 2022',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmDN: 210,
+				bgmNN: 210,
+				bgmDB: 211,
+				bgmNB: 211,
+				bossnode: ['R'],
+			},
+			2: {
+				name: 'E2',
+				bgmDN: 210,
+				bgmNN: 210,
+				bgmDB: 211,
+				bgmNB: 211,
+				bossnode: ['K','V'],
+			},
+			3: {
+				name: 'E3',
+				bgmDN: 211,
+				bgmNN: 211,
+				bgmDB: 212,
+				bgmNB: 212,
+				bossnode: ['L','U'],
+				overrideBGM: {
+					'L': { bgmDB: 99, bgmNB: 99 },
+				},
+			},
+		}
+	},
 }
 
 //-------------------------------------

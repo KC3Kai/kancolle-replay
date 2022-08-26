@@ -59,6 +59,7 @@ Fleet.prototype.fleetAntiAir = function(alreadyCombined,isRaid) {
 		for (var i=0; i<this.ships.length; i++) {
 			if (this.ships[i].HP <= 0) { continue; }
 			if (this.ships[i].retreated) continue;
+			let aaF = 0;
 			for (var j=0; j<this.ships[i].equips.length; j++) {
 				var equip = this.ships[i].equips[j];
 				var mod = 0;
@@ -76,9 +77,10 @@ Fleet.prototype.fleetAntiAir = function(alreadyCombined,isRaid) {
 					default:
 						mod = .2; break;
 				}
-				if (equip.AA) this._baseFAA += equip.AA * mod;
+				if (equip.AA) aaF += equip.AA * mod;
 			}
-			if (this.ships[i].improves.AAfleet) this._baseFAA += this.ships[i].improves.AAfleet;
+			if (this.ships[i].improves.AAfleet) aaF += this.ships[i].improves.AAfleet;
+			this._baseFAA += Math.floor(aaF);
 		}
 		this._baseFAA = Math.floor(this._baseFAA);
 	}
@@ -734,7 +736,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		this.statsEqBonus = bonusesPrev;
 		if (addstats) {
 			for (let stat in this.statsEqBonus) {
-				if (stat == 'ACC') continue;
+				if (stat == 'ACC' || stat == 'DIVEBOMB') continue;
 				this[stat] += this.statsEqBonus[stat];
 			}
 		}
@@ -1279,6 +1281,7 @@ Ship.prototype.getAACItype = function(atypes) {
 	if (!MECHANICS.aaci8Up && atypes[A_HAFD] && atypes[A_AIRRADAR]) types.push(8);
 	
 	if ([546,911,916].includes(this.mid) && hasID[275] && atypes[A_AIRRADAR]) types.push(26); //Musashi/Yamato Kai Ni
+	if ([321].includes(this.mid) && hasID[275] && hasID[274] && atypes[A_AIRRADAR]) types.push(27); //Ooyodo
 	if ([82,88,553,554,148,546].indexOf(this.mid) != -1 && hasID[274] && atypes[A_AIRRADAR]) types.push(28); //Ise-class Kai + Musashi Kai
 	if ((this.mid == 557 || this.mid == 558) && atypes[A_HAGUN] && atypes[A_AIRRADAR]) types.push(29); //Isokaze+Hamakaze B Kai
 	

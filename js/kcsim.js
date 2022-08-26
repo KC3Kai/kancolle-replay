@@ -82,7 +82,8 @@ var AACIDATA = {
 	23:{num:1,rate:.8,mod:1.05,equip:'G',num1:1},
 	24:{num:3,rate:.5,mod:1.25,equip:'HG',num1:1},
 	25:{num:7,rate:.6,mod:1.55,equip:'GRS',num1:1},
-	26:{num:8,rate:.6,mod:1.4,equip:'HR',num1:1},
+	26:{num:6,rate:.55,mod:1.4,equip:'HR',num1:1},
+	27:{num:5,rate:.55,mod:1.55,equip:'BGR',num1:1},
 	28:{num:4,rate:.55,mod:1.4,equip:'GR',num1:1},
 	29:{num:5,rate:.6,mod:1.55,equip:'HR',num1:1},
 	30:{num:3,rate:.4,mod:1.3,equip:'HHH',num1:1},
@@ -109,9 +110,9 @@ var ARTILLERYSPOTDATA = {
 	4: { dmgMod: 1.2, accMod: 1.5, chanceMod: 1.3, name: 'Radar CI' },
 	5: { dmgMod: 1.3, accMod: 1.3, chanceMod: 1.4, name: 'AP+Sec. CI' },
 	6: { dmgMod: 1.5, accMod: 1.2, chanceMod: 1.5, name: 'AP CI' },
-	71: { dmgMod: 1.25, accMod: 1.2, chanceMod: 1.25, id: 7, name: 'CVCI (FBA)' },
+	71: { dmgMod: 1.25, accMod: 1.35, chanceMod: 1.25, id: 7, name: 'CVCI (FBA)' },
 	72: { dmgMod: 1.2, accMod: 1.2, chanceMod: 1.4, id: 7, name: 'CVCI (BBA)' },
-	73: { dmgMod: 1.15, accMod: 1.2, chanceMod: 1.55, id: 7, name: 'CVCI (BA)' },
+	73: { dmgMod: 1.15, accMod: 1.18, chanceMod: 1.55, id: 7, name: 'CVCI (BA)' },
 	200: { dmgMod: 1.35, accMod: 1.2, chanceMod: 1.2, name: 'Zuiun CI' },
 	201: { dmgMod: 1.3, accMod: 1.2, chanceMod: 1.3, name: 'DB CI' },
 }
@@ -164,6 +165,15 @@ var SIMCONSTS = {
 	vanguardEvShellOther: [7,7,7,7,15,20,20],
 	vanguardEvTorpDD: [15,15,45,50,65,75,75],
 	vanguardEvTorpOther: [15,15,20,45,45,60,60],
+	vanguardEvShellDDMod: null,
+	vanguardEvTorpDDMod: null,
+	vanguardEvShellOtherMod: [.95,.95,.95,.95,.865,.79,.71],
+	vanguardEvShellDDModNormal: [.95,.95,.81,.81,.69,.64,.64],
+	vanguardEvShellDDModEvent: [.95,.95,.67,.67,.52,.48,.42],
+	vanguardEvTorpOtherMod: [.95,.95,.81,.72,.68,.61,.56],
+	vanguardEvTorpDDModNormal: [.95,.95,.7,.62,.54,.48,.48],
+	vanguardEvTorpDDModEvent: [.95,.95,.57,.51,.42,.35,.35],
+	vanguardUseType: 1,
 	nelsonTouchRate: 60,
 	nagatoSpecialRate: 60,
 	mutsuSpecialRate: 60,
@@ -185,7 +195,21 @@ var SIMCONSTS = {
 	nbattack7New: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.15, name: 'DDCI (GTR) x1', replace: 11, replaceChance: .65 },
 	nbattack8Old: { dmgMod: 1.2, accMod: 1.65, chanceMod: 1.5, name: 'DDCI (LTR)' },
 	nbattack8New: { dmgMod: 1.2, accMod: 1.65, chanceMod: 1.4, name: 'DDCI (LTR) x1', replace: 12, replaceChance: .5 },
+	airstrikeDmgMF: -10,
+	airstrikeDmgMFRaid: -10,
+	airstrikeDmgME: -10,
+	airstrikeDmgEF: -20,
+	airstrikeDmgEFRaid: -20,
+	airstrikeDmgEE: -20,
+	airstrikeAccMF: 15,
+	airstrikeAccMFRaid: 10,
+	airstrikeAccME: 15,
+	airstrikeAccEF: -20,
+	airstrikeAccEFRaid: -25,
+	airstrikeAccEE: -15,
 }
+SIMCONSTS.vanguardEvShellDDMod = SIMCONSTS.vanguardEvShellDDModNormal.slice();
+SIMCONSTS.vanguardEvTorpDDMod = SIMCONSTS.vanguardEvTorpDDModNormal.slice();
 function setConst(key, val) {
 	if (val == null) SIMCONSTS[key] = null;
 	else SIMCONSTS[key] = parseInt(val);
@@ -240,6 +264,7 @@ var MECHANICS = {
 	coloradoSpecialFix: true,
 	kongouSpecialBuff2: true,
 	coloradoSpecialBuff2: true,
+	eqBonusAA: false,
 };
 var NERFPTIMPS = false;
 var BREAKPTIMPS = false;
@@ -336,8 +361,12 @@ function shell(ship,target,APIhou,attackSpecial) {
 	
 	var evFlat = 0;
 	if (target.fleet.formation.id == 6) {
-		evFlat += (target.type == 'DD') ? SIMCONSTS.vanguardEvShellDD[target.num-1] || 0 : SIMCONSTS.vanguardEvShellOther[target.num-1] || 0;
-		if (target.type == 'DD' && !isPlayable(target.mid) && accMod > 1) accMod = 1 + (accMod-1)/2;
+		if (SIMCONSTS.vanguardUseType == 1) {
+			evFlat += (target.type == 'DD') ? SIMCONSTS.vanguardEvShellDD[target.num-1] || 0 : SIMCONSTS.vanguardEvShellOther[target.num-1] || 0;
+			if (target.type == 'DD' && !isPlayable(target.mid) && accMod > 1) accMod = 1 + (accMod-1)/2;
+		} else {
+			accMod *= target.type == 'DD' ? (SIMCONSTS.vanguardEvShellDDMod[target.num-1] || 1) : (SIMCONSTS.vanguardEvShellOtherMod[target.num-1] || 1);
+		}
 	}
 	evFlat += target.improves.EVshell || 0;
 	
@@ -349,7 +378,7 @@ function shell(ship,target,APIhou,attackSpecial) {
 	if (MECHANICS.fitGun && ship.ACCfit) acc += ship.ACCfit*.01;
 	acc *= accMod2;
 	
-	if (ship.bonusSpecialAcc && evFlat < 20) acc *= getBonusAcc(ship,target);
+	if (ship.bonusSpecialAcc && (evFlat < 20 || SIMCONSTS.vanguardUseType != 1)) acc *= getBonusAcc(ship,target);
 	
 	if (target.isPT) {
 		if (NERFPTIMPS) {
@@ -609,7 +638,11 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 		preMod *= .5;
 	}
 	if (target.fleet.formation.id == 6) {
-		evFlat += (target.type == 'DD') ? SIMCONSTS.vanguardEvShellDD[target.num-1] || 0 : SIMCONSTS.vanguardEvShellOther[target.num-1] || 0;
+		if (SIMCONSTS.vanguardUseType == 1) {
+			evFlat += (target.type == 'DD') ? SIMCONSTS.vanguardEvShellDD[target.num-1] || 0 : SIMCONSTS.vanguardEvShellOther[target.num-1] || 0;
+		} else {
+			accMod *= target.type == 'DD' ? (SIMCONSTS.vanguardEvShellDDMod[target.num-1] || 1) : (SIMCONSTS.vanguardEvShellOtherMod[target.num-1] || 1);
+		}
 	}
 	
 	//PT Imp bonus
@@ -624,7 +657,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 	if (ship.ACCnbca) acc += ship.ACCnbca*.01;
 	acc *= accMod2;
 	
-	if (ship.bonusSpecialAcc && evFlat < 20) acc *= getBonusAcc(ship,target);
+	if (ship.bonusSpecialAcc && (evFlat < 20 || SIMCONSTS.vanguardUseType != 1)) acc *= getBonusAcc(ship,target);
 	
 	if (target.isPT) {
 		if (NERFPTIMPS) {
@@ -800,7 +833,11 @@ function ASW(ship,target,isnight,APIhou,isOASW) {
 	if (!formationCountered(ship.fleet.formation.id,target.fleet.formation.id)) accMod *= ship.getFormation().ASWacc || ship.getFormation().shellacc;
 	var evFlat = 0;
 	if (target.fleet.formation.id == 6) {
-		evFlat += (target.type == 'DD') ? SIMCONSTS.vanguardEvShellDD[target.num-1] || 0 : SIMCONSTS.vanguardEvShellOther[target.num-1] || 0;
+		if (SIMCONSTS.vanguardUseType == 1) {
+			evFlat += (target.type == 'DD') ? SIMCONSTS.vanguardEvShellDD[target.num-1] || 0 : SIMCONSTS.vanguardEvShellOther[target.num-1] || 0;
+		} else {
+			accMod *= target.type == 'DD' ? (SIMCONSTS.vanguardEvShellDDMod[target.num-1] || 1) : (SIMCONSTS.vanguardEvShellOtherMod[target.num-1] || 1);
+		}
 	}
 	var acc = hitRate(ship,80,sonarAcc,accMod);
 	if (ship.bonusSpecialAcc) acc *= getBonusAcc(ship,target);
@@ -1464,7 +1501,11 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 		
 		var evFlat = (target.improves.EVtorp)? ship.improves.EVtorp : 0;
 		if (target.fleet.formation.id == 6) {
-			evFlat += (target.type == 'DD') ? SIMCONSTS.vanguardEvTorpDD[target.num-1] || 0 : SIMCONSTS.vanguardEvTorpOther[target.num-1] || 0;
+			if (SIMCONSTS.vanguardUseType == 1) {
+				evFlat += (target.type == 'DD') ? SIMCONSTS.vanguardEvTorpDD[target.num-1] || 0 : SIMCONSTS.vanguardEvTorpOther[target.num-1] || 0;
+			} else {
+				accMod *= target.type == 'DD' ? (SIMCONSTS.vanguardEvTorpDDMod[target.num-1] || 1) : (SIMCONSTS.vanguardEvTorpOtherMod[target.num-1] || 1);
+			}
 		}
 		
 		var acc = hitRate(ship,85,accflat,accMod);
@@ -1512,17 +1553,28 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 	}
 }
 
-function airstrike(ship,target,slot,contactMod,issupport,isjetphase) {
+function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 	if (!contactMod) contactMod = 1;
 	var equip = ship.equips[slot];
 	var acc = (issupport)? .85 : .95;
+	if (target.fleet.combinedWith) {
+		if (target.side == 0) {
+			if (isRaid) {
+				acc += (target.isescort ? (SIMCONSTS.airstrikeAccEFRaid || 0) : (SIMCONSTS.airstrikeAccMFRaid || 0))/100;
+			} else {
+				acc += (target.isescort ? (SIMCONSTS.airstrikeAccEF || 0) : (SIMCONSTS.airstrikeAccMF || 0))/100;
+			}
+		} else {
+			acc += (target.isescort ? (SIMCONSTS.airstrikeAccEE || 0) : (SIMCONSTS.airstrikeAccME || 0))/100;
+		}
+	}
 	if (ship.bonusSpecialAcc) acc *= getBonusAcc(ship,target,true);
 	if (SIMCONSTS.enableSkipTorpBonus && [459,625,626].includes(equip.mid)) {
 		if (['FBB','BB','BBV','CVL','CV'].includes(target.type)) acc += .28;
 		else if (['CA','CAV'].includes(target.type)) acc += .21;
 		else acc += .14;
 	}
-	var res = rollHit(accuracyAndCrit(ship,target,acc,target.getFormation().AAmod,0,.2,!issupport && 2),!issupport && ship.critdmgbonus);
+	var res = rollHit(accuracyAndCrit(ship,target,acc,target.getFormation().AAmod,0,0,!issupport && 2),!issupport && ship.critdmgbonus);
 	var dmg = 0, realdmg = 0;
 	var planebase = (equip.isdivebomber)? equip.DIVEBOMB + (equip.airstrikePowerImprove || 0) : (target.isInstall)? 0 : equip.TP + (equip.airstrikePowerImprove || 0);
 	planebase = planebase || 0;
@@ -1535,7 +1587,17 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase) {
 			}
 		}
 		var base = (issupport)? 3 : 25;
-		if (target.fleet.airstrikeMod) base += target.fleet.airstrikeMod; //in enemy combined, main gets -10, escort -20
+		if (target.fleet.combinedWith && !issupport) {
+			if (target.side == 0) {
+				if (isRaid) {
+					base += target.isescort ? (SIMCONSTS.airstrikeDmgEFRaid || 0) : (SIMCONSTS.airstrikeDmgMFRaid || 0);
+				} else {
+					base += target.isescort ? (SIMCONSTS.airstrikeDmgEF || 0) : (SIMCONSTS.airstrikeDmgMF || 0);
+				}
+			} else {
+				base += target.isescort ? (SIMCONSTS.airstrikeDmgEE || 0) : (SIMCONSTS.airstrikeDmgME || 0);
+			}
+		}
 		var preMod = (equip.isdivebomber)? 1 : ((Math.random() < .5)? .8 : 1.5);
 		if (equip.isjet && !isjetphase) preMod *= 1/Math.sqrt(2);
 		if (SIMCONSTS.enableSkipTorpBonus && [459,625,626].includes(equip.mid) && !target.isInstall) {
@@ -1614,7 +1676,7 @@ function accuracyAndCrit(ship,target,hit,evMod,evFlat,critMod,isPlanes,critBonus
 	var crit = Math.sqrt(100*acc)*critMod*.01;
 	if (isPlanes) {
 		if (ship.ACCplane) acc += ship.ACCplane*.01;
-		if (ship.critratebonus) crit += ship.critratebonus*.01; //x.75 earlier, find real value?
+		if (ship.critratebonus) crit += ship.critratebonus*.01;
 	}
 	crit += critBonusFlat || 0;
 	if (C) console.log('	accfinal: '+acc+', crit: '+crit);
@@ -1814,6 +1876,7 @@ function AADefenceFighters(carriers,showplanes,APIkouku,eqtFilter) {
 function getAAShotProp(defender,slotsize,resistMod,isRaid) {
 	var sAA = defender.weightedAntiAir(isRaid);
 	if (MECHANICS.aaResist && resistMod) sAA = Math.floor(sAA*resistMod);
+	if (MECHANICS.eqBonusAA) sAA += defender.statsEqBonus.AA*.8;
 	return Math.floor(slotsize*sAA/200);
 }
 
@@ -1824,6 +1887,10 @@ function getAAShotFlat(defender,resistModShip,resistModFleet,isRaid) {
 	if (MECHANICS.aaResist) {
 		if (resistModShip) sAA = Math.floor(sAA*resistModShip);
 		if (resistModFleet) fAA = Math.floor(fAA*resistModFleet);
+	}
+	if (MECHANICS.eqBonusAA) {
+		sAA += defender.statsEqBonus.AA*.8;
+		fAA += defender.statsEqBonus.AA*.75;
 	}
 	return (sAA+fAA)*mod;
 }
@@ -2034,7 +2101,7 @@ function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupp
 				}
 				var target = choiceWProtect(targetsR,null,true);
 				if (target._rocketTriggered) continue;
-				var dmg = airstrike(ship,target,slot,contactMod,issupport,isjetphase);
+				var dmg = airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid);
 				if (C) {
 					if (target.isescort) {
 						APIkouku.api_stage3_combined[(target.side)?'api_edam':'api_fdam'][target.num] += dmg;
@@ -2147,9 +2214,13 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 				else targets = (Math.random() < .4)? targetsM : targetsE;
 			}
 			var target = choiceWProtect(targets,null,null,true);
-			var evFlat = 0;
+			var evFlat = 0, accMod = 1;
 			if (target.fleet.formation.id == 6) {
-				evFlat += (target.type == 'DD') ? SIMCONSTS.vanguardEvShellDD[target.num-1] || 0 : SIMCONSTS.vanguardEvShellOther[target.num-1] || 0;
+				if (SIMCONSTS.vanguardUseType == 1) {
+					evFlat += (target.type == 'DD') ? SIMCONSTS.vanguardEvShellDD[target.num-1] || 0 : SIMCONSTS.vanguardEvShellOther[target.num-1] || 0;
+				} else {
+					accMod *= target.type == 'DD' ? (SIMCONSTS.vanguardEvShellDDMod[target.num-1] || 1) : (SIMCONSTS.vanguardEvShellOtherMod[target.num-1] || 1);
+				}
 			}
 			var accCrit, torpDmg;
 			if (suptype==3) {
@@ -2161,7 +2232,7 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 					formMod = FLEETS1[0].formation.torpacc;
 					if (FLEETS1[0].formation.id == 6 && target.type == 'DD') formMod *= 1.2;
 				}
-				accCrit = accuracyAndCrit(ship,target,hitRate(ship,54,ship.ACC/*+torpDmg*.35*/,ship.moraleMod(true)*formMod),target.getFormation().torpev,evFlat,1.2);
+				accCrit = accuracyAndCrit(ship,target,hitRate(ship,54,ship.ACC/*+torpDmg*.35*/,ship.moraleMod(true)*formMod*accMod),target.getFormation().torpev,evFlat,1.2);
 			} else if (suptype == 2) {
 				var baseacc;
 				if (isboss) baseacc = (SIMCONSTS.supportShellB != null)? SIMCONSTS.supportShellB : 64;
@@ -2171,13 +2242,13 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 					formMod = FLEETS1[0].formation.shellacc;
 					if (FLEETS1[0].formation.id == 6 && target.type == 'DD') formMod *= 1.1;
 				}
-				accCrit = accuracyAndCrit(ship,target,hitRate(ship,baseacc,ship.ACC,ship.moraleMod()*formMod),target.getFormation().shellev,evFlat,1);
+				accCrit = accuracyAndCrit(ship,target,hitRate(ship,baseacc,ship.ACC,ship.moraleMod()*formMod*accMod),target.getFormation().shellev,evFlat,1);
 			} else {
 				if (!ship.CVshelltype || !ship.canASW()) continue;
 				var baseacc;
 				if (isboss) baseacc = (SIMCONSTS.supportShellB != null)? SIMCONSTS.supportShellB : 64;
 				else baseacc = (SIMCONSTS.supportShellN != null)? SIMCONSTS.supportShellN : 64;
-				accCrit = accuracyAndCrit(ship,target,hitRate(ship,baseacc,ship.ACC,ship.moraleMod()),target.getFormation().ASWev,evFlat,1.3,true);
+				accCrit = accuracyAndCrit(ship,target,hitRate(ship,baseacc,ship.ACC,ship.moraleMod()*accMod),target.getFormation().ASWev,evFlat,1.3,true);
 			}
 			var res = rollHit(accCrit);
 			var dmg = 0, realdmg = 0;
@@ -2477,14 +2548,15 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 		switch(equip.rank) {
 			case 7: ACCplane += 9; critval = 10; break;
 			case 6: ACCplane += 6; critval = 7; break;
-			case 5: ACCplane += 4; break;
-			case 4: ACCplane += 3; break;
-			case 3: ACCplane += 2; break;
-			case 2: ACCplane += 1; break;
+			case 5: ACCplane += 4; critval = 5; break;
+			case 4: ACCplane += 3; critval = 4; break;
+			case 3: ACCplane += 2; critval = 3; break;
+			case 2: ACCplane += 1; critval = 2; break;
+			case 1: ACCplane += 0; critval = 1; break;
 			case 0: ACCplane = 0; break;
 		}
 		critdmgbonus += Math.floor(Math.sqrt(equip.exp)+critval)/100;
-		critratebonus = critval*.6;
+		critratebonus = critval*.8;
 	}
 	if (MECHANICS.LBASBuff) {
 		acc += .07*(equip.ACC || 0);
@@ -2509,7 +2581,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 		for (let group in equip.bonusSpecialAccP) acc *= equip.bonusSpecialAccP[group];
 	}
 	lbas.critratebonus = critratebonus; lbas.ACCplane = ACCplane;
-	var res = rollHit(accuracyAndCrit(lbas,target,acc,target.getFormation().AAmod,0,.2,true),critdmgbonus);
+	var res = rollHit(accuracyAndCrit(lbas,target,acc,target.getFormation().AAmod,0,0,true),critdmgbonus);
 	lbas.critratebonus = 0; lbas.ACCplane = 0;
 	var dmg = 0, realdmg = 0;
 	var planebase;
