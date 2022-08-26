@@ -9,8 +9,8 @@ var CONST = window.COMMON.getConst({
 	
 	urlDeckbuilder: 'http://www.kancolle-calc.net/deckbuilder.html?predeck=',
 	urlLBASSim: 'https://noro6.github.io/kc-web?predeck=',
-	urlKCNavEnemyComps: 'https://tsunkit.net/api/routing/enemycomps',
-	urlKCNavFriendFleets: 'https://tsunkit.net/api/routing/friendfleets',
+	urlKCNavEnemyComps: 'https://tsunkit.net/api/routing/maps/{maps}/edges/{edges}/enemycomps',
+	urlKCNavFriendFleets: 'https://tsunkit.net/api/routing/maps/{maps}/edges/{edges}/friendfleets',
 	urlKCNavAbnormalDamage: 'https://tsunkit.net/api/routing/abnormaldamage',
 	urlDewyAbnormalDamage: 'https://raw.githubusercontent.com/sorewachigauyo/kc-event-bonus/master',
 	kcnavEventFirst: 42,
@@ -73,6 +73,11 @@ var UI_MAIN = Vue.createApp({
 			vanguardEvTorpDD: SIMCONSTS.vanguardEvTorpDD.slice(),
 			vanguardEvShellOther: SIMCONSTS.vanguardEvShellOther.slice(),
 			vanguardEvTorpOther: SIMCONSTS.vanguardEvTorpOther.slice(),
+			vanguardEvShellDDMod: SIMCONSTS.vanguardEvShellDDMod.slice(),
+			vanguardEvTorpDDMod: SIMCONSTS.vanguardEvTorpDDMod.slice(),
+			vanguardEvShellOtherMod: SIMCONSTS.vanguardEvShellOtherMod.slice(),
+			vanguardEvTorpOtherMod: SIMCONSTS.vanguardEvTorpOtherMod.slice(),
+			vanguardUseType: SIMCONSTS.vanguardUseType,
 			nelsonTouchRate: SIMCONSTS.nelsonTouchRate,
 			nagatoSpecialRate: SIMCONSTS.nagatoSpecialRate,
 			mutsuSpecialRate: SIMCONSTS.mutsuSpecialRate,
@@ -85,6 +90,18 @@ var UI_MAIN = Vue.createApp({
 			carryOverHP: CARRYOVERHP,
 			carryOverMorale: CARRYOVERMORALE,
 			enableSkipTorpBonus: SIMCONSTS.enableSkipTorpBonus,
+			airstrikeDmgMF: SIMCONSTS.airstrikeDmgMF,
+			airstrikeDmgMFRaid: SIMCONSTS.airstrikeDmgMFRaid,
+			airstrikeDmgME: SIMCONSTS.airstrikeDmgME,
+			airstrikeDmgEF: SIMCONSTS.airstrikeDmgEF,
+			airstrikeDmgEFRaid: SIMCONSTS.airstrikeDmgEFRaid,
+			airstrikeDmgEE: SIMCONSTS.airstrikeDmgEE,
+			airstrikeAccMF: SIMCONSTS.airstrikeAccMF,
+			airstrikeAccMFRaid: SIMCONSTS.airstrikeAccMFRaid,
+			airstrikeAccME: SIMCONSTS.airstrikeAccME,
+			airstrikeAccEF: SIMCONSTS.airstrikeAccEF,
+			airstrikeAccEFRaid: SIMCONSTS.airstrikeAccEFRaid,
+			airstrikeAccEE: SIMCONSTS.airstrikeAccEE,
 		},
 		
 		canSim: true,
@@ -125,6 +142,15 @@ var UI_MAIN = Vue.createApp({
 		
 		this.addNewComp(this.fleetsFFriend,{ isFriend: 1 });
 		
+		SIMCONSTS.defaults = {};
+		for (let key in this.settings) {
+			if (['mechanics','showAdvanced'].includes(key)) continue;
+			if (Array.isArray(this.settings[key])) {
+				SIMCONSTS.defaults[key] = this.settings[key].slice();
+			} else {
+				SIMCONSTS.defaults[key] = this.settings[key];
+			}
+		}
 		for (let obj of MECHANICS_LIST) {
 			this.settings.mechanics.push({ key: obj.key, name: obj.name, enabled: true });
 		}
@@ -136,6 +162,9 @@ var UI_MAIN = Vue.createApp({
 			let finishInit = function() {
 				CONVERT.loadSave(dataSave,this);
 				this.canSave = true;
+				setTimeout(function() {
+					if (document.querySelector('#divSettingsAdvanced input.changed')) this.settings.showAdvanced = true;
+				}.bind(this),1);
 			}.bind(this);
 			if (window.location.hash.length >= 3) {
 				let dataHash;
@@ -314,6 +343,38 @@ var UI_MAIN = Vue.createApp({
 		onchangeMechanic: function(mechanic) {
 			if (mechanic.key == 'eqBonus') {
 				COMMON.global.fleetEditorToggleEquipBonus(mechanic.enabled);
+			}
+		},
+		onclickRestoreSettings: function() {
+			for (let key in SIMCONSTS.defaults) {
+				if (Array.isArray(this.settings[key])) {
+					this.settings[key] = SIMCONSTS.defaults[key].slice();
+				} else {
+					this.settings[key] = SIMCONSTS.defaults[key];
+				}
+			}
+			for (let mechanic of this.settings.mechanics) {
+				mechanic.enabled = true;
+			}
+		},
+		getClassSetting: function(key,index) {
+			return SIMCONSTS.defaults && (index != null ? this.settings[key][index] != SIMCONSTS.defaults[key][index] : this.settings[key] != SIMCONSTS.defaults[key]) ? { 'changed': true } : null;
+		},
+		onclickVanguardSet: function(type) {
+			if (type == 'event') {
+				for (let i=0; i<SIMCONSTS.vanguardEvShellDDModEvent.length; i++) {
+					this.settings.vanguardEvShellDDMod[i] = SIMCONSTS.vanguardEvShellDDModEvent[i];
+				}
+				for (let i=0; i<SIMCONSTS.vanguardEvTorpDDModEvent.length; i++) {
+					this.settings.vanguardEvTorpDDMod[i] = SIMCONSTS.vanguardEvTorpDDModEvent[i];
+				}
+			} else if (type == 'normal') {
+				for (let i=0; i<SIMCONSTS.vanguardEvShellDDModNormal.length; i++) {
+					this.settings.vanguardEvShellDDMod[i] = SIMCONSTS.vanguardEvShellDDModNormal[i];
+				}
+				for (let i=0; i<SIMCONSTS.vanguardEvTorpDDModNormal.length; i++) {
+					this.settings.vanguardEvTorpDDMod[i] = SIMCONSTS.vanguardEvTorpDDModNormal[i];
+				}
 			}
 		},
 		
@@ -690,24 +751,19 @@ var UI_KCNAVCOMPIMPORTER = Vue.createApp({
 			this.canClose = false;
 			
 			let url = this.isFriendFleet ? CONST.urlKCNavFriendFleets : CONST.urlKCNavEnemyComps;
-			url += '?map=' + this.world + '-' + this.mapnum;
-			url += '&edges=' + this.edges;
+			url = url.replace('{maps}',this.world + '-' + this.mapnum);
+			url = url.replace('{edges}',this.edges);
 			if (!this.isFriendFleet) {
-				url += '&minGaugeLevel=' + (this.gaugeHPMin != null ? this.gaugeHPMin : 0);
-				url += '&maxGaugeLevel=' + (this.gaugeHPMax != null ? this.gaugeHPMax : 99999);
-				url += '&minGauge=' + (this.gaugeNum || 1);
-				url += '&maxGauge=' + (this.gaugeNum || 4);
-				if (this.diff && +this.world > 10) {
-					url += '&minDiff=' + this.diff + '&maxDiff=' + this.diff;
-				}
-				if (this.hqMin) url += '&minHqLvl=' + this.hqMin;
-				if (this.hqMax) url += '&maxHqLvl=' + this.hqMax;
+				url += '?start=' + (+this.world < 10 ? CONST.kcnavDateStart : '');
+				if (this.gaugeHPMin != null && this.gaugeHPMin != '' && this.gaugeHPMin != 0) url += '&minGaugeLevel=' + this.gaugeHPMin;
+				if (this.gaugeHPMax != null && this.gaugeHPMax != '' && this.gaugeHPMax != 99999) url += '&maxGaugeLevel=' + this.gaugeHPMax;
+				if (this.gaugeNum != null && this.gaugeNum != '' && this.gaugeNum != 1) url += '&minGauge=' + this.gaugeNum;
+				if (this.gaugeNum != null && this.gaugeNum != '' && this.gaugeNum != 4) url += '&maxGauge=' + this.gaugeNum;
+				if (this.diff && +this.world > 10) url += '&difficulty=' + this.diff;
+				if (this.hqMin) url += '&minHqLevel=' + this.hqMin;
+				if (this.hqMax) url += '&maxHqLevel=' + this.hqMax;
 			} else {
-				if (this.ffDateStart) url += '&start=' + this.ffDateStart;
-				url += '&minGauge=1&maxGauge=4';
-			}
-			if (+this.world < 10) {
-				url += '&start=' + CONST.kcnavDateStart;
+				url += '?start=' + (this.ffDateStart ? this.ffDateStart : '');
 			}
 			// if (+this.world < 10) {
 				// let d = new Date();
@@ -728,15 +784,26 @@ var UI_KCNAVCOMPIMPORTER = Vue.createApp({
 					this.showTimeout = true;
 					return;
 				}
-				let compsNav = JSON.parse(xhr.response);
+				let compsNav;
+				try {
+					compsNav = JSON.parse(xhr.response);
+				} catch (e) {
+					console.error(e);
+					this.showError = true;
+					return;
+				}
 				console.log(compsNav);
-				if (!compsNav.entries || compsNav.entries.length <= 0) {
+				if (!compsNav.result) {
+					this.showError = true;
+					return;
+				}
+				if (!compsNav.result.entries || compsNav.result.entries.length <= 0) {
 					this.showNoData = true;
 					return;
 				}
 				COMMON.global.fleetEditorMoveTemp();
 				if (this.isFriendFleet) {
-					compsNav.entries = compsNav.entries.filter(entry => !!entry.requestType == !!this.ffStrong);
+					compsNav.result.entries = compsNav.result.entries.filter(entry => !!entry.requestType == !!this.ffStrong);
 					if (this.ffSkipSame) {
 						let idsMain = UI_MAIN.fleetFMain.ships.filter(ship => !FLEET_MODEL.shipIsEmpty(ship)).map(ship => ship.mstId);
 						if (UI_MAIN.fleetFMain.combined) idsMain = idsMain.concat(UI_MAIN.fleetFMain.shipsEscort.filter(ship => !FLEET_MODEL.shipIsEmpty(ship)).map(ship => ship.mstId));
@@ -748,10 +815,10 @@ var UI_KCNAVCOMPIMPORTER = Vue.createApp({
 								id = SHIPDATA[id].next;
 							} while (id && !idsAll[id]);
 						}
-						compsNav.entries = compsNav.entries.filter(entry => !entry.fleet.map(ship => ship.id).find(id => idsAll[id]));
+						compsNav.result.entries = compsNav.result.entries.filter(entry => !entry.fleet.map(ship => ship.id).find(id => idsAll[id]));
 					}
 				}
-				let compsSave = CONVERT.kcnavToSaveComps(compsNav);
+				let compsSave = CONVERT.kcnavToSaveComps(compsNav.result);
 				compsSave.sort((a,b) => b.rate - a.rate);
 				for (let i=this.comps.length; i>compsSave.length; i--) UI_MAIN.deleteComp(this.comps);
 				for (let comp of this.comps) comp.fleet = FLEET_MODEL.getBlankFleet(comp.fleet);

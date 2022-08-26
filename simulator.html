@@ -107,19 +107,19 @@
 			</div>
 			<div>
 				<table>
-				<tr><td><label for="mechShellDmgCap">Day Shelling Soft-Cap:</label></td><td><input id="mechShellDmgCap" type="number" v-model="settings.shellDmgCap" min="0" max="9999" /></td></tr>
-				<tr><td><label for="mechASWDmgCap">ASW Soft-Cap:</label></td><td><input id="mechASWDmgCap" type="number" v-model="settings.aswDmgCap" min="0" max="9999" /></td></tr>
-				<tr><td><label for="mechTorpedoDmgCap">Torpedo Soft-Cap:</label></td><td><input id="mechTorpedoDmgCap" type="number" v-model="settings.torpedoDmgCap" min="0" max="9999" /></td></tr>
-				<tr><td><label for="mechNightDmgCap">Night Soft-Cap:</label></td><td><input id="mechNightDmgCap" type="number" v-model="settings.nightDmgCap" min="0" max="9999" /></td></tr>
-				<tr><td><label for="mechAirDmgCap">Air Soft-Cap:</label></td><td><input id="mechAirDmgCap" type="number" v-model="settings.airDmgCap" min="0" max="9999" /></td></tr>
-				<tr><td><label for="mechSupportDmgCap">Support Soft-Cap:</label></td><td><input id="mechSupportDmgCap" type="number" v-model="settings.supportDmgCap" min="0" max="9999" /></td></tr>
+				<tr><td><label for="mechShellDmgCap">Day Shelling Soft-Cap:</label></td><td><input id="mechShellDmgCap" type="number" v-model="settings.shellDmgCap" :class="getClassSetting('shellDmgCap')" min="0" max="9999" /></td></tr>
+				<tr><td><label for="mechASWDmgCap">ASW Soft-Cap:</label></td><td><input id="mechASWDmgCap" type="number" v-model="settings.aswDmgCap" :class="getClassSetting('aswDmgCap')" min="0" max="9999" /></td></tr>
+				<tr><td><label for="mechTorpedoDmgCap">Torpedo Soft-Cap:</label></td><td><input id="mechTorpedoDmgCap" type="number" v-model="settings.torpedoDmgCap" :class="getClassSetting('torpedoDmgCap')" min="0" max="9999" /></td></tr>
+				<tr><td><label for="mechNightDmgCap">Night Soft-Cap:</label></td><td><input id="mechNightDmgCap" type="number" v-model="settings.nightDmgCap" :class="getClassSetting('nightDmgCap')" min="0" max="9999" /></td></tr>
+				<tr><td><label for="mechAirDmgCap">Air Soft-Cap:</label></td><td><input id="mechAirDmgCap" type="number" v-model="settings.airDmgCap" :class="getClassSetting('airDmgCap')" min="0" max="9999" /></td></tr>
+				<tr><td><label for="mechSupportDmgCap">Support Soft-Cap:</label></td><td><input id="mechSupportDmgCap" type="number" v-model="settings.supportDmgCap" :class="getClassSetting('supportDmgCap')" min="0" max="9999" /></td></tr>
 				</table>
 			</div>
 			<div>
 				<label><input type="checkbox" v-model="settings.airRaidCostW6" /> Use default World 6 costs for Air Raid (4% <img src="assets/stats/fuel.png" /> 8% <img src="assets/stats/ammo.png" />)</label>
 			</div>
 			<div>
-				<div><img src="assets/stats/bucket.png" />: Count use if HP &leq; <input type="number" min="0" max="100" v-model="settings.bucketPercent" />% OR repair time &gt; <input type="number" min="0" max="100" v-model="settings.bucketTime" /> hours</div>
+				<div><img src="assets/stats/bucket.png" />: Count use if HP &leq; <input type="number" min="0" max="100" v-model="settings.bucketPercent":class="getClassSetting('bucketPercent')" />% OR repair time &gt; <input type="number" min="0" max="100" v-model="settings.bucketTime" :class="getClassSetting('bucketTime')"/> hours</div>
 				<div><label><input type="checkbox" v-model="settings.carryOverHP" />Carry over ship HP between sims unless <img src="assets/stats/bucket.png" /> conditions</label></div>
 				<div><label><input type="checkbox" v-model="settings.carryOverMorale" />Carry over ship morale between sims</label></div>
 			</div>
@@ -127,40 +127,99 @@
 				<div><input type="button" value="Show Advanced" @click="settings.showAdvanced=!settings.showAdvanced" /></div>
 				<div v-show="settings.showAdvanced">
 					<span class="subheader">Vanguard Evasion Bonus:</span>
-					<table>
-					<tr><td></td><td>Shelling</td><td>Torpedo</td></tr>
-					<tr><td>DD 1:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[0]" /></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[0]" /></td></tr>
-					<tr><td>DD 2:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[1]" /></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[1]" /></td></tr>
-					<tr><td>DD 3:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[2]" /></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[2]" /></td></tr>
-					<tr><td>DD 4:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[3]" /></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[3]" /></td></tr>
-					<tr><td>DD 5:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[4]" /></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[4]" /></td></tr>
-					<tr><td>DD 6:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[5]" /></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[5]" /></td></tr>
-					<tr><td>DD 7:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[6]" /></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[6]" /></td></tr>
-					<tr><td>Other 1:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[0]" /></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[0]" /></td></tr>
-					<tr><td>Other 2:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[1]" /></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[1]" /></td></tr>
-					<tr><td>Other 3:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[2]" /></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[2]" /></td></tr>
-					<tr><td>Other 4:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[3]" /></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[3]" /></td></tr>
-					<tr><td>Other 5:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[4]" /></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[4]" /></td></tr>
-					<tr><td>Other 6:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[5]" /></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[5]" /></td></tr>
-					<tr><td>Other 7:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[6]" /></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[6]" /></td></tr>
-					</table>
-					<!-- <label><input type="checkbox" /> Use Experimental Formula (overrides above)</label> -->
+					<div style="display:flex">
+						<div>
+							<!-- <label><input type="radio" value="1" v-model="settings.vanguardUseType"/> Use Flat Evasion Bonus</label> -->
+							<table>
+							<tr><td></td><td>Shelling</td><td>Torpedo</td></tr>
+							<tr><td>DD 1:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[0]" :class="getClassSetting('vanguardEvShellDD',0)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[0]" :class="getClassSetting('vanguardEvTorpDD',0)" :disabled="settings.vanguardUseType!=1"/></td></tr>
+							<tr><td>DD 2:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[1]" :class="getClassSetting('vanguardEvShellDD',1)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[1]" :class="getClassSetting('vanguardEvTorpDD',1)" :disabled="settings.vanguardUseType!=1"/></td></tr>
+							<tr><td>DD 3:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[2]" :class="getClassSetting('vanguardEvShellDD',2)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[2]" :class="getClassSetting('vanguardEvTorpDD',2)" :disabled="settings.vanguardUseType!=1"/></td></tr>
+							<tr><td>DD 4:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[3]" :class="getClassSetting('vanguardEvShellDD',3)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[3]" :class="getClassSetting('vanguardEvTorpDD',3)" :disabled="settings.vanguardUseType!=1"/></td></tr>
+							<tr><td>DD 5:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[4]" :class="getClassSetting('vanguardEvShellDD',4)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[4]" :class="getClassSetting('vanguardEvTorpDD',4)" :disabled="settings.vanguardUseType!=1"/></td></tr>
+							<tr><td>DD 6:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[5]" :class="getClassSetting('vanguardEvShellDD',5)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[5]" :class="getClassSetting('vanguardEvTorpDD',5)" :disabled="settings.vanguardUseType!=1"/></td></tr>
+							<tr><td>DD 7:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[6]" :class="getClassSetting('vanguardEvShellDD',6)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[6]" :class="getClassSetting('vanguardEvTorpDD',6)" :disabled="settings.vanguardUseType!=1"/></td></tr>
+							<tr><td>Other 1:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[0]" :class="getClassSetting('vanguardEvShellOther',0)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[0]" :class="getClassSetting('vanguardEvTorpOther',0)" :disabled="settings.vanguardUseType!=1"/></td></tr>
+							<tr><td>Other 2:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[1]" :class="getClassSetting('vanguardEvShellOther',1)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[1]" :class="getClassSetting('vanguardEvTorpOther',1)" :disabled="settings.vanguardUseType!=1"/></td></tr>
+							<tr><td>Other 3:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[2]" :class="getClassSetting('vanguardEvShellOther',2)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[2]" :class="getClassSetting('vanguardEvTorpOther',2)" :disabled="settings.vanguardUseType!=1"/></td></tr>
+							<tr><td>Other 4:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[3]" :class="getClassSetting('vanguardEvShellOther',3)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[3]" :class="getClassSetting('vanguardEvTorpOther',3)" :disabled="settings.vanguardUseType!=1"/></td></tr>
+							<tr><td>Other 5:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[4]" :class="getClassSetting('vanguardEvShellOther',4)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[4]" :class="getClassSetting('vanguardEvTorpOther',4)" :disabled="settings.vanguardUseType!=1"/></td></tr>
+							<tr><td>Other 6:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[5]" :class="getClassSetting('vanguardEvShellOther',5)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[5]" :class="getClassSetting('vanguardEvTorpOther',5)" :disabled="settings.vanguardUseType!=1"/></td></tr>
+							<tr><td>Other 7:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[6]" :class="getClassSetting('vanguardEvShellOther',6)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[6]" :class="getClassSetting('vanguardEvTorpOther',6)" :disabled="settings.vanguardUseType!=1"/></td></tr>
+							</table>
+						</div>
+						<!-- <div style="margin-left:20px"> -->
+							<!-- <label><input type="radio" value="2" v-model="settings.vanguardUseType"/> Use Accuracy Multiplier</label> -->
+							<!-- <table> -->
+							<!-- <tr><td></td><td>Shelling</td><td>Torpedo</td></tr> -->
+							<!-- <tr><td>DD 1:</td><td><input type="number" min="0" max="1" step=".005" v-model="settings.vanguardEvShellDDMod[0]" :class="getClassSetting('vanguardEvShellDDMod',0)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".005" v-model="settings.vanguardEvTorpDDMod[0]" :class="getClassSetting('vanguardEvTorpDDMod',0)" :disabled="settings.vanguardUseType!=2"/></td></tr> -->
+							<!-- <tr><td>DD 2:</td><td><input type="number" min="0" max="1" step=".005" v-model="settings.vanguardEvShellDDMod[1]" :class="getClassSetting('vanguardEvShellDDMod',1)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".005" v-model="settings.vanguardEvTorpDDMod[1]" :class="getClassSetting('vanguardEvTorpDDMod',1)" :disabled="settings.vanguardUseType!=2"/></td></tr> -->
+							<!-- <tr><td>DD 3:</td><td><input type="number" min="0" max="1" step=".005" v-model="settings.vanguardEvShellDDMod[2]" :class="getClassSetting('vanguardEvShellDDMod',2)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".005" v-model="settings.vanguardEvTorpDDMod[2]" :class="getClassSetting('vanguardEvTorpDDMod',2)" :disabled="settings.vanguardUseType!=2"/></td></tr> -->
+							<!-- <tr><td>DD 4:</td><td><input type="number" min="0" max="1" step=".005" v-model="settings.vanguardEvShellDDMod[3]" :class="getClassSetting('vanguardEvShellDDMod',3)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".005" v-model="settings.vanguardEvTorpDDMod[3]" :class="getClassSetting('vanguardEvTorpDDMod',3)" :disabled="settings.vanguardUseType!=2"/></td></tr> -->
+							<!-- <tr><td>DD 5:</td><td><input type="number" min="0" max="1" step=".005" v-model="settings.vanguardEvShellDDMod[4]" :class="getClassSetting('vanguardEvShellDDMod',4)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".005" v-model="settings.vanguardEvTorpDDMod[4]" :class="getClassSetting('vanguardEvTorpDDMod',4)" :disabled="settings.vanguardUseType!=2"/></td></tr> -->
+							<!-- <tr><td>DD 6:</td><td><input type="number" min="0" max="1" step=".005" v-model="settings.vanguardEvShellDDMod[5]" :class="getClassSetting('vanguardEvShellDDMod',5)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".005" v-model="settings.vanguardEvTorpDDMod[5]" :class="getClassSetting('vanguardEvTorpDDMod',5)" :disabled="settings.vanguardUseType!=2"/></td></tr> -->
+							<!-- <tr><td>DD 7:</td><td><input type="number" min="0" max="1" step=".005" v-model="settings.vanguardEvShellDDMod[6]" :class="getClassSetting('vanguardEvShellDDMod',6)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".005" v-model="settings.vanguardEvTorpDDMod[6]" :class="getClassSetting('vanguardEvTorpDDMod',6)" :disabled="settings.vanguardUseType!=2"/></td></tr> -->
+							<!-- <tr><td>Other 1:</td><td><input type="number" min="0" max="1" step=".005" v-model="settings.vanguardEvShellOtherMod[0]" :class="getClassSetting('vanguardEvShellOtherMod',0)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".005" v-model="settings.vanguardEvTorpOtherMod[0]" :class="getClassSetting('vanguardEvTorpOtherMod',0)" :disabled="settings.vanguardUseType!=2"/></td></tr> -->
+							<!-- <tr><td>Other 2:</td><td><input type="number" min="0" max="1" step=".005" v-model="settings.vanguardEvShellOtherMod[1]" :class="getClassSetting('vanguardEvShellOtherMod',1)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".005" v-model="settings.vanguardEvTorpOtherMod[1]" :class="getClassSetting('vanguardEvTorpOtherMod',1)" :disabled="settings.vanguardUseType!=2"/></td></tr> -->
+							<!-- <tr><td>Other 3:</td><td><input type="number" min="0" max="1" step=".005" v-model="settings.vanguardEvShellOtherMod[2]" :class="getClassSetting('vanguardEvShellOtherMod',2)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".005" v-model="settings.vanguardEvTorpOtherMod[2]" :class="getClassSetting('vanguardEvTorpOtherMod',2)" :disabled="settings.vanguardUseType!=2"/></td></tr> -->
+							<!-- <tr><td>Other 4:</td><td><input type="number" min="0" max="1" step=".005" v-model="settings.vanguardEvShellOtherMod[3]" :class="getClassSetting('vanguardEvShellOtherMod',3)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".005" v-model="settings.vanguardEvTorpOtherMod[3]" :class="getClassSetting('vanguardEvTorpOtherMod',3)" :disabled="settings.vanguardUseType!=2"/></td></tr> -->
+							<!-- <tr><td>Other 5:</td><td><input type="number" min="0" max="1" step=".005" v-model="settings.vanguardEvShellOtherMod[4]" :class="getClassSetting('vanguardEvShellOtherMod',4)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".005" v-model="settings.vanguardEvTorpOtherMod[4]" :class="getClassSetting('vanguardEvTorpOtherMod',4)" :disabled="settings.vanguardUseType!=2"/></td></tr> -->
+							<!-- <tr><td>Other 6:</td><td><input type="number" min="0" max="1" step=".005" v-model="settings.vanguardEvShellOtherMod[5]" :class="getClassSetting('vanguardEvShellOtherMod',5)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".005" v-model="settings.vanguardEvTorpOtherMod[5]" :class="getClassSetting('vanguardEvTorpOtherMod',5)" :disabled="settings.vanguardUseType!=2"/></td></tr> -->
+							<!-- <tr><td>Other 7:</td><td><input type="number" min="0" max="1" step=".005" v-model="settings.vanguardEvShellOtherMod[6]" :class="getClassSetting('vanguardEvShellOtherMod',6)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".005" v-model="settings.vanguardEvTorpOtherMod[6]" :class="getClassSetting('vanguardEvTorpOtherMod',6)" :disabled="settings.vanguardUseType!=2"/></td></tr> -->
+							<!-- </table> -->
+							<!-- <input type="button" value="Set Event Values" @click="onclickVanguardSet('event')"/> <input type="button" value="Set Normal Values" @click="onclickVanguardSet('normal')"/> -->
+						<!-- </div> -->
+					</div>
+					<div>
+					
+					</div>
 				</div>
 				<div v-show="settings.showAdvanced">
 					<span class="subheader">Special Attack Activation Rate:</span>
 					<table>
-					<tr><td>Nelson Touch:</td><td><input type="number" min="0" max="100" v-model="settings.nelsonTouchRate" />%</td></tr>
-					<tr><td>Nagato Special:</td><td><input type="number" min="0" max="100" v-model="settings.nagatoSpecialRate" />%</td></tr>
-					<tr><td>Mutsu Special:</td><td><input type="number" min="0" max="100" v-model="settings.mutsuSpecialRate" />%</td></tr>
-					<tr><td>Colorado Special:</td><td><input type="number" min="0" max="100" v-model="settings.coloradoSpecialRate" />%</td></tr>
-					<tr><td>Kongou Special:</td><td><input type="number" min="0" max="100" v-model="settings.kongouSpecialRate" />%</td></tr>
-					<tr><td>Yamato Special (3-ship):</td><td><input type="number" min="0" max="100" v-model="settings.yamatoSpecial3Rate" />%</td></tr>
-					<tr><td>Yamato Special (2-ship):</td><td><input type="number" min="0" max="100" v-model="settings.yamatoSpecial2Rate" />%</td></tr>
+					<tr><td>Nelson Touch:</td><td><input type="number" min="0" max="100" v-model="settings.nelsonTouchRate" :class="getClassSetting('nelsonTouchRate')"/>%</td></tr>
+					<tr><td>Nagato Special:</td><td><input type="number" min="0" max="100" v-model="settings.nagatoSpecialRate" :class="getClassSetting('nagatoSpecialRate')"/>%</td></tr>
+					<tr><td>Mutsu Special:</td><td><input type="number" min="0" max="100" v-model="settings.mutsuSpecialRate" :class="getClassSetting('mutsuSpecialRate')"/>%</td></tr>
+					<tr><td>Colorado Special:</td><td><input type="number" min="0" max="100" v-model="settings.coloradoSpecialRate" :class="getClassSetting('coloradoSpecialRate')"/>%</td></tr>
+					<tr><td>Kongou Special:</td><td><input type="number" min="0" max="100" v-model="settings.kongouSpecialRate" :class="getClassSetting('kongouSpecialRate')"/>%</td></tr>
+					<tr><td>Yamato Special (3-ship):</td><td><input type="number" min="0" max="100" v-model="settings.yamatoSpecial3Rate" :class="getClassSetting('yamatoSpecial3Rate')"/>%</td></tr>
+					<tr><td>Yamato Special (2-ship):</td><td><input type="number" min="0" max="100" v-model="settings.yamatoSpecial2Rate" :class="getClassSetting('yamatoSpecial2Rate')"/>%</td></tr>
 					</table>
 				</div>
 				<div v-show="settings.showAdvanced">
 					<label><input type="checkbox" v-model="settings.enableSkipTorpBonus"/>Use provisional B-25 bonuses for Abyssal skip bomb airstrikes</label>
 				</div>
+				<div v-show="settings.showAdvanced">
+					<span class="subheader">Combined Fleet Airstrike Base Mods:</span>
+					<table>
+					<tr><td></td><td colspan="2">Damage (Base 25):</td><td> </td><td colspan="2">Accuracy (Base 95):</td></tr>
+					<tr><td></td><td>Main</td><td>Escort</td><td> </td><td>Main</td><td>Escort</td></tr>
+					<tr>
+						<td>Player Target (Battle)</td>
+						<td><input type="number" min="-999" max="999" v-model="settings.airstrikeDmgMF" :class="getClassSetting('airstrikeDmgMF')"/></td>
+						<td><input type="number" min="-999" max="999" v-model="settings.airstrikeDmgEF" :class="getClassSetting('airstrikeDmgEF')"/></td><td> </td>
+						<td><input type="number" min="-999" max="999" v-model="settings.airstrikeAccMF" :class="getClassSetting('airstrikeAccMF')"/></td>
+						<td><input type="number" min="-999" max="999" v-model="settings.airstrikeAccEF" :class="getClassSetting('airstrikeAccEF')"/></td>
+					</tr>
+					<tr>
+						<td>Player Target (Raid)</td>
+						<td><input type="number" min="-999" max="999" v-model="settings.airstrikeDmgMFRaid" :class="getClassSetting('airstrikeDmgMFRaid')"/></td>
+						<td><input type="number" min="-999" max="999" v-model="settings.airstrikeDmgEFRaid" :class="getClassSetting('airstrikeDmgEFRaid')"/></td><td> </td>
+						<td><input type="number" min="-999" max="999" v-model="settings.airstrikeAccMFRaid" :class="getClassSetting('airstrikeAccMFRaid')"/></td>
+						<td><input type="number" min="-999" max="999" v-model="settings.airstrikeAccEFRaid" :class="getClassSetting('airstrikeAccEFRaid')"/></td>
+					</tr>
+					<tr>
+						<td>Enemy Target</td>
+						<td><input type="number" min="-999" max="999" v-model="settings.airstrikeDmgME" :class="getClassSetting('airstrikeDmgME')"/></td>
+						<td><input type="number" min="-999" max="999" v-model="settings.airstrikeDmgEE" :class="getClassSetting('airstrikeDmgEE')"/></td><td> </td>
+						<td><input type="number" min="-999" max="999" v-model="settings.airstrikeAccME" :class="getClassSetting('airstrikeAccME')"/></td>
+						<td><input type="number" min="-999" max="999" v-model="settings.airstrikeAccEE" :class="getClassSetting('airstrikeAccEE')"/></td>
+					</tr>
+					</table>
+				</div>
+			</div>
+			<div>
+				<input type="button" value="Restore Defaults" @click="onclickRestoreSettings"/>
 			</div>
 		</div>
 		<hr>
@@ -322,6 +381,7 @@
 	<div id="divOther">
 	<div id="divChangeLog">
 		<div><span class="header">Change Log:</span></div>
+		<div>2022-08-27 - Settings now saved (highlights changed values, Restore Defaults button), new Advanced Setting: combined fleet airstrike damage/accuracy mods</div>
 		<div>2022-06-21 - LBAS historical accuracy bonus settings</div>
 		<div>2022-05-28 - KCNav/<a href="https://github.com/sorewachigauyo/kc-event-bonus">Dewy</a> historical bonus import</div>
 		<div>2022-05-06 - New UI: strike force, multiple enemy/friend-fleet comps, equipment bonus, override historical bonus per node, LBAS historical bonus damage, add maelstrom cost per node, KCNav enemy/FF comp import, noro6 LBAS Sim import/export, download save backup file</div>
@@ -519,6 +579,14 @@
 							<span v-show="showStatTotal">
 								<span>{{getStatTotal(ship,'range')}}</span>
 								<span class="statBonus" v-show="showEquipBonus && ship.statsBonus.range">(+{{ship.statsBonus.range}})</span>
+							</span>
+						</div>
+						<div class="statHalf" v-show="showStatTotal">
+							<img src="assets/stats/divebomb.png" title="Divebomb"/><input style="visibility:hidden"/>
+							<span>
+								<span>{{getStatTotal(ship,'divebomb')}}</span>
+								<span class="statBonus" v-show="showEquipBonus && ship.statsBonus.divebomb > 0">(+{{ship.statsBonus.divebomb}})</span>
+								<span class="statBonus negative" v-show="showEquipBonus && ship.statsBonus.divebomb < 0">({{ship.statsBonus.divebomb}})</span>
 							</span>
 						</div>
 						<div class="statHalf" v-show="showStatTotal">

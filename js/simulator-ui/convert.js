@@ -683,11 +683,13 @@ window.CONVERT = {
 		for (let obj of dataUI.settings.mechanics) {
 			mechInput.mechanics[obj.key] = obj.enabled;
 		}
-		for (let key of ['shellDmgCap','aswDmgCap','torpedoDmgCap','nightDmgCap','airDmgCap','supportDmgCap','airRaidCostW6','nelsonTouchRate','nagatoSpecialRate','mutsuSpecialRate','coloradoSpecialRate','kongouSpecialRate','yamatoSpecial3Rate','yamatoSpecial2Rate','enableSkipTorpBonus']) {
-			mechInput.consts[key] = dataUI.settings[key];
-		}
-		for (let key of ['vanguardEvShellDD','vanguardEvTorpDD','vanguardEvShellOther','vanguardEvTorpOther']) {
-			mechInput.consts[key] = dataUI.settings[key].slice();
+		for (let key in dataUI.settings) {
+			if (SIMCONSTS[key] === undefined) continue;
+			if (Array.isArray(dataUI.settings[key])) {
+				mechInput.consts[key] = dataUI.settings[key].slice();
+			} else {
+				mechInput.consts[key] = dataUI.settings[key];
+			}
 		}
 		return mechInput;
 	},
@@ -792,6 +794,34 @@ window.CONVERT = {
 		}
 		return basesSave;
 	},
+	uiToSaveSettings: function(settingsUI) {
+		let settingsSave = {};
+		for (let key in settingsUI) {
+			if (['mechanics','showAdvanced'].includes(key)) continue;
+			if (Array.isArray(settingsUI[key])) {
+				let a = [], found = false;
+				for (let i=0; i<settingsUI[key].length; i++) {
+					if (settingsUI[key][i] != SIMCONSTS.defaults[key][i]) {
+						a.push(settingsUI[key][i]);
+						found = true;
+					} else {
+						a.push(null);
+					}
+				}
+				if (found) settingsSave[key] = a;
+			} else {
+				if (settingsUI[key] != SIMCONSTS.defaults[key]) {
+					settingsSave[key] = settingsUI[key];
+				}
+			}
+		}
+		let mechanicsSave = {};
+		for (let mechanic of settingsUI.mechanics) {
+			if (!mechanic.enabled) mechanicsSave[mechanic.key] = mechanic.enabled;
+		}
+		if (Object.keys(mechanicsSave).length) settingsSave.mechanics = mechanicsSave;
+		return settingsSave;
+	},
 	uiToSave: function(dataUI) {
 		let dataSave = {};
 		for (let key of ['fleetFMain','fleetFSupportN','fleetFSupportB']) {
@@ -810,6 +840,8 @@ window.CONVERT = {
 			battleSave.enemyComps = this.uiToSaveComps(battleUI.enemyComps);
 			dataSave.battles.push(battleSave);
 		}
+		
+		dataSave.settings = this.uiToSaveSettings(dataUI.settings);
 		
 		return dataSave;
 	},
@@ -875,6 +907,24 @@ window.CONVERT = {
 			}
 		}
 	},
+	loadSaveSettings(settingsSave,settingsUI) {
+		for (let key in settingsSave) {
+			if (key == 'mechanics') continue;
+			if (settingsUI[key] == null) continue;
+			if (Array.isArray(settingsUI[key])) {
+				for (let i=0; i<settingsUI[key].length; i++) {
+					if (settingsSave[key][i] != null) settingsUI[key][i] = settingsSave[key][i];
+				}
+			} else {
+				settingsUI[key] = settingsSave[key];
+			}
+		}
+		if (settingsSave.mechanics) {
+			for (let mechanic of settingsUI.mechanics) {
+				if (settingsSave.mechanics[mechanic.key] != null) mechanic.enabled = settingsSave.mechanics[mechanic.key];
+			}
+		}
+	},
 	loadSave: function(dataSave,dataUI) {
 		this._UI_MAIN = dataUI;
 		
@@ -906,6 +956,10 @@ window.CONVERT = {
 				if (dataUI.battles[i].id < idMin) idMin = dataUI.battles[i].id;
 			}
 			if (idMax && idMin < Number.MAX_SAFE_INTEGER/10) COMMON.ID_GEN.setInit('battle',idMax);
+		}
+		
+		if (dataSave.settings) {
+			this.loadSaveSettings(dataSave.settings,dataUI.settings);
 		}
 	},
 };

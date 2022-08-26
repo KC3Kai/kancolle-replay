@@ -2618,7 +2618,6 @@ var EQDATA = {
 		added: '2017-01-27',
 		b_image: 11,
 		type: SEAPLANEBOMBER,
-		aaResistShip: .6,
 		DIVEBOMB: 7,
 		AA: 1,
 		ASW: 2,
@@ -3876,7 +3875,7 @@ var EQDATA = {
 		added: '2019-03-27',
 		type: SEAPLANEBOMBER,
 		aaResistShip: .5,
-		aaResistFleet: .7,
+		aaResistFleet: .5,
 		FP: 2,
 		DIVEBOMB: 11,
 		AA: 5,
@@ -5492,6 +5491,58 @@ var EQDATA = {
 		ACC: 1,
 		ASW: 19,
 	},
+	473: {
+		name: 'F4U-2 Night Corsair',
+		nameJP: 'F4U-2 Night Corsair',
+		added: '2022-08-26',
+		type: FIGHTER, image: 45,
+		FP: 1,
+		AA: 9,
+		ACC: 1,
+		EV: 2,
+		ASW: 5,
+		LOS: 2,
+	},
+	474: {
+		name: 'F4U-4',
+		nameJP: 'F4U-4',
+		added: '2022-08-26',
+		type: DIVEBOMBER,
+		FP: 2,
+		DIVEBOMB: 6,
+		AA: 10,
+		EV: 1,
+		ASW: 3,
+		LOS: 2,
+	},
+	477: {
+		name: 'Skilled Deck Personnel',
+		nameJP: '熟練甲板要員',
+		added: '2022-08-26',
+		type: SCAMP,
+		FP: 2,
+		AA: 1,
+		AR: 1,
+		ACC: 1,
+		EV: 1,
+		LOS: 1,
+	},
+	478: {
+		name: 'Skilled Deck Personnel + Aviation Maintenance Hands',
+		nameJP: '熟練甲板要員+航空整備員',
+		added: '2022-08-26',
+		type: SCAMP,
+		FP: 7,
+		DIVEBOMB: 1,
+		TP: 1,
+		AA: 1,
+		AR: 1,
+		ACC: 1,
+		EV: 1,
+		ASW: 1,
+		LOS: 1,
+		RNG: 4,
+	},
 	501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
@@ -6661,8 +6712,6 @@ var EQDATA = {
 		b_image: 3,
 		type: DIVEBOMBER,
 		btype: B_NIGHTBOMBER2,
-		aaResistShip: .6,
-		aaResistFleet: .7,
 		FP: 4,
 		DIVEBOMB: 17,
 		AA: 6,
@@ -6678,8 +6727,6 @@ var EQDATA = {
 		b_image: 3,
 		type: TORPBOMBER, image: 46,
 		btype: B_NIGHTBOMBER,
-		aaResistShip: .6,
-		aaResistFleet: .7,
 		FP: 5,
 		TP: 17,
 		AA: 7,
@@ -6693,6 +6740,8 @@ var EQDATA = {
 		nameJP: '深海戦爆複座鷹',
 		added: '2021-12-28',
 		type: DIVEBOMBER,
+		aaResistShip: .6,
+		aaResistFleet: .7,
 		FP: 5,
 		DIVEBOMB: 12,
 		AA: 10,
@@ -6708,6 +6757,8 @@ var EQDATA = {
 		nameJP: '深海戦爆複座鷹改',
 		added: '2021-12-28',
 		type: DIVEBOMBER,
+		aaResistShip: .6,
+		aaResistFleet: .7,
 		FP: 6,
 		DIVEBOMB: 16,
 		AA: 11,
@@ -7019,17 +7070,30 @@ var LBASDATA = {
 	466: { distance: 6, cost: 9 },
 	469: { distance: 7, cost: 5 },
 	471: { distance: 3, cost: 9 },
+	473: { distance: 6, cost: 9 },
+	474: { distance: 6, cost: 9 },
 };
 
 
 
-var EQUIPBONUSDATA = [];
+var EQUIPBONUSDATA = { bonuses: [], ctypeToCountry: {} };
 function initEQDATA(callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', 'js/data/mst_slotitem_bonus.json');
 	xhr.onload = () => {
-		EQUIPBONUSDATA = JSON.parse(xhr.response);
-		callback && callback();
+		EQUIPBONUSDATA.bonuses = JSON.parse(xhr.response);
+		let xhr2 = new XMLHttpRequest();
+		xhr2.open('GET', 'js/data/country_ctype.json');
+		xhr2.onload = () => {
+			let data = JSON.parse(xhr2.response);
+			for (let country in data) {
+				for (let ctype of data[country]) {
+					EQUIPBONUSDATA.ctypeToCountry[+ctype] = country;
+				}
+			}
+			callback && callback();
+		};
+		xhr2.send();
 	};
 	xhr.send();
 }
@@ -7045,9 +7109,9 @@ function getBaseId(mid) {
 }
 
 let mapShipTypeId = { 'DE': 1, 'DD': 2, 'CL': 3, 'CLT': 4, 'CA': 5, 'CAV': 6, 'CVL': 7, 'FBB': 8, 'BB': 9, 'BBV': 10, 'CV': 11, 'SS': 13, 'SSV': 14, 'AV': 16, 'LHA': 17, 'CVB': 18, 'AR': 19, 'AS': 20, 'CT': 21, 'AO': 22 };
-let mapStatName = { houg: 'FP', raig: 'TP', tyku: 'AA', souk: 'AR', kaih: 'EV', tais: 'ASW', saku: 'LOS', houm: 'ACC', leng: 'RNG' };
+let mapStatName = { houg: 'FP', raig: 'TP', tyku: 'AA', souk: 'AR', kaih: 'EV', tais: 'ASW', saku: 'LOS', houm: 'ACC', leng: 'RNG', baku: 'DIVEBOMB' };
 function getBonusStats(mid,eqids,improves) {
-	let bonusTotal = { houg: 0, raig: 0, tyku: 0, souk: 0, kaih: 0, tais: 0, saku: 0, houm: 0, leng: 0 };
+	let bonusTotal = { houg: 0, raig: 0, tyku: 0, souk: 0, kaih: 0, tais: 0, saku: 0, houm: 0, leng: 0, baku: 0 };
 	let sdata = SHIPDATA[mid];
 	let eqCounts = {}, eqCountsType = {}, eqImproves = {};
 	let hasSR = false, hasAR = false;
@@ -7065,7 +7129,7 @@ function getBonusStats(mid,eqids,improves) {
 			if (eqdata.AA >= 2) hasAR = true;
 		}
 	}
-	for (let bonusItem of EQUIPBONUSDATA) {
+	for (let bonusItem of EQUIPBONUSDATA.bonuses) {
 		let eqNum = 0, improves = [];
 		if (bonusItem.ids) {
 			for (let id in eqCounts) {
@@ -7087,17 +7151,20 @@ function getBonusStats(mid,eqids,improves) {
 		if (eqNum <= 0) continue;
 		
 		for (let bonusData of bonusItem.bonuses) {
+			if (bonusData.requiresSR && !hasSR) continue
+			if (bonusData.requiresAR && !hasAR) continue;
 			if (bonusData.shipClass && bonusData.shipClass.indexOf(sdata.sclass) == -1) continue;
-			if (bonusData.shipX && bonusData.shipX.indexOf(mid) == -1) continue;
-			if (bonusData.shipS && bonusData.shipS.indexOf(getBaseId(mid)) == -1) continue;
+			if (bonusData.shipCountry && bonusData.shipCountry.indexOf(EQUIPBONUSDATA.ctypeToCountry[sdata.sclass]) == -1) continue;
+			if (bonusData.shipId && bonusData.shipId.indexOf(mid) == -1) continue;
+			if (bonusData.shipBase && bonusData.shipBase.indexOf(getBaseId(mid)) == -1) continue;
 			if (bonusData.shipType && bonusData.shipType.indexOf(mapShipTypeId[sdata.type]) == -1) continue;
-			if (bonusData.requires) {
-				let count = 0, reqNum = bonusData.requiresNum || 1;
-				for (let id of bonusData.requires) count += eqCounts[id] || 0;
+			if (bonusData.requiresId) {
+				let count = 0, reqNum = bonusData.requiresIdNum || 1;
+				for (let id of bonusData.requiresId) count += eqCounts[id] || 0;
 				if (count < reqNum) continue;
 			}
 			if (bonusData.requiresType) {
-				let count = 0, reqNum = bonusData.requiresNumType || 1;
+				let count = 0, reqNum = bonusData.requiresTypeNum || 1;
 				for (let type of bonusData.requiresType) count += eqCountsType[type] || 0;
 				if (count < reqNum) continue;
 			}
@@ -7108,19 +7175,9 @@ function getBonusStats(mid,eqids,improves) {
 			}
 			if (bonusData.num && bonusData.num > num) continue;
 			
-			if (bonusData.num || bonusData.requires || bonusData.requiresType) num = 1;
+			if (bonusData.num) num = 1;
 			for (let stat in bonusData.bonus) {
 				bonusTotal[stat] += bonusData.bonus[stat] * num;
-			}
-			if (hasSR && bonusData.bonusSR) {
-				for (let stat in bonusData.bonusSR) {
-					bonusTotal[stat] += bonusData.bonusSR[stat];
-				}
-			}
-			if (hasAR && bonusData.bonusAR) {
-				for (let stat in bonusData.bonusAR) {
-					bonusTotal[stat] += bonusData.bonusAR[stat];
-				}
 			}
 		}
 	}

@@ -138,6 +138,7 @@ var FLEET_MODEL = {
 				los: 0,
 				range: sdata.RNG || 0,
 				acc: 0,
+				divebomb: 0,
 			},
 			statsBonus: {
 				
