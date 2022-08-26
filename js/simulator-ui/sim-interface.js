@@ -539,7 +539,7 @@ var SIM = {
 			let lbWaves = [];
 			if (node.lbas) {
 				for (let num of node.lbas) {
-					lbWaves.push(LBAS[num-1]);
+					if (LBAS[num-1]) lbWaves.push(LBAS[num-1]);
 				}
 			}
 			
