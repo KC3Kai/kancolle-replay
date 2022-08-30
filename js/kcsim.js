@@ -1574,7 +1574,7 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 		else if (['CA','CAV'].includes(target.type)) acc += .21;
 		else acc += .14;
 	}
-	var res = rollHit(accuracyAndCrit(ship,target,acc,target.getFormation().AAmod,0,0,!issupport && 2),!issupport && ship.critdmgbonus);
+	var res = rollHit(accuracyAndCrit(ship,target,acc,1,0,0,!issupport && 2),!issupport && ship.critdmgbonus);
 	var dmg = 0, realdmg = 0;
 	var planebase = (equip.isdivebomber)? equip.DIVEBOMB + (equip.airstrikePowerImprove || 0) : (target.isInstall)? 0 : equip.TP + (equip.airstrikePowerImprove || 0);
 	planebase = planebase || 0;
@@ -2388,7 +2388,7 @@ function supportASW(carriers,targets,defenders,APIkouku,combinedAll) {
 function airstrikeSupportASW(ship,target,slot,contactMod) {
 	if (!contactMod) contactMod = 1;
 	var acc = .85;
-	var res = rollHit(accuracyAndCrit(ship,target,acc,target.getFormation().AAmod,0,.2));
+	var res = rollHit(accuracyAndCrit(ship,target,acc,1,0,.2));
 	var equip = ship.equips[slot];
 	var dmg = 0, realdmg = 0;
 	var planebase = equip.ASW;
@@ -2581,7 +2581,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 		for (let group in equip.bonusSpecialAccP) acc *= equip.bonusSpecialAccP[group];
 	}
 	lbas.critratebonus = critratebonus; lbas.ACCplane = ACCplane;
-	var res = rollHit(accuracyAndCrit(lbas,target,acc,target.getFormation().AAmod,0,0,true),critdmgbonus);
+	var res = rollHit(accuracyAndCrit(lbas,target,acc,1,0,0,true),critdmgbonus);
 	lbas.critratebonus = 0; lbas.ACCplane = 0;
 	var dmg = 0, realdmg = 0;
 	var planebase;
