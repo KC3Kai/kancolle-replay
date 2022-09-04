@@ -26,7 +26,9 @@ var CONST = window.COMMON.getConst({
 		'warn_bad_mechanic': { txt: 'Warning: Invalid mechanic: <0>' },
 		'warn_bad_const': { txt: 'Warning: Invalid const: <0>' },
 		'warn_no_nb': { txt: 'Warning: Night Battle not enabled on last node, intentional?' },
+		'warn_nb_preboss': { txt: 'Warning: Night Battle enabled on Node <0> before last node, intentional?' },
 		'warn_no_subonly': { txt: 'Warning: Sub-only supply cost not enabled on Node <0>, intentional?' },
+		'warn_vanguard': { txt: 'Warning: Destroyers have different vanguard evasion mods in event maps, see "Show Advanced" if simulating event maps' },
 	},
 });
 	
@@ -505,6 +507,25 @@ var SIM = {
 		let nodeLast = dataInput.nodes.at(-1);
 		if (dataInput.nodes.length > 1 && !nodeLast.doNB && !nodeLast.NBOnly && !nodeLast.airRaid) {
 			this._addWarning('warn_no_nb');
+		}
+		for (let i=0; i<dataInput.nodes.length-1; i++) {
+			let node = dataInput.nodes[i];
+			if (node.doNB && !node.NBOnly && !node.airRaid) {
+				this._addWarning('warn_nb_preboss',[i+1]);
+			}
+		}
+		
+		let hasVanguard = dataInput.fleetF.formation == 6;
+		if (!hasVanguard) {
+			for (let node of dataInput.nodes) {
+				if (node.formationOverride == 6 || (node.fleetE && node.fleetE.formation == 6) || (node.fleetEComps && node.fleetEComps.find(comp => comp.fleet.formation == 6))) {
+					hasVanguard = true;
+					break;
+				}
+			}
+		}
+		if (hasVanguard) {
+			this._addWarning('warn_vanguard');
 		}
 	},
 	

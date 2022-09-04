@@ -167,13 +167,13 @@ var SIMCONSTS = {
 	vanguardEvTorpOther: [15,15,20,45,45,60,60],
 	vanguardEvShellDDMod: null,
 	vanguardEvTorpDDMod: null,
-	vanguardEvShellOtherMod: [.95,.95,.95,.95,.865,.79,.71],
-	vanguardEvShellDDModNormal: [.95,.95,.81,.81,.69,.64,.64],
-	vanguardEvShellDDModEvent: [.95,.95,.67,.67,.52,.48,.42],
-	vanguardEvTorpOtherMod: [.95,.95,.81,.72,.68,.61,.56],
-	vanguardEvTorpDDModNormal: [.95,.95,.7,.62,.54,.48,.48],
-	vanguardEvTorpDDModEvent: [.95,.95,.57,.51,.42,.35,.35],
-	vanguardUseType: 1,
+	vanguardEvShellOtherMod: [.95,.95,.95,.95,.86,.79,.7],
+	vanguardEvShellDDModNormal: [.95,.95,.8,.8,.69,.64,.64],
+	vanguardEvShellDDModEvent: [.95,.95,.66,.66,.52,.48,.4],
+	vanguardEvTorpOtherMod: [.9,.9,.77,.67,.63,.55,.51],
+	vanguardEvTorpDDModNormal: [.9,.9,.65,.58,.5,.42,.42],
+	vanguardEvTorpDDModEvent: [.9,.9,.54,.48,.38,.33,.25],
+	vanguardUseType: 2,
 	nelsonTouchRate: 60,
 	nagatoSpecialRate: 60,
 	mutsuSpecialRate: 60,
@@ -182,8 +182,6 @@ var SIMCONSTS = {
 	yamatoSpecial3Rate: 80,
 	yamatoSpecial2Rate: 80,
 	airRaidCostW6: false,
-	enableEnemyAACI: true,
-	enableEnemyAACILBAS: false,
 	enablePlaneBonus: true,
 	enableModSummerBB: true,
 	enableModSummerCA: true,
@@ -2028,13 +2026,16 @@ function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupp
 	if (!hasbomber) return;
 	
 	//get AACI
-	var AACInum = 0, AACImod = 1, AACItype = 0;
-	if (SIMCONSTS.enableEnemyAACI) {
-		let AACIResult = getAACI(defenders,APIkouku);
-		AACInum = AACIResult.num;
-		AACImod = AACIResult.mod;
-		AACItype = AACIResult.id;
+	let shipsAACI = defenders;
+	if (defenders.length && defenders[0].side == 1) {
+		let fleet = defenders[0].fleet;
+		shipsAACI = fleet.combinedWith ? fleet.ships.concat(fleet.combinedWith.ships) : fleet.ships;
 	}
+	var AACInum = 0, AACImod = 1, AACItype = 0;
+	let AACIResult = getAACI(shipsAACI,APIkouku);
+	AACInum = AACIResult.num;
+	AACImod = AACIResult.mod;
+	AACItype = AACIResult.id;
 	
 	//get contact
 	var contactMod = 1;
