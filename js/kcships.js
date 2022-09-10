@@ -90,7 +90,7 @@ Fleet.prototype.fleetAntiAir = function(alreadyCombined,isRaid) {
 		FAA += this.combinedWith.fleetAntiAir(true,isRaid);
 	}
 	FAA = Math.floor(FAA*this.formation.AAmod);
-	if (this.side == 0) FAA = FAA/1.3;
+	if (this.side == 0 && MECHANICS.AACI) FAA = FAA/1.3;
 	if (this.combinedWith) {
 		if (this.isescort) FAA *= .48;
 		else FAA *= (isRaid ? .72 : .8);
@@ -1179,27 +1179,31 @@ Ship.prototype.damageMod = function(isTorp) {
 }
 Ship.prototype.weightedAntiAir = function(isRaid) {
 	if (this._wAA === undefined) {
-		this._wAA = this.statsBase.AA/2;
-		if (this.side==1) this._wAA = Math.sqrt(this.AA);
-		if (this.equips.length) this._wAA = Math.floor(this._wAA);
-		for (var i=0; i<this.equips.length; i++) {
-			var mod = 0;
-			switch (this.equips[i].atype) {
-				case A_HAGUN:
-				case A_HAFD:
-				case A_AAFD:
-					mod = 2; break;
-				case A_AAGUN:
-					mod = 3; break;
-				case A_AIRRADAR:
-					mod = 1.5; break;
-				default:
-					continue;
+		if (!MECHANICS.AACI) {
+			this._wAA = this.side == 1 ? Math.sqrt(this.AA) : this.AA;
+		} else {
+			this._wAA = this.statsBase.AA/2;
+			if (this.side==1) this._wAA = Math.sqrt(this.AA);
+			if (this.equips.length) this._wAA = Math.floor(this._wAA);
+			for (var i=0; i<this.equips.length; i++) {
+				var mod = 0;
+				switch (this.equips[i].atype) {
+					case A_HAGUN:
+					case A_HAFD:
+					case A_AAFD:
+						mod = 2; break;
+					case A_AAGUN:
+						mod = 3; break;
+					case A_AIRRADAR:
+						mod = 1.5; break;
+					default:
+						continue;
+				}
+				this._wAA += this.equips[i].AA * mod;
 			}
-			this._wAA += this.equips[i].AA * mod;
+			this._wAA += (this.improves.AAself)? this.improves.AAself : 0;
+			this._wAA = Math.max(0,this._wAA);
 		}
-		this._wAA += (this.improves.AAself)? this.improves.AAself : 0;
-		this._wAA = Math.max(0,this._wAA);
 	}
 	let wAA = this._wAA;
 	if (this.fleet.combinedWith) {
@@ -1408,6 +1412,7 @@ CAV.prototype = Object.create(Ship.prototype);
 CAV.prototype.planeasw = 1;
 CAV.prototype.APweak = true;
 CAV.prototype.canASW = function() {
+	if (!isPlayable(this.mid) && SHIPDATA[this.mid].ASW) return true;
 	for (var i=0; i<this.equips.length; i++) {
 		if (this.planecount[i] <= 0) continue;
 		if (EQTDATA[this.equips[i].type].isASWPlane && this.equips[i].ASW > 0) return true;

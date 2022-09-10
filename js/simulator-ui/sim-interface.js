@@ -28,7 +28,8 @@ var CONST = window.COMMON.getConst({
 		'warn_no_nb': { txt: 'Warning: Night Battle not enabled on last node, intentional?' },
 		'warn_nb_preboss': { txt: 'Warning: Night Battle enabled on Node <0> before last node, intentional?' },
 		'warn_no_subonly': { txt: 'Warning: Sub-only supply cost not enabled on Node <0>, intentional?' },
-		'warn_vanguard': { txt: 'Warning: Destroyers have different vanguard evasion mods in event maps, see "Show Advanced" if simulating event maps' },
+		'warn_vanguard': { txt: 'Warning: Destroyers have different vanguard evasion mods in event maps, see "Show Advanced" if simulating event maps', excludeImport: true },
+		'warn_enemy_unset_stats': { txt: 'Warning: Node <0> has enemies with unknown and unset evasion/luck stats (still set to 0/1).', excludeImport: true },
 	},
 });
 	
@@ -40,6 +41,7 @@ var SIM = {
 	_compListsEnemy: [],
 	_compListFF: null,
 	_inputPrev: {},
+	_unsetEnemy: null,
 
 	_addError: function(key,args) {
 		let txt = CONST.errorText[key].txt;
@@ -49,7 +51,7 @@ var SIM = {
 			}
 		}
 		if (this._saveErrors) {
-			this._errors.push({ txt: txt, excludeClient: !!CONST.errorText[key].excludeClient });
+			this._errors.push({ txt: txt, excludeClient: !!CONST.errorText[key].excludeClient, excludeImport: !!CONST.errorText[key].excludeImport });
 		} else {
 			console.log('error: ' + txt);
 		}
@@ -62,7 +64,7 @@ var SIM = {
 			}
 		}
 		if (this._saveErrors) {
-			this._warnings.push({ txt: txt, excludeClient: !!CONST.errorText[key].excludeClient });
+			this._warnings.push({ txt: txt, excludeClient: !!CONST.errorText[key].excludeClient, excludeImport: !!CONST.errorText[key].excludeImport });
 		} else {
 			console.log('warning: ' + txt);
 		}
@@ -308,6 +310,10 @@ var SIM = {
 			} else if (!sdata) {
 				this._addWarning('warn_unknown_ship',[shipInput.masterId]);
 			}
+			if (this._unsetEnemy && !this._unsetEnemy.found && sdata && sdata.unknownstats && (stats.EV == 0 || stats.LUK <= 1)) {
+				this._addWarning('warn_enemy_unset_stats',[this._unsetEnemy.node]);
+				this._unsetEnemy.found = true;
+			}
 			
 			sdata = SHIPDATA[shipInput.masterId];
 			let shipSim = new ShipType(shipInput.masterId,sdata.name,side,level,stats.HP,stats.FP,stats.TP,stats.AA,stats.AR,stats.EV,stats.ASW,stats.LOS,stats.LUK,stats.RNG,stats.SLOTS);
@@ -413,6 +419,7 @@ var SIM = {
 		this._saveErrors = true;
 		this._errors = [];
 		this._warnings = [];
+		this._unsetEnemy = null;
 		
 		this._setMechanics(dataInput);
 		
@@ -454,6 +461,7 @@ var SIM = {
 		FLEETS2 = [];
 		this._compListsEnemy = [];
 		for (let i=0; i<dataInput.nodes.length; i++) {
+			this._unsetEnemy = { node: i+1, found: false };
 			let node = dataInput.nodes[i];
 			if (node.fleetEComps && node.fleetEComps.length >= 2) {
 				let compsE = [];
