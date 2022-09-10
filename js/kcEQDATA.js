@@ -5496,6 +5496,7 @@ var EQDATA = {
 		nameJP: 'F4U-2 Night Corsair',
 		added: '2022-08-26',
 		type: FIGHTER, image: 45,
+		btype: B_NIGHTFIGHTER,
 		FP: 1,
 		AA: 9,
 		ACC: 1,

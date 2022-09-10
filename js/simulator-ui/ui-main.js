@@ -378,14 +378,17 @@ var UI_MAIN = Vue.createApp({
 			}
 		},
 		
+		_includeError(error) {
+			return (this.results.isFromImport || !error.excludeClient) && (!this.results.isFromImport || !error.excludeImport);
+		},
 		callbackSimStats: function(res) {
 			if (res.errors) {
-				this.results.errors = res.errors.filter(obj => this.results.isFromImport || !obj.excludeClient).map(obj => obj.txt);
+				this.results.errors = res.errors.filter(obj => this._includeError(obj)).map(obj => obj.txt);
 				this.canSim = true;
 				return;
 			}
 			if (res.warnings) {
-				this.results.warnings = res.warnings.filter(obj => this.results.isFromImport || !obj.excludeClient).map(obj => obj.txt);
+				this.results.warnings = res.warnings.filter(obj => this._includeError(obj)).map(obj => obj.txt);
 			}
 			if (res.didReset) {
 				this.results.active = false;
@@ -415,7 +418,7 @@ var UI_MAIN = Vue.createApp({
 			let replay = CONVERT.uiToReplay(this);
 			let errors = SIM.runReplay(CONVERT.uiToSimInput(this),replay);
 			if (errors) {
-				this.results.errors = errors.filter(obj => this.results.isFromImport || !obj.excludeClient).map(obj => obj.txt);;
+				this.results.errors = errors.filter(obj => this._includeError(obj)).map(obj => obj.txt);;
 				return;
 			}
 			console.log(replay)
