@@ -3204,7 +3204,7 @@
 		"bonuses": [
 			{
 				"bonus": { "houg": 3, "tyku": 3, "tais": 3, "kaih": 3 },
-				"shipClass": [69,83,84,105,116]
+				"shipClass": [69,83,84,105,116,118]
 			},
 			{
 				"bonus": { "houg": 1, "tyku": 1, "tais": 1, "kaih": 1 },

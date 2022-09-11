@@ -1954,6 +1954,39 @@ var MAPDATA = {
 					'L': { bgmDB: 99, bgmNB: 99 },
 				},
 			},
+			4: {
+				name: 'E4',
+				bgmDN: 211,
+				bgmNN: 211,
+				bgmDB: 212,
+				bgmNB: 212,
+				bossnode: ['K','W'],
+			},
+			5: {
+				name: 'E5',
+				bgmDN: 212,
+				bgmNN: 212,
+				bgmDB: 214,
+				bgmNB: 214,
+				bossnode: ['H','O','P','X'],
+				overrideBGM: {
+					'H': { bgmDB: 140, bgmNB: 140 },
+					'O': { bgmDB: 141, bgmNB: 141 },
+				},
+			},
+			6: {
+				name: 'E6',
+				bgmDN: 214,
+				bgmNN: 214,
+				bgmDB: 215,
+				bgmNB: 215,
+				bossnode: ['G','S','W','Z'],
+				overrideBGM: {
+					'G': { bgmDB: 211, bgmNB: 211 },
+					'S': { bgmDB: 212, bgmNB: 212 },
+					'Z': { bgmDB: 216, bgmNB: 216 },
+				},
+			},
 		}
 	},
 }
