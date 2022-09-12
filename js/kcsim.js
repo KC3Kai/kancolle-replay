@@ -1728,7 +1728,7 @@ function damage(ship,target,base,preMod,postMod,cap,isAirstrike,isSupport) {
 	
 	if (dmg > cap) dmg = cap + Math.sqrt(dmg-cap);
 	
-	if (target.installtype == 3) { //supply depot type installations
+	if (target.installtype == 3 || target.isSupplyDepot) { //supply depot type installations
 		if (isAirstrike) {
 			if (target.mid <= 1658 && !ship.mid) {
 				dmg = dmg*target.divebombWeak + 100;
