@@ -5606,7 +5606,7 @@ var EQDATA = {
 		LOS: 6,
 	},
 	482: {
-		name: '特大発動艇+Ⅲ号戦車(北アフリカ仕様)',
+		name: 'Toku Daihatsu Landing Craft + Panzer III (North African Specification)',
 		nameJP: '特大発動艇+Ⅲ号戦車(北アフリカ仕様)',
 		added: '2022-09-11',
 		type: LANDINGCRAFT,
