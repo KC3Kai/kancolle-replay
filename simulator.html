@@ -86,7 +86,7 @@
 				<input type="button" value="Insert Node" @click="onclickInsertBattle(0)" />
 			</div>
 			<div v-for="battle in battles" :key="battle.id">
-				<vbattle :battle="battle" :candelete="canDeleteBattles"></vbattle>
+				<vbattle :battle="battle" :candelete="canDeleteBattles" :isboss="battle.ind==battles.length-1"></vbattle>
 				<div class="battleNext">
 					<input type="button" value="Insert Node" @click="onclickInsertBattle(battle.ind+1)" />
 				</div>
@@ -381,6 +381,7 @@
 	<div id="divOther">
 	<div id="divChangeLog">
 		<div><span class="header">Change Log:</span></div>
+		<div>2022-09-19 - Node setting: choose if last node uses Normal or Boss support</div>
 		<div>2022-09-04 - new Advanced Setting: <a href="https://twitter.com/Divinity_123/status/1566375780380282882">vanguard accuracy multipliers</a></div>
 		<div>2022-08-27 - Settings now saved (highlights changed values, Restore Defaults button), new Advanced Setting: combined fleet airstrike damage/accuracy mods</div>
 		<div>2022-06-21 - LBAS historical accuracy bonus settings</div>
@@ -454,6 +455,11 @@
 					<div>1 <input type="checkbox" v-model="battle.lbasWaves[0]" /><input type="checkbox" v-model="battle.lbasWaves[1]" /></div>
 					<div>2 <input type="checkbox" v-model="battle.lbasWaves[2]" /><input type="checkbox" v-model="battle.lbasWaves[3]" /></div>
 					<div>3 <input type="checkbox" v-model="battle.lbasWaves[4]" /><input type="checkbox" v-model="battle.lbasWaves[5]" /></div>
+					<div class="space" v-show="isboss"><span class="header">Support:</span></div>
+					<div class="formationsWrap" v-show="isboss">
+						<label><input type="radio" value="1" v-model.number="battle.useNormalSupport" />Normal</label>
+						<label><input type="radio" value="0" v-model.number="battle.useNormalSupport" />Boss</label>
+					</div>
 				</div>
 				<div>
 					<div><span class="header">Override Historical Bonuses:</span></div>

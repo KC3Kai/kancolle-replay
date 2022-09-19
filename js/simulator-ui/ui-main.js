@@ -222,6 +222,7 @@ var UI_MAIN = Vue.createApp({
 				addCostFuel: null,
 				addCostAmmo: null,
 				subOnly: false,
+				useNormalSupport: 0,
 					
 				enemyComps: [],
 			};
@@ -453,7 +454,7 @@ var UI_MAIN = Vue.createApp({
 		},
 	},
 }).component('vbattle',{
-	props: ['battle','candelete'],
+	props: ['battle','candelete','isboss'],
 	data: () => ({
 		
 	}),

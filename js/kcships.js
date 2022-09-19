@@ -383,7 +383,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (eq.mid == 355) installeqs.m4a1 = installeqs.m4a1 + 1 || 1;
 		if (eq.mid == 408) installeqs.soukoutei = installeqs.soukoutei + 1 || 1;
 		if (eq.mid == 409) installeqs.armedDaihatsu = installeqs.armedDaihatsu + 1 || 1;
-		if (eq.mid == 436 || eq.mid == 482) installeqs.panzer = installeqs.panzer + 1 || 1;
+		if (eq.mid == 436) installeqs.panzer = installeqs.panzer + 1 || 1;
 		if (eq.mid == 449) installeqs.tokuT1 = installeqs.tokuT1 + 1 || 1;
 		if (eq.mid == 126) this.numWG = this.numWG + 1 || 1;
 		
@@ -1696,8 +1696,8 @@ LandBase.prototype.airPower = function(eqtFilter) {
 	var ap = 0, landscoutmod = 1;
 	for (var i=0; i<this.equips.length; i++) {
 		if (this.equips[i].type == LANDSCOUT) {
-			if (this.equips[i].ACC >= 3) landscoutmod = 1.18;
-			else if (this.equips[i].ACC <= 2 && landscoutmod < 1.15) landscoutmod = 1.15;
+			if (this.equips[i].LOS >= 9) landscoutmod = 1.18;
+			else if (this.equips[i].LOS <= 8 && landscoutmod < 1.15) landscoutmod = 1.15;
 		}
 		if (this.equips[i][eqtFilter]) {
 			var base = (this.equips[i].AA||0) + (this.equips[i].AAImprove||0);

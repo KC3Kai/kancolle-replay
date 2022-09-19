@@ -732,6 +732,11 @@ window.CONVERT = {
 			}
 			dataInput.nodes.push(nodeInput);
 		}
+		let iLast = dataUI.battles.length-1;
+		if (+dataUI.battles[iLast].useNormalSupport) {
+			dataInput.nodes[iLast].useNormalSupport = !!+dataUI.battles[iLast].useNormalSupport;
+		}
+		
 		let mechInput = this.uiToSimInputMechanics(dataUI);
 		dataInput.mechanics = mechInput.mechanics;
 		dataInput.consts = mechInput.consts;
