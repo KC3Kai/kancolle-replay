@@ -563,7 +563,7 @@ var SIM = {
 			let isBossNode = battleInd == dataInput.nodes.length-1;
 			let fleetF = FLEETS1[0];
 			let fleetE = FLEETS2[battleInd];
-			let fleetFSupport = isBossNode ? FLEETS1S[1] : FLEETS1S[0];
+			let fleetFSupport = isBossNode && !dataInput.nodes[battleInd].useNormalSupport ? FLEETS1S[1] : FLEETS1S[0];
 			let fleetFF = isBossNode ? FLEETS1S[2] : null;
 			let lbWaves = [];
 			if (node.lbas) {

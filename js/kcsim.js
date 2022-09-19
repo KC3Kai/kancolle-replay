@@ -2465,7 +2465,7 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 	for (let eq of lbas.equips) {
 		if (eq.type == LANDSCOUT) {
 			if (eq.ACC >= 3) contactModLB = 1.15;
-			else if (eq.ACC <= 2 && contactModLB < 1.125) contactModLB = 1.125;
+			else if (eq.ACC <= 2 && contactModLB < 1.12) contactModLB = 1.12;
 		}
 	}
 	contactMod *= contactModLB;
