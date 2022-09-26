@@ -1556,7 +1556,7 @@ CV.prototype.NBPower = function(target) {
 	return Ship.prototype.NBPower.call(this,target);
 }
 CV.prototype.canNBAirAttack = function() {
-	return (this.hasNBAirGear() || (this.sclass == 78 && this.equips.find(eq => eq.isSwordfish))) && (this.canStillShellDamage() || (!isPlayable(this.mid) && this.HP/this.maxHP > .25));
+	return (this.hasNBAirGear() || (this.sclass == 78 && this.equips.find(eq => eq.isSwordfish))) && this.canStillShellDamage();
 }
 CV.prototype.hasNBAirGear = function() {
 	return (this.equiptypesB[B_NIGHTCREW] || this.hasBuiltInNightCrew) && (this.equiptypesB[B_NIGHTFIGHTER] || this.equiptypesB[B_NIGHTBOMBER]);
