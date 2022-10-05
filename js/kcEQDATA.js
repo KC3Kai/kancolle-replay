@@ -2882,7 +2882,7 @@ var EQDATA = {
 		nameJP: '30.5cm三連装砲改',
 		added: '2017-05-02',
 		type: MAINGUNL,
-		fitclass: 10,
+		fitclass: 8,
 		FP: 17,
 		AA: 3,
 		AR: 1,

@@ -16,7 +16,7 @@ var CONST = window.COMMON.getConst({
 	tooltipUnknownStat: 'This stat\'s true value is currently unknown.',
 	
 	rankExceptTypes: [AUTOGYRO,ASWPLANE],
-	rankDefaultSpecial: { 311: 0, 312: 2 },
+	rankDefaultSpecial: { 311: 0, 312: 2, 480: 0 },
 	
 	lbasTypesRecon: [SEAPLANE,CARRIERSCOUT,CARRIERSCOUT2,FLYINGBOAT,LANDSCOUT],
 	lbasTypesHeavy: [LANDBOMBERL],
@@ -810,6 +810,7 @@ var UI_ADDITIONALSTATS = Vue.createApp({
 					vsHarbourSummer: Math.floor(ship.shellPower({isInstall:true,installtype:6})),
 					modSupply: ship.supplyPostMult ? Math.round(100*ship.supplyPostMult)/100 : null,
 					modAnchorage: ship.anchoragePostMult ? Math.round(100*ship.anchoragePostMult)/100 : null,
+					modDock: ship.dockPostMult ? Math.round(100*ship.dockPostMult)/100 : null,
 				};
 				if (ship.AStype().length && ship.canAS()) {
 					stats.asTypes = [];
@@ -920,7 +921,7 @@ var UI_ADDITIONALSTATSLBAS = Vue.createApp({
 						if ([CARRIERSCOUT,SEAPLANE,FLYINGBOAT,LANDSCOUT].includes(equip.type) && dist > rangeScoutMax) rangeScoutMax = dist;
 					}
 				}
-				stats.rangePlus = Math.min(3,Math.floor(Math.sqrt(rangeScoutMax-stats.range)));
+				stats.rangePlus = Math.min(3,Math.round(Math.sqrt(rangeScoutMax-stats.range)));
 			}
 		},
 		doClose: function() {

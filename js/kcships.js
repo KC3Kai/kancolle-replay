@@ -677,6 +677,22 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	if (installeqs.DB) this.anchoragePostMult *= 1.4;
 	if (installeqs.DB >= 2) this.anchoragePostMult *= 1.5;
 	
+	this.dockPostMult = 1;
+	if (installeqs.DB) this.dockPostMult *= 1.1;
+	if (installeqs.DB >= 2) this.dockPostMult *= 1.1;
+	if (installeqs.SB) this.dockPostMult *= 1.1;
+	if (this.numWG) this.dockPostMult *= 1.1;
+	if (this.numWG >= 2) this.dockPostMult *= 1.2;
+	if (installeqs.T3) this.dockPostMult *= 1.3;
+	if (installeqs.DH3) this.dockPostMult *= 1.2 * installbonus3;
+	if (hasLC) this.dockPostMult *= 1.1;
+	if (installeqs.TDH11 || installeqs.tokuT1 || this.equips.find(eq => eq.mid == 482)) this.dockPostMult *= 1.4;
+	if (installeqs.DH2) this.dockPostMult *= 1.15 * installbonus1;
+	if (installeqs.DH2 >= 2) this.dockPostMult *= 1.15;
+	if (installeqs.m4a1) this.dockPostMult *= 1.1;
+	if (installeqs.panzer) this.dockPostMult *= 1.15;
+	if (installeqs.panzer >= 2) this.dockPostMult *= 1.15;
+	if (numAB) this.dockPostMult *= 1.1;
 	
 	this.ptDmgMod = 1;
 	let numGuns = (this.equiptypes[MAINGUNS] || 0) + (this.equiptypes[MAINGUNSAA] || 0);

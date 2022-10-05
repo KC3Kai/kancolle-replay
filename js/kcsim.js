@@ -186,6 +186,7 @@ var SIMCONSTS = {
 	enableModSummerBB: true,
 	enableModSummerCA: true,
 	enableModFrenchBB: true,
+	enableModDock: true,
 	enableSkipTorpBonus: true,
 	echelonOld: {shellmod:.6,torpmod:.6,ASWmod:1,AAmod:1, shellacc:1.2,torpacc:.6,NBacc:.8, shellev:1.2,torpev:1.3,NBev:1.1,ASWev:1.3, id:4},
 	echelonNew: {shellmod:.75,torpmod:.6,ASWmod:1.1,AAmod:1, shellacc:1.2,torpacc:.75,NBacc:.9, shellev:1.4,torpev:1.3,NBev:1.3,ASWev:1.3, id:4},
@@ -405,6 +406,9 @@ function shell(ship,target,APIhou,attackSpecial) {
 	
 	if (target.isAnchorage) {
 		postMod *= ship.anchoragePostMult;
+	}
+	if (SIMCONSTS.enableModDock && target.isDock) {
+		postMod *= ship.dockPostMult;
 	}
 	if (SIMCONSTS.enableModSummerBB && target.isSummerBB) {
 		if (ship.equiptypes[APSHELL]) postMod *= 1.2;
@@ -678,6 +682,9 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 	
 	if (target.isAnchorage) {
 		postMod *= ship.anchoragePostMult;
+	}
+	if (SIMCONSTS.enableModDock && target.isDock) {
+		postMod *= ship.dockPostMult;
 	}
 	if (SIMCONSTS.enableModSummerBB && target.isSummerBB) {
 		if (ship.equiptypes[APSHELL]) postMod *= 1.2;
@@ -1520,6 +1527,9 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 		let postMod = 1;
 		if (target.isAnchorage && !MECHANICS.anchorageTorpNerf) {
 			postMod *= ship.anchoragePostMult;
+		}
+		if (SIMCONSTS.enableModDock && target.isDock) {
+			postMod *= ship.dockPostMult;
 		}
 		
 		var res = rollHit(accuracyAndCrit(ship,target,acc,target.getFormation().torpev,evFlat,1.5));
