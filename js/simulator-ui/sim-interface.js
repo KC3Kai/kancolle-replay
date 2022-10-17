@@ -28,7 +28,7 @@ var CONST = window.COMMON.getConst({
 		'warn_no_nb': { txt: 'Warning: Night Battle not enabled on last node, intentional?' },
 		'warn_nb_preboss': { txt: 'Warning: Night Battle enabled on Node <0> before last node, intentional?' },
 		'warn_no_subonly': { txt: 'Warning: Sub-only supply cost not enabled on Node <0>, intentional?' },
-		'warn_vanguard': { txt: 'Warning: Destroyers have different vanguard evasion mods in event maps, see "Show Advanced" if simulating event maps', excludeImport: true },
+		'warn_vanguard': { txt: 'Note: Destroyers have different vanguard evasion mods in event maps, see "Show Advanced" if simulating event maps', excludeImport: true },
 		'warn_enemy_unset_stats': { txt: 'Warning: Node <0> has enemies with unknown and unset evasion/luck stats (still set to 0/1).', excludeImport: true },
 	},
 });
@@ -42,6 +42,8 @@ var SIM = {
 	_compListFF: null,
 	_inputPrev: {},
 	_unsetEnemy: null,
+	
+	cancelRun: false,
 
 	_addError: function(key,args) {
 		let txt = CONST.errorText[key].txt;
@@ -174,6 +176,7 @@ var SIM = {
 		}
 		for (let num of lbasUsed) {
 			let base = LBAS[num-1];
+			if (!base) continue;
 			let cost = base.getCost();
 			this._results.totalFuelS += cost[0];
 			this._results.totalAmmoS += cost[1];
@@ -704,6 +707,7 @@ var SIM = {
 		let numSim = Math.min(CONST.numSimMax, dataInput.numSims || CONST.numSimDefault);
 		callback({ progress: n, progressTotal: numSim, didReset: doReset, warnings: this._warnings.slice() });
 		
+		this.cancelRun = false;
 		let timeStart = Date.now();
 		let runStep = function() {
 			let numStep = Math.min(CONST.numSimStep,numSim-n);
@@ -711,10 +715,11 @@ var SIM = {
 				this._doSimSortie(dataInput);
 			}
 			n += numStep;
-			if (n >= numSim) {
+			if (n >= numSim || this.cancelRun) {
 				callback({ progress: n, progressTotal: numSim, result: this._results });
 				let timeTotal = Date.now() - timeStart;
 				console.log('time: ' + (timeTotal/1000) + ' sec');
+				this.cancelRun = false;
 			} else {
 				callback({ progress: n, progressTotal: numSim });
 				setTimeout(runStep.bind(this),1);

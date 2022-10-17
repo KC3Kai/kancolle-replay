@@ -230,6 +230,7 @@
 			<div>Simulate <input type="number" min="1" max="99999" v-model="numSim" /> times and show statistics:</div>
 			<div id="divSimStatsButtons">
 				<input type="button" value="Go" :disabled="!canSim" @click="onclickGo"/>
+				<input type="button" value="Cancel" v-show="!canSim" :disabled="canSim" @click="onclickCancel"/>
 				<input type="button" value="Clear" v-show="results.active&&canSim" @click="onclickClear"/>
 			</div>
 		</div>

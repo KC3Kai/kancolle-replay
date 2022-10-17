@@ -431,6 +431,9 @@ var UI_MAIN = Vue.createApp({
 			this.results.active = false;
 			SIM.resetStats();
 		},
+		onclickCancel: function() {
+			SIM.cancelRun = true;
+		},
 		
 		onclickDeckbuilder: function() {
 			UI_DECKBUILDERIMPORTER.doOpen();
