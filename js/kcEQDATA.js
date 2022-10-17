@@ -5616,6 +5616,16 @@ var EQDATA = {
 		FP: 1,
 		AA: 1,
 	},
+	483: {
+		name: 'Type 3 Shell Kai Ni',
+		nameJP: '三式弾改二',
+		added: '2022-09-30',
+		type: TYPE3SHELL,
+		FP: 5,
+		AA: 7,
+		ACC: 1,
+		EV: 1,
+	},
 	501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
