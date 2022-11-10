@@ -5344,6 +5344,7 @@ var EQDATA = {
 		nameJP: 'B-25',
 		added: '2022-05-28',
 		type: LANDBOMBER,
+		isSkipBomber: true,
 		FP: 3,
 		DIVEBOMB: 16,
 		TP: 8,
@@ -5626,21 +5627,34 @@ var EQDATA = {
 		ACC: 1,
 		EV: 1,
 	},
-	501: {
+	484: {
+		name: 'Type 4 Heavy Bomber Hiryuu (Skilled) + No.1 Model 1A Guided Missile',
+		nameJP: '四式重爆 飛龍(熟練)+イ号一型甲 誘導弾',
+		added: '2022-10-31',
+		type: LANDBOMBER,
+		aaResistShip: .6,
+		DIVEBOMB: 21,
+		TP: 17,
+		AA: 5,
+		ACC: 3,
+		ASW: 4,
+		LOS: 5,
+	},
+	1501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
 		type: MAINGUNS,
 		FP: 1,
 		RNG: 1,
 	},
-	502: {
+	1502: {
 		name: '5inch Twin Cannon',
 		nameJP: '5inch連装砲',
 		type: MAINGUNS,
 		FP: 2,
 		RNG: 1,
 	},
-	503: {
+	1503: {
 		name: '3inch Single High-Angle Mount',
 		nameJP: '3inch単装高角砲',
 		type: MAINGUNS, image: 16,
@@ -5649,7 +5663,7 @@ var EQDATA = {
 		AA: 1,
 		RNG: 1,
 	},
-	504: {
+	1504: {
 		name: '5inch Single AA Cannon',
 		nameJP: '5inch単装高射砲',
 		type: MAINGUNM,
@@ -5657,7 +5671,7 @@ var EQDATA = {
 		AA: 2,
 		RNG: 2,
 	},
-	505: {
+	1505: {
 		name: '8inch Triple Cannon',
 		nameJP: '8inch三連装砲',
 		type: MAINGUNM,
@@ -5665,7 +5679,7 @@ var EQDATA = {
 		AA: 2,
 		RNG: 2,
 	},
-	506: {
+	1506: {
 		name: '6inch Twin Rapid-fire Cannon',
 		nameJP: '6inch連装速射砲',
 		type: MAINGUNM,
@@ -5673,7 +5687,7 @@ var EQDATA = {
 		AA: 3,
 		RNG: 2,
 	},
-	507: {
+	1507: {
 		name: '14inch Twin Cannon',
 		nameJP: '14inch連装砲',
 		type: MAINGUNL,
@@ -5681,7 +5695,7 @@ var EQDATA = {
 		AA: 4,
 		RNG: 3,
 	},
-	508: {
+	1508: {
 		name: '16inch Twin Cannon',
 		nameJP: '16inch連装砲',
 		type: MAINGUNL,
@@ -5689,7 +5703,7 @@ var EQDATA = {
 		AA: 4,
 		RNG: 3,
 	},
-	509: {
+	1509: {
 		name: '16inch Triple Cannon',
 		nameJP: '16inch三連装砲',
 		type: MAINGUNL,
@@ -5697,7 +5711,7 @@ var EQDATA = {
 		AA: 5,
 		RNG: 3,
 	},
-	510: {
+	1510: {
 		name: '5inch High-Angle Mount (Secondary)',
 		nameJP: '5inch単装高射砲',
 		type: SECGUN, image: 16,
@@ -5705,14 +5719,14 @@ var EQDATA = {
 		AA: 2,
 		RNG: 1,
 	},
-	511: {
+	1511: {
 		name: '6inch Single Cannon',
 		nameJP: '6inch単装砲',
 		type: SECGUN,
 		FP: 1,
 		RNG: 2,
 	},
-	512: {
+	1512: {
 		name: '12.5inch Twin Secondary Cannon',
 		nameJP: '12.5inch連装副砲',
 		type: SECGUN,
@@ -5720,28 +5734,28 @@ var EQDATA = {
 		AA: 3,
 		RNG: 2,
 	},
-	513: {
+	1513: {
 		name: '21inch Torpedo Mk.I',
 		nameJP: '21inch魚雷前期型',
 		type: TORPEDO,
 		TP: 2,
 		RNG: 1,
 	},
-	514: {
+	1514: {
 		name: '21inch Torpedo Mk.II',
 		nameJP: '21inch魚雷後期型',
 		type: TORPEDO,
 		TP: 5,
 		RNG: 1,
 	},
-	515: {
+	1515: {
 		name: 'High-speed Abyssal Torpedo',
 		nameJP: '高速深海魚雷',
 		type: TORPEDO,
 		TP: 10,
 		RNG: 1,
 	},
-	516: {
+	1516: {
 		name: 'Abyssal Torpedo Bomber Mk.I',
 		nameJP: '深海棲艦攻',
 		b_image: 3,
@@ -5750,7 +5764,7 @@ var EQDATA = {
 		ASW: 2,
 		LOS: 5,
 	},
-	517: {
+	1517: {
 		name: 'Abyssal Torpedo Bomber Mk.II',
 		nameJP: '深海棲艦攻 Mark.II',
 		b_image: 4,
@@ -5759,7 +5773,7 @@ var EQDATA = {
 		ASW: 4,
 		LOS: 5,
 	},
-	518: {
+	1518: {
 		name: 'Abyssal Torpedo Bomber Mk.III',
 		nameJP: '深海棲艦攻 Mark.III',
 		b_image: 5,
@@ -5769,35 +5783,35 @@ var EQDATA = {
 		ASW: 7,
 		LOS: 5,
 	},
-	519: {
+	1519: {
 		name: 'Abyssal Fighter',
 		nameJP: '深海棲艦戦',
 		b_image: 3,
 		type: FIGHTER,
 		AA: 2,
 	},
-	520: {
+	1520: {
 		name: 'Abyssal Fighter Mk.II',
 		nameJP: '深海棲艦戦 Mark.II',
 		b_image: 4,
 		type: FIGHTER,
 		AA: 5,
 	},
-	521: {
+	1521: {
 		name: 'Abyssal Fighter Mk.III',
 		nameJP: '深海棲艦戦 Mark.III',
 		b_image: 5,
 		type: FIGHTER,
 		AA: 9,
 	},
-	522: {
+	1522: {
 		name: 'Flying-fish Fighter',
 		nameJP: '飛び魚艦戦',
 		b_image: 5,
 		type: FIGHTER,
 		AA: 13,
 	},
-	523: {
+	1523: {
 		name: 'Abyssal Dive Bomber Mk.I',
 		nameJP: '深海棲艦爆',
 		b_image: 3,
@@ -5805,7 +5819,7 @@ var EQDATA = {
 		DIVEBOMB: 3,
 		ASW: 1,
 	},
-	524: {
+	1524: {
 		name: 'Abyssal Dive Bomber Mk.II',
 		nameJP: '深海棲艦爆 Mark.II',
 		b_image: 4,
@@ -5813,7 +5827,7 @@ var EQDATA = {
 		DIVEBOMB: 6,
 		ASW: 2,
 	},
-	525: {
+	1525: {
 		name: 'Abyssal Recon Plane',
 		nameJP: '深海棲艦偵察機',
 		type: SEAPLANE,
@@ -5822,7 +5836,7 @@ var EQDATA = {
 		ASW: 1,
 		LOS: 5,
 	},
-	526: {
+	1526: {
 		name: 'Flying-fish Recon Plane',
 		nameJP: '飛び魚偵察機',
 		type: SEAPLANE,
@@ -5831,7 +5845,7 @@ var EQDATA = {
 		ASW: 2,
 		LOS: 10,
 	},
-	527: {
+	1527: {
 		name: 'Air Radar Mark.I',
 		nameJP: '対空レーダ― Mark.I',
 		type: RADARS,
@@ -5839,21 +5853,21 @@ var EQDATA = {
 		LOS: 5,
 		ACC: 5,
 	},
-	528: {
+	1528: {
 		name: 'Surface Radar Mark.I',
 		nameJP: '水上レーダ― Mark.I',
 		type: RADARS,
 		LOS: 5,
 		ACC: 10,
 	},
-	529: {
+	1529: {
 		name: 'Surface Radar Mark.II',
 		nameJP: '水上レーダ― Mark.II',
 		type: RADARS,
 		LOS: 10,
 		ACC: 15,
 	},
-	530: {
+	1530: {
 		name: 'Air Radar Mark.II',
 		nameJP: '対空レーダ― Mark.II',
 		type: RADARL,
@@ -5861,7 +5875,7 @@ var EQDATA = {
 		LOS: 10,
 		ACC: 5,
 	},
-	531: {
+	1531: {
 		name: 'Abyssal Surface Radar',
 		nameJP: '深海水上レーダー',
 		type: RADARL,
@@ -5871,7 +5885,7 @@ var EQDATA = {
 		LOS: 16,
 		ACC: 24,
 	},
-	532: {
+	1532: {
 		name: 'Abyssal Air Radar',
 		nameJP: '深海対空レーダ―',
 		type: RADARL,
@@ -5881,57 +5895,57 @@ var EQDATA = {
 		LOS: 12,
 		ACC: 16,
 	},
-	533: {
+	1533: {
 		name: 'Improved Abyssal Turbine',
 		nameJP: '改良型深海タービン',
 		type: ENGINE,
 		EV: 10,
 	},
-	534: {
+	1534: {
 		name: 'Enhanced Abyssal Engine',
 		nameJP: '強化型深海缶',
 		type: ENGINE,
 		EV: 15,
 	},
-	535: {
+	1535: {
 		name: 'Abyssal AA Dispersal Shell',
 		nameJP: '対空散弾',
 		type: TYPE3SHELL,
 		AA: 10,
 	},
-	536: {
+	1536: {
 		name: 'Depleted AP Shell',
 		nameJP: '劣化徹甲弾',
 		type: APSHELL,
 		FP: 15,
 		ACC: 5,
 	},
-	537: {
+	1537: {
 		name: '12.7mm Abyssal Gun',
 		nameJP: '12.7mm機銃',
 		type: AAGUN,
 		AA: 2,
 	},
-	538: {
+	1538: {
 		name: '20mm Abyssal Gun',
 		nameJP: '20mm機銃',
 		type: AAGUN,
 		AA: 4,
 	},
-	539: {
+	1539: {
 		name: '40mm Abyssal Twin Autocannon',
 		nameJP: '40mm二連装機関砲',
 		type: AAGUN,
 		AA: 8,
 	},
-	540: {
+	1540: {
 		name: '40mm Abyssal Quad Autocannon',
 		nameJP: '40mm四連装機関砲',
 		type: AAGUN,
 		isconcentrated: true,
 		AA: 12,
 	},
-	541: {
+	1541: {
 		name: 'Abyssal Cuttlefish Torpedo',
 		nameJP: '深海烏賊魚雷',
 		type: MIDGETSUB,
@@ -5939,31 +5953,31 @@ var EQDATA = {
 		ACC: 5,
 		RNG: 1,
 	},
-	542: {
+	1542: {
 		name: 'Abyssal Depth Charge Projector',
 		nameJP: '深海爆雷投射機',
 		type: DEPTHCHARGE,
 		ASW: 7,
 	},
-	543: {
+	1543: {
 		name: 'Abyssal Sonar',
 		nameJP: '深海ソナー',
 		type: SONARS,
 		ASW: 9,
 	},
-	544: {
+	1544: {
 		name: 'Abyssal Depth Charge Projector Mk.II',
 		nameJP: '深海爆雷投射機 Mk.II',
 		type: DEPTHCHARGE,
 		ASW: 13,
 	},
-	545: {
+	1545: {
 		name: 'Abyssal Sonar Mk.II',
 		nameJP: '深海ソナー Mk.II',
 		type: SONARS,
 		ASW: 16,
 	},
-	546: {
+	1546: {
 		name: 'Flying-fish Dive Bomber',
 		nameJP: '飛び魚艦爆',
 		b_image: 5,
@@ -5972,7 +5986,7 @@ var EQDATA = {
 		AA: 8,
 		ASW: 7,
 	},
-	547: {
+	1547: {
 		name: 'Abyssal Cat Fighter',
 		nameJP: '深海猫艦戦',
 		b_image: 6,
@@ -5980,7 +5994,7 @@ var EQDATA = {
 		AA: 10,
 		ACC: 1,
 	},
-	548: {
+	1548: {
 		name: 'Abyssal Hell Diver',
 		nameJP: '深海地獄艦爆',
 		b_image: 7,
@@ -5990,7 +6004,7 @@ var EQDATA = {
 		LOS: 3,
 		ACC: 3,
 	},
-	549: {
+	1549: {
 		name: 'Avenger Torpedo Bomber',
 		nameJP: '深海復讐艦攻',
 		b_image: 8,
@@ -6001,7 +6015,7 @@ var EQDATA = {
 		LOS: 5,
 		ACC: 2,
 	},
-	550: {
+	1550: {
 		name: '5inch Twin Dual-Purpose Cannon',
 		nameJP: '5inch連装両用莢砲',
 		type: MAINGUNS, image: 16,
@@ -6010,7 +6024,7 @@ var EQDATA = {
 		RNG: 2,
 		ACC: 3,
 	},
-	551: {
+	1551: {
 		name: '20inch Twin Cannon',
 		nameJP: '20inch連装砲',
 		type: MAINGUNL,
@@ -6019,7 +6033,7 @@ var EQDATA = {
 		RNG: 3,
 		ACC: 3,
 	},
-	552: {
+	1552: {
 		name: '15inch Fortress Gun',
 		nameJP: '15inch要塞砲',
 		type: MAINGUNL,
@@ -6028,7 +6042,7 @@ var EQDATA = {
 		RNG: 3,
 		ACC: 4,
 	},
-	553: {
+	1553: {
 		name: '4inch Dual-Purpose+CIC',
 		nameJP: '4inch連装両用砲+CIC',
 		type: MAINGUNS, image: 16,
@@ -6037,7 +6051,7 @@ var EQDATA = {
 		RNG: 2,
 		ACC: 5,
 	},
-	554: {
+	1554: {
 		name: 'Abyssal Attack Seaplane',
 		nameJP: '深海水上攻撃機',
 		b_image: 7,
@@ -6048,7 +6062,7 @@ var EQDATA = {
 		LOS: 6,
 		ACC: 1,
 	},
-	555: {
+	1555: {
 		name: 'Abyssal Attack Seaplane Kai',
 		nameJP: '深海水上攻撃機改',
 		b_image: 7,
@@ -6059,7 +6073,7 @@ var EQDATA = {
 		LOS: 7,
 		ACC: 3,
 	},
-	556: {
+	1556: {
 		name: 'Abyssal Cat Fighter Kai',
 		nameJP: '深海猫艦戦改',
 		b_image: 6,
@@ -6068,7 +6082,7 @@ var EQDATA = {
 		EV: 2,
 		ACC: 2,
 	},
-	557: {
+	1557: {
 		name: 'Abyssal Hell Diver Kai',
 		nameJP: '深海地獄艦爆改',
 		b_image: 7,
@@ -6078,7 +6092,7 @@ var EQDATA = {
 		LOS: 5,
 		ACC: 4,
 	},
-	558: {
+	1558: {
 		name: 'Avenger Torpedo Bomber Kai',
 		nameJP: '深海復讐艦攻改',
 		b_image: 8,
@@ -6089,7 +6103,7 @@ var EQDATA = {
 		LOS: 6,
 		ACC: 3,
 	},
-	559: {
+	1559: {
 		name: 'Abyssal FCS + CIC',
 		nameJP: '深海FCS+CIC',
 		type: SONARS,
@@ -6100,14 +6114,14 @@ var EQDATA = {
 		LOS: 3,
 		ACC: 5
 	},
-	560: {
+	1560: {
 		name: 'Abyssal Searchlight',
 		nameJP: '深海探照灯',
 		type: SEARCHLIGHTS,
 		FP: 2,
 		LOS: 2
 	},
-	561: {
+	1561: {
 		name: 'Abyssal Liberation Land-based Dive Bomber',
 		nameJP: '深海解放陸爆',
 		b_image: 9,
@@ -6118,7 +6132,7 @@ var EQDATA = {
 		ACC: 1,
 		LOS: 3
 	},
-	562: {
+	1562: {
 		name: 'Abyssal Liberation Land-based Dive Bomber Ace',
 		nameJP: '深海解放陸爆Ace',
 		b_image: 10,
@@ -6129,7 +6143,7 @@ var EQDATA = {
 		ACC: 2,
 		LOS: 4
 	},
-	563: {
+	1563: {
 		name: '8inch Long Range Twin Gun Mount',
 		nameJP: '8inch長射程連装砲',
 		type: MAINGUNM,
@@ -6138,7 +6152,7 @@ var EQDATA = {
 		ACC: -1,
 		RNG: 3
 	},
-	564: {
+	1564: {
 		name: 'Abyssal Reconnaissance Observation Seaplane',
 		nameJP: '深海水上偵察観測機',
 		type: SEAPLANE,
@@ -6147,7 +6161,7 @@ var EQDATA = {
 		ACC: 5,
 		LOS: 5
 	},
-	565: {
+	1565: {
 		name: '5inch Coastal Gun',
 		nameJP: '5inch沿岸設置砲',
 		type: MAINGUNS,
@@ -6156,7 +6170,7 @@ var EQDATA = {
 		ACC: 3,
 		RNG: 2
 	},
-	566: {
+	1566: {
 		name: 'Abyssal Cat Fighter (Bombing)',
 		nameJP: '深海猫艦戦(爆装)',
 		b_image: 6,
@@ -6166,7 +6180,7 @@ var EQDATA = {
 		ASW: 2,
 		ACC: 2
 	},
-	567: {
+	1567: {
 		name: 'Coastal Radar',
 		nameJP: '沿岸設置レーダー',
 		type: RADARL,
@@ -6174,7 +6188,7 @@ var EQDATA = {
 		ACC: 16,
 		LOS: 8
 	},
-	568: {
+	1568: {
 		name: '16inch Triple Gun Mount (Abyssal)',
 		nameJP: '16inch三連装砲',
 		type: MAINGUNL,
@@ -6184,7 +6198,7 @@ var EQDATA = {
 		ACC: 4,
 		RNG: 3
 	},
-	569: {
+	1569: {
 		name: 'Abyssal Reconnaissance Flying Boat',
 		nameJP: '深海偵察飛行艇',
 		type: SEAPLANE,
@@ -6194,7 +6208,7 @@ var EQDATA = {
 		ACC: 8,
 		LOS: 9
 	},
-	570: {
+	1570: {
 		name: 'High-speed Abyssal Torpedo mod. 2',
 		nameJP: '高速深海魚雷 mod.2',
 		type: MIDGETSUB,
@@ -6203,10 +6217,10 @@ var EQDATA = {
 		ACC: 3,
 		RNG: 1,
 	},
-	571: {
+	1571: {
 		name: 'Abyssal Seaplane Tender Imp Aircraft',
 		nameJP: '深海水母小鬼機',
-		b_image: 7,
+		b_image: 'e009',
 		type: SEAPLANEBOMBER,
 		FP: 4,
 		DIVEBOMB: 15,
@@ -6217,10 +6231,10 @@ var EQDATA = {
 		LOS: 8,
 		RNG: 4,
 	},
-	572: {
+	1572: {
 		name: 'Abyssal Bearcat Fighter',
 		nameJP: '深海熊猫艦戦',
-		b_image: 7,
+		b_image: 'e010',
 		type: FIGHTER,
 		FP: 8,
 		AA: 18,
@@ -6228,10 +6242,10 @@ var EQDATA = {
 		ACC: 8,
 		EV: 8,
 	},
-	573: {
+	1573: {
 		name: 'Abyssal Submarine Floatplane',
 		nameJP: '深海潜水下駄履き',
-		b_image: 7,
+		b_image: 'e011',
 		type: SEAPLANEBOMBER,
 		FP: 6,
 		DIVEBOMB: 18,
@@ -6243,7 +6257,7 @@ var EQDATA = {
 		LOS: 3,
 		RNG: 5,
 	},
-	574: {
+	1574: {
 		name: 'Abyssal Patrolling Attack Hawk',
 		nameJP: '深海攻撃哨戒鷹',
 		added: '2017-05-02',
@@ -6259,7 +6273,7 @@ var EQDATA = {
 		LOS: 3,
 		RNG: 4,
 	},
-	575: {
+	1575: {
 		name: 'Abyssal Patrolling Attack Hawk Kai',
 		nameJP: '深海攻撃哨戒鷹改',
 		added: '2017-05-02',
@@ -6275,7 +6289,7 @@ var EQDATA = {
 		LOS: 3,
 		RNG: 4,
 	},
-	576: {
+	1576: {
 		name: 'Abyssal 12inch Triple Gun Mount',
 		nameJP: '深海12inch三連装砲',
 		added: '2017-05-02',
@@ -6287,7 +6301,7 @@ var EQDATA = {
 		EV: 2,
 		RNG: 3,
 	},
-	577: {
+	1577: {
 		name: 'Abyssal 15inch Quadruple Gun Mount',
 		nameJP: '深海15inch四連装砲',
 		added: '2017-08-12',
@@ -6299,7 +6313,7 @@ var EQDATA = {
 		EV: 1,
 		RNG: 3,
 	},
-	578: {
+	1578: {
 		name: 'Abyssal 15inch Late Model Twin Gun Mount',
 		nameJP: '深海15inch連装砲後期型',
 		added: '2017-08-12',
@@ -6313,7 +6327,7 @@ var EQDATA = {
 		EV: 2,
 		RNG: 3,
 	},
-	579: {
+	1579: {
 		name: 'Abyssal 14inch Straight Twin Gun Mount',
 		nameJP: '深海14inch海峡連装砲',
 		added: '2017-11-19',
@@ -6325,7 +6339,7 @@ var EQDATA = {
 		EV: 3,
 		RNG: 3,
 	},
-	580: {
+	1580: {
 		name: 'Abyssal Ambush Torpedo',
 		nameJP: '深海待伏魚雷',
 		added: '2017-11-19',
@@ -6335,7 +6349,7 @@ var EQDATA = {
 		ACC: 9,
 		RNG: 1,
 	},
-	581: {
+	1581: {
 		name: 'Abyssal Night Cat Fighter',
 		nameJP: '夜猫深海艦戦',
 		added: '2018-02-16',
@@ -6350,7 +6364,7 @@ var EQDATA = {
 		LOS: 2,
 		RNG: 1,
 	},
-	582: {
+	1582: {
 		name: 'Abyssal Night Dive Bomber',
 		nameJP: '夜深海艦爆',
 		added: '2018-02-16',
@@ -6367,7 +6381,7 @@ var EQDATA = {
 		LOS: 6,
 		RNG: 2,
 	},
-	583: {
+	1583: {
 		name: 'Abyssal Night Revenge Torpedo Bomber',
 		nameJP: '夜復讐深海艦攻',
 		added: '2018-02-16',
@@ -6385,7 +6399,7 @@ var EQDATA = {
 		LOS: 7,
 		RNG: 2,
 	},
-	584: {
+	1584: {
 		name: 'Abyssal 14inch Twin Gun Mount Kai',
 		nameJP: '深海14inch連装砲改',
 		added: '2018-02-22',
@@ -6397,7 +6411,7 @@ var EQDATA = {
 		EV: 4,
 		RNG: 3,
 	},
-	585: {
+	1585: {
 		name: 'Abyssal 16inch Triple Gun Mount Kai',
 		nameJP: '深海16inch三連装砲改',
 		added: '2018-02-22',
@@ -6408,7 +6422,7 @@ var EQDATA = {
 		ACC: 20,
 		RNG: 4,
 	},
-	586: {
+	1586: {
 		name: 'Abyssal Patrolling Attack Hawk Kai Ni',
 		nameJP: '深海攻撃哨戒鷹改二',
 		added: '2018-09-08',
@@ -6424,7 +6438,7 @@ var EQDATA = {
 		LOS: 5,
 		RNG: 4,
 	},
-	587: {
+	1587: {
 		name: 'Abyssal 16inch Triple Gun Mount Kai Ni',
 		nameJP: '深海16inch三連装砲改二',
 		added: '2018-09-12',
@@ -6436,7 +6450,7 @@ var EQDATA = {
 		EV: 3,
 		RNG: 4,
 	},
-	588: {
+	1588: {
 		name: 'Abyssal 5inch Twin Gun Mount Model C',
 		nameJP: '深海5inch連装砲C型',
 		added: '2018-12-27',
@@ -6448,7 +6462,7 @@ var EQDATA = {
 		ASW: 6,
 		RNG: 1,
 	},
-	589: {
+	1589: {
 		name: 'Abyssal 5.5inch Twin Gun Mount Kai',
 		nameJP: '深海5.5inch連装砲改',
 		added: '2018-12-27',
@@ -6461,7 +6475,7 @@ var EQDATA = {
 		ASW: 6,
 		RNG: 2,
 	},
-	590: {
+	1590: {
 		name: 'Abyssal Target',
 		nameJP: '深海標的',
 		added: '2018-12-27',
@@ -6473,7 +6487,7 @@ var EQDATA = {
 		EV: 4,
 		RNG: 4,
 	},
-	591: {
+	1591: {
 		name: 'Abyssal 5inch Single Gun Mount Mk.30',
 		nameJP: '深海5inch単装砲 Mk.30',
 		added: '2018-12-27',
@@ -6485,7 +6499,7 @@ var EQDATA = {
 		ASW: 7,
 		RNG: 2,
 	},
-	592: {
+	1592: {
 		name: 'Abyssal 16inch Mk.VIII Twin Gun Mount Kai',
 		nameJP: '深海16inch Mk.VIII連装砲改',
 		added: '2019-05-25',
@@ -6496,7 +6510,7 @@ var EQDATA = {
 		ACC: 22,
 		RNG: 3,
 	},
-	593: {
+	1593: {
 		name: 'High-speed Abyssal Torpedo mod. 3',
 		nameJP: '高速深海魚雷 mod.3',
 		added: '2019-05-25',
@@ -6506,7 +6520,7 @@ var EQDATA = {
 		EV: 3,
 		RNG: 1,
 	},
-	594: {
+	1594: {
 		name: 'Abyssal Sky Fortress (Reconnaissance Model)',
 		nameJP: '深海空要塞',
 		added: '2019-09-04',
@@ -6520,7 +6534,7 @@ var EQDATA = {
 		LOS: 7,
 		RNG: 4,
 	},
-	595: {
+	1595: {
 		name: 'Abyssal Sky Fortress Ace (Reconnaissance Model)',
 		nameJP: '深海空要塞Ace',
 		added: '2019-09-04',
@@ -6534,7 +6548,7 @@ var EQDATA = {
 		LOS: 9,
 		RNG: 4,
 	},
-	596: {
+	1596: {
 		name: 'Abyssal 6inch Triple New Rapid Fire Gun Mount',
 		nameJP: '深海6inch三連装新型速射砲',
 		added: '2019-08-30',
@@ -6544,7 +6558,7 @@ var EQDATA = {
 		ACC: 9,
 		RNG: 2,
 	},
-	597: {
+	1597: {
 		name: 'Abyssal Sky Fortress (Heavy Bomber Model)',
 		nameJP: '深海空要塞(重爆型)',
 		added: '2019-09-04',
@@ -6558,7 +6572,7 @@ var EQDATA = {
 		LOS: 5,
 		RNG: 4,
 	},
-	598: {
+	1598: {
 		name: 'Abyssal Sky Fortress Ace (Heavy Bomber Model)',
 		nameJP: '深海空要塞Ace(重爆型)',
 		added: '2019-09-04',
@@ -6572,7 +6586,7 @@ var EQDATA = {
 		LOS: 7,
 		RNG: 4,
 	},
-	599: {
+	1599: {
 		name: 'Abyssal 4.7inch Gun Mk.XII',
 		nameJP: '深海4.7inch砲 Mk.XII',
 		added: '2019-09-04',
@@ -6584,7 +6598,7 @@ var EQDATA = {
 		ASW: 12,
 		RNG: 1,
 	},
-	600: {
+	1600: {
 		name: 'Abyssal 8inch Twin Rapid Fire Gun Mount',
 		nameJP: '深海8inch連装速射砲',
 		added: '2019-11-29',
@@ -6594,7 +6608,7 @@ var EQDATA = {
 		ACC: 8,
 		RNG: 2,
 	},
-	601: {
+	1601: {
 		name: 'Abyssal 8inch Triple Gun Mount Mk.9',
 		nameJP: '深海8inch三連装砲 Mk.9',
 		added: '2019-11-29',
@@ -6604,7 +6618,7 @@ var EQDATA = {
 		ACC: 9,
 		RNG: 2,
 	},
-	602: {
+	1602: {
 		name: 'Abyssal 5inch Twin Dual-purpose Gun Mount (Concentrated Deployment)',
 		nameJP: '深海5inch連装両用砲(集中配備)',
 		added: '2019-12-07',
@@ -6615,7 +6629,7 @@ var EQDATA = {
 		EV: 3,
 		RNG: 2,
 	},
-	603: {
+	1603: {
 		name: 'Abyssal Air Radar Mark.III + FCS',
 		nameJP: '深海対空レーダーMark.III+FCS',
 		added: '2019-12-07',
@@ -6626,7 +6640,7 @@ var EQDATA = {
 		ASW: 11,
 		LOS: 13,
 	},
-	604: {
+	1604: {
 		name: 'Abyssal 5inch Twin Gun Mount Model A',
 		nameJP: '深海5inch連装砲A型',
 		added: '2020-06-26',
@@ -6639,7 +6653,7 @@ var EQDATA = {
 		ASW: 4,
 		RNG: 1,
 	},
-	605: {
+	1605: {
 		name: 'Abyssal Submarine Electronic Armament',
 		nameJP: '深海潜水艦搭載電子兵装',
 		added: '2020-06-26',
@@ -6650,7 +6664,7 @@ var EQDATA = {
 		LOS: 6,
 		RNG: 1,
 	},
-	606: {
+	1606: {
 		name: 'Abyssal 5inch Single High-angle Gun Mount Kai Ni',
 		nameJP: '深海5inch単装高角砲改二',
 		added: '2020-06-26',
@@ -6662,7 +6676,7 @@ var EQDATA = {
 		ASW: 2,
 		RNG: 1,
 	},
-	607: {
+	1607: {
 		name: 'Abyssal 5inch Twin High-angle Gun Mount Kai Ni',
 		nameJP: '深海5inch連装高角砲改二',
 		added: '2020-06-26',
@@ -6674,7 +6688,7 @@ var EQDATA = {
 		ASW: 2,
 		RNG: 1,
 	},
-	608: {
+	1608: {
 		name: 'Abyssal Night Operation Aviation Equipment',
 		nameJP: '深海夜間航空作戦装備',
 		added: '2020-07-11',
@@ -6683,7 +6697,7 @@ var EQDATA = {
 		ACC: 3,
 		RNG: 4,
 	},
-	609: {
+	1609: {
 		name: 'Abyssal 16inch Triple Gun Mount Mk.6',
 		nameJP: '深海16inch三連装砲 Mk6',
 		added: '2020-07-11',
@@ -6695,7 +6709,7 @@ var EQDATA = {
 		EV: 4,
 		RNG: 3,
 	},
-	610: {
+	1610: {
 		name: 'Abyssal Seagull Reconnaissance Seaplane',
 		nameJP: '深海カモメ水偵',
 		added: '2021-05-08',
@@ -6705,7 +6719,7 @@ var EQDATA = {
 		ASW: 4,
 		LOS: 6,
 	},
-	611: {
+	1611: {
 		name: 'Abyssal Seamew Reconnaissance Seaplane',
 		nameJP: '深海海猫水偵',
 		added: '2021-05-21',
@@ -6717,7 +6731,7 @@ var EQDATA = {
 		ASW: 6,
 		LOS: 7,
 	},
-	612: {
+	1612: {
 		name: 'Abyssal 6inch Triple Main Gun Mount Mk.16',
 		nameJP: '深海6inch三連装主砲 Mk.16',
 		added: '2021-05-21',
@@ -6728,7 +6742,7 @@ var EQDATA = {
 		ASW: 3,
 		RNG: 2,
 	},
-	613: {
+	1613: {
 		name: 'Mediterranean 12inch/46 Twin Gun Mount',
 		nameJP: '地中海12inch/46 連装砲',
 		added: '2021-08-21',
@@ -6739,7 +6753,7 @@ var EQDATA = {
 		EV: 4,
 		RNG: 3,
 	},
-	614: {
+	1614: {
 		name: 'Mediterranean 12inch/46 Triple Gun Mount',
 		nameJP: '地中海12inch/46 三連装砲',
 		added: '2021-08-21',
@@ -6750,7 +6764,7 @@ var EQDATA = {
 		EV: 3,
 		RNG: 3,
 	},
-	615: {
+	1615: {
 		name: 'Mediterranean 12.6inch/44 Twin Gun Mount',
 		nameJP: '地中海12.6inch/44 連装砲',
 		added: '2021-08-21',
@@ -6762,7 +6776,7 @@ var EQDATA = {
 		EV: 5,
 		RNG: 3,
 	},
-	616: {
+	1616: {
 		name: 'Mediterranean 12.6inch/44 Triple Gun Mount',
 		nameJP: '地中海12.6inch/44 三連装砲',
 		added: '2021-08-21',
@@ -6774,7 +6788,7 @@ var EQDATA = {
 		EV: 4,
 		RNG: 3,
 	},
-	617: {
+	1617: {
 		name: 'Abyssal Night Cat Fighter II',
 		nameJP: '夜猫深海艦戦II',
 		added: '2021-08-31',
@@ -6788,7 +6802,7 @@ var EQDATA = {
 		LOS: 2,
 		RNG: 1,
 	},
-	618: {
+	1618: {
 		name: 'Abyssal Night Dive Bomber II',
 		nameJP: '夜深海艦爆II',
 		added: '2021-08-31',
@@ -6803,7 +6817,7 @@ var EQDATA = {
 		LOS: 6,
 		RNG: 2,
 	},
-	619: {
+	1619: {
 		name: 'Abyssal Night Revenge Torpedo Bomber II',
 		nameJP: '夜復讐深海艦攻II',
 		added: '2021-08-31',
@@ -6818,10 +6832,11 @@ var EQDATA = {
 		LOS: 7,
 		RNG: 2,
 	},
-	620: {
+	1620: {
 		name: 'Abyssal Two-seat Fighter-bomber Hawk',
 		nameJP: '深海戦爆複座鷹',
 		added: '2021-12-28',
+		b_image: 'e020',
 		type: DIVEBOMBER,
 		aaResistShip: .6,
 		aaResistFleet: .7,
@@ -6835,10 +6850,11 @@ var EQDATA = {
 		LOS: 3,
 		RNG: 4,
 	},
-	621: {
+	1621: {
 		name: 'Abyssal Two-seat Fighter-bomber Hawk Kai',
 		nameJP: '深海戦爆複座鷹改',
 		added: '2021-12-28',
+		b_image: 'e020',
 		type: DIVEBOMBER,
 		aaResistShip: .6,
 		aaResistFleet: .7,
@@ -6852,7 +6868,7 @@ var EQDATA = {
 		LOS: 3,
 		RNG: 4,
 	},
-	622: {
+	1622: {
 		name: 'Abyssal Quadruple (Oxygen) Torpedo Mount Late Model',
 		nameJP: '深海四連装(酸素)魚雷後期型',
 		added: '2022-02-22',
@@ -6863,7 +6879,7 @@ var EQDATA = {
 		EV: 2,
 		RNG: 1,
 	},
-	623: {
+	1623: {
 		name: 'Abyssal 5inch Twin Gun Mount Model D',
 		nameJP: '深海5inch連装砲D型',
 		added: '2022-03-05',
@@ -6876,7 +6892,7 @@ var EQDATA = {
 		ASW: 6,
 		RNG: 1,
 	},
-	624: {
+	1624: {
 		name: 'Abyssal Quintuple (Oxygen) Torpedo Mount Late Model',
 		nameJP: '深海五連装(酸素)魚雷後期型',
 		added: '2022-03-05',
@@ -6887,11 +6903,13 @@ var EQDATA = {
 		EV: 2,
 		RNG: 1,
 	},
-	625: {
+	1625: {
 		name: 'Abyssal Twin-engine Land-based Dive Bomber',
 		nameJP: '深海双発陸爆',
 		added: '2022-05-28',
+		b_image: 9,
 		type: DIVEBOMBER,
+		isSkipBomber: true,
 		DIVEBOMB: 12,
 		TP: 6,
 		AA: 3,
@@ -6899,11 +6917,13 @@ var EQDATA = {
 		ASW: 5,
 		LOS: 3,
 	},
-	626: {
+	1626: {
 		name: 'Abyssal Twin-engine Land-based Dive Bomber Ace',
 		nameJP: '深海双発陸爆Ace',
 		added: '2022-05-28',
+		b_image: 10,
 		type: DIVEBOMBER,
+		isSkipBomber: true,
 		DIVEBOMB: 17,
 		TP: 7,
 		AA: 5,
@@ -6911,7 +6931,7 @@ var EQDATA = {
 		ASW: 7,
 		LOS: 4,
 	},
-	627: {
+	1627: {
 		name: 'Abyssal 5inch Twin Gun Mount Model C',
 		nameJP: '深海5inch連装砲C型',
 		added: '2022-05-28',
@@ -6924,10 +6944,11 @@ var EQDATA = {
 		ASW: 5,
 		RNG: 1,
 	},
-	630: {
+	1630: {
 		name: 'Abyssal Sky Super Fortress',
 		nameJP: '深海空超要塞',
 		added: '2022-03-05',
+		b_image: 'e021',
 		type: LANDBOMBER,
 		FP: 18,
 		DIVEBOMB: 33,
@@ -6936,10 +6957,11 @@ var EQDATA = {
 		LOS: 4,
 		RNG: 5,
 	},
-	631: {
+	1631: {
 		name: 'Abyssal Sky Super Fortress Kai',
 		nameJP: '深海空超要塞改',
 		added: '2022-03-05',
+		b_image: 'e021',
 		type: LANDBOMBER,
 		FP: 18,
 		DIVEBOMB: 44,
@@ -7159,6 +7181,7 @@ var LBASDATA = {
 	476: { distance: 6, cost: 11 },
 	480: { distance: 9, cost: 13 },
 	481: { distance: 7, cost: 14 },
+	484: { distance: 5, cost: 15 },
 };
 
 

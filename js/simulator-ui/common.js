@@ -66,7 +66,7 @@ var COMMON = {
 		return +id > 3000 && +id < 4000;
 	},
 	isEquipIdAbyssal: function(id) {
-		return +id > 500;
+		return +id > 1500;
 	},
 	
 	

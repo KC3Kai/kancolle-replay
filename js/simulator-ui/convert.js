@@ -12,6 +12,9 @@ window.CONVERT = {
 	_dataKC3: null,
 	_dataSimSave: null,
 	
+	_SAVE_VERSION_CURRENT: 2,
+	_SAVE_VERSION_EQUIP_SHIFT_20221109: 2,
+	
 	_copyObj: function(objFrom,keys,objTo) {
 		keys = keys || Object.keys(objFrom);
 		objTo = objTo || {};
@@ -22,6 +25,12 @@ window.CONVERT = {
 			else objTo[key] = objFrom[key];
 		}
 		return objTo;
+	},
+	
+	_convertEquipId20221109: function(equipMstId) {
+		//abyssal eq id shift 2022-11-09
+		if (equipMstId && equipMstId > 500 && equipMstId < 1000) equipMstId += 1000;
+		return equipMstId;
 	},
 	
 	saveIsEmpty: function(dataSave) {
@@ -199,6 +208,7 @@ window.CONVERT = {
 			};
 			for (let id of eSlot[i]) {
 				if (id <= 0) continue;
+				id = this._convertEquipId20221109(id);
 				shipSave.equips.push({ mstId: id, rank: 0 });
 			}
 			shipsSave.push(shipSave);
@@ -271,7 +281,7 @@ window.CONVERT = {
 			if (!bdata || Object.keys(bdata).length <= 0) bdata = battle.yasen;
 			if (!bdata || Object.keys(bdata).length <= 0) continue;
 			let ship_ke = bdata.api_ship_ke.filter(x => x != -1);
-			if (dataReplay.world != -1) {
+			if (dataReplay.world != -1 && dataReplay.world != 0) {
 				ship_ke = ship_ke.map(id => id < 1000 ? id + 1000 : id);
 			}
 			
@@ -533,6 +543,11 @@ window.CONVERT = {
 				equips: shipNav.equips.filter(id => id != -1).map(id => ({ mstId: id, rank: 0 })),
 			};
 			if (shipNav.exslot && shipNav.exslot != -1) shipSave.equips.push({ mstId: shipNav.exslot, rank: 0 });
+			if (COMMON.isShipIdAbyssal(shipSave.mstId)) {
+				for (let equip of shipSave.equips) {
+					equip.mstId = this._convertEquipId20221109(equip.mstId);
+				}
+			}
 			shipsSave.push(shipSave);
 		}
 		return shipsSave;
@@ -778,6 +793,7 @@ window.CONVERT = {
 			fleetSave.shipsEscort = [];
 			for (let ship of fleetUI.shipsEscort) fleetSave.shipsEscort.push(this.uiToSaveShip(ship));
 		}
+		fleetSave.version = this._SAVE_VERSION_CURRENT;
 		return fleetSave;
 	},
 	uiToSaveComps: function(compsUI) {
@@ -847,11 +863,12 @@ window.CONVERT = {
 		}
 		
 		dataSave.settings = this.uiToSaveSettings(dataUI.settings);
+		dataSave.version = this._SAVE_VERSION_CURRENT;
 		
 		return dataSave;
 	},
 	
-	loadSaveShips: function(shipsSave,shipsUI) {
+	_loadSaveShips: function(shipsSave,shipsUI,version) {
 		for (let i=0; i<shipsSave.length; i++) {
 			let shipSave = shipsSave[i];
 			if (!shipSave) continue;
@@ -865,6 +882,9 @@ window.CONVERT = {
 			for (let j=0; j<shipSave.equips.length; j++) {
 				let equipSave = shipSave.equips[j];
 				if (!equipSave) continue;
+				if ((version || 1) < this._SAVE_VERSION_EQUIP_SHIFT_20221109) {
+					equipSave.mstId = this._convertEquipId20221109(equipSave.mstId);
+				}
 				if (!EQDATA[equipSave.mstId]) {
 					shipUI.equips[j] = FLEET_MODEL.getDefaultEquip(0,shipUI,j);
 					continue;
@@ -878,9 +898,9 @@ window.CONVERT = {
 	loadSaveFleet: function(fleetSave,fleetUI) {
 		fleetUI.formation = fleetSave.formation;
 		FLEET_MODEL.setType(fleetUI,fleetSave.type);
-		this.loadSaveShips(fleetSave.ships,fleetUI.ships);
+		this._loadSaveShips(fleetSave.ships,fleetUI.ships,fleetSave.version);
 		if (fleetUI.shipsEscort && fleetSave.shipsEscort) {
-			this.loadSaveShips(fleetSave.shipsEscort,fleetUI.shipsEscort);
+			this._loadSaveShips(fleetSave.shipsEscort,fleetUI.shipsEscort,fleetSave.version);
 		}
 	},
 	loadSaveComps: function(compsSave,compsUI) {

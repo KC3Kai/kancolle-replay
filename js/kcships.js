@@ -738,6 +738,8 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	
 	if (aswPenetrate > 0) this.aswPenetrate = aswPenetrate;
 	
+	if (this.equips.find(eq => [1574,1575,1586].includes(eq.mid))) this.canAirstrikeSub = true;
+	
 	if (MECHANICS.eqBonus) {
 		let equipsCur = [], levelsCur = [], bonusesPrev = {};
 		for (let i=0; i<equips.length; i++) {

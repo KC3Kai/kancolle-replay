@@ -3880,7 +3880,7 @@ var VOICES = {
 	494: {
 		start: "assets/voice/I-13-Battle_Start.ogg",
 		attack: "assets/voice/I-13-Attack.ogg",
-		nbattack: "assets/voice/I-13-Night_Attack.ogg",
+		nbattack: "assets/voice/I-13-NightAttack.mp3",
 		damage1: "assets/voice/I-13-Minor_Damage_1.ogg",
 		damage2: "assets/voice/I-13-Minor_Damage_2.ogg",
 		damage3: "assets/voice/I-13-Major_Damage.ogg",
@@ -3888,7 +3888,7 @@ var VOICES = {
 	374: {
 		start: "assets/voice/I-13Kai-Battle_Start.ogg",
 		attack: "assets/voice/I-13-Attack.ogg",
-		nbattack: "assets/voice/I-13-Night_Attack.ogg",
+		nbattack: "assets/voice/I-13-NightAttack.mp3",
 		damage1: "assets/voice/I-13-Minor_Damage_1.ogg",
 		damage2: "assets/voice/I-13-Minor_Damage_2.ogg",
 		damage3: "assets/voice/I-13-Major_Damage.ogg",
