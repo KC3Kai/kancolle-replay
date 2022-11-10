@@ -88,6 +88,15 @@ loader.add('BG1','assets/82_res.images.ImgBackgroundDay.jpg')
 	.add('plane588','assets/plane588.png')
 	.add('plane590','assets/plane590.png')
 	.add('plane592','assets/plane592.png')
+	.add('plane594','assets/plane594.png')
+	.add('plane597','assets/plane597.png')
+	.add('plane_e009','assets/plane_e009.png')
+	.add('plane_e010','assets/plane_e010.png')
+	.add('plane_e011','assets/plane_e011.png')
+	.add('plane_e018','assets/plane_e018.png')
+	.add('plane_e019','assets/plane_e019.png')
+	.add('plane_e020','assets/plane_e020.png')
+	.add('plane_e021','assets/plane_e021.png')
 	.add('WG1','assets/684.png')
 	.add('WG2','assets/687.png')
 	.add('WG3','assets/690.png')
@@ -114,7 +123,9 @@ loader.add('BG1','assets/82_res.images.ImgBackgroundDay.jpg')
 	.add('repairteam','assets/Emergency_Repair_Personnel_042_Card.png')
 	.add('repairgoddess','assets/Emergency_Repair_Goddess_043_Card.png')
 	.add('bossbar','assets/bossbar.png')
-	.add('mask','assets/mask.png');
+	.add('mask','assets/mask.png')
+	.add('skipbomb','assets/skipbomb.png')
+	.add('skipbombsplash','assets/skipbombsplash.png');
 for (var i=389; i <= 417; i+=2) loader.add(i.toString(),'assets/'+i+'.png');
 for (var i=0; i<=9; i++) loader.add('C'+i,'assets/C'+i+'.png');
 for (var i=0; i<=9; i++) loader.add('N'+i,'assets/N'+i+'.png');
@@ -396,7 +407,7 @@ function createShip(data,side,i,damaged) {
 		if (eq) {
 			var eqt = EQTDATA[eq.type];
 			if (eq.b_image) ship.planetypes.push(eq.b_image);
-			else if (eqt.isfighter||eqt.istorpbomber||eqt.isdivebomber||eq.type==AUTOGYRO||eq.type==ASWPLANE) ship.planetypes.push(1+side);
+			else if (eqt.isfighter||eqt.istorpbomber||eqt.isdivebomber||eq.type==AUTOGYRO||eq.type==ASWPLANE) ship.planetypes.push({11:11,45:12}[eq.type] || 1+side);
 			//else if (eq.type==SEAPLANE||eq.type==FLYINGBOAT) ship.planetypes.push(11);
 			if (eqt.istorpbomber||eqt.isdivebomber||eq.type==AUTOGYRO||eq.type==ASWPLANE) ship.hasbomber = true;
 			if (eqt.istorpbomber) ship.hastorpbomber = true;
@@ -433,6 +444,8 @@ function processAPI(root) {
 	COMBINED = root.fleetnum == 1 ? root.combined : 0;
 	PVPMODE = (root.world <= 0);
 	OLDFORMAT = !!data.api_maxhps; //new format 2017-11-17
+	
+	let IS_BEFORE_ENEMY_EQ_SHIFT = root.time*1000 < Date.UTC(2022,11,9); //abyssal eq shift 2022-11-09
 	
 	if (root.now_maphp && root.max_maphp) {
 		bossbar.maxhp = root.max_maphp;
@@ -576,6 +589,13 @@ function processAPI(root) {
 				if (data.api_ship_ke[i] < 1000) data.api_ship_ke[i] += 1000;
 			}
 		}
+		if (IS_BEFORE_ENEMY_EQ_SHIFT) {
+			for (let eSlot of data.api_eSlot) {
+				for (let i=0; i<eSlot.length; i++) {
+					if (eSlot[i] > 500 && eSlot[i] < 1000) eSlot[i] += 1000;
+				}
+			}
+		}
 		for (var i=0; i<data.api_ship_ke.length; i++) {
 			if (!data.api_ship_ke[i] || data.api_ship_ke[i] == -1) continue;
 			if (SHIPDATA[data.api_ship_ke[i]])
@@ -606,6 +626,13 @@ function processAPI(root) {
 				for (var i=0; i<data.api_ship_ke_combined.length; i++) {
 					if (data.api_ship_ke_combined[i] == -1) continue;
 					if (data.api_ship_ke_combined[i] < 1000) data.api_ship_ke_combined[i] += 1000;
+				}
+			}
+			if (IS_BEFORE_ENEMY_EQ_SHIFT) {
+				for (let eSlot of data.api_eSlot_combined) {
+					for (let i=0; i<eSlot.length; i++) {
+						if (eSlot[i] > 500 && eSlot[i] < 1000) eSlot[i] += 1000;
+					}
 				}
 			}
 			for (var i=0; i<data.api_ship_ke_combined.length; i++) {
@@ -730,6 +757,9 @@ function processAPI(root) {
 		
 		//for reading air phase
 		var processKouku = function(kouku,isbombing,isjet) {
+			if (IS_BEFORE_ENEMY_EQ_SHIFT && kouku && kouku.api_stage1 && kouku.api_stage1.api_touch_plane && kouku.api_stage1.api_touch_plane[1]) {
+				if (kouku.api_stage1.api_touch_plane[1] > 500 && kouku.api_stage1.api_touch_plane[1] < 1000) kouku.api_stage1.api_touch_plane[1] += 1000;
+			}
 			if (kouku && kouku.api_plane_from && ((kouku.api_plane_from[0] && kouku.api_plane_from[0][0] != -1) || (kouku.api_plane_from[1] && kouku.api_plane_from[1][0] != -1))) {
 				//air state
 				var AS1 = {0:0,1:2,2:1,3:-1,4:-2}[kouku.api_stage1.api_disp_seiku];
@@ -829,6 +859,7 @@ function processAPI(root) {
 							var hit = (kouku.api_stage3.api_frai_flag[ind] || kouku.api_stage3.api_fbak_flag[ind]);
 							if (hit) {
 								targetdata.push([fleet1[i],(dam>0)? dam:0,(dam!=kouku.api_stage3.api_fdam[ind]),kouku.api_stage3.api_fcl_flag[ind],kouku.api_stage3.api_frai_flag[ind]]);
+								if (kouku.api_stage3.api_f_sp_list) targetdata[targetdata.length-1].push(kouku.api_stage3.api_f_sp_list[ind]);
 								fleet1[i].hpTrack -= Math.floor(dam);
 							}
 						}
@@ -837,6 +868,7 @@ function processAPI(root) {
 							var dam = parseInt(kouku.api_stage3.api_edam[ind]);
 							hit = (kouku.api_stage3.api_erai_flag[ind] || kouku.api_stage3.api_ebak_flag[ind]);
 							if (hit) targetdata.push([f2[i],(dam>0)? dam:0,(dam!=kouku.api_stage3.api_edam[ind]),kouku.api_stage3.api_ecl_flag[ind],kouku.api_stage3.api_erai_flag[ind]]);
+							if (hit && kouku.api_stage3.api_e_sp_list) targetdata[targetdata.length-1].push(kouku.api_stage3.api_e_sp_list[ind]);
 						}
 						
 						if (kouku.api_stage3_combined) {
@@ -845,6 +877,7 @@ function processAPI(root) {
 								var hit = (kouku.api_stage3_combined.api_frai_flag[ind] || kouku.api_stage3_combined.api_fbak_flag[ind]);
 								if (hit) {
 									targetdata.push([fleet1C[i],(dam>0)? dam:0,(dam!=kouku.api_stage3_combined.api_fdam[ind]),kouku.api_stage3_combined.api_fcl_flag[ind],kouku.api_stage3_combined.api_frai_flag[ind]]);
+									if (kouku.api_stage3_combined.api_f_sp_list) targetdata[targetdata.length-1].push(kouku.api_stage3_combined.api_f_sp_list[ind]);
 									fleet1C[i].hpTrack -= Math.floor(dam);
 								}
 							}
@@ -852,6 +885,7 @@ function processAPI(root) {
 								var dam = parseInt(kouku.api_stage3_combined.api_edam[ind]);  //remember later, .1 = protect
 								var hit = (kouku.api_stage3_combined.api_erai_flag[ind] || kouku.api_stage3_combined.api_ebak_flag[ind]);
 								if (hit) targetdata.push([f2c[i],(dam>0)? dam:0,(dam!=kouku.api_stage3_combined.api_edam[ind]),kouku.api_stage3_combined.api_ecl_flag[ind],kouku.api_stage3_combined.api_erai_flag[ind]]);
+								if (hit && kouku.api_stage3_combined.api_e_sp_list) targetdata[targetdata.length-1].push(kouku.api_stage3_combined.api_e_sp_list[ind]);
 							}
 						}
 					}
@@ -2555,7 +2589,8 @@ function createKleinFieldRing(field) {
 	},[]]);
 }
 
-var PLANESPRITES = ['938','914','916','918','920','922','924','926','plane9','plane10','plane11','plane12','plane13','plane544','plane511','plane588','plane590','plane592'];
+var PLANESPRITES = {1:'938',2:'914',3:'916',4:'918',5:'920',6:'922',7:'924',8:'926',9:'plane9',10:'plane10',11:'plane11',12:'plane12',13:'plane13',14:'plane544',15:'plane511',16:'plane588',17:'plane590',18:'plane592',19:'plane594',20:'plane597',
+	'e009':'plane_e009','e010':'plane_e010','e011':'plane_e011','e018':'plane_e018','e019':'plane_e019','e020':'plane_e020','e021':'plane_e021'};
 function createPlane(x,y,planetypes,shots,shots2,side) {
 	var num = Math.min(3,planetypes.length);
 	if (shots) shots = shuffle(shots);
@@ -2564,7 +2599,7 @@ function createPlane(x,y,planetypes,shots,shots2,side) {
 	var planes = new PIXI.Container();
 	if (num == 3) {
 		for (var i=0; i<3; i++) {
-			var plane = PIXI.Sprite.fromImage('assets/'+PLANESPRITES[planetypes[2-i]-1]+'.png');
+			var plane = PIXI.Sprite.fromImage('assets/'+PLANESPRITES[planetypes[2-i]]+'.png');
 			plane.x = i*25-25;
 			plane.y = (i==1) ? -15 : 15;
 			plane.scale.set(.8);
@@ -2576,7 +2611,7 @@ function createPlane(x,y,planetypes,shots,shots2,side) {
 		}
 	} else if (num == 2) {
 		for (var i=0; i<2; i++) {
-			var plane = PIXI.Sprite.fromImage('assets/'+PLANESPRITES[planetypes[1-i]-1]+'.png');
+			var plane = PIXI.Sprite.fromImage('assets/'+PLANESPRITES[planetypes[1-i]]+'.png');
 			plane.x = i*30-15;
 			plane.y = (i==1) ? -15 : 15;
 			plane.scale.set(.8);
@@ -2587,7 +2622,7 @@ function createPlane(x,y,planetypes,shots,shots2,side) {
 			// plane.shot = 2;
 		}
 	} else if (num == 1) {
-		var plane = PIXI.Sprite.fromImage('assets/'+PLANESPRITES[planetypes[0]-1]+'.png');
+		var plane = PIXI.Sprite.fromImage('assets/'+PLANESPRITES[planetypes[0]]+'.png');
 		plane.scale.set(.8);
 		if (side && [11,12,14].indexOf(planetypes[0])!=-1) { plane.scale.x = -plane.scale.x; plane.pivot.x = 50; }
 		planes.addChild(plane);
@@ -2665,6 +2700,62 @@ function createTorpedoBomber2(x,y,target) {
 		}
 		return false;
 	},[torp,speed]]);
+}
+
+function createSkipBomber(x,y,target) {
+	let bomb = getFromPool('skipbomb','assets/skipbomb.png'); bomb.notpersistent = true;
+	bomb.position.set(x,y-40); bomb.pivot.set(12,4); bomb.scale.set(.67);
+	stage.addChild(bomb); bomb.time = 0; bomb.yBase = y;
+	let speed = (target.graphic.x+(1-target.side)*160 - x)/80;
+	let dir = Math.atan((y-target.graphic.y-20)/(x-target.graphic.x-40-80*(1-target.side)))+Math.PI*(1-target.side);
+	bomb.rotation = speed < 0 ? Math.PI : 0;
+	let splash = getFromPool('skipbombsplash','assets/skipbombsplash.png'); splash.notpersistent = true;
+	splash.anchor.set(.5,1); splash.scale.set(0); splash.size = 0; splash.dirH = speed < 0 ? -1 : 1;
+	stage.addChild(splash);
+	updates.push([function(bomb,splash,speed,dir) {
+		let yOff = 0;
+		if (bomb.time < 30) {
+			let p = (bomb.time)/30;
+			yOff = 40*p*p*p-40;
+		} else if (bomb.time < 50) {
+			let p = 1-(bomb.time-30)/20;
+			yOff = 15*p*p*p-15;
+		} else if (bomb.time < 70) {
+			let p = (bomb.time-50)/20;
+			yOff = 15*p*p*p-15;
+		} else if (bomb.time < 82) {
+			let p = 1-(bomb.time-70)/12;
+			yOff = 9*p*p*p-9;
+		} else if (bomb.time < 94) {
+			let p = (bomb.time-82)/12;
+			yOff = 9*p*p*p-9;
+		} else if (bomb.time < 102) {
+			let p = 1-(bomb.time-94)/8;
+			yOff = 6*p*p*p-6;
+		} else {
+			let p = (bomb.time-102)/8;
+			yOff = 6*p*p*p-6;
+		}
+		if (bomb.time >= 30) {
+			bomb.x += speed;
+			bomb.yBase += Math.tan(dir)*speed;
+			bomb.rotation = dir;
+		}
+		bomb.y = bomb.yBase + yOff;
+		splash.position.set(bomb.x+12*splash.dirH,bomb.y+7);
+		if (bomb.time == 30 || bomb.time == 70 || bomb.time == 94) {
+			splash.size = 3;
+		}
+		let scale = .222*splash.size;
+		splash.scale.set(scale*splash.dirH,scale);
+		if (splash.size > 0) splash.size--;
+		bomb.time++;
+		if (bomb.time >= 110) {
+			recycle(bomb);
+			recycle(splash);
+			return true;
+		}
+	},[bomb,splash,speed,dir]]);
 }
 
 function GTorpedoPhase(shots) {
@@ -2805,6 +2896,19 @@ function GAirPhase(attackdata,targetdata,defenders,aaciShip1,aaciShip2,contact1,
 	}, 900 - 450*isjet);
 	
 	if (!issupport) addTimeout(function() {
+		for (var i=0; i<targetdata.length; i++) {
+			var target = targetdata[i][0];
+			if (targetdata[i][5] && targetdata[i][5].includes(1)) {
+				let src = attackdata.filter(d => d[0].side != target.side);
+				let bomber = src[Math.floor(Math.random()*src.length)];
+				let x = 480-160*target.side-isbombing*120;
+				let y = isbombing ? 200+(bomber[0]-7)*60 : bomber[0].graphic.y+80;
+				createSkipBomber(x,y,target);
+			}
+		}
+	}, 900);
+	
+	if (!issupport) addTimeout(function() {
 		var pos = [[],[]];
 		for (var i=0; i<attackdata.length; i++) {
 			if (isbombing&&(attackdata[i][0]-6)) pos[0].push(180+(attackdata[i][0]-7)*60);
@@ -2812,8 +2916,9 @@ function GAirPhase(attackdata,targetdata,defenders,aaciShip1,aaciShip2,contact1,
 		}
 		for (var i=0; i<targetdata.length; i++) {
 			var target = targetdata[i][0];
-			if (targetdata[i][4])
+			if (targetdata[i][4]) {
 				createTorpedoBomber1(380+40*target.side-isbombing*70,pos[(1-target.side)][Math.floor(Math.random()*pos[(1-target.side)].length)],target);
+			}
 		}
 	}, 1400 - 700*isjet);
 	

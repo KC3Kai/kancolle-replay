@@ -261,9 +261,11 @@ var MECHANICS = {
 	anchorageTorpNerf: true,
 	eqBonusASW: true,
 	coloradoSpecialFix: true,
+	yamatoSpecial: true,
 	kongouSpecialBuff2: true,
 	coloradoSpecialBuff2: true,
-	eqBonusAA: false,
+	eqBonusAA: false, //WIP disabled
+	antiSubRaid: false, //WIP disabled
 };
 var NERFPTIMPS = false;
 var BREAKPTIMPS = false;
@@ -999,7 +1001,7 @@ function canSpecialAttack(ship,isNB) {
 		}
 		return false;
 	}
-	if ([546,911,916].includes(ship.mid)) {
+	if (MECHANICS.yamatoSpecial && [546,911,916].includes(ship.mid)) {
 		if (ship.fleet.didSpecial) return false;
 		if (ship.fleet.ships[0] != ship || (!isNB && ship.isescort)) return false;
 		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated && !ship.isSub).length < 6) return false;
@@ -1578,7 +1580,7 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 		}
 	}
 	if (ship.bonusSpecialAcc) acc *= getBonusAcc(ship,target,true);
-	if (SIMCONSTS.enableSkipTorpBonus && [459,625,626].includes(equip.mid)) {
+	if (SIMCONSTS.enableSkipTorpBonus && [459,1625,1626].includes(equip.mid)) {
 		if (['FBB','BB','BBV','CVL','CV'].includes(target.type)) acc += .28;
 		else if (['CA','CAV'].includes(target.type)) acc += .21;
 		else acc += .14;
@@ -1586,6 +1588,7 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 	var res = rollHit(accuracyAndCrit(ship,target,acc,1,0,0,!issupport && 2),!issupport && ship.critdmgbonus);
 	var dmg = 0, realdmg = 0;
 	var planebase = (equip.isdivebomber)? equip.DIVEBOMB + (equip.airstrikePowerImprove || 0) : (target.isInstall)? 0 : equip.TP + (equip.airstrikePowerImprove || 0);
+	if (target.isSub) planebase = equip.ASW;
 	planebase = planebase || 0;
 	if (C) console.log('		'+slot+' '+planebase);
 	if (res) {
@@ -1608,8 +1611,11 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 			}
 		}
 		var preMod = (equip.isdivebomber)? 1 : ((Math.random() < .5)? .8 : 1.5);
+		if (target.isSub) {
+			preMod = (planebase >= 10)? .7 + Math.random()*.3 : .35 + Math.random()*.45;
+		}
 		if (equip.isjet && !isjetphase) preMod *= 1/Math.sqrt(2);
-		if (SIMCONSTS.enableSkipTorpBonus && [459,625,626].includes(equip.mid) && !target.isInstall) {
+		if (SIMCONSTS.enableSkipTorpBonus && [459,1625,1626].includes(equip.mid) && !target.isInstall) {
 			if (['DD'].includes(target.type)) preMod *= 1.9;
 			if (['CL','CLT'].includes(target.type)) preMod *= 1.75;
 			if (['CA','CAV'].includes(target.type)) preMod *= 1.6;
@@ -2101,8 +2107,8 @@ function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupp
 				continue;
 			}
 			
-			if (targets.length) {  //even if subs only, bombers still get shot down
-				var targetsR = targets;
+			let targetsR = MECHANICS.antiSubRaid && isRaid && ship.canAirstrikeSub ? defenders : targets;
+			if (targetsR.length) {
 				if (false) {
 					var targetsM = [], targetsE = [];
 					for (var k=0; k<targets.length; k++) {
@@ -2120,14 +2126,16 @@ function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupp
 					if (target.isescort) {
 						APIkouku.api_stage3_combined[(target.side)?'api_edam':'api_fdam'][target.num] += dmg;
 						APIkouku.api_stage3_combined[(target.side)?'api_ecl_flag':'api_fcl_flag'][target.num] = 0;
-						if (ship.equips[slot].istorpbomber) APIkouku.api_stage3_combined[(target.side)?'api_erai_flag':'api_frai_flag'][target.num] = 1;
+						if (ship.equips[slot].istorpbomber && !ship.equips[slot].isSkipBomber && !target.isSub) APIkouku.api_stage3_combined[(target.side)?'api_erai_flag':'api_frai_flag'][target.num] = 1;
 						else APIkouku.api_stage3_combined[(target.side)?'api_ebak_flag':'api_fbak_flag'][target.num] = 1;
+						if (ship.equips[slot].isSkipBomber) APIkouku.api_stage3_combined[target.side?'api_e_sp_list':'api_f_sp_list'][target.num] = [1];
 					} else {
 						if (!APIkouku.api_stage3[(target.side)?'api_edam':'api_fdam'][target.num]) APIkouku.api_stage3[(target.side)?'api_edam':'api_fdam'][target.num] = 0;
 						APIkouku.api_stage3[(target.side)?'api_edam':'api_fdam'][target.num] += dmg;
 						APIkouku.api_stage3[(target.side)?'api_ecl_flag':'api_fcl_flag'][target.num] = 0;
-						if (ship.equips[slot].istorpbomber) APIkouku.api_stage3[(target.side)?'api_erai_flag':'api_frai_flag'][target.num] = 1;
+						if (ship.equips[slot].istorpbomber && !ship.equips[slot].isSkipBomber && !target.isSub) APIkouku.api_stage3[(target.side)?'api_erai_flag':'api_frai_flag'][target.num] = 1;
 						else APIkouku.api_stage3[(target.side)?'api_ebak_flag':'api_fbak_flag'][target.num] = 1;
+						if (ship.equips[slot].isSkipBomber) APIkouku.api_stage3[target.side?'api_e_sp_list':'api_f_sp_list'][target.num] = [1];
 					}
 				}
 			}
@@ -2150,8 +2158,8 @@ function airPhase(alive1,subsalive1,alive2,subsalive2,APIkouku,isjetphase,isbomb
 		if (C) {
 			APIkouku.api_stage1 = {api_e_count:0,api_e_lostcount:0,api_f_count:0,api_f_lostcount:0,api_touch_plane:[-1,-1]};
 			APIkouku.api_stage2 = {api_e_count:0,api_e_lostcount:0,api_f_count:0,api_f_lostcount:0};
-			APIkouku.api_stage3 = {api_ebak_flag:[-1,0,0,0,0,0,0],api_edam:[-1,0,0,0,0,0,0],api_erai_flag:[-1,0,0,0,0,0,0],api_fbak_flag:[-1,0,0,0,0,0,0],api_fdam:[-1,0,0,0,0,0,0],api_frai_flag:[-1,0,0,0,0,0,0],api_ecl_flag:[-1,0,0,0,0,0,0],api_fcl_flag:[-1,0,0,0,0,0,0]};
-			APIkouku.api_stage3_combined = {api_ebak_flag:[-1,0,0,0,0,0,0],api_edam:[-1,0,0,0,0,0,0],api_erai_flag:[-1,0,0,0,0,0,0],api_fbak_flag:[-1,0,0,0,0,0,0],api_fdam:[-1,0,0,0,0,0,0],api_frai_flag:[-1,0,0,0,0,0,0],api_ecl_flag:[-1,0,0,0,0,0,0],api_fcl_flag:[-1,0,0,0,0,0,0]};
+			APIkouku.api_stage3 = {api_ebak_flag:[-1,0,0,0,0,0,0],api_edam:[-1,0,0,0,0,0,0],api_erai_flag:[-1,0,0,0,0,0,0],api_fbak_flag:[-1,0,0,0,0,0,0],api_fdam:[-1,0,0,0,0,0,0],api_frai_flag:[-1,0,0,0,0,0,0],api_ecl_flag:[-1,0,0,0,0,0,0],api_fcl_flag:[-1,0,0,0,0,0,0],api_e_sp_list:[-1,null,null,null,null,null,null],api_f_sp_list:[-1,null,null,null,null,null,null]};
+			APIkouku.api_stage3_combined = {api_ebak_flag:[-1,0,0,0,0,0,0],api_edam:[-1,0,0,0,0,0,0],api_erai_flag:[-1,0,0,0,0,0,0],api_fbak_flag:[-1,0,0,0,0,0,0],api_fdam:[-1,0,0,0,0,0,0],api_frai_flag:[-1,0,0,0,0,0,0],api_ecl_flag:[-1,0,0,0,0,0,0],api_fcl_flag:[-1,0,0,0,0,0,0],api_e_sp_list:[-1,null,null,null,null,null,null],api_f_sp_list:[-1,null,null,null,null,null,null]};
 		}
 		
 		if (isjetphase) {
@@ -2442,8 +2450,8 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 		}
 		APIkouku.api_stage1 = {api_e_count:0,api_e_lostcount:0,api_f_count:0,api_f_lostcount:0,api_touch_plane:[-1,-1]};
 		APIkouku.api_stage2 = {api_f_count:0,api_f_lostcount:0};
-		APIkouku.api_stage3 = {api_ebak_flag:[-1,0,0,0,0,0,0],api_edam:[-1,0,0,0,0,0,0],api_erai_flag:[-1,0,0,0,0,0,0],api_ecl_flag:[-1,0,0,0,0,0,0]};
-		APIkouku.api_stage3_combined = {api_ebak_flag:[-1,0,0,0,0,0,0],api_edam:[-1,0,0,0,0,0,0],api_erai_flag:[-1,0,0,0,0,0,0],api_ecl_flag:[-1,0,0,0,0,0,0]};
+		APIkouku.api_stage3 = {api_ebak_flag:[-1,0,0,0,0,0,0],api_edam:[-1,0,0,0,0,0,0],api_erai_flag:[-1,0,0,0,0,0,0],api_ecl_flag:[-1,0,0,0,0,0,0],api_e_sp_list:[-1,null,null,null,null,null,null]};
+		APIkouku.api_stage3_combined = {api_ebak_flag:[-1,0,0,0,0,0,0],api_edam:[-1,0,0,0,0,0,0],api_erai_flag:[-1,0,0,0,0,0,0],api_ecl_flag:[-1,0,0,0,0,0,0],api_e_sp_list:[-1,null,null,null,null,null,null]};
 	}
 	
 	//fighter defence
@@ -2524,17 +2532,20 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 			if (C) {
 				var showtorpedo = lbas.equips[i].istorpbomber;
 				if (lbas.equips[i].type == LANDBOMBER && target.isInstall) showtorpedo = false;
+				if (lbas.equips[i].isSkipBomber) showtorpedo = false;
 				if (target.isSub) showtorpedo = false;
 				if (target.isescort) {
 					APIkouku.api_stage3_combined[(target.side)?'api_edam':'api_fdam'][target.num] += dmg;
 					APIkouku.api_stage3_combined[(target.side)?'api_ecl_flag':'api_fcl_flag'][target.num] = 0;
 					if (showtorpedo) APIkouku.api_stage3_combined[(target.side)?'api_erai_flag':'api_frai_flag'][target.num] = 1;
 					else APIkouku.api_stage3_combined[(target.side)?'api_ebak_flag':'api_fbak_flag'][target.num] = 1;
+					if (lbas.equips[i].isSkipBomber) APIkouku.api_stage3_combined[target.side?'api_e_sp_list':'api_f_sp_list'][target.num] = [1];
 				} else {
 					APIkouku.api_stage3[(target.side)?'api_edam':'api_fdam'][target.num] += dmg;
 					APIkouku.api_stage3[(target.side)?'api_ecl_flag':'api_fcl_flag'][target.num] = 0;
 					if (showtorpedo) APIkouku.api_stage3[(target.side)?'api_erai_flag':'api_frai_flag'][target.num] = 1;
 					else APIkouku.api_stage3[(target.side)?'api_ebak_flag':'api_fbak_flag'][target.num] = 1;
+					if (lbas.equips[i].isSkipBomber) APIkouku.api_stage3[target.side?'api_e_sp_list':'api_f_sp_list'][target.num] = [1];
 				}
 			}
 		}
@@ -2575,7 +2586,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 	if (MECHANICS.LBASBuff) {
 		acc += .07*(equip.ACC || 0);
 	}
-	if (equip.mid == 444) {
+	if ([444,484].includes(equip.mid)) {
 		if (target.type == 'DD') acc -= .07;
 		if (target.type == 'CL') acc += .07;
 	}
@@ -2586,7 +2597,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 		if (target.type == 'DD') acc -= .15;
 		if (target.type == 'CL') acc += .07;
 	}
-	if (equip.mid == 459 || (SIMCONSTS.enableSkipTorpBonus && [625,626].includes(equip.mid))) {
+	if (equip.mid == 459 || (SIMCONSTS.enableSkipTorpBonus && [1625,1626].includes(equip.mid))) {
 		if (['FBB','BB','BBV','CVL','CV'].includes(target.type)) acc += .28;
 		else if (['CA','CAV'].includes(target.type)) acc += .21;
 		else acc += .14;
@@ -2610,7 +2621,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 		if (equip.mid == 405 && !target.isInstall) {
 			if (['DD'].indexOf(target.type) != -1) planebase *= 1.1;
 		}
-		if (equip.mid == 444 && !target.isInstall) {
+		if ([444,484].includes(equip.mid) && !target.isInstall) {
 			if (['DD','CL','CLT','CVL','FBB','BB','BBV'].includes(target.type)) planebase *= 1.15;
 		}
 		if (equip.mid == 454 && !target.isInstall) {
@@ -2628,7 +2639,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 			if (['CA','CAV','CV','CVB'].indexOf(target.type) != -1) preMod *= 1.15;
 			if (['FBB','BB','BBV'].indexOf(target.type) != -1) preMod *= 1.35;
 		}
-		if ((equip.mid == 459 || (SIMCONSTS.enableSkipTorpBonus && [625,626].includes(equip.mid))) && !target.isInstall) {
+		if ((equip.mid == 459 || (SIMCONSTS.enableSkipTorpBonus && [1625,1626].includes(equip.mid))) && !target.isInstall) {
 			if (['DD'].includes(target.type)) preMod *= 1.9;
 			if (['CL','CLT'].includes(target.type)) preMod *= 1.75;
 			if (['CA','CAV'].includes(target.type)) preMod *= 1.6;
@@ -4063,7 +4074,7 @@ function friendFleetPhase(fleet1,fleet2,alive2,subsalive2,BAPI) {
 					ship.protectionFF = true;
 				}
 				let target;
-				if (MECHANICS.ffReroll && alive2[0].isflagship && !alive2[0].isescort) {
+				if (MECHANICS.ffReroll && alive2.length && alive2[0].isflagship && !alive2[0].isescort) {
 					alive2[0].isflagship = false;
 					target = nightPhaseTarget(attacker,alive2,subsalive2,nightEquips[3][1],nightEquips[1][1]).target;
 					alive2[0].isflagship = true;
