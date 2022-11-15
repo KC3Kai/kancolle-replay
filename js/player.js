@@ -445,7 +445,8 @@ function processAPI(root) {
 	PVPMODE = (root.world <= 0);
 	OLDFORMAT = !!data.api_maxhps; //new format 2017-11-17
 	
-	let IS_BEFORE_ENEMY_EQ_SHIFT = root.time*1000 < Date.UTC(2022,11,9); //abyssal eq shift 2022-11-09
+	//abyssal eq shift 2022-11-09 //root.time*1000 < Date.UTC(2022,11,9); 
+	let IS_BEFORE_ENEMY_EQ_SHIFT = !PVPMODE && !root.source;
 	
 	if (root.now_maphp && root.max_maphp) {
 		bossbar.maxhp = root.max_maphp;

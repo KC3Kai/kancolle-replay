@@ -385,6 +385,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (eq.mid == 409) installeqs.armedDaihatsu = installeqs.armedDaihatsu + 1 || 1;
 		if (eq.mid == 436) installeqs.panzer = installeqs.panzer + 1 || 1;
 		if (eq.mid == 449) installeqs.tokuT1 = installeqs.tokuT1 + 1 || 1;
+		if (eq.mid == 482) installeqs.panzer3 = installeqs.panzer3 + 1 || 1;
 		if (eq.mid == 126) this.numWG = this.numWG + 1 || 1;
 		
 		if (eq.LOS) this.LOSeq += eq.LOS;
@@ -443,7 +444,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	
 	let installModAll = 1;
 	this.installFlat = 0;
-	if (installeqs.TDH11 || installeqs.tokuT1) {
+	if (installeqs.TDH11 || installeqs.tokuT1 || installeqs.panzer3) {
 		installModAll *= 1.8;
 		this.installFlat *= 1.8;
 		this.installFlat += 25;
@@ -461,8 +462,8 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	
 	let abSynergyMult = 1, abSynergyFlat = 0, numAB = (installeqs.soukoutei || 0) + (installeqs.armedDaihatsu || 0);
 	if ((installeqs.soukoutei == 1 || installeqs.armedDaihatsu == 1) && (installeqs.soukoutei || 0) < 2 && (installeqs.armedDaihatsu || 0) < 2) {
-		let numA = this.equips.filter(eq => [68,166,193,449].includes(eq.mid)).length;
-		let numB = this.equips.filter(eq => [167,230].includes(eq.mid)).length;
+		let numA = this.equips.filter(eq => [68,166,193,436,449].includes(eq.mid)).length;
+		let numB = this.equips.filter(eq => [167,230,482].includes(eq.mid)).length;
 		if (numA + numB) {
 			abSynergyMult *= 1.2;
 			abSynergyFlat += 10;
@@ -661,21 +662,50 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		else if (installeqs.DH3 == 1) this.supplyPostMult*=1.7*installbonus3;
 	}
 	
+	let numSwordfish = this.equips.filter(eq => [242,243,244].includes(eq.mid)).length;
+
+	this.summerBBPostMult = 1;
+	if (this.equiptypes[APSHELL]) this.summerBBPostMult *= 1.2;
+	if (this.equiptypes[SEAPLANEBOMBER] || this.equiptypes[SEAPLANEFIGHTER]) this.summerBBPostMult *= 1.1;
+	if (numSwordfish) this.summerBBPostMult *= 1.15;
+	if (numSwordfish >= 2) this.summerBBPostMult *= 1.05;
+	if ([171,172,173,176,177,178,393,515,571,574,576,579,630].includes(this.mid)) this.summerBBPostMult *= 1.1
+	
+	this.summerCAPostMult = 1;
+	if (this.equiptypes[APSHELL]) this.summerCAPostMult *= 1.1;
+	if (this.equiptypes[SEAPLANEBOMBER] || this.equiptypes[SEAPLANEFIGHTER]) this.summerCAPostMult *= 1.15;
+	if (numSwordfish) this.summerCAPostMult *= 1.15;
+	if (numSwordfish >= 2) this.summerCAPostMult *= 1.05;
+	if ([171,172,173,176,177,178,393,515,571,574,576,579,630].includes(this.mid)) this.summerCAPostMult *= 1.1
+	
+	this.frenchBBPostMult = 1;
+	if (this.equiptypes[APSHELL]) this.frenchBBPostMult *= 1.2;
+	if (this.equiptypes[SEAPLANEBOMBER] || this.equiptypes[SEAPLANEFIGHTER]) this.frenchBBPostMult *= 1.1;
+	if (this.equips.find(eq => eq.mid == 194)) this.frenchBBPostMult *= 1.2;
+	if (this.equiptypes[DIVEBOMBER]) this.frenchBBPostMult *= 1.1;
+	if (this.equiptypes[DIVEBOMBER] >= 2) this.frenchBBPostMult *= 1.15;
+	if ([70,79].includes(this.sclass)) this.frenchBBPostMult *= 1.15;
+	
 	this.anchoragePostMult = 1;
-	if (numMortar) this.anchoragePostMult *= 1.15;
-	if (numRocket4) this.anchoragePostMult *= 1.2;
-	if (this.numWG) this.anchoragePostMult *= 1.25;
+	if (numMortar) this.anchoragePostMult *= 1.1;
+	if (numRocket4) this.anchoragePostMult *= 1.15;
+	if (numRocket4 >= 2) this.anchoragePostMult *= 1.4;
+	if (this.numWG) this.anchoragePostMult *= 1.2;
 	if (this.numWG >= 2) this.anchoragePostMult *= 1.3;
-	if (hasLC) this.anchoragePostMult *= 1.45 * installbonus1;
-	if (installeqs.DH2) this.anchoragePostMult *= 1.15;
+	if (hasLC) this.anchoragePostMult *= 1.4 * installbonus1;
+	if (installeqs.TDH) this.anchoragePostMult *= 1.15;
+	if (installeqs.DH2) this.anchoragePostMult *= 1.2;
 	if (installeqs.DH2 >= 2) this.anchoragePostMult *= 1.4;
 	if (installeqs.DH3) this.anchoragePostMult *= 2.4 * installbonus3;
 	if (installeqs.DH3 >= 2) this.anchoragePostMult *= 1.35;
-	if (installeqs.m4a1) this.anchoragePostMult *= 1.75;
-	if (installeqs.panzer) this.anchoragePostMult *= 1.15;
-	if (installeqs.T3) this.anchoragePostMult *= 1.35;
+	if (installeqs.m4a1) this.anchoragePostMult *= 1.8;
+	if (installeqs.panzer) this.anchoragePostMult *= 1.2;
+	if (installeqs.T3) this.anchoragePostMult *= 1.45;
 	if (installeqs.DB) this.anchoragePostMult *= 1.4;
-	if (installeqs.DB >= 2) this.anchoragePostMult *= 1.5;
+	if (installeqs.DB >= 2 || this.equiptypes[JETBOMBER]) this.anchoragePostMult *= 1.75;
+	if (numAB) this.anchoragePostMult *= 1.2;
+	if (numAB >= 2) this.anchoragePostMult *= 1.1;
+	if ([80,81,131,136,143,148,275,276,541,546,573,911,916].includes(this.mid)) this.anchoragePostMult *= 1.2;
 	
 	this.dockPostMult = 1;
 	if (installeqs.DB) this.dockPostMult *= 1.1;
@@ -685,14 +715,16 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	if (this.numWG >= 2) this.dockPostMult *= 1.2;
 	if (installeqs.T3) this.dockPostMult *= 1.3;
 	if (installeqs.DH3) this.dockPostMult *= 1.2 * installbonus3;
+	if (installeqs.DH3 >= 2) this.dockPostMult *= 1.2;
 	if (hasLC) this.dockPostMult *= 1.1;
-	if (installeqs.TDH11 || installeqs.tokuT1 || this.equips.find(eq => eq.mid == 482)) this.dockPostMult *= 1.4;
+	if (installeqs.TDH11 || installeqs.tokuT1 || installeqs.panzer3) this.dockPostMult *= 1.4;
 	if (installeqs.DH2) this.dockPostMult *= 1.15 * installbonus1;
 	if (installeqs.DH2 >= 2) this.dockPostMult *= 1.15;
 	if (installeqs.m4a1) this.dockPostMult *= 1.1;
 	if (installeqs.panzer) this.dockPostMult *= 1.15;
 	if (installeqs.panzer >= 2) this.dockPostMult *= 1.15;
 	if (numAB) this.dockPostMult *= 1.1;
+	if ([58,61,64,68,80,92,113].includes(this.sclass)) this.dockPostMult *= 1.1;
 	
 	this.ptDmgMod = 1;
 	let numGuns = (this.equiptypes[MAINGUNS] || 0) + (this.equiptypes[MAINGUNSAA] || 0);
@@ -1900,11 +1932,11 @@ Equip.prototype.setImprovement = function(level) {
 		this.improves.AAself = mod*Math.sqrt(level);
 	}
 	
-	if ([12,234,247,467].includes(this.mid)) {
+	if ([12,234,247,463,467].includes(this.mid)) {
 		this.improves.Pshell = .3*level;
 		this.improves.Pnb = .3*level;
 	}
-	if ([10,66,220,275,358].includes(this.mid)) {
+	if ([10,66,220,275,358,464].includes(this.mid)) {
 		this.improves.Pshell = .2*level;
 		this.improves.Pnb = .2*level;
 	}
