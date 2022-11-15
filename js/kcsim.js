@@ -413,20 +413,13 @@ function shell(ship,target,APIhou,attackSpecial) {
 		postMod *= ship.dockPostMult;
 	}
 	if (SIMCONSTS.enableModSummerBB && target.isSummerBB) {
-		if (ship.equiptypes[APSHELL]) postMod *= 1.2;
-		if (ship.equiptypes[SEAPLANEBOMBER] || ship.equiptypes[SEAPLANEFIGHTER]) postMod *= 1.1;
+		postMod *= ship.summerBBPostMult;
 	}
 	if (SIMCONSTS.enableModSummerCA && target.isSummerCA) {
-		if (ship.equiptypes[APSHELL]) postMod *= 1.1;
-		if (ship.equiptypes[SEAPLANEBOMBER] || ship.equiptypes[SEAPLANEFIGHTER]) postMod *= 1.15;
+		postMod *= ship.summerCAPostMult;
 	}
 	if (SIMCONSTS.enableModFrenchBB && target.isFrenchBB) {
-		if (ship.sclass == 79) postMod *= 1.17;
-		if (ship.equiptypes[APSHELL]) postMod *= 1.2;
-		if (ship.equiptypes[SEAPLANEBOMBER] || ship.equiptypes[SEAPLANEFIGHTER]) postMod *= 1.1;
-		if (ship.equips.find(eq => eq.mid == 194)) postMod *= 1.3;
-		if (ship.equiptypes[DIVEBOMBER]) postMod *= 1.1;
-		if (ship.equiptypes[DIVEBOMBER] >= 2) postMod *= 1.15;
+		postMod *= ship.frenchBBPostMult;
 	}
 	
 	if (SIMCONSTS.enablePlaneBonus && ship.CVshelltype) postMod *= getBonusSpecialPlane(ship);
@@ -689,20 +682,13 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 		postMod *= ship.dockPostMult;
 	}
 	if (SIMCONSTS.enableModSummerBB && target.isSummerBB) {
-		if (ship.equiptypes[APSHELL]) postMod *= 1.2;
-		if (ship.equiptypes[SEAPLANEBOMBER] || ship.equiptypes[SEAPLANEFIGHTER]) postMod *= 1.1;
+		postMod *= ship.summerBBPostMult;
 	}
 	if (SIMCONSTS.enableModSummerCA && target.isSummerCA) {
-		if (ship.equiptypes[APSHELL]) postMod *= 1.1;
-		if (ship.equiptypes[SEAPLANEBOMBER] || ship.equiptypes[SEAPLANEFIGHTER]) postMod *= 1.15;
+		postMod *= ship.summerCAPostMult;
 	}
 	if (SIMCONSTS.enableModFrenchBB && target.isFrenchBB) {
-		if (ship.sclass == 79) postMod *= 1.17;
-		if (ship.equiptypes[APSHELL]) postMod *= 1.2;
-		if (ship.equiptypes[SEAPLANEBOMBER] || ship.equiptypes[SEAPLANEFIGHTER]) postMod *= 1.1;
-		if (ship.equips.find(eq => eq.mid == 194)) postMod *= 1.3;
-		if (ship.equiptypes[DIVEBOMBER]) postMod *= 1.1;
-		if (ship.equiptypes[DIVEBOMBER] >= 2) postMod *= 1.15;
+		postMod *= ship.frenchBBPostMult;
 	}
 	
 	if (SIMCONSTS.enablePlaneBonus && ship.canNBAirAttack()) postMod *= getBonusSpecialPlane(ship);
