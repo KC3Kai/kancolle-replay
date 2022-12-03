@@ -49,7 +49,7 @@
 			}
 		}
 		function loadImgURL(url) {
-			if (url.indexOf('salty-brushlands-75370.herokuapp.com/') == -1) url = 'https://salty-brushlands-75370.herokuapp.com/' + url;
+			if (url.indexOf('api.codetabs.com') == -1) url = 'https://api.codetabs.com/v1/proxy/?quest=' + url;
 			var preview = document.getElementById('imgpreview');
 			var xhr = new XMLHttpRequest();
 			xhr.responseType = 'blob';
