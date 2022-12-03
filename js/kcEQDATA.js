@@ -5640,6 +5640,16 @@ var EQDATA = {
 		ASW: 4,
 		LOS: 5,
 	},
+	485: {
+		name: 'Kyoufuu Kai Ni',
+		nameJP: '強風改二',
+		added: '2022-11-30',
+		type: SEAPLANEFIGHTER,
+		AA: 6,
+		ACC: 1,
+		EV: 4,
+		LOS: 2,
+	},
 	1501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
@@ -7182,6 +7192,7 @@ var LBASDATA = {
 	480: { distance: 9, cost: 13 },
 	481: { distance: 7, cost: 14 },
 	484: { distance: 5, cost: 15 },
+	485: { distance: 3, cost: 6 },
 };
 
 
