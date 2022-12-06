@@ -5650,6 +5650,29 @@ var EQDATA = {
 		EV: 4,
 		LOS: 2,
 	},
+	486: {
+		name: 'Type 0 Fighter Model 64 (Air Superiority Fighter Specification)',
+		nameJP: '零式艦戦64型(制空戦闘機仕様)',
+		added: '2022-12-06',
+		type: FIGHTER,
+		FP: 1,
+		AA: 9,
+		ACC: 1,
+		EV: 3,
+		LOS: 1,
+	},
+	487: {
+		name: 'Type 0 Fighter Model 64 (Skilled Fighter-Bomber)',
+		nameJP: '零式艦戦64型(熟練爆戦)',
+		added: '2022-12-06',
+		type: DIVEBOMBER,
+		FP: 1,
+		DIVEBOMB: 6,
+		AA: 7,
+		ACC: 2,
+		ASW: 3,
+		LOS: 2,
+	},
 	1501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
@@ -7193,6 +7216,8 @@ var LBASDATA = {
 	481: { distance: 7, cost: 14 },
 	484: { distance: 5, cost: 15 },
 	485: { distance: 3, cost: 6 },
+	486: { distance: 5, cost: 6 },
+	487: { distance: 5, cost: 6 },
 };
 
 
