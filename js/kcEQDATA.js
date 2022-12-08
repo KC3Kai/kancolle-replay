@@ -5666,6 +5666,8 @@ var EQDATA = {
 		nameJP: '零式艦戦64型(熟練爆戦)',
 		added: '2022-12-06',
 		type: DIVEBOMBER,
+		isFighterBomber: true,
+		aaResistShip: .6,
 		FP: 1,
 		DIVEBOMB: 6,
 		AA: 7,

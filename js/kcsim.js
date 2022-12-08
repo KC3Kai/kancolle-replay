@@ -835,11 +835,12 @@ function ASW(ship,target,isnight,APIhou,isOASW) {
 	}
 	var acc = hitRate(ship,80,sonarAcc,accMod);
 	if (ship.bonusSpecialAcc) acc *= getBonusAcc(ship,target);
-	var res = rollHit(accuracyAndCrit(ship,target,acc,target.getFormation().ASWev,evFlat,1.3,ship.planeasw && !isOASW),ship.planeasw && !isOASW ? ship.critdmgbonus : null);
+	let usePlaneProf = ship.planeasw && !isOASW && ship.type != 'CV' && ship.type != 'AO';
+	var res = rollHit(accuracyAndCrit(ship,target,acc,target.getFormation().ASWev,evFlat,1.3,usePlaneProf),usePlaneProf ? ship.critdmgbonus : null);
 	var dmg = 0, realdmg = 0;
 	var premod = (isnight)? 0 : ship.getFormation().ASWmod*ENGAGEMENT*ship.damageMod();
 	let postMod = 1;
-	if (SIMCONSTS.enablePlaneBonus && ship.planeasw && !isOASW) postMod *= getBonusSpecialPlane(ship);
+	if (SIMCONSTS.enablePlaneBonus && usePlaneProf) postMod *= getBonusSpecialPlane(ship);
 	if (res) {
 		dmg = damage(ship,target,ship.ASWPower(),premod,res*postMod,SIMCONSTS.aswDmgCap);
 		realdmg = takeDamage(target,dmg);
