@@ -224,7 +224,7 @@ EQTDATA[SONARS] = {
 	btype: B_SONAR,
 	improve: {Pshell:.75,Pasw:1,ACCasw:1.3,EVtorp:1.5},
 	canequip: ['DD','CL','CT','CLT','SS','SSV','DE'],
-	canequipS: [352, 372, 380, 381, 382, 450, 491, 500, 529, 534, 536, 546, 554, 586, 591, 592, 626, 645, 650, 690, 699, 707, 713, 717, 879, 885, 889, 900, 911, 916],
+	canequipS: [352, 372, 380, 381, 382, 450, 491, 500, 529, 534, 536, 546, 554, 586, 591, 592, 626, 645, 650, 690, 699, 707, 713, 717, 879, 885, 889, 894, 899, 900, 911, 916],
 	canASWDamage: true,
 };
 EQTDATA[SONARL] = {
@@ -261,7 +261,7 @@ EQTDATA[TORPBOMBER] = {
 	image: 8,
 	canequip: ['CVL','CV','CVB','LandBase'],
 	canequipS: [352],
-	cannotequipS: [521],
+	cannotequipS: [521, 899],
 	isPlane: true,
 	isfighter: true,
 	istorpbomber: true,
@@ -345,7 +345,7 @@ EQTDATA[ASWPLANE] = {
 	image: 22,
 	canequip: ['CVL','LHA'],
 	canequipS: [553, 554, 646, 717, 900],
-	cannotequipS: [521, 522, 526, 534, 621, 626, 884],
+	cannotequipS: [521, 522, 526, 534, 621, 626, 884, 894],
 	isASWPlane: true,
 	canASWDamage: true,
 	canSupportASW: true,
@@ -392,7 +392,7 @@ EQTDATA[BULGEM] = {
 	name: 'Torpedo Bulge',
 	image: 23,
 	canequip: ['CT','CA','CAV','CVL','AS','AV','AR'],
-	canequipS: [146, 147, 216, 217, 305, 306, 307, 314, 330, 346, 357, 500, 537, 538, 542, 543, 547, 563, 564, 566, 567, 568, 569, 578, 579, 621, 622, 623, 624, 626, 629, 630, 645, 649, 650, 652, 656, 657, 662, 663, 668, 670, 699, 717, 900, 915],
+	canequipS: [146, 147, 216, 217, 305, 306, 307, 314, 330, 346, 357, 500, 537, 538, 542, 543, 547, 556, 559, 563, 564, 566, 567, 568, 569, 578, 579, 621, 622, 623, 624, 626, 629, 630, 645, 649, 650, 652, 656, 657, 662, 663, 668, 670, 699, 717, 900, 915],
 };
 EQTDATA[BULGEL] = {
 	name: 'Torpedo Bulge',
@@ -406,7 +406,7 @@ EQTDATA[LANDINGCRAFT] = {
 	btype: B_LC1,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['AV','LHA'],
-	canequipS: [147, 198, 199, 200, 260, 352, 382, 418, 419, 434, 435, 464, 468, 469, 470, 478, 487, 488, 489, 490, 498, 500, 506, 541, 547, 548, 563, 587, 623, 630, 645, 647, 650, 657, 666, 667, 699, 703, 707, 716, 718, 720, 889, 908, 915, 916],
+	canequipS: [147, 198, 199, 200, 260, 352, 382, 418, 419, 434, 435, 464, 468, 469, 470, 478, 487, 488, 489, 490, 498, 500, 506, 541, 547, 548, 559, 563, 587, 623, 630, 645, 647, 650, 657, 666, 667, 699, 703, 707, 716, 718, 720, 889, 899, 908, 915, 916],
 	cannotequipS: [445, 491],
 };
 EQTDATA[SEARCHLIGHTS] = {
@@ -434,7 +434,7 @@ EQTDATA[PICKET] = {
 	image: 32,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['DD','CL','CT','CLT','CA','CAV','FBB','BB','BBV','AS','AV','DE'],
-	canequipS: [381, 500, 529, 536, 621, 626, 699, 889],
+	canequipS: [381, 500, 529, 536, 621, 626, 699, 889, 894, 899],
 };
 EQTDATA[WG42] = {
 	name: 'Misc',
@@ -462,7 +462,7 @@ EQTDATA[DRUM] = {
 	name: 'Misc',
 	image: 25,
 	canequip: ['DD','CL','CAV','AV','AO','LHA'],
-	canequipS: [530, 539, 605, 707],
+	canequipS: [530, 539, 605, 707, 899],
 	cannotequipS: [717, 900],
 };
 EQTDATA[SCAMP] = {
@@ -510,7 +510,7 @@ EQTDATA[LANDINGTANK] = {
 	btype: B_LC3,
 	improve: {Pshell:1,Pnb:1},
 	canequip: ['SS','SSV','AV','LHA'],
-	canequipS: [147, 198, 199, 200, 352, 418, 464, 468, 470, 478, 487, 488, 489, 490, 497, 500, 506, 541, 547, 548, 564, 568, 569, 573, 578, 587, 588, 623, 647, 656, 657, 662, 663, 666, 667, 668, 670, 908, 915, 916],
+	canequipS: [147, 198, 199, 200, 352, 418, 464, 468, 470, 478, 487, 488, 489, 490, 497, 500, 506, 541, 547, 548, 556, 564, 568, 569, 573, 578, 587, 588, 623, 647, 656, 657, 662, 663, 666, 667, 668, 670, 899, 908, 915, 916],
 	cannotequipS: [445, 491, 581],
 };
 EQTDATA[OILDRUM] = {
@@ -5674,6 +5674,18 @@ var EQDATA = {
 		ACC: 2,
 		ASW: 3,
 		LOS: 2,
+	},
+	488: {
+		name: 'Type 2 Depth Charge Kai Ni',
+		nameJP: '二式爆雷改二',
+		added: '2022-12-31',
+		type: DEPTHCHARGE,
+		isDCOnly: true,
+		canASWPenetrate: true,
+		AR: 1,
+		ACC: 1,
+		EV: 1,
+		ASW: 8,
 	},
 	1501: {
 		name: '5inch Single Cannon',
