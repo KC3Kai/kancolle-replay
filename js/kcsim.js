@@ -464,7 +464,7 @@ function shell(ship,target,APIhou,attackSpecial) {
 			}
 		}
 	} else {
-		var res = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,1.3,ship.CVshelltype,critRateBonus),(overrideCritDmgBonus || ship.critdmgbonus));
+		var res = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,1.3,ship.CVshelltype,critRateBonus),ship.CVshelltype && (overrideCritDmgBonus || ship.critdmgbonus));
 		var dmg = (cutin)? getScratchDamage(target.HP) : 0, realdmg = 0;
 		if (res) {
 			dmg = damage(ship,target,ship.shellPower(target,ship.fleet.basepowshell)+FPfit,preMod,res*postMod,SIMCONSTS.shellDmgCap);
@@ -1574,7 +1574,7 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 	}
 	var res = rollHit(accuracyAndCrit(ship,target,acc,1,0,0,!issupport && 2),!issupport && ship.critdmgbonus);
 	var dmg = 0, realdmg = 0;
-	var planebase = (equip.isdivebomber)? equip.DIVEBOMB + (equip.airstrikePowerImprove || 0) : (target.isInstall)? 0 : equip.TP + (equip.airstrikePowerImprove || 0);
+	var planebase = (equip.isdivebomber && !equip.isLB)? (equip.DIVEBOMB || 0) + (equip.airstrikePowerImprove || 0) : (target.isInstall)? 0 : (equip.TP || 0) + (equip.airstrikePowerImprove || 0);
 	if (target.isSub) planebase = equip.ASW;
 	planebase = planebase || 0;
 	if (C) console.log('		'+slot+' '+planebase);
@@ -1657,6 +1657,7 @@ function accuracyAndCrit(ship,target,hit,evMod,evFlat,critMod,isPlanes,critBonus
 		let mod = 1;
 		for (var i=0; i<target.bonusSpecialEv.length; i++) {
 			if (target.bonusSpecialEv[i].type == 2) continue;
+			if (target.bonusSpecialEv[i].requireSlot != null && target.planecount[target.bonusSpecialEv[i].requireSlot] <= 0) continue;
 			if (!target.bonusSpecialEv[i].on || target.bonusSpecialEv[i].on.indexOf(target.mid) != -1) {
 				mod *= target.bonusSpecialEv[i].mod;
 			}
@@ -1697,6 +1698,7 @@ function getBonusAcc(ship,target,isAir) {
 	for (var i=0; i<ship.bonusSpecialAcc.length; i++) {
 		if (isAir && ship.bonusSpecialAcc[i].type != 'air') continue;
 		if (ship.bonusSpecialAcc[i].type == 2) continue;
+		if (ship.bonusSpecialAcc[i].requireSlot != null && ship.planecount[ship.bonusSpecialAcc[i].requireSlot] <= 0) continue;
 		if (!ship.bonusSpecialAcc[i].on || ship.bonusSpecialAcc[i].on.indexOf(target.mid) != -1) {
 			mod *= ship.bonusSpecialAcc[i].mod;
 		}
@@ -1752,6 +1754,7 @@ function damage(ship,target,base,preMod,postMod,cap,isAirstrike,isSupport) {
 	dmg *= postMod;  //artillery spotting, contact, AP shell, critical
 	if (ship.bonusSpecial) { //e.g. event historical bonus
 		for (var i=0; i<ship.bonusSpecial.length; i++) {
+			if (ship.bonusSpecial[i].requireSlot != null && ship.planecount[ship.bonusSpecial[i].requireSlot] <= 0) continue;
 			if (!ship.bonusSpecial[i].on || ship.bonusSpecial[i].on.indexOf(target.mid) != -1) {
 				dmg *= ship.bonusSpecial[i].mod;
 			}
