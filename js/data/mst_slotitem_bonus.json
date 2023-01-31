@@ -5851,5 +5851,34 @@
 				"level": 10
 			}
 		]
+	},
+	{
+		"ids": [489],
+		"bonuses": [
+			{
+				"bonus": { "houg": 1, "tyku": 2, "kaih": 1, "tais": 1, "houm": 1 },
+				"shipBase": [161,900]
+			},
+			{
+				"bonus": { "houg": 2, "tyku": 2, "kaih": 2, "tais": 1, "houm": 1 },
+				"shipId": [717]
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"level": 3
+			},
+			{
+				"bonus": { "tais": 1 },
+				"level": 6
+			},
+			{
+				"bonus": { "houm": 1 },
+				"level": 8
+			},
+			{
+				"bonus": { "houg": 1 },
+				"level": 10
+			}
+		]
 	}
 ]

@@ -5687,6 +5687,17 @@ var EQDATA = {
 		EV: 1,
 		ASW: 8,
 	},
+	489: {
+		name: 'Type 1 Fighter Hayabusa Model II Kai (20th Squadron)',
+		nameJP: '一式戦 隼II型改(20戦隊)',
+		added: '2023-01-31',
+		type: ASWPLANE,
+		FP: 2,
+		DIVEBOMB: 4,
+		AA: 6,
+		EV: 3,
+		ASW: 8,
+	},
 	1501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
