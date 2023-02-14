@@ -388,6 +388,7 @@ var TEXTDATA_EN = {
 				102: "Mutsu Special",
 				103: "Colorado Special",
 				104: "Kongou Special",
+				200: "Night Zuiun cut-in",
 				300: "Submarine Fleet Special",
 				301: "Submarine Fleet Special",
 				302: "Submarine Fleet Special",

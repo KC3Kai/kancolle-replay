@@ -1056,7 +1056,7 @@ function canSpecialAttack(ship,isNB) {
 		let damageThres = MECHANICS.coloradoSpecialFix ? .25 : .5;
 		for (let i=0; i<=2; i++) {
 			let s = ship.fleet.ships[i];
-			if (s.HP/s.maxHP <= damageThres) return false;
+			if (s.HP/s.maxHP <= (i == 0 ? .5 : damageThres)) return false;
 		}
 		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[1].type) == -1) return false;
 		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[2].type) == -1) return false;

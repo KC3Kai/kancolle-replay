@@ -1199,6 +1199,11 @@ function processAPI(root) {
 						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
 						var args = [attackers,targets,d.slice(2,4),d.slice(4,6),protects];
 						eventqueue.push([shootNelsonTouch,args,getState()]); break;
+					case 200:
+						var attackers = (hou.api_at_eflag && hou.api_at_eflag[j])? [f2[0],f2[0]] : [f1[0],f1[0]];
+						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
+						var args = [attackers,targets,d.slice(2,4),d.slice(4,6),protects];
+						eventqueue.push([shootNelsonTouch,args,getState()]); break;
 					case 300:
 					case 301:
 					case 302:
