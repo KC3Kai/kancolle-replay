@@ -1894,7 +1894,13 @@ Equip.prototype.setImprovement = function(level) {
 				this.improves.Pasw = .2*level;
 			}
 			break;
-			
+		case ASWPLANE:
+			if (this.ASW >= 8) {
+				this.improves.Pasw = .3*level;
+			} else {
+				this.improves.Pasw = .2*level;
+			}
+			break;
 		case LANDBOMBER:
 		case LANDBOMBERL:
 			this.AAImprove = .5*Math.sqrt(level);
