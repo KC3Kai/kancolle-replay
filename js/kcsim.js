@@ -181,6 +181,7 @@ var SIMCONSTS = {
 	kongouSpecialRate: null,
 	yamatoSpecial3Rate: 80,
 	yamatoSpecial2Rate: 80,
+	nightZuiunCIRate: 60,
 	airRaidCostW6: false,
 	enablePlaneBonus: true,
 	enableModSummerBB: true,
@@ -219,6 +220,12 @@ function toggleEchelon(enable) {
 function toggleDDCIBuff(enable) {
 	NBATTACKDATA[7] = enable ? SIMCONSTS.nbattack7New : SIMCONSTS.nbattack7Old;
 	NBATTACKDATA[8] = enable ? SIMCONSTS.nbattack8New : SIMCONSTS.nbattack8Old;
+}
+
+function toggleASWPlaneAir(enable) {
+	for (let type of [AUTOGYRO,ASWPLANE]) {
+		EQTDATA[type].isPlane = EQTDATA[type].isfighter = EQTDATA[type].isdivebomber = !!enable;
+	}
 }
 
 var BUCKETPERCENT = .5;
@@ -266,6 +273,7 @@ var MECHANICS = {
 	coloradoSpecialBuff2: true,
 	eqBonusAA: false, //WIP disabled
 	antiSubRaid: false, //WIP disabled
+	aswPlaneAir: true,
 };
 var NERFPTIMPS = false;
 var BREAKPTIMPS = false;
@@ -969,6 +977,28 @@ function shellPhaseAttack(ship,targetData,APIhou,attackSpecial) {
 }
 
 function canSpecialAttack(ship,isNB) {
+	if (SHIPDATA[ship.mid].attackSpecial) {
+		ship.attackSpecial = SHIPDATA[ship.mid].attackSpecial;
+	} else {
+		delete ship.attackSpecial;
+	}
+	let result = canSpecialAttackUnique(ship,isNB);
+	if (result) {
+		ship.attackSpecialT = SHIPDATA[ship.mid].attackSpecial || ship.attackSpecial;
+		return result;
+	}
+	
+	if (isNB && (ship.equiptypesB[B_MAINGUN] || 0) >= 2 && ship.equips.find((eq,i) => eq.mid == 490 && ship.planecount[i]) && ['CL','CAV','BBV','AV'].includes(ship.type) && ship.HP/ship.maxHP > .5) {
+		let rate = SIMCONSTS.nightZuiunCIRate;
+		if (Math.random() < rate/100) {
+			ship.attackSpecial = 200;
+			return true;
+		}
+	}
+	return false;
+}
+
+function canSpecialAttackUnique(ship,isNB) {
 	if (!MECHANICS.specialAttacks) return false;
 	if (MECHANICS.subFleetAttack && ship.type == 'AS' && ship.fleet.id == 0) {
 		if (ship.fleet.ships[0] != ship) return false;
@@ -1100,7 +1130,7 @@ function canSpecialAttack(ship,isNB) {
 	return false;
 }
 
-function getSpecialAttackShips(ships,attackSpecial) {
+function getSpecialAttackShips(ships,attackSpecial,shipCurrent) {
 	let attackers;
 	if (attackSpecial == 101 || attackSpecial == 102) {
 		attackers = [ships[0], ships[0], ships[1]];
@@ -1110,6 +1140,8 @@ function getSpecialAttackShips(ships,attackSpecial) {
 		attackers = [ships[0], ships[1], ships[2]];
 	} else if (attackSpecial == 104) {
 		attackers = [ships[0], ships[1]];
+	} else if (attackSpecial == 200) {
+		attackers = [shipCurrent,shipCurrent];
 	} else if (attackSpecial == 300) {
 		attackers = [ships[1], ships[2], ships[1], ships[2]];
 	} else if (attackSpecial == 301) {
@@ -1183,6 +1215,9 @@ function getSpecialAttackMod(ship,attackSpecial) {
 		mod = MECHANICS.kongouSpecialBuff2 ? 2.2 : 1.9;
 		if (ENGAGEMENT == 1.2) mod *= 1.25;
 		else if (ENGAGEMENT == .6) mod *= MECHANICS.kongouSpecialBuff2 ? .8 : .75;
+	} else if (attackSpecial == 200) {
+		mod = 1.16 + .08*ship.equips.filter((eq,i) => eq.mid == 490 && ship.planecount[i]).length;
+		if (ship.equips.find(eq => eq.btype == B_RADAR && eq.LOS >= 5)) mod += .04;
 	} else if (attackSpecial == 300 || attackSpecial == 301 || attackSpecial == 302) {
 		mod = 1.2 + 0.04*Math.sqrt(ship.LVL);
 	} else if (attackSpecial == 400) {
@@ -1228,7 +1263,7 @@ function shellPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,APIhou,isO
 	for (var i=0; i<numRounds; i++) {
 		if (i < order1.length && order1[i].canStillShell(isOASW)) {
 			if (alive2.length && canSpecialAttack(order1[i])) {
-				let ships = getSpecialAttackShips(order1[i].fleet.ships,order1[i].attackSpecial);
+				let ships = getSpecialAttackShips(order1[i].fleet.ships,order1[i].attackSpecial,order1[i]);
 				let k = 0;
 				for (; k<ships.length; k++) {
 					if (alive2.length <= 0) break;
@@ -1275,7 +1310,7 @@ function shellPhaseC(order1,order2,targets,APIhou,isOASW) {
 	for (var i=0; i<numRounds; i++) {
 		if (i < order1.length && order1[i].canStillShell(isOASW)) {
 			if (targets.alive2.length + targets.alive2C.length && canSpecialAttack(order1[i])) {
-				let ships = getSpecialAttackShips(order1[i].fleet.ships,order1[i].attackSpecial);
+				let ships = getSpecialAttackShips(order1[i].fleet.ships,order1[i].attackSpecial,order1[i]);
 				let k=0;
 				for (; k<ships.length; k++) {
 					if (targets.alive2.length + targets.alive2C.length <= 0) break;
@@ -1347,11 +1382,12 @@ function nightPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,NBonly,API
 	for (var i=0; i<numRounds; i++) {
 		if (i < order1.length && order1[i].canNB()) {
 			if (alive2.length && canSpecialAttack(order1[i],true)) {
-				let ships = getSpecialAttackShips(order1[i].fleet.ships,order1[i].attackSpecial);
+				let ships = getSpecialAttackShips(order1[i].fleet.ships,order1[i].attackSpecial,order1[i]);
 				let k=0;
 				for (; k<ships.length; k++) {
 					if (alive2.length <= 0) break;
 					var target = nightPhaseTarget(ships[k],alive2,[],slrerolls2,true).target;
+					if (order1[i].attackSpecial == 200) star1 = true;
 					if (NBattack(ships[k],target,NBonly,[[star1,star2],[light1,light2],[scout1,scout2]],APIhou,order1[i].attackSpecial)) alive2.splice(alive2.indexOf(target),1);
 				}
 				if (C) {
@@ -1575,6 +1611,7 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 	var res = rollHit(accuracyAndCrit(ship,target,acc,1,0,0,!issupport && 2),!issupport && ship.critdmgbonus);
 	var dmg = 0, realdmg = 0;
 	var planebase = (equip.isdivebomber && !equip.isLB)? (equip.DIVEBOMB || 0) + (equip.airstrikePowerImprove || 0) : (target.isInstall)? 0 : (equip.TP || 0) + (equip.airstrikePowerImprove || 0);
+	if ([AUTOGYRO,ASWPLANE].includes(equip.type)) planebase = 0;
 	if (target.isSub) planebase = equip.ASW;
 	planebase = planebase || 0;
 	if (C) console.log('		'+slot+' '+planebase);
@@ -1785,11 +1822,16 @@ function softCap(num,cap) {
 function compareAP(fleet1,fleet2,eqtFilter1,includeEscort,eqtFilter2) {
 	eqtFilter2 = eqtFilter2 || eqtFilter1;
 	var ap1 = fleet1.fleetAirPower(eqtFilter1), ap2 = fleet2.fleetAirPower(eqtFilter2);
+	let hasAir = false, ships1 = fleet1.ships ? fleet1.ships : [fleet1];
+	if (ships1.find(ship => ship.equips.find((eq,i) => eq[eqtFilter1||'isfighter'] && ship.planecount[i]))) hasAir = true;
+	if (fleet2.ships.find(ship => ship.equips.find((eq,i) => eq[eqtFilter2||'isfighter'] && ship.planecount[i]))) hasAir = true;
 	if (includeEscort) {
 		if (fleet1.combinedWith) ap1 += fleet1.combinedWith.fleetAirPower(eqtFilter1);
 		if (fleet2.combinedWith) ap2 += fleet2.combinedWith.fleetAirPower(eqtFilter2);
+		if (fleet1.combinedWith && fleet1.combinedWith.ships.find(ship => ship.equips.find((eq,i) => eq[eqtFilter1||'isfighter'] && ship.planecount[i]))) hasAir = true;
+		if (fleet2.combinedWith && fleet2.combinedWith.ships.find(ship => ship.equips.find((eq,i) => eq[eqtFilter2||'isfighter'] && ship.planecount[i]))) hasAir = true;
 	}
-	if (ap1 == 0 && ap2 == 0) { fleet1.AS = fleet2.AS = 0; }
+	if (!hasAir) { fleet1.AS = fleet2.AS = 0; }
 	else if (ap1 >= ap2*3) { fleet1.AS = 2; fleet2.AS = -2; }
 	else if (ap1 >= ap2*1.5) { fleet1.AS = 1; fleet2.AS = -1; }
 	else if (ap2 >= ap1*3) { fleet1.AS = -2; fleet2.AS = 2; }
@@ -2024,7 +2066,7 @@ function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupp
 		bombers.push([]);
 		for (var j=0; j<ship.equips.length; j++) {
 			var e = ship.equips[j];
-			if ((e.istorpbomber || e.isdivebomber) && ship.planecount[j]>0 && (!isjetphase||e.isjet) && !e.isLB) {
+			if ((e.istorpbomber || e.isdivebomber) && ship.planecount[j]>0 && (!isjetphase||e.isjet) && !e.isLB && (e.DIVEBOMB || e.TP)) {
 				bombers[i].push(j);
 				hasbomber = true;
 				var side = (ship.side == 2 || ship.side == 3)? 0 : ship.side;
@@ -2483,6 +2525,7 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 	for (var i=0; i<lbas.equips.length; i++) {
 		var eq = lbas.equips[i];
 		if (!eq.isdivebomber && !eq.istorpbomber) continue;
+		if (subsalive2.length <= 0 && !eq.DIVEBOMB && !eq.TP) continue;
 		var defender = defenders[Math.floor(Math.random()*defenders.length)];
 		var supportMod = 1;
 		var shotProp = (Math.random() < .5)? Math.floor(getAAShotProp(defender,lbas.planecount[i],eq.aaResistShip)*supportMod) : 0;
@@ -2602,6 +2645,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 	var planebase;
 	if (equip.type == LANDBOMBER || equip.type == LANDBOMBERL) planebase = (target.isInstall)? equip.DIVEBOMB : equip.TP + (equip.airstrikePowerImprove || 0);
 	else planebase = (equip.isdivebomber)? equip.DIVEBOMB + (equip.airstrikePowerImprove || 0) : (target.isInstall)? 0 : equip.TP + (equip.airstrikePowerImprove || 0);
+	if ([AUTOGYRO,ASWPLANE].includes(equip.type)) planebase = 0;
 	if (target.isSub) planebase = equip.ASW;
 	if (MECHANICS.hayabusa65Buff && equip.mid == 224) {
 		if (['DD'].indexOf(target.type) != -1) planebase = 25;
@@ -3243,12 +3287,13 @@ function getRankRaid(shipsF,shipsFC) {
 function updateSupply(ships,didNB,NBonly,bombing,noammo,isECombined) {
 	let costSpecial = null, shipsSpecial = null;
 	if (ships[0].fleet.didSpecial == 1) {
-		if (ships[0].attackSpecial == 101 || ships[0].attackSpecial == 102) costSpecial = 1.5;
-		else if (ships[0].attackSpecial == 104) costSpecial = MECHANICS.kongouSpecialBuff ? 1.2 : 1.3;
-		else if (ships[0].attackSpecial == 400) costSpecial = 1.8;
-		else if (ships[0].attackSpecial == 401) costSpecial = 1.6;
-		if (costSpecial) shipsSpecial = getSpecialAttackShips(ships,ships[0].attackSpecial);
+		if (ships[0].attackSpecialT == 101 || ships[0].attackSpecialT == 102) costSpecial = 1.5;
+		else if (ships[0].attackSpecialT == 104) costSpecial = MECHANICS.kongouSpecialBuff ? 1.2 : 1.3;
+		else if (ships[0].attackSpecialT == 400) costSpecial = 1.8;
+		else if (ships[0].attackSpecialT == 401) costSpecial = 1.6;
+		if (costSpecial) shipsSpecial = getSpecialAttackShips(ships,ships[0].attackSpecialT);
 		ships[0].fleet.didSpecial = 2;
+		delete ships[0].attackSpecialT;
 	}
 	let costFuel = 0, costAmmo = 0;
 	if (MECHANICS.newSupply) {

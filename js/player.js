@@ -1200,10 +1200,10 @@ function processAPI(root) {
 						var args = [attackers,targets,d.slice(2,4),d.slice(4,6),protects];
 						eventqueue.push([shootNelsonTouch,args,getState()]); break;
 					case 200:
-						var attackers = (hou.api_at_eflag && hou.api_at_eflag[j])? [f2[0],f2[0]] : [f1[0],f1[0]];
+						var attackers = [d[0],d[0]];
 						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
 						var args = [attackers,targets,d.slice(2,4),d.slice(4,6),protects];
-						eventqueue.push([shootNelsonTouch,args,getState()]); break;
+						eventqueue.push([shootNightZuiun,args,getState()]); break;
 					case 300:
 					case 301:
 					case 302:
@@ -2266,6 +2266,76 @@ function shootNelsonTouch(ships,targets,damages,crits,protects) {
 	
 	addTimeout(function(){ ecomplete = true; }, 5500);
 }
+
+
+function shootNightZuiun(ships,targets,damages,crits,protects) {
+	SM.playVoice(ships[0].mid,'nbattack',ships[0].id);
+	
+	addTimeout(function() {
+		let ship = ships[0];
+		let planes = createPlane(ship.graphic.x+85,ship.graphic.y+22,[11],null,null,ship.side);
+		let xTarget = (ship.side==0)? 715:85;
+		let angle = Math.atan((240-planes.y)/(xTarget-planes.x));
+		console.log(angle)
+		updates.push([movePlane,[planes,angle,(ship.side==0) ? 8 : -8, planes.x, xTarget]]);
+	},200);
+	
+	addTimeout(function() {
+		var flash = new PIXI.Graphics();
+		flash.beginFill(0xffffff);
+		flash.drawRect(0,0,800,480);
+		flash.lifetime = 20; flash.alpha = 0;
+		stage.addChild(flash);
+		updates.push([function(flash) {
+			flash.lifetime--;
+			if (flash.lifetime >= 10) flash.alpha += .06;
+			else if (flash.lifetime > 0) flash.alpha -= .06;
+			else { stage.removeChild(flash); return true; }
+			return false;
+		}, [flash]]);
+	}, 1000);
+	addTimeout(function() {
+		let ship = ships[0];
+		createFlare3((ship.side==0)?600:90,150-40*ship.side,-1,1);
+		createFlare3((ship.side==0)?670:160,140-40*ship.side,1,.85);
+	}, 1100);
+	
+	let delay = 1500;
+	let shipsDone = [];
+	for (var i=0; i<ships.length; i++) {
+		let ship = ships[i], target = targets[i], damage = damages[i], forcecrit = crits[i], protect = protects[i];
+		if (!shipsDone.includes(ship.id)) {
+			updates.push([shipMoveTo,[ship,ship.xorigin+25-50*ship.side,2]]);
+			addTimeout(function() {
+				updates.push([shipMoveTo,[ship,ship.xorigin,2]]);
+			},3000 + delay);
+			shipsDone.push(ship.id);
+		}
+		
+		if (!target) continue;
+		
+		if (protect) {
+			addTimeout(function() { updates.push([shipMoveTo,[target,target.xorigin+25-50*target.side,3]]); }, 1500*i+675 + delay);
+		}
+		addTimeout(function() {
+			shipShake(target,5,.125,40);
+			createExplosion(target.xorigin+40+80*Math.random(),target.graphic.y+42*Math.random(),1);
+			if (damage>14) addTimeout(function(){createExplosion(target.xorigin+40+80*Math.random(),target.graphic.y+42*Math.random(),1);},75);
+			addTimeout(function(){createExplosion(target.xorigin+40+80*Math.random(),target.graphic.y+42*Math.random(),1);},150);
+			if (damage>14) addTimeout(function(){createExplosion(target.xorigin+40+80*Math.random(),target.graphic.y+42*Math.random(),1);},225);
+			addTimeout(function(){createExplosion(target.xorigin+40+80*Math.random(),target.graphic.y+42*Math.random(),1);},300);
+			if (damage<=14) SM.play('fire');
+			else if (damage<40) SM.play('hit');
+			else { SM.play('crit'); SM.play('fire'); }
+		}, 1500*i+800 + delay);
+		addTimeout(function(){
+			standardHit(target,damage,true,protect,forcecrit);
+		}, 1500*i+1500 + delay);
+	}
+	
+	addTimeout(function(){ ecomplete = true; }, 4000 + delay);
+}
+
 
 function shootSSAttack(ships,targets,damages,crits,protects) {
 	SM.playVoice(ships[0].mid,'special',ships[0].id);

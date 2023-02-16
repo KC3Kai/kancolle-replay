@@ -406,6 +406,7 @@ var SIM = {
 			}
 			if (dataInput.mechanics.enable_echelon != null) window.toggleEchelon(dataInput.mechanics.enable_echelon);
 			if (dataInput.mechanics.enable_DDCI != null) window.toggleDDCIBuff(dataInput.mechanics.enable_DDCI);
+			if (dataInput.mechanics.enable_ASWPlaneAir != null) window.toggleASWPlaneAir(dataInput.mechanics.enable_ASWPlaneAir);
 		}
 		
 		if (dataInput.consts) {
