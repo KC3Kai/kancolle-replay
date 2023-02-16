@@ -15,8 +15,8 @@ var CONST = window.COMMON.getConst({
 	
 	tooltipUnknownStat: 'This stat\'s true value is currently unknown.',
 	
-	rankExceptTypes: [AUTOGYRO,ASWPLANE],
-	rankDefaultSpecial: { 311: 0, 312: 2, 480: 0 },
+	rankExceptTypes: [],
+	rankDefaultSpecial: {},
 	
 	lbasTypesRecon: [SEAPLANE,CARRIERSCOUT,CARRIERSCOUT2,FLYINGBOAT,LANDSCOUT],
 	lbasTypesHeavy: [LANDBOMBERL],
@@ -38,7 +38,15 @@ var CONST = window.COMMON.getConst({
 	],
 	
 	urlDeckbuilder: 'http://www.kancolle-calc.net/deckbuilder.html?predeck=',
+	
+	EQTDATA_COPY: {},
 });
+for (let type in EQTDATA) {
+	CONST.EQTDATA_COPY[type] = {};
+	for (let key in EQTDATA[type]) {
+		if (typeof EQTDATA[type][key] !== 'object') CONST.EQTDATA_COPY[type][key] = EQTDATA[type][key];
+	}
+}
 
 var FLEET_MODEL = {
 	fleetCurrent: null,
@@ -175,8 +183,8 @@ var FLEET_MODEL = {
 			let edata = EQDATA[mstId];
 			obj.mstId = +mstId;
 			obj.name = edata.name;
-			obj.imgName = '' + (edata.image || EQTDATA[edata.type].image);
-			if (EQTDATA[edata.type].isPlane && !CONST.rankExceptTypes.includes(edata.type)) {
+			obj.imgName = '' + (edata.image || CONST.EQTDATA_COPY[edata.type].image);
+			if (CONST.EQTDATA_COPY[edata.type].isPlane && !CONST.rankExceptTypes.includes(edata.type)) {
 				obj.isPlane = true;
 				obj.rank = ship && !COMMON.isShipIdPlayable(ship.mstId) ? 0 : 7;
 				if (CONST.rankDefaultSpecial[mstId] != null) obj.rank = CONST.rankDefaultSpecial[mstId];

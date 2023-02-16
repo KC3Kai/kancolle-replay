@@ -39,6 +39,7 @@ var MECHANICS_LIST = [
 	{ key: 'eqBonusTorp', name: 'Torpedo Airstrike Use Equipment Bonus' },
 	{ key: 'eqBonusASW', name: 'ASW Use Equipment Bonus' },
 	{ key: 'ffReroll', name: 'Friend Fleet Flagship Reroll' },
+	{ key: 'enable_ASWPlaneAir', name: 'Autogyro/Liaison Air Battle' },
 ];
 
 
@@ -85,6 +86,7 @@ var UI_MAIN = Vue.createApp({
 			kongouSpecialRate: SIMCONSTS.kongouSpecialRate,
 			yamatoSpecial3Rate: SIMCONSTS.yamatoSpecial3Rate,
 			yamatoSpecial2Rate: SIMCONSTS.yamatoSpecial2Rate,
+			nightZuiunCIRate: SIMCONSTS.nightZuiunCIRate,
 			bucketPercent: BUCKETPERCENT*100,
 			bucketTime: BUCKETTIME/3600,
 			carryOverHP: CARRYOVERHP,
