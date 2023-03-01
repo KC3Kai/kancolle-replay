@@ -1997,6 +1997,41 @@ var MAPDATA = {
 			},
 		}
 	},
+	56: {
+		name: 'Early-Spring 2023 Event',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmDN: 219,
+				bgmNN: 219,
+				bgmDB: 220,
+				bgmNB: 220,
+				bossnode: ['M','S'],
+			},
+			2: {
+				name: 'E2',
+				bgmDN: 219,
+				bgmNN: 219,
+				bgmDB: 220,
+				bgmNB: 220,
+				bossnode: ['G','J','W'],
+				overrideBGM: {
+					'G': { bgmDB: 143, bgmNB: 143 },
+				},
+			},
+			3: {
+				name: 'E3',
+				bgmDN: 220,
+				bgmNN: 220,
+				bgmDB: 221,
+				bgmNB: 221,
+				bossnode: ['K','T'],
+				overrideBGM: {
+					'K': { bgmDB: 207, bgmNB: 207 },
+				},
+			},
+		}
+	},
 }
 
 //-------------------------------------

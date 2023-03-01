@@ -5853,7 +5853,7 @@
 		]
 	},
 	{
-		"ids": [489],
+		"ids": [489,491],
 		"bonuses": [
 			{
 				"bonus": { "houg": 1, "tyku": 2, "kaih": 1, "tais": 1, "houm": 1 },

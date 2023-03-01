@@ -385,6 +385,10 @@ function createShip(data,side,i,damaged) {
 	hpbar.drawRect((side==1)?3:161,3,5,38);
 	hptxt = new PIXI.Text(data[1]+'/'+data[1],{font:'13px "Arno Pro Semibold"',fill:'#ffffff'});
 	hptxt.position.set((side==1)?-7-hptxt.width:177,12);
+	if (data[1] == 'N/A') {
+		hptxt.visible = false;
+		ship.xorigin += 25;
+	}
 	var hpbarback = PIXI.Sprite.fromImage('assets/433.png');
 	hpbarback.position.set((side==1)?2:160,2);
 	graphic.addChild(hpbarback);
