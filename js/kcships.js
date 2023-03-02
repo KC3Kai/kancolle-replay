@@ -1019,6 +1019,15 @@ Ship.prototype.NBtypes = function() {
 	var mguns = (this.equiptypesB[B_MAINGUN])? this.equiptypesB[B_MAINGUN] : 0;
 	var sguns = (this.equiptypesB[B_SECGUN])? this.equiptypesB[B_SECGUN] : 0;
 	var torps = (this.equiptypesB[B_TORPEDO])? this.equiptypesB[B_TORPEDO] : 0;
+	let numSurfaceRadar = this.equips.filter(eq => eq.btype == B_RADAR && eq.LOS >= 5).length;
+	
+	if (mguns >= 2 && ['CL','CAV','BBV','AV'].includes(this.type)) {
+		let numZuiun = this.equips.filter((eq,i) => eq.mid == 490 && this.planecount[i]).length;
+		if (numZuiun >= 2 && numSurfaceRadar) this._nbtypes.push(2001);
+		if (numZuiun >= 2) this._nbtypes.push(2002);
+		if (numZuiun && numSurfaceRadar) this._nbtypes.push(2003);
+		if (numZuiun) this._nbtypes.push(2004);
+	}
 	
 	if (this.canNBAirAttack()) {
 		if (MECHANICS.CVCI) {
@@ -1043,8 +1052,8 @@ Ship.prototype.NBtypes = function() {
 		}
 	}
 	if (MECHANICS.destroyerNBCI && this.type == 'DD') {
-		if (mguns && torps && this.equiptypesB[B_RADAR]) this._nbtypes.push(7);
-		if (this.hasLookout && torps && this.equiptypesB[B_RADAR]) this._nbtypes.push(8);
+		if (mguns && torps && numSurfaceRadar) this._nbtypes.push(7);
+		if (this.hasLookout && torps && numSurfaceRadar) this._nbtypes.push(8);
 		
 		let hasTSLO = this.equips.some(eq => eq.mid == 412);
 		let hasDrum = this.equips.some(eq => eq.mid == 75);
@@ -2004,7 +2013,7 @@ Equip.prototype.setProficiency = function(rank,forLBAS) {
 	}
 	
 	if (MECHANICS.aswPlaneAir) {
-		if (this.mid == 489) {
+		if ([489,491].includes(this.mid)) {
 			this.APbonus = Math.sqrt(this.exp*.1);
 			this.APbonus += [0,0,2,5,9,14,14,22][this.rank];
 		}

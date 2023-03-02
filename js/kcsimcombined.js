@@ -338,8 +338,9 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		if (!NBonly) BAPI.data.api_midnight_flag = +!!(!bombing && alive2.length + subsalive2.length);
 	}
 	
+	let hasAlive2 = NBonly || (alive2.filter(s => !s.isFaraway).length + subsalive2.filter(s => !s.isFaraway).length > 0);
 	//friend fleet
-	if ((doNB||NBonly) && friendFleet && alive2.length+subsalive2.length > 0) {
+	if ((doNB||NBonly) && friendFleet && hasAlive2) {
 		let ff = friendFleet.id != null ? friendFleet : friendFleet.night;
 		if (ff) {
 			friendFleetPhase(ff,F2,alive2,subsalive2,BAPI);
@@ -349,7 +350,7 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	
 	//night battle
 	var didNB = false;
-	if ((doNB||NBonly) && alive1C.length+subsalive1C.length > 0 && alive2.length+subsalive2.length > 0) {
+	if ((doNB||NBonly) && alive1C.length+subsalive1C.length > 0 && hasAlive2) {
 		didNB = !NBonly;
 		var order1 = [], order2 = [];
 		for (var i=0; i<ships1C.length; i++) {
@@ -382,8 +383,8 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	if (!noupdate) {
 		// var subonly = true;
 		// for (var j=0; j<ships2.length; j++) if (ships2[j].type != 'SS') subonly = false;
-		updateSupply(ships1,didNB,NBonly,bombing,noammo);
-		updateSupply(ships1C,didNB,NBonly,bombing,noammo);
+		updateSupply(ships1,didNB,NBonly,bombing,noammo,false,F2.ships.find(s => s.isFaraway));
+		updateSupply(ships1C,didNB,NBonly,bombing,noammo,false,F2.ships.find(s => s.isFaraway));
 	}
 	
 	
@@ -951,8 +952,9 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 		if (!NBonly) BAPI.data.api_midnight_flag = +!!(!bombing && alive2.length + subsalive2.length + alive2C.length + subsalive2C.length);
 	}
 	
+	let hasAlive2 = NBonly || (alive2.filter(s => !s.isFaraway).length + subsalive2.filter(s => !s.isFaraway).length + alive2C.filter(s => !s.isFaraway).length + subsalive2C.filter(s => !s.isFaraway).length > 0);
 	//friend fleet
-	if ((doNB||NBonly) && friendFleet && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
+	if ((doNB||NBonly) && friendFleet && hasAlive2) {
 		let ff = friendFleet.id != null ? friendFleet : friendFleet.night;
 		if (ff) {
 			friendFleetPhase(ff,F2,alive2.concat(alive2C),subsalive2.concat(subsalive2C),BAPI);
@@ -963,7 +965,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	
 	//night battle
 	var didNB = false;
-	if ((doNB||NBonly) && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
+	if ((doNB||NBonly) && alive1.length+subsalive1.length > 0 && hasAlive2) {
 		didNB = !NBonly;
 		var count = 0, allsunk = true;
 		for (var i=0; i<ships2.length; i++) if (ships2[i].HP > 0) { allsunk = false; break; }
@@ -1010,7 +1012,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	
 	//results
 	if (!noupdate) {
-		updateSupply(ships1,didNB,NBonly,bombing,noammo,true);
+		updateSupply(ships1,didNB,NBonly,bombing,noammo,true,F2.ships.find(s => s.isFaraway) || F2C.ships.find(s => s.isFaraway));
 	}
 	
 	
@@ -1416,8 +1418,9 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		if (!NBonly) BAPI.data.api_midnight_flag = +!!(!bombing && alive2.length + subsalive2.length + alive2C.length + subsalive2C.length);
 	}
 	
+	let hasAlive2 = NBonly || (alive2.filter(s => !s.isFaraway).length + subsalive2.filter(s => !s.isFaraway).length + alive2C.filter(s => !s.isFaraway).length + subsalive2C.filter(s => !s.isFaraway).length > 0);
 	//friend fleet
-	if ((doNB||NBonly) && friendFleet && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
+	if ((doNB||NBonly) && friendFleet && hasAlive2) {
 		let ff = friendFleet.id != null ? friendFleet : friendFleet.night;
 		if (ff) {
 			friendFleetPhase(ff,F2,alive2.concat(alive2C),subsalive2.concat(subsalive2C),BAPI);
@@ -1428,7 +1431,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	
 	//night battle
 	var didNB = false;
-	if ((doNB||NBonly) && alive1C.length+subsalive1C.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
+	if ((doNB||NBonly) && alive1C.length+subsalive1C.length > 0 && hasAlive2) {
 		didNB = !NBonly;
 		var count = 0, allsunk = true;
 		for (var i=0; i<ships2.length; i++) if (ships2[i].HP > 0) { allsunk = false; break; }
@@ -1477,8 +1480,8 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	if (!noupdate) {
 		// var subonly = true;
 		// for (var j=0; j<ships2.length; j++) if (ships2[j].type != 'SS') subonly = false;
-		updateSupply(ships1,didNB,NBonly,bombing,noammo,true);
-		updateSupply(ships1C,didNB,NBonly,bombing,noammo,true);
+		updateSupply(ships1,didNB,NBonly,bombing,noammo,true,F2.ships.find(s => s.isFaraway) || F2C.ships.find(s => s.isFaraway));
+		updateSupply(ships1C,didNB,NBonly,bombing,noammo,true,F2.ships.find(s => s.isFaraway) || F2C.ships.find(s => s.isFaraway));
 	}
 	
 	

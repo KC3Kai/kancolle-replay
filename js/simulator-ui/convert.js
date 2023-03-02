@@ -5,7 +5,7 @@ var CONST = window.COMMON.getConst({});
 
 window.CONVERT = {
 	_fleetPropsSaved: ['type','formation'],
-	_shipPropsSaved: ['mstId','level','hp','hpInit','morale','fuelInit','ammoInit','statsBase','slots','bonusDmg','bonusAcc','bonusEva','bonusDmgDebuff'],
+	_shipPropsSaved: ['mstId','level','hp','hpInit','morale','fuelInit','ammoInit','statsBase','slots','bonusDmg','bonusAcc','bonusEva','bonusDmgDebuff','isFaraway'],
 	_equipPropsSaved: ['mstId','level','rank','bonusDmg','bonusAcc'],
 	
 	_UI_MAIN: null,
@@ -196,8 +196,8 @@ window.CONVERT = {
 			let shipSave = {
 				mstId: ship_ke[i],
 				level: ship_lv[i],
-				hp: e_maxhps[i],
-				hpInit: e_maxhps[i],
+				hp: e_maxhps[i] == 'N/A' ? null : e_maxhps[i],
+				hpInit: e_maxhps[i] == 'N/A' ? null : e_maxhps[i],
 				statsBase: {
 					fp: eParam[i][0],
 					tp: eParam[i][1],
@@ -211,6 +211,7 @@ window.CONVERT = {
 				id = this._convertEquipId20221109(id);
 				shipSave.equips.push({ mstId: id, rank: 0 });
 			}
+			if (e_maxhps[i] == 'N/A') shipSave.isFaraway = true;
 			shipsSave.push(shipSave);
 		}
 		return shipsSave;
@@ -564,6 +565,22 @@ window.CONVERT = {
 				fleetSave.type = CONST.CTF;
 				fleetSave.shipsEscort = this.kcnavToSaveShips(compNav.escortFleet);
 			}
+			if (fleetSave.ships.length && +compNav.map.split('-')[0] >= 56) {
+				let isAirSub = ['SS','SSV'].includes(SHIPDATA[fleetSave.ships[0].mstId].type);
+				let foundCV = false;
+				for (let ship of fleetSave.ships) {
+					let isSS = ['SS','SSV'].includes(SHIPDATA[ship.mstId].type);
+					let isCV = ['CVL','CV','CVB'].includes(SHIPDATA[ship.mstId].type);
+					if (!isSS && !isCV) isAirSub = false;
+					if (isSS && foundCV) isAirSub = false;
+					if (isCV) foundCV = true;
+				}
+				if (isAirSub && foundCV) {
+					for (let ship of fleetSave.ships) {
+						if (['CVL','CV','CVB'].includes(SHIPDATA[ship.mstId].type)) ship.isFaraway = true;
+					}
+				}
+			}
 			let compSave = {
 				rate: compNav.count,
 				fleet: fleetSave,
@@ -601,6 +618,7 @@ window.CONVERT = {
 				morale: shipUI.morale,
 				equips: [],
 				includesEquipStats: 0,
+				isFaraway: shipUI.isFaraway,
 			};
 			for (let i=0; i<shipUI.equips.length; i++) {
 				let equipUI = shipUI.equips[i];

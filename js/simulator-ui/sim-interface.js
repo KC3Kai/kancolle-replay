@@ -325,6 +325,7 @@ var SIM = {
 			if (shipInput.morale != null) shipSim.moraleDefault = shipSim.morale = shipInput.morale;
 			if (shipInput.fuelInit != null) shipSim.fuelleft = shipSim.fuelDefault = 10*shipInput.fuelInit;
 			if (shipInput.ammoInit != null) shipSim.ammoleft = shipSim.ammoDefault = 10*shipInput.ammoInit;
+			if (shipInput.isFaraway) shipSim.isFaraway = true;
 			
 			if (shipInput.equips) {
 				let r = this._getSimEquipLists(shipInput.equips);
@@ -503,7 +504,7 @@ var SIM = {
 					fleetsSimE.push(FLEETS2[i]);
 				}
 			}
-			if (!node.noAmmo && fleetsSimE.every(fleetSim => !fleetSim.combinedWith && fleetSim.ships.every(ship => ship.type == 'SS' || ship.type == 'SSV'))) {
+			if (!node.noAmmo && fleetsSimE.every(fleetSim => !fleetSim.combinedWith && fleetSim.ships.every(ship => (ship.type == 'SS' || ship.type == 'SSV') && !ship.isFaraway))) {
 				this._addWarning('warn_no_subonly',[i+1]);
 			}
 		}

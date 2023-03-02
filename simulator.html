@@ -184,7 +184,6 @@
 					<tr><td>Kongou Special:</td><td><input type="number" min="0" max="100" v-model="settings.kongouSpecialRate" :class="getClassSetting('kongouSpecialRate')"/>%</td></tr>
 					<tr><td>Yamato Special (3-ship):</td><td><input type="number" min="0" max="100" v-model="settings.yamatoSpecial3Rate" :class="getClassSetting('yamatoSpecial3Rate')"/>%</td></tr>
 					<tr><td>Yamato Special (2-ship):</td><td><input type="number" min="0" max="100" v-model="settings.yamatoSpecial2Rate" :class="getClassSetting('yamatoSpecial2Rate')"/>%</td></tr>
-					<tr><td>Night Zuiun Attack:</td><td><input type="number" min="0" max="100" v-model="settings.nightZuiunCIRate" :class="getClassSetting('nightZuiunCIRate')"/>%</td></tr>
 					</table>
 				</div>
 				<div v-show="settings.showAdvanced">
@@ -383,6 +382,7 @@
 	<div id="divOther">
 	<div id="divChangeLog">
 		<div><span class="header">Change Log:</span></div>
+		<div>2023-03-02 - Air Support Sub node settings, update <a href="https://twitter.com/yukicacoon/status/1628701453677363202">Night Zuiun Cut-In trigger rate</a> (removed Advanced Setting) + show in Additional Stats</div>
 		<div>2023-02-16 - Mechanic: Autogyro/Liaison Air Battle, provisional Night Zuiun Cut-In (see Advanced Settings for trigger rate)</div>
 		<div>2022-10-05 - <a href="https://docs.google.com/document/d/1TmsVRhmkqjH1bczdoBHtrdcYv7JYD95NVkMrAK5bpK4/edit#heading=h.kuxw81rvevec">Provisional Dock Princess mods</a></div>
 		<div>2022-09-19 - Node setting: choose if last node uses Normal or Boss support</div>
@@ -649,6 +649,7 @@
 						<div class="statWide">Morale: <input type="number" v-model.number="ship.morale" min="0" max="100" :class="getClassMorale(ship)" @change="onchangeStat($event,ship,'morale')"/></div>
 						<div class="statHalf"><img src="assets/stats/fuel.png" title="Fuel Percent"/><input type="number" v-model.number="ship.fuelInit" min="0" max="100" @change="onchangeStat($event,ship,'fuelInit')"/></div>
 						<div class="statHalf"><img src="assets/stats/ammo.png" title="Ammo Percent"/><input type="number" v-model.number="ship.ammoInit" min="0" max="100" @change="onchangeStat($event,ship,'ammoInit')"/></div>
+						<div class="statWide" v-show="fleet.isEnemy"><label><img src="assets/maps/nodeAirSub.png" title="Air Sub Node" style="height:20px"/> Support: <input type="checkbox" v-model="ship.isFaraway"/></label></div>
 					</div>
 				</div>
 			</div>
