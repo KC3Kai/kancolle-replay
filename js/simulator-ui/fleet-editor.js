@@ -160,6 +160,8 @@ var FLEET_MODEL = {
 			bonusAcc: 1,
 			bonusEva: 1,
 			bonusByNode: {},
+			
+			isFaraway: false,
 		};
 		obj._levelPrev = obj.level;
 		if (levelDefault && sdata.EVbase) {
@@ -841,7 +843,7 @@ var UI_ADDITIONALSTATS = Vue.createApp({
 					let base = ship.NBchance()/100, chanceLeft = 1;
 					for (let id of ship.NBtypes()) {
 						let d = NBATTACKDATA[id];
-						let rate = d.chanceMod > 0 ? chanceLeft*base/d.chanceMod : .99;
+						let rate = d.chanceMod > 0 ? chanceLeft*base/d.chanceMod : chanceLeft*.99;
 						if (d.replace && ship.LVL >= 80) {
 							let rateBase = Math.floor(100*rate);
 							stats.nbTypes.push({ name: NBATTACKDATA[d.replace].name, rate: Math.round(rateBase*d.replaceChance) });
@@ -920,16 +922,19 @@ var UI_ADDITIONALSTATSLBAS = Vue.createApp({
 				let cost = base.getCost();
 				stats.costFuel += cost[0];
 				stats.costAmmo += cost[1];
-				let rangeScoutMax = 0;
+				let rangeScoutMax = 0, hasASWPlane = false;
 				for (let i=0; i<base.equips.length; i++) {
 					let equip = base.equips[i];
+					if ([ASWPLANE,AUTOGYRO].includes(equip.type) && !equip.DIVEBOMB) hasASWPlane = true;
 					if (LBASDATA[equip.mid]) {
 						let dist = LBASDATA[equip.mid].distance;
 						if (dist < stats.range) stats.range = dist;
 						if ([CARRIERSCOUT,SEAPLANE,FLYINGBOAT,LANDSCOUT].includes(equip.type) && dist > rangeScoutMax) rangeScoutMax = dist;
 					}
 				}
-				stats.rangePlus = Math.min(3,Math.round(Math.sqrt(rangeScoutMax-stats.range)));
+				if (!hasASWPlane) {
+					stats.rangePlus = Math.min(3,Math.round(Math.sqrt(rangeScoutMax-stats.range)));
+				}
 			}
 		},
 		doClose: function() {
