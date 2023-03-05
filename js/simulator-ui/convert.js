@@ -566,9 +566,10 @@ window.CONVERT = {
 				fleetSave.shipsEscort = this.kcnavToSaveShips(compNav.escortFleet);
 			}
 			if (fleetSave.ships.length && +compNav.map.split('-')[0] >= 56) {
-				let isAirSub = ['SS','SSV'].includes(SHIPDATA[fleetSave.ships[0].mstId].type);
+				let isAirSub = SHIPDATA[fleetSave.ships[0].mstId] && ['SS','SSV'].includes(SHIPDATA[fleetSave.ships[0].mstId].type);
 				let foundCV = false;
 				for (let ship of fleetSave.ships) {
+					if (!SHIPDATA[ship.mstId]) { isAirSub = false; break; }
 					let isSS = ['SS','SSV'].includes(SHIPDATA[ship.mstId].type);
 					let isCV = ['CVL','CV','CVB'].includes(SHIPDATA[ship.mstId].type);
 					if (!isSS && !isCV) isAirSub = false;

@@ -2025,7 +2025,7 @@ var MAPDATA = {
 				bgmNN: 220,
 				bgmDB: 221,
 				bgmNB: 221,
-				bossnode: ['K','T'],
+				bossnode: ['K','T','X'],
 				overrideBGM: {
 					'K': { bgmDB: 207, bgmNB: 207 },
 				},

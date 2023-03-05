@@ -7071,6 +7071,32 @@ var EQDATA = {
 		LOS: 6,
 		RNG: 5,
 	},
+	1632: {
+		name: 'Abyssal Aviation Maintenance Bugs',
+		nameJP: '深海航空整備蟲',
+		added: '2023-03-03',
+		type: SCAMP,
+		FP: 16,
+		DIVEBOMB: 12,
+		TP: 12,
+		AA: 8,
+		ACC: 8,
+		ASW: 32,
+		RNG: 5,
+	},
+	1633: {
+		name: 'Abyssal Aviation Maintenance Bugs Pro',
+		nameJP: '深海航空整備蟲pro',
+		added: '2023-03-03',
+		type: SCAMP,
+		FP: 24,
+		DIVEBOMB: 16,
+		TP: 16,
+		AA: 8,
+		ACC: 16,
+		ASW: 48,
+		RNG: 5,
+	},
 };
 
 var LBASDATA = {

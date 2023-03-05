@@ -2689,6 +2689,9 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 	if (MECHANICS.hayabusa65Buff && equip.mid == 224) {
 		if (['DD'].indexOf(target.type) != -1) planebase = 25;
 	}
+	if (MECHANICS.hayabusa65Buff && equip.mid == 491) {
+		if (['DD'].indexOf(target.type) != -1) planebase = 18;
+	}
 	planebase = planebase || 0;
 	if (res) {
 		if (equip.mid == 405 && !target.isInstall) {
