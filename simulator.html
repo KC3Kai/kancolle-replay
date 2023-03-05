@@ -593,7 +593,7 @@
 							</span>
 						</div>
 						<div class="statHalf" v-show="showStatTotal">
-							<img src="assets/stats/divebomb.png" title="Divebomb"/><input style="visibility:hidden"/>
+							<img src="assets/stats/divebomb.png" title="Divebomb"/><input type="number" style="visibility:hidden"/>
 							<span>
 								<span>{{getStatTotal(ship,'divebomb')}}</span>
 								<span class="statBonus" v-show="showEquipBonus && ship.statsBonus.divebomb > 0">(+{{ship.statsBonus.divebomb}})</span>
@@ -601,7 +601,7 @@
 							</span>
 						</div>
 						<div class="statHalf" v-show="showStatTotal">
-							<img src="assets/stats/acc.png" title="Accuracy"/><input style="visibility:hidden"/>
+							<img src="assets/stats/acc.png" title="Accuracy"/><input type="number" style="visibility:hidden"/>
 							<span>
 								<span>{{getStatTotal(ship,'acc')}}</span>
 								<span class="statBonus" v-show="showEquipBonus && ship.statsBonus.acc > 0">(+{{ship.statsBonus.acc}})</span>
