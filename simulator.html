@@ -614,10 +614,10 @@
 						</div>
 						
 						<div class="bonusWrap" v-show="canBonus">
-							<div class="statWide"><span title="Mapwide Historical Damage Bonus Multiplier">Bonus Dmg</span>:<input type="number" v-model.number="ship.bonusDmg" min="0" max="99" step=".1" @change="onchangeStat($event,ship,'bonusDmg',1)"/></div>
-							<div class="statWide"><span title="Mapwide Historical Accuracy Bonus Multiplier">Bonus Acc</span>:<input type="number" v-model.number="ship.bonusAcc" min="0" max="99" step=".1" @change="onchangeStat($event,ship,'bonusAcc',1)"/></div>
-							<div class="statWide"><span title="Mapwide Historical Evasion Bonus Multiplier">Bonus Eva</span>:<input type="number" v-model.number="ship.bonusEva" min="0" max="99" step=".1" @change="onchangeStat($event,ship,'bonusEva',1)"/></div>
-							<div class="statWide" v-show="fleet.isFriend"><span class="statDebuff" title="Multiplier applied to LAST NODE FLAGSHIP only, stacks with above">Debuff Dmg</span>:<input type="number" v-model.number="ship.bonusDmgDebuff" min="0" max="99" step=".1" @change="onchangeStat($event,ship,'bonusDmgDebuff',1)"/></div>
+							<div class="statWide"><span title="Mapwide Historical Damage Bonus Multiplier">Bonus Dmg</span>:<input type="number" v-model.number="ship.bonusDmg" min="0" max="99" step="any" @change="onchangeStat($event,ship,'bonusDmg',1)"/></div>
+							<div class="statWide"><span title="Mapwide Historical Accuracy Bonus Multiplier">Bonus Acc</span>:<input type="number" v-model.number="ship.bonusAcc" min="0" max="99" step="any" @change="onchangeStat($event,ship,'bonusAcc',1)"/></div>
+							<div class="statWide"><span title="Mapwide Historical Evasion Bonus Multiplier">Bonus Eva</span>:<input type="number" v-model.number="ship.bonusEva" min="0" max="99" step="any" @change="onchangeStat($event,ship,'bonusEva',1)"/></div>
+							<div class="statWide" v-show="fleet.isFriend"><span class="statDebuff" title="Multiplier applied to LAST NODE FLAGSHIP only, stacks with above">Debuff Dmg</span>:<input type="number" v-model.number="ship.bonusDmgDebuff" min="0" max="99" step="any" @change="onchangeStat($event,ship,'bonusDmgDebuff',1)"/></div>
 						</div>
 						
 						<div class="equipWrap">
@@ -723,10 +723,10 @@
 								<div class="equipLevel" v-show="equip.mstId"><span>&#9733;</span><select v-model.number="equip.level" title="Improvement"><option value="0"></option><option v-for="n in 10" :value="n">{{n}}</option></select></div>
 							</div>
 							<div class="shipStatWrap"><div class="bonusWrap">
-								<div class="statWide"><span title="Mapwide Historical Damage Bonus Multiplier">Bonus Dmg</span>:<input type="number" v-model.number="equip.bonusDmg" min="0" max="99" step=".1" :disabled="!equip.mstId" @change="onchangeStat($event,equip,'bonusDmg',1)"/></div>
+								<div class="statWide"><span title="Mapwide Historical Damage Bonus Multiplier">Bonus Dmg</span>:<input type="number" v-model.number="equip.bonusDmg" min="0" max="99" step="any" :disabled="!equip.mstId" @change="onchangeStat($event,equip,'bonusDmg',1)"/></div>
 							</div></div>
 							<div class="shipStatWrap"><div class="bonusWrap">
-								<div class="statWide"><span title="Mapwide Historical Accuracy Bonus Multiplier">Bonus Acc</span>:<input type="number" v-model.number="equip.bonusAcc" min="0" max="99" step=".1" :disabled="!equip.mstId" @change="onchangeStat($event,equip,'bonusAcc',1)"/></div>
+								<div class="statWide"><span title="Mapwide Historical Accuracy Bonus Multiplier">Bonus Acc</span>:<input type="number" v-model.number="equip.bonusAcc" min="0" max="99" step="any" :disabled="!equip.mstId" @change="onchangeStat($event,equip,'bonusAcc',1)"/></div>
 							</div></div>
 						</div>
 					</div>
@@ -847,10 +847,10 @@
 						<div v-for="ship in ships" class="ship">
 							<div><img :src="'assets/icons/' + ship.imgName"/></div>
 							<div class="bonusWrap" v-if="ship.bonusByNode[nodeId]">
-								<div><label>Bonus Dmg: <input type="number" min="0" max="99" step=".1" :placeholder="ship.bonusDmg" v-model.number="ship.bonusByNode[nodeId].bonusDmg"/></label></div>
-								<div><label>Bonus Acc: <input type="number" min="0" max="99" step=".1" :placeholder="ship.bonusAcc" v-model.number="ship.bonusByNode[nodeId].bonusAcc"/></label></div>
-								<div><label>Bonus Eva: <input type="number" min="0" max="99" step=".1" :placeholder="ship.bonusEva" v-model.number="ship.bonusByNode[nodeId].bonusEva"/></label></div>
-								<div v-show="isBossNode"><label><span class="statDebuff" title="Multiplier applied to LAST NODE FLAGSHIP only, stacks with above">Debuff Dmg:</span> <input type="number" min="0" max="99" step=".1" v-model.number="ship.bonusDmgDebuff"/></label></div>
+								<div><label>Bonus Dmg: <input type="number" min="0" max="99" step="any" :placeholder="ship.bonusDmg" v-model.number="ship.bonusByNode[nodeId].bonusDmg"/></label></div>
+								<div><label>Bonus Acc: <input type="number" min="0" max="99" step="any" :placeholder="ship.bonusAcc" v-model.number="ship.bonusByNode[nodeId].bonusAcc"/></label></div>
+								<div><label>Bonus Eva: <input type="number" min="0" max="99" step="any" :placeholder="ship.bonusEva" v-model.number="ship.bonusByNode[nodeId].bonusEva"/></label></div>
+								<div v-show="isBossNode"><label><span class="statDebuff" title="Multiplier applied to LAST NODE FLAGSHIP only, stacks with above">Debuff Dmg:</span> <input type="number" min="0" max="99" step="any" v-model.number="ship.bonusDmgDebuff"/></label></div>
 							</div>
 						</div>
 					</div>
@@ -1098,7 +1098,7 @@
 						<td>{{bonusShip.count}}</td>
 						<td>{{bonusShip.min}}</td>
 						<td>{{bonusShip.max}}</td>
-						<td><input type="number" v-model.number="bonusShip.value" min="0" max="99" step=".01"/></td>
+						<td><input type="number" v-model.number="bonusShip.value" min="0" max="99" step="any"/></td>
 					</tr>
 				</table>
 				<div>

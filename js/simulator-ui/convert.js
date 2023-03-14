@@ -143,27 +143,33 @@ window.CONVERT = {
 	},
 	
 	
-	replayToSaveShipsF: function(shipsReplay,useMorale) {
+	replayToSaveShipsF: function(shipsReplay,f_maxhps,fParam,useMorale) {
+		if (f_maxhps) f_maxhps = f_maxhps.filter(x => x != -1);
+		if (fParam) fParam = fParam.filter(x => x != -1);
+		
 		let shipsSave = [];
-		for (let shipReplay of shipsReplay) {
+		for (let n=0; n<shipsReplay.length; n++) {
+			let shipReplay = shipsReplay[n];
 			let sdata = SHIPDATA[shipReplay.mst_id];
 			if (!sdata) {
 				shipsSave.push(null);
 				continue;
 			}
+			let hp = f_maxhps && f_maxhps[n] ? f_maxhps[n] : COMMON.getHP(sdata.HP,sdata.HPmax,shipReplay.level) + (shipReplay.kyouka[5] || 0);
+			let params = fParam && fParam[n];
 			let shipSave = {
 				mstId: shipReplay.mst_id,
 				level: shipReplay.level,
-				hp: sdata.HP + (shipReplay.kyouka[5] || 0),
-				hpInit: sdata.HP + (shipReplay.kyouka[5] || 0),
+				hp: hp,
+				hpInit: hp,
 				statsBase: {
-					fp: sdata.FPbase + (shipReplay.kyouka[0] || 0),
-					tp: sdata.TPbase + (shipReplay.kyouka[1] || 0),
-					aa: sdata.AAbase + (shipReplay.kyouka[2] || 0),
-					ar: sdata.ARbase + (shipReplay.kyouka[3] || 0),
-					ev: COMMON.getScaledStat(sdata.EVbase,sdata.EV,shipReplay.level),
-					asw: COMMON.getScaledStat(sdata.ASWbase,sdata.ASW,shipReplay.level) + (shipReplay.kyouka[6] || 0),
-					los: COMMON.getScaledStat(sdata.LOSbase,sdata.LOS,shipReplay.level),
+					fp: (params && params[0]) ?? sdata.FPbase + (shipReplay.kyouka[0] || 0),
+					tp: (params && params[1]) ?? sdata.TPbase + (shipReplay.kyouka[1] || 0),
+					aa: (params && params[2]) ?? sdata.AAbase + (shipReplay.kyouka[2] || 0),
+					ar: (params && params[3]) ?? sdata.ARbase + (shipReplay.kyouka[3] || 0),
+					ev: (shipReplay.stats && shipReplay.stats.ev) ?? COMMON.getScaledStat(sdata.EVbase,sdata.EV,shipReplay.level),
+					asw: (shipReplay.stats && shipReplay.stats.as) ?? COMMON.getScaledStat(sdata.ASWbase,sdata.ASW,shipReplay.level) + (shipReplay.kyouka[6] || 0),
+					los: (shipReplay.stats && shipReplay.stats.ls) ?? COMMON.getScaledStat(sdata.LOSbase,sdata.LOS,shipReplay.level),
 					luk: sdata.LUK + (shipReplay.kyouka[4] || 0)
 				},
 				equips: [],
@@ -219,21 +225,28 @@ window.CONVERT = {
 	replayToSave: function(dataReplay) {
 		let dataSave = {};
 		
+		let bdataFirst = dataReplay.battles[0].data;
+		if (!bdataFirst || Object.keys(bdataFirst).length <= 0) bdataFirst = dataReplay.battles[0].yasen;
+		if (!bdataFirst || Object.keys(bdataFirst).length <= 0) bdataFirst = {};
+		let f_maxhps = bdataFirst.api_f_maxhps;
+		if (bdataFirst.api_maxhps) f_maxhps = bdataFirst.api_maxhps.slice(0 + +(bdataFirst.api_maxhps[0] == -1), 6 + +(bdataFirst.api_maxhps[0] == -1));
 		dataSave.fleetFMain = {
 			type: dataReplay.combined,
-			ships: this.replayToSaveShipsF(dataReplay['fleet'+dataReplay.fleetnum]),
+			ships: this.replayToSaveShipsF(dataReplay['fleet'+dataReplay.fleetnum],f_maxhps,bdataFirst.api_fParam),
 		};
 		if (dataSave.fleetFMain.type == 0 && dataSave.fleetFMain.ships.length >= 7) dataSave.fleetFMain.type = CONST.SF;
 		if (dataReplay.combined) {
-			dataSave.fleetFMain.shipsEscort = this.replayToSaveShipsF(dataReplay.fleet2);
+			let f_maxhps_combined = bdataFirst.api_f_maxhps_combined;
+			if (bdataFirst.api_maxhps_combined) f_maxhps_combined = bdataFirst.api_maxhps_combined.slice(0 + +(bdataFirst.api_maxhps_combined[0] == -1), 6 + +(bdataFirst.api_maxhps_combined[0] == -1));
+			dataSave.fleetFMain.shipsEscort = this.replayToSaveShipsF(dataReplay.fleet2,f_maxhps_combined,bdataFirst.api_fParam_combined);
 		}
 		
 		if (dataReplay.support1) {
-			dataSave.fleetFSupportN = { type: 0, ships: this.replayToSaveShipsF(dataReplay['fleet'+dataReplay.support1],true) };
+			dataSave.fleetFSupportN = { type: 0, ships: this.replayToSaveShipsF(dataReplay['fleet'+dataReplay.support1],null,null,true) };
 			dataSave.useSupportN = true;
 		}
 		if (dataReplay.support2) {
-			dataSave.fleetFSupportB = { type: 0, ships: this.replayToSaveShipsF(dataReplay['fleet'+dataReplay.support2],true) };
+			dataSave.fleetFSupportB = { type: 0, ships: this.replayToSaveShipsF(dataReplay['fleet'+dataReplay.support2],null,null,true) };
 			dataSave.useSupportB = true;
 		}
 		

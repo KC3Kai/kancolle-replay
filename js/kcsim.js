@@ -2690,7 +2690,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 		if (['DD'].indexOf(target.type) != -1) planebase = 25;
 	}
 	if (MECHANICS.hayabusa65Buff && equip.mid == 491) {
-		if (['DD'].indexOf(target.type) != -1) planebase = 18;
+		if (['DD'].indexOf(target.type) != -1) planebase = 19;
 	}
 	planebase = planebase || 0;
 	if (res) {
@@ -2708,7 +2708,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 		if (target.isSub) {
 			preMod = (planebase >= 10)? .7 + Math.random()*.3 : .35 + Math.random()*.45;
 		}
-		var postMod = (equip.type == LANDBOMBER)? 1.8 : 1;
+		var postMod = (equip.type == LANDBOMBER || (equip.mid == 491 && target.type == 'DD'))? 1.8 : 1;
 		// https://discordapp.com/channels/118339803660943369/425302689887289344/805523354844135494
 		// CV/CVB unconfirmed, assumed based on ap shell weakness
 		if (equip.mid == 406 && !target.isInstall) {
