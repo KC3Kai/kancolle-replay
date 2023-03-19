@@ -444,6 +444,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	if (MECHANICS.fitGunUpdate1) {
 		let accFit = this.getFit();
 		if (accFit || (this.ACCfit && this.fitclass == 100)) this.ACCfit = accFit;
+		if (['FBB','BB','BBV'].includes(this.type)) this.ACCfit = this.ACCfitN = accFit;
 	}
 	
 	var installbonus1 = 1 + (installeqs.DH1stars / (installeqs.DH1+installeqs.DH2))/50;
@@ -809,6 +810,132 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	}
 }
 Ship.prototype.getFit = function() {
+	if (this.type == 'FBB') {
+		let fit = 0;
+		let num46cm = this.equips.filter(eq => [9].includes(eq.mid)).length;
+		let numP46cm = this.equips.filter(eq => [117].includes(eq.mid)).length;
+		let num41cm = this.equips.filter(eq => [8,105,236,290,298,299,300,318,330,331,332,381,385,390].includes(eq.mid)).length;
+		let num356cm = this.equips.filter(eq => [7,76,103,104,114,190,192,289,328,329].includes(eq.mid)).length;
+		let num381mm = this.equips.filter(eq => [133,137].includes(eq.mid)).length;
+		let num16inchMk7 = this.equips.filter(eq => [161,183].includes(eq.mid)).length;
+		let num46cmK = this.equips.filter(eq => [276].includes(eq.mid)).length;
+		let num51cm = this.equips.filter(eq => [128,281,465].includes(eq.mid)).length;
+		let num305cm = this.equips.filter(eq => [231,232].includes(eq.mid)).length;
+		let num320mm = this.equips.filter(eq => [426,427,428,429].includes(eq.mid)).length;
+		let modMarried = this.LVL >= 100 ? .6 : 1;
+		fit += -10*Math.sqrt(num46cm)*modMarried;
+		fit += -7*Math.sqrt(numP46cm)*modMarried;
+		fit += -5*Math.sqrt(num41cm)*modMarried;
+		fit += 4*Math.sqrt(num356cm);
+		fit += -2*Math.sqrt(num381mm)*modMarried;
+		fit += -5*Math.sqrt(num16inchMk7)*modMarried;
+		fit += -10*Math.sqrt(num46cmK)*modMarried;
+		fit += -10*Math.sqrt(num51cm)*modMarried;
+		fit += 12*Math.sqrt(num305cm);
+		fit += 14*Math.sqrt(num320mm);
+		if ([47,58].includes(this.sclass)) {
+			fit += 3*Math.sqrt(num381mm)*modMarried;
+		}
+		if (this.sclass == 6) {
+			fit += 3*Math.sqrt(num356cm);
+		}
+		if (this.sclass == 65) {
+			fit += 7*Math.sqrt(this.equips.filter(eq => [161].includes(eq.mid)).length)*modMarried;
+			fit += 14*Math.sqrt(this.equips.filter(eq => [183].includes(eq.mid)).length)*modMarried;
+		}
+		if (this.sclass == 73) {
+			fit += -4*Math.sqrt(num41cm)*modMarried;
+			fit += 3*Math.sqrt(num356cm);
+		}
+		if (this.sclass == 79) {
+			let num38cmQ = this.equips.filter(eq => [245,246,468].includes(eq.mid)).length;
+			fit += 2*Math.sqrt(num38cmQ);
+			fit += -2*Math.sqrt(num41cm + num16inchMk7)*modMarried;
+		}
+		if (this.sclass == 113) {
+			fit += -4*Math.sqrt(num41cm)*modMarried;
+		}
+		if (this.sclass == 37) {
+			fit += 3*Math.sqrt(num46cm);
+			fit += 3*Math.sqrt(numP46cm);
+			fit += 7*Math.sqrt(num46cmK);
+		}
+		return fit;
+	}
+	if (this.type == 'BB') {
+		let fit = 0;
+		let num46cm = this.equips.filter(eq => [9].includes(eq.mid)).length;
+		let numP46cm = this.equips.filter(eq => [117].includes(eq.mid)).length;
+		let num41cm = this.equips.filter(eq => [8,105,236,290,298,299,300,318,330,331,332,381,385,390].includes(eq.mid)).length;
+		let num356cm = this.equips.filter(eq => [7,76,103,104,114,190,192,289,328,329].includes(eq.mid)).length;
+		let num381mm = this.equips.filter(eq => [133,137].includes(eq.mid)).length;
+		let num46cmK = this.equips.filter(eq => [276].includes(eq.mid)).length;
+		let num51cm = this.equips.filter(eq => [128,281,465].includes(eq.mid)).length;
+		let modMarried = this.LVL >= 100 ? .6 : 1;
+		if (SHIPDATA[this.mid].HP <= 92) {
+			fit += -7*Math.sqrt(num46cm)*modMarried;
+			fit += -3*Math.sqrt(numP46cm)*modMarried;
+			fit += 2*Math.sqrt(num41cm);
+			fit += 2*Math.sqrt(num356cm);
+			fit += 2*Math.sqrt(num381mm)*modMarried;
+		}
+		if (this.sclass != 37) {
+			fit += -3*Math.sqrt(num46cmK)*modMarried;
+			fit += -5*Math.sqrt(num51cm)*modMarried;
+		}
+		if (this.sclass == 19) {
+			if (this.mid == 541) {
+				fit += 4*Math.sqrt(this.equips.filter(eq => [8].includes(eq.mid)).length);
+				fit += 3*Math.sqrt(this.equips.filter(eq => [105,236,290,298,299,300,318,330,331,332,381,385,390].includes(eq.mid)).length);
+			} else {
+				fit += 2*Math.sqrt(num41cm);
+			}
+		}
+		if (this.sclass == 67) {
+			let num381cmMk1 = this.equips.filter(eq => [190,192].includes(eq.mid)).length;
+			fit += 2*Math.sqrt(num381cmMk1);
+		}
+		if (this.sclass == 37) {
+			fit += 3*Math.sqrt(num46cm);
+			fit += 3*Math.sqrt(numP46cm);
+			fit += 7*Math.sqrt(num46cmK);
+			let num155Sec = this.equips.filter(eq => [12,234,463].includes(eq.mid)).length;
+			if (num155Sec) fit += 2;
+		}
+		return fit;
+	}
+	if (this.type == 'BBV') {
+		let fit = 0;
+		let num46cm = this.equips.filter(eq => [9].includes(eq.mid)).length;
+		let numP46cm = this.equips.filter(eq => [117].includes(eq.mid)).length;
+		let num41cm = this.equips.filter(eq => [8,105,236,290,298,299,300,318,330,331,332,381,385,390].includes(eq.mid)).length;
+		let num356cm = this.equips.filter(eq => [7,76,103,104,114,190,192,289,328,329].includes(eq.mid)).length;
+		let num381mm = this.equips.filter(eq => [133,137].includes(eq.mid)).length;
+		let num46cmK = this.equips.filter(eq => [276].includes(eq.mid)).length;
+		let num51cm = this.equips.filter(eq => [128,281,465].includes(eq.mid)).length;
+		let modMarried = this.LVL >= 100 ? .6 : 1;
+		if (this.sclass == 37) {
+			fit += -8*Math.sqrt(num46cm + num46cmK + num51cm)*modMarried;
+			fit += -5*Math.sqrt(numP46cm)*modMarried;
+			fit += 2*Math.sqrt(num41cm);
+			fit += 4*Math.sqrt(num356cm);
+			fit += 2*Math.sqrt(num381mm)*modMarried;
+			fit += 3*Math.sqrt(num46cm);
+			fit += 3*Math.sqrt(numP46cm);
+			fit += 7*Math.sqrt(num46cmK);
+			let num155Sec = this.equips.filter(eq => [12,234,463].includes(eq.mid)).length;
+			if (num155Sec) fit += 2;
+		} else {
+			fit += -7*Math.sqrt(num46cm)*modMarried;
+			fit += -3*Math.sqrt(numP46cm)*modMarried;
+			fit += 2*Math.sqrt(num41cm);
+			fit += 4*Math.sqrt(num356cm);
+			fit += 2*Math.sqrt(num381mm)*modMarried;
+			fit += -7*Math.sqrt(num46cmK)*modMarried;
+		}
+		return fit;
+	}
+	
 	// MECHANICS.fitGunUpdate1 2017-06-23
 	let IDS_14_152 = [4,119,310,65,139,407,303,359,360,361];
 	let IDS_152 = [65,139,407,303,359,360,361];

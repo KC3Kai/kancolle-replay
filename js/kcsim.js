@@ -135,10 +135,10 @@ var NBATTACKDATA = {
 	12: { dmgMod: 1.2, accMod: 1.65, chanceMod: 1.4, numHits: 2, name: 'DDCI (LTR) x2' },
 	13: { dmgMod: 1.5, accMod: 1.65, chanceMod: 1.22, numHits: 2, torpedo: true, name: 'DDCI (TTL) x2' },
 	14: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.22, numHits: 2, torpedo: true, name: 'DDCI (TDL) x2' },
-	2001: { dmgMod: 1.36, accMod: 1.1, chanceMod: 1.55, isSpecial: true, id: 200, name: 'NZuiun CI (ZZR)' },
-	2002: { dmgMod: 1.32, accMod: 1.1, chanceMod: 1.55, isSpecial: true, id: 200, name: 'NZuiun CI (ZZ)' },
-	2003: { dmgMod: 1.28, accMod: 1.1, chanceMod: 1.55, isSpecial: true, id: 200, name: 'NZuiun CI (ZR)' },
-	2004: { dmgMod: 1.24, accMod: 1.1, chanceMod: 1.55, isSpecial: true, id: 200, name: 'NZuiun CI (Z)' },
+	2001: { dmgMod: 1.36, accMod: 1.1, chanceMod: 1.35, isSpecial: true, id: 200, name: 'NZuiun CI (ZZR)' },
+	2002: { dmgMod: 1.32, accMod: 1.1, chanceMod: 1.35, isSpecial: true, id: 200, name: 'NZuiun CI (ZZ)' },
+	2003: { dmgMod: 1.28, accMod: 1.1, chanceMod: 1.35, isSpecial: true, id: 200, name: 'NZuiun CI (ZR)' },
+	2004: { dmgMod: 1.24, accMod: 1.1, chanceMod: 1.35, isSpecial: true, id: 200, name: 'NZuiun CI (Z)' },
 }
 
 var FLEETS1 = [];
@@ -1007,7 +1007,11 @@ function canSpecialAttack(ship,isNB,NBequips) {
 		NBchance *= .01;
 		for (let nbtype of ship.NBtypes()) {
 			if (!NBATTACKDATA[nbtype].isSpecial) continue;
-			let rate = NBchance/NBATTACKDATA[nbtype].chanceMod;
+			let c = NBchance;
+			if (NBATTACKDATA[nbtype].id == 200) {
+				c -= .14*NBequips[0][0];
+			}
+			let rate = c/NBATTACKDATA[nbtype].chanceMod;
 			if (Math.random() < rate) {
 				ship.attackSpecial = NBATTACKDATA[nbtype].id || nbtype;
 				ship.attackSpecialType = nbtype;
