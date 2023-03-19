@@ -441,7 +441,7 @@ function init() {
 	EQUIP_CATEGORIES['22'] = getCategoryEquip([24,46]);
 	EQUIP_CATEGORIES['23'] = getCategoryEquip([47,53]);
 	EQUIP_CATEGORIES['24'] = getCategoryEquip([48]);
-	EQUIP_CATEGORIES['25'] = getCategoryEquip([23,30,31,34,35,36,37,43,44,49,50]);
+	EQUIP_CATEGORIES['25'] = getCategoryEquip([23,30,31,34,35,36,37,43,44,49,50,52]);
 }
 
 init();

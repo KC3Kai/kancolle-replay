@@ -4230,7 +4230,7 @@
 			},
 			{
 				"bonus": { "houg": 1, "saku": 1 },
-				"shipClass": [95,99,106,110],
+				"shipClass": [95,99,106,110,121],
 				"num": 1
 			},
 			{
@@ -4241,19 +4241,19 @@
 			},
 			{
 				"bonus": { "saku": 1 },
-				"shipClass": [95,99,106,110],
+				"shipClass": [95,99,106,110,121],
 				"num": 1,
 				"level": 3
 			},
 			{
 				"bonus": { "kaih": 1 },
-				"shipClass": [95,99,106,110],
+				"shipClass": [95,99,106,110,121],
 				"num": 1,
 				"level": 8
 			},
 			{
 				"bonus": { "houg": 1 },
-				"shipClass": [95,99,106,110],
+				"shipClass": [95,99,106,110,121],
 				"num": 1,
 				"level": 10
 			}
@@ -4275,18 +4275,18 @@
 			},
 			{
 				"bonus": { "houg": 1 },
-				"shipClass": [95,99,106,110],
+				"shipClass": [95,99,106,110,121],
 				"num": 1
 			},
 			{
 				"bonus": { "kaih": 1 },
-				"shipClass": [95,99,106,110],
+				"shipClass": [95,99,106,110,121],
 				"num": 1,
 				"level": 3
 			},
 			{
 				"bonus": { "houg": 1 },
-				"shipClass": [95,99,106,110],
+				"shipClass": [95,99,106,110,121],
 				"num": 1,
 				"level": 8
 			}
