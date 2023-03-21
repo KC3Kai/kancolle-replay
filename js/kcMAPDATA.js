@@ -2058,7 +2058,7 @@ var MAPDATA = {
 				bgmNN: 223,
 				bgmDB: 225,
 				bgmNB: 225,
-				bossnode: ['G','O'],
+				bossnode: ['G','O','X','Z2'],
 				overrideBGM: {
 					'G': { bgmDB: 224, bgmNB: 224 },
 					'O': { bgmDB: 224, bgmNB: 224 },
