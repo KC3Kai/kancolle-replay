@@ -276,7 +276,7 @@ var MECHANICS = {
 	kongouSpecialBuff2: true,
 	coloradoSpecialBuff2: true,
 	eqBonusAA: false, //WIP disabled
-	antiSubRaid: false, //WIP disabled
+	antiSubRaid: true,
 	aswPlaneAir: true,
 };
 var NERFPTIMPS = false;
@@ -1640,7 +1640,7 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 		}
 	}
 	if (ship.bonusSpecialAcc) acc *= getBonusAcc(ship,target,true);
-	if (SIMCONSTS.enableSkipTorpBonus && [459,1625,1626].includes(equip.mid)) {
+	if (SIMCONSTS.enableSkipTorpBonus && [459,1625,1626,1635,1636].includes(equip.mid)) {
 		if (['FBB','BB','BBV','CVL','CV'].includes(target.type)) acc += .28;
 		else if (['CA','CAV'].includes(target.type)) acc += .21;
 		else acc += .14;
@@ -1676,7 +1676,7 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 			preMod = (planebase >= 10)? .7 + Math.random()*.3 : .35 + Math.random()*.45;
 		}
 		if (equip.isjet && !isjetphase) preMod *= 1/Math.sqrt(2);
-		if (SIMCONSTS.enableSkipTorpBonus && [459,1625,1626].includes(equip.mid) && !target.isInstall) {
+		if (SIMCONSTS.enableSkipTorpBonus && [459,1625,1626,1635,1636].includes(equip.mid) && !target.isInstall) {
 			if (['DD'].includes(target.type)) preMod *= 1.9;
 			if (['CL','CLT'].includes(target.type)) preMod *= 1.75;
 			if (['CA','CAV'].includes(target.type)) preMod *= 1.6;
@@ -2673,7 +2673,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 		if (target.type == 'DD') acc -= .15;
 		if (target.type == 'CL') acc += .07;
 	}
-	if (equip.mid == 459 || (SIMCONSTS.enableSkipTorpBonus && [1625,1626].includes(equip.mid))) {
+	if (equip.mid == 459 || (SIMCONSTS.enableSkipTorpBonus && [1625,1626,1635,1636].includes(equip.mid))) {
 		if (['FBB','BB','BBV','CVL','CV'].includes(target.type)) acc += .28;
 		else if (['CA','CAV'].includes(target.type)) acc += .21;
 		else acc += .14;
@@ -2719,7 +2719,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 			if (['CA','CAV','CV','CVB'].indexOf(target.type) != -1) preMod *= 1.15;
 			if (['FBB','BB','BBV'].indexOf(target.type) != -1) preMod *= 1.35;
 		}
-		if ((equip.mid == 459 || (SIMCONSTS.enableSkipTorpBonus && [1625,1626].includes(equip.mid))) && !target.isInstall) {
+		if ((equip.mid == 459 || (SIMCONSTS.enableSkipTorpBonus && [1625,1626,1635,1636].includes(equip.mid))) && !target.isInstall) {
 			if (['DD'].includes(target.type)) preMod *= 1.9;
 			if (['CL','CLT'].includes(target.type)) preMod *= 1.75;
 			if (['CA','CAV'].includes(target.type)) preMod *= 1.6;
