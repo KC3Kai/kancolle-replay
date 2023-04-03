@@ -7169,6 +7169,7 @@ var EQDATA = {
 		name: 'Abyssal Rigging Assault General Seaplane',
 		nameJP: '深海艤装水上汎用襲撃機',
 		added: '2023-03-18',
+		b_image: 'e011',
 		type: SEAPLANEBOMBER,
 		FP: 7,
 		DIVEBOMB: 17,
@@ -7182,7 +7183,9 @@ var EQDATA = {
 		name: 'Abyssal Assault Torpedo Bomber',
 		nameJP: '深海突破襲撃機',
 		added: '2023-03-18',
+		b_image: 9,
 		type: TORPBOMBER,
+		isSkipBomber: true,
 		FP: 6,
 		DIVEBOMB: 11,
 		TP: 11,
@@ -7194,7 +7197,9 @@ var EQDATA = {
 		name: 'Abyssal Assault Torpedo Bomber Ace',
 		nameJP: '深海突破襲撃機Ace',
 		added: '2023-03-18',
+		b_image: 10,
 		type: TORPBOMBER,
+		isSkipBomber: true,
 		FP: 9,
 		DIVEBOMB: 16,
 		TP: 13,
@@ -7538,7 +7543,13 @@ function getBonusStats(mid,eqids,improves) {
 			if (bonusData.shipType && bonusData.shipType.indexOf(mapShipTypeId[sdata.type]) == -1) continue;
 			if (bonusData.requiresId) {
 				let count = 0, reqNum = bonusData.requiresIdNum || 1;
-				for (let id of bonusData.requiresId) count += eqCounts[id] || 0;
+				for (let id of bonusData.requiresId) {
+					if (bonusData.requiresIdLevel) {
+						if (eqImproves[id]) count += eqImproves[id].filter(n => n >= bonusData.requiresIdLevel);
+					} else {
+						count += eqCounts[id] || 0;
+					}
+				}
 				if (count < reqNum) continue;
 			}
 			if (bonusData.requiresType) {

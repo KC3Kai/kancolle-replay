@@ -566,7 +566,37 @@ window.CONVERT = {
 		}
 		return shipsSave;
 	},
+	//combine enemies with equip id shift, FF submissions without exslot (-2)
+	_kcnavCombineEntries(compsNav) {
+		let keys = {};
+		for (let compNav of compsNav.entries) {
+			let key = '', hasEx = false;
+			for (let kFleet of ['fleet','mainFleet','escortFleet']) {
+				if (!compNav[kFleet]) continue;
+				for (let ship of compNav[kFleet]) {
+					let keyShip = ship.id + ',' + ship.lvl + ',' + ship.hp + ',' + ship.fp + ',' + ship.torp + ',' + ship.aa + ',' + ship.armor;
+					if (COMMON.isShipIdKanmusu(ship.id)) keyShip += ',' + ship.equips.join('_');
+					key += keyShip + '|';
+					if (ship.exslot != -2) hasEx = true;
+				}
+			}
+			key += '|' + compNav.formation;
+			if (!keys[key]) keys[key] = { comp: compNav, hasEx: hasEx, count: 0 };
+			keys[key].count += compNav.count;
+			if (!keys[key].hasEx && hasEx) {
+				keys[key].comp = compNav;
+				keys[key].hasEx = hasEx;
+			}
+		}
+		compsNav.entries = [];
+		for (let key in keys) {
+			keys[key].comp.count = keys[key].count;
+			compsNav.entries.push(keys[key].comp);
+		}
+		return compsNav;
+	},
 	kcnavToSaveComps: function(compsNav) {
+		compsNav = this._kcnavCombineEntries(compsNav);
 		let compsSave = [];
 		for (let compNav of compsNav.entries) {
 			let fleetSave = {
@@ -578,7 +608,7 @@ window.CONVERT = {
 				fleetSave.type = CONST.CTF;
 				fleetSave.shipsEscort = this.kcnavToSaveShips(compNav.escortFleet);
 			}
-			if (fleetSave.ships.length && +compNav.map.split('-')[0] >= 56) {
+			if (fleetSave.ships.length && compNav.map && +compNav.map.split('-')[0] >= 56) {
 				let isAirSub = SHIPDATA[fleetSave.ships[0].mstId] && ['SS','SSV'].includes(SHIPDATA[fleetSave.ships[0].mstId].type);
 				let foundCV = false;
 				for (let ship of fleetSave.ships) {

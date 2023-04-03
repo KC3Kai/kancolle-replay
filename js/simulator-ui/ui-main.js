@@ -39,6 +39,7 @@ var MECHANICS_LIST = [
 	{ key: 'eqBonusTorp', name: 'Torpedo Airstrike Use Equipment Bonus' },
 	{ key: 'eqBonusASW', name: 'ASW Use Equipment Bonus' },
 	{ key: 'ffReroll', name: 'Friend Fleet Flagship Reroll' },
+	{ key: 'antiSubRaid', name: 'Anti-Sub Air Raid' },
 	{ key: 'enable_ASWPlaneAir', name: 'Autogyro/Liaison Air Battle' },
 ];
 

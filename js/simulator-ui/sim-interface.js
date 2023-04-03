@@ -365,6 +365,7 @@ var SIM = {
 				this._addError('bad_formation',[fleetInput.formation]);
 			}
 			fleetSim.reset();
+			if (fleetSim.combinedWith) fleetSim.combinedWith.reset();
 			result = fleetSim;
 		}
 		return result;
