@@ -605,6 +605,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 		for (let NBtype of ship.NBtypes()) {
 			if (da || cutin) break;
 			let attackData = NBATTACKDATA[NBtype];
+			if (attackData.isSpecial) continue;
 			if (attackData.id == 6 && !ship.canNBAirAttack()) continue;
 			if (attackData.replace && ship.LVL >= 80) {
 				if (Math.random() < attackData.replaceChance) {
