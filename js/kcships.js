@@ -1149,10 +1149,11 @@ Ship.prototype.NBtypes = function() {
 	let numSurfaceRadar = this.equips.filter(eq => eq.btype == B_RADAR && eq.LOS >= 5).length;
 	
 	if (mguns >= 2 && ['CL','CAV','BBV','AV'].includes(this.type)) {
+		let hasSameGuns = this.equiptypes[MAINGUNS] >= 2 || this.equiptypes[MAINGUNM] >= 2 || this.equiptypes[MAINGUNL] >= 2;
 		let numZuiun = this.equips.filter((eq,i) => eq.mid == 490 && this.planecount[i]).length;
 		if (numZuiun >= 2 && numSurfaceRadar) this._nbtypes.push(2001);
 		if (numZuiun >= 2) this._nbtypes.push(2002);
-		if (numZuiun && numSurfaceRadar) this._nbtypes.push(2003);
+		if (numZuiun && numSurfaceRadar && hasSameGuns) this._nbtypes.push(2003);
 		if (numZuiun) this._nbtypes.push(2004);
 	}
 	
