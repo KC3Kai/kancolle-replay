@@ -59,6 +59,7 @@ Fleet.prototype.fleetAntiAir = function(alreadyCombined,isRaid) {
 		for (var i=0; i<this.ships.length; i++) {
 			if (this.ships[i].HP <= 0) { continue; }
 			if (this.ships[i].retreated) continue;
+			if (this.ships[i].isFaraway) continue;
 			let aaF = 0;
 			for (var j=0; j<this.ships[i].equips.length; j++) {
 				var equip = this.ships[i].equips[j];
@@ -1374,7 +1375,9 @@ Ship.prototype.damageMod = function(isTorp) {
 }
 Ship.prototype.weightedAntiAir = function(isRaid) {
 	if (this._wAA === undefined) {
-		if (!MECHANICS.AACI) {
+		if (this.isFaraway) {
+			this._wAA = 0;
+		} else if (!MECHANICS.AACI) {
 			this._wAA = this.side == 1 ? Math.sqrt(this.AA) : this.AA;
 		} else {
 			this._wAA = this.statsBase.AA/2;
