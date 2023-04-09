@@ -2150,35 +2150,37 @@ function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupp
 		var ship = carriers[i];
 		for (var j=0; j<bombers[i].length; j++) {
 			var slot = bombers[i][j];
-			var defender = defenders[Math.floor(Math.random()*defenders.length)];
-			var supportMod = (issupport)? .8 : 1;
-			var shotProp = (Math.random() < .5)? Math.floor(getAAShotProp(defender,ship.planecount[slot],ship.equips[slot].aaResistShip,isRaid)*supportMod) : 0;
-			var shotFlat = (Math.random() < .5)? Math.floor(getAAShotFlat(defender,ship.equips[slot].aaResistShip,ship.equips[slot].aaResistFleet,isRaid)*AACImod*supportMod) : 0;
-			var shotFix = ((defender.side==0 || AACInum) && MECHANICS.AACI ? 1 : 0) + AACInum;
-			if (MECHANICS.aaResist && ship.equips[slot].aaResistShip && shotFix) {
-				let n1 = shotFix, n2 = 0;
-				if (AACItype) {
-					n1 = AACIDATA[AACItype].num1;
-					n2 = shotFix - AACIDATA[AACItype].num1;
+			if (defenders.length) {
+				var defender = defenders[Math.floor(Math.random()*defenders.length)];
+				var supportMod = (issupport)? .8 : 1;
+				var shotProp = (Math.random() < .5)? Math.floor(getAAShotProp(defender,ship.planecount[slot],ship.equips[slot].aaResistShip,isRaid)*supportMod) : 0;
+				var shotFlat = (Math.random() < .5)? Math.floor(getAAShotFlat(defender,ship.equips[slot].aaResistShip,ship.equips[slot].aaResistFleet,isRaid)*AACImod*supportMod) : 0;
+				var shotFix = ((defender.side==0 || AACInum) && MECHANICS.AACI ? 1 : 0) + AACInum;
+				if (MECHANICS.aaResist && ship.equips[slot].aaResistShip && shotFix) {
+					let n1 = shotFix, n2 = 0;
+					if (AACItype) {
+						n1 = AACIDATA[AACItype].num1;
+						n2 = shotFix - AACIDATA[AACItype].num1;
+					}
+					shotFix = Math.floor(n1 * ship.equips[slot].aaResistShip + n2);
+					if (C) console.log('AACI resist: ' + n1 + ' ' + n2 + ' ' + shotFix);
 				}
-				shotFix = Math.floor(n1 * ship.equips[slot].aaResistShip + n2);
-				if (C) console.log('AACI resist: ' + n1 + ' ' + n2 + ' ' + shotFix);
-			}
-			
-			if (C) {
-				APIkouku.api_stage2[(ship.side)?'api_e_count':'api_f_count'] += ship.planecount[slot];
-				APIkouku.api_stage2[(ship.side)?'api_e_lostcount':'api_f_lostcount'] += shotProp+shotFlat+shotFix;
-				if (!ship.equips[slot].lostnums) ship.equips[slot].lostnums = [];
-				ship.equips[slot].lostnums.push(shotProp+shotFlat+shotFix);
-			}
-			ship.planecount[slot] = Math.max(0,ship.planecount[slot]-shotProp-shotFlat-shotFix);
-			if (C) console.log('	anti air: '+defender.name+' '+defender.AA+' '+shotProp+' '+shotFlat+' '+shotFix+' '+ship.planecount[slot]);
+				
+				if (C) {
+					APIkouku.api_stage2[(ship.side)?'api_e_count':'api_f_count'] += ship.planecount[slot];
+					APIkouku.api_stage2[(ship.side)?'api_e_lostcount':'api_f_lostcount'] += shotProp+shotFlat+shotFix;
+					if (!ship.equips[slot].lostnums) ship.equips[slot].lostnums = [];
+					ship.equips[slot].lostnums.push(shotProp+shotFlat+shotFix);
+				}
+				ship.planecount[slot] = Math.max(0,ship.planecount[slot]-shotProp-shotFlat-shotFix);
+				if (C) console.log('	anti air: '+defender.name+' '+defender.AA+' '+shotProp+' '+shotFlat+' '+shotFix+' '+ship.planecount[slot]);
 		
-			if (ship.planecount[slot]<=0) {
-				ship.planecount[slot] = 0;
-				ship.equips[slot].setProficiency(0);
-				ship.updateProficiencyBonus();
-				continue;
+				if (ship.planecount[slot]<=0) {
+					ship.planecount[slot] = 0;
+					ship.equips[slot].setProficiency(0);
+					ship.updateProficiencyBonus();
+					continue;
+				}
 			}
 			
 			let targetsR = MECHANICS.antiSubRaid && isRaid && ship.canAirstrikeSub ? defenders : targets;
@@ -2247,7 +2249,7 @@ function airPhase(alive1,subsalive1,alive2,subsalive2,APIkouku,isjetphase,isbomb
 		AADefenceFighters(carriers2,alive1.length,APIkouku,filter);
 		
 		//bomber defence
-		if (!isbombing) AADefenceBombersAndAirstrike(carriers1,alive2,alive2.concat(subsalive2),APIkouku,false,isjetphase,includeEscort);
+		if (!isbombing) AADefenceBombersAndAirstrike(carriers1,alive2,alive2.concat(subsalive2).filter(s => !s.isFaraway),APIkouku,false,isjetphase,includeEscort);
 		AADefenceBombersAndAirstrike(carriers2,alive1,alive1.concat(subsalive1),APIkouku,false,isjetphase,includeEscort,isbombing);
 	}
 	if (C) {
@@ -2375,7 +2377,7 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 		if (suptype == 4) {
 			compareAP(shipsS[0].fleet,subsalive2[0].fleet,'canSupportASW',false,'isfighter');
 			AADefenceFighters(shipsS,false,(C)? BAPI.data.api_support_info.api_support_airatack : null,'canSupportASW');
-			supportASW(shipsS,subsalive2,alive2.concat(subsalive2),(C)? BAPI.data.api_support_info.api_support_airatack : null,subsalive2[0].fleet.combinedWith);
+			supportASW(shipsS,subsalive2,alive2.concat(subsalive2).filter(s => !s.isFaraway),(C)? BAPI.data.api_support_info.api_support_airatack : null,subsalive2[0].fleet.combinedWith);
 		} else {
 			for (let ship of shipsS) {
 				if (ship.hasjet) ship.addJetSteelCost();
@@ -2383,7 +2385,7 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 			var prevAS = alive2[0].fleet.AS;
 			compareAP(shipsS[0].fleet,alive2[0].fleet);
 			AADefenceFighters(shipsS,false,(C)? BAPI.data.api_support_info.api_support_airatack : null);
-			AADefenceBombersAndAirstrike(shipsS,alive2,alive2.concat(subsalive2),(C)? BAPI.data.api_support_info.api_support_airatack : null,true,false,alive2[0].fleet.combinedWith);
+			AADefenceBombersAndAirstrike(shipsS,alive2,alive2.concat(subsalive2).filter(s => !s.isFaraway),(C)? BAPI.data.api_support_info.api_support_airatack : null,true,false,alive2[0].fleet.combinedWith);
 			alive2[0].fleet.AS = prevAS;
 		}
 		if (C) {
@@ -2429,24 +2431,26 @@ function supportASW(carriers,targets,defenders,APIkouku,combinedAll) {
 		var ship = carriers[i];
 		for (var j=0; j<bombers[i].length; j++) {
 			var slot = bombers[i][j];
-			var defender = defenders[Math.floor(Math.random()*defenders.length)];
-			var supportMod = .8;
-			var shotProp = (Math.random() < .5)? Math.floor(getAAShotProp(defender,ship.planecount[slot])*supportMod) : 0;
-			var shotFlat = (Math.random() < .5)? Math.floor(getAAShotFlat(defender)*AACImod*supportMod) : 0;
-			var shotFix = ((defender.side==0 || AACInum)? 1 : 0) + AACInum;
+			if (defenders.length) {
+				var defender = defenders[Math.floor(Math.random()*defenders.length)];
+				var supportMod = .8;
+				var shotProp = (Math.random() < .5)? Math.floor(getAAShotProp(defender,ship.planecount[slot])*supportMod) : 0;
+				var shotFlat = (Math.random() < .5)? Math.floor(getAAShotFlat(defender)*AACImod*supportMod) : 0;
+				var shotFix = ((defender.side==0 || AACInum)? 1 : 0) + AACInum;
+				
+				if (C) {
+					APIkouku.api_stage2[(ship.side)?'api_e_count':'api_f_count'] += ship.planecount[slot];
+					APIkouku.api_stage2[(ship.side)?'api_e_lostcount':'api_f_lostcount'] += shotProp+shotFlat+shotFix;
+					if (!ship.equips[slot].lostnums) ship.equips[slot].lostnums = [];
+					ship.equips[slot].lostnums.push(shotProp+shotFlat+shotFix);
+				}
+				ship.planecount[slot] = Math.max(0,ship.planecount[slot]-shotProp-shotFlat-shotFix);
+				if (C) console.log('	anti air: '+defender.name+' '+defender.AA+' '+shotProp+' '+shotFlat+' '+shotFix+' '+ship.planecount[slot]);
 			
-			if (C) {
-				APIkouku.api_stage2[(ship.side)?'api_e_count':'api_f_count'] += ship.planecount[slot];
-				APIkouku.api_stage2[(ship.side)?'api_e_lostcount':'api_f_lostcount'] += shotProp+shotFlat+shotFix;
-				if (!ship.equips[slot].lostnums) ship.equips[slot].lostnums = [];
-				ship.equips[slot].lostnums.push(shotProp+shotFlat+shotFix);
-			}
-			ship.planecount[slot] = Math.max(0,ship.planecount[slot]-shotProp-shotFlat-shotFix);
-			if (C) console.log('	anti air: '+defender.name+' '+defender.AA+' '+shotProp+' '+shotFlat+' '+shotFix+' '+ship.planecount[slot]);
-		
-			if (ship.planecount[slot]<=0) {
-				ship.planecount[slot] = 0;
-				continue;
+				if (ship.planecount[slot]<=0) {
+					ship.planecount[slot] = 0;
+					continue;
+				}
 			}
 			
 			if (targets.length) { 
@@ -2540,8 +2544,8 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 	var defenders = [];
 	var AACImod = 1;
 	var AACInum = 0;
-	for (var i=0; i<alive2.length; i++) defenders.push(alive2[i]);
-	for (var i=0; i<subsalive2.length; i++) defenders.push(subsalive2[i]);
+	for (var i=0; i<alive2.length; i++) if (!alive2[i].isFaraway) defenders.push(alive2[i]);
+	for (var i=0; i<subsalive2.length; i++) if (!subsalive2[i].isFaraway) defenders.push(subsalive2[i]);
 	
 	let airStateNow = lbas.AS;
 	if (airStateNow == 0) {
@@ -2571,21 +2575,23 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 		var eq = lbas.equips[i];
 		if (!eq.isdivebomber && !eq.istorpbomber) continue;
 		if (subsalive2.length <= 0 && !eq.DIVEBOMB && !eq.TP) continue;
-		var defender = defenders[Math.floor(Math.random()*defenders.length)];
-		var supportMod = 1;
-		var shotProp = (Math.random() < .5)? Math.floor(getAAShotProp(defender,lbas.planecount[i],eq.aaResistShip)*supportMod) : 0;
-		var shotFlat = (Math.random() < .5)? Math.floor(getAAShotFlat(defender,eq.aaResistShip,eq.aaResistFleet)*AACImod*supportMod) : 0;
-		var shotFix = ((defender.side==0 || AACInum)? 1 : 0) + AACInum;
-		
-		if (C) {
-			APIkouku.api_stage2.api_f_count += lbas.planecount[i];
-			APIkouku.api_stage2.api_f_lostcount += shotProp+shotFlat+shotFix;
-			console.log(lbas.planecount[i] + ' ' + defender.name + ' ' + shotProp + ' ' + shotFlat);
-		}
-		lbas.planecount[i] = Math.max(0,lbas.planecount[i]-shotProp-shotFlat-shotFix);
-		if (lbas.planecount[i] <= 0) {
-			lbas.equips[i].emptied = true;
-			continue;
+		if (defenders.length) {
+			var defender = defenders[Math.floor(Math.random()*defenders.length)];
+			var supportMod = 1;
+			var shotProp = (Math.random() < .5)? Math.floor(getAAShotProp(defender,lbas.planecount[i],eq.aaResistShip)*supportMod) : 0;
+			var shotFlat = (Math.random() < .5)? Math.floor(getAAShotFlat(defender,eq.aaResistShip,eq.aaResistFleet)*AACImod*supportMod) : 0;
+			var shotFix = ((defender.side==0 || AACInum)? 1 : 0) + AACInum;
+			
+			if (C) {
+				APIkouku.api_stage2.api_f_count += lbas.planecount[i];
+				APIkouku.api_stage2.api_f_lostcount += shotProp+shotFlat+shotFix;
+				console.log(lbas.planecount[i] + ' ' + defender.name + ' ' + shotProp + ' ' + shotFlat);
+			}
+			lbas.planecount[i] = Math.max(0,lbas.planecount[i]-shotProp-shotFlat-shotFix);
+			if (lbas.planecount[i] <= 0) {
+				lbas.equips[i].emptied = true;
+				continue;
+			}
 		}
 		
 		let isASWPlane = MECHANICS.LBASBuff && eq.ASW >= 7;
