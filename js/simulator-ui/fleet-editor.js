@@ -161,6 +161,8 @@ var FLEET_MODEL = {
 			bonusEva: 1,
 			bonusByNode: {},
 			
+			neverFCF: false,
+			
 			isFaraway: false,
 		};
 		obj._levelPrev = obj.level;
@@ -350,6 +352,7 @@ var UI_FLEETEDITOR = Vue.createApp({
 		showStatTotal: false,
 		showEquipBonus: true,
 		autoScaleStats: true,
+		preserveBonus: false,
 		
 		loadCode: '',
 		loadKC3Fleet: 1,
@@ -401,10 +404,11 @@ var UI_FLEETEDITOR = Vue.createApp({
 		},
 	},
 	methods: {
-		setNewShip: function(mstId,ind,shipsProp) {
+		setNewShip: function(mstId,ind,shipsProp,copyBonus) {
 			ind = ind != null ? ind : this.selectedShipInd;
 			shipsProp = shipsProp || this.selectedShipsProp;
 			
+			let shipPrev = this.fleet[shipsProp][ind];
 			let ship = this.fleet[shipsProp][ind] = FLEET_MODEL.getDefaultShip(mstId,ind);
 			let eqDef;
 			if (mstId > 0 && (eqDef = SHIPDATA[mstId].EQUIPS)) {
@@ -412,6 +416,12 @@ var UI_FLEETEDITOR = Vue.createApp({
 					ship.equips[i] = FLEET_MODEL.getDefaultEquip(eqDef[i],ship,i);
 				}
 				FLEET_MODEL.updateEquipStats(ship);
+			}
+			
+			if (copyBonus) {
+				for (let key of ['bonusDmg','bonusDmgDebuff','bonusAcc','bonusEva','bonusByNode']) {
+					if (shipPrev[key] != null) ship[key] = shipPrev[key];
+				}
 			}
 		},
 		setNewEquip: function(mstId,indShip,indEquip,shipsProp) {
@@ -504,7 +514,7 @@ var UI_FLEETEDITOR = Vue.createApp({
 			}
 		},
 		onclickDeleteShip: function(ship,shipsProp) {
-			this.setNewShip(0,ship.ind,shipsProp);
+			this.setNewShip(0,ship.ind,shipsProp,this.preserveBonus);
 		},
 		ondragstartShip: function(ship,shipsProp) {
 			this.isDraggingShip = true;
@@ -680,7 +690,7 @@ var UI_FLEETEDITOR = Vue.createApp({
 		},
 		
 		receiveSelectShip: function(mstId) {
-			UI_FLEETEDITOR.setNewShip(mstId);
+			UI_FLEETEDITOR.setNewShip(mstId,null,null,this.preserveBonus);
 		},
 		receiveCloseShip: function() {
 			UI_FLEETEDITOR.refocusShip();

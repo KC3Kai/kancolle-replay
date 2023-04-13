@@ -7171,6 +7171,7 @@ var EQDATA = {
 		added: '2023-03-18',
 		b_image: 'e011',
 		type: SEAPLANEBOMBER,
+		isSkipBomber: true,
 		FP: 7,
 		DIVEBOMB: 17,
 		TP: 14,

@@ -496,7 +496,7 @@ var BATTLE = (function() {
 							damage : (dam > 0) ? dam : 0,
 							protect : (dam != kouku.api_stage3.api_fdam[ind]),
 							crit : kouku.api_stage3.api_fcl_flag[ind],
-							rai : kouku.api_stage3.api_frai_flag[ind]
+							rai : +kouku.api_stage3.api_frai_flag[ind]
 						});
 				}
 
@@ -510,7 +510,7 @@ var BATTLE = (function() {
 							damage : (dam > 0) ? dam : 0,
 							protect : (dam != stage3.api_edam[ind]),
 							crit : stage3.api_ecl_flag[ind],
-							rai : stage3.api_erai_flag[ind]
+							rai : +stage3.api_erai_flag[ind]
 						});
 				}
 
@@ -525,7 +525,7 @@ var BATTLE = (function() {
 								damage : (dam > 0) ? dam : 0,
 								protect : (dam != stage3_combined.api_fdam[ind]),
 								crit : stage3_combined.api_fcl_flag[ind],
-								rai : stage3_combined.api_frai_flag[ind]
+								rai : +stage3_combined.api_frai_flag[ind]
 							});
 					}
 					if (stage3_combined.api_edam && opponent.escortFleet && opponent.escortFleet[i]) {
@@ -538,7 +538,7 @@ var BATTLE = (function() {
 								damage : (dam > 0) ? dam : 0,
 								protect : (dam != stage3.api_edam[ind]),
 								crit : stage3_combined.api_ecl_flag[ind],
-								rai : stage3_combined.api_erai_flag[ind]
+								rai : +stage3_combined.api_erai_flag[ind]
 							});
 					}
 				}
