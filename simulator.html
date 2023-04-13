@@ -97,7 +97,8 @@
 		<div id="divSettings">
 			<h2>Settings</h2>
 			<div>
-				<label><input type="checkbox" v-model="settings.retreatOnTaiha" /> Retreat on <img src="assets/stats/taiha.png" /> ?</label> <img v-show="!settings.retreatOnTaiha" src="assets/stats/kuso.png" />
+				<div><label><input type="checkbox" v-model="settings.retreatOnTaiha" /> Retreat on <img src="assets/stats/taiha.png" /> ?</label> <img v-show="!settings.retreatOnTaiha" src="assets/stats/kuso.png" /></div>
+				<div><img src="assets/items/28.png"/><input type="button" value="FCF Settings" @click="onclickSetFCF"/> <span v-show="hasFCFSettings" class="bonusMarker fcf" title="FCF Settings set">&#11044;</span></div>
 			</div>
 			<div id="divSettingsMechanics">
 				<span class="subheader">Mechanics:</span>
@@ -382,6 +383,7 @@
 	<div id="divOther">
 	<div id="divChangeLog">
 		<div><span class="header">Change Log:</span></div>
+		<div>2023-04-13 - FCF Settings</a></div>
 		<div>2023-03-19 - Update <a href="https://twitter.com/Divinity_123/status/1637255766166863873">BB gun fit</a></div>
 		<div>2023-03-02 - Air Support Sub node settings, update <a href="https://twitter.com/yukicacoon/status/1628701453677363202">Night Zuiun Cut-In trigger rate</a> (removed Advanced Setting) + show in Additional Stats</div>
 		<div>2023-02-16 - Mechanic: Autogyro/Liaison Air Battle, provisional Night Zuiun Cut-In (see Advanced Settings for trigger rate)</div>
@@ -657,6 +659,7 @@
 			<div class="fleetEditorAddl">
 				<label><input type="checkbox" v-model="showStatTotal"/>Show Equipped Stats</label>
 				<label><input type="checkbox" v-model="autoScaleStats"/>Auto-Scale <img src="assets/stats/hp.png"/>/<img src="assets/stats/ev.png"/>/<img src="assets/stats/asw.png"/>/<img src="assets/stats/los.png"/> with <img src="assets/stats/lv.png"/></label>
+				<label><input type="checkbox" v-model="preserveBonus"/>Preserve Bonus on ship change</label>
 				<input type="button" value="Show Additional Stats" @click="onclickAdditionalStats(keyS)" />
 			</div>
 		</div></div>
@@ -1138,6 +1141,45 @@
 			</div>
 			<div class="footer" v-show="isReplayImport">
 				<input type="button" value="Continue" @click="onclickContinue"/>
+			</div>
+		</div>
+		</vmodal>
+	</div></div>
+	
+	<div id="divFCFSettings"><div v-show="active">
+		<vmodal :active="active" @vclose="canClose&&(active=false)">
+		<div id="divFCFSettingsMain" v-if="settings">
+			<div>
+				<label><span class="header">Require LoS (after FCF):</span> <input type="number" step="any" v-model.number="settings.los" :class="{'changed':settings.los!=null&&settings.los!==''}"/></label>
+				<select v-model="settings.losC"><option v-for="n in 4" :value="n">C{{n}}</option></select> 
+				on Node <select v-model="settings.losNode"><option value="0">All</option><option v-for="(id,i) in nodes" :value="id">{{i+1}}</option></select>
+			</div>
+			<div>
+				<label><span class="header">Require Ships with Surface Radar (after FCF):</span> <input type="number" min="0" max="12" v-model.number="settings.radarCount" :class="{'changed':settings.radarCount}"/></label>
+				on Node <select v-model="settings.radarNode"><option value="0">All</option><option v-for="(id,i) in nodes" :value="id">{{i+1}}</option></select>
+			</div>
+			<div>
+				<div><span class="header">Require Ship Counts (after FCF):</span></div>
+				<div v-for="rule in settings.rules">
+					{{rule.shipStr}} &ge; {{rule.count}} on Node 
+					<select v-model="rule.node"><option value="0">All</option><option v-for="(id,i) in nodes" :value="id">{{i+1}}</option></select>
+					&nbsp;<input type="button" value="&#10006;" @click="onclickDelRule(rule)"/>
+				</div>
+				<div>
+					<input v-model="ruleNew.shipStr" placeholder="e.g. &quot;DD&quot;, &quot;DE/DD/CL&quot;, &quot;XX&quot;" ref="inputShipStrNew"/>
+					&ge; <input type="number" min="0" max="12" v-model="ruleNew.count" ref="inputCountNew"/>
+					on Node <select v-model="ruleNew.node"><option value="0">All</option><option v-for="(id,i) in nodes" :value="id">{{i+1}}</option></select>&nbsp;
+					<input type="button" value="Add" @click="onclickAddRule"/>
+				</div>
+			</div>
+			<div>
+				<span class="header">Never Use On:</span>
+				<div v-for="ships in shipGroups" class="shipGroup">
+					<img v-for="ship in ships" :src="'assets/icons/' + ship.imgName" :style="{'opacity':ship.neverFCF?1:.35}" @click="onclickShipCanRetreat(ship)"/>
+				</div>
+			</div>
+			<div>
+				<span class="note">* ("on Node" = applies check after battle on this node and on all nodes before it, for example: "on Node 2" = checks on nodes 1 and 2, does not check on node 3 and after)</span>
 			</div>
 		</div>
 		</vmodal>

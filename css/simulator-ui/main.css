@@ -44,6 +44,9 @@ div.bonusMarker.friend {
 div.bonusMarker.lbas {
 	color: #556B2F;
 }
+.bonusMarker.fcf {
+	color: #C8AAFF;
+}
 div.fleet div.header div.expand {
 	margin-left: auto;
 }
@@ -187,7 +190,7 @@ div.fleetCompAdd > div {
 #divSettingsAdvanced > div {
 	margin-bottom: 15px;
 }
-#divSettings input.changed {
+input.changed {
 	background-color: yellow;
 }
 
@@ -412,4 +415,23 @@ div.kcnavImporterSettingsWrap select.suggestion {
 }
 #divSimBackupMain div.footer > input {
 	margin-left: auto;
+}
+
+#divFCFSettingsMain {
+	background-color: #DDEEFF;
+	border: 1px solid transparent;
+	box-shadow: 0 0 5px black;
+	padding: 20px;
+}
+#divFCFSettingsMain > div:not(:first-child) {
+	margin-top: 10px;
+}
+#divFCFSettingsMain span.header {
+	font-weight: bold;
+}
+#divFCFSettingsMain div.shipGroup {
+	display: flex;
+}
+#divFCFSettingsMain div.shipGroup img:hover {
+	cursor: pointer;
 }

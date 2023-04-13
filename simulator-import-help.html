@@ -56,7 +56,8 @@ If ship/equip "masterId" not in simulator's database, "stats" is required.
 			},
 			bonusesDebuff: historical bonus applied to last node flagship only (optional) {
 				bonusDmg: &lt;float&gt;
-			}
+			},
+			neverFCF: &lt;bool&gt; if 1, never use FCF to retreat this ship (default 0)
 		}],
 		combineType: &lt;int&gt; 1=CTF, 2=STF, 3=TCF (optional),
 		shipsC: [&lt;same as ships&gt;] (optional),
@@ -97,7 +98,19 @@ If ship/equip "masterId" not in simulator's database, "stats" is required.
 	continueOnTaiha: &lt;bool&gt; (default 0),
 	bucketHPPercent: &lt;int&gt; if HP percent &lt;= bucketHPPercent, report as bucket used (default 0),
 	bucketTime: &lt;int&gt; if repair time in seconds &gt; bucketTime, report as bucket used (default "infinity"),
-	didSpecial: &lt;bool&gt; if fleet has already performed special attack, disables special attack for simulator (default 0)
+	didSpecial: &lt;bool&gt; if fleet has already performed special attack, disables special attack for simulator (default 0),
+	settingsFCF: optional {
+		los: &lt;float&gt; required ELoS after FCF use (optional),
+		losC: &lt;int&gt; ELoS coefficient (default 1),
+		losNode: &lt;int&gt; applies check on this node index (1-indexed) and all nodes before it (default "all nodes"),
+		radarCount: &lt;int&gt; required number of ships with surface radar (LOS >= 5) after FCF use
+		radarNode: &lt;int&gt; applies check on this node index (1-indexed) and all nodes before it (default "all nodes"),
+		rules: required ship type counts after FCF use (optional) [{
+			types: [&lt;int&gt; or &lt;string&gt;] ship classes to check, use API number or hull code e.g. "DD", or use "XX" for "any",
+			count: &lt;int&gt; required number after FCF use,
+			node: &lt;int&gt; applies check on this node index (1-indexed) and all nodes before it (default "all nodes"),
+		}]
+	},
 	mechanics: optional, all are &lt;bool&gt; (default 1) {
 		artillerySpotting: 
 		AACI: 

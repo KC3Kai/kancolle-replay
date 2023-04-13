@@ -5,7 +5,7 @@ var CONST = window.COMMON.getConst({});
 
 window.CONVERT = {
 	_fleetPropsSaved: ['type','formation'],
-	_shipPropsSaved: ['mstId','level','hp','hpInit','morale','fuelInit','ammoInit','statsBase','slots','bonusDmg','bonusAcc','bonusEva','bonusDmgDebuff','isFaraway'],
+	_shipPropsSaved: ['mstId','level','hp','hpInit','morale','fuelInit','ammoInit','statsBase','slots','bonusDmg','bonusAcc','bonusEva','bonusDmgDebuff','isFaraway','neverFCF'],
 	_equipPropsSaved: ['mstId','level','rank','bonusDmg','bonusAcc'],
 	
 	_UI_MAIN: null,
@@ -695,6 +695,7 @@ window.CONVERT = {
 				}
 				if (Object.keys(bonusesByNode).length) shipInput.bonusesByNode = bonusesByNode;
 			}
+			if (shipUI.neverFCF) shipInput.neverFCF = 1;
 			
 			shipsInput.push(shipInput);
 		}			
@@ -817,6 +818,29 @@ window.CONVERT = {
 		let mechInput = this.uiToSimInputMechanics(dataUI);
 		dataInput.mechanics = mechInput.mechanics;
 		dataInput.consts = mechInput.consts;
+		if (dataUI.settingsFCF) {
+			dataInput.settingsFCF = {}
+			if (dataUI.settingsFCF.los != null && dataUI.settingsFCF.los !== '') {
+				dataInput.settingsFCF.los = dataUI.settingsFCF.los;
+				dataInput.settingsFCF.losC = dataUI.settingsFCF.losC;
+				dataInput.settingsFCF.losNode = nodeIdToNum[dataUI.settingsFCF.losNode] || dataUI.battles.length;
+			}
+			if (dataUI.settingsFCF.radarCount) {
+				dataInput.settingsFCF.radarCount = dataUI.settingsFCF.radarCount;
+				dataInput.settingsFCF.radarNode = nodeIdToNum[dataUI.settingsFCF.radarNode];
+			}
+			if (dataUI.settingsFCF.rules && dataUI.settingsFCF.rules.length) {
+				dataInput.settingsFCF.rules = [];
+				for (let ruleUI of dataUI.settingsFCF.rules) {
+					dataInput.settingsFCF.rules.push({
+						types: ruleUI.shipStr.split('/'),
+						count: ruleUI.count,
+						node: nodeIdToNum[ruleUI.node] || dataUI.battles.length,
+					});
+				}
+			}
+			if (!Object.keys(dataInput.settingsFCF).length) delete dataInput.settingsFCF;
+		}
 		return dataInput;
 	},
 	
@@ -925,6 +949,8 @@ window.CONVERT = {
 		}
 		
 		dataSave.settings = this.uiToSaveSettings(dataUI.settings);
+		dataSave.settingsFCF = this._copyObj(dataUI.settingsFCF);
+		
 		dataSave.version = this._SAVE_VERSION_CURRENT;
 		
 		return dataSave;
@@ -1047,6 +1073,9 @@ window.CONVERT = {
 		
 		if (dataSave.settings) {
 			this.loadSaveSettings(dataSave.settings,dataUI.settings);
+		}
+		if (dataSave.settingsFCF) {
+			this._copyObj(dataSave.settingsFCF,null,dataUI.settingsFCF);
 		}
 	},
 };

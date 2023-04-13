@@ -1643,7 +1643,7 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 		}
 	}
 	if (ship.bonusSpecialAcc) acc *= getBonusAcc(ship,target,true);
-	if (SIMCONSTS.enableSkipTorpBonus && [459,1625,1626,1635,1636].includes(equip.mid)) {
+	if (SIMCONSTS.enableSkipTorpBonus && equip.isSkipBomber) {
 		if (['FBB','BB','BBV','CVL','CV'].includes(target.type)) acc += .28;
 		else if (['CA','CAV'].includes(target.type)) acc += .21;
 		else acc += .14;
@@ -1679,7 +1679,7 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 			preMod = (planebase >= 10)? .7 + Math.random()*.3 : .35 + Math.random()*.45;
 		}
 		if (equip.isjet && !isjetphase) preMod *= 1/Math.sqrt(2);
-		if (SIMCONSTS.enableSkipTorpBonus && [459,1625,1626,1635,1636].includes(equip.mid) && !target.isInstall) {
+		if (SIMCONSTS.enableSkipTorpBonus && equip.isSkipBomber && !target.isInstall) {
 			if (['DD'].includes(target.type)) preMod *= 1.9;
 			if (['CL','CLT'].includes(target.type)) preMod *= 1.75;
 			if (['CA','CAV'].includes(target.type)) preMod *= 1.6;
@@ -2682,7 +2682,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 		if (target.type == 'DD') acc -= .15;
 		if (target.type == 'CL') acc += .07;
 	}
-	if (equip.mid == 459 || (SIMCONSTS.enableSkipTorpBonus && [1625,1626,1635,1636].includes(equip.mid))) {
+	if (equip.mid == 459 || (SIMCONSTS.enableSkipTorpBonus && equip.isSkipBomber)) {
 		if (['FBB','BB','BBV','CVL','CV'].includes(target.type)) acc += .28;
 		else if (['CA','CAV'].includes(target.type)) acc += .21;
 		else acc += .14;
@@ -2728,7 +2728,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 			if (['CA','CAV','CV','CVB'].indexOf(target.type) != -1) preMod *= 1.15;
 			if (['FBB','BB','BBV'].indexOf(target.type) != -1) preMod *= 1.35;
 		}
-		if ((equip.mid == 459 || (SIMCONSTS.enableSkipTorpBonus && [1625,1626,1635,1636].includes(equip.mid))) && !target.isInstall) {
+		if ((equip.mid == 459 || (SIMCONSTS.enableSkipTorpBonus && equip.isSkipBomber)) && !target.isInstall) {
 			if (['DD'].includes(target.type)) preMod *= 1.9;
 			if (['CL','CLT'].includes(target.type)) preMod *= 1.75;
 			if (['CA','CAV'].includes(target.type)) preMod *= 1.6;
@@ -3495,33 +3495,37 @@ function getFCFShips(ships1,ships1C) {
 	return [retreater, escorter];
 }
 
-function canContinue(ships1,ships1C) {
+function canContinue(ships1,ships1C,ignoreFCF) {
 	if (ships1[0].HP/ships1[0].maxHP <= .25) return false;
 	
-	if (!ships1C && ships1[0].hasFCF && ships1[0].hasFCF[272] && ships1[0].fleet.ships.length >= 7) {
+	if (!ignoreFCF && !ships1C && ships1[0].hasFCF && ships1[0].hasFCF[272] && ships1[0].fleet.ships.length >= 7) {
 		let taihaShips = ships1.filter(ship => ship.HP/ship.maxHP <= .25 && !ship.retreated);
 		if (taihaShips.length >= 2) return false;
 		if (taihaShips.length) {
+			taihaShips[0]._tempFCF = { fuelleft: taihaShips[0].fuelleft, HP: taihaShips[0].HP, morale: taihaShips[0].morale };
 			taihaShips[0].retreated = true;
 			taihaShips[0].fuelleft = 0;
+			taihaShips[0].morale = 49;
 			taihaShips[0].HP = Math.max(1, taihaShips[0].HP - Math.floor(.2*taihaShips[0].maxHP));
 		}
 		return true;
 	}
 	
-	if (!ships1C && ships1[0].hasFCF && ships1[0].hasFCF[413] && ships1[0].fleet.isTorpedoSquadron()) {
+	if (!ignoreFCF && !ships1C && ships1[0].hasFCF && ships1[0].hasFCF[413] && ships1[0].fleet.isTorpedoSquadron()) {
 		let taihaShips = ships1.filter(ship => ship.HP/ship.maxHP <= .25 && !ship.retreated);
 		if (taihaShips.length >= 2) return false;
 		if (taihaShips.length) {
+			taihaShips[0]._tempFCF = { fuelleft: taihaShips[0].fuelleft, ammoleft: taihaShips[0], HP: taihaShips[0].HP, morale: taihaShips[0].morale };
 			taihaShips[0].retreated = true;
 			taihaShips[0].fuelleft = taihaShips[0].ammoleft = 0;
+			taihaShips[0].morale = 49;
 			taihaShips[0].HP = Math.max(1, taihaShips[0].HP - Math.floor(.2*taihaShips[0].maxHP));
 		}
 		return true;
 	}
 	
 	var retreater = null, escorter = null;
-	if (ships1C && ships1[0].hasFCF && ships1[0].hasFCF[107]) { var d = getFCFShips(ships1,ships1C); retreater = d[0]; escorter = d[1]; }
+	if (!ignoreFCF && ships1C && ships1[0].hasFCF && ships1[0].hasFCF[107]) { var d = getFCFShips(ships1,ships1C); retreater = d[0]; escorter = d[1]; }
 	if (DORETREAT) {
 		for (var i=1; i<ships1.length; i++) {
 			if (ships1[i].retreated) continue;
@@ -3535,8 +3539,11 @@ function canContinue(ships1,ships1C) {
 		}
 	}
 	if (retreater && escorter) {
+		retreater._tempFCF = { fuelleft: retreater.fuelleft, morale: retreater.morale };
+		escorter._tempFCF = { fuelleft: escorter.fuelleft, morale: escorter.morale };
 		retreater.retreated = escorter.retreated = true;
 		retreater.fuelleft = escorter.fuelleft = 0;
+		retreater.morale = escorter.morale = 49;
 	}
 	return true;
 }

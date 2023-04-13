@@ -106,6 +106,14 @@ var UI_MAIN = Vue.createApp({
 			airstrikeAccEFRaid: SIMCONSTS.airstrikeAccEFRaid,
 			airstrikeAccEE: SIMCONSTS.airstrikeAccEE,
 		},
+		settingsFCF: {
+			los: null,
+			losC: 4,
+			losNode: 0,
+			radarCount: 0,
+			radarNode: 0,
+			rules: [],
+		},
 		
 		canSim: true,
 		numSim: CONST.numSimDefault,
@@ -208,6 +216,12 @@ var UI_MAIN = Vue.createApp({
 	computed: {
 		canDeleteBattles: function() {
 			return this.battles.length > 1;
+		},
+		hasFCFSettings: function() {
+			return !!(this.settingsFCF.los || this.settingsFCF.radarCount || this.settingsFCF.rules.length
+				|| (this.fleetFMain.ships && this.fleetFMain.ships.find(s => s.neverFCF))
+				|| (this.fleetFMain.shipsEscort && this.fleetFMain.shipsEscort.find(s => s.neverFCF))
+			);
 		},
 	},
 	methods: {
@@ -457,6 +471,10 @@ var UI_MAIN = Vue.createApp({
 			this.canSim = false;
 			this.results.isFromImport = true;
 			SIM.runStats(dataInput,this.callbackSimStats);
+		},
+		
+		onclickSetFCF: function() {
+			UI_FCFSETTINGS.doOpen(this.settingsFCF);
 		},
 	},
 }).component('vbattle',{
@@ -1170,6 +1188,69 @@ var UI_BACKUP = Vue.createApp({
 		},
 	},
 }).component('vmodal',COMMON.CMP_MODAL).mount('#divSimBackup');;
+
+
+var UI_FCFSETTINGS = Vue.createApp({
+	data: () => ({
+		active: false,
+		canClose: true,
+		
+		settings: null,
+		nodes: [],
+		ruleNew: { shipStr: '', count: 0, node: 0 },
+		shipGroups: [],
+	}),
+	methods: {
+		doOpen: function(settings) {
+			this.active = true;
+			this.settings = settings;
+			
+			this.ruleNew.shipStr = '';
+			this.ruleNew.count = 0;
+			this.ruleNew.node = 0;
+			
+			this.nodes = [];
+			for (let battle of UI_MAIN.battles) {
+				this.nodes.push(battle.id);
+			}
+			if (!this.nodes.includes(this.settings.losNode)) this.settings.losNode = 0;
+			for (let rule of this.settings.rules) {
+				if (!this.nodes.includes(rule.node)) rule.node = 0;
+			}
+			
+			this.shipGroups = [];
+			this.shipGroups.push(UI_MAIN.fleetFMain.ships.filter(ship => !FLEET_MODEL.shipIsEmpty(ship)));
+			if (UI_MAIN.fleetFMain.shipsEscort && UI_MAIN.fleetFMain.combined) this.shipGroups.push(UI_MAIN.fleetFMain.shipsEscort.filter(ship => !FLEET_MODEL.shipIsEmpty(ship)));
+		},
+		doClose: function() {
+			this.active = false;
+		},
+		
+		onclickAddRule: function() {
+			let shipStr = this.ruleNew.shipStr.trim().replaceAll('"','').replaceAll(/[, ]+/g,'/').toUpperCase();
+			if (!shipStr || (shipStr != 'XX' && shipStr.split('/').find(type => !COMMON.shipTypeHullToId[type]) != null)) {
+				this.$refs.inputShipStrNew.focus();
+				return;
+			}
+			if (this.ruleNew.count <= 0 || !+this.ruleNew.count) {
+				this.$refs.inputCountNew.focus();
+				return;
+			}
+			
+			shipStr = shipStr.split('/').filter((type,i,a) => a.indexOf(type) == i).join('/');
+			this.settings.rules.push({ shipStr: shipStr, count: this.ruleNew.count, node: this.ruleNew.node });
+			this.ruleNew.shipStr = '';
+			this.ruleNew.count = 0;
+			this.ruleNew.node = 0;
+		},
+		onclickDelRule: function(rule) {
+			this.settings.rules.splice(this.settings.rules.indexOf(rule),1);
+		},
+		onclickShipCanRetreat: function(ship) {
+			ship.neverFCF = !ship.neverFCF;
+		},
+	},
+}).component('vmodal',COMMON.CMP_MODAL).mount('#divFCFSettings');;
 
 
 document.body.onunload = function() {

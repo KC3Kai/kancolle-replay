@@ -18,6 +18,7 @@ var CONST = window.COMMON.getConst({
 		'no_combinetype': { txt: 'Unsupported combineType: <0>' },
 		'bad_ship_type': { txt: 'Invalid ship type: <0>' },
 		'bad_formation': { txt: 'Invalid formation: <0>' },
+		'no_fcf_retreat': { txt: 'Initial fleet does not meet set FCF Settings requirements' },
 		
 		'warn_unknown_equiptype': { txt: 'Warning: Unknown equip type - <0>, effects may be missing' },
 		'warn_unknown_ship': { txt: 'Warning: Unknown ship - <0>, unique effects may be missing' },
@@ -541,6 +542,52 @@ var SIM = {
 		if (hasVanguard) {
 			this._addWarning('warn_vanguard');
 		}
+		
+		if (dataInput.settingsFCF) {
+			if (!this._checkSettingsFCF(dataInput.settingsFCF,FLEETS1[0])) {
+				this._addError('no_fcf_retreat');
+			} else {
+				if (dataInput.settingsFCF.rules) {
+					for (let rule of dataInput.settingsFCF.rules) {
+						if (!rule.types) continue;
+						if (rule.types.includes('XX')) {
+							rule.types = ['XX'];
+						} else {
+							rule.types = rule.types.filter((type,i,a) => a.indexOf(type) == i && COMMON.shipTypeHullToId[type]);
+						}
+					}
+				}
+			}
+		}
+	},
+	
+	_checkSettingsFCF: function(settingsFCF,fleetF,battleInd=-1) {
+		if (settingsFCF.los != null && (!settingsFCF.losNode || battleInd+1 <= settingsFCF.losNode)) {
+			let los = fleetF.fleetELoS(settingsFCF.losC || 1);
+			if (fleetF.combinedWith) los += fleetF.combinedWith.fleetELoS(settingsFCF.losC || 1);
+			if (los < settingsFCF.los) return false;
+		}
+		if (settingsFCF.radarCount && (!settingsFCF.radarNode || battleInd+1 <= settingsFCF.radarNode)) {
+			let ships = fleetF.combinedWith ? fleetF.ships.concat(fleetF.combinedWith.ships) : fleetF.ships;
+			let numRadarShips = ships.filter(ship => ship.HP > 0 && !ship.retreated && ship.equips.find(eq => eq.btype == B_RADAR && eq.LOS >= 5)).length;
+			if (numRadarShips < settingsFCF.radarCount) return false;
+		}
+		if (settingsFCF.rules) {
+			let counts = { 'XX': 0 };
+			let ships = fleetF.combinedWith ? fleetF.ships.concat(fleetF.combinedWith.ships) : fleetF.ships;
+			for (let ship of ships) {
+				if (ship.HP <= 0 || ship.retreated) continue;
+				counts[ship.type] = counts[ship.type] + 1 || 1;
+				counts.XX++;
+			}
+			for (let rule of settingsFCF.rules) {
+				if (!rule.types || rule.types.length <= 0) continue;
+				if (rule.node && battleInd+1 > rule.node) continue;
+				let count = rule.types.reduce((a,type) => a + (counts[type] ?? counts[CONST.shipTypeIdToHull[type]] ?? 0), 0);
+				if (count < (rule.count || 0)) return false;
+			}
+		}
+		return true;
 	},
 	
 	_doSimSortie: function(dataInput,dataReplay) {
@@ -585,7 +632,8 @@ var SIM = {
 				fleetF.setFormation(dataInput.fleetF.formation,dataInput.fleetF.combineType);
 			}
 			
-			for (let ship of (fleetF.combinedWith ? fleetF.ships.concat(fleetF.combinedWith.ships) : fleetF.ships)) {
+			let shipsAll = fleetF.combinedWith ? fleetF.ships.concat(fleetF.combinedWith.ships) : fleetF.ships;
+			for (let ship of shipsAll) {
 				let bonus = {};
 				if (ship._dataOrig.bonuses) {
 					for (let key in ship._dataOrig.bonuses) bonus[key] = ship._dataOrig.bonuses[key];
@@ -639,11 +687,30 @@ var SIM = {
 				this._updateResultsNode(result,battleInd);
 			}
 			
-			if (fleetF.combinedWith) {
-				if (!canContinue(fleetF.ships,fleetF.combinedWith.ships)) break;
-			} else {
-				if (!canContinue(fleetF.ships)) break;
+			let isRetreat = fleetF.combinedWith ? !canContinue(fleetF.ships,fleetF.combinedWith.ships) : !canContinue(fleetF.ships);
+			if (!isRetreat) {
+				let undoFCF = false;
+				if (dataInput.settingsFCF && battleInd < dataInput.nodes.length-1) {
+					if (!this._checkSettingsFCF(dataInput.settingsFCF,fleetF,battleInd)) {
+						undoFCF = true;
+					}
+				}
+				if (!undoFCF && shipsAll.find(ship => ship.retreated && ship._dataOrig.neverFCF)) {
+					undoFCF = true;
+				}
+				if (undoFCF) {
+					for (let ship of shipsAll) {
+						if (ship._tempFCF) {
+							ship.retreated = false;
+							for (let key in ship._tempFCF) ship[key] = ship._tempFCF[key];
+						}
+					}
+					isRetreat = fleetF.combinedWith ? !canContinue(fleetF.ships,fleetF.combinedWith.ships,true) : !canContinue(fleetF.ships,null,true);
+				}
 			}
+			
+			for (let ship of shipsAll) delete ship._tempFCF;
+			if (isRetreat) break;
 		}
 		
 		if (!dataReplay) {
