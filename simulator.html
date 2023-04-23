@@ -538,7 +538,16 @@
 			<div>
 				<div class="headerSubImport">From text:</div>
 				<div><textarea cols="20" rows="2" autocomplete="off" v-model="loadCode" @focus="onfocusCode" title="Can use: Simulator's default JSON, Deckbuilder JSON, KC3 Replay JSON"></textarea></div>
-				<div><input type="button" value="Load" @click="onclickLoadCode"/></div>
+				<div>
+					<input type="button" value="Load" @click="onclickLoadCode"/>
+					<span v-show="codeIsDeckbuilder"> Fleet: <select v-model.number="loadCodeFleet">
+						<option v-for="n in 4" :value="n">{{n}}</option>
+						<option v-if="fleet.isEnemy" value="11">1+2</option>
+						<option v-if="fleet.isPlayer" value="11">1+2 CTF</option>
+						<option v-if="fleet.isPlayer" value="12">1+2 STF</option>
+						<option v-if="fleet.isPlayer" value="13">1+2 TCF</option>
+					</select></span>
+				</div>
 			</div>
 			<div>
 				<div class="headerSubImport">From .kc3 file (<a href="#" @click.prevent="showKC3ProfileHelp=true">?</a>):</div>
@@ -971,12 +980,12 @@
 						<div><input type="button" value="Import" @click="onclickImport"/></div>
 						<div class="sectionWrap">
 							<div>
-								<div><label><input type="checkbox" v-model="importMain"/>Main Fleet: </label><select v-model="fleetNumMain"><option>1+2</option><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
+								<div><label><input type="checkbox" v-model="importMain"/>Main Fleet: </label><select v-model.number="fleetNumMain"><option value="11">1+2 CTF</option><option value="12">1+2 STF</option><option value="13">1+2 TCF</option><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
 								<div><label><input type="checkbox" v-model="importLBAS"/>LBAS</label></div>
 							</div>
 							<div>
-								<div><label><input type="checkbox" v-model="importSupportN"/>Support (Normal): </label><select v-model="fleetNumSupportN"><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
-								<div><label><input type="checkbox" v-model="importSupportB"/>Support (Boss): </label><select v-model="fleetNumSupportB"><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
+								<div><label><input type="checkbox" v-model="importSupportN"/>Support (Normal): </label><select v-model.number="fleetNumSupportN"><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
+								<div><label><input type="checkbox" v-model="importSupportB"/>Support (Boss): </label><select v-model.number="fleetNumSupportB"><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
 							</div>
 						</div>
 					</div>
