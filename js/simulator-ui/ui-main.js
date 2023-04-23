@@ -609,9 +609,9 @@ var UI_DECKBUILDERIMPORTER = Vue.createApp({
 		importSupportN: true,
 		importSupportB: true,
 		importLBAS: true,
-		fleetNumMain: '1+2',
-		fleetNumSupportN: '3',
-		fleetNumSupportB: '4',
+		fleetNumMain: 11,
+		fleetNumSupportN: 3,
+		fleetNumSupportB: 4,
 	}),
 	methods: {
 		doOpen: function() {
@@ -633,17 +633,12 @@ var UI_DECKBUILDERIMPORTER = Vue.createApp({
 			return dataDb;
 		},
 		loadDataDb: function(dataDb,fleetNum,fleetUI,isSupport) {
-			let dataDbN = dataDb;
-			if (fleetNum != '1+2') {
-				let key = 'f'+fleetNum;
-				if (!dataDb[key] || Object.keys(dataDb[key]).length <= 0) return;
-				dataDbN = { version: dataDb.version, f1: dataDb[key] };
-			}
 			if (isSupport) {
-				if (fleetNum == '1+2') return;
-				if (dataDbN.f1.s7) delete dataDbN.f1.s7;
+				if (+fleetNum >= 10) return;
+				let fleetKey = 'f'+fleetNum;
+				if (dataDb[fleetKey].s7) delete dataDb[fleetKey].s7;
 			}
-			CONVERT.loadSaveFleet(CONVERT.deckbuilderToSaveFleet(dataDbN),fleetUI);
+			CONVERT.loadSaveFleet(CONVERT.deckbuilderToSaveFleet(dataDb,fleetNum),fleetUI);
 		},
 		
 		onclickImport: function() {
@@ -783,10 +778,10 @@ var UI_KCNAVCOMPIMPORTER = Vue.createApp({
 			url = url.replace('{edges}',this.edges);
 			if (!this.isFriendFleet) {
 				url += '?start=' + (+this.world < 10 ? CONST.kcnavDateStart : '');
-				if (this.gaugeHPMin != null && this.gaugeHPMin != '' && this.gaugeHPMin != 0) url += '&minGaugeLevel=' + this.gaugeHPMin;
-				if (this.gaugeHPMax != null && this.gaugeHPMax != '' && this.gaugeHPMax != 99999) url += '&maxGaugeLevel=' + this.gaugeHPMax;
-				if (this.gaugeNum != null && this.gaugeNum != '' && this.gaugeNum != 1) url += '&minGauge=' + this.gaugeNum;
-				if (this.gaugeNum != null && this.gaugeNum != '' && this.gaugeNum != 4) url += '&maxGauge=' + this.gaugeNum;
+				if (this.gaugeHPMin != null && this.gaugeHPMin !== '' && this.gaugeHPMin != 0) url += '&minGaugeLevel=' + this.gaugeHPMin;
+				if (this.gaugeHPMax != null && this.gaugeHPMax !== '' && this.gaugeHPMax != 99999) url += '&maxGaugeLevel=' + this.gaugeHPMax;
+				if (this.gaugeNum != null && this.gaugeNum !== '' && this.gaugeNum != 1) url += '&minGauge=' + this.gaugeNum;
+				if (this.gaugeNum != null && this.gaugeNum !== '' && this.gaugeNum != 4) url += '&maxGauge=' + this.gaugeNum;
 				if (this.diff && +this.world > 10) url += '&difficulty=' + this.diff;
 				if (this.hqMin) url += '&minHqLevel=' + this.hqMin;
 				if (this.hqMax) url += '&maxHqLevel=' + this.hqMax;

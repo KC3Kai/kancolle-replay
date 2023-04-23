@@ -1038,17 +1038,21 @@ Ship.prototype.updateProficiencyBonus = function() {
 				if (!this.critratebonus) this.critratebonus = 0;
 				if (!this.critdmgbonus) this.critdmgbonus = 1;
 				var mod = 0;
-				if (eq.rank == 7) mod = 10;
-				else if (eq.rank == 6) mod = 7;
-				else if (eq.rank == 5) mod = 5;
-				else if (eq.rank == 4) mod = 4;
-				else if (eq.rank == 3) mod = 3;
-				else if (eq.rank == 2) mod = 2;
-				else if (eq.rank == 1) mod = 1;
-				let modType = [AUTOGYRO,ASWPLANE].includes(eq.type) ? .8 : 1;
-				this.critratebonus += mod*modType*((i==0)? .8 : .6);
-				this.critdmgbonus += modType*Math.floor(Math.sqrt(eq.exp) + mod)/((i==0)? 100:200);
-				planeexp += eq.exp;
+				let exp = eq.exp || 0, rank = eq.rank || 0;
+				if ([AUTOGYRO,ASWPLANE].includes(eq.type)) {
+					exp *= .825;
+					if (rank > 0) rank--;
+				}
+				if (rank == 7) mod = 10;
+				else if (rank == 6) mod = 7;
+				else if (rank == 5) mod = 5;
+				else if (rank == 4) mod = 4;
+				else if (rank == 3) mod = 3;
+				else if (rank == 2) mod = 2;
+				else if (rank == 1) mod = 1;
+				this.critratebonus += mod*((i==0)? .8 : .6);
+				this.critdmgbonus += Math.floor(Math.sqrt(exp) + mod)/((i==0)? 100:200);
+				planeexp += exp;
 			}
 			planecount++;
 		}
@@ -1057,7 +1061,7 @@ Ship.prototype.updateProficiencyBonus = function() {
 		var avgexp = planeexp/planecount;
 		if (avgexp >= 10) this.ACCplane = Math.sqrt(avgexp*.1);
 		if (avgexp >= 100) this.ACCplane += 9;
-		else if (avgexp >= 80) this.ACCplane += 6;
+		else if (avgexp >= 85) this.ACCplane += 6;
 		else if (avgexp >= 70) this.ACCplane += 4;
 		else if (avgexp >= 55) this.ACCplane += 3;
 		else if (avgexp >= 40) this.ACCplane += 2;
@@ -2115,7 +2119,7 @@ Equip.prototype.setProficiency = function(rank,forLBAS) {
 		rank -= 1000;
 		this.exp = rank;
 		if (this.exp >= 100) this.rank = 7;
-		else if (this.exp >= 80) this.rank = 6;
+		else if (this.exp >= 85) this.rank = 6;
 		else if (this.exp >= 70) this.rank = 5;
 		else if (this.exp >= 55) this.rank = 4;
 		else if (this.exp >= 40) this.rank = 3;
@@ -2124,7 +2128,7 @@ Equip.prototype.setProficiency = function(rank,forLBAS) {
 		else this.rank = 0;
 	} else {
 		this.rank = rank;
-		this.exp = [0,10,25,40,55,70,80,120][rank];
+		this.exp = [0,10,25,40,55,70,85,120][rank];
 	}
 	this.APbonus = Math.sqrt(this.exp*.1);
 	switch (this.type) {

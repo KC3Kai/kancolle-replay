@@ -398,7 +398,7 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	results.undamaged = true;
 	results.buckets = 0;
 	for (var i=0; i<ships1.length; i++) {
-		if (ships1[i].HP/ships1[i].maxHP <= .25) {
+		if (ships1[i].HP/ships1[i].maxHP <= .25 && !ships1[i].retreated) {
 			results.redded = true;
 			results.reddedIndiv[i] = true;
 			if (!ships1[i].isflagship) ships1[i].protection = false;
@@ -407,7 +407,7 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		if (ships1[i].HP/ships1[i].maxHP <= BUCKETPERCENT || getRepairTime(ships1[i]) > BUCKETTIME) results.buckets++;
 	}
 	for (var i=0; i<ships1C.length; i++) {
-		if (ships1C[i].HP/ships1C[i].maxHP <= .25) {
+		if (ships1C[i].HP/ships1C[i].maxHP <= .25 && !ships1C[i].retreated) {
 			if (!ships1C[i].isflagship) results.redded = true; //don't count escort flag taiha as retreat
 			results.reddedIndivC[i] = true;
 			if (!ships1C[i].isflagship) ships1C[i].protection = false;
@@ -1025,7 +1025,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	results.undamaged = true;
 	results.buckets = 0;
 	for (var i=0; i<ships1.length; i++) {
-		if (ships1[i].HP/ships1[i].maxHP <= .25) {
+		if (ships1[i].HP/ships1[i].maxHP <= .25 && !ships1[i].retreated) {
 			results.redded = true;
 			results.reddedIndiv[i] = true;
 			if (!ships1[i].isflagship) ships1[i].protection = false;
@@ -1495,7 +1495,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	results.undamaged = true;
 	results.buckets = 0;
 	for (var i=0; i<ships1.length; i++) {
-		if (ships1[i].HP/ships1[i].maxHP <= .25) {
+		if (ships1[i].HP/ships1[i].maxHP <= .25 && !ships1[i].retreated) {
 			results.redded = true;
 			results.reddedIndiv[i] = true;
 			if (!ships1[i].isflagship) ships1[i].protection = false;
@@ -1504,7 +1504,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		if (ships1[i].HP/ships1[i].maxHP <= BUCKETPERCENT || getRepairTime(ships1[i]) > BUCKETTIME) results.buckets++;
 	}
 	for (var i=0; i<ships1C.length; i++) {
-		if (ships1C[i].HP/ships1C[i].maxHP <= .25) {
+		if (ships1C[i].HP/ships1C[i].maxHP <= .25 && !ships1C[i].retreated) {
 			if (!ships1C[i].isflagship) results.redded = true; //don't count escort flag taiha as retreat
 			results.reddedIndivC[i] = true;
 			if (!ships1C[i].isflagship) ships1C[i].protection = false;

@@ -153,6 +153,7 @@ var SIMCONSTS = {
 	torpedoDmgCap: 180,
 	nightDmgCap: 360,
 	airDmgCap: 170,
+	lbasDmgCap: 190,
 	aswDmgCap: 170,
 	supportDmgCap: 170,
 	shellEcMF: null,
@@ -349,18 +350,27 @@ function shell(ship,target,APIhou,attackSpecial) {
 			}
 		}
 		if (cutin == 7) { //special CVCI crit bonus
-			overrideCritDmgBonus = 1 + .1*(ship.ACCplane||0)/12.46; //base scaling on average proficiency
-			critRateBonus = .13*(ship.ACCplane||0)/12.46 - ship.critratebonus*.01; //override normal rate bonus
-			
+			let planes = ship.equips.filter(eq => (eq.isdivebomber||eq.istorpbomber) && (eq.DIVEBOMB || eq.TP));
+			let avgExp = planes.reduce((a,eq) => a + (eq.exp||0)*([ASWPLANE,AUTOGYRO].includes(eq.type) ? .825 : 1),0)/planes.length;
+			critRateBonus = .13*avgExp/120 - ship.critratebonus*.01;
 			if (ship.equips[0]) {
 				let type0 = ship.equips[0].type;
 				if (type0 == DIVEBOMBER || type0 == TORPBOMBER || (type0 == FIGHTER && AStypes[i] == 71)) {
-					if (ship.equips[0].rank == 7) {
-						overrideCritDmgBonus += .15; //base scaling on 8 - 5.6 mods of standard crit dmg bonus
+					let exp0 = ship.equips[0].exp || 0;
+					if (exp0 >= 100) {
+						overrideCritDmgBonus = 1 + exp0*.003 + avgExp*.001 - 0.23;
 						critRateBonus += .08;
-					} else if (ship.equips[0].rank == 6) {
-						overrideCritDmgBonus += .1;
-						critRateBonus += .056;
+					} else {
+						overrideCritDmgBonus = 1 + exp0*.0006 + .024;
+						if (exp0 >= 85) critRateBonus += .056;
+					}
+				} else {
+					if (avgExp >= 119) {
+						overrideCritDmgBonus = 1.106;
+					} else if (avgExp >= 107) {
+						overrideCritDmgBonus = 1.096;
+					} else if (avgExp >= 50) {
+						overrideCritDmgBonus = 1 + (avgExp-50)*.001;
 					}
 				}
 			}
@@ -2653,9 +2663,14 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 	var acc = .95;
 	var critdmgbonus = 1, critratebonus = 0, ACCplane = 0;
 	if (equip.type != LANDBOMBER || MECHANICS.LBASBuff) {
-		ACCplane = Math.sqrt(equip.exp*.1);
+		let exp = equip.exp || 0, rank = equip.rank || 0;
+		if ([AUTOGYRO,ASWPLANE].includes(equip.type)) {
+			exp *= .825;
+			if (rank > 0) rank--;
+		}
+		ACCplane = Math.sqrt(exp*.1);
 		var critval = 0;
-		switch(equip.rank) {
+		switch(rank) {
 			case 7: ACCplane += 9; critval = 10; break;
 			case 6: ACCplane += 6; critval = 7; break;
 			case 5: ACCplane += 4; critval = 5; break;
@@ -2665,7 +2680,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 			case 1: ACCplane += 0; critval = 1; break;
 			case 0: ACCplane = 0; break;
 		}
-		critdmgbonus += Math.floor(Math.sqrt(equip.exp)+critval)/100;
+		critdmgbonus += Math.floor(Math.sqrt(exp)+critval)/100;
 		critratebonus = critval*.8;
 	}
 	if (MECHANICS.LBASBuff) {
@@ -2697,13 +2712,12 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 	var planebase;
 	if (equip.type == LANDBOMBER || equip.type == LANDBOMBERL) planebase = (target.isInstall)? equip.DIVEBOMB : equip.TP + (equip.airstrikePowerImprove || 0);
 	else planebase = (equip.isdivebomber)? equip.DIVEBOMB + (equip.airstrikePowerImprove || 0) : (target.isInstall)? 0 : equip.TP + (equip.airstrikePowerImprove || 0);
-	if ([AUTOGYRO,ASWPLANE].includes(equip.type)) planebase = 0;
 	if (target.isSub) planebase = equip.ASW;
 	if (MECHANICS.hayabusa65Buff && equip.mid == 224) {
 		if (['DD'].indexOf(target.type) != -1) planebase = 25;
 	}
 	if (MECHANICS.hayabusa65Buff && equip.mid == 491) {
-		if (['DD'].indexOf(target.type) != -1) planebase = 19;
+		if (['DD'].indexOf(target.type) != -1) planebase = 30;
 	}
 	planebase = planebase || 0;
 	if (res) {
@@ -2717,11 +2731,11 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 			if (['DD','CL','CLT','CA','CAV'].includes(target.type)) planebase *= 1.16;
 		}
 		var dmgbase = 25+planebase*Math.sqrt(1.8*lbas.planecount[slot]);
-		var preMod = (equip.type == LANDBOMBER)? .8 : 1;
+		var preMod = (equip.type == LANDBOMBER || equip.type == LANDBOMBERL)? .8 : 1;
 		if (target.isSub) {
 			preMod = (planebase >= 10)? .7 + Math.random()*.3 : .35 + Math.random()*.45;
 		}
-		var postMod = (equip.type == LANDBOMBER || (equip.mid == 491 && target.type == 'DD'))? 1.8 : 1;
+		var postMod = equip.type == LANDBOMBER ? 1.8 : 1;
 		// https://discordapp.com/channels/118339803660943369/425302689887289344/805523354844135494
 		// CV/CVB unconfirmed, assumed based on ap shell weakness
 		if (equip.mid == 406 && !target.isInstall) {
@@ -2746,7 +2760,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 		if (SIMCONSTS.enablePlaneBonus && equip.bonusSpecialP) {
 			for (let group in equip.bonusSpecialP) postMod *= equip.bonusSpecialP[group];
 		}
-		dmg = damage(lbas,target,dmgbase,preMod,res*contactMod*postMod,SIMCONSTS.airDmgCap,true);
+		dmg = damage(lbas,target,dmgbase,preMod,res*contactMod*postMod,SIMCONSTS.lbasDmgCap,true);
 		realdmg = takeDamage(target,dmg);
 	}
 	if(C) {
@@ -3255,7 +3269,7 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 	results.undamaged = true;
 	results.buckets = 0;
 	for (var i=0; i<ships1.length; i++) {
-		if (ships1[i].HP/ships1[i].maxHP <= .25) {
+		if (ships1[i].HP/ships1[i].maxHP <= .25 && !ships1[i].retreated) {
 			results.redded = true;
 			results.reddedIndiv[i] = true;
 			if (!noupdate && !ships1[i].isflagship) ships1[i].protection = false;
@@ -4066,7 +4080,7 @@ function simNightFirstCombined(F1,F2,Fsupport,LBASwaves,BAPI) {
 	results.undamaged = true;
 	results.buckets = 0;
 	for (var i=0; i<ships1.length; i++) {
-		if (ships1[i].HP/ships1[i].maxHP <= .25) {
+		if (ships1[i].HP/ships1[i].maxHP <= .25 && !ships1[i].retreated) {
 			results.redded = true;
 			results.reddedIndiv[i] = true;
 			if (!ships1[i].isflagship) ships1[i].protection = false;

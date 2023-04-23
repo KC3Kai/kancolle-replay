@@ -436,15 +436,17 @@ window.CONVERT = {
 		}
 		return shipsSave;
 	},
-	deckbuilderToSaveFleet: function(dataDb) {
-		let hasCombined = !!(dataDb.f2 && Object.keys(dataDb.f2).length);
-		let fleetSave = { type: +hasCombined };
-		fleetSave.ships = this.deckbuilderToSaveShips(dataDb.f1);
+	deckbuilderToSaveFleet: function(dataDb,fleetNum) {
+		if (!fleetNum) fleetNum = dataDb.f2 && Object.keys(dataDb.f2).length ? 11 : 1;
+		let type = fleetNum > 10 ? fleetNum - 10 : 0;
+		let fleetKey = fleetNum > 10 ? 'f1' : 'f'+fleetNum;
+		let fleetSave = { type: type };
+		fleetSave.ships = this.deckbuilderToSaveShips(dataDb[fleetKey]);
 		if (fleetSave.ships.length >= 7) {
 			fleetSave.type = CONST.SF;
-			hasCombined = false;
+			type = 0;
 		}
-		if (hasCombined) fleetSave.shipsEscort = this.deckbuilderToSaveShips(dataDb.f2);
+		if (type) fleetSave.shipsEscort = this.deckbuilderToSaveShips(dataDb.f2);
 		return fleetSave;
 	},
 	deckbuilderToSaveLBAS: function(dataDb) {

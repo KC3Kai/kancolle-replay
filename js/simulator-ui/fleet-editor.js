@@ -355,6 +355,7 @@ var UI_FLEETEDITOR = Vue.createApp({
 		preserveBonus: false,
 		
 		loadCode: '',
+		loadCodeFleet: 1,
 		loadKC3Fleet: 1,
 		loadPresetArea: null,
 		loadPresetNode: null,
@@ -401,6 +402,9 @@ var UI_FLEETEDITOR = Vue.createApp({
 		},
 		canBonus: function() {
 			return this.fleet.isPlayer || this.fleet.isFriend;
+		},
+		codeIsDeckbuilder: function() {
+			return this.loadCode.includes('"f1"');
 		},
 	},
 	methods: {
@@ -591,6 +595,7 @@ var UI_FLEETEDITOR = Vue.createApp({
 		
 		onfocusCode: function() {
 			this.updateCode();
+			this.loadCodeFleet = 1;
 		},
 		onclickLoadCode: function() {
 			if (!this.loadCode) return;
@@ -603,7 +608,7 @@ var UI_FLEETEDITOR = Vue.createApp({
 			}
 			
 			if (data.f1) {
-				data = CONVERT.deckbuilderToSaveFleet(data);
+				data = CONVERT.deckbuilderToSaveFleet(data,this.loadCodeFleet);
 			} else if (data.fleetnum && data.fleet1 && data.battles) {
 				data = CONVERT.replayToSave(data).fleetFMain;
 			}
@@ -853,7 +858,14 @@ var UI_ADDITIONALSTATS = Vue.createApp({
 					let base = ship.NBchance()/100, chanceLeft = 1;
 					for (let id of ship.NBtypes()) {
 						let d = NBATTACKDATA[id];
-						let rate = d.chanceMod > 0 ? chanceLeft*base/d.chanceMod : chanceLeft*.99;
+						let chanceMod = d.chanceMod;
+						if (id == 3 && ['SS','SSV'].includes(ship.type)) {
+							let numSpecialTorp = ship.equips.filter(eq => eq.specialCutIn).length;
+							let hasSubRadar = !!ship.equips.find(eq => eq.type == SUBRADAR);
+							if (numSpecialTorp && hasSubRadar) chanceMod = 1.05;
+							else if (numSpecialTorp >= 2) chanceMod = 1.1;
+						}
+						let rate = chanceMod > 0 ? chanceLeft*base/chanceMod : chanceLeft*.99;
 						if (d.replace && ship.LVL >= 80) {
 							let rateBase = Math.floor(100*rate);
 							stats.nbTypes.push({ name: NBATTACKDATA[d.replace].name, rate: Math.round(rateBase*d.replaceChance) });

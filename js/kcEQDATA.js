@@ -52,6 +52,7 @@ const TRANSPORTITEM = 50;
 const SUBRADAR = 51;
 const ARMYUNIT = 52;
 const LANDBOMBERL = 53;
+const SMOKESCREEN = 54;
 const JETBOMBER = 57;
 const JETSCOUT = 59;
 const RADARXL = 93;
@@ -150,7 +151,7 @@ EQTDATA[SECGUN] = {
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AS','AV','AR','LHA'],
 	canequipS: [500, 717],
-	cannotequipS: [477, 478, 622, 623, 624],
+	cannotequipS: [477, 478, 622, 623, 624, 945],
 };
 EQTDATA[SECGUNL] = {
 	name: 'Secondary Gun',
@@ -168,7 +169,7 @@ EQTDATA[SECGUNAA] = {
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3,AAfleet:2,AAself:1},
 	canequip: ['CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AS','AV','AR','LHA'],
 	canequipS: [500, 717],
-	cannotequipS: [477, 478, 622, 623, 624],
+	cannotequipS: [477, 478, 622, 623, 624, 945],
 };
 EQTDATA[APSHELL] = {
 	name: 'AP Shell',
@@ -363,6 +364,7 @@ EQTDATA[RADARS] = {
 	btype: B_RADAR,
 	improve: {ACCshell:1,ACCnb:1.3,LOS:1.25},
 	canequip: ['DD','CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AS','AV','AO','AR','LHA','DE'],
+	cannotequipS: [945],
 };
 EQTDATA[RADARL] = {
 	name: 'Radar (L)',
@@ -386,7 +388,7 @@ EQTDATA[ENGINE] = {
 	image: 19,
 	improve: {EVshell:1.5},
 	canequip: ['DD','CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','SS','SSV','AS','AV','AO','AR','LHA'],
-	cannotequipS: [727, 945],
+	cannotequipS: [],
 };
 EQTDATA[TYPE3SHELL] = {
 	name: 'Anti-Air Shell',
@@ -400,7 +402,7 @@ EQTDATA[BULGEM] = {
 	name: 'Torpedo Bulge',
 	image: 23,
 	canequip: ['CT','CA','CAV','CVL','AS','AV','AR'],
-	canequipS: [146, 147, 216, 217, 305, 306, 307, 314, 330, 346, 357, 500, 537, 538, 542, 543, 547, 556, 559, 563, 564, 566, 567, 568, 569, 578, 579, 621, 622, 623, 624, 626, 629, 630, 645, 649, 650, 652, 656, 657, 662, 663, 668, 670, 699, 717, 900, 915, 943, 948],
+	canequipS: [146, 147, 216, 217, 305, 306, 307, 314, 330, 346, 357, 500, 537, 538, 542, 543, 547, 556, 559, 563, 564, 566, 567, 568, 569, 578, 579, 621, 622, 623, 624, 626, 629, 630, 645, 649, 650, 652, 656, 657, 662, 663, 668, 670, 699, 717, 727, 900, 915, 943, 948],
 };
 EQTDATA[BULGEL] = {
 	name: 'Torpedo Bulge',
@@ -414,7 +416,7 @@ EQTDATA[LANDINGCRAFT] = {
 	btype: B_LC1,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['AV','LHA'],
-	canequipS: [147, 198, 199, 200, 260, 352, 382, 418, 419, 434, 435, 464, 468, 469, 470, 478, 487, 488, 489, 490, 498, 500, 506, 541, 547, 548, 559, 563, 587, 623, 630, 645, 647, 650, 657, 666, 667, 699, 703, 707, 716, 718, 720, 725, 889, 899, 908, 915, 916],
+	canequipS: [147, 198, 199, 200, 260, 352, 382, 418, 419, 434, 435, 464, 468, 469, 470, 478, 487, 488, 489, 490, 498, 500, 506, 541, 547, 548, 559, 563, 587, 623, 630, 645, 647, 650, 657, 666, 667, 699, 703, 707, 716, 718, 720, 725, 889, 899, 908, 915, 916, 959],
 	cannotequipS: [445, 491, 727, 945],
 };
 EQTDATA[SEARCHLIGHTS] = {
@@ -422,7 +424,7 @@ EQTDATA[SEARCHLIGHTS] = {
 	image: 24,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['DD','CL','CA','CAV','FBB','BB','BBV','AV'],
-	canequipS: [343, 356, 500, 626, 639, 640, 645, 650, 699, 727, 945, 948],
+	canequipS: [343, 356, 500, 626, 639, 640, 645, 650, 699, 727, 948],
 };
 EQTDATA[SEARCHLIGHTL] = {
 	name: 'Night Equip',
@@ -435,7 +437,7 @@ EQTDATA[STARSHELL] = {
 	name: 'Night Equip',
 	image: 27,
 	canequip: ['DD','CL','CLT','CA','CAV','FBB','BB','BBV','AS','AV','AR'],
-	canequipS: [500, 699],
+	canequipS: [500, 699, 727],
 };
 EQTDATA[PICKET] = {
 	name: 'Night Equip',
@@ -586,6 +588,12 @@ EQTDATA[ARMYUNIT] = {
 	image: 52,
 	canequip: [],
 	canequipS: [727, 945],
+};
+EQTDATA[SMOKESCREEN] = {
+	name: 'Smoke Generator',
+	image: 54,
+	canequip: ['DE','DD','CL','CLT','CA','CT'],
+	canequipS: [411, 412, 645, 650, 699],
 };
 EQTDATA[OTHER] = {
 	name: 'Misc',
@@ -5808,6 +5816,20 @@ var EQDATA = {
 		nameJP: '陸軍歩兵部隊+チハ改',
 		added: '2023-03-18',
 		type: ARMYUNIT,
+	},
+	500: {
+		name: 'Smoke Generator (Smoke Screen)',
+		nameJP: '発煙装置(煙幕)',
+		added: '2023-04-23',
+		type: SMOKESCREEN,
+		EV: 1,
+	},
+	501: {
+		name: 'Smoke Generator Kai (Smoke Screen)',
+		nameJP: '発煙装置改(煙幕)',
+		added: '2023-04-23',
+		type: SMOKESCREEN,
+		EV: 3,
 	},
 	1501: {
 		name: '5inch Single Cannon',
