@@ -533,7 +533,7 @@ var SIM = {
 		let hasVanguard = dataInput.fleetF.formation == 6;
 		if (!hasVanguard) {
 			for (let node of dataInput.nodes) {
-				if (node.formationOverride == 6 || (node.fleetE && node.fleetE.formation == 6) || (node.fleetEComps && node.fleetEComps.find(comp => comp.fleet.formation == 6))) {
+				if (node.formationOverride == 6 || (node.fleetE && node.fleetE.formation == 6) || (node.fleetEComps && node.fleetEComps.find(comp => comp.fleet && comp.fleet.formation == 6))) {
 					hasVanguard = true;
 					break;
 				}
