@@ -125,7 +125,10 @@ loader.add('BG1','assets/82_res.images.ImgBackgroundDay.jpg')
 	.add('bossbar','assets/bossbar.png')
 	.add('mask','assets/mask.png')
 	.add('skipbomb','assets/skipbomb.png')
-	.add('skipbombsplash','assets/skipbombsplash.png');
+	.add('skipbombsplash','assets/skipbombsplash.png')
+	.add('smokebig','assets/smokeBig.png')
+	.add('smokemiddle','assets/smokeMiddle.png')
+	.add('smokesmall','assets/smokeSmall.png')
 for (var i=389; i <= 417; i+=2) loader.add(i.toString(),'assets/'+i+'.png');
 for (var i=0; i<=9; i++) loader.add('C'+i,'assets/C'+i+'.png');
 for (var i=0; i<=9; i++) loader.add('N'+i,'assets/N'+i+'.png');
@@ -1269,6 +1272,10 @@ function processAPI(root) {
 			}
 		}
 		
+		if (data.api_smoke_type) {
+			eventqueue.push([phaseSmokescreenStart,[data.api_smoke_type]]);
+		}
+		
 		//jet LBAS phase
 		if (data.api_air_base_injection) {
 			data.api_air_base_injection.api_plane_from[1] = [];
@@ -1342,6 +1349,10 @@ function processAPI(root) {
 		//opening torp
 		f = (COMBINED)? fleet1C : fleet1;
 		if (data.api_opening_atack) processRaigeki(data.api_opening_atack,f,(data.api_ship_ke_combined));
+		
+		if (data.api_smoke_type) {
+			eventqueue.push([phaseSmokescreenEnd,[]]);
+		}
 		
 		//engagement
 		var ldShooting = data.api_name == 'ld_shooting' || data.api_name == 'fc_ld_shooting';
@@ -2279,8 +2290,8 @@ function shootNightZuiun(ships,targets,damages,crits,protects) {
 		let ship = ships[0];
 		let planes = createPlane(ship.graphic.x+85,ship.graphic.y+22,[11],null,null,ship.side);
 		let xTarget = (ship.side==0)? 715:85;
-		let angle = Math.atan((240-planes.y)/(xTarget-planes.x));
-		console.log(angle)
+		let yTarget = targets[0].graphic.y+20;
+		let angle = Math.atan((yTarget-planes.y)/(xTarget-planes.x));
 		updates.push([movePlane,[planes,angle,(ship.side==0) ? 8 : -8, planes.x, xTarget]]);
 	},200);
 	
@@ -3336,6 +3347,94 @@ function moveSearchlight(light) {
 	return false;
 }
 
+
+function phaseSmokescreenStart(smokeType) {
+	createSmokescreen(smokeType);
+	addTimeout(function(){ ecomplete = true; }, 1000);
+}
+
+function phaseSmokescreenEnd() {
+	for (let smoke of SMOKESCREEN_ACTIVE) {
+		smoke.ended = true;
+	}
+	addTimeout(function(){ ecomplete = true; }, 1);
+}
+
+var SMOKESCREEN_TYPES = {
+	1: [[1,4,1,1],[3,19,16,1],[1,1,43,1],[2,25,34,1],[1,42,48,1],[3,22,50,1],[2,17,68,1],[1,6,73,1],[1,45,74,1],[1,8,78,1],[2,27,82,1],[3,48,90,0.9],[3,27,101,0.9],[2,43,117,0.8],[1,56,118,0.9],[2,11,119,0.9],[2,9,122,0.9],[1,65,127,0.9],[1,56,140,0.9],[2,6,144,0.9],[2,39,143,0.9],[1,61,154,0.8],[2,19,148,0.8],[2,28,169,0.6],[2,7,170,0.7],[1,1,173,0.7],[1,44,189,0.7],[2,47,176,0.6],[1,61,185,0.6],[1,18,191,0.6],[3,47,208,0.6],[3,8,210,0.6],[3,48,222,0.5],[3,27,231,0.5],[2,6,242,0.5],[3,32,259,0.6],[3,9,268,0.6],[3,57,279,0.4],[3,28,284,0.3],[3,48,297,0.3],[2,2,302,0.3],[3,18,302,0.3],[2,53,306,0.3],[2,8,328,0.3],[2,38,333,0.2],[3,56,337,0.2],[3,15,343,0.2]],
+	2: [[1,4,1,1],[3,19,16,1],[2,25,34,1],[1,1,43,1],[1,42,48,1],[3,22,50,1],[2,17,68,1],[1,6,73,1],[1,45,74,1],[1,8,78,1],[2,27,82,1],[3,48,90,0.9],[3,27,101,0.9],[2,43,117,0.6],[1,56,118,0.9],[2,11,119,0.8],[2,9,122,0.8],[1,65,127,0.7],[1,56,140,0.8],[2,6,144,0.7],[2,39,143,0.7],[2,19,148,0.6],[1,61,154,0.6],[2,28,169,0.4],[2,7,170,0.5],[1,1,173,0.5],[2,47,176,0.4],[1,61,185,0.4],[1,44,189,0.5],[1,18,191,0.3],[3,47,208,0.3],[3,8,210,0.3],[3,48,222,0.2],[3,27,231,0.2],[2,6,242,0.2]],
+	3: [[1,4,1,1],[3,19,16,1],[2,25,34,1],[1,1,43,1],[1,42,48,1],[3,22,50,1],[2,17,68,1],[1,6,73,1],[1,45,74,1],[1,8,78,1],[2,27,82,1],[3,48,90,0.9],[3,27,101,0.9],[2,43,117,0.6],[1,56,118,0.9],[2,11,119,0.8],[2,9,122,0.8],[1,65,127,0.7],[1,56,140,0.8],[2,6,144,0.7],[2,39,143,0.7],[2,19,148,0.6],[1,61,154,0.6],[2,28,169,0.4],[2,7,170,0.5],[1,1,173,0.5],[2,47,176,0.4],[1,61,185,0.4],[1,44,189,0.5],[1,18,191,0.3],[3,47,208,0.3],[3,8,210,0.3],[3,48,222,0.2],[3,27,231,0.2],[2,6,242,0.2]],
+	11: [[1,32,359,0.2],[2,9,368,0.2],[3,57,379,0.2]],
+	12: [[1,32,259,0.2],[2,9,268,0.2],[3,57,279,0.2]],
+}
+var SMOKESCREEN_ACTIVE = [];
+function createSmokescreen(smokeType) {
+	deleteSmokescreen();
+	SMOKESCREEN_ACTIVE = [];
+	let time = 0;
+	let ratio = smokeType == 3 ? 1.5 : smokeType == 2 ? 1.3 : 1;
+	for (let type=1; type<=smokeType; type++) {
+		let arrs = SMOKESCREEN_TYPES[type].slice();
+		if (fleet1.length >= 7 && SMOKESCREEN_TYPES[type+10]) arrs = arrs.concat(SMOKESCREEN_TYPES[type+10]);
+		for (let i=0; i<arrs.length; i++) {
+			let arr = arrs[i];
+			let size = arr[0], x = arr[1], y = arr[2], alpha = arr[3];
+			let smoke = size == 3 ? getFromPool('smokebig','assets/smokeBig.png') : size == 2 ? getFromPool('smokemiddle','assets/smokeMiddle.png') : getFromPool('smokesmall','assets/smokeSmall.png');
+			SMOKESCREEN_ACTIVE.push(smoke);
+			smoke.notpersistent = true;
+			smoke.anchor.set(.5);
+			smoke.scale.set(.667);
+			x += COMBINED ? 473 : 269;
+			if (type == 1) y += 136;
+			else if (type == 2 && smokeType == 2) y += 333;
+			else if (type == 2 && smokeType == 3) y += 283;
+			else if (type == 3) y += 406;
+			smoke.position.set(x*.667,y*.667);
+			smoke.alpha = alpha;
+			smoke.rotation = Math.random()*2*Math.PI;
+			smoke.xR = smoke.xOrig = x; smoke.yR = smoke.yOrig = y;
+			smoke.time = 0;
+			smoke.lifetime = (COMBINED ? 600 : 360) + 12*ratio*(i + (type == 3 ? 21 : type == 2 ? 12 : 0)) - Math.round(time*.06);
+			smoke.ended = false;
+			
+			let xTarget = 6*Math.random() - 3;
+			let yTarget = 6*Math.random() - 3;
+			let fadeSpeed = alpha/(120*ratio);
+			
+			addTimeout(function() {
+				stage.addChildAt(smoke,stage.getChildIndex(shutterTop2));
+				updates.push([moveSmokescreen,[smoke,xTarget,yTarget,fadeSpeed]]);
+			}, time);
+			time += 10;
+		}
+	}
+}
+
+function deleteSmokescreen() {
+	for (let smoke of SMOKESCREEN_ACTIVE) {
+		smoke.ended = true;
+		smoke.lifetime = smoke.alpha = 0;
+	}
+}
+
+function moveSmokescreen(smoke,xTarget,yTarget,fadeSpeed) {
+	let x = smoke.xOrig + xTarget*Math.sin(2*Math.PI*smoke.time/120);
+	let y = smoke.yOrig + yTarget*Math.sin(2*Math.PI*smoke.time/120);
+	smoke.position.set(x*.667, y*.667);
+	if (++smoke.time >= 120) smoke.time = 0;
+	if (smoke.lifetime <= 0) {
+		smoke.alpha -= fadeSpeed;
+		if (smoke.alpha <= 0) {
+			smoke.alpha = 0;
+			recycle(smoke);
+			return true;
+		}
+	} else {
+		if (smoke.ended) smoke.lifetime--;
+	}
+	return false;
+}
+
 function NBstart(flares,contact,bgm,combinedEType,isFriend) {
 	flares = flares || [-1,-1];
 	contact = contact || [-1,-1];
@@ -3487,12 +3586,13 @@ function friendStart(fleetFriend,hps,bgm) {
 		shipSetHP(fleetFriend[i],hps[i]);
 	}
 
+	let offset = fleet1C && fleet1C[5] && fleet1C[5].graphic.y != 302 ? 300 : 0;
 	for (var i=0; i<fleet1.length; i++) {
 		var j = 0;
 		addTimeout(function() {
 			updates.push([shipMoveTo,[fleet1[j],-220,10]]);
 			j++;
-		}, 100+i*100);
+		}, 100+i*100 + offset);
 	}
 
 	if (fleet1C) {
@@ -3502,7 +3602,7 @@ function friendStart(fleetFriend,hps,bgm) {
 			addTimeout(function() {
 				updates.push([shipMoveToV,[fleet1C[k2],-100,-10]]);
 				k2++;
-			}, 200+i*100);
+			}, 200+i*100 + offset);
 		}
 		var kk2 = fleet1C.length-1;
 		for (var i=5; i>=3; i--) {
@@ -3510,7 +3610,7 @@ function friendStart(fleetFriend,hps,bgm) {
 			addTimeout(function() {
 				updates.push([shipMoveToV,[fleet1C[kk2],600,10]]);
 				kk2--;
-			}, 200+(5-i)*100);
+			}, 200+(5-i)*100 + offset);
 		}
 	}
 	
@@ -3521,13 +3621,13 @@ function friendStart(fleetFriend,hps,bgm) {
 			addTimeout(function(){
 				updates.push([shipMoveTo,[fleetFriend[j],fleetFriend[j].xorigin,10]]);
 				j++; SM.play('enter');
-			},100+100*i);
+			},100+100*i + offset);
 		}
-	},1000);
+	},1000 + offset);
 	
 	addTimeout(function() {
 		ecomplete = true;
-	}, 2000);
+	}, 2000 + offset);
 }
 
 function friendExit(fleetFriend) {
@@ -3657,6 +3757,7 @@ function resetBattle() {
 	$('#plAS1').text('');
 	$('#plAS2').text('');
 	bossBarReset();
+	deleteSmokescreen();
 }
 
 function shuttersNextBattle(battledata, newships) {

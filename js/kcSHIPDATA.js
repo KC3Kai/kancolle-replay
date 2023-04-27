@@ -18395,7 +18395,6 @@ var SHIPDATA = {
 		type: 'DD', sclass: 91,
 		nid: 541,
 		added: '2023-03-01',
-		alwaysOASW: true,
 		HP: 17, HPmax: 35,
 		FP: 30, FPbase: 12,
 		TP: 61, TPbase: 20,
