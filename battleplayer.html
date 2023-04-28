@@ -49,7 +49,7 @@
 			}
 		}
 		function loadImgURL(url) {
-			<!-- if (url.indexOf('cors.piro.moe') == -1) url = 'https://cors.piro.moe/' + url; -->
+			if (url.indexOf('cors.piro.moe') == -1) url = 'https://cors.piro.moe/' + url;
 			var preview = document.getElementById('imgpreview');
 			var xhr = new XMLHttpRequest();
 			xhr.responseType = 'blob';
