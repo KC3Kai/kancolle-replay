@@ -1458,6 +1458,10 @@ function processAPI(root) {
 	
 	if (!started) animate();
 	SM.stopBGM();
+	
+	if (Howler.ctx.state == 'suspended') {
+		showOverlaySuspend();
+	}
 }
 
 
@@ -1471,7 +1475,7 @@ var updates = [];
 
 var e = 0;
 var ecomplete = true;
-var PAUSE = false;
+var PAUSE = false, PAUSE_SUSPEND = false;
 var END = false;
 var SHOW = false;
 var statechangefunc = null;
@@ -1505,7 +1509,7 @@ function animate(currtime=TARGETFRAMETIME) {
 	}
 	prevtime = currtime;
 	
-	if (PAUSE) return;
+	if (PAUSE || PAUSE_SUSPEND) return;
 	if (STEPBYFRAME) PAUSE = true;
 	
 	if (statechangefunc) {
@@ -3822,6 +3826,32 @@ function wait(time,stopBGM) {
 	addTimeout(function(){ ecomplete = true; }, time);
 	if (stopBGM) SM.fadeBGM();
 }
+
+
+var G_OVERLAY_SUSPEND = (() => {
+	let overlay = new PIXI.Container();
+	overlay.alpha = .75;
+	let g = new PIXI.Graphics();
+	g.beginFill(0);
+	g.drawRect(0,0,800,480);
+	overlay.addChild(g);
+	let txt = new PIXI.Text('Click anywhere to resume',{ fill: 0xffffff });
+	txt.anchor.set(.5);
+	txt.position.set(400,240);
+	overlay.addChild(txt);
+	return overlay;
+})();
+function showOverlaySuspend() {
+	G_OVERLAY_SUSPEND.visible = true;
+	PAUSE_SUSPEND = true;
+	renderer.render(G_OVERLAY_SUSPEND);
+}
+function hideOverlaySuspend() {
+	G_OVERLAY_SUSPEND.visible = false;
+	PAUSE_SUSPEND = false;
+	renderer.render(G_OVERLAY_SUSPEND);
+}
+
 
 function skipToBattle(battle) {
 	if (battle > battlestarts.length) battle = battlestarts.length;

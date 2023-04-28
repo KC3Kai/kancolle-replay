@@ -247,3 +247,14 @@ $('#textimgurl').on('keypress', function (e) {
 $('#rad'+(localStorage.replay_lang || 'EN')).prop('checked',true);
 
 if (renderer instanceof PIXI.CanvasRenderer) $('#warningwebgl').show();
+
+document.body.onclick = function() {
+	if (Howler.ctx.state == 'suspended') {
+		Howler.ctx.resume();
+	}
+}
+Howler.ctx.onstatechange = function() {
+	if (Howler.ctx.state == 'running') {
+		hideOverlaySuspend();
+	}
+}
