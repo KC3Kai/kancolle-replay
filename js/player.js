@@ -3835,7 +3835,7 @@ var G_OVERLAY_SUSPEND = (() => {
 	g.beginFill(0);
 	g.drawRect(0,0,800,480);
 	overlay.addChild(g);
-	let txt = new PIXI.Text('Click anywhere to resume',{ fill: 0xffffff });
+	let txt = new PIXI.Text('Click anywhere to start',{ fill: 0xffffff });
 	txt.anchor.set(.5);
 	txt.position.set(400,240);
 	overlay.addChild(txt);
