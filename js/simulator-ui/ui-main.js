@@ -88,6 +88,8 @@ var UI_MAIN = Vue.createApp({
 			yamatoSpecial3Rate: SIMCONSTS.yamatoSpecial3Rate,
 			yamatoSpecial2Rate: SIMCONSTS.yamatoSpecial2Rate,
 			nightZuiunCIRate: SIMCONSTS.nightZuiunCIRate,
+			arcticCamoAr: SIMCONSTS.arcticCamoAr,
+			arcticCamoEva: SIMCONSTS.arcticCamoEva,
 			bucketPercent: BUCKETPERCENT*100,
 			bucketTime: BUCKETTIME/3600,
 			carryOverHP: CARRYOVERHP,
@@ -113,6 +115,7 @@ var UI_MAIN = Vue.createApp({
 			radarCount: 0,
 			radarNode: 0,
 			rules: [],
+			dameconNode: 0,
 		},
 		
 		canSim: true,
@@ -255,6 +258,7 @@ var UI_MAIN = Vue.createApp({
 			for (let i=indAt; i<this.battles.length; i++) {
 				this.battles[i].ind--;
 			}
+			if (this.settingsFCF.dameconNode == this.battles[indAt].id) this.settingsFCF.dameconNode = 0;
 			this.battles.splice(indAt,1);
 		},
 		addNewComp: function(comps,args) {

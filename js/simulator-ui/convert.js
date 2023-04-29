@@ -841,6 +841,9 @@ window.CONVERT = {
 					});
 				}
 			}
+			if (dataUI.settingsFCF.dameconNode && nodeIdToNum[dataUI.settingsFCF.dameconNode]) {
+				dataInput.settingsFCF.dameconNode = nodeIdToNum[dataUI.settingsFCF.dameconNode];
+			}
 			if (!Object.keys(dataInput.settingsFCF).length) delete dataInput.settingsFCF;
 		}
 		return dataInput;

@@ -403,6 +403,8 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 			aswPenetrate += Math.max(0, Math.sqrt(eq.ASW - 2) + +(this.type == 'DE'));
 		}
 		
+		if (eq.mid == 268) this.hasArcticCamo = true;
+		
 		this.equips.push(eq);
 	}
 	
@@ -780,6 +782,8 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	if (aswPenetrate > 0) this.aswPenetrate = aswPenetrate;
 	
 	if (this.equips.find(eq => [1574,1575,1586].includes(eq.mid))) this.canAirstrikeSub = true;
+	
+	if (this.hasArcticCamo && SIMCONSTS.arcticCamoAr) this.AR += +SIMCONSTS.arcticCamoAr || 0;
 	
 	if (MECHANICS.eqBonus) {
 		let equipsCur = [], levelsCur = [], bonusesPrev = {};
