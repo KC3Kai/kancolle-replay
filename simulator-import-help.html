@@ -109,7 +109,8 @@ If ship/equip "masterId" not in simulator's database, "stats" is required.
 			types: [&lt;int&gt; or &lt;string&gt;] ship classes to check, use API number or hull code e.g. "DD", or use "XX" for "any",
 			count: &lt;int&gt; required number after FCF use,
 			node: &lt;int&gt; applies check on this node index (1-indexed) and all nodes before it (default "all nodes"),
-		}]
+		}],
+		dameconNode: &lt;int&gt; ignore repair team/goddess on ships when determining retreat, applies on this node index (1-indexed) and all nodes before it (default "no nodes"),
 	},
 	mechanics: optional, all are &lt;bool&gt; (default 1) {
 		artillerySpotting: 

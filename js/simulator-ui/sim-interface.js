@@ -687,7 +687,8 @@ var SIM = {
 				this._updateResultsNode(result,battleInd);
 			}
 			
-			let isRetreat = fleetF.combinedWith ? !canContinue(fleetF.ships,fleetF.combinedWith.ships) : !canContinue(fleetF.ships);
+			let ignoreDamecon = dataInput.settingsFCF && dataInput.settingsFCF.dameconNode && battleInd+1 <= dataInput.settingsFCF.dameconNode;
+			let isRetreat = fleetF.combinedWith ? !canContinue(fleetF.ships,fleetF.combinedWith.ships,false,ignoreDamecon) : !canContinue(fleetF.ships,null,false,ignoreDamecon);
 			if (!isRetreat) {
 				let undoFCF = false;
 				if (dataInput.settingsFCF && battleInd < dataInput.nodes.length-1) {
@@ -705,7 +706,7 @@ var SIM = {
 							for (let key in ship._tempFCF) ship[key] = ship._tempFCF[key];
 						}
 					}
-					isRetreat = fleetF.combinedWith ? !canContinue(fleetF.ships,fleetF.combinedWith.ships,true) : !canContinue(fleetF.ships,null,true);
+					isRetreat = fleetF.combinedWith ? !canContinue(fleetF.ships,fleetF.combinedWith.ships,true,ignoreDamecon) : !canContinue(fleetF.ships,null,true,ignoreDamecon);
 				}
 			}
 			

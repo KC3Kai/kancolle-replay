@@ -153,7 +153,7 @@ var SIMCONSTS = {
 	torpedoDmgCap: 180,
 	nightDmgCap: 360,
 	airDmgCap: 170,
-	lbasDmgCap: 190,
+	lbasDmgCap: 220,
 	aswDmgCap: 170,
 	supportDmgCap: 170,
 	shellEcMF: null,
@@ -187,6 +187,8 @@ var SIMCONSTS = {
 	yamatoSpecial3Rate: 80,
 	yamatoSpecial2Rate: 80,
 	nightZuiunCIRate: 60,
+	arcticCamoAr: 0,
+	arcticCamoEva: 0,
 	airRaidCostW6: false,
 	enablePlaneBonus: true,
 	enableModSummerBB: true,
@@ -392,6 +394,7 @@ function shell(ship,target,APIhou,attackSpecial) {
 		}
 	}
 	evFlat += target.improves.EVshell || 0;
+	if (target.hasArcticCamo && SIMCONSTS.arcticCamoEva) evFlat += +SIMCONSTS.arcticCamoEva || 0;
 	
 	
 	var FPfit = (ship.FPfit||0);
@@ -2142,7 +2145,7 @@ function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupp
 	
 	//get contact
 	var contactMod = 1;
-	if (carriers[0].airState() != -2 && carriers[0].airState() != 0 && !issupport) {
+	if (carriers[0].airState() != -2 && carriers[0].airState() != 0 && !issupport && !isjetphase) {
 		var contactdata = getContact(carriers);
 		if (contactdata) {
 			contactMod = contactdata.mod;
@@ -2578,7 +2581,6 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 			else if (eq.ACC <= 2 && contactModLB < 1.12) contactModLB = 1.12;
 		}
 	}
-	contactMod *= contactModLB;
 	lbas.AS = airStateNow;
 	
 	for (var i=0; i<lbas.equips.length; i++) {
@@ -2623,7 +2625,7 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 			}
 			var target = choiceWProtect(targets);
 			if (!target) continue;
-			var dmg = airstrikeLBAS(lbas,target,i,contactMod);
+			var dmg = airstrikeLBAS(lbas,target,i,contactMod,contactModLB,isjetphase);
 			if (C) {
 				var showtorpedo = lbas.equips[i].istorpbomber;
 				if (lbas.equips[i].type == LANDBOMBER && target.isInstall) showtorpedo = false;
@@ -2657,12 +2659,12 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 	}
 }
 
-function airstrikeLBAS(lbas,target,slot,contactMod) {
+function airstrikeLBAS(lbas,target,slot,contactMod,contactModLB,isjetphase) {
 	if (!contactMod) contactMod = 1;
 	var equip = lbas.equips[slot];
 	var acc = .95;
 	var critdmgbonus = 1, critratebonus = 0, ACCplane = 0;
-	if (equip.type != LANDBOMBER || MECHANICS.LBASBuff) {
+	if ((equip.type != LANDBOMBER || MECHANICS.LBASBuff) && !isjetphase) {
 		let exp = equip.exp || 0, rank = equip.rank || 0;
 		if ([AUTOGYRO,ASWPLANE].includes(equip.type)) {
 			exp *= .825;
@@ -2730,11 +2732,14 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 		if (equip.mid == 454 && !target.isInstall) {
 			if (['DD','CL','CLT','CA','CAV'].includes(target.type)) planebase *= 1.16;
 		}
-		var dmgbase = 25+planebase*Math.sqrt(1.8*lbas.planecount[slot]);
+		let slotMod = isjetphase ? 1 : 1.8;
+		var dmgbase = 25+planebase*Math.sqrt(slotMod*lbas.planecount[slot]);
 		var preMod = (equip.type == LANDBOMBER || equip.type == LANDBOMBERL)? .8 : 1;
+		if (equip.isjet && !isjetphase) preMod = 1/Math.sqrt(2);
 		if (target.isSub) {
 			preMod = (planebase >= 10)? .7 + Math.random()*.3 : .35 + Math.random()*.45;
 		}
+		preMod *= (contactModLB || 1);
 		var postMod = equip.type == LANDBOMBER ? 1.8 : 1;
 		// https://discordapp.com/channels/118339803660943369/425302689887289344/805523354844135494
 		// CV/CVB unconfirmed, assumed based on ap shell weakness
@@ -3509,8 +3514,17 @@ function getFCFShips(ships1,ships1C) {
 	return [retreater, escorter];
 }
 
-function canContinue(ships1,ships1C,ignoreFCF) {
-	if (ships1[0].HP/ships1[0].maxHP <= .25) return false;
+function canContinue(ships1,ships1C,ignoreFCF,ignoreDamecon) {
+	if (ships1[0].HP/ships1[0].maxHP <= .25) {
+		let ship = ships1[0];
+		if (!ignoreDamecon && ship.repairs && ship.repairs.length) {
+			let repair = ship.repairs.shift();
+			if (repair == 42) ship.HP = Math.floor(.5*ship.maxHP);
+			else if (repair == 43) { ship.HP = ship.maxHP; ship.fuelleft = ship.ammoleft = 10; }
+			return true;
+		}
+		return false;
+	}
 	
 	if (!ignoreFCF && !ships1C && ships1[0].hasFCF && ships1[0].hasFCF[272] && ships1[0].fleet.ships.length >= 7) {
 		let taihaShips = ships1.filter(ship => ship.HP/ship.maxHP <= .25 && !ship.retreated);
@@ -3543,12 +3557,12 @@ function canContinue(ships1,ships1C,ignoreFCF) {
 	if (DORETREAT) {
 		for (var i=1; i<ships1.length; i++) {
 			if (ships1[i].retreated) continue;
-			if (ships1[i].HP/ships1[i].maxHP <= .25 && (!ships1[i].repairs||!ships1[i].repairs.length) && ships1[i] != retreater) return false;
+			if (ships1[i].HP/ships1[i].maxHP <= .25 && (ignoreDamecon||!ships1[i].repairs||!ships1[i].repairs.length) && ships1[i] != retreater) return false;
 		}
 		if (ships1C) {
 			for (var i=1; i<ships1C.length; i++) {
 				if (ships1C[i].retreated) continue;
-				if (ships1C[i].HP/ships1C[i].maxHP <= .25 && (!ships1C[i].repairs||!ships1C[i].repairs.length) && ships1C[i] != retreater) return false;
+				if (ships1C[i].HP/ships1C[i].maxHP <= .25 && (ignoreDamecon||!ships1C[i].repairs||!ships1C[i].repairs.length) && ships1C[i] != retreater) return false;
 			}
 		}
 	}
