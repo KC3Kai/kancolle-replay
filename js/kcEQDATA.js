@@ -5831,6 +5831,30 @@ var EQDATA = {
 		type: SMOKESCREEN,
 		EV: 3,
 	},
+	502: {
+		name: '35.6cm Twin Gun Mount Kai 3 (Dazzle Camouflage)',
+		nameJP: '35.6cm連装砲改三(ダズル迷彩仕様)',
+		added: '2023-04-30',
+		type: MAINGUNL,
+		FP: 20,
+		AA: 6,
+		AR: 2,
+		ACC: 4,
+		EV: 3,
+		RNG: 3,
+	},
+	503: {
+		name: '35.6cm Twin Gun Mount Kai 4',
+		nameJP: '35.6cm連装砲改四',
+		added: '2023-05-01',
+		type: MAINGUNL,
+		FP: 22,
+		AA: 5,
+		AR: 2,
+		ACC: 4,
+		EV: 1,
+		RNG: 3,
+	},
 	1501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
@@ -7520,7 +7544,7 @@ function getBonusStats(mid,eqids,improves) {
 	let bonusTotal = { houg: 0, raig: 0, tyku: 0, souk: 0, kaih: 0, tais: 0, saku: 0, houm: 0, leng: 0, baku: 0 };
 	let sdata = SHIPDATA[mid];
 	let eqCounts = {}, eqCountsType = {}, eqImproves = {};
-	let hasSR = false, hasAR = false;
+	let hasSR = false, hasAR = false, hasAccR = false;
 	for (let i=0; i<eqids.length; i++) {
 		let eqid = eqids[i];
 		if (!eqid || eqid < 0) continue;
@@ -7533,6 +7557,7 @@ function getBonusStats(mid,eqids,improves) {
 		if (EQTDATA[eqdata.type].btype == B_RADAR) {
 			if (eqdata.LOS >= 5) hasSR = true;
 			if (eqdata.AA >= 2) hasAR = true;
+			if (eqdata.ACC >= 8) hasAccR = true;
 		}
 	}
 	for (let bonusItem of EQUIPBONUSDATA.bonuses) {
@@ -7559,6 +7584,7 @@ function getBonusStats(mid,eqids,improves) {
 		for (let bonusData of bonusItem.bonuses) {
 			if (bonusData.requiresSR && !hasSR) continue
 			if (bonusData.requiresAR && !hasAR) continue;
+			if (bonusData.requiresAccR && !hasAccR) continue;
 			if (bonusData.shipClass && bonusData.shipClass.indexOf(sdata.sclass) == -1) continue;
 			if (bonusData.shipCountry && bonusData.shipCountry.indexOf(EQUIPBONUSDATA.ctypeToCountry[sdata.sclass]) == -1) continue;
 			if (bonusData.shipId && bonusData.shipId.indexOf(mid) == -1) continue;
