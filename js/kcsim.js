@@ -102,6 +102,7 @@ var AACIDATA = {
 	43:{num:8,rate:.55,mod:1.6,equip:'HHR',num1:1},
 	44:{num:6,rate:.55,mod:1.6,equip:'HRG',num1:1},
 	45:{num:5,rate:.5,mod:1.55,equip:'HR',num1:1},
+	46:{num:8,rate:.5,mod:1.55,equip:'MCR',num1:1},
 };
 
 var ARTILLERYSPOTDATA = {
@@ -281,6 +282,7 @@ var MECHANICS = {
 	eqBonusAA: false, //WIP disabled
 	antiSubRaid: true,
 	aswPlaneAir: true,
+	kongouSpecialBuff3: true,
 };
 var NERFPTIMPS = false;
 var BREAKPTIMPS = false;
@@ -1068,7 +1070,7 @@ function canSpecialAttackUnique(ship,isNB) {
 		let ship2 = ship.fleet.ships[1], ship3 = ship.fleet.ships[2];
 		if (ship2.HP/ship2.maxHP <= .5) return false;
 		if ([911,916].includes(ship.mid) && ship3.HP/ship3.maxHP > .5) {
-			let groups = [[541,573], [553,554], [411,412], [364,576], [591,592], [697,659], [446,447]];
+			let groups = [[541,573], [553,554], [411,412], [364,576], [591,592], [591,593], [591,954], [697,659], [446,447]];
 			let group = groups.find(group => group.includes(ship2.mid) && group.includes(ship3.mid));
 			if (group || (ship2.mid == 546 && [541,573].includes(ship3.mid))) {
 				let rate = SIMCONSTS.yamatoSpecial3Rate;
@@ -1151,6 +1153,7 @@ function canSpecialAttackUnique(ship,isNB) {
 		}
 		if (ship.mid == 591 && [592,151,439,364].indexOf(ship.fleet.ships[1].mid) == -1) return false;
 		if (ship.mid == 592 && [591,152].indexOf(ship.fleet.ships[1].mid) == -1) return false;
+		if ([593,954].includes(ship.mid) && ![591,592].includes(ship.fleet.ships[1].mid)) return false;
 		let rate = SIMCONSTS.kongouSpecialRate;
 		if (!rate) {
 			rate = 45;
@@ -1259,7 +1262,7 @@ function getSpecialAttackMod(ship,attackSpecial) {
 		if (ship.equiptypesB[B_APSHELL]) { modAcc *= 1.15; }
 		if (ship.equiptypesB[B_RADAR]) { modAcc *= 1.15; }
 	} else if (attackSpecial == 104) {
-		mod = MECHANICS.kongouSpecialBuff2 ? 2.2 : 1.9;
+		mod = MECHANICS.kongouSpecialBuff3 ? 2.4 : MECHANICS.kongouSpecialBuff2 ? 2.2 : 1.9;
 		if (ENGAGEMENT == 1.2) mod *= 1.25;
 		else if (ENGAGEMENT == .6) mod *= MECHANICS.kongouSpecialBuff2 ? .8 : .75;
 	} else if (attackSpecial == 300 || attackSpecial == 301 || attackSpecial == 302) {

@@ -1477,6 +1477,10 @@ Ship.prototype.getAACItype = function(atypes) {
 		if (numSecHA && numDuplex) types.push(45);
 	}
 	
+	if (this.mid == 593) { //Haruna Kai Ni B
+		if (this.equips.find(eq => eq.mid == 502 || eq.mid == 503) && concentrated && atypes[A_AIRRADAR]) types.push(46);
+	}
+	
 	var add6 = false;
 	if (this.type=='BB'||this.type=='BBV'||this.type=='FBB') {  //is BB
 		if (atypes[A_GUN] && atypes[A_TYPE3SHELL] && atypes[A_AAFD]) {
