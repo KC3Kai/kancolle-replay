@@ -836,7 +836,7 @@ var EQDATA = {
 	},
 	22: {
 		name: 'Prototype Reppuu Late Model',
-		nameJP: '烈風',
+		nameJP: '試製烈風 前期型',
 		added: '2013-04-17',
 		type: FIGHTER,
 		AA: 10
@@ -923,8 +923,8 @@ var EQDATA = {
 		ACC: 8
 	},
 	32: {
-		name: 'Type 14 Air RADAR',
-		nameJP: '14号対空電探',
+		name: 'Type 42 Air RADAR',
+		nameJP: '42号対空電探',
 		added: '2013-04-17',
 		type: RADARL,
 		AA: 6,
@@ -994,7 +994,7 @@ var EQDATA = {
 	},
 	41: {
 		name: 'Type A Ko-hyoteki',
-		nameJP: '甲標的',
+		nameJP: '甲標的 甲型',
 		added: '2013-04-17',
 		type: MIDGETSUB,
 		TP: 12
@@ -1044,8 +1044,8 @@ var EQDATA = {
 		ACC: 2
 	},
 	48: {
-		name: '12.7 cm Single High-Angle Cannon',
-		nameJP: '12.7cm単装高角砲',
+		name: '12cm Single High-Angle Cannon',
+		nameJP: '12cm単装高角砲',
 		added: '2013-06-05',
 		type: SECGUN, image: 16,
 		FP: 1,
@@ -1090,7 +1090,7 @@ var EQDATA = {
 	},
 	53: {
 		name: 'Reppuu Model 11',
-		nameJP: '烈風改',
+		nameJP: '烈風 一一型',
 		added: '2013-05-17',
 		type: FIGHTER,
 		AA: 12
@@ -2001,8 +2001,8 @@ var EQDATA = {
 		AR: -2
 	},
 	147: {
-		name: '120mm Twin Gun Mount',
-		nameJP: '120mm連装砲',
+		name: '120mm/50 Twin Gun Mount',
+		nameJP: '120mm/50 連装砲',
 		added: '2015-08-10',
 		type: MAINGUNS,
 		FP: 3,
@@ -2397,7 +2397,7 @@ var EQDATA = {
 	},
 	185: {
 		name: 'Type 3 Fighter Hien Model 1D',
-		nameJP: '三式戦 飛燕１型丁',
+		nameJP: '三式戦 飛燕一型丁',
 		added: '2016-08-12',
 		image: 44,
 		type: INTERCEPTOR,
@@ -3423,8 +3423,8 @@ var EQDATA = {
 		LOS: 10,
 	},
 	279: {
-		name: 'SK&SG Radar',
-		nameJP: 'SK&SG レーダー',
+		name: 'SK+SG Radar',
+		nameJP: 'SK+SG レーダー',
 		added: '2018-02-16',
 		type: RADARL,
 		FP: 1,
@@ -4038,7 +4038,7 @@ var EQDATA = {
 		EV: 3,
 	},
 	335: {
-		name: '	Reppuu Kai (Prototype Carrier-based Model)',
+		name: 'Reppuu Kai (Prototype Carrier-based Model)',
 		nameJP: '烈風改(試製艦載型)',
 		added: '2019-05-20',
 		type: FIGHTER,
@@ -4059,7 +4059,7 @@ var EQDATA = {
 		EV: 1,
 	},
 	337: {
-		name: '	Reppuu Kai Ni (CarDiv 1/Skilled)',
+		name: 'Reppuu Kai Ni (CarDiv 1/Skilled)',
 		nameJP: '烈風改二(一航戦/熟練)',
 		added: '2019-05-20',
 		type: FIGHTER,
@@ -5609,8 +5609,8 @@ var EQDATA = {
 		RNG: 4,
 	},
 	479: {
-		name: 'Mosquito FB Mk.IV',
-		nameJP: 'Mosquito FB Mk.IV',
+		name: 'Mosquito FB Mk.VI',
+		nameJP: 'Mosquito FB Mk.VI',
 		added: '2022-08-31',
 		type: LANDBOMBER,
 		aaResistShip: .6,
@@ -5759,7 +5759,7 @@ var EQDATA = {
 		ASW: 8,
 	},
 	492: {
-		name: 'Zero Fighter Model 52C (Yawata Force)',
+		name: 'Zero Fighter Model 52C (Hachiman Force)',
 		nameJP: '零戦52型丙(八幡部隊)',
 		added: '2023-03-18',
 		type: FIGHTER,
@@ -5769,7 +5769,7 @@ var EQDATA = {
 		EV: 1,
 	},
 	493: {
-		name: 'Type 1 Land-based Attack Aircraft (Yawata Force)',
+		name: 'Type 1 Land-based Attack Aircraft (Hachiman Force)',
 		nameJP: '一式陸攻(八幡部隊)',
 		added: '2023-03-18',
 		type: LANDBOMBER,
@@ -6737,7 +6737,7 @@ var EQDATA = {
 	},
 	1594: {
 		name: 'Abyssal Sky Fortress (Reconnaissance Model)',
-		nameJP: '深海空要塞',
+		nameJP: '深海空要塞(偵察型)',
 		added: '2019-09-04',
 		type: DIVEBOMBER,
 		b_image: 19,
@@ -6751,7 +6751,7 @@ var EQDATA = {
 	},
 	1595: {
 		name: 'Abyssal Sky Fortress Ace (Reconnaissance Model)',
-		nameJP: '深海空要塞Ace',
+		nameJP: '深海空要塞Ace(偵察型)',
 		added: '2019-09-04',
 		type: DIVEBOMBER,
 		b_image: 19,
