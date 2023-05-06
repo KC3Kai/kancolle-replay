@@ -70,6 +70,7 @@ var BATTLE = (function() {
 		body.append(getTextRow("FORMATION_SELECT", [dbattle.api_formation[0]]));
 		body.append(getTextRow("ENEMY_FORMATION", [combinedE, dbattle.api_formation[1]], "end"));
 		body.append(getTextRow("ENGAGEMENT", [dbattle.api_formation[2]], "center"));
+		if (dbattle.api_smoke_type) body.append(getTextRow("SMOKESCREEN", [dbattle.api_smoke_type]));
 		tab.append(body);
 
 	};

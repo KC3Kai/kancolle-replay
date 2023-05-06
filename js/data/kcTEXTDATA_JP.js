@@ -109,6 +109,10 @@ var TEXTDATA_JP = {
 		"text": "敵艦隊編成:<br><b><0><b>",
 		"values": {}
 	},
+	"SMOKESCREEN": {
+		"text": "煙幕: <b><0></b>",
+		"values": {},
+	},
 	"AIR_NONE": {
 		"text" : "航空戦発生せず",
 		"values": {}

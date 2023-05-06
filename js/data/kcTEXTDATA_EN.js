@@ -108,6 +108,10 @@ var TEXTDATA_EN = {
 		"text": "The enemy fleet consists of:<br><b><0><b>",
 		"values": {}
 	},
+	"SMOKESCREEN": {
+		"text": "<b>Smoke screen</b> activated: type <b><0></b>",
+		"values": {},
+	},
 	"AIR_NONE": {
 		"text" : "No Air Battle",
 		"values": {}

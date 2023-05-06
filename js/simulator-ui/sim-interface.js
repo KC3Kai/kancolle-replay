@@ -324,8 +324,8 @@ var SIM = {
 			if (stats.TACC) shipSim.TACC = stats.TACC;
 			if (shipInput.HPInit != null) shipSim.HPDefault = shipInput.HPInit;
 			if (shipInput.morale != null) shipSim.moraleDefault = shipSim.morale = shipInput.morale;
-			if (shipInput.fuelInit != null) shipSim.fuelleft = shipSim.fuelDefault = 10*shipInput.fuelInit;
-			if (shipInput.ammoInit != null) shipSim.ammoleft = shipSim.ammoDefault = 10*shipInput.ammoInit;
+			if (shipInput.fuelInit != null) shipSim.fuelleft = shipSim.fuelDefault = sdata.fuel ? 10*Math.round(sdata.fuel*shipInput.fuelInit)/sdata.fuel : 10*shipInput.fuelInit;
+			if (shipInput.ammoInit != null) shipSim.ammoleft = shipSim.ammoDefault = sdata.ammo ? 10*Math.round(sdata.ammo*shipInput.ammoInit)/sdata.ammo : 10*shipInput.ammoInit;
 			if (shipInput.isFaraway) shipSim.isFaraway = true;
 			
 			if (shipInput.equips) {

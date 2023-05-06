@@ -108,6 +108,10 @@ var TEXTDATA_CN = {
 		"text": "敌方舰队配置:<br><b><0><b>",
 		"values": {}
 	},
+	"SMOKESCREEN": {
+		"text": "烟幕: <b><0></b>",
+		"values": {},
+	},
 	"AIR_NONE": {
 		"text" : "未发生航空战",
 		"values": {}
