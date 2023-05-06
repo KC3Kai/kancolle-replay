@@ -667,8 +667,8 @@
 						
 						<div class="statWide"><img src="assets/stats/hp.png" title="HP Init"/> Init: <input type="number" v-model.number="ship.hpInit" min="1" :max="ship.hp" :class="getClassHP(ship)" @change="onchangeStat($event,ship,'hpInit')"/></div>
 						<div class="statWide">Morale: <input type="number" v-model.number="ship.morale" min="0" max="100" :class="getClassMorale(ship)" @change="onchangeStat($event,ship,'morale')"/></div>
-						<div class="statHalf"><img src="assets/stats/fuel.png" title="Fuel Percent"/><input type="number" v-model.number="ship.fuelInit" min="0" max="100" @change="onchangeStat($event,ship,'fuelInit')"/></div>
-						<div class="statHalf"><img src="assets/stats/ammo.png" title="Ammo Percent"/><input type="number" v-model.number="ship.ammoInit" min="0" max="100" @change="onchangeStat($event,ship,'ammoInit')"/></div>
+						<div class="statHalf" :title="getFuel(ship)+'/'+getFuelMax(ship)"><img src="assets/stats/fuel.png" title="Fuel Percent"/><input type="number" v-model.number="ship.fuelInit" min="0" max="100" @change="onchangeStat($event,ship,'fuelInit')"/></div>
+						<div class="statHalf" :title="getAmmo(ship)+'/'+getAmmoMax(ship)"><img src="assets/stats/ammo.png" title="Ammo Percent"/><input type="number" v-model.number="ship.ammoInit" min="0" max="100" @change="onchangeStat($event,ship,'ammoInit')"/></div>
 						<div class="statWide" v-show="fleet.isEnemy"><label><img src="assets/maps/nodeAirSub.png" title="Air Sub Node" style="height:20px"/> Support: <input type="checkbox" v-model="ship.isFaraway"/></label></div>
 					</div>
 				</div>

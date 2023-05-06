@@ -489,6 +489,18 @@ var UI_FLEETEDITOR = Vue.createApp({
 			if (ship.morale < 20) return 'morale red';
 			if (ship.morale < 30) return 'morale orange';
 		},
+		getFuel: function(ship) {
+			return Math.round(this.getFuelMax(ship)*ship.fuelInit/100);
+		},
+		getAmmo: function(ship) {
+			return Math.round(this.getAmmoMax(ship)*ship.ammoInit/100);
+		},
+		getFuelMax: function(ship) {
+			return SHIPDATA[ship.mstId].fuel || 100;
+		},
+		getAmmoMax: function(ship) {
+			return SHIPDATA[ship.mstId].ammo || 100;
+		},
 		
 		doOpen: function(fleet) {
 			this.active = true;

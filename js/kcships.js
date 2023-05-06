@@ -394,6 +394,8 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (eq.mid == 436) installeqs.panzer = installeqs.panzer + 1 || 1;
 		if (eq.mid == 449) installeqs.tokuT1 = installeqs.tokuT1 + 1 || 1;
 		if (eq.mid == 482) installeqs.panzer3 = installeqs.panzer3 + 1 || 1;
+		if (eq.mid == 494) installeqs.chiha = installeqs.chiha + 1 || 1;
+		if (eq.mid == 495) installeqs.chihaKai = installeqs.chihaKai + 1 || 1;
 		if (eq.mid == 126) this.numWG = this.numWG + 1 || 1;
 		
 		if (eq.LOS) this.LOSeq += eq.LOS;
@@ -470,11 +472,21 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		this.installFlat *= 1.3;
 		this.installFlat += 42;
 	}
+	if (installeqs.chiha) {
+		installModAll *= 1.4;
+		this.installFlat *= 1.4;
+		this.installFlat += 28;
+	}
+	if (installeqs.chihaKai) {
+		installModAll *= 1.5;
+		this.installFlat *= 1.5;
+		this.installFlat += 33;
+	}
 	
 	let abSynergyMult = 1, abSynergyFlat = 0, numAB = (installeqs.soukoutei || 0) + (installeqs.armedDaihatsu || 0);
 	if ((installeqs.soukoutei == 1 || installeqs.armedDaihatsu == 1) && (installeqs.soukoutei || 0) < 2 && (installeqs.armedDaihatsu || 0) < 2) {
 		let numA = this.equips.filter(eq => [68,166,193,436,449].includes(eq.mid)).length;
-		let numB = this.equips.filter(eq => [167,230,482].includes(eq.mid)).length;
+		let numB = this.equips.filter(eq => [167,230,482,494,495].includes(eq.mid)).length;
 		if (numA + numB) {
 			abSynergyMult *= 1.2;
 			abSynergyFlat += 10;
@@ -529,10 +541,10 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (numRocket4 >= 2) this.softSkinMult *= 1.5;
 		if (hasLC) this.softSkinMult *= 1.4;
 		if (installeqs.TDH) this.softSkinMult *= 1.15;
-		if (installeqs.m4a1) this.softSkinMult *= 1.1;
+		if ((installeqs.m4a1||0) + (installeqs.chihaKai||0)) this.softSkinMult *= 1.1;
 		if (installeqs.panzer) this.softSkinMult *= 1.5;
 		if (installeqs.DH2) this.softSkinMult *= 1.5;
-		if (installeqs.DH2 >= 2) this.softSkinMult *= 1.3;
+		if ((installeqs.DH2||0) + (installeqs.chiha||0) + (installeqs.chihaKai||0) >= 2) this.softSkinMult *= 1.3;
 		if (installbonus1 > 1) this.softSkinMult *= installbonus1;
 		if (installeqs.DH3) this.softSkinMult *= 1.5 * installbonus3;
 		if (installeqs.DH3 >= 2) this.softSkinMult *= 1.2;
@@ -554,10 +566,10 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	if (MECHANICS.installRevamp) {
 		if (hasLC) this.pillboxMult *= 1.8;
 		if (installeqs.TDH) this.pillboxMult *= 1.15;
-		if (installeqs.m4a1) this.pillboxMult *= 2;
+		if ((installeqs.m4a1||0) + (installeqs.chihaKai||0)) this.pillboxMult *= 2;
 		if (installeqs.panzer) this.pillboxMult *= 1.5;
 		if (installeqs.DH2 > 0) this.pillboxMult *= 1.5;
-		if (installeqs.DH2 >= 2) this.pillboxMult *= 1.4;
+		if ((installeqs.DH2||0) + (installeqs.chiha||0) + (installeqs.chihaKai||0) >= 2) this.pillboxMult *= 1.4;
 		if (installbonus1 > 1) this.pillboxMult *= installbonus1;
 		if (installeqs.DH3) this.pillboxMult *= 2.4 * installbonus3;
 		if (installeqs.DH3 >= 2) this.pillboxMult *= 1.35;
@@ -588,10 +600,10 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	if (MECHANICS.installRevamp) {
 		if (hasLC) this.isoMult *= 1.8;
 		if (installeqs.TDH) this.isoMult *= 1.15;
-		if (installeqs.m4a1) this.isoMult *= 1.8;
+		if ((installeqs.m4a1||0) + (installeqs.chihaKai||0)) this.isoMult *= 1.8;
 		if (installeqs.panzer) this.isoMult *= 1.2;
 		if (installeqs.DH2) this.isoMult *= 1.2;
-		if (installeqs.DH2 >= 2) this.isoMult *= 1.4;
+		if ((installeqs.DH2||0) + (installeqs.chiha||0) + (installeqs.chihaKai||0) >= 2) this.isoMult *= 1.4;
 		if (installbonus1 > 1) this.isoMult *= installbonus1;
 		if (installeqs.DH3) this.isoMult *= 2.4 * installbonus3;
 		if (installeqs.DH3 >= 2) this.isoMult *= 1.35;
@@ -619,10 +631,10 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (numMortar >= 2) this.harbourSummerMult *= 1.15;
 		if (hasLC) this.harbourSummerMult *= 1.7;
 		if (installeqs.TDH) this.harbourSummerMult *= 1.2;
-		if (installeqs.m4a1) this.harbourSummerMult *= 2;
+		if ((installeqs.m4a1||0) + (installeqs.chihaKai||0)) this.harbourSummerMult *= 2;
 		if (installeqs.panzer) this.harbourSummerMult *= 1.6;
 		if (installeqs.DH2) this.harbourSummerMult *= 1.6;
-		if (installeqs.DH2 >= 2) this.harbourSummerMult *= 1.5;
+		if ((installeqs.DH2||0) + (installeqs.chiha||0) + (installeqs.chihaKai||0) >= 2) this.harbourSummerMult *= 1.5;
 		if (installbonus1 > 1) this.harbourSummerMult *= installbonus1;
 		if (installeqs.DH3) this.harbourSummerMult *= 2.8 * installbonus3;
 		if (installeqs.DH3 >= 2) this.harbourSummerMult *= 1.5;
@@ -656,8 +668,8 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (hasLC) this.supplyPostMult *= 1.7 * installbonus1;
 		if (installeqs.TDH) this.supplyPostMult *= 1.2;
 		if (installeqs.DH2) this.supplyPostMult *= 1.3 * installbonus1;
-		if (installeqs.DH2 >= 2) this.supplyPostMult *= 1.6;
-		if (installeqs.m4a1) this.supplyPostMult *= 1.2;
+		if ((installeqs.DH2||0) + (installeqs.chiha||0) + (installeqs.chihaKai||0) >= 2) this.supplyPostMult *= 1.6;
+		if ((installeqs.m4a1||0) + (installeqs.chihaKai||0)) this.supplyPostMult *= 1.2;
 		if (installeqs.panzer) this.supplyPostMult *= 1.3 * installbonus1;
 		if (installeqs.DH3) this.supplyPostMult *= 1.7 * installbonus3;
 		if (installeqs.DH3 >= 2) this.supplyPostMult *= 1.5;
@@ -706,10 +718,10 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	if (hasLC) this.anchoragePostMult *= 1.4 * installbonus1;
 	if (installeqs.TDH) this.anchoragePostMult *= 1.15;
 	if (installeqs.DH2) this.anchoragePostMult *= 1.2;
-	if (installeqs.DH2 >= 2) this.anchoragePostMult *= 1.4;
+	if ((installeqs.DH2||0) + (installeqs.chiha||0) + (installeqs.chihaKai||0) >= 2) this.anchoragePostMult *= 1.4;
 	if (installeqs.DH3) this.anchoragePostMult *= 2.4 * installbonus3;
 	if (installeqs.DH3 >= 2) this.anchoragePostMult *= 1.35;
-	if (installeqs.m4a1) this.anchoragePostMult *= 1.8;
+	if ((installeqs.m4a1||0) + (installeqs.chihaKai||0)) this.anchoragePostMult *= 1.8;
 	if (installeqs.panzer) this.anchoragePostMult *= 1.2;
 	if (installeqs.T3) this.anchoragePostMult *= 1.45;
 	if (installeqs.DB) this.anchoragePostMult *= 1.4;
@@ -730,8 +742,8 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	if (hasLC) this.dockPostMult *= 1.1;
 	if (installeqs.TDH11 || installeqs.tokuT1 || installeqs.panzer3) this.dockPostMult *= 1.4;
 	if (installeqs.DH2) this.dockPostMult *= 1.15 * installbonus1;
-	if (installeqs.DH2 >= 2) this.dockPostMult *= 1.15;
-	if (installeqs.m4a1) this.dockPostMult *= 1.1;
+	if ((installeqs.DH2||0) + (installeqs.chiha||0) + (installeqs.chihaKai||0) >= 2) this.dockPostMult *= 1.15;
+	if ((installeqs.m4a1||0) + (installeqs.chihaKai||0)) this.dockPostMult *= 1.1;
 	if (installeqs.panzer) this.dockPostMult *= 1.15;
 	if (installeqs.panzer >= 2) this.dockPostMult *= 1.15;
 	if (numAB) this.dockPostMult *= 1.1;
