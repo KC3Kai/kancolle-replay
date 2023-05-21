@@ -1084,23 +1084,35 @@ Ship.prototype.updateProficiencyBonus = function() {
 		else if (avgexp >= 25) this.ACCplane += 1;
 	}
 }
-Ship.prototype.getEquipBonusCVTorp = function() {
-	let bonusMin = null, statMax = 0, carryMax = 0, slot = -1;
+Ship.prototype.getEquipBonusCVTorp = function(slot) {
+	if (slot >= this.equips.length || (!this.equips[slot].istorpbomber && !this.equips[slot].isdivebomber)) return 0;
+	let bonusTotal = 0;
+	let bonusMin = 0, statMax = 0, carryMax = 0, slotMax = -1;
 	for (let i=0; i<this.equips.length; i++) {
 		let eq = this.equips[i];
-		if (!eq.isdivebomber && !eq.istorpbomber) continue;
-		if (!bonusMin || bonusMin > eq.statsEqBonus.TP) bonusMin = eq.statsEqBonus.TP;
-		let stat = eq.isdivebomber ? eq.DIVEBOMB : eq.TP;
+		if (!eq.isPlane) continue;
+		if (eq.statsEqBonus.TP && (!bonusMin || bonusMin > eq.statsEqBonus.TP)) bonusMin = eq.statsEqBonus.TP;
+		let stat = eq.isdivebomber ? (eq.DIVEBOMB || 0) : (eq.TP || 0);
 		if (stat > statMax) {
 			statMax = stat;
 			carryMax = this.planecount[i];
-			slot = i;
+			slotMax = i;
 		} else if (stat == statMax && this.planecount[i] > carryMax) {
 			carryMax = this.planecount[i];
-			slot = i;
+			slotMax = i;
 		}
 	}
-	return bonusMin ? { bonus: bonusMin, slot: slot } : null;
+	if (slotMax == slot) bonusTotal += bonusMin || 0;
+	
+	let bonusCrewTPMin = 0, bonusCrewDBMin = 0;
+	for (let eq of this.equips) {
+		if (eq.type != SCAMP) continue;
+		if (eq.statsEqBonus.TP && (!bonusCrewTPMin || bonusCrewTPMin > eq.statsEqBonus.TP)) bonusCrewTPMin = eq.statsEqBonus.TP;
+		if (eq.statsEqBonus.DIVEBOMB && (!bonusCrewDBMin || bonusCrewDBMin > eq.statsEqBonus.DIVEBOMB)) bonusCrewDBMin = eq.statsEqBonus.DIVEBOMB;
+	}
+	if (this.equips[slot].type == TORPBOMBER) bonusTotal += bonusCrewTPMin || 0;
+	else bonusTotal += bonusCrewDBMin || 0;
+	return bonusTotal;
 }
 Ship.prototype.getFormation = function() {
 	if (!this.fleet || !this.fleet.formation) return null;
@@ -1719,10 +1731,8 @@ CV.prototype.shellPower = function(target,base) {
 		if(this.equips[i].TP) tp += this.equips[i].TP;
 	}
 	if (MECHANICS.eqBonusTorp) {
-		let d = this.getEquipBonusCVTorp();
-		if (d) {
-			tp += d.bonus;
-		}
+		tp += this.statsEqBonus.TP || 0;
+		dp += this.statsEqBonus.DIVEBOMB || 0;
 	}
 	var bonus = (base||0) + 5;
 	if (target && target.isInstall) tp = 0;
@@ -1862,6 +1872,11 @@ AO.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	}
 }
 AO.prototype.canASW = DD.prototype.canASW;
+
+function AT(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
+	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
+};
+AT.prototype = Object.create(Ship.prototype);
 
 function AS(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);

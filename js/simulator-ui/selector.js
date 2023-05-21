@@ -340,7 +340,7 @@ function init() {
 		SHIP_CATEGORIES[lang].playerCVL = getCategoryF(['CVL'],keyName);
 		SHIP_CATEGORIES[lang].playerCV = getCategoryF(['CV','CVB'],keyName);
 		SHIP_CATEGORIES[lang].playerSS = getCategoryF(['SS','SSV'],keyName);
-		SHIP_CATEGORIES[lang].playerOther = getCategoryF(['DE','AV','LHA','AR','AS','AO'],keyName);
+		SHIP_CATEGORIES[lang].playerOther = getCategoryF(['DE','AV','LHA','AR','AS','AO','AT'],keyName);
 		
 		SHIP_CATEGORIES[lang].enemyDD = getCategoryE(['DD'],keyName);
 		SHIP_CATEGORIES[lang].enemyCL = getCategoryE(['CL','CLT','CT'],keyName);
@@ -348,7 +348,7 @@ function init() {
 		SHIP_CATEGORIES[lang].enemyBB = getCategoryE(['FBB','BB','BBV'],keyName);
 		SHIP_CATEGORIES[lang].enemyCV = getCategoryE(['CVL','CV','CVB'],keyName);
 		SHIP_CATEGORIES[lang].enemySS = getCategoryE(['SS','SSV'],keyName);
-		SHIP_CATEGORIES[lang].enemyOther = getCategoryE(['DE','AV','LHA','AR','AS','AO'],keyName);
+		SHIP_CATEGORIES[lang].enemyOther = getCategoryE(['DE','AV','LHA','AR','AS','AO','AT'],keyName);
 		SHIP_CATEGORIES[lang].enemyInstall = getCategoryE(null,keyName,true);
 		
 		SHIP_CATEGORIES[lang].arpeggio =  [];
