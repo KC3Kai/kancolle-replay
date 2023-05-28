@@ -3604,7 +3604,7 @@ function canContinue(ships1,ships1C,ignoreFCF,ignoreDamecon) {
 		let taihaShips = ships1.filter(ship => ship.HP/ship.maxHP <= .25 && !ship.retreated);
 		if (taihaShips.length >= 2) return false;
 		if (taihaShips.length) {
-			taihaShips[0]._tempFCF = { fuelleft: taihaShips[0].fuelleft, ammoleft: taihaShips[0], HP: taihaShips[0].HP, morale: taihaShips[0].morale };
+			taihaShips[0]._tempFCF = { fuelleft: taihaShips[0].fuelleft, ammoleft: taihaShips[0].ammoleft, HP: taihaShips[0].HP, morale: taihaShips[0].morale };
 			taihaShips[0].retreated = true;
 			taihaShips[0].fuelleft = taihaShips[0].ammoleft = 0;
 			taihaShips[0].morale = 49;
