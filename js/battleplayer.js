@@ -226,6 +226,7 @@ if (qs.fromImg) {
 	/*
 		- LZString.compressToEncodedURIComponent(str) to encode strings
 		- LZString.decompressFromEncodedURIComponent(str) to decode from LZString-encoded strings
+		- deprecated: don't use ?fromLZString=, long qs -> 414 error, use #fromLZString= instead
      */
 	try {
 		var decompressed = LZString.decompressFromEncodedURIComponent(qs.fromLZString);
@@ -235,7 +236,12 @@ if (qs.fromImg) {
 		console.error('error while processing lz-string data', e)
 	}
 } else if (window.location.hash.length > 5) {
-	document.getElementById('code').value = decodeURIComponent(window.location.hash.substr(1));
+	let hash = window.location.hash.substr(1);
+	if (hash.indexOf('fromLZString=') == 0) {
+		document.getElementById('code').value = LZString.decompressFromEncodedURIComponent(hash.substr('fromLZString='.length));
+	} else {
+		document.getElementById('code').value = decodeURIComponent(hash);
+	}
 	loadCode();
 	window.location.hash = '';
 }

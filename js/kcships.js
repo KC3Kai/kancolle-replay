@@ -996,7 +996,7 @@ Ship.prototype.getFit = function() {
 		return fit;
 	}
 	
-	if (this.type == 'AV') {
+	if (this.type == 'AV' || this.type == 'AO' || (SIMCONSTS.enableASFit && this.type == 'AS')) {
 		let numM = this.equips.filter(eq => eq.type == MAINGUNM).length;
 		if (!numM) return 0;
 		let num14_152 = this.equips.filter(eq => IDS_14_152.includes(eq.mid)).length;
@@ -1272,14 +1272,15 @@ Ship.prototype.AStype = function() {
 	return this._astype;
 }
 
-Ship.prototype.ASchance = function(ASstate) {
+Ship.prototype.ASchance = function(ASstate,combinedAll) {
 	if (ASstate < 1 || !this.canAS() || !this.AStype().length) return 0;
-	var fleetLOS = Math.floor(Math.sqrt(this.fleet.fleetLoS())+this.fleet.fleetLoS()*.1);
+	let fleetLOSBase = this.fleet.fleetLoS() + (combinedAll && this.fleet.combinedWith ? this.fleet.combinedWith.fleetLoS() : 0);
+	var fleetLOS = Math.floor(Math.sqrt(fleetLOSBase)+fleetLOSBase*.1);
 	var luckLOS = Math.floor(Math.sqrt(this.LUK)+10);
 	var ASchance;
 	if (ASstate == 2) ASchance = Math.floor(luckLOS + 10 + .7*(this.LOSeq*1.6 + fleetLOS));
 	else ASchance = Math.floor(luckLOS + .6*(this.LOSeq*1.2 + fleetLOS));
-	if (this.isflagship) ASchance += 15;
+	if (this.isflagship && !this.isescort) ASchance += 15;
 	ASchance *= .01;
 	return ASchance;
 }
@@ -1452,7 +1453,7 @@ Ship.prototype.getAACItype = function(atypes) {
 		hasID[this.equips[i].mid] = hasID[this.equips[i].mid] + 1 || 1;
 	}
 	
-	if (this.hasBuiltInFD) {  //Akizuki-class
+	if (this.sclass == 54) {  //Akizuki-class
 		if (atypes[A_HAGUN] >= 2 && atypes[A_AIRRADAR]) types.push(1);
 		if (atypes[A_HAGUN] && atypes[A_AIRRADAR]) types.push(2);
 		if (atypes[A_HAGUN] >= 2) types.push(3);
@@ -1512,13 +1513,13 @@ Ship.prototype.getAACItype = function(atypes) {
 			add6 = true;
 		}
 	}
-	if (atypes[A_HAFD] >= 2 && atypes[A_AIRRADAR]) types.push(5);
+	if (this.sclass != 54 && atypes[A_HAFD] >= 2 && atypes[A_AIRRADAR]) types.push(5);
 	if (add6) types.push(6);
-	if (MECHANICS.aaci8Up && atypes[A_HAFD] && atypes[A_AIRRADAR]) types.push(8); //changed 8 > 7 some time between 2018-04-21 - 2019-04-24?
+	if (MECHANICS.aaci8Up && this.sclass != 54 && atypes[A_HAFD] && atypes[A_AIRRADAR]) types.push(8); //changed 8 > 7 some time between 2018-04-21 - 2019-04-24?
 	if (atypes[A_HAGUN] && atypes[A_AAFD] && atypes[A_AIRRADAR]) types.push(7);
-	if (!MECHANICS.aaci8Up && atypes[A_HAFD] && atypes[A_AIRRADAR]) types.push(8);
+	if (!MECHANICS.aaci8Up && this.sclass != 54 && atypes[A_HAFD] && atypes[A_AIRRADAR]) types.push(8);
 	
-	if ([546,911,916].includes(this.mid) && hasID[275] && atypes[A_AIRRADAR]) types.push(26); //Musashi/Yamato Kai Ni
+	if (([546,911,916].includes(this.mid) || (MECHANICS.yamatoSpecial && [136].includes(this.mid))) && hasID[275] && atypes[A_AIRRADAR]) types.push(26); //Musashi/Yamato Kai Ni
 	if ([321].includes(this.mid) && hasID[275] && hasID[274] && atypes[A_AIRRADAR]) types.push(27); //Ooyodo
 	if ([82,88,553,554,148,546].indexOf(this.mid) != -1 && hasID[274] && atypes[A_AIRRADAR]) types.push(28); //Ise-class Kai + Musashi Kai
 	if ((this.mid == 557 || this.mid == 558) && atypes[A_HAGUN] && atypes[A_AIRRADAR]) types.push(29); //Isokaze+Hamakaze B Kai
@@ -1528,7 +1529,7 @@ Ship.prototype.getAACItype = function(atypes) {
 	if((this.mid == 579 || this.mid == 630) && atypes[A_HAGUN] && atypes[A_AAGUN]) types.push(33); //Gotland Kai
 	
 	if (concentrated && atypes[A_AAGUN] >= 2 && atypes[A_AIRRADAR]) types.push(12);
-	// if (concentrated && atypes[A_HAFD] && atypes[A_AIRRADAR]) return 13;
+	if (this.mid != 428 && concentrated && atypes[A_HAFD] && atypes[A_AIRRADAR]) types.push(13);
 	
 	if (this.mid == 418 && concentrated) types.push(18); //Satsuki Kai Ni
 	if (this.mid == 487 && concentrated) types.push(20); //Kinu Kai Ni (2)
@@ -1539,7 +1540,7 @@ Ship.prototype.getAACItype = function(atypes) {
 		if (atypes[A_HAGUN] >= 2 && this.mid == 477) types.push(31);
 	}
 	if ((this.mid == 478 || this.mid == 477) && atypes[A_HAGUN] && atypes[A_AAGUN] > concentrated) types.push(24); //Tatsuta Kai Ni + Tenryuu Kai Ni
-	if (([67,78,82,88,108].indexOf(this.sclass) != -1 || [149,150,151,152,591,592].indexOf(this.mid) != -1) && ((hasID[191] && hasID[300]) || (hasID[301] && hasID[191]) || (hasID[301] >= 2))) types.push(32); //royal navy + Kongou-class
+	if (([67,78,82,88,108,112].indexOf(this.sclass) != -1 || [149,150,151,152,591,592,593,954].indexOf(this.mid) != -1) && ((hasID[191] && hasID[300]) || (hasID[301] && hasID[191]) || (hasID[301] >= 2))) types.push(32); //royal navy + Kongou-class
 	
 	return types;
 }

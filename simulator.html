@@ -391,10 +391,11 @@
 	<div id="divOther">
 	<div id="divChangeLog">
 		<div><span class="header">Change Log:</span></div>
-		<div>2023-04-13 - FCF Settings</a></div>
+		<div>2023-06-05 - Mechanic: AACI Rework (sequential roll and <a href="https://docs.google.com/spreadsheets/d/1agGoLv57g5eOXLXtNIKHRoBYy61OQYxibWP6Vi_DMuY/edit#gid=13450409">new AACI priority</a>), Additional Stats show fleetwide AACI rate</div>
+		<div>2023-04-13 - FCF Settings</div>
 		<div>2023-03-19 - Update <a href="https://twitter.com/Divinity_123/status/1637255766166863873">BB gun fit</a></div>
 		<div>2023-03-02 - Air Support Sub node settings, update <a href="https://twitter.com/yukicacoon/status/1628701453677363202">Night Zuiun Cut-In trigger rate</a> (removed Advanced Setting) + show in Additional Stats</div>
-		<div>2023-02-16 - Mechanic: Autogyro/Liaison Air Battle, provisional Night Zuiun Cut-In (see Advanced Settings for trigger rate)</div>
+		<div>2023-02-16 - Mechanic: Autogyro/Liaison Air Battle, provisional Night Zuiun Cut-In</div>
 		<div>2022-10-05 - <a href="https://docs.google.com/document/d/1TmsVRhmkqjH1bczdoBHtrdcYv7JYD95NVkMrAK5bpK4/edit#heading=h.kuxw81rvevec">Provisional Dock Princess mods</a></div>
 		<div>2022-09-19 - Node setting: choose if last node uses Normal or Boss support</div>
 		<div>2022-09-04 - new Advanced Setting: <a href="https://twitter.com/Divinity_123/status/1566375780380282882">vanguard accuracy multipliers</a></div>
@@ -910,10 +911,11 @@
 				<div class="sub" v-show="s.aaProp!=null">Proportional: {{s.aaProp}}%</div>
 				<div class="sub" v-show="s.aaFlat!=null">Flat: {{s.aaFlat}}</div>
 				<div v-for="type in s.aaciTypes">
-					<div>AACI #{{type.id}}:</div>
-					<div class="sub">Planes: {{type.num}}</div>
+					<div>AACI {{type.id ? '#'+type.id : 'None'}}:</div>
+					<div class="sub" v-show="type.id">Planes: {{type.num}}</div>
 					<div class="sub">Rate: {{type.rate}}%</div>
-					<div class="sub">Multiplier: {{type.mod}}</div>
+					<div class="sub" v-show="type.rateFleet!=null"><div class="sub">(Fleet: {{type.rateFleet}}%)</div></div>
+					<div class="sub" v-show="type.id">Multiplier: {{type.mod}}</div>
 				</div>
 				<div v-show="s.rocketBarrage!=null">Rocket Barrage: {{s.rocketBarrage}}%</div>
 			</div></td></tr>
