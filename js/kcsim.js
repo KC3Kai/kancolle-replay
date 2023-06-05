@@ -69,10 +69,10 @@ var AACIDATA = {
 	10:{num:8,rate:.6,mod:1.65,equip:'HCR',num1:3},
 	11:{num:6,rate:.55,mod:1.5,equip:'HC',num1:2},
 	12:{num:3,rate:.45,mod:1.25,equip:'CGR',num1:1},
-	// 13:{num:4,rate:.35,mod:1.35,equip:'BCR',num1:1},
+	13:{num:4,rate:.35,mod:1.35,equip:'BCR',num1:1},
 	14:{num:4,rate:.63,mod:1.45,equip:'HGR',num1:1},
 	15:{num:3,rate:.55,mod:1.3,equip:'HG',num1:1},
-	16:{num:4,rate:.6,mod:1.4,equip:'HGR',num1:1},
+	16:{num:4,rate:.62,mod:1.4,equip:'HGR',num1:1},
 	17:{num:2,rate:.55,mod:1.25,equip:'HG',num1:1},
 	18:{num:2,rate:.6,mod:1.2,equip:'C',num1:1},
 	19:{num:5,rate:.55,mod:1.45,equip:'HC',num1:1},
@@ -80,30 +80,47 @@ var AACIDATA = {
 	21:{num:5,rate:.6,mod:1.45,equip:'HR',num1:1},
 	22:{num:2,rate:.6,mod:1.2,equip:'C',num1:1},
 	23:{num:1,rate:.8,mod:1.05,equip:'G',num1:1},
-	24:{num:3,rate:.5,mod:1.25,equip:'HG',num1:1},
+	24:{num:3,rate:.55,mod:1.25,equip:'HG',num1:1},
 	25:{num:7,rate:.6,mod:1.55,equip:'GRS',num1:1},
-	26:{num:6,rate:.55,mod:1.4,equip:'HR',num1:1},
+	26:{num:6,rate:.6,mod:1.4,equip:'HR',num1:1},
 	27:{num:5,rate:.55,mod:1.55,equip:'BGR',num1:1},
 	28:{num:4,rate:.55,mod:1.4,equip:'GR',num1:1},
 	29:{num:5,rate:.6,mod:1.55,equip:'HR',num1:1},
-	30:{num:3,rate:.4,mod:1.3,equip:'HHH',num1:1},
+	30:{num:3,rate:.45,mod:1.3,equip:'HHH',num1:1},
 	31:{num:2,rate:.5,mod:1.25,equip:'HH',num1:1},
 	32:{num:3,rate:.5,mod:1.2,equip:'CM',num1:1},
-	33:{num:3,rate:.4,mod:1.35,equip:'HG',num1:1},
+	33:{num:3,rate:.42,mod:1.35,equip:'HG',num1:1},
 	34:{num:7,rate:.6,mod:1.6,equip:'BB',rollIndiv:true,num1:1},
 	35:{num:6,rate:.55,mod:1.55,equip:'BH',rollIndiv:true,num1:1},
 	36:{num:6,rate:.55,mod:1.55,equip:'HHR',rollIndiv:true,num1:1},
 	37:{num:4,rate:.4,mod:1.45,equip:'HH',rollIndiv:true,num1:1},
-	38:{num:10,rate:.58,mod:1.85,equip:'BB',rollIndiv:true,num1:5},
+	38:{num:10,rate:.62,mod:1.85,equip:'BB',rollIndiv:true,num1:5},
 	39:{num:10,rate:.57,mod:1.7,equip:'BB',rollIndiv:true,num1:5},
 	40:{num:10,rate:.56,mod:1.7,equip:'BBR',rollIndiv:true,num1:5},
 	41:{num:9,rate:.55,mod:1.65,equip:'BB',rollIndiv:true,num1:5},
-	42:{num:10,rate:.6,mod:1.65,equip:'HHRG',num1:1},
-	43:{num:8,rate:.55,mod:1.6,equip:'HHR',num1:1},
+	42:{num:10,rate:.65,mod:1.65,equip:'HHRG',num1:1},
+	43:{num:8,rate:.58,mod:1.6,equip:'HHR',num1:1},
 	44:{num:6,rate:.55,mod:1.6,equip:'HRG',num1:1},
 	45:{num:5,rate:.5,mod:1.55,equip:'HR',num1:1},
-	46:{num:8,rate:.5,mod:1.55,equip:'MCR',num1:1},
+	46:{num:8,rate:.6,mod:1.55,equip:'MCR',num1:1},
 };
+(() => {
+	let orderKnown = [38,39,40,42,41,10,43,46,11,25,1,34,44,26,4,2,35,36,27,45,19,21,29,16,14,3,5,6,28,37,33,30,8,13,15,7,20,24,32,12,31,17,18,22,9,23];
+	let orderUnknown = Object.keys(AACIDATA).map(key => +key).filter(type => !orderKnown.includes(type)).sort((a,b) => AACIDATA[a].num != AACIDATA[b].num ? AACIDATA[b].num - AACIDATA[a].num : AACIDATA[a].mod != AACIDATA[b].mod ? AACIDATA[b].mod - AACIDATA[a].mod : +a-+b);
+	let orderAll = [], n = 0;
+	for (let id of orderKnown) {
+		if (![11,30,33].includes(id)) {
+			while (n < orderUnknown.length && (AACIDATA[orderUnknown[n]].num > AACIDATA[id].num || (AACIDATA[orderUnknown[n]].num == AACIDATA[id].num && AACIDATA[orderUnknown[n]].mod > AACIDATA[id].mod))) {
+				orderAll.push(orderUnknown[n++]);
+			}
+		}
+		orderAll.push(id);
+	}
+	orderAll = orderAll.concat(orderUnknown.slice(n));
+	for (let i=0; i<orderAll.length; i++) {
+		AACIDATA[orderAll[i]].priority = i+1;
+	}
+})();
 
 var ARTILLERYSPOTDATA = {
 	2: { dmgMod: 1.2, accMod: 1.1, chanceMod: 1.3, numHits: 2, name: 'DA' },
@@ -130,12 +147,12 @@ var NBATTACKDATA = {
 	64: { dmgMod: 1.18, accMod: 1.2, chanceMod: 1.3, id: 6, name: 'CVCI (1.18)' },
 	7: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.15, name: 'DDCI (GTR) x1', replace: 11, replaceChance: .65 },
 	8: { dmgMod: 1.2, accMod: 1.65, chanceMod: 1.4, name: 'DDCI (LTR) x1', replace: 12, replaceChance: .5 },
-	9: { dmgMod: 1.5, accMod: 1.65, chanceMod: 1.22, torpedo: true, name: 'DDCI (TTL) x1', replace: 13, replaceChance: .875 },
-	10: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.22, torpedo: true, name: 'DDCI (TDL) x1', replace: 14, replaceChance: .55 },
+	9: { dmgMod: 1.5, accMod: 1.65, chanceMod: 1.25, name: 'DDCI (TTL) x1', replace: 13, replaceChance: .875 },
+	10: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.22, name: 'DDCI (TDL) x1', replace: 14, replaceChance: .55 },
 	11: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.3, numHits: 2, name: 'DDCI (GTR) x2' },
 	12: { dmgMod: 1.2, accMod: 1.65, chanceMod: 1.4, numHits: 2, name: 'DDCI (LTR) x2' },
-	13: { dmgMod: 1.5, accMod: 1.65, chanceMod: 1.22, numHits: 2, torpedo: true, name: 'DDCI (TTL) x2' },
-	14: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.22, numHits: 2, torpedo: true, name: 'DDCI (TDL) x2' },
+	13: { dmgMod: 1.5, accMod: 1.65, chanceMod: 1.25, numHits: 2, name: 'DDCI (TTL) x2' },
+	14: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.22, numHits: 2, name: 'DDCI (TDL) x2' },
 	2001: { dmgMod: 1.36, accMod: 1.1, chanceMod: 1.35, isSpecial: true, id: 200, name: 'NZuiun CI (ZZR)' },
 	2002: { dmgMod: 1.32, accMod: 1.1, chanceMod: 1.35, isSpecial: true, id: 200, name: 'NZuiun CI (ZZ)' },
 	2003: { dmgMod: 1.28, accMod: 1.1, chanceMod: 1.35, isSpecial: true, id: 200, name: 'NZuiun CI (ZR)' },
@@ -198,6 +215,7 @@ var SIMCONSTS = {
 	enableModDock: true,
 	enableSkipTorpBonus: true,
 	enableAirstrikeSpecialBonus: true,
+	enableASFit: false,
 	echelonOld: {shellmod:.6,torpmod:.6,ASWmod:1,AAmod:1, shellacc:1.2,torpacc:.6,NBacc:.8, shellev:1.2,torpev:1.3,NBev:1.1,ASWev:1.3, id:4},
 	echelonNew: {shellmod:.75,torpmod:.6,ASWmod:1.1,AAmod:1, shellacc:1.2,torpacc:.75,NBacc:.9, shellev:1.4,torpev:1.3,NBev:1.3,ASWev:1.3, id:4},
 	nbattack7Old: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.3, name: 'DDCI (GTR)' },
@@ -284,6 +302,7 @@ var MECHANICS = {
 	antiSubRaid: true,
 	aswPlaneAir: true,
 	kongouSpecialBuff3: true,
+	aaciMultiRoll: true,
 };
 var NERFPTIMPS = false;
 var BREAKPTIMPS = false;
@@ -322,7 +341,7 @@ function formationCountered(form1,form2) {
 	return false;
 }
 
-function shell(ship,target,APIhou,attackSpecial) {
+function shell(ship,target,APIhou,attackSpecial,combinedAll) {
 	var da = false, cutin = false, cutinR = 0;
 	var preMod = ship.getFormation().shellmod*ENGAGEMENT*ship.damageMod();
 	var postMod = (MECHANICS.APmod)? ship.APmod(target) : 1;
@@ -339,7 +358,7 @@ function shell(ship,target,APIhou,attackSpecial) {
 	
 	let AStypes;
 	if (MECHANICS.artillerySpotting && (AStypes = ship.canAS()) && ship.fleet.AS > 0 && !attackSpecial) {
-		var ASchance = ship.ASchance(ship.fleet.AS);
+		var ASchance = ship.ASchance(ship.fleet.AS,combinedAll);
 		if (C) console.log('AS chance: '+ASchance);
 		
 		for (var i=0; i<AStypes.length; i++) {
@@ -628,6 +647,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 					attackData = NBATTACKDATA[NBtype = attackData.replace];
 				}
 			}
+			if (target.isInstall && NBtype >= 7 && NBtype <= 14 && !ship.equiptypesB[B_MAINGUN]) continue;
 			if (target.isInstall && attackData.torpedo) {
 				if ((NBtype == 3 || NBtype == 2) && ship._hasNBDA) {
 					attackData = NBATTACKDATA[NBtype = 1];
@@ -978,6 +998,10 @@ function shellPhaseTarget(ship,alive,subsalive,isOASW) {
 				let targetsPT = alive.filter(ship => ship.isPT);
 				if (targetsPT.length) targets = targetsPT;
 			}
+			if (ship.isAntiInstall) {
+				let targetsT = alive.filter(ship => ship.isInstall);
+				if (targetsT.length) targets = targetsT;
+			}
 			if (targets.length) {
 				result.type = 1;
 				result.target = choiceWProtect(targets);
@@ -992,7 +1016,7 @@ function shellPhaseAttack(ship,targetData,APIhou,attackSpecial) {
 	if (!targetData.target) return;
 	switch (targetData.type) {
 		case 1: //shell
-			if (shell(ship,targetData.target,APIhou,attackSpecial)) targetData.alive.splice(targetData.alive.indexOf(targetData.target),1);
+			if (shell(ship,targetData.target,APIhou,attackSpecial,targetData.combinedAll)) targetData.alive.splice(targetData.alive.indexOf(targetData.target),1);
 			break;
 		case 2: //ASW
 			if (ASW(ship,targetData.target,false,APIhou,targetData.isOASW)) targetData.alive.splice(targetData.alive.indexOf(targetData.target),1);
@@ -1029,6 +1053,7 @@ function canSpecialAttack(ship,isNB,NBequips,skipUnique) {
 			let c = NBchance;
 			if (NBATTACKDATA[nbtype].id == 200) {
 				c -= .14*NBequips[0][0];
+				c -= .17*NBequips[1][0];
 			}
 			let rate = c/NBATTACKDATA[nbtype].chanceMod;
 			if (Math.random() < rate) {
@@ -1349,6 +1374,7 @@ function doShellC(ship,targets,APIhou,isOASW,attackSpecial) {
 		targetData = shellPhaseTarget(ship,targets.alive2,targets.subsalive2,isOASW);
 		if (!targetData.target && targets.alive2C) targetData = shellPhaseTarget(ship,targets.alive2C,targets.subsalive2C,isOASW);
 	}
+	targetData.combinedAll = true;
 	shellPhaseAttack(ship,targetData,APIhou,attackSpecial);
 }
 
@@ -1388,6 +1414,7 @@ function shellPhaseC(order1,order2,targets,APIhou,isOASW) {
 				targetData = shellPhaseTarget(order2[i],targets.alive1,targets.subsalive1,isOASW);
 				if (!targetData.target && targets.alive1C) targetData = shellPhaseTarget(order2[i],targets.alive1C,targets.subsalive1C,isOASW);
 			}
+			targetData.combinedAll = true;
 			shellPhaseAttack(order2[i],targetData,APIhou);
 		}
 		var num1 = targets.alive1.length+targets.subsalive1.length;
@@ -1480,6 +1507,10 @@ function nightPhaseTarget(ship,alive,subsalive,slrerolls,light) {
 		if (ship.isAntiPT) {
 			let targetsPT = alive.filter(ship => ship.isPT);
 			if (targetsPT.length) targets = targetsPT;
+		}
+		if (ship.isAntiInstall) {
+			let targetsT = alive.filter(ship => ship.isInstall);
+			if (targetsT.length) targets = targetsT;
 		}
 		return { type: 1, target: choiceWProtect(targets,slrerolls,true) };
 	}
@@ -2028,16 +2059,27 @@ function getAACI(defenders,APIkouku) {
 	var AACInum = 0, AACImod = 1;
 	if (MECHANICS.AACI) {
 		var AACIship, AACItype = 0;
-		for (var i=0; i<defenders.length; i++) {
-			if (defenders[i].AACItype.length) {
-				var r = Math.random();
-				for (var j=0; j<defenders[i].AACItype.length; j++) {
-					var type = defenders[i].AACItype[j];
-					let roll = (AACIDATA[type].rollIndiv)? Math.random() : r;
-					if (type > AACItype && roll < AACIDATA[type].rate) {
+		if (MECHANICS.aaciMultiRoll) {
+			for (let ship of defenders) {
+				for (let type of ship.AACItype) {
+					if ((!AACItype || AACIDATA[type].priority < AACIDATA[AACItype].priority) && Math.random() < AACIDATA[type].rate) {
 						AACItype = type;
-						AACIship = defenders[i];
-						break;
+						AACIship = ship;
+					}
+				}
+			}
+		} else {
+			for (var i=0; i<defenders.length; i++) {
+				if (defenders[i].AACItype.length) {
+					var r = Math.random();
+					for (var j=0; j<defenders[i].AACItype.length; j++) {
+						var type = defenders[i].AACItype[j];
+						let roll = (AACIDATA[type].rollIndiv)? Math.random() : r;
+						if (type > AACItype && roll < AACIDATA[type].rate) {
+							AACItype = type;
+							AACIship = defenders[i];
+							break;
+						}
 					}
 				}
 			}

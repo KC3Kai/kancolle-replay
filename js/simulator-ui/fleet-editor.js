@@ -807,6 +807,8 @@ var UI_ADDITIONALSTATS = Vue.createApp({
 			console.log(fleetSim);
 			this.active = true;
 			this.ships = [];
+			let aaciAll = [];
+			let ind = 0;
 			for (let ship of fleetSim.ships) {
 				let stats = {
 					imgName: SHIPDATA[ship.mid].image,
@@ -892,16 +894,50 @@ var UI_ADDITIONALSTATS = Vue.createApp({
 				if (ship.AACItype.length) {
 					stats.aaciTypes = [];
 					let chanceUsed = 0, chanceMod = 1;
-					for (let id of ship.AACItype) {
+					let aaciTypes = ship.AACItype;
+					if (MECHANICS.aaciMultiRoll) aaciTypes = aaciTypes.sort((a,b) => AACIDATA[a].priority - AACIDATA[b].priority);
+					let aaciMap = {};
+					for (let id of aaciTypes) {
 						let d = AACIDATA[id];
 						if (chanceUsed >= d.rate) continue;
-						stats.aaciTypes.push({ id: id, num: d.num, mod: d.mod, rate: Math.round((d.rate-chanceUsed)*chanceMod*100) });
-						if (d.rollIndiv) chanceMod *= 1-d.rate;
+						let rate = (d.rate-chanceUsed)*chanceMod;
+						let obj = { id: id, num: d.num, mod: d.mod, rate: Math.round(rate*10000)/100, rateFleet: null };
+						stats.aaciTypes.push(obj);
+						if (d.rollIndiv || MECHANICS.aaciMultiRoll) chanceMod *= 1-d.rate;
 						else chanceUsed = d.rate;
+						aaciMap[id] = { rate: rate, rateOrig: rate, obj: obj };
 					}
+					let rate = (1-chanceUsed)*chanceMod;
+					let obj = { id: 0, num: '', mod: '', rate: Math.round(10000*rate)/100, rateFleet: null };
+					stats.aaciTypes.push(obj);
+					aaciMap[0] = { rate: rate, rateOrig: rate, obj: obj };
+					aaciAll.push({ ind: ind, aaciMap: aaciMap });
 				}
 				stats.hasImprove = !!Object.keys(stats).find(k => k.indexOf('impr') == 0 && stats[k]);
 				this.ships.push(stats);
+				ind++;
+			}
+			if (aaciAll.length) {
+				let rateLeft = 1;
+				for (let ship of aaciAll) {
+					for (let type in ship.aaciMap) {
+						if (type == 0) continue;
+						for (let shipC of aaciAll) {
+							if (shipC.ind == ship.ind) continue;
+							let rateTotal = 0;
+							for (let typeC in shipC.aaciMap) {
+								if (typeC == 0) continue;
+								let compType = MECHANICS.aaciMultiRoll ? AACIDATA[type].priority < AACIDATA[typeC].priority : +type > +typeC;
+								let hasPriority = type != typeC ? compType : ship.ind < shipC.ind;
+								if (!hasPriority) rateTotal += shipC.aaciMap[typeC].rateOrig;
+							}
+							ship.aaciMap[type].rate *= 1-rateTotal;
+						}
+						ship.aaciMap[type].obj.rateFleet = Math.round(10000*ship.aaciMap[type].rate)/100;
+						rateLeft -= ship.aaciMap[type].rate;
+					}
+				}
+				aaciAll[0].aaciMap[0].obj.rateFleet = Math.round(10000*rateLeft)/100;
 			}
 			this.fleet.airPower = fleetSim.fleetAirPower();
 			this.fleet.airPowerCombined = null;

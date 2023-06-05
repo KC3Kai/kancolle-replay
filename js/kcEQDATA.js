@@ -185,7 +185,7 @@ EQTDATA[TORPEDO] = {
 	btype: B_TORPEDO,
 	improve: {Ptorp:1.2,Pnb:1,ACCtorp:2,ACCnb:1.3},
 	canequip: ['DD','CL','CT','CLT','CA','CAV','SS','SSV'],
-	canequipS: [178, 591, 592, 877, 879],
+	canequipS: [178, 591, 592, 593, 877, 879, 954],
 	cannotequipS: [657],
 };
 EQTDATA[TORPEDOSS] = {
@@ -226,7 +226,7 @@ EQTDATA[SONARS] = {
 	btype: B_SONAR,
 	improve: {Pshell:.75,Pasw:1,ACCasw:1.3,EVtorp:1.5},
 	canequip: ['DD','CL','CT','CLT','SS','SSV','DE'],
-	canequipS: [352, 372, 380, 381, 382, 450, 491, 500, 529, 534, 536, 546, 554, 586, 591, 592, 626, 645, 650, 690, 699, 707, 713, 717, 879, 885, 889, 894, 899, 900, 911, 916, 943, 948],
+	canequipS: [352, 372, 380, 381, 382, 450, 491, 500, 529, 534, 536, 546, 554, 586, 591, 592, 593, 626, 645, 650, 690, 699, 707, 713, 717, 879, 885, 889, 894, 899, 900, 911, 916, 943, 948, 954],
 	canASWDamage: true,
 };
 EQTDATA[SONARL] = {
@@ -303,7 +303,7 @@ EQTDATA[SEAPLANEBOMBER] = {
 	btype: B_RECON,
 	improve: {LOS:1.15},
 	canequip: ['CAV','BBV','SSV','AV','AO','LandBase'],
-	canequipS: [305, 306, 307, 314, 358, 361, 392, 446, 447, 488, 496, 547, 574, 579, 591, 626, 630, 639, 640, 652, 662, 663, 668, 724, 879, 911],
+	canequipS: [305, 306, 307, 314, 358, 361, 392, 446, 447, 488, 496, 547, 574, 579, 591, 593, 626, 630, 639, 640, 652, 662, 663, 668, 724, 879, 911, 954],
 	cannotequipS: [645, 650, 699, 717, 900],
 	isPlane: true,
 	isfighter: true,
@@ -451,7 +451,7 @@ EQTDATA[WG42] = {
 	image: 31,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['DD','CL','CAV','BBV','SS','SSV','AS','AV','LHA'],
-	canequipS: [500, 573, 591, 592, 699, 877, 878, 879],
+	canequipS: [500, 573, 591, 592, 593, 699, 877, 878, 879, 954],
 	cannotequipS: [445, 553, 554, 943, 948],
 };
 EQTDATA[SRF] = {
@@ -508,7 +508,7 @@ EQTDATA[SEAPLANEFIGHTER] = {
 	name: 'Seaplane Fighter',
 	image: 43,
 	canequip: ['CAV','BBV','SSV','AS','AV','AO','LandBase'],
-	canequipS: [136, 148, 275, 276, 358, 361, 446, 447, 488, 496, 541, 546, 547, 573, 592, 621, 626, 652, 668, 879, 911],
+	canequipS: [136, 148, 275, 276, 358, 361, 446, 447, 488, 496, 541, 546, 547, 573, 592, 593, 621, 626, 652, 668, 879, 911],
 	cannotequipS: [645, 650, 699, 717, 900],
 	isPlane: true,
 	isfighter: true,
@@ -520,7 +520,7 @@ EQTDATA[LANDINGTANK] = {
 	btype: B_LC3,
 	improve: {Pshell:1,Pnb:1},
 	canequip: ['SS','SSV','AV','LHA'],
-	canequipS: [147, 198, 199, 200, 352, 418, 464, 468, 470, 478, 487, 488, 489, 490, 497, 500, 506, 541, 547, 548, 556, 564, 568, 569, 573, 578, 587, 588, 623, 647, 656, 657, 662, 663, 666, 667, 668, 670, 899, 908, 915, 916],
+	canequipS: [147, 198, 199, 200, 352, 418, 464, 468, 470, 478, 487, 488, 489, 490, 497, 500, 506, 541, 547, 548, 556, 564, 568, 569, 573, 578, 587, 588, 623, 647, 656, 657, 662, 663, 666, 667, 668, 670, 899, 908, 915, 916, 954],
 	cannotequipS: [445, 491, 581, 943],
 };
 EQTDATA[OILDRUM] = {
@@ -5855,6 +5855,19 @@ var EQDATA = {
 		EV: 1,
 		RNG: 3,
 	},
+	504: {
+		name: 'Ginga (Skilled)',
+		nameJP: '銀河(熟練)',
+		added: '2023-05-28',
+		type: LANDBOMBER,
+		aaResistShip: .6,
+		DIVEBOMB: 15,
+		TP: 14,
+		AA: 3,
+		ACC: 2,
+		ASW: 3,
+		LOS: 3,
+	},
 	1501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
@@ -7502,6 +7515,7 @@ var LBASDATA = {
 	491: { distance: 4, cost: 4 },
 	492: { distance: 6, cost: 5 },
 	493: { distance: 9, cost: 5 },
+	504: { distance: 6, cost: 13 },
 };
 
 

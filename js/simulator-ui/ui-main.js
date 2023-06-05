@@ -41,6 +41,7 @@ var MECHANICS_LIST = [
 	{ key: 'ffReroll', name: 'Friend Fleet Flagship Reroll' },
 	{ key: 'antiSubRaid', name: 'Anti-Sub Air Raid' },
 	{ key: 'enable_ASWPlaneAir', name: 'Autogyro/Liaison Air Battle' },
+	{ key: 'aaciMultiRoll', name: 'AACI Rework (Sequential Roll + New Priority)' },
 ];
 
 
