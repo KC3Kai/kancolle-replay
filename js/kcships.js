@@ -1516,7 +1516,7 @@ Ship.prototype.getAACItype = function(atypes) {
 	if (this.sclass != 54 && atypes[A_HAFD] >= 2 && atypes[A_AIRRADAR]) types.push(5);
 	if (add6) types.push(6);
 	if (MECHANICS.aaci8Up && this.sclass != 54 && atypes[A_HAFD] && atypes[A_AIRRADAR]) types.push(8); //changed 8 > 7 some time between 2018-04-21 - 2019-04-24?
-	if (atypes[A_HAGUN] && atypes[A_AAFD] && atypes[A_AIRRADAR]) types.push(7);
+	if (this.sclass != 54 && atypes[A_HAGUN] && atypes[A_AAFD] && atypes[A_AIRRADAR]) types.push(7);
 	if (!MECHANICS.aaci8Up && this.sclass != 54 && atypes[A_HAFD] && atypes[A_AIRRADAR]) types.push(8);
 	
 	if (([546,911,916].includes(this.mid) || (MECHANICS.yamatoSpecial && [136].includes(this.mid))) && hasID[275] && atypes[A_AIRRADAR]) types.push(26); //Musashi/Yamato Kai Ni
