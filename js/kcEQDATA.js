@@ -592,6 +592,7 @@ EQTDATA[ARMYUNIT] = {
 EQTDATA[SMOKESCREEN] = {
 	name: 'Smoke Generator',
 	image: 54,
+	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['DE','DD','CL','CLT','CA','CT'],
 	canequipS: [411, 412, 645, 650, 699],
 };

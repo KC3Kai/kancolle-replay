@@ -333,6 +333,14 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		}
 	}
 	
+	if (!NBonly && !bombing) {
+		if (['A','B'].includes(doNB)) {
+			if (['E','D','C','B','A','S'].indexOf(getRank(ships1,ships2,ships1C)) >= ['E','D','C','B','A','S'].indexOf(doNB)) doNB = false;
+		} else if (doNB == 'flagsunk') {
+			if (ships2[0].HP <= 0) doNB = false;
+		}
+	}
+	
 	if (C) {
 		apiUpdateFlag(BAPI.data,bombing,type);
 		if (!NBonly) BAPI.data.api_midnight_flag = +!!(!bombing && alive2.length + subsalive2.length);
@@ -947,6 +955,14 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 		}
 	}
 	
+	if (!NBonly && !bombing) {
+		if (['A','B'].includes(doNB)) {
+			if (['E','D','C','B','A','S'].indexOf(getRank(ships1,ships2.concat(ships2C))) >= ['E','D','C','B','A','S'].indexOf(doNB)) doNB = false;
+		} else if (doNB == 'flagsunk') {
+			if (ships2[0].HP <= 0) doNB = false;
+		}
+	}
+	
 	if (C) {
 		apiUpdateFlag(BAPI.data,bombing,null,true);
 		if (!NBonly) BAPI.data.api_midnight_flag = +!!(!bombing && alive2.length + subsalive2.length + alive2C.length + subsalive2C.length);
@@ -1410,6 +1426,14 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		results.repairsDayC = {};
 		for (var i=0; i<ships1C.length; i++) {
 			if (ships1C[i].repairs) results.repairsDayC[i] = ships1C[i].repairs.slice();
+		}
+	}
+	
+	if (!NBonly && !bombing) {
+		if (['A','B'].includes(doNB)) {
+			if (['E','D','C','B','A','S'].indexOf(getRank(ships1,ships2.concat(ships2C),ships1C)) >= ['E','D','C','B','A','S'].indexOf(doNB)) doNB = false;
+		} else if (doNB == 'flagsunk') {
+			if (ships2[0].HP <= 0) doNB = false;
 		}
 	}
 	

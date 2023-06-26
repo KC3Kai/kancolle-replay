@@ -441,6 +441,12 @@
 						<label><input type="radio" value="4" v-model="battle.nodeType" /><img src="assets/maps/nodeAir.png" title="Air Only" /></label>
 					</div>
 					<div v-show="hasNB"><label><input type="checkbox" v-model="battle.doNB" />Night Battle?</label></div>
+					<div v-show="hasNB && battle.doNB"><label><select v-model="battle.doNBCond">
+						<option value="">Always if possible</option>
+						<option value="A">Only if Day Rank less than A</option>
+						<option value="B">Only if Day Rank less than B</option>
+						<option value="flagsunk">Only if Enemy Flagship not sunk</option>
+					</select></label></div>
 				</div>
 				<div>
 					<div><span class="header">Resupply Cost:</span></div>
