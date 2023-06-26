@@ -146,8 +146,14 @@ var SIM = {
 				if (useBucket) this._results.totalBuckets++;
 				let fuelleft = ship.fuelleft - (ship._fuelUnderway || 0);
 				let ammoleft = ship.ammoleft - (ship._ammoUnderway || 0);
-				this._results.totalFuelS += Math.round(ship.fuel * (10-fuelleft)/10);
-				this._results.totalAmmoS += Math.round(ship.ammo * (10-ammoleft)/10);
+				let costFuel = Math.round(ship.fuel * (10-fuelleft)/10);
+				let costAmmo = Math.round(ship.ammo * (10-ammoleft)/10);
+				if (ship.LVL >= 100) {
+					costFuel = Math.floor(costFuel*.85) || 1;
+					costAmmo = Math.floor(costAmmo*.85) || 1;
+				}
+				this._results.totalFuelS += costFuel;
+				this._results.totalAmmoS += costAmmo;
 				for (let i=0; i<ship.PLANESLOTS.length; i++) {
 					this._results.totalBauxS += 5*(ship.PLANESLOTS[i]-ship.planecount[i]);
 					this._results.totalEmptiedPlanes += +!!(ship.PLANESLOTS[i] && ship.planecount[i] <= 0);
