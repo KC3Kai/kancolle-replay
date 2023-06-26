@@ -1077,7 +1077,7 @@ Ship.prototype.updateProficiencyBonus = function() {
 		var avgexp = planeexp/planecount;
 		if (avgexp >= 10) this.ACCplane = Math.sqrt(avgexp*.1);
 		if (avgexp >= 100) this.ACCplane += 9;
-		else if (avgexp >= 85) this.ACCplane += 6;
+		else if (avgexp >= 80) this.ACCplane += 6;
 		else if (avgexp >= 70) this.ACCplane += 4;
 		else if (avgexp >= 55) this.ACCplane += 3;
 		else if (avgexp >= 40) this.ACCplane += 2;
@@ -1519,7 +1519,7 @@ Ship.prototype.getAACItype = function(atypes) {
 	if (this.sclass != 54 && atypes[A_HAGUN] && atypes[A_AAFD] && atypes[A_AIRRADAR]) types.push(7);
 	if (!MECHANICS.aaci8Up && this.sclass != 54 && atypes[A_HAFD] && atypes[A_AIRRADAR]) types.push(8);
 	
-	if (([546,911,916].includes(this.mid) || (MECHANICS.yamatoSpecial && [136].includes(this.mid))) && hasID[275] && atypes[A_AIRRADAR]) types.push(26); //Musashi/Yamato Kai Ni
+	if (([546,911,916].includes(this.mid) || (MECHANICS.yamatoSpecial && [136,148].includes(this.mid))) && hasID[275] && atypes[A_AIRRADAR]) types.push(26); //Musashi/Yamato Kai Ni
 	if ([321].includes(this.mid) && hasID[275] && hasID[274] && atypes[A_AIRRADAR]) types.push(27); //Ooyodo
 	if ([82,88,553,554,148,546].indexOf(this.mid) != -1 && hasID[274] && atypes[A_AIRRADAR]) types.push(28); //Ise-class Kai + Musashi Kai
 	if ((this.mid == 557 || this.mid == 558) && atypes[A_HAGUN] && atypes[A_AIRRADAR]) types.push(29); //Isokaze+Hamakaze B Kai
@@ -1769,7 +1769,9 @@ CV.prototype.NBPower = function(target) {
 				let equip = this.equips[i];
 				if (equip.btype != B_NIGHTFIGHTER && equip.btype != B_NIGHTBOMBER && equip.btype != B_NIGHTBOMBER2) continue;
 				let mod = .3*((equip.FP || 0) + (equip.TP || 0) + (equip.ASW || 0) + (equip.DIVEBOMB || 0));
-				power += (equip.FP || 0) + (equip.TP || 0) + Math.sqrt(equip.level || 0);
+				power += (equip.FP || 0) + Math.sqrt(equip.level || 0);
+				if (!(target && target.isInstall) && equip.type == TORPBOMBER) power += (equip.TP || 0);
+				if (equip.type != TORPBOMBER) power += (equip.DIVEBOMB || 0);
 				if (equip.btype != B_NIGHTBOMBER2) {
 					power += this.planecount[i]*3;
 					mod *= 1.5;

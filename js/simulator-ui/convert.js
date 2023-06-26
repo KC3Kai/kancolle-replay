@@ -805,6 +805,7 @@ window.CONVERT = {
 				addCostAmmo: battleUI.addCostAmmo/100,
 				lbas: [],
 			};
+			if (battleUI.doNBCond) nodeInput.doNBCond = battleUI.doNBCond;
 			for (let i=0; i<battleUI.lbasWaves.length; i++) {
 				if (battleUI.lbasWaves[i]) {
 					nodeInput.lbas.push(Math.floor(i/2)+1);

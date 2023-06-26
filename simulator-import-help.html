@@ -85,6 +85,7 @@ If ship/equip "masterId" not in simulator's database, "stats" is required.
 			fleet: &lt;same format as fleetF&gt;,
 		}],
 		doNB: &lt;bool&gt; (default 0),
+		doNBCond: &lt;string&gt; (optional) "A"/"B": don't do NB if rank after day is already this or higher, "flagsunk": don't do NB if enemy flagship already sunk. "doNB" must be true,
 		NBOnly: &lt;bool&gt; (default 0),
 		airOnly: &lt;bool&gt; (default 0),
 		airRaid: &lt;bool&gt; (default 0),

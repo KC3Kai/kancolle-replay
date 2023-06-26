@@ -41,7 +41,7 @@ var MECHANICS_LIST = [
 	{ key: 'ffReroll', name: 'Friend Fleet Flagship Reroll' },
 	{ key: 'antiSubRaid', name: 'Anti-Sub Air Raid' },
 	{ key: 'enable_ASWPlaneAir', name: 'Autogyro/Liaison Air Battle' },
-	{ key: 'aaciMultiRoll', name: 'AACI Rework (Sequential Roll + New Priority)' },
+	{ key: 'enable_AACIRework', name: 'AACI Rework (Sequential Roll + New Priority)' },
 ];
 
 
@@ -239,6 +239,7 @@ var UI_MAIN = Vue.createApp({
 				formation: this.fleetFMain.combined ? CONST.formationCombinedDefault : CONST.formationSingleDefault,
 				nodeType: CONST.NODE_NORMAL,
 				doNB: false,
+				doNBCond: '',
 				lbasWaves: [false,false,false,false,false,false],
 				addCostFuel: null,
 				addCostAmmo: null,
