@@ -6528,5 +6528,68 @@
 				"num": 1
 			}
 		]
+	},
+	{
+		"ids": [507,508],
+		"bonuses": [
+			{
+				"bonus": { "houg": 2, "kaih": 1, "houm": 1 },
+				"shipCountry": ["US"],
+				"shipType": [8,9,10]
+			},
+			{
+				"bonus": { "houg": 1, "kaih": 1, "houm": 2 },
+				"shipCountry": ["US"],
+				"shipType": [8,9,10],
+				"requiresId": [279,307,315,456],
+				"num": 1
+			},
+			{
+				"bonus": { "kaih": 1, "houm": 1 },
+				"shipClass": [2,6,26],
+				"num": 1
+			},
+			{
+				"bonus": { "kaih": 1, "houm": 1 },
+				"shipCountry": ["GB"],
+				"num": 1
+			},
+			{
+				"bonus": { "houg": 1 },
+				"level": 3
+			},
+			{
+				"bonus": { "souk": 1 },
+				"level": 6
+			},
+			{
+				"bonus": { "houm": 1 },
+				"level": 9
+			}
+		]
+	},
+	{
+		"ids": [508],
+		"bonuses": [
+			{
+				"bonus": { "houg": 1, "kaih": 2, "houm": 1 },
+				"shipCountry": ["US"],
+				"shipType": [8,9,10],
+				"requiresId": [507],
+				"num": 1
+			},
+			{
+				"bonus": { "houg": 1, "kaih": 1, "houm": 1 },
+				"shipClass": [2,6,26],
+				"requiresId": [507],
+				"num": 1
+			},
+			{
+				"bonus": { "houg": 1, "kaih": 1, "houm": 1 },
+				"shipCountry": ["GB"],
+				"requiresId": [507],
+				"num": 1
+			}
+		]
 	}
 ]
