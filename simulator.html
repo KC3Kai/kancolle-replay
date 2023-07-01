@@ -597,7 +597,7 @@
 					<div class="shipBanner"><img :src="'assets/icons/' + ship.imgName" @dragstart="ondragstartShip(ship,keyS)" @dragover.prevent="" @drop.prevent="ondropShip(ship,keyS)" @dragend="ondragendShip" /></div>
 					<div class="shipStatWrap" v-if="ship.mstId">
 						<div class="statHalf"><img src="assets/stats/lv.png" title="Level"/><input type="number" v-model.number="ship.level" min="1" max="999" @change="onchangeStat($event,ship,'level');onchangeLevel(ship)"/></div>
-						<div class="statHalf"><img src="assets/stats/hp.png" title="HP"/><input type="number" v-model.number="ship.hp" min="1" max="9999" @change="onchangeStat($event,ship,'hp')"/></div>
+						<div class="statHalf"><img src="assets/stats/hp.png" title="HP"/><input type="number" v-model.number="ship.hp" min="1" max="9999" @change="onchangeStat($event,ship,'hp');onchangeHP(ship)"/></div>
 						<div v-for="stat in statBList" class="statHalf">
 							<img :src="'assets/stats/' + stat.key + '.png'" :title="stat.name"/>
 							<input type="number" v-model.number="ship.statsBase[stat.key]" min="0" max="999"
@@ -1081,7 +1081,7 @@
 		<vmodal :active="active" @vclose="canClose&&(active=false)">
 		<div id="divBonusImporterMain">
 			<div class="kcnavImporter" v-show="bonusData.length<=0">
-				<div class="header">Import Bonuses from <a href="https://github.com/sorewachigauyo/kc-event-bonus">Dewy</a>:</div>
+				<div class="header">Import Bonuses from <a href="https://github.com/sorewachigauyo/kc-event-bonus" target="_blank">Dewy</a>:</div>
 				<div class="kcnavImporterSettingsWrap">
 					<div>
 						<table>

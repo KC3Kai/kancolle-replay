@@ -596,6 +596,9 @@ var UI_FLEETEDITOR = Vue.createApp({
 				}
 			}
 		},
+		onchangeHP: function(ship) {
+			ship.hpInit = ship.hp;
+		},
 		
 		onchangeEquipLevel: function(ship) {
 			FLEET_MODEL.updateEquipStats(ship);
