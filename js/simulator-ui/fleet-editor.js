@@ -882,7 +882,12 @@ var UI_ADDITIONALSTATS = Vue.createApp({
 							if (numSpecialTorp && hasSubRadar) chanceMod = 1.05;
 							else if (numSpecialTorp >= 2) chanceMod = 1.1;
 						}
-						let rate = chanceMod > 0 ? chanceLeft*base/chanceMod : chanceLeft*.99;
+						let c = base;
+						if (d.id == 200) {
+							if (ship.equips.find(eq => eq.mid == 129)) c += .03;
+							if (['DD','CL','CLT'].includes(ship.type) && ship.equips.find(eq => eq.mid == 412)) c -= .08;
+						}
+						let rate = chanceMod > 0 ? chanceLeft*c/chanceMod : chanceLeft*.99;
 						if (d.replace && ship.LVL >= 80) {
 							let rateBase = Math.floor(100*rate);
 							stats.nbTypes.push({ name: NBATTACKDATA[d.replace].name, rate: Math.round(rateBase*d.replaceChance) });
