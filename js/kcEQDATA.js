@@ -1435,7 +1435,8 @@ var EQDATA = {
 		FP: 9,
 		AA: 3,
 		RNG: 2,
-		ACC: 1
+		ACC: 1,
+		CANBbonus: 15,
 	},
 	91: {
 		name: '12.7cm Twin High-Angle Mount (Late Model)',
