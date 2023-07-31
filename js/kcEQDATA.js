@@ -335,7 +335,7 @@ EQTDATA[CARRIERSCOUT2] = {
 EQTDATA[AUTOGYRO] = {
 	name: 'Anti-Sub Plane',
 	image: 21,
-	canequip: ['CAV','BBV','CVL','AS','AO','AR','LHA'],
+	canequip: ['CAV','BBV','CVL','AS','AO','AR','LHA','LandBase'],
 	canequipS: [372, 477, 478, 491, 546, 547, 573, 574, 586, 630, 646, 652, 662, 663, 668, 690, 713, 885, 911, 920],
 	cannotequipS: [380, 381, 382, 521, 522, 526, 534, 621, 645, 699, 727, 884, 889, 900, 943, 945],
 	isPlane: true,
@@ -348,7 +348,7 @@ EQTDATA[AUTOGYRO] = {
 EQTDATA[ASWPLANE] = {
 	name: 'Anti-Sub Plane',
 	image: 22,
-	canequip: ['CVL','LHA'],
+	canequip: ['CVL','LHA','LandBase'],
 	canequipS: [553, 554, 646, 717, 900],
 	cannotequipS: [521, 522, 526, 534, 621, 626, 727, 884, 894, 945],
 	isPlane: true,
@@ -402,7 +402,7 @@ EQTDATA[BULGEM] = {
 	name: 'Torpedo Bulge',
 	image: 23,
 	canequip: ['CT','CA','CAV','CVL','AS','AV','AR'],
-	canequipS: [146, 147, 216, 217, 305, 306, 307, 314, 330, 346, 357, 500, 537, 538, 542, 543, 547, 556, 559, 563, 564, 566, 567, 568, 569, 578, 579, 621, 622, 623, 624, 626, 629, 630, 645, 649, 650, 652, 656, 657, 662, 663, 668, 670, 699, 717, 727, 900, 915, 943, 948, 961],
+	canequipS: [146, 147, 216, 217, 305, 306, 307, 314, 330, 346, 357, 500, 537, 538, 542, 543, 547, 556, 559, 563, 564, 566, 567, 568, 569, 578, 579, 621, 622, 623, 624, 626, 629, 630, 645, 649, 650, 652, 656, 657, 662, 663, 668, 670, 699, 717, 727, 900, 915, 943, 948, 951, 961],
 };
 EQTDATA[BULGEL] = {
 	name: 'Torpedo Bulge',
@@ -416,7 +416,7 @@ EQTDATA[LANDINGCRAFT] = {
 	btype: B_LC1,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['AV','LHA'],
-	canequipS: [147, 198, 199, 200, 260, 352, 382, 418, 419, 434, 435, 464, 468, 469, 470, 478, 487, 488, 489, 490, 498, 500, 506, 541, 547, 548, 559, 563, 587, 623, 630, 645, 647, 650, 657, 666, 667, 699, 703, 707, 716, 718, 720, 725, 889, 899, 908, 915, 916, 959],
+	canequipS: [147, 198, 199, 200, 260, 352, 382, 418, 419, 434, 435, 464, 468, 469, 470, 478, 487, 488, 489, 490, 498, 500, 506, 541, 547, 548, 559, 563, 587, 623, 630, 645, 647, 650, 657, 666, 667, 699, 703, 707, 716, 718, 720, 725, 889, 899, 908, 915, 916, 951, 959],
 	cannotequipS: [445, 491, 727, 945],
 };
 EQTDATA[SEARCHLIGHTS] = {
@@ -5908,6 +5908,29 @@ var EQDATA = {
 		AR: 1,
 		RNG: 3,
 	},
+	509: {
+		name: '12cm Single High-angle Gun Mount Model E Kai',
+		nameJP: '12cm単装高角砲E型改',
+		added: '2023-07-31',
+		type: MAINGUNS, image: 16,
+		FP: 1,
+		AA: 4,
+		AR: 1,
+		ACC: 1,
+		EV: 3,
+		ASW: 2,
+		RNG: 1,
+	},
+	510: {
+		name: 'Walrus',
+		nameJP: 'Walrus',
+		added: '2023-07-31',
+		type: SEAPLANE, image: 50,
+		isnightscout: true,
+		ACC: 1,
+		ASW: 4,
+		LOS: 4,
+	},
 	1501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
@@ -7556,6 +7579,7 @@ var LBASDATA = {
 	492: { distance: 6, cost: 5 },
 	493: { distance: 9, cost: 5 },
 	504: { distance: 6, cost: 13 },
+	510: { distance: 3, cost: 10 },
 };
 
 

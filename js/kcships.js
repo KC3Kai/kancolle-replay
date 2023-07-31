@@ -1454,8 +1454,8 @@ Ship.prototype.getAACItype = function(atypes) {
 	}
 	
 	if (this.sclass == 54) {  //Akizuki-class
-		if (atypes[A_HAGUN] >= 2 && atypes[A_AIRRADAR]) types.push(1);
-		if (atypes[A_HAGUN] && atypes[A_AIRRADAR]) types.push(2);
+		if (atypes[A_HAGUN] >= 2 && this.equiptypesB[B_RADAR]) types.push(1);
+		if (atypes[A_HAGUN] && this.equiptypesB[B_RADAR]) types.push(2);
 		if (atypes[A_HAGUN] >= 2) types.push(3);
 	}
 	if (this.mid == 428 && concentrated && (atypes[A_HAGUN]||atypes[A_HAFD])) {   //428 = Maya Kai Ni
