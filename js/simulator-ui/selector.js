@@ -43,28 +43,36 @@ var METHODS_COMMON = {
 			if (!this.searchName) {
 				return;
 			}
-			let searchNameL = this.searchName.toLowerCase();
-			let n = 0;
 			let foundSelected = false;
-			for (let obj of OBJ_LIST) {
-				if (obj.nameL.indexOf(searchNameL) != 0) continue;
-				this.addResult(obj.id,obj.name,obj.imgName);
-				if (!foundSelected && obj.id == this.searchSelected) {
-					foundSelected = true;
-					this.searchInd = n;
+			let matchId = this.searchName[0] == '=' ? +this.searchName.substr(1) : null;
+			if (matchId) {
+				let obj = OBJ_LIST.find(obj => obj.id == matchId);
+				if (obj) {
+					this.addResult(obj.id,obj.name,obj.imgName);
 				}
-				if (++n >= CONST.MAX_RESULTS) break;
-			}
-			if (searchNameL.length > 1 || this.$i18n.locale != 'en') {
+			} else {
+				let searchNameL = this.searchName.toLowerCase();
+				let n = 0;
 				for (let obj of OBJ_LIST) {
-					if (obj.nameL.indexOf(searchNameL) == 0) continue;
-					if (!obj.nameL.includes(searchNameL)) continue;
+					if (obj.nameL.indexOf(searchNameL) != 0) continue;
 					this.addResult(obj.id,obj.name,obj.imgName);
 					if (!foundSelected && obj.id == this.searchSelected) {
 						foundSelected = true;
 						this.searchInd = n;
 					}
 					if (++n >= CONST.MAX_RESULTS) break;
+				}
+				if (searchNameL.length > 1 || this.$i18n.locale != 'en') {
+					for (let obj of OBJ_LIST) {
+						if (obj.nameL.indexOf(searchNameL) == 0) continue;
+						if (!obj.nameL.includes(searchNameL)) continue;
+						this.addResult(obj.id,obj.name,obj.imgName);
+						if (!foundSelected && obj.id == this.searchSelected) {
+							foundSelected = true;
+							this.searchInd = n;
+						}
+						if (++n >= CONST.MAX_RESULTS) break;
+					}
 				}
 			}
 			if (!foundSelected && this.searchResults.length) {

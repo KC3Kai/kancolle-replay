@@ -435,3 +435,37 @@ div.kcnavImporterSettingsWrap select.suggestion {
 #divFCFSettingsMain div.shipGroup img:hover {
 	cursor: pointer;
 }
+
+
+#divAutoBonus div.autoBonusMain {
+	background-color: #DDEEFF;
+	border: 1px solid transparent;
+	box-shadow: 0 0 5px black;
+	padding: 20px;
+}
+#divAutoBonus div.autoBonusMain span.header {
+	font-weight: bold;
+}
+#divAutoBonus div.autoBonusMain > div:not(:first-child) {
+	margin-top: 10px;
+}
+#divAutoBonus .error {
+	color: red;
+}
+#divAutoBonus .tooltip {
+	text-decoration: underline dotted 1px;
+	cursor: help;
+}
+#divAutoBonus div.autoBonusMainFoot {
+	display: flex;
+	gap: 5px;
+}
+#divAutoBonus div.autoBonusMainFoot > div:last-child {
+	margin-left: auto;
+}
+span.autoBonusStatus {
+	font-weight: bold;
+}
+span.autoBonusStatus.good {
+	color: green;
+}

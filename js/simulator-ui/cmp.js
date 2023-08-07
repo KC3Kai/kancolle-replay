@@ -36,6 +36,37 @@ COMMON.CMP_MODAL = {
 	template: document.getElementById('tmpModal')
 };
 
+COMMON.CMP_LOADING = {
+	props: [],
+	emits: [],
+	data: () => ({
+		txtLoading: '',
+		active: false,
+	}),
+	methods: {
+		_update: function() {
+			setTimeout(function() {
+				if (!this.txtLoading) {
+					this.active = false;
+					return;
+				}
+				this.txtLoading += ' •';
+				if (this.txtLoading.length > 6) this.txtLoading = ' •';
+				this._update();
+			}.bind(this),500);
+		},
+		start: function() {
+			if (this.txtLoading) return;
+			this.txtLoading = ' •';
+			if (!this.active) this._update();
+		},
+		stop: function() {
+			this.txtLoading = '';
+		},
+	},
+	template: document.getElementById('tmpLoading')
+};
+
 let messages = {
 	en: {
 		'ui_search': 'Search',

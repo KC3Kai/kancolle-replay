@@ -32,7 +32,8 @@
 		
 		<div id="divPlayer">
 			<div class="fleetSection">
-				<input type="button" value="Save/Load Simulator Backup" @click="onclickBackup"/>
+				<input type="button" value="Save/Load Simulator Backup" @click="onclickBackup"/>&nbsp;
+				<input type="button" value="Import/Export DeckBuilder Format" @click="onclickDeckbuilder"/>&nbsp;
 			</div>
 			<div class="fleetSection">
 				<vfleet :fleet="fleetFMain" fleetname="Main Fleet"></vfleet>
@@ -70,14 +71,6 @@
 				<vfleetcomps :comps="fleetsFFriend" fleetname="Friend Fleet" canimportkcnav="1" isfriendfleet="1"></vfleetcomps>
 				<label><input type="checkbox" v-model="useFF"/> Use Friend Fleet</label>
 			</div>
-			
-			<div class="fleetSection">
-				<input type="button" value="Import/Export DeckBuilder Format" @click="onclickDeckbuilder"/>
-			</div>
-			
-			<div class="fleetSection">
-				<input type="button" value="Import Mapwide Historical Bonuses" @click="onclickBonusImporter"/>
-			</div>
 		</div>
 		
 		<hr>
@@ -100,6 +93,16 @@
 				<div><label><input type="checkbox" v-model="settings.retreatOnTaiha" /> Retreat on <img src="assets/stats/taiha.png" /> ?</label> <img v-show="!settings.retreatOnTaiha" src="assets/stats/kuso.png" /></div>
 				<div style="margin-left:20px">Retreat on <img src="assets/stats/taiha.png" /> even if ship has <img src="assets/items/14.png"/> if on Node <select v-model="settingsFCF.dameconNode"><option value="0">None</option><option v-for="(battle,i) in battles" :value="battle.id">{{i+1}}</option></select> or before</div>
 				<div><img src="assets/items/28.png"/><input type="button" value="FCF Settings" @click="onclickSetFCF"/> <span v-show="hasFCFSettings" class="bonusMarker fcf" title="FCF Settings set">&#11044;</span></div>
+			</div>
+			<div>
+				<div><span class="subheader">Historical Bonus:</span></div>
+				<div>
+					<input type="button" value="Auto-Set Historical Bonuses" @click="onclickAutoBonus"/>
+					<span class="autoBonusStatus" :class="classAutoBonusStatus">&nbsp;{{autoBonusStatus}}</span> <span v-if="autoBonus">({{autoBonusName}}, Nodes: {{autoBonusNodes}})</span>
+				</div>
+				<div style="margin-top:20px">
+					<input type="button" value="Import Mapwide Bonuses Once" @click="onclickBonusImporter"/>
+				</div>
 			</div>
 			<div id="divSettingsMechanics">
 				<span class="subheader">Mechanics:</span>
@@ -391,6 +394,7 @@
 	<div id="divOther">
 	<div id="divChangeLog">
 		<div><span class="header">Change Log:</span></div>
+		<div>2023-08-07 - Auto-Set Historical Bonuses settings</div>
 		<div>2023-06-05 - Mechanic: AACI Rework (sequential roll and <a href="https://docs.google.com/spreadsheets/d/1agGoLv57g5eOXLXtNIKHRoBYy61OQYxibWP6Vi_DMuY/edit#gid=13450409">new AACI priority</a>), Additional Stats show fleetwide AACI rate</div>
 		<div>2023-04-13 - FCF Settings</div>
 		<div>2023-03-19 - Update <a href="https://twitter.com/Divinity_123/status/1637255766166863873">BB gun fit</a></div>
@@ -474,9 +478,9 @@
 				</div>
 				<div>
 					<div><span class="header">LBAS Waves:</span></div>
-					<div>1 <input type="checkbox" v-model="battle.lbasWaves[0]" /><input type="checkbox" v-model="battle.lbasWaves[1]" /></div>
-					<div>2 <input type="checkbox" v-model="battle.lbasWaves[2]" /><input type="checkbox" v-model="battle.lbasWaves[3]" /></div>
-					<div>3 <input type="checkbox" v-model="battle.lbasWaves[4]" /><input type="checkbox" v-model="battle.lbasWaves[5]" /></div>
+					<div>1 <input type="checkbox" v-model="battle.lbasWaves[0]" @change="onchangeLbasWaves(0)"/><input type="checkbox" v-model="battle.lbasWaves[1]" @change="onchangeLbasWaves(0)"/></div>
+					<div>2 <input type="checkbox" v-model="battle.lbasWaves[2]" @change="onchangeLbasWaves(1)"/><input type="checkbox" v-model="battle.lbasWaves[3]" @change="onchangeLbasWaves(1)"/></div>
+					<div>3 <input type="checkbox" v-model="battle.lbasWaves[4]" @change="onchangeLbasWaves(2)"/><input type="checkbox" v-model="battle.lbasWaves[5]" @change="onchangeLbasWaves(2)"/></div>
 					<div class="space" v-show="isboss"><span class="header">Support:</span></div>
 					<div class="formationsWrap" v-show="isboss">
 						<label><input type="radio" value="1" v-model.number="battle.useNormalSupport" />Normal</label>
@@ -489,7 +493,7 @@
 					<div v-show="hasBonusMain()" class="bonusMarker main" title="Main Fleet set">&#11044;</div>
 					<div v-show="hasBonusLBAS()" class="bonusMarker lbas" title="Land Base Aerial Support set">&#11044;</div>
 					<div v-show="hasBonusFF()" class="bonusMarker friend" title="Friend Fleet set">&#11044;</div>
-					<div><input type="button" value="Import Bonuses" @click="onclickImportBonus"/></div>
+					<div><input type="button" value="Import Bonuses Once" @click="onclickImportBonus"/></div>
 				</div>
 			</div>
 			<div ref="comps"><vfleetcomps :comps="battle.enemyComps" fleetname="Enemy Fleet" canimportkcnav="1"></vfleetcomps></div>
@@ -1210,6 +1214,73 @@
 		</vmodal>
 	</div></div>
 	
+	<div id="divAutoBonus"><div v-show="active">
+		<vmodal :active="active" @vclose="canClose&&(active=false)">
+		<div class="autoBonusMain" v-show="!isPreloader">
+			<div><span class="header">Auto-Set Historical Bonus</span></div>
+			<div v-show="isUpdate">
+				Current data set has been updated<span v-show="datePreloader"> ({{datePreloader}})</span>. Re-apply all bonuses now?
+			</div>
+			<div v-show="!isUpdate">
+				<label><input value="preset" type="radio" v-model="type"/> <span class="tooltip" title="Manually compiled bonuses (Recommended if available)">Simulator Preset</span></label>&nbsp;&nbsp;&nbsp;
+				<label><input value="dewy" type="radio" v-model="type" @change="onclickDewy"/> <span class="tooltip" title="Bonus ranges automatically calculated from TsunDB">Dewy</span></label> (<a href="https://github.com/sorewachigauyo/kc-event-bonus" target="_blank">kc-event-bonus</a>)
+			</div>
+			<div v-show="type=='preset'">
+				<label>Set: <select v-model="keyPreset" :disabled="isUpdate" @change="onchangeNamePreset"><option value="">None</option><option v-for="opt in optionsPresetName" :value="opt.key">{{opt.name}}</option></select></label>
+			</div>
+			<div v-show="type=='dewy'">
+				<label>Set: <select v-model="keyDewy" :disabled="!optionsDewyName.length || isUpdate" @change="onchangeNameDewy"><option value="">None</option><option v-for="opt in optionsDewyName" :value="opt.key">{{opt.name}}</option></select></label>
+			</div>
+			<div v-show="type=='preset' && !isUpdate">
+				<div v-for="(node,i) in nodeToLetterListPreset">
+					<label>Node {{i+1}}: <select v-model="node.letter"><option value=""></option><option v-for="letter in optionsPresetLetter">{{letter}}</option></select></label>
+				</div>
+			</div>
+			<div v-show="type=='dewy' && !isUpdate">
+				<div v-for="(node,i) in nodeToLetterListDewy">
+					<label>Node {{i+1}}: <select v-model="node.letter" @change="onchangeLetterDewy(node.letter)"><option value="">None</option><option v-for="letter in optionsDewyLetter">{{letter}}</option></select></label>
+				</div>
+			</div>
+			<div v-show="type=='preset'">
+				Damage: Use Preset Values
+			</div>
+			<div v-show="type=='dewy'">
+				<label>Damage: <select v-model="dmgType">
+					<option value="0">Use Average</option>
+					<option value="1">Use Min</option>
+					<option value="2">Use Max</option>
+				</select></label>
+			</div>
+			<div>
+				<label>Accuracy/Evasion: <select v-model="accEvaType">
+					<option value="0">None</option>
+					<option value="1" v-if="type=='preset'" :disabled="!hasAccEva">Use Estimated Values</option>
+					<option value="2">Use Equal to Damage Mod</option>
+					<option value="3">Use Half of Damage Mod</option>
+				</select></label>
+			</div>
+			<div v-show="type=='preset' && hasDebuff">
+				<label><input type="checkbox" v-model="useDebuff"/> Debuffed</label>
+			</div>
+			<div class="autoBonusMainFoot">
+				<div><input type="button" value="Start" :disabled="!canStart" @click="onclickStart"/></div>
+				<div v-show="isUpdate"><input type="button" value="Dismiss" @click="onclickDismiss"/></div>
+				<div style="width:50px">
+					<div v-show="!hasError"><vloading ref="txtLoading"></vloading></div>
+					<div v-show="hasError" class="error">Error</div>
+				</div>
+				<div><label><input type="checkbox" v-model="applyToCurrent" :disabled="isUpdate"/> <span class="tooltip" title="&#9744; All newly added ships starting now will have these bonuses as defaults.&#13;&#9745; Also apply these bonuses now to all currently set ships (Set: None = remove all).">Apply to Current</span></label></div>
+			</div>
+		</div>
+		<div class="autoBonusMain" v-show="isPreloader">
+			<div><span class="header">Auto-Set Historical Bonus</span></div>
+			<div v-show="!hasError">Loading <vloading ref="txtLoadingPL"></vloading></div>
+			<div v-show="!hasError"><input type="button" value="Cancel" @click="cancelPreload"/></div>
+			<div v-show="hasError" class="error">Load error, Auto-Bonus will be turned off</div>
+		</div>
+		</vmodal>
+	</div></div>
+	
 	<template id="tmpModal">
 		<div class="overlayDark" tabindex="1" @focus.prevent="focusContentTop" @click="$emit('vclose')"></div>
 		<div class="modalContent" tabindex="-1" ref="content" @keydown="onkeypressClose">
@@ -1221,9 +1292,13 @@
 		</div>
 	</template>
 	
+	<template id="tmpLoading">
+		<span v-show="txtLoading">{{txtLoading}}</span>
+	</template>
 	
 	
 	<script src="js/simulator-ui/cmp.js"></script>
+	<script src="js/simulator-ui/bonus.js"></script>
 	<script src="js/simulator-ui/fleet-editor.js"></script>
 	<script src="js/simulator-ui/selector.js"></script>
 	<script src="js/simulator-ui/convert.js"></script>
