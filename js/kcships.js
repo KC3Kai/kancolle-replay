@@ -448,7 +448,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	}
 	if (MECHANICS.fitGunUpdate1) {
 		let accFit = this.getFit();
-		if (accFit || (this.ACCfit && this.fitclass == 100)) this.ACCfit = accFit;
+		if (accFit || (this.ACCfit && this.fitclass == 100)) this.ACCfit = this.ACCfitN = accFit;
 		if (['FBB','BB','BBV'].includes(this.type)) this.ACCfit = this.ACCfitN = accFit;
 	}
 	

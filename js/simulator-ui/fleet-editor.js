@@ -427,6 +427,12 @@ var UI_FLEETEDITOR = Vue.createApp({
 					if (shipPrev[key] != null) ship[key] = shipPrev[key];
 				}
 			}
+			if (mstId > 0 && this.canBonus) {
+				COMMON.BONUS_MANAGER.applyAutoBonusShip(this.fleet[shipsProp][ind],this.fleet.isFriend);
+			}
+			if (mstId > 0 && this.fleet.isEnemy) {
+				COMMON.BONUS_MANAGER.applyAutoDebuff(this.fleet,this.fleet[shipsProp][ind]);
+			}
 		},
 		setNewEquip: function(mstId,indShip,indEquip,shipsProp) {
 			indShip = indShip != null ? indShip : this.selectedShipInd;
@@ -437,6 +443,10 @@ var UI_FLEETEDITOR = Vue.createApp({
 			
 			ship.equips[indEquip] = FLEET_MODEL.getDefaultEquip(mstId,ship,indEquip);
 			FLEET_MODEL.updateEquipStats(ship);
+			
+			if (ship.mstId > 0 && this.canBonus) {
+				COMMON.BONUS_MANAGER.applyAutoBonusShip(this.fleet[shipsProp][indShip],this.fleet.isFriend);
+			}
 		},
 		resetShips: function(deleteEscort) {
 			for (let i=0; i<this.fleet.ships.length; i++) {
@@ -468,7 +478,7 @@ var UI_FLEETEDITOR = Vue.createApp({
 				data.formation = CONST.formationSingleDefault;
 			}
 			this.resetShips(true);
-			CONVERT.loadSaveFleet(data,this.fleet);
+			CONVERT.loadSaveFleet(data,this.fleet,true);
 			this.loadCode = JSON.stringify(data);
 		},
 		updateCode: function() {
@@ -565,6 +575,11 @@ var UI_FLEETEDITOR = Vue.createApp({
 			if (shipTo != shipFrom) {
 				FLEET_MODEL.updateEquipStats(shipTo);
 				FLEET_MODEL.updateEquipStats(shipFrom);
+				
+				if (this.canBonus) {
+					if (shipTo.mstId) COMMON.BONUS_MANAGER.applyAutoBonusShip(shipTo,this.fleet.isFriend);
+					if (shipFrom.mstId) COMMON.BONUS_MANAGER.applyAutoBonusShip(shipFrom,this.fleet.isFriend);
+				}
 			}
 		},
 		ondragendEquip: METHODS_COMMON.methods.ondragendEquip,
@@ -748,6 +763,8 @@ window.CMP_LBASEDITOR = {
 			if (edata) {
 				base.slots[indEquip] = COMMON.getLBASSlotDefault(edata.type);
 			}
+			
+			COMMON.BONUS_MANAGER.applyAutoLBAS(base.ind);
 		},
 		
 		onclickEquip: METHODS_COMMON.methods.onclickEquip,
@@ -768,6 +785,9 @@ window.CMP_LBASEDITOR = {
 			
 			equipFrom.ind = equipTo.ind;
 			equipTo.ind = this.selectedEquipInd;
+			
+			COMMON.BONUS_MANAGER.applyAutoLBAS(baseFrom.ind);
+			COMMON.BONUS_MANAGER.applyAutoLBAS(baseTo.ind);
 		},
 		ondragendEquip: METHODS_COMMON.methods.ondragendEquip,
 		

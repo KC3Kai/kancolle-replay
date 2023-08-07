@@ -956,6 +956,7 @@ window.CONVERT = {
 		
 		dataSave.settings = this.uiToSaveSettings(dataUI.settings);
 		dataSave.settingsFCF = this._copyObj(dataUI.settingsFCF);
+		if (dataUI.autoBonus) dataSave.autoBonus = this._copyObj(dataUI.autoBonus);
 		
 		dataSave.version = this._SAVE_VERSION_CURRENT;
 		
@@ -989,15 +990,23 @@ window.CONVERT = {
 			FLEET_MODEL.updateEquipStats(shipUI);
 		}
 	},
-	loadSaveFleet: function(fleetSave,fleetUI) {
+	loadSaveFleet: function(fleetSave,fleetUI,useAutoBonus) {
 		fleetUI.formation = fleetSave.formation;
 		FLEET_MODEL.setType(fleetUI,fleetSave.type);
 		this._loadSaveShips(fleetSave.ships,fleetUI.ships,fleetSave.version);
 		if (fleetUI.shipsEscort && fleetSave.shipsEscort) {
 			this._loadSaveShips(fleetSave.shipsEscort,fleetUI.shipsEscort,fleetSave.version);
 		}
+		if (useAutoBonus) {
+			if (fleetUI.isPlayer || fleetUI.isFriend) {
+				COMMON.BONUS_MANAGER.applyAutoBonusFleet(fleetUI);
+			}
+			if (fleetUI.isEnemy) {
+				COMMON.BONUS_MANAGER.applyAutoDebuff(fleetUI);
+			}
+		}
 	},
-	loadSaveComps: function(compsSave,compsUI) {
+	loadSaveComps: function(compsSave,compsUI,useAutoBonus) {
 		for (let i=compsUI.length; i<compsSave.length; i++) {
 			this._UI_MAIN.addNewComp(compsUI);
 		}
@@ -1005,7 +1014,7 @@ window.CONVERT = {
 			if (!compsUI[i]) continue;
 			this._copyObj(compsSave[i],Object.keys(compsSave[i]).filter(k => k != 'fleet'),compsUI[i]);
 			if (compsSave[i].fleet) {
-				this.loadSaveFleet(compsSave[i].fleet,compsUI[i].fleet);
+				this.loadSaveFleet(compsSave[i].fleet,compsUI[i].fleet,useAutoBonus);
 			}
 		}
 	},
@@ -1082,6 +1091,10 @@ window.CONVERT = {
 		}
 		if (dataSave.settingsFCF) {
 			this._copyObj(dataSave.settingsFCF,null,dataUI.settingsFCF);
+		}
+		if (dataSave.autoBonus) {
+			dataUI.autoBonus = {};
+			this._copyObj(dataSave.autoBonus,null,dataUI.autoBonus);
 		}
 	},
 };

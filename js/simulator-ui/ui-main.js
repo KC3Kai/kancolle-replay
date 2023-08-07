@@ -118,6 +118,7 @@ var UI_MAIN = Vue.createApp({
 			rules: [],
 			dameconNode: 0,
 		},
+		autoBonus: null,
 		
 		canSim: true,
 		numSim: CONST.numSimDefault,
@@ -171,12 +172,23 @@ var UI_MAIN = Vue.createApp({
 		}
 		this.addNewBattle();
 		
+		COMMON.BONUS_MANAGER.init(this);
+		
 		initEQDATA(() => {
 			document.body.style = '';
-			let dataSave = null;
+			let dataSave = null, dataReplay = null;
 			let finishInit = function() {
 				CONVERT.loadSave(dataSave,this);
 				this.canSave = true;
+				if (this.autoBonus) {
+					UI_AUTOBONUS.doOpenPreloader(this.autoBonus);
+				}
+				if (dataReplay) {
+					let autoBonus = COMMON.BONUS_MANAGER.getAutoBonusFromReplay(dataReplay) ;
+					if (autoBonus) {
+						UI_AUTOBONUS.doOpen(autoBonus);
+					}
+				}
 				setTimeout(function() {
 					if (document.querySelector('#divSettingsAdvanced input.changed')) this.settings.showAdvanced = true;
 				}.bind(this),1);
@@ -193,7 +205,7 @@ var UI_MAIN = Vue.createApp({
 				if (dataHash) {
 					if (dataHash.fleet1 && dataHash.battles && !dataHash.source) { //replay import
 						console.log('replay import');
-						let dataReplay = dataHash;
+						dataReplay = dataHash;
 						dataSave = CONVERT.replayToSave(dataReplay);
 						this.settings.airRaidCostW6 = dataReplay.world == 6;
 						if (localStorage.sim2 && !CONVERT.saveIsEmpty(JSON.parse(localStorage.sim2))) {
@@ -226,6 +238,22 @@ var UI_MAIN = Vue.createApp({
 				|| (this.fleetFMain.ships && this.fleetFMain.ships.find(s => s.neverFCF))
 				|| (this.fleetFMain.shipsEscort && this.fleetFMain.shipsEscort.find(s => s.neverFCF))
 			);
+		},
+		
+		autoBonusStatus: function() {
+			return !this.autoBonus ? 'Off' : 'Active';
+		},
+		classAutoBonusStatus: function() {
+			return this.autoBonus ? 'good' : '';
+		},
+		autoBonusName: function() {
+			if (!this.autoBonus) return '';
+			if (this.autoBonus.type == 'preset') return 'Preset: ' + COMMON.BONUS_MANAGER.PRESET_INDEX[this.autoBonus.key].name;
+			if (this.autoBonus.type == 'dewy') return 'kc-event-bonus: ' + COMMON.BONUS_MANAGER.getDewyName(this.autoBonus.key);
+			return '';
+		},
+		autoBonusNodes: function() {
+			return this.autoBonus ? this.battles.map(battle => this.autoBonus.nodeToLetter[battle.id] || '(default)').join('\u2192') : '';
 		},
 	},
 	methods: {
@@ -465,6 +493,9 @@ var UI_MAIN = Vue.createApp({
 		onclickBonusImporter: function() {
 			UI_BONUSIMPORTER.doOpen();
 		},
+		onclickAutoBonus: function() {
+			UI_AUTOBONUS.doOpen(this.autoBonus);
+		},
 		
 		onclickBackup: function() {
 			UI_BACKUP.doOpen();
@@ -529,6 +560,10 @@ var UI_MAIN = Vue.createApp({
 		},
 		onclickImportBonus: function() {
 			UI_BONUSIMPORTER.doOpen(this.battle.id);
+		},
+		
+		onchangeLbasWaves: function(ind) {
+			COMMON.BONUS_MANAGER.applyAutoLBAS(ind);
 		},
 	},
 	watch: {
@@ -644,7 +679,7 @@ var UI_DECKBUILDERIMPORTER = Vue.createApp({
 				let fleetKey = 'f'+fleetNum;
 				if (dataDb[fleetKey].s7) delete dataDb[fleetKey].s7;
 			}
-			CONVERT.loadSaveFleet(CONVERT.deckbuilderToSaveFleet(dataDb,fleetNum),fleetUI);
+			CONVERT.loadSaveFleet(CONVERT.deckbuilderToSaveFleet(dataDb,fleetNum),fleetUI,true);
 		},
 		
 		onclickImport: function() {
@@ -852,7 +887,7 @@ var UI_KCNAVCOMPIMPORTER = Vue.createApp({
 				for (let i=this.comps.length; i>compsSave.length; i--) UI_MAIN.deleteComp(this.comps);
 				for (let comp of this.comps) comp.fleet = FLEET_MODEL.getBlankFleet(comp.fleet);
 				for (let i=this.comps.length; i<compsSave.length; i++) UI_MAIN.addNewComp(this.comps);
-				CONVERT.loadSaveComps(compsSave,this.comps);
+				CONVERT.loadSaveComps(compsSave,this.comps,true);
 				this.active = false;
 			}.bind(this);
 			xhr.onerror = function() {
@@ -1167,7 +1202,7 @@ var UI_BACKUP = Vue.createApp({
 			for (let key of ['fleetFMain','fleetFSupportN','fleetFSupportB']) {
 				if (!dataSave[key]) continue;
 				UI_MAIN[key] = FLEET_MODEL.getBlankFleet(UI_MAIN[key]);
-				CONVERT.loadSaveFleet(dataSave[key],UI_MAIN[key]);
+				CONVERT.loadSaveFleet(dataSave[key],UI_MAIN[key],true);
 			}
 			if (dataSave.landBases) {
 				CONVERT.loadSaveLBAS(dataSave.landBases,UI_MAIN.landBases);
@@ -1252,6 +1287,323 @@ var UI_FCFSETTINGS = Vue.createApp({
 		},
 	},
 }).component('vmodal',COMMON.CMP_MODAL).mount('#divFCFSettings');;
+
+
+
+
+
+var UI_AUTOBONUS = Vue.createApp({
+	data: () => ({
+		active: false,
+		canClose: true,
+		hasError: false,
+		
+		type: 'preset',
+		keyPreset: '',
+		keyDewy: '',
+		nodeToLetterListPreset: [],
+		nodeToLetterListDewy: [],
+		useDebuff: false,
+		dmgType: 0,
+		accEvaType: 0,
+		applyToCurrent: true,
+		
+		optionsPresetName: [],
+		optionsPresetLetter: [],
+		optionsDewyName: [],
+		optionsDewyLetter: [],
+		hasDebuff: false,
+		hasAccEva: false,
+		
+		isPreloader: false,
+		namePreloader: '',
+		datePreloader: '',
+		cancelledPreloader: false,
+		isUpdate: false,
+		
+		hashes: { preset: {}, dewy: {} },
+	}),
+	mounted: function() {
+		for (let key in COMMON.BONUS_MANAGER.PRESET_INDEX) {
+			this.optionsPresetName.push({ name: COMMON.BONUS_MANAGER.PRESET_INDEX[key].name, key: key });
+		}
+	},
+	computed: {
+		canStart: function() {
+			if (this.type == 'preset') {
+				return !this.keyPreset || this.hashes.preset[this.keyPreset] != null;
+			} else if (this.type == 'dewy') {
+				return Object.values(this.hashes.dewy).every(v => v != null);
+			}
+		},
+	},
+	methods: {
+		doOpen: function(autoBonusInit) {
+			this.isPreloader = this.isUpdate = false;
+			this.canClose = true;
+			this.active = true;
+			this.hasError = false;
+			this._initNodeToLetter();
+			if (autoBonusInit) {
+				this._initSettings(autoBonusInit)
+			}
+		},
+		doOpenPreloader: async function(autoBonus) {
+			if (!autoBonus) return;
+			this.cancelledPreloader = false;
+			this.hasError = false;
+			let isUpdated = false;
+			if (autoBonus.type == 'preset') {
+				let result = await COMMON.BONUS_MANAGER.getPreset(autoBonus.key);
+				if (this.cancelledPreloader) return;
+				this.hasError = result.data == null;
+				isUpdated = autoBonus.hash != result.hash;
+				this.hashes.preset[autoBonus.key] = result.hash;
+			} else if (autoBonus.type == 'dewy') {
+				this.isPreloader = true;
+				this.isUpdate = false;
+				this.canClose = false;
+				this.active = true;
+				this.$refs.txtLoadingPL.start();
+				
+				let results = await Promise.all(autoBonus.files.map(file => COMMON.BONUS_MANAGER.getDewy(file.key)));
+				if (this.cancelledPreloader) return;
+				this.canClose = true;
+				this.$refs.txtLoadingPL.stop();
+				for (let i=0; i<results.length; i++) {
+					if (results[i].data == null) this.hasError = true;
+					if (autoBonus.files[i].hash != results[i].hash) isUpdated = true;
+					this.hashes.dewy[autoBonus.files[i].key] = results[i].hash;
+				}
+			}
+			if (this.hasError) {
+				UI_MAIN.autoBonus = null;
+				this.canClose = true;
+			} else {
+				this.active = false;
+				this.canClose = true;
+				if (isUpdated) {
+					this.$nextTick(() => this.doOpenUpdate(autoBonus));
+				}
+			}
+		},
+		cancelPreload: function() {
+			this.active = false;
+			this.canClose = true;
+			UI_MAIN.autoBonus = null;
+			this.cancelledPreloader = true;
+		},
+		doOpenUpdate: function(autoBonus) {
+			if (!autoBonus) return;
+			this.isUpdate = true;
+			this.isPreloader = false;
+			this.canClose = true;
+			this.active = true;
+			
+			this._initNodeToLetter();
+			this._initSettings(autoBonus);
+			this.applyToCurrent = true;
+		},
+		doClose: function() {
+			this.active = false;
+		},
+		
+		_initNodeToLetter: function() {
+			let idToLetterPrev = {};
+			for (let nodeToLetterListKey of ['nodeToLetterListPreset', 'nodeToLetterListDewy']) {
+				for (let node of this[nodeToLetterListKey]) idToLetterPrev[node.id] = node.letter;
+				this[nodeToLetterListKey] = [];
+				for (let battle of UI_MAIN.battles) {
+					let obj = { id: battle.id, letter: '' };
+					if (idToLetterPrev[battle.id]) obj.letter = idToLetterPrev[battle.id];
+					this[nodeToLetterListKey].push(obj);
+				}
+			}
+		},
+		_initSettings: function(autoBonus) {
+			this.type = autoBonus.type;
+			if (autoBonus.type == 'preset') {
+				if (this.keyPreset != autoBonus.key) {
+					this.keyPreset = autoBonus.key;
+					this.onchangeNamePreset();
+				}
+				this.useDebuff = autoBonus.useDebuff;
+				this.accEvaType = autoBonus.accEvaType;
+				for (let obj of this.nodeToLetterListPreset) {
+					if (autoBonus.nodeToLetter[obj.id]) obj.letter = autoBonus.nodeToLetter[obj.id];
+				}
+			}
+			if (autoBonus.type == 'dewy') {
+				this.onclickDewy();
+				if (this.keyDewy != autoBonus.key) {
+					this.keyDewy = autoBonus.key;
+					this.onchangeNameDewy();
+				}
+				this.dmgType = autoBonus.dmgType;
+				this.accEvaType = autoBonus.accEvaType;
+				for (let obj of this.nodeToLetterListDewy) {
+					if (autoBonus.nodeToLetter[obj.id]) obj.letter = autoBonus.nodeToLetter[obj.id];
+				}
+			}
+		},
+		_applySettings: function() {
+			let autoBonus = null;
+			if (this.type == 'preset' && this.keyPreset) {
+				autoBonus = {
+					type: this.type,
+					key: this.keyPreset,
+					hash: this.hashes.preset[this.keyPreset],
+					nodeToLetter: {},
+					useDebuff: this.hasDebuff && this.useDebuff,
+					accEvaType: this.accEvaType,
+				};
+				for (let node of this.nodeToLetterListPreset) autoBonus.nodeToLetter[node.id] = node.letter;
+			}
+			if (this.type == 'dewy' && this.keyDewy) {
+				autoBonus = {
+					type: this.type,
+					key: this.keyDewy,
+					files: [],
+					nodeToLetter: {},
+					dmgType: this.dmgType,
+					accEvaType: this.accEvaType,
+				};
+				for (let node of this.nodeToLetterListDewy) {
+					if (!node.letter) continue;
+					let key = this.keyDewy + '/' + node.letter;
+					autoBonus.nodeToLetter[node.id] = node.letter;
+					if (this.hashes.dewy[key]) autoBonus.files.push({ key: key, hash: this.hashes.dewy[key] });
+				}
+			}
+			UI_MAIN.autoBonus = autoBonus;
+			
+			if (this.applyToCurrent) {
+				if (autoBonus) {
+					COMMON.BONUS_MANAGER.applyAutoAll();
+				} else {
+					COMMON.BONUS_MANAGER.resetAll();
+				}
+			}
+		},
+		
+		
+		onclickDewy: async function() {
+			if (this.type != 'dewy') return;
+			if (this.accEvaType == 1) this.accEvaType = 0;
+			if (this.optionsDewyName.length) return;
+			
+			let dataIndex = await COMMON.BONUS_MANAGER.getDewyIndex();
+			if (!dataIndex) return;
+			let objs = {};
+			for (let item of dataIndex.tree.filter(obj => obj.path.indexOf('/') == -1)) {
+				let name = COMMON.BONUS_MANAGER.getDewyName(item.path);
+				let s = item.path.split('-');
+				let keySort = '' + (1000 - +s[0]) + '-' + s[1];
+				objs[keySort] = { name: name, key: item.path };
+			}
+			for (let keySort of Object.keys(objs).sort()) this.optionsDewyName.push(objs[keySort]);
+		},
+		_getLetterToEdges: function(keyEdges) {
+			let letterToEdges = {};
+			for (let edgeId in EDGES[keyEdges]) {
+				let letter = EDGES[keyEdges][edgeId][1];
+				if (letter.indexOf('Start') == 0) continue;
+				if (!letterToEdges[letter]) letterToEdges[letter] = [];
+				letterToEdges[letter].push(edgeId);
+			}
+			return letterToEdges;
+		},
+		onchangeNamePreset: async function() {
+			this.optionsPresetLetter = [];
+			for (let node of this.nodeToLetterListPreset) {
+				node.letter = '';
+			}
+			
+			if (this.keyPreset) {
+				let keyNow = this.keyPreset;
+				this.hashes.preset[this.keyPreset] = null;
+				this.hasError = false;
+				
+				let result = await COMMON.BONUS_MANAGER.getPreset(this.keyPreset);
+				if (!result.data) {
+					delete this.hashes.preset[keyNow];
+					if (this.keyPreset == keyNow) {
+						this.hasError = true;
+						this.keyPreset = '';
+					}
+				}
+				if (result.key == this.keyPreset) {
+					let keyEdges = 'World ' + result.data.world + '-' + result.data.mapnum;
+					for (let letter of Object.keys(this._getLetterToEdges(keyEdges)).sort()) {
+						this.optionsPresetLetter.push(letter);
+					}
+					this.hasDebuff = !!result.data.listDebuff;
+					this.hasAccEva = !!(
+						(result.data.listBonus && result.data.listBonus.find(item => item.bonuses.find(bonus => bonus.acc != null || bonus.eva != null))) ||
+						(result.data.listBonusLBAS && result.data.listBonusLBAS.find(item => item.bonuses.find(bonus => bonus.acc != null)))
+					);
+					if (!this.accEvaType || this.accEvaType == 1) this.accEvaType = this.hasAccEva ? 1 : 0;
+					this.hashes.preset[this.keyPreset] = result.hash;
+				}
+			}
+		},
+		onchangeNameDewy: function() {
+			this.optionsDewyLetter = [];
+			for (let node of this.nodeToLetterListDewy) {
+				node.letter = '';
+			}
+			if (this.keyDewy) {
+				let keyEdges = 'World ' + this.keyDewy;
+				for (let letter of Object.keys(this._getLetterToEdges(keyEdges)).sort()) {
+					this.optionsDewyLetter.push(letter);
+				}
+			}
+		},
+		onchangeLetterDewy: async function(letter) {
+			if (!letter) return;
+			
+			let dataIndex = await COMMON.BONUS_MANAGER.getDewyIndex();
+			let key = this.keyDewy + '/' + letter;
+			if (!dataIndex.tree.find(item => item.path == key + '.json')) return;
+			this.hashes.dewy[key] = null;
+			this.hasError = false;
+			
+			let result = await COMMON.BONUS_MANAGER.getDewy(key);
+			this.hashes.dewy[key] = result.hash;
+			if (!result.data) {
+				this.hasError = true;
+				delete this.hashes.dewy[key];
+				for (let node of this.nodeToLetterListDewy) {
+					if (node.letter == letter) node.letter = '';
+				}
+			}
+		},
+		onclickStart: function() {
+			if (!this.canClose) return;
+			if (!this.hasError) {
+				this._applySettings();
+			}
+			this.active = false;
+		},
+		onclickDismiss: function() {
+			let autoBonus = UI_MAIN.autoBonus;
+			if (this.type == 'preset') {
+				autoBonus.hash = this.hashes.preset[autoBonus.key];
+			} else if (this.type == 'dewy') {
+				for (file of autoBonus.files) {
+					file.hash = this.hashes.dewy[file.key];
+				}
+			}
+			this.active = false;
+		},
+	},
+	watch: {
+		canStart: function() {
+			this.canStart ? this.$refs.txtLoading.stop() : this.$refs.txtLoading.start();
+		},
+	},
+}).component('vmodal',COMMON.CMP_MODAL).component('vloading',COMMON.CMP_LOADING).mount('#divAutoBonus');
+
 
 
 document.body.onunload = function() {
