@@ -2066,6 +2066,43 @@ var MAPDATA = {
 			},
 		}
 	},
+	57: {
+		name: 'Summer 2023 Event',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmDN: 228,
+				bgmNN: 229,
+				bgmDB: 230,
+				bgmNB: 230,
+				bossnode: ['N','S'],
+			},
+			2: {
+				name: 'E2',
+				bgmDN: 228,
+				bgmNN: 229,
+				bgmDB: 230,
+				bgmNB: 230,
+				bossnode: ['S','W'],
+			},
+			3: {
+				name: 'E3',
+				bgmDN: 228,
+				bgmNN: 229,
+				bgmDB: 230,
+				bgmNB: 230,
+				bossnode: ['E','M','W'],
+			},
+			4: {
+				name: 'E4',
+				bgmDN: 230,
+				bgmNN: 230,
+				bgmDB: 231,
+				bgmNB: 231,
+				bossnode: ['F','Q','X'],
+			},
+		}
+	},
 }
 
 //-------------------------------------
