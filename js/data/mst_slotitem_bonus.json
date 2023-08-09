@@ -5135,6 +5135,11 @@
 				"bonus": { "raig": 2 },
 				"shipClass": [114],
 				"num": 1
+			},
+			{
+				"bonus": { "raig": 1, "kaih": 2 },
+				"shipClass": [122],
+				"num": 1
 			}
 		]
 	},
@@ -6954,6 +6959,21 @@
 			{
 				"bonus": { "houg": 4, "kaih": 2 },
 				"shipClass": [88],
+				"num": 1
+			}
+		]
+	},
+	{
+		"ids": [511,512],
+		"bonuses": [
+			{
+				"bonus": { "raig": 3, "kaih": 4 },
+				"shipClass": [122],
+				"num": 1
+			},
+			{
+				"bonus": { "raig": 1, "kaih": 2 },
+				"shipClass": [114],
 				"num": 1
 			}
 		]
