@@ -1306,7 +1306,9 @@ var UI_AUTOBONUS = Vue.createApp({
 		useDebuff: false,
 		dmgType: 0,
 		accEvaType: 0,
+		useSpeculated: true,
 		applyToCurrent: true,
+		applyToCurrentDmgOnly: false,
 		
 		optionsPresetName: [],
 		optionsPresetLetter: [],
@@ -1314,6 +1316,10 @@ var UI_AUTOBONUS = Vue.createApp({
 		optionsDewyLetter: [],
 		hasDebuff: false,
 		hasAccEva: false,
+		hasSpeculated: false,
+		
+		datePreset: '',
+		notePreset: '',
 		
 		isPreloader: false,
 		namePreloader: '',
@@ -1335,6 +1341,9 @@ var UI_AUTOBONUS = Vue.createApp({
 			} else if (this.type == 'dewy') {
 				return Object.values(this.hashes.dewy).every(v => v != null);
 			}
+		},
+		classApplyToCurrentDmgOnly: function() {
+			return { 'invisible': !this.applyToCurrent || (this.accEvaType != 0 && this.accEvaType != 1) };
 		},
 	},
 	methods: {
@@ -1427,11 +1436,12 @@ var UI_AUTOBONUS = Vue.createApp({
 					this.keyPreset = autoBonus.key;
 					this.onchangeNamePreset();
 				}
-				this.useDebuff = autoBonus.useDebuff;
+				this.useDebuff = autoBonus.useDebuff != null ? autoBonus.useDebuff : true;
 				this.accEvaType = autoBonus.accEvaType;
 				for (let obj of this.nodeToLetterListPreset) {
 					if (autoBonus.nodeToLetter[obj.id]) obj.letter = autoBonus.nodeToLetter[obj.id];
 				}
+				this.useSpeculated = autoBonus.useSpeculated != null ? autoBonus.useSpeculated : true;
 			}
 			if (autoBonus.type == 'dewy') {
 				this.onclickDewy();
@@ -1454,9 +1464,10 @@ var UI_AUTOBONUS = Vue.createApp({
 					key: this.keyPreset,
 					hash: this.hashes.preset[this.keyPreset],
 					nodeToLetter: {},
-					useDebuff: this.hasDebuff && this.useDebuff,
 					accEvaType: this.accEvaType,
 				};
+				if (this.hasDebuff) autoBonus.useDebuff = this.useDebuff;
+				if (this.hasSpeculated) autoBonus.useSpeculated = this.useSpeculated;
 				for (let node of this.nodeToLetterListPreset) autoBonus.nodeToLetter[node.id] = node.letter;
 			}
 			if (this.type == 'dewy' && this.keyDewy) {
@@ -1479,7 +1490,7 @@ var UI_AUTOBONUS = Vue.createApp({
 			
 			if (this.applyToCurrent) {
 				if (autoBonus) {
-					COMMON.BONUS_MANAGER.applyAutoAll();
+					COMMON.BONUS_MANAGER.applyAutoAll(this.applyToCurrentDmgOnly);
 				} else {
 					COMMON.BONUS_MANAGER.resetAll();
 				}
@@ -1542,8 +1553,12 @@ var UI_AUTOBONUS = Vue.createApp({
 						(result.data.listBonus && result.data.listBonus.find(item => item.bonuses.find(bonus => bonus.acc != null || bonus.eva != null))) ||
 						(result.data.listBonusLBAS && result.data.listBonusLBAS.find(item => item.bonuses.find(bonus => bonus.acc != null)))
 					);
+					this.hasSpeculated = result.data.listBonus && result.data.listBonus.find(item => item.bonuses.find(bonus => bonus.unconfirmed));
 					if (!this.accEvaType || this.accEvaType == 1) this.accEvaType = this.hasAccEva ? 1 : 0;
+					this.applyToCurrentDmgOnly = !this.hasAccEva;
 					this.hashes.preset[this.keyPreset] = result.hash;
+					this.datePreset = result.data.date || '';
+					this.notePreset = result.data.note || '';
 				}
 			}
 		},

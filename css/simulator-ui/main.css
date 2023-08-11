@@ -452,12 +452,16 @@ div.kcnavImporterSettingsWrap select.suggestion {
 #divAutoBonus .error {
 	color: red;
 }
+#divAutoBonus .note {
+	color: red;
+}
 #divAutoBonus .tooltip {
 	text-decoration: underline dotted 1px;
 	cursor: help;
 }
 #divAutoBonus div.autoBonusMainFoot {
 	display: flex;
+	align-items: center;
 	gap: 5px;
 }
 #divAutoBonus div.autoBonusMainFoot > div:last-child {
@@ -468,4 +472,7 @@ span.autoBonusStatus {
 }
 span.autoBonusStatus.good {
 	color: green;
+}
+.invisible {
+	visibility: hidden;
 }

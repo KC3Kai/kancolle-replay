@@ -1226,7 +1226,13 @@
 				<label><input value="dewy" type="radio" v-model="type" @change="onclickDewy"/> <span class="tooltip" title="Bonus ranges automatically calculated from TsunDB">Dewy</span></label> (<a href="https://github.com/sorewachigauyo/kc-event-bonus" target="_blank">kc-event-bonus</a>)
 			</div>
 			<div v-show="type=='preset'">
-				<label>Set: <select v-model="keyPreset" :disabled="isUpdate" @change="onchangeNamePreset"><option value="">None</option><option v-for="opt in optionsPresetName" :value="opt.key">{{opt.name}}</option></select></label>
+				<div>
+					<label>Set: <select v-model="keyPreset" :disabled="isUpdate" @change="onchangeNamePreset"><option value="">None</option><option v-for="opt in optionsPresetName" :value="opt.key">{{opt.name}}</option></select></label>
+					<span class="note" v-show="datePreset"> (Updated {{datePreset}})</span>
+				</div>
+				<div v-show="notePreset">
+					<span class="note" v-show="notePreset">Note: {{notePreset}}</span>
+				</div>
 			</div>
 			<div v-show="type=='dewy'">
 				<label>Set: <select v-model="keyDewy" :disabled="!optionsDewyName.length || isUpdate" @change="onchangeNameDewy"><option value="">None</option><option v-for="opt in optionsDewyName" :value="opt.key">{{opt.name}}</option></select></label>
@@ -1262,6 +1268,9 @@
 			<div v-show="type=='preset' && hasDebuff">
 				<label><input type="checkbox" v-model="useDebuff"/> Debuffed</label>
 			</div>
+			<div v-show="type=='preset' && hasSpeculated">
+				<label><input type="checkbox" v-model="useSpeculated"/> <span class="tooltip" title="Ships which have no data confirmation yet, but are speculated to have bonus based on historical formations"> Include Speculated Ships</span></label>
+			</div>
 			<div class="autoBonusMainFoot">
 				<div><input type="button" value="Start" :disabled="!canStart" @click="onclickStart"/></div>
 				<div v-show="isUpdate"><input type="button" value="Dismiss" @click="onclickDismiss"/></div>
@@ -1269,7 +1278,10 @@
 					<div v-show="!hasError"><vloading ref="txtLoading"></vloading></div>
 					<div v-show="hasError" class="error">Error</div>
 				</div>
-				<div><label><input type="checkbox" v-model="applyToCurrent" :disabled="isUpdate"/> <span class="tooltip" title="&#9744; All newly added ships starting now will have these bonuses as defaults.&#13;&#9745; Also apply these bonuses now to all currently set ships (Set: None = remove all).">Apply to Current</span></label></div>
+				<div>
+					<div><label><input type="checkbox" v-model="applyToCurrent" :disabled="isUpdate"/> <span class="tooltip" title="&#9744; All newly added ships starting now will have these bonuses as defaults.&#13;&#9745; Also apply these bonuses now to all currently set ships (Set: None = remove all).">Apply to Current</span></label></div>
+					<div :class="classApplyToCurrentDmgOnly"><label><input type="checkbox" v-model="applyToCurrentDmgOnly"/>Apply Dmg Only</label></div>
+				</div>
 			</div>
 		</div>
 		<div class="autoBonusMain" v-show="isPreloader">
