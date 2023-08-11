@@ -4,6 +4,8 @@ COMMON.BONUS_MANAGER = {
 	PRESET_INDEX: {
 		'7-4': { name: 'World 7-4' },
 		'7-5': { name: 'World 7-5' },
+		'57-1': { name: 'Summer 2023 E1' },
+		'57-2': { name: 'Summer 2023 E2' },
 	},
 	_URL_DEWY_INDEX: 'https://api.github.com/repos/sorewachigauyo/kc-event-bonus/git/trees/master?recursive=1',
 	_URL_DEWY_PATH: 'https://raw.githubusercontent.com/sorewachigauyo/kc-event-bonus/master/',
@@ -166,6 +168,7 @@ COMMON.BONUS_MANAGER = {
 				if (item.nodes && !item.nodes.includes(letter)) continue;
 				if (item.nodesExclude && item.nodesExclude.includes(letter)) continue;
 				for (let bonus of item.bonuses) {
+					if (bonus.unconfirmed && !autoBonus.useSpeculated) continue;
 					if (bonus.shipType && !bonus.shipType.includes(COMMON.shipTypeHullToId[SHIPDATA[ship.mstId].type])) continue;
 					if (bonus.shipClass && !bonus.shipClass.includes(SHIPDATA[ship.mstId].sclass)) continue;
 					if (bonus.shipBase && !bonus.shipBase.includes(window.getBaseId(ship.mstId))) continue;
@@ -330,13 +333,29 @@ COMMON.BONUS_MANAGER = {
 		}
 	},
 	
-	applyAutoAll: function() {
+	_copyObj: function(objFrom,keys,objTo) {
+		keys = keys || Object.keys(objFrom);
+		objTo = objTo || {};
+		for (let key of keys) {
+			if (objFrom[key] == null) continue;
+			if (Array.isArray(objFrom[key])) objTo[key] = objFrom[key].slice();
+			else if (typeof objFrom[key] === 'object') objTo[key] = this._copyObj(objFrom[key],null,objTo[key]);
+			else objTo[key] = objFrom[key];
+		}
+		return objTo;
+	},
+	applyAutoAll: function(dmgOnly) {
+		if (dmgOnly && (this._UI_MAIN.autoBonus.accEvaType == 0 || this._UI_MAIN.autoBonus == 1)) {
+			this._autoBonusOverride = this._copyObj(this._UI_MAIN.autoBonus);
+			this._autoBonusOverride.accEvaType = -1;
+		}
 		this.applyAutoBonusFleet(this._UI_MAIN.fleetFMain);
 		for (let comp of this._UI_MAIN.fleetsFFriend) {
 			this.applyAutoBonusFleet(comp.fleet);
 		}
 		this.applyAutoLBAS();
 		this.applyAutoDebuff();
+		this._autoBonusOverride = null;
 	},
 	
 	resetAll: function() {
