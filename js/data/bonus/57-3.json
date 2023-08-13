@@ -1,0 +1,44 @@
+{
+	"world": 57,
+	"mapnum": 3,
+	"date": "2023-08-13",
+	"note": "WIP, dmg only",
+	"listBonus": [
+		{
+			"bonuses": [
+				{ "dmg": 1.12, "shipType": [1] },
+				{ "dmg": 1.03, "shipType": [2] },
+				{ "dmg": 1.02, "shipType": [3] },
+				{ "dmg": 1.11, "shipType": [7] },
+				{ "dmg": 1.14, "shipType": [16] },
+				{ "dmg": 1.05, "requireEquipType": [25], "perEquip": 1 },
+				{ "dmg": 1.07, "requireEquipType": [26], "perEquip": 1 },
+				{ "dmg": 1.12, "shipBase": [15,18,38,40,41,49,63,64,99,100,101,114,413,631] },
+				{ "dmg": 1.2, "shipBase": [881,882] }
+			]
+		},
+		{
+			"nodes": ["A","A1","A2","B1","B2","C1","E","I","L","M"],
+			"bonuses": [
+				{ "dmg": 1.13, "shipBase": [15,18,38,40,41,49,63,64,99,100,101,114,413,631] }
+			]
+		},
+		{
+			"nodes": ["N","O","P","Q","R","T","U","W"],
+			"bonuses": [
+				{ "dmg": 1.13, "shipBase": [42,43,50,62,65,66,67,68,69,71,72,78,79,80,124,125,131,135,138,143,405,425,452,485,527,528] },
+				{ "dmg": 1.13, "shipBase": [46], "unconfirmed": 1 },
+				{ "dmg": 1.13, "shipBase": [881,882] }
+			]
+		}
+	],
+	"listDebuff": [
+		{
+			"nodes": ["W"],
+			"debuffs": [
+				{ "shipId": [1961,1962,1963,1964], "amount": 39 },
+				{ "shipId": [1511,1523,1524,1529,1557,1762,1764,1765,1776,1779], "amount": 22 }
+			]
+		}
+	]
+}
