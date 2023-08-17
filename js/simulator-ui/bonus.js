@@ -326,7 +326,7 @@ COMMON.BONUS_MANAGER = {
 							if (shipOnly && ship != shipOnly) continue;
 							for (let debuff of item.debuffs) {
 								if (debuff.shipId && !debuff.shipId.includes(ship.mstId)) continue;
-								ship.statsBase.ar = Math.max(0, SHIPDATA[ship.mstId].AR - debuff.amount);
+								ship.statsBase.ar = Math.max(1, SHIPDATA[ship.mstId].AR - debuff.amount);
 							}
 						}
 					}
