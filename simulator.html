@@ -712,6 +712,9 @@
 				<label v-show="fleet.combined"><input type="radio" value="14" v-model="fleet.formation" /><img src="assets/stats/form14.png" /></label>
 			</div>
 		</div>
+		<div style="margin:10px">
+			<label>Set All Morale To: </label><input type="button" value="49" @click="onclickSetMoraleAll(49)"/> <input type="button" value="85" @click="onclickSetMoraleAll(85)"/>
+		</div>
 	</div>
 	<div v-show="showKC3ProfileHelp">
 		<vmodal @vclose="showKC3ProfileHelp=false">

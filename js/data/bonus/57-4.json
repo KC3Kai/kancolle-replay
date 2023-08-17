@@ -1,8 +1,8 @@
 {
 	"world": 57,
 	"mapnum": 4,
-	"date": "2023-08-14",
-	"note": "WIP, dmg only, debuff incomplete",
+	"date": "2023-08-17",
+	"note": "WIP, dmg only",
 	"listBonus": [
 		{
 			"bonuses": [
@@ -54,8 +54,8 @@
 			"nodes": ["X"],
 			"debuffs": [
 				{ "shipId": [2172,2173,2174,2175,2176,2177], "amount": 49 },
-				{ "shipId": [1557,1707], "amount": 39 },
-				{ "shipId": [1570,1806], "amount": 13 }
+				{ "shipId": [1509,1522,1524,1527,1529,1557,1707,1778,1780,1862,1927,1928], "amount": 39 },
+				{ "shipId": [1570,1591,1592,1806,2050,2051], "amount": 13 }
 			]
 		}
 	]
