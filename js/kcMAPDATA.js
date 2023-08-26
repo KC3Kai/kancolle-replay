@@ -2101,6 +2101,30 @@ var MAPDATA = {
 				bgmNB: 231,
 				bossnode: ['F','Q','X'],
 			},
+			5: {
+				name: 'E5',
+				bgmDN: 233,
+				bgmNN: 233,
+				bgmDB: 231,
+				bgmNB: 231,
+				bossnode: ['O','T','Y'],
+			},
+			6: {
+				name: 'E6',
+				bgmDN: 229,
+				bgmNN: 229,
+				bgmDB: 234,
+				bgmNB: 234,
+				bossnode: ['H','Q','Z'],
+			},
+			7: {
+				name: 'E7',
+				bgmDN: 234,
+				bgmNN: 234,
+				bgmDB: 235,
+				bgmNB: 235,
+				bossnode: [],
+			},
 		}
 	},
 }
