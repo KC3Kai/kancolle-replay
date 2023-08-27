@@ -5951,14 +5951,14 @@ var EQDATA = {
 		RNG: 1,
 	},
 	513: {
-		name: '阻塞気球',
+		name: 'Barrage Balloon',
 		nameJP: '阻塞気球',
 		added: '2023-08-26',
 		type: SMOKESCREEN, image: 55,
 		EV: 1,
 	},
 	514: {
-		name: '特大発動艇+Ⅲ号戦車J型',
+		name: 'Toku Daihatsu Landing Craft + Panzer III Ausf. J',
 		nameJP: '特大発動艇+Ⅲ号戦車J型',
 		added: '2023-08-26',
 		type: LANDINGCRAFT,
@@ -7417,7 +7417,7 @@ var EQDATA = {
 		RNG: 2,
 	},
 	1640: {
-		name: '深海観測阻塞気球',
+		name: 'Abyssal Observation Barrage Balloon',
 		nameJP: '深海観測阻塞気球',
 		added: '2023-08-26',
 		type: SMOKESCREEN, image: 55,
@@ -7427,7 +7427,7 @@ var EQDATA = {
 		EV: 3,
 	},
 	1641: {
-		name: '深海標準14inch/45 連装砲',
+		name: 'Abyssal Standard 14inch/45 Twin Gun Mount',
 		nameJP: '深海標準14inch/45 連装砲',
 		added: '2023-08-26',
 		type: MAINGUNL,
@@ -7438,7 +7438,7 @@ var EQDATA = {
 		RNG: 3,
 	},
 	1642: {
-		name: '深海標準14inch/45 三連装砲',
+		name: 'Abyssal Standard 14inch/45 Triple Gun Mount',
 		nameJP: '深海標準14inch/45 三連装砲',
 		added: '2023-08-26',
 		type: MAINGUNL,
@@ -7449,7 +7449,7 @@ var EQDATA = {
 		RNG: 3,
 	},
 	1643: {
-		name: '深海3.7cm FlaK',
+		name: 'Abyssal 3.7cm FlaK',
 		nameJP: '深海3.7cm FlaK',
 		added: '2023-08-26',
 		type: AAGUN,

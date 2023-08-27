@@ -394,6 +394,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (eq.mid == 436) installeqs.panzer = installeqs.panzer + 1 || 1;
 		if (eq.mid == 449) installeqs.tokuT1 = installeqs.tokuT1 + 1 || 1;
 		if (eq.mid == 482) installeqs.panzer3 = installeqs.panzer3 + 1 || 1;
+		if (MECHANICS.panzerIIIBuff && eq.mid == 482) { installeqs.DH1--; installeqs.DH2++; installeqs.TDH++; }
 		if (eq.mid == 494) installeqs.chiha = installeqs.chiha + 1 || 1;
 		if (eq.mid == 495) installeqs.chihaKai = installeqs.chihaKai + 1 || 1;
 		if (eq.mid == 126) this.numWG = this.numWG + 1 || 1;

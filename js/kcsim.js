@@ -314,6 +314,7 @@ var MECHANICS = {
 	aswPlaneAir: true,
 	kongouSpecialBuff3: true,
 	aaciMultiRoll: true,
+	panzerIIIBuff: true,
 };
 var NERFPTIMPS = false;
 var BREAKPTIMPS = false;
