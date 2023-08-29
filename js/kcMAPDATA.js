@@ -2123,7 +2123,7 @@ var MAPDATA = {
 				bgmNN: 234,
 				bgmDB: 235,
 				bgmNB: 235,
-				bossnode: [],
+				bossnode: ['H','P','Z'],
 			},
 		}
 	},

@@ -1762,7 +1762,7 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 				postMod *= Math.random() < .4 ? 2.2 : 1.4;
 			} else if ([1586,1620,1781,1782,2105,2106,2107,2108].includes(target.mid)) {
 				postMod *= Math.random() < .4 ? 2.2 : 1.7;
-			} else if ([1637,1638,1639,1640].includes(target.mid)) {
+			} else if (target.isPT) {
 				postMod *= Math.random() < .4 ? .8 : .5;
 			} else if (target.installtype == 3 || target.isSupplyDepot) {
 				postMod *= Math.random() < .4 ? 2.4 : 1.5;
@@ -2866,7 +2866,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod,contactModLB,isjetphase) {
 		if (SIMCONSTS.enableAirstrikeSpecialBonus) {
 			if ([1557,1586].includes(target.mid)) {
 				postMod *= Math.random() < .4 ? 3 : 1.7;
-			} else if ([1637,1638,1639,1640].includes(target.mid)) {
+			} else if (target.isPT) {
 				postMod *= Math.random() < .4 ? .7 : .4;
 			} else if ([1653,1654,1655,1656,1657,1658].includes(target.mid)) {
 				if (equip.type == TORPBOMBER) {
