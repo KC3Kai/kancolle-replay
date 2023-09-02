@@ -211,6 +211,7 @@ var SIMCONSTS = {
 	enablePlaneBonus: true,
 	enableModSummerBB: true,
 	enableModSummerCA: true,
+	enableModSummerCV: true,
 	enableModFrenchBB: true,
 	enableModDock: true,
 	enableSkipTorpBonus: true,
@@ -469,7 +470,9 @@ function shell(ship,target,APIhou,attackSpecial,combinedAll) {
 	
 	if (ship.type == 'DE') acc -= .13;
 	
-	
+	if (target.installtype == 3 || target.isSupplyDepot) {
+		postMod *= (ship.supplyPostMult||1);
+	}
 	if (target.isAnchorage) {
 		postMod *= ship.anchoragePostMult;
 	}
@@ -481,6 +484,9 @@ function shell(ship,target,APIhou,attackSpecial,combinedAll) {
 	}
 	if (SIMCONSTS.enableModSummerCA && target.isSummerCA) {
 		postMod *= ship.summerCAPostMult;
+	}
+	if (SIMCONSTS.enableModSummerCV && target.isSummerCV) {
+		postMod *= ship.summerCVPostMult;
 	}
 	if (SIMCONSTS.enableModFrenchBB && target.isFrenchBB) {
 		postMod *= ship.frenchBBPostMult;
@@ -743,6 +749,9 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 		if (BREAKPTIMPS && ship.type == 'DD') acc = 0;
 	}
 	
+	if (target.installtype == 3 || target.isSupplyDepot) {
+		postMod *= (ship.supplyPostMult||1);
+	}
 	if (target.isAnchorage) {
 		postMod *= ship.anchoragePostMult;
 	}
@@ -754,6 +763,9 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 	}
 	if (SIMCONSTS.enableModSummerCA && target.isSummerCA) {
 		postMod *= ship.summerCAPostMult;
+	}
+	if (SIMCONSTS.enableModSummerCV && target.isSummerCV) {
+		postMod *= ship.summerCVPostMult;
 	}
 	if (SIMCONSTS.enableModFrenchBB && target.isFrenchBB) {
 		postMod *= ship.frenchBBPostMult;
@@ -1665,6 +1677,18 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 		if (SIMCONSTS.enableModDock && target.isDock) {
 			postMod *= ship.dockPostMult;
 		}
+		if (SIMCONSTS.enableModSummerBB && target.isSummerBB) {
+			postMod *= ship.summerBBPostMult;
+		}
+		if (SIMCONSTS.enableModSummerCA && target.isSummerCA) {
+			postMod *= ship.summerCAPostMult;
+		}
+		if (SIMCONSTS.enableModSummerCV && target.isSummerCV) {
+			postMod *= ship.summerCVPostMult;
+		}
+		if (SIMCONSTS.enableModFrenchBB && target.isFrenchBB) {
+			postMod *= ship.frenchBBPostMult;
+		}
 		
 		var res = rollHit(accuracyAndCrit(ship,target,acc,target.getFormation().torpev,evFlat,1.5));
 		var realdmg = 0, dmg = 0;
@@ -1905,8 +1929,6 @@ function damage(ship,target,base,preMod,postMod,cap,isAirstrike,isSupport) {
 					postMod /= target.divebombWeak;
 				}
 			}
-		} else {
-			dmg *= (ship.supplyPostMult||1);
 		}
 	}
 	if (target.isPT && !NERFPTIMPS) {
@@ -1915,7 +1937,7 @@ function damage(ship,target,base,preMod,postMod,cap,isAirstrike,isSupport) {
 				dmg *= (Math.random() < .5 ? .5 : .8);
 			}
 		} else if (!isSupport) {
-			dmg = dmg*.35 + 15;
+			dmg = dmg*.3 + Math.sqrt(dmg) + 10;
 		}
 	}
 	dmg *= postMod;  //artillery spotting, contact, AP shell, critical

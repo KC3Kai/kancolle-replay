@@ -702,6 +702,15 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	if (numSwordfish >= 2) this.summerCAPostMult *= 1.05;
 	if ([171,172,173,176,177,178,393,515,571,574,576,579,630].includes(this.mid)) this.summerCAPostMult *= 1.1
 	
+	this.summerCVPostMult = 1;
+	if (this.equiptypes[APSHELL]) this.summerCVPostMult *= 1.1;
+	if (this.equiptypes[SEAPLANEBOMBER] || this.equiptypes[SEAPLANEFIGHTER]) this.summerCVPostMult *= 1.1;
+	if (this.equiptypes[DIVEBOMBER]) this.summerCVPostMult *= 1.1;
+	if (this.equiptypes[DIVEBOMBER] >= 2) this.summerCVPostMult *= 1.1;
+	if (numSwordfish) this.summerCVPostMult *= 1.1;
+	if (numSwordfish >= 2) this.summerCVPostMult *= 1.1;
+	if ([171,172,173,176,177,178,393,515,571,574,576,579,630].includes(this.mid)) this.summerCVPostMult *= 1.1
+	
 	this.frenchBBPostMult = 1;
 	if (this.equiptypes[APSHELL]) this.frenchBBPostMult *= 1.2;
 	if (this.equiptypes[SEAPLANEBOMBER] || this.equiptypes[SEAPLANEFIGHTER]) this.frenchBBPostMult *= 1.1;
