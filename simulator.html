@@ -394,6 +394,7 @@
 	<div id="divOther">
 	<div id="divChangeLog">
 		<div><span class="header">Change Log:</span></div>
+		<div>2023-09-04 - Barrage Balloon node setting</div>
 		<div>2023-08-07 - Auto-Set Historical Bonuses settings</div>
 		<div>2023-06-05 - Mechanic: AACI Rework (sequential roll and <a href="https://docs.google.com/spreadsheets/d/1agGoLv57g5eOXLXtNIKHRoBYy61OQYxibWP6Vi_DMuY/edit#gid=13450409">new AACI priority</a>), Additional Stats show fleetwide AACI rate</div>
 		<div>2023-04-13 - FCF Settings</div>
@@ -444,7 +445,7 @@
 						<label><input type="radio" value="6" v-model="battle.nodeType" /><img src="assets/maps/nodeRaid.png" title="Air Raid" /></label>
 						<label><input type="radio" value="4" v-model="battle.nodeType" /><img src="assets/maps/nodeAir.png" title="Air Only" /></label>
 					</div>
-					<div v-show="hasNB"><label><input type="checkbox" v-model="battle.doNB" />Night Battle?</label></div>
+					<div v-show="hasNB"><label><input type="checkbox" v-model="battle.doNB" /><img src="assets/stats/nightbattle.png"/>Night Battle?</label></div>
 					<div v-show="hasNB && battle.doNB"><label><select v-model="battle.doNBCond">
 						<option value="">Always if possible</option>
 						<option value="A">Only if Day Rank less than A</option>
@@ -486,6 +487,7 @@
 						<label><input type="radio" value="1" v-model.number="battle.useNormalSupport" />Normal</label>
 						<label><input type="radio" value="0" v-model.number="battle.useNormalSupport" />Boss</label>
 					</div>
+					<div class="space"><label><input type="checkbox" v-model="battle.useBalloon"/><img src="assets/items/55.png" title="Enable Barrage Balloon Effects"/></label></div>
 				</div>
 				<div>
 					<div><span class="header">Override Historical Bonuses:</span></div>

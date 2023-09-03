@@ -470,6 +470,12 @@ function shell(ship,target,APIhou,attackSpecial,combinedAll) {
 	
 	if (ship.type == 'DE') acc -= .13;
 	
+	if (ship.fleet.useBalloon || (ship.fleet.combinedWith && ship.fleet.combinedWith.useBalloon)) {
+		let ships = ship.fleet.combinedWith ? ship.fleet.combinedWith.ships.concat(ship.fleet.ships) : ship.fleet.ships;
+		let modBalloon = 1 + (ships.filter(s => s.HP > 0 && !s.retreated && s.equips.find(eq => eq.isBalloon)).length/50);
+		postMod *= modBalloon;
+	}
+	
 	if (target.installtype == 3 || target.isSupplyDepot) {
 		postMod *= (ship.supplyPostMult||1);
 	}
@@ -1264,6 +1270,10 @@ function getSpecialAttackMod(ship,attackSpecial) {
 	if (attackSpecial == 100) {
 		mod = 2;
 		modAcc = 1.05;
+		if (ship.fleet.ships[2].sclass == 88) {
+			if (ship.isflagship) mod *= 1.15;
+			if (ship.num == 3) mod *= 1.2;
+		}
 	} else if (attackSpecial == 101) {
 		mod = (ship.isflagship)? 1.4 : 1.2;
 		if (ship.fleet.ships[1].mid == 81 || ship.fleet.ships[1].mid == 276) {

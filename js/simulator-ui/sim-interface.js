@@ -31,6 +31,7 @@ var CONST = window.COMMON.getConst({
 		'warn_no_subonly': { txt: 'Warning: Sub-only supply cost not enabled on Node <0>, intentional?' },
 		'warn_vanguard': { txt: 'Note: Destroyers have different vanguard evasion mods in event maps, see "Show Advanced" if simulating event maps', excludeImport: true },
 		'warn_enemy_unset_stats': { txt: 'Warning: Node <0> has enemies with unknown and unset evasion/luck stats (still set to 0/1).', excludeImport: true },
+		'warn_debuff_dmg': { txt: 'Warning: "Debuff Dmg" is a legacy setting and may be inaccurate to the mechanic, recommended to modify enemy\'s Armour stat instead.' },
 	},
 });
 	
@@ -550,6 +551,17 @@ var SIM = {
 			this._addWarning('warn_vanguard');
 		}
 		
+		let shipsAll = dataInput.fleetF.ships;
+		if (dataInput.fleetF.shipsC) shipsAll = shipsAll.concat(dataInput.fleetF.shipsC);
+		if (dataInput.fleetFriendComps) {
+			for (let comp of dataInput.fleetFriendComps) {
+				if (comp.fleet && comp.fleet.ships) shipsAll = shipsAll.concat(comp.fleet.ships);
+			}
+		}
+		if (shipsAll.find(ship => ship.bonusesDebuff && ship.bonusesDebuff.bonusDmg != null && ship.bonusesDebuff.bonusDmg != 1)) {
+			this._addWarning('warn_debuff_dmg');
+		}
+		
 		if (dataInput.settingsFCF) {
 			if (!this._checkSettingsFCF(dataInput.settingsFCF,FLEETS1[0])) {
 				this._addError('no_fcf_retreat');
@@ -665,6 +677,9 @@ var SIM = {
 			if (isBossNode) {
 				window.underwaySupply(fleetF);
 			}
+			
+			fleetF.useBalloon = !!node.useBalloon;
+			fleetE.useBalloon = !!node.useBalloon;
 			
 			let result;
 			let apiBattle = null;

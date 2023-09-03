@@ -310,7 +310,7 @@ window.CONVERT = {
 			if (bdata.api_kouku2) {
 				battleSave.nodeType = CONST.NODE_AIR;
 			}
-			if (bdata.api_name && bdata.api_name.includes('ld_airbattle')) {
+			if ((bdata.api_name && bdata.api_name.includes('ld_airbattle')) || (!bdata.api_name && bdata.api_hougeki1 === undefined && bdata.kouku2 === undefined)) {
 				battleSave.nodeType = CONST.NODE_RAID;
 			}
 			if (ship_ke.every(id => SHIPDATA[id] && ['SS','SSV'].includes(SHIPDATA[id].type))) {
@@ -323,6 +323,12 @@ window.CONVERT = {
 					if (battleSave.lbasWaves[ind]) ind++;
 					battleSave.lbasWaves[ind] = true;
 				}
+			}
+			
+			let keyWorldMap = dataReplay.world + '-' + dataReplay.mapnum;
+			let letter = window.EDGES['World ' + keyWorldMap] && window.EDGES['World ' + keyWorldMap][battle.node] ? window.EDGES['World ' + keyWorldMap][battle.node][1] : null;
+			if (letter && COMMON.BARRAGE_BALLOON_NODES.includes(keyWorldMap + '-' + letter)) {
+				battleSave.useBalloon = true;
 			}
 			
 			let e_maxhps = bdata.api_e_maxhps;
@@ -804,6 +810,7 @@ window.CONVERT = {
 				addCostFuel: battleUI.addCostFuel/100,
 				addCostAmmo: battleUI.addCostAmmo/100,
 				lbas: [],
+				useBalloon: battleUI.useBalloon,
 			};
 			if (battleUI.doNBCond) nodeInput.doNBCond = battleUI.doNBCond;
 			for (let i=0; i<battleUI.lbasWaves.length; i++) {

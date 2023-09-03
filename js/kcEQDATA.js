@@ -5955,6 +5955,7 @@ var EQDATA = {
 		nameJP: '阻塞気球',
 		added: '2023-08-26',
 		type: SMOKESCREEN, image: 55,
+		isBalloon: true,
 		EV: 1,
 	},
 	514: {
@@ -7421,6 +7422,7 @@ var EQDATA = {
 		nameJP: '深海観測阻塞気球',
 		added: '2023-08-26',
 		type: SMOKESCREEN, image: 55,
+		isBalloon: true,
 		FP: 1,
 		AR: 1,
 		ACC: 3,
