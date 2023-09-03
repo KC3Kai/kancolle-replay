@@ -19,6 +19,8 @@ var COMMON = {
 	
 	shipTypeHullToId: { 'DE':1, 'DD':2, 'CL':3, 'CLT':4, 'CA':5, 'CAV':6, 'CVL':7, 'FBB':8, 'BB':9, 'BBV':10, 'CV':11, 'SS':13, 'SSV':14, 'AT':15, 'AV':16, 'LHA':17, 'CVB':18, 'AR':19, 'AS':20, 'CT':21, 'AO':22 },
 	
+	BARRAGE_BALLOON_NODES: ['3-5-H','4-3-N','4-5-T','57-5-L1','57-5-L2','57-5-O','57-6-C2','57-6-Q','57-7-A5','57-7-H','57-7-P','57-7-U','57-7-Z'],
+	
 	ID_GEN: {
 		_ids: {},
 		nextId: function(key) {

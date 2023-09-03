@@ -273,6 +273,7 @@ var UI_MAIN = Vue.createApp({
 				addCostAmmo: null,
 				subOnly: false,
 				useNormalSupport: 0,
+				useBalloon: false,
 					
 				enemyComps: [],
 			};
@@ -1468,7 +1469,14 @@ var UI_AUTOBONUS = Vue.createApp({
 				};
 				if (this.hasDebuff) autoBonus.useDebuff = this.useDebuff;
 				if (this.hasSpeculated) autoBonus.useSpeculated = this.useSpeculated;
-				for (let node of this.nodeToLetterListPreset) autoBonus.nodeToLetter[node.id] = node.letter;
+				for (let node of this.nodeToLetterListPreset) {
+					autoBonus.nodeToLetter[node.id] = node.letter;
+					
+					let keyB = this.keyPreset + '-' + node.letter;
+					console.log(keyB, +COMMON.BARRAGE_BALLOON_NODES.includes(keyB))
+					let battle = UI_MAIN.battles.find(battle => battle.id == node.id);
+					if (battle) battle.useBalloon = COMMON.BARRAGE_BALLOON_NODES.includes(keyB);
+				}
 			}
 			if (this.type == 'dewy' && this.keyDewy) {
 				autoBonus = {
@@ -1484,6 +1492,10 @@ var UI_AUTOBONUS = Vue.createApp({
 					let key = this.keyDewy + '/' + node.letter;
 					autoBonus.nodeToLetter[node.id] = node.letter;
 					if (this.hashes.dewy[key]) autoBonus.files.push({ key: key, hash: this.hashes.dewy[key] });
+					
+					let keyB = this.keyDewy + '-' + node.letter;
+					let battle = UI_MAIN.battles.find(battle => battle.id == node.id);
+					if (battle) battle.useBalloon = COMMON.BARRAGE_BALLOON_NODES.includes(keyB);
 				}
 			}
 			UI_MAIN.autoBonus = autoBonus;
