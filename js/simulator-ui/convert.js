@@ -622,14 +622,14 @@ window.CONVERT = {
 				for (let ship of fleetSave.ships) {
 					if (!SHIPDATA[ship.mstId]) { isAirSub = false; break; }
 					let isSS = ['SS','SSV'].includes(SHIPDATA[ship.mstId].type);
-					let isCV = ['CVL','CV','CVB'].includes(SHIPDATA[ship.mstId].type);
+					let isCV = ['CVL','CV','CVB','BBV'].includes(SHIPDATA[ship.mstId].type);
 					if (!isSS && !isCV) isAirSub = false;
 					if (isSS && foundCV) isAirSub = false;
 					if (isCV) foundCV = true;
 				}
 				if (isAirSub && foundCV) {
 					for (let ship of fleetSave.ships) {
-						if (['CVL','CV','CVB'].includes(SHIPDATA[ship.mstId].type)) ship.isFaraway = true;
+						if (['CVL','CV','CVB','BBV'].includes(SHIPDATA[ship.mstId].type)) ship.isFaraway = true;
 					}
 				}
 			}

@@ -308,7 +308,6 @@ COMMON.BONUS_MANAGER = {
 	applyAutoDebuff: async function(fleetOnly,shipOnly) {
 		let autoBonus = this._autoBonusOverride || this._UI_MAIN.autoBonus;
 		if (!autoBonus) return;
-		if (!autoBonus.useDebuff) return;
 		if (autoBonus.type != 'preset') return;
 		
 		let result = await this.getPreset(autoBonus.key);
@@ -329,7 +328,7 @@ COMMON.BONUS_MANAGER = {
 							if (shipOnly && ship != shipOnly) continue;
 							for (let debuff of item.debuffs) {
 								if (debuff.shipId && !debuff.shipId.includes(ship.mstId)) continue;
-								ship.statsBase.ar = Math.max(1, SHIPDATA[ship.mstId].AR - debuff.amount);
+								ship.statsBase.ar = autoBonus.useDebuff ? Math.max(1, SHIPDATA[ship.mstId].AR - debuff.amount) : SHIPDATA[ship.mstId].AR;
 							}
 						}
 					}

@@ -1264,7 +1264,8 @@
 			</div>
 			<div>
 				<label>Accuracy/Evasion: <select v-model="accEvaType">
-					<option value="0">None</option>
+					<option value="4">None (Ignore)</option>
+					<option value="0">None (Overwrite)</option>
 					<option value="1" v-if="type=='preset'" :disabled="!hasAccEva">Use Estimated Values</option>
 					<option value="2">Use Equal to Damage Mod</option>
 					<option value="3">Use Half of Damage Mod</option>
@@ -1285,7 +1286,7 @@
 				</div>
 				<div>
 					<div><label><input type="checkbox" v-model="applyToCurrent" :disabled="isUpdate"/> <span class="tooltip" title="&#9744; All newly added ships starting now will have these bonuses as defaults.&#13;&#9745; Also apply these bonuses now to all currently set ships (Set: None = remove all).">Apply to Current</span></label></div>
-					<div :class="classApplyToCurrentDmgOnly"><label><input type="checkbox" v-model="applyToCurrentDmgOnly"/>Apply Dmg Only</label></div>
+					<!-- <div :class="classApplyToCurrentDmgOnly"><label><input type="checkbox" v-model="applyToCurrentDmgOnly"/>Apply Dmg Only</label></div> -->
 				</div>
 			</div>
 		</div>

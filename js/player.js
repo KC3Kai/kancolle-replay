@@ -129,6 +129,8 @@ loader.add('BG1','assets/82_res.images.ImgBackgroundDay.jpg')
 	.add('smokebig','assets/smokeBig.png')
 	.add('smokemiddle','assets/smokeMiddle.png')
 	.add('smokesmall','assets/smokeSmall.png')
+	.add('balloonF','assets/balloonF.png')
+	.add('balloonE','assets/balloonE.png')
 for (var i=389; i <= 417; i+=2) loader.add(i.toString(),'assets/'+i+'.png');
 for (var i=0; i<=9; i++) loader.add('C'+i,'assets/C'+i+'.png');
 for (var i=0; i<=9; i++) loader.add('N'+i,'assets/N'+i+'.png');
@@ -427,6 +429,7 @@ function createShip(data,side,i,damaged) {
 			if (eq.type == SEARCHLIGHTS || eq.type == SEARCHLIGHTL) ship.hassearchlight = true;
 			if (data[j]==42) ship.hasrepairteam = (ship.hasrepairteam)? ship.hasrepairteam+1 : 1;
 			if (data[j]==43) ship.hasrepairgoddess = (ship.hasrepairgoddess)? ship.hasrepairgoddess+1 : 1;
+			if (eq.isBalloon) ship.hasBalloon = true;
 		}
 	}
 	ship.hasonlytorp = hasonlytorp;
@@ -1272,6 +1275,9 @@ function processAPI(root) {
 			}
 		}
 		
+		if (data.api_balloon_cell) {
+			eventqueue.push([phaseBalloonStart,[]]);
+		}
 		if (data.api_smoke_type) {
 			eventqueue.push([phaseSmokescreenStart,[data.api_smoke_type]]);
 		}
@@ -3439,6 +3445,63 @@ function moveSmokescreen(smoke,xTarget,yTarget,fadeSpeed) {
 	return false;
 }
 
+
+function phaseBalloonStart() {
+	for (let ship of fleet1) {
+		if (ship.hasBalloon) createBalloon(ship);
+	}
+	for (let ship of fleet1C) {
+		if (ship.hasBalloon) createBalloon(ship);
+	}
+	for (let ship of fleet2) {
+		if (ship.hasBalloon) createBalloon(ship);
+	}
+	for (let ship of fleet2C) {
+		if (ship.hasBalloon) createBalloon(ship);
+	}
+	
+	addTimeout(function(){ ecomplete = true; }, 1);
+}
+
+function createBalloon(ship) {
+	let balloon = ship.side ? getFromPool('balloonE','assets/balloonE.png') : getFromPool('balloonF','assets/balloonF.png');
+	balloon.position.set(ship.graphic.x + (ship.side ? 0 : 169), ship.graphic.y + 37);
+	balloon.pivot.set((ship.side ? 68 : 1), 75);
+	balloon.scale.set(0);
+	balloon.ship = ship;
+	balloon.time = Math.floor(Math.random()*100);
+	balloon.notpersistent = true;
+	delete ship._removeBalloon;
+	updates.push([moveBalloon,[balloon]]);
+	stage.addChildAt(balloon,stage.getChildIndex(shutterTop2));
+}
+
+function moveBalloon(balloon) {
+	if (balloon.ship.hp <= 0 || balloon.ship._removeBalloon) {
+		delete balloon.ship._removeBalloon;
+		recycle(balloon);
+		return true;
+	}
+	if (balloon.scale.x < .667) {
+		balloon.scale.set(Math.min(balloon.scale.x + .05, .667));
+	}
+	balloon.position.y = balloon.ship.graphic.y + 37 + Math.sin(2*Math.PI*balloon.time/100);
+	balloon.time++;
+	if (balloon.time >= 100) {
+		balloon.time = 0;
+	}
+	return false;
+}
+
+function deleteBalloons() {
+	for (let ship of fleet1) ship._removeBalloon = true;
+	for (let ship of fleet1C) ship._removeBalloon = true;
+	for (let ship of fleet2) ship._removeBalloon = true;
+	for (let ship of fleet2C) ship._removeBalloon = true;
+}
+
+
+
 function NBstart(flares,contact,bgm,combinedEType,isFriend) {
 	flares = flares || [-1,-1];
 	contact = contact || [-1,-1];
@@ -3762,6 +3825,7 @@ function resetBattle() {
 	$('#plAS2').text('');
 	bossBarReset();
 	deleteSmokescreen();
+	deleteBalloons();
 }
 
 function shuttersNextBattle(battledata, newships) {
@@ -3794,6 +3858,7 @@ function shutters(nightToDay) {
 		}
 		updates.push([openShutters,[]]);
 		SM.play('shutters');
+		deleteBalloons();
 	},1000);
 	
 	addTimeout(function(){ ecomplete = true; }, 2000);

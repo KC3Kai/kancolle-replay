@@ -708,6 +708,7 @@ var UI_FLEETEDITOR = Vue.createApp({
 			SIM.setMechanics(CONVERT.uiToSimInputMechanics());
 			let fleetInput = CONVERT.uiToSimInputFleet(this.fleet);
 			let fleetSim = SIM.createSimFleet(fleetInput,+!!this.fleet.isEnemy);
+			if (!fleetSim) return;
 			if (keyS == 'shipsEscort') fleetSim = fleetSim.combinedWith;
 			if (!fleetSim || !fleetSim.ships || !fleetSim.ships.length) return;
 			UI_ADDITIONALSTATS.doOpen(fleetSim);
