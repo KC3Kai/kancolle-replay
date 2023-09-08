@@ -3069,6 +3069,8 @@ function apiSetBasic(dataroot,ships1,ships2,ships1C,ships2C) {
 		dataroot.api_opening_flag = 0;
 		dataroot.api_hourai_flag = [0,0,0,0];
 	}
+	
+	dataroot.api_balloon_cell = +!!ships1[0].fleet.useBalloon;
 }
 
 function apiUpdateFlag(dataroot,isRaid,combineTypeF,combinedE) {

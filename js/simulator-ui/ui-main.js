@@ -823,7 +823,7 @@ var UI_KCNAVCOMPIMPORTER = Vue.createApp({
 				if (this.gaugeHPMin != null && this.gaugeHPMin !== '' && this.gaugeHPMin != 0) url += '&minGaugeLevel=' + this.gaugeHPMin;
 				if (this.gaugeHPMax != null && this.gaugeHPMax !== '' && this.gaugeHPMax != 99999) url += '&maxGaugeLevel=' + this.gaugeHPMax;
 				if (this.gaugeNum != null && this.gaugeNum !== '' && this.gaugeNum != 1) url += '&minGauge=' + this.gaugeNum;
-				if (this.gaugeNum != null && this.gaugeNum !== '' && this.gaugeNum != 4) url += '&maxGauge=' + this.gaugeNum;
+				if (this.gaugeNum != null && this.gaugeNum !== '' && this.gaugeNum != 5) url += '&maxGauge=' + this.gaugeNum;
 				if (this.diff && +this.world > 10) url += '&difficulty=' + this.diff;
 				if (this.hqMin) url += '&minHqLevel=' + this.hqMin;
 				if (this.hqMax) url += '&maxHqLevel=' + this.hqMax;
@@ -1306,7 +1306,7 @@ var UI_AUTOBONUS = Vue.createApp({
 		nodeToLetterListDewy: [],
 		useDebuff: false,
 		dmgType: 0,
-		accEvaType: 0,
+		accEvaType: 4,
 		useSpeculated: true,
 		applyToCurrent: true,
 		applyToCurrentDmgOnly: false,
@@ -1502,7 +1502,7 @@ var UI_AUTOBONUS = Vue.createApp({
 			
 			if (this.applyToCurrent) {
 				if (autoBonus) {
-					COMMON.BONUS_MANAGER.applyAutoAll(this.applyToCurrentDmgOnly);
+					COMMON.BONUS_MANAGER.applyAutoAll(false);
 				} else {
 					COMMON.BONUS_MANAGER.resetAll();
 				}
@@ -1512,7 +1512,7 @@ var UI_AUTOBONUS = Vue.createApp({
 		
 		onclickDewy: async function() {
 			if (this.type != 'dewy') return;
-			if (this.accEvaType == 1) this.accEvaType = 0;
+			if (this.accEvaType == 1) this.accEvaType = 4;
 			if (this.optionsDewyName.length) return;
 			
 			let dataIndex = await COMMON.BONUS_MANAGER.getDewyIndex();
@@ -1566,8 +1566,8 @@ var UI_AUTOBONUS = Vue.createApp({
 						(result.data.listBonusLBAS && result.data.listBonusLBAS.find(item => item.bonuses.find(bonus => bonus.acc != null)))
 					);
 					this.hasSpeculated = result.data.listBonus && result.data.listBonus.find(item => item.bonuses.find(bonus => bonus.unconfirmed));
-					if (!this.accEvaType || this.accEvaType == 1) this.accEvaType = this.hasAccEva ? 1 : 0;
-					this.applyToCurrentDmgOnly = !this.hasAccEva;
+					if (!this.accEvaType || this.accEvaType == 1 || this.accEvaType == 4) this.accEvaType = this.hasAccEva ? 1 : 4;
+					// this.applyToCurrentDmgOnly = !this.hasAccEva;
 					this.hashes.preset[this.keyPreset] = result.hash;
 					this.datePreset = result.data.date || '';
 					this.notePreset = result.data.note || '';
