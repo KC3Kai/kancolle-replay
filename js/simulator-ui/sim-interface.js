@@ -167,7 +167,7 @@ var SIM = {
 			if (!fleet) continue;
 			for (let ship of fleet.ships) {
 				this._results.totalFuelS += Math.floor(ship.fuel*.5);
-				this._results.totalAmmoS += Math.floor(ship.ammo*(fleet.supportType == 1 ? .4 : .8));
+				this._results.totalAmmoS += Math.floor(ship.ammo*(fleet.supportType == 1 && fleet.useAirSupportCost ? .4 : .8));
 				for (let i=0; i<ship.PLANESLOTS.length; i++) {
 					this._results.totalBauxS += 5*(ship.PLANESLOTS[i]-ship.planecount[i]);
 				}
@@ -271,7 +271,7 @@ var SIM = {
 		}
 		return result;
 	},
-	_getSimShips: function(shipsInput,side) {
+	_getSimShips: function(shipsInput,side,isSupport) {
 		let shipsSim = [];
 		for (let shipInput of shipsInput) {
 			let stats = { HP: 0, FP: 0, TP: 0, AA: 0, AR: 0, LUK: 0, EV: 0, ASW: 0, LOS: 0, RNG: 0, SPD: 0, TACC: null, SLOTS: [] };
@@ -337,6 +337,7 @@ var SIM = {
 			
 			if (shipInput.equips) {
 				let r = this._getSimEquipLists(shipInput.equips);
+				if (isSupport) r.profs = [];
 				shipSim.loadEquips(r.equips,r.improves,r.profs,!shipInput.includesEquipStats);
 			} else if (sdata.EQUIPS) {
 				shipSim.loadEquips(sdata.EQUIPS,[],[],true);
@@ -354,16 +355,16 @@ var SIM = {
 		}
 		return shipsSim;
 	},
-	_getSimFleet: function(fleetInput,side) {
+	_getSimFleet: function(fleetInput,side,isSupport) {
 		let result = null;
 		if (fleetInput) {
 			let fleetSim = new Fleet(side);
-			let shipsSim = this._getSimShips(fleetInput.ships,side);
+			let shipsSim = this._getSimShips(fleetInput.ships,side,isSupport);
 			if (!shipsSim.length) return null;
 			fleetSim.loadShips(shipsSim);
 			if (fleetInput.shipsC) {
 				let fleetSimC = new Fleet(side,fleetSim);
-				let shipsSimC = this._getSimShips(fleetInput.shipsC,side);
+				let shipsSimC = this._getSimShips(fleetInput.shipsC,side,isSupport);
 				if (shipsSimC.length) fleetSimC.loadShips(shipsSimC);
 				else fleetSim.combinedWith = null;
 			}
@@ -452,8 +453,8 @@ var SIM = {
 			return;
 		}
 		if (FLEETS1[0].combinedWith) FLEETS1[1] = FLEETS1[0].combinedWith;
-		FLEETS1S[0] = this._getSimFleet(dataInput.fleetSupportN,0);
-		FLEETS1S[1] = this._getSimFleet(dataInput.fleetSupportB,0);
+		FLEETS1S[0] = this._getSimFleet(dataInput.fleetSupportN,0,true);
+		FLEETS1S[1] = this._getSimFleet(dataInput.fleetSupportB,0,true);
 		LBAS = this._getSimLBAS(dataInput.lbas);
 		
 		if (FLEETS1S[0] && FLEETS1S[0].getSupportType() == 0) FLEETS1S[0] = null;
@@ -767,9 +768,9 @@ var SIM = {
 		this._setMechanics(mechInput);
 	},
 	
-	createSimFleet: function(fleetInput,side) {
+	createSimFleet: function(fleetInput,side,isSupport) {
 		this._saveErrors = false;
-		return this._getSimFleet(fleetInput,side);
+		return this._getSimFleet(fleetInput,side,isSupport);
 	},
 	createSimLBAS: function(lbasInput) {
 		this._saveErrors = false;
