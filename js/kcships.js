@@ -174,7 +174,7 @@ Fleet.prototype.getSupportType = function() {
 			}
 		}
 	}
-	let numDD = 0, numCV = 0, numAir1 = 0, numAir2 = 0, numShell = 0, numBB = 0, numCA = 0, numTorpedo = 0, hasBomber = false;
+	let numDD = 0, numCV = 0, numAir1 = 0, numAir2 = 0, numShell = 0, numBB = 0, numCA = 0, numTorpedo = 0, hasBomber = false, numCVL = 0, numDE = 0, hasASW = 0;
 	for (let ship of this.ships) {
 		if (ship.type == 'DD') numDD++;
 		if (['CVL','CV','CVB'].includes(ship.type)) numCV++;
@@ -187,15 +187,21 @@ Fleet.prototype.getSupportType = function() {
 		if (!hasBomber && ['CVL','CV','CVB','AV','LHA','BBV','CAV','AO'].includes(ship.type)) {
 			if (ship.equips.find(eq => (eq.isdivebomber || eq.istorpbomber) && !eq.isLB && (eq.DIVEBOMB || eq.TP))) hasBomber = true;
 		}
+		if (ship.type == 'CVL') numCVL++;
+		if (ship.type == 'DE') numDE++;
+		if (!hasASW && ['CVL','AV','CL','CT','AO','LHA'].includes(ship.type) && ship.equips.find(eq => eq.canSupportASW)) hasASW = true;
 	}
+	if (hasBomber) this.canAirSupport = true;
+	if (numCVL && (hasASW || numDE >= 2)) this.canASWSupport = true;
+	if (numCV + numAir1 >= 3) this.useAirSupportCost = true;
 	if (!MECHANICS.LBASBuff) {
 		if (numCV + numAir1 >= 3) return this.supportType = 1;
 		if (numTorpedo >= 4) return this.supportType = 3;
 		return this.supportType = 2;
 	}
 	if (numDD < 2) return this.supportType = 0;
-	if (numShell <= 0 && (numCV || numAir1 >= 2 || numAir2 >= 2)) return this.supportType = (hasBomber ? 1 : 0);
-	if (numShell && numCV + numAir1 >= 2) return this.supportType = (hasBomber ? 1 : 0);
+	if (numShell <= 0 && (numCV || numAir1 >= 2 || numAir2 >= 2)) return this.supportType = 1;
+	if (numShell && numCV + numAir1 >= 2) return this.supportType = 1;
 	if (numBB >= 2) return this.supportType = 2;
 	if (numBB + numCA >= 4) return this.supportType = 2;
 	return this.supportType = 3;

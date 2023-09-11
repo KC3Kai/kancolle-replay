@@ -2399,6 +2399,8 @@ function airPhase(alive1,subsalive1,alive2,subsalive2,APIkouku,isjetphase,isbomb
 }
 
 function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
+	if (MECHANICS.LBASBuff && suptype == 1 && subsalive2.length && shipsS[0].fleet.canASWSupport) suptype = 4;
+	if (suptype == 1 && !shipsS[0].fleet.canAirSupport) return;
 	if (C) {
 		BAPI.data.api_support_flag = suptype;
 		BAPI.data.api_support_info = { api_support_airatack:null, api_support_hourai:null };
@@ -2409,7 +2411,7 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 			else
 				apiSupport = BAPI.data.api_support_info.api_support_hourai = { api_cl_list:[-1,0,0,0,0,0,0], api_damage:[-1,0,0,0,0,0,0], api_deck_id:(shipsS[0].fleet.deckId || 3)};
 			if (NEWFORMAT) formatRemovePadding(BAPI.data.api_support_info.api_support_hourai);
-		} else if (suptype==1) {
+		} else if (suptype==1||suptype==4) {
 			apiSupport = BAPI.data.api_support_info.api_support_airatack = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null};
 			BAPI.data.api_support_info.api_support_airatack.api_stage1 = {api_e_count:0,api_e_lostcount:0,api_f_count:0,api_f_lostcount:0};
 			BAPI.data.api_support_info.api_support_airatack.api_stage2 = {api_f_count:0,api_f_lostcount:0};
@@ -2421,14 +2423,6 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 		for (let ship of shipsS) {
 			apiSupport.api_ship_id.push(ship.mid); //actually roster ID
 			apiSupport.api_undressing_flag.push(+(ship.HP/ship.maxHP <= .5));
-		}
-	}
-	if (MECHANICS.LBASBuff && suptype == 1 && subsalive2.length && shipsS.find(ship => ship.type == 'CVL')) {
-		for (let ship of shipsS) {
-			if (ship.equips.find(eq => eq.canSupportASW)) {
-				suptype = 4;
-				break;
-			}
 		}
 	}
 	if (suptype != 4 && !alive2.length) return;
