@@ -290,7 +290,7 @@ COMMON.BONUS_MANAGER = {
 					for (let eq of equipsApply) {
 						for (let i=0; i<numBonus; i++) {
 							eq.bonusDmg *= bonus.dmg;
-							if (autoBonus.accEvaType == 1) eq.bonusAcc *= bonus.acc;
+							if (autoBonus.accEvaType == 1 && bonus.acc) eq.bonusAcc *= bonus.acc;
 						}
 					}
 				}
