@@ -5963,6 +5963,7 @@ var EQDATA = {
 		nameJP: '特大発動艇+Ⅲ号戦車J型',
 		added: '2023-08-26',
 		type: LANDINGCRAFT,
+		btype: B_LC2,
 		FP: 2,
 		AA: 1,
 		ACC: 1,

@@ -238,6 +238,7 @@ var SIMCONSTS = {
 	airstrikeAccEFRaid: -25,
 	airstrikeAccEE: -15,
 	nbOnlyCFAccBase: 69,
+	supportASWAccBase: 85,
 }
 SIMCONSTS.vanguardEvShellDDMod = SIMCONSTS.vanguardEvShellDDModNormal.slice();
 SIMCONSTS.vanguardEvTorpDDMod = SIMCONSTS.vanguardEvTorpDDModNormal.slice();
@@ -470,11 +471,7 @@ function shell(ship,target,APIhou,attackSpecial,combinedAll) {
 	
 	if (ship.type == 'DE') acc -= .13;
 	
-	if (ship.fleet.useBalloon || (ship.fleet.combinedWith && ship.fleet.combinedWith.useBalloon)) {
-		let ships = ship.fleet.combinedWith ? ship.fleet.combinedWith.ships.concat(ship.fleet.ships) : ship.fleet.ships;
-		let modBalloon = 1 + (ships.filter(s => s.HP > 0 && !s.retreated && s.equips.find(eq => eq.isBalloon)).length/50);
-		postMod *= modBalloon;
-	}
+	postMod *= 1 + (ship.fleet.getNumBalloons()/50);
 	
 	if (target.installtype == 3 || target.isSupplyDepot) {
 		postMod *= (ship.supplyPostMult||1);
@@ -1270,9 +1267,9 @@ function getSpecialAttackMod(ship,attackSpecial) {
 	if (attackSpecial == 100) {
 		mod = 2;
 		modAcc = 1.05;
-		if (ship.fleet.ships[2].sclass == 88) {
+		if (ship.sclass == 88 && (ship.fleet.ships[2].sclass == 88 || ship.fleet.ships[4].sclass == 88)) {
 			if (ship.isflagship) mod *= 1.15;
-			if (ship.num == 3) mod *= 1.2;
+			else mod *= 1.2;
 		}
 	} else if (attackSpecial == 101) {
 		mod = (ship.isflagship)? 1.4 : 1.2;
@@ -2274,6 +2271,9 @@ function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupp
 			if (C) APIkouku.api_stage1.api_touch_plane[carriers[0].side] = contactdata.id;
 		}
 	}
+	contactMod *= 1 + (carriers[0].fleet.getNumBalloons()/50);
+	if (targets.length) contactMod *= 1 - (targets[0].fleet.getNumBalloons()/20);
+	
 	
 	//get rocket barrage
 	for (let target of targets) {
@@ -2619,7 +2619,7 @@ function supportASW(carriers,targets,defenders,APIkouku,combinedAll) {
 
 function airstrikeSupportASW(ship,target,slot,contactMod) {
 	if (!contactMod) contactMod = 1;
-	var acc = .85;
+	var acc = SIMCONSTS.supportASWAccBase/100;
 	var res = rollHit(accuracyAndCrit(ship,target,acc,1,0,.2));
 	var equip = ship.equips[slot];
 	var dmg = 0, realdmg = 0;
@@ -2698,6 +2698,8 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 		}
 	}
 	lbas.AS = airStateNow;
+	if (FLEETS1[0]) contactMod *= 1 + (FLEETS1[0].getNumBalloons()/50);
+	if (defenders.length) contactMod *= 1 - (defenders[0].fleet.getNumBalloons()/20);
 	
 	for (var i=0; i<lbas.equips.length; i++) {
 		var eq = lbas.equips[i];
