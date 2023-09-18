@@ -451,6 +451,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	
 	for (var eqfitclass in fitcounts) { //BB fit
 		if (eqfitclass > 100) continue;
+		if (!FITDATA[this.fitclass]) continue;
 		if (!this.ACCfit) this.ACCfit = 0;
 		this.ACCfit += FITDATA[this.fitclass][eqfitclass]*Math.sqrt(fitcounts[eqfitclass]);
 		if (!this.ACCfitN) this.ACCfitN = 0;

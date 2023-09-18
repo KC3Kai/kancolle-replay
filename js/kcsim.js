@@ -2428,6 +2428,7 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 	if (suptype != 4 && !alive2.length) return;
 	if (suptype == 2 || suptype == 3) {
 		var hou = (BAPI)? BAPI.data.api_support_info.api_support_hourai : undefined;
+		let hasSubM = subsalive2.filter(s => !s.isescort).length, hasSubE = subsalive2.length - hasSubM;
 		for (var i=0; i<shipsS.length; i++) {
 			var ship = shipsS[i];
 			var targets = alive2;
@@ -2437,8 +2438,8 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 					if (targets[j].isescort) targetsE.push(targets[j]);
 					else targetsM.push(targets[j]);
 				}
-				if (!targetsE.length) targets = targetsM;
-				else if (!targetsM.length) targets = targetsE;
+				if (!targetsE.length && !hasSubE) targets = targetsM;
+				else if (!targetsM.length && !hasSubM) targets = targetsE;
 				else targets = (Math.random() < .4)? targetsM : targetsE;
 			}
 			var target = choiceWProtect(targets,null,null,true);
@@ -2908,8 +2909,8 @@ function airstrikeLBAS(lbas,target,slot,contactMod,contactModLB,isjetphase) {
 				} else {
 					postMod *= Math.random() < .4 ? 2.5 : 1.6;
 				}
-			} else if ([1696,1697,1698].includes(target.mid)) {
-				postMod *= Math.random() < .4 ? 2 : 1.6;
+			} else if ([1696,1697,1698,1751].includes(target.mid)) {
+				postMod *= Math.random() < .4 ? 1.8 : 1.5;
 			} else {
 				preMod *= (target.LBWeak || 1);
 				if (equip.isdivebomber) postMod *= (target.divebombWeak || 1);
