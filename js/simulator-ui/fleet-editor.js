@@ -599,14 +599,14 @@ var UI_FLEETEDITOR = Vue.createApp({
 				if (ship.hpInit == hpPrev || ship.hpInit > ship.hp) ship.hpInit = ship.hp;
 			}
 			if (!sdata.unknownstats) {
-				if (sdata.ASWbase) {
+				if (sdata.ASWbase || (sdata.ASW && sdata.ASWbase != null)) {
 					let aswDiff = Math.max(0,Math.min(CONST.modASWMax,ship.statsBase.asw - COMMON.getScaledStat(sdata.ASWbase,sdata.ASW,levelPrev)));
 					ship.statsBase.asw = COMMON.getScaledStat(sdata.ASWbase,sdata.ASW,ship.level) + aswDiff;
 				}
-				if (sdata.EVbase) {
+				if (sdata.EVbase || (sdata.EV && sdata.EVbase != null)) {
 					ship.statsBase.ev = COMMON.getScaledStat(sdata.EVbase,sdata.EV,ship.level);
 				}
-				if (sdata.LOSbase) {
+				if (sdata.LOSbase || (sdata.LOS && sdata.LOSbase != null)) {
 					ship.statsBase.los = COMMON.getScaledStat(sdata.LOSbase,sdata.LOS,ship.level);
 				}
 			}
