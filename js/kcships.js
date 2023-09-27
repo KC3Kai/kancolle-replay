@@ -32,12 +32,12 @@ Fleet.prototype.loadShips = function(ships) {
 		
 		if (ships[i].isAntiPTShip) {
 			ships[i].isAntiPT = true;
-			ships[i].ptAccMod *= 1.25;
+			ships[i].ptAccFlat = 64;
 			for (let ship of [ships[i-1],ships[i+1]]) {
 				if (!ship) continue;
 				if (ship.type == 'DD' || ship.type == 'DE') {
 					ship.isAntiPT = true;
-					ship.ptAccMod *= 1.2;
+					ships[i].ptAccFlat = 32;
 				}
 			}
 		}
@@ -133,14 +133,17 @@ Fleet.prototype.reset = function(notShips) {
 	}
 	delete this.didSpecial;
 	delete this.numSpecialKongou;
+	delete this.smokeUsed;
 	this.resetBattle();
 }
 Fleet.prototype.resetBattle = function() {
 	this.AS = 0;
 	LandBase.airStatePrev = 0;
+	delete LandBase.contactPrev;
 	this.clearFleetAntiAir();
 	this.clearFleetLoS();
 	this.DMGTOTALS.fill(0);
+	delete this.smokeType;
 }
 Fleet.prototype.giveCredit = function(ship,damage) {
 	this.DMGTOTALS[this.ships.indexOf(ship)] += damage;
@@ -1679,14 +1682,15 @@ CAV.prototype.canASW = function() {
 	}
 	return false;
 }
-CAV.prototype.rocketBarrageChance = function() {
+CAV.prototype.rocketBarrageChance = function(wAA) {
+	wAA = wAA ?? this.weightedAntiAir();
 	let num = 0;
 	for (let equip of this.equips) {
 		if (equip.canBarrage) num++;
 	}
 	if (num <= 0) return 0;
 	let base = 48, numBonus = 30 + 40*num, classBonus = 70*(this.sclass == 2);
-	return (2*this.weightedAntiAir() + .9*this.LUK)/(400 - (base + numBonus + classBonus));
+	return (2*wAA + .9*this.LUK)/(400 - (base + numBonus + classBonus));
 }
 
 function BBV(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {

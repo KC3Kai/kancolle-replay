@@ -108,6 +108,17 @@ var UI_MAIN = Vue.createApp({
 			airstrikeAccEF: SIMCONSTS.airstrikeAccEF,
 			airstrikeAccEFRaid: SIMCONSTS.airstrikeAccEFRaid,
 			airstrikeAccEE: SIMCONSTS.airstrikeAccEE,
+			smokeChance: SIMCONSTS.smokeChance.slice(),
+			smokeModShellAccF: SIMCONSTS.smokeModShellAccF.slice(),
+			smokeModShellAccFRadar: SIMCONSTS.smokeModShellAccFRadar.slice(),
+			smokeModShellAccE: SIMCONSTS.smokeModShellAccE.slice(),
+			smokeModShellAccERadar: SIMCONSTS.smokeModShellAccERadar.slice(),
+			smokeModASWAccF: SIMCONSTS.smokeModASWAccF.slice(),
+			smokeModASWAccE: SIMCONSTS.smokeModASWAccE.slice(),
+			smokeModTorpAccF: SIMCONSTS.smokeModTorpAccF.slice(),
+			smokeModTorpAccE: SIMCONSTS.smokeModTorpAccE.slice(),
+			smokeModAirAccF: SIMCONSTS.smokeModAirAccF.slice(),
+			smokeModAirAccE: SIMCONSTS.smokeModAirAccE.slice(),
 		},
 		settingsFCF: {
 			los: null,
@@ -274,6 +285,7 @@ var UI_MAIN = Vue.createApp({
 				subOnly: false,
 				useNormalSupport: 0,
 				useBalloon: false,
+				useSmoke: false,
 					
 				enemyComps: [],
 			};
@@ -429,6 +441,18 @@ var UI_MAIN = Vue.createApp({
 					this.settings.vanguardEvTorpDDMod[i] = SIMCONSTS.vanguardEvTorpDDModNormal[i];
 				}
 			}
+		},
+		onclickSmokeSet: function() {
+			this.settings.smokeModShellAccF = SIMCONSTS.smokeEst.smokeModShellAccF.slice();
+			this.settings.smokeModShellAccFRadar = SIMCONSTS.smokeEst.smokeModShellAccFRadar.slice();
+			this.settings.smokeModShellAccE = SIMCONSTS.smokeEst.smokeModShellAccE.slice();
+			this.settings.smokeModShellAccERadar = SIMCONSTS.smokeEst.smokeModShellAccERadar.slice();
+			this.settings.smokeModASWAccF = SIMCONSTS.smokeEst.smokeModASWAccF.slice();
+			this.settings.smokeModASWAccE = SIMCONSTS.smokeEst.smokeModASWAccE.slice();
+			this.settings.smokeModTorpAccF = SIMCONSTS.smokeEst.smokeModTorpAccF.slice();
+			this.settings.smokeModTorpAccE = SIMCONSTS.smokeEst.smokeModTorpAccE.slice();
+			this.settings.smokeModAirAccF = SIMCONSTS.smokeEst.smokeModAirAccF.slice();
+			this.settings.smokeModAirAccE = SIMCONSTS.smokeEst.smokeModAirAccE.slice();
 		},
 		
 		_includeError(error) {

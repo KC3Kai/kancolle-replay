@@ -1275,7 +1275,7 @@ function processAPI(root) {
 			}
 		}
 		
-		if (data.api_balloon_cell) {
+		if (data.api_balloon_cell && !NBonly) {
 			eventqueue.push([phaseBalloonStart,[]]);
 		}
 		if (data.api_smoke_type) {
@@ -3448,16 +3448,16 @@ function moveSmokescreen(smoke,xTarget,yTarget,fadeSpeed) {
 
 function phaseBalloonStart() {
 	for (let ship of fleet1) {
-		if (ship.hasBalloon) createBalloon(ship);
+		if (ship.hasBalloon && ship.status > 0) createBalloon(ship);
 	}
 	for (let ship of fleet1C) {
-		if (ship.hasBalloon) createBalloon(ship);
+		if (ship.hasBalloon && ship.status > 0) createBalloon(ship);
 	}
 	for (let ship of fleet2) {
-		if (ship.hasBalloon) createBalloon(ship);
+		if (ship.hasBalloon && ship.status > 0) createBalloon(ship);
 	}
 	for (let ship of fleet2C) {
-		if (ship.hasBalloon) createBalloon(ship);
+		if (ship.hasBalloon && ship.status > 0) createBalloon(ship);
 	}
 	
 	addTimeout(function(){ ecomplete = true; }, 1);

@@ -229,6 +229,32 @@
 					<tr><td>Evasion (Shelling):</td><td><input type="number" min="0" max="999" v-model="settings.arcticCamoEva" :class="getClassSetting('arcticCamoEva')"/></td></tr>
 					</table>
 				</div>
+				<div v-show="settings.showAdvanced">
+					<span class="subheader"><img src="assets/items/54.png"/> Smokescreen Mods:</span>
+					<div style="display:flex">
+						<table>
+							<tr><td colspan="2">Smoke Level:</td><th>1</th><th>2</th><th>3</th></tr>
+							<tr><td colspan="2">Activation Rate:</td><td v-for="i in 3"><input type="number" min="0" max="100" v-model="settings.smokeChance[i-1]" :class="getClassSetting('smokeChance',i-1)"/>%</td></tr>
+							<tr><td colspan="5">Shelling Accuracy Multiplier:</td></tr>
+							<tr><td style="width:20px"></td><td>Player (No Radar)</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModShellAccF[i-1]" :class="getClassSetting('smokeModShellAccF',i-1)"/></td></tr>
+							<tr><td></td><td>Player (Radar)</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModShellAccFRadar[i-1]" :class="getClassSetting('smokeModShellAccFRadar',i-1)"/></td></tr>
+							<tr><td></td><td>Enemy (No Radar)</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModShellAccE[i-1]" :class="getClassSetting('smokeModShellAccE',i-1)"/></td></tr>
+							<tr><td></td><td>Enemy (Radar)</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModShellAccERadar[i-1]" :class="getClassSetting('smokeModShellAccERadar',i-1)"/></td></tr>
+							<tr><td colspan="5">ASW Accuracy Multiplier:</td></tr>
+							<tr><td></td><td>Player</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModASWAccF[i-1]" :class="getClassSetting('smokeModASWAccF',i-1)"/></td></tr>
+							<tr><td></td><td>Enemy</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModASWAccE[i-1]" :class="getClassSetting('smokeModASWAccE',i-1)"/></td></tr>
+							<tr><td colspan="5">Torpedo Accuracy Multiplier:</td></tr>
+							<tr><td></td><td>Player</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModTorpAccF[i-1]" :class="getClassSetting('smokeModTorpAccF',i-1)"/></td></tr>
+							<tr><td></td><td>Enemy</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModTorpAccE[i-1]" :class="getClassSetting('smokeModTorpAccE',i-1)"/></td></tr>
+							<tr><td colspan="5">Airstrike Accuracy Multiplier:</td></tr>
+							<tr><td></td><td>Player</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModAirAccF[i-1]" :class="getClassSetting('smokeModAirAccF',i-1)"/></td></tr>
+							<tr><td></td><td>Enemy</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModAirAccE[i-1]" :class="getClassSetting('smokeModAirAccE',i-1)"/></td></tr>
+						</table>
+					</div>
+					<div><input type="button" value="Set Simulator's Suggested Values (Provisional)" @click="onclickSmokeSet"/> (Airstrike may be inaccurate)</div>
+					<div><a href="https://docs.google.com/spreadsheets/d/1I_HMplw81mR7g9_jUKRmI7ylhlhKkuvGKtrpj3DJ9zo/edit#gid=0" target="_blank">Activation Rate Suggestions</a></div>
+					<div><a href="https://docs.google.com/spreadsheets/d/1sznusxVurE6iCr2s-gLNpBQ_g1BD5mEMDlltluMB1CE/edit#gid=1397813463" target="_blank">Other Suggestions and Data</a></div>
+				</div>
 			</div>
 			<div>
 				<input type="button" value="Restore Defaults" @click="onclickRestoreSettings"/>
@@ -394,6 +420,7 @@
 	<div id="divOther">
 	<div id="divChangeLog">
 		<div><span class="header">Change Log:</span></div>
+		<div>2023-09-28 - Provisional Smokescreen settings, see Show Advanced</div>
 		<div>2023-09-04 - Barrage Balloon node setting</div>
 		<div>2023-08-07 - Auto-Set Historical Bonuses settings</div>
 		<div>2023-06-05 - Mechanic: AACI Rework (sequential roll and <a href="https://docs.google.com/spreadsheets/d/1agGoLv57g5eOXLXtNIKHRoBYy61OQYxibWP6Vi_DMuY/edit#gid=13450409">new AACI priority</a>), Additional Stats show fleetwide AACI rate</div>
@@ -487,7 +514,8 @@
 						<label><input type="radio" value="1" v-model.number="battle.useNormalSupport" />Normal</label>
 						<label><input type="radio" value="0" v-model.number="battle.useNormalSupport" />Boss</label>
 					</div>
-					<div class="space"><label><input type="checkbox" v-model="battle.useBalloon"/><img src="assets/items/55.png" title="Enable Barrage Balloon Effects"/></label></div>
+					<div class="space"><label><input type="checkbox" v-model="battle.useSmoke"/><img src="assets/items/54.png" title="Use Smokescreen"/></label></div>
+					<div><label><input type="checkbox" v-model="battle.useBalloon"/><img src="assets/items/55.png" title="Enable Barrage Balloon Effects"/></label></div>
 				</div>
 				<div>
 					<div><span class="header">Override Historical Bonuses:</span></div>

@@ -40,6 +40,8 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	else if (r < .9 || F1.noRedT || F2.noRedT || F1C.noRedT) ENGAGEMENT = .8;
 	else ENGAGEMENT = .6;
 	
+	if (F1.useSmoke) F1.smokeType = F1C.smokeType = getSmokeType(alive1.concat(alive1C));
+	
 	F1.AS = F2.AS = F1C.AS = 0;
 	
 	// if (aironly && ships2.length <= 2 && [652,651,650].indexOf(ships2[0].mid) != -1) bombing = true;
@@ -708,6 +710,8 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	else if (r < .9 || F1.noRedT || F2.noRedT || F2C.noRedT) ENGAGEMENT = .8;
 	else ENGAGEMENT = .6;
 	
+	if (F1.useSmoke && alive1.length >= 4) F1.smokeType = getSmokeType(alive1);
+	
 	F1.AS = F2.AS = F2C.AS = 0;
 	
 	if (bombing) aironly = true;
@@ -1114,6 +1118,8 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	else if (r < .6) ENGAGEMENT = 1.2;
 	else if (r < .9 || F1.noRedT || F2.noRedT || F1C.noRedT || F2C.noRedT) ENGAGEMENT = .8;
 	else ENGAGEMENT = .6;
+	
+	if (F1.useSmoke) F1.smokeType = F1C.smokeType = getSmokeType(alive1.concat(alive1C));
 	
 	F1.AS = F2.AS = F1C.AS = F2C.AS = 0;
 	

@@ -19,6 +19,7 @@ var CONST = window.COMMON.getConst({
 		'bad_ship_type': { txt: 'Invalid ship type: <0>' },
 		'bad_formation': { txt: 'Invalid formation: <0>' },
 		'no_fcf_retreat': { txt: 'Initial fleet does not meet set FCF Settings requirements' },
+		'no_smoke': { txt: 'Smoke activation is currently disabled, see Show Advanced for settings' },
 		
 		'warn_unknown_equiptype': { txt: 'Warning: Unknown equip type - <0>, effects may be missing' },
 		'warn_unknown_ship': { txt: 'Warning: Unknown ship - <0>, unique effects may be missing' },
@@ -439,6 +440,10 @@ var SIM = {
 		
 		this._setMechanics(dataInput);
 		
+		if (dataInput.nodes.find(node => node.useSmoke) && !SIMCONSTS.smokeChance.reduce((a,b)=>a+b,0)) {
+			this._addError('no_smoke');
+		}
+		
 		FLEETS1[0] = this._getSimFleet(dataInput.fleetF,0);
 		if (!FLEETS1[0]) {
 			this._addError('no_fleet_f');
@@ -681,6 +686,9 @@ var SIM = {
 			
 			fleetF.useBalloon = !!node.useBalloon;
 			fleetE.useBalloon = !!node.useBalloon;
+			
+			if (fleetF.smokeType) fleetF.smokeUsed = true;
+			fleetF.useSmoke = !node.NBOnly && !fleetF.smokeUsed && !!node.useSmoke;
 			
 			let result;
 			let apiBattle = null;
