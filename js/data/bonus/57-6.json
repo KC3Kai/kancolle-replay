@@ -1,7 +1,7 @@
 {
 	"world": 57,
 	"mapnum": 6,
-	"date": "2023-09-19",
+	"date": "2023-09-28",
 	"note": "WIP, acc/eva incomplete, LBAS incomplete",
 	"listBonus": [
 		{
@@ -70,6 +70,14 @@
 				{ "dmg": 1.06, "basewide": 1, "requireEquipId": [158,159,178,184,189,249,353,354,401,405,406,431,432,459,510] },
 				{ "dmg": 1.08, "basewide": 1, "requireEquipId": [250,251,252,253,423,433,434,435,471,473,474,475,476,479,480,481,515,516] },
 				{ "dmg": 1.2, "basewide": 1, "requireEquipId": [395,396] }
+			]
+		},
+		{
+			"nodes": ["C2","Q"],
+			"bonuses": [
+				{ "dmg": 1.04, "basewide": 1, "requireEquipId": [158,159,178,184,189,249,353,354,401,405,406,431,432,459,510] },
+				{ "dmg": 1.06, "basewide": 1, "requireEquipId": [250,251,252,253,423,433,434,435,471,473,474,475,476,479,480,481,515,516] },
+				{ "dmg": 1.25, "basewide": 1, "requireEquipId": [395,396] }
 			]
 		}
 	],

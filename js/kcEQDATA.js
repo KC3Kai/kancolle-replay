@@ -586,6 +586,7 @@ EQTDATA[JETBOMBER] = {
 EQTDATA[ARMYUNIT] = {
 	name: 'Army Unit',
 	image: 52,
+	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: [],
 	canequipS: [727, 945],
 };
