@@ -31,6 +31,14 @@
 			]
 		}
 	],
+	"listBonusLBAS": [
+		{
+			"bonuses": [
+				{ "dmg": 1.05, "basewide": 1, "requireEquipType": [25], "perEquip": 1 },
+				{ "dmg": 1.07, "basewide": 1, "requireEquipType": [26], "perEquip": 1 }
+			]
+		}
+	],
 	"listDebuff": [
 		{
 			"nodes": ["W"],

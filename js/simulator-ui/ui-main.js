@@ -264,7 +264,7 @@ var UI_MAIN = Vue.createApp({
 			return '';
 		},
 		autoBonusNodes: function() {
-			return this.autoBonus ? this.battles.map(battle => this.autoBonus.nodeToLetter[battle.id] || '(default)').join('\u2192') : '';
+			return this.autoBonus ? this.battles.map(battle => this.autoBonus.nodeToLetter[battle.id] || '(default)').join('\u2192') + (this.autoBonus.useDebuff ? ', Debuffed' : '') : '';
 		},
 	},
 	methods: {

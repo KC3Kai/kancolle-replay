@@ -781,7 +781,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 		if (NERFPTIMPS) {
 			acc *= ship.ptAccMod/.7;
 		} else {
-			acc = .42*acc + .24;
+			acc = (.42*acc + .24)*.7;
 			acc *= ship.ptAccMod || 1;
 			if (ship.fleet.formation.id == 6) acc *= 1.2;
 		}

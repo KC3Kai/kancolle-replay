@@ -527,6 +527,23 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	this.installFlat *= abSynergyMult;
 	this.installFlat += abSynergyFlat;
 	
+	if (this.equips.find(eq => eq.mid == 496)) {
+		installModAll *= 4.05;
+		this.installFlat += 60;
+	}
+	if (this.equips.find(eq => eq.mid == 497)) {
+		installModAll *= 3.2;
+		this.installFlat += 63;
+	}
+	if (this.equips.find(eq => eq.mid == 498)) {
+		installModAll *= 4.57;
+		this.installFlat += 161;
+	}
+	if (this.equips.find(eq => eq.mid == 499)) {
+		installModAll *= 7.14;
+		this.installFlat += 166;
+	}
+	
 	if (this.numWG) this.installFlat += WGpower(this.numWG);
 	if (installeqs.mortarC >= 4) this.installFlat += 180;
 	else if (installeqs.mortarC == 3) this.installFlat += 150;
@@ -694,6 +711,12 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (installeqs.DH3 >= 2) this.supplyPostMult *= 1.5;
 		if (numAB) this.supplyPostMult *= 1.5;
 		if (numAB >= 2) this.supplyPostMult *= 1.1;
+		
+		if (this.equiptypes[ARMYUNIT]) this.supplyPostMult *= 3.15;
+		if (this.equiptypes[ARMYUNIT] >= 2) this.supplyPostMult *= 2.33;
+		if (this.equiptypes[ARMYUNIT] >= 3) this.supplyPostMult *= 1.2;
+		if (this.equips.find(eq => eq.mid == 498 || eq.mid == 499)) this.supplyPostMult *= 1.2;
+		if (this.equips.find(eq => eq.mid == 496 || eq.mid == 499)) this.supplyPostMult *= 1.55;
 	} else {
 		if (this.numWG >= 2) this.supplyPostMult*=1.625;
 		else if (this.numWG == 1) this.supplyPostMult*=1.25;
