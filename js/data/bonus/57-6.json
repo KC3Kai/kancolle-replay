@@ -1,8 +1,8 @@
 {
 	"world": 57,
 	"mapnum": 6,
-	"date": "2023-09-28",
-	"note": "WIP, acc/eva incomplete, LBAS incomplete",
+	"date": "2023-10-05",
+	"note": "WIP, acc/eva incomplete",
 	"listBonus": [
 		{
 			"bonuses": [
@@ -29,9 +29,9 @@
 		{
 			"nodes": ["C2","Q"],
 			"bonuses": [
-				{ "dmg": 1.05, "acc": 1.05, "requireEquipId": [167,230,436,494,495,507,508,513], "perEquip": 0 },
-				{ "dmg": 1.08, "acc": 1.05, "requireEquipId": [355,449,482], "perEquip": 0 },
-				{ "dmg": 1.12, "acc": 1.05, "requireEquipId": [514], "perEquip": 0 },
+				{ "dmg": 1.05, "acc": 1.05, "requireEquipId": [167,230,436,494,495,496,507,508,513], "perEquip": 0 },
+				{ "dmg": 1.08, "acc": 1.05, "requireEquipId": [355,449,482,497], "perEquip": 0 },
+				{ "dmg": 1.12, "acc": 1.05, "requireEquipId": [489,498,514], "perEquip": 0 },
 				{ "dmg": 1.06, "requireEquipId": [513], "perEquip": 1 },
 				{ "dmg": 1.03, "requireEquipType": [25], "perEquip": 1 }
 			]
@@ -77,7 +77,8 @@
 			"bonuses": [
 				{ "dmg": 1.04, "basewide": 1, "requireEquipId": [158,159,178,184,189,249,353,354,401,405,406,431,432,459,510] },
 				{ "dmg": 1.06, "basewide": 1, "requireEquipId": [250,251,252,253,423,433,434,435,471,473,474,475,476,479,480,481,515,516] },
-				{ "dmg": 1.25, "basewide": 1, "requireEquipId": [395,396] }
+				{ "dmg": 1.25, "basewide": 1, "requireEquipId": [395,396] },
+				{ "dmg": 1.03, "basewide": 1, "requireEquipType": [25], "perEquip": 1 }
 			]
 		}
 	],
