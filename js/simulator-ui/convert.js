@@ -129,6 +129,7 @@ window.CONVERT = {
 	kc3ToSaveFleet: function(fleetNum) {
 		if (!this._dataKC3) return;
 		let fleetSave = {
+			version: this._SAVE_VERSION_CURRENT,
 			type: 0,
 		};
 		if (+fleetNum == 10) {
@@ -214,7 +215,7 @@ window.CONVERT = {
 			};
 			for (let id of eSlot[i]) {
 				if (id <= 0) continue;
-				id = this._convertEquipId20221109(id);
+				if (COMMON.isShipIdAbyssal(ship_ke[i])) id = this._convertEquipId20221109(id);
 				shipSave.equips.push({ mstId: id, rank: 0 });
 			}
 			if (e_maxhps[i] == 'N/A') shipSave.isFaraway = true;
@@ -231,6 +232,7 @@ window.CONVERT = {
 		let f_maxhps = bdataFirst.api_f_maxhps;
 		if (bdataFirst.api_maxhps) f_maxhps = bdataFirst.api_maxhps.slice(0 + +(bdataFirst.api_maxhps[0] == -1), 6 + +(bdataFirst.api_maxhps[0] == -1));
 		dataSave.fleetFMain = {
+			version: this._SAVE_VERSION_CURRENT,
 			type: dataReplay.combined,
 			ships: this.replayToSaveShipsF(dataReplay['fleet'+dataReplay.fleetnum],f_maxhps,bdataFirst.api_fParam),
 		};
@@ -242,11 +244,11 @@ window.CONVERT = {
 		}
 		
 		if (dataReplay.support1) {
-			dataSave.fleetFSupportN = { type: 0, ships: this.replayToSaveShipsF(dataReplay['fleet'+dataReplay.support1],null,null,true) };
+			dataSave.fleetFSupportN = { version: this._SAVE_VERSION_CURRENT, type: 0, ships: this.replayToSaveShipsF(dataReplay['fleet'+dataReplay.support1],null,null,true) };
 			dataSave.useSupportN = true;
 		}
 		if (dataReplay.support2) {
-			dataSave.fleetFSupportB = { type: 0, ships: this.replayToSaveShipsF(dataReplay['fleet'+dataReplay.support2],null,null,true) };
+			dataSave.fleetFSupportB = { version: this._SAVE_VERSION_CURRENT, type: 0, ships: this.replayToSaveShipsF(dataReplay['fleet'+dataReplay.support2],null,null,true) };
 			dataSave.useSupportB = true;
 		}
 		
@@ -278,6 +280,7 @@ window.CONVERT = {
 				for (let i=0; i<api_Slot.length; i++) api_Slot[i].push(info.api_slot_ex[i]);
 			}
 			let fleetFF = {
+				version: this._SAVE_VERSION_CURRENT,
 				type: (info.api_ship_id.length >= 7 ? CONST.SF : 0),
 				ships: this.replayToSaveShipsE(info.api_ship_id,info.api_ship_lv,info.api_maxhps,info.api_Param,api_Slot),
 			};
@@ -446,7 +449,7 @@ window.CONVERT = {
 		if (!fleetNum) fleetNum = dataDb.f2 && Object.keys(dataDb.f2).length ? 11 : 1;
 		let type = fleetNum > 10 ? fleetNum - 10 : 0;
 		let fleetKey = fleetNum > 10 ? 'f1' : 'f'+fleetNum;
-		let fleetSave = { type: type };
+		let fleetSave = { version: this._SAVE_VERSION_CURRENT, type: type };
 		fleetSave.ships = this.deckbuilderToSaveShips(dataDb[fleetKey]);
 		if (fleetSave.ships.length >= 7) {
 			fleetSave.type = CONST.SF;
@@ -608,6 +611,7 @@ window.CONVERT = {
 		let compsSave = [];
 		for (let compNav of compsNav.entries) {
 			let fleetSave = {
+				version: this._SAVE_VERSION_CURRENT,
 				formation: +compNav.formation,
 				type: 0,
 				ships: this.kcnavToSaveShips(compNav.mainFleet || compNav.fleet),
