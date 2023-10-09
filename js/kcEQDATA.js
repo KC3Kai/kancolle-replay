@@ -5639,6 +5639,7 @@ var EQDATA = {
 		nameJP: 'Mosquito TR Mk.33',
 		added: '2022-09-11',
 		type: TORPBOMBER,
+		aaResistShip: .6,
 		TP: 8,
 		AA: 5,
 		ACC: 1,
