@@ -4087,6 +4087,34 @@
 			{
 				"bonus": { "raig": 4 },
 				"shipId": [607]
+			},
+			{
+				"bonus": { "raig": 1 },
+				"shipClass": [44],
+				"level": 4,
+				"num": 1
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipClass": [44],
+				"level": 6,
+				"num": 1
+			},
+			{
+				"bonus": { "raig": 1 },
+				"level": 8,
+				"num": 1
+			},
+			{
+				"bonus": { "houm": 1 },
+				"level": 10,
+				"num": 1
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipBase": [127,636],
+				"level": 5,
+				"num": 1
 			}
 		]
 	},
@@ -7063,6 +7091,26 @@
 				"bonus": { "houg": 1, "houm": 1, "tyku": 4, "kaih": 3 },
 				"requiresId": [450],
 				"requiresIdLevel": 4,
+				"num": 1
+			},
+			{
+				"bonus": { "houm": 1 },
+				"level": 7,
+				"num": 1
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"level": 8,
+				"num": 1
+			},
+			{
+				"bonus": { "houg": 1 },
+				"level": 9,
+				"num": 1
+			},
+			{
+				"bonus": { "houm": 1 },
+				"level": 10,
 				"num": 1
 			}
 		]
