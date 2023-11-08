@@ -57,14 +57,14 @@ var ALLFORMATIONS = {1:LINEAHEAD,2:DOUBLELINE,3:DIAMOND,4:ECHELON,5:LINEABREAST,
 };
 
 var AACIDATA = {
-	1:{num:7,rate:.65,mod:1.75,equip:'HHR',num1:3},
+	1:{num:7,rate:.65,mod:1.7,equip:'HHR',num1:3},
 	2:{num:6,rate:.58,mod:1.7,equip:'HR',num1:3},
 	3:{num:4,rate:.5,mod:1.6,equip:'HH',num1:2},
 	4:{num:6,rate:.52,mod:1.5,equip:'MSAR',num1:5},
-	5:{num:4,rate:.55,mod:1.55,equip:'BBR',num1:2},
-	6:{num:4,rate:.4,mod:1.5,equip:'MSA',num1:4},
+	5:{num:4,rate:.55,mod:1.5,equip:'BBR',num1:2},
+	6:{num:4,rate:.4,mod:1.45,equip:'MSA',num1:4},
 	7:{num:3,rate:.45,mod:1.35,equip:'HAR',num1:2},
-	8:{num:4,rate:.5,mod:1.45,equip:'BR',num1:2},
+	8:{num:4,rate:.5,mod:1.4,equip:'BR',num1:2},
 	9:{num:2,rate:.4,mod:1.3,equip:'HA',num1:1},
 	10:{num:8,rate:.6,mod:1.65,equip:'HCR',num1:3},
 	11:{num:6,rate:.55,mod:1.5,equip:'HC',num1:2},
@@ -262,6 +262,8 @@ var SIMCONSTS = {
 		smokeModAirAccF: [1,1,1],
 		smokeModAirAccE: [1,1,1],
 	},
+	eqBonusAAModShip: .75,
+	eqBonusAAModFleet: 1,
 }
 SIMCONSTS.vanguardEvShellDDMod = SIMCONSTS.vanguardEvShellDDModNormal.slice();
 SIMCONSTS.vanguardEvTorpDDMod = SIMCONSTS.vanguardEvTorpDDModNormal.slice();
@@ -334,7 +336,7 @@ var MECHANICS = {
 	yamatoSpecial: true,
 	kongouSpecialBuff2: true,
 	coloradoSpecialBuff2: true,
-	eqBonusAA: false, //WIP disabled
+	eqBonusAA: true,
 	antiSubRaid: true,
 	aswPlaneAir: true,
 	kongouSpecialBuff3: true,
@@ -2148,27 +2150,31 @@ function AADefenceFighters(carriers,showplanes,APIkouku,eqtFilter) {
 	}
 }
 
-function getAAShotProp(defender,slotsize,resistMod,isRaid) {
+function getAAShotProp(defender,slotsize,resistMod,isRaid,forceCF) {
 	if (!MECHANICS.AACI) return 0;
-	var sAA = defender.weightedAntiAir(isRaid);
+	var sAA = defender.weightedAntiAir();
 	if (MECHANICS.aaResist && resistMod) sAA = Math.floor(sAA*resistMod);
-	if (MECHANICS.eqBonusAA) sAA += (defender.statsEqBonus.AA || 0)*.8;
+	if (defender.fleet.combinedWith || forceCF) {
+		sAA *= defender.isescort ? .48 : isRaid ? .72 : .8;
+	}
 	if (defender.fleet.smokeType) sAA = 0;
 	return Math.floor(slotsize*sAA/200);
 }
 
-function getAAShotFlat(defender,resistModShip,resistModFleet,isRaid) {
+function getAAShotFlat(defender,resistModShip,resistModFleet,isRaid,forceCF) {
 	var mod = (defender.side==0)? .2 : 0.1875;
 	if (!MECHANICS.AACI) mod = .2125;
-	var fAA = (MECHANICS.fixFleetAA)? defender.fleet.fleetAntiAir(false,isRaid) : 0;
-	var sAA = defender.weightedAntiAir(isRaid);
+	var fAA = (MECHANICS.fixFleetAA)? defender.fleet.fleetAntiAir(false) : 0;
+	var sAA = defender.weightedAntiAir();
 	if (MECHANICS.aaResist) {
-		if (resistModShip) sAA = Math.floor(sAA*resistModShip);
-		if (resistModFleet) fAA = Math.floor(fAA*resistModFleet);
+		sAA = Math.floor(sAA*(resistModShip||1));
+		fAA = Math.floor(fAA*(resistModFleet||1));
 	}
-	if (MECHANICS.eqBonusAA) {
-		sAA += (defender.statsEqBonus.AA || 0)*.8;
-		fAA += (defender.statsEqBonus.AA || 0)*.75;
+	if (defender.side == 0 && MECHANICS.AACI) fAA = Math.floor(fAA/1.3);
+	if (defender.fleet.combinedWith || forceCF) {
+		let modCF = defender.isescort ? .48 : isRaid ? .72 : .8;
+		sAA *= modCF;
+		fAA *= modCF;
 	}
 	if (defender.fleet.smokeType) {
 		sAA = 0;
@@ -2361,17 +2367,22 @@ function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupp
 			if (defenders.length) {
 				var defender = defenders[Math.floor(Math.random()*defenders.length)];
 				var supportMod = (issupport)? .8 : 1;
-				var shotProp = (Math.random() < .5)? Math.floor(getAAShotProp(defender,ship.planecount[slot],ship.equips[slot].aaResistShip,isRaid)*supportMod) : 0;
-				var shotFlat = (Math.random() < .5)? Math.floor(getAAShotFlat(defender,ship.equips[slot].aaResistShip,ship.equips[slot].aaResistFleet,isRaid)*AACImod*supportMod) : 0;
+				let forceCF = defender.fleet.combinedWith || (ship.side == 1 && ship.fleet.combinedWith);
+				var shotProp = (Math.random() < .5)? Math.floor(getAAShotProp(defender,ship.planecount[slot],ship.equips[slot].aaResistShip,isRaid,forceCF)*supportMod) : 0;
+				var shotFlat = (Math.random() < .5)? Math.floor(getAAShotFlat(defender,ship.equips[slot].aaResistShip,ship.equips[slot].aaResistFleet,isRaid,forceCF)*AACImod*supportMod) : 0;
 				var shotFix = ((defender.side==0 || AACInum) && MECHANICS.AACI ? 1 : 0) + AACInum;
-				if (MECHANICS.aaResist && ship.equips[slot].aaResistShip && shotFix) {
+				if (MECHANICS.aaResist && ship.equips[slot].aaResistShip && ship.equips[slot].aaResistFleet && shotFix) {
 					let n1 = shotFix, n2 = 0;
 					if (AACItype) {
 						n1 = AACIDATA[AACItype].num1;
 						n2 = shotFix - AACIDATA[AACItype].num1;
 					}
-					shotFix = Math.floor(n1 * ship.equips[slot].aaResistShip + n2);
-					if (C) console.log('AACI resist: ' + n1 + ' ' + n2 + ' ' + shotFix);
+					if (ship.equips[slot].aaResistShip <= .5) {
+						shotFix = Math.max(0,shotFix-3);
+					} else {
+						shotFix = Math.floor(n1*.6 + n2);
+					}
+					if (C) console.log('AACI resist: ' + ship.equips[slot].aaResistShip + ' ' + ship.equips[slot].aaResistFleet + ' ' + n1 + ' ' + n2 + ' ' + shotFix);
 				}
 				
 				if (C) {
