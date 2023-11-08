@@ -5947,6 +5947,7 @@ var EQDATA = {
 		nameJP: '21inch艦首魚雷発射管4門(後期型)',
 		added: '2023-08-09',
 		type: TORPEDOSS,
+		specialCutIn: true,
 		TP: 12,
 		ACC: 3,
 		EV: 5,

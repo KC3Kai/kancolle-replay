@@ -53,7 +53,7 @@ Fleet.prototype.fleetAirPower = function(eqtFilter) {  //get air power
 	}
 	return this.AP;
 }
-Fleet.prototype.fleetAntiAir = function(alreadyCombined,isRaid) {
+Fleet.prototype.fleetAntiAir = function(alreadyCombined) {
 	if (this._baseFAA === undefined) {
 		this._baseFAA = 0;
 		for (var i=0; i<this.ships.length; i++) {
@@ -82,20 +82,16 @@ Fleet.prototype.fleetAntiAir = function(alreadyCombined,isRaid) {
 			}
 			if (this.ships[i].improves.AAfleet) aaF += this.ships[i].improves.AAfleet;
 			this._baseFAA += Math.floor(aaF);
+			if (MECHANICS.eqBonusAA) this._baseFAA += (this.ships[i].statsEqBonus.AA || 0)*SIMCONSTS.eqBonusAAModFleet;
 		}
 		this._baseFAA = Math.floor(this._baseFAA);
 	}
 	var FAA = this._baseFAA;
 	if (alreadyCombined) return FAA;
 	if (this.combinedWith) {
-		FAA += this.combinedWith.fleetAntiAir(true,isRaid);
+		FAA += this.combinedWith.fleetAntiAir(true);
 	}
 	FAA = Math.floor(FAA*this.formation.AAmod);
-	if (this.side == 0 && MECHANICS.AACI) FAA = FAA/1.3;
-	if (this.combinedWith) {
-		if (this.isescort) FAA *= .48;
-		else FAA *= (isRaid ? .72 : .8);
-	}
 	return FAA;
 }
 Fleet.prototype.clearFleetAntiAir = function() {
@@ -1457,7 +1453,7 @@ Ship.prototype.damageMod = function(isTorp) {
 	if (this.HP/this.maxHP <= .5) return .7;
 	return 1;
 }
-Ship.prototype.weightedAntiAir = function(isRaid) {
+Ship.prototype.weightedAntiAir = function() {
 	if (this._wAA === undefined) {
 		if (this.isFaraway) {
 			this._wAA = 0;
@@ -1466,33 +1462,30 @@ Ship.prototype.weightedAntiAir = function(isRaid) {
 		} else {
 			this._wAA = this.statsBase.AA/2;
 			if (this.side==1) this._wAA = Math.sqrt(this.AA);
-			if (this.equips.length) this._wAA = Math.floor(this._wAA);
-			for (var i=0; i<this.equips.length; i++) {
-				var mod = 0;
-				switch (this.equips[i].atype) {
-					case A_HAGUN:
-					case A_HAFD:
-					case A_AAFD:
-						mod = 2; break;
-					case A_AAGUN:
-						mod = 3; break;
-					case A_AIRRADAR:
-						mod = 1.5; break;
-					default:
-						continue;
+			if (this.equips.length) {
+				for (var i=0; i<this.equips.length; i++) {
+					var mod = 0;
+					switch (this.equips[i].atype) {
+						case A_HAGUN:
+						case A_HAFD:
+						case A_AAFD:
+							mod = 2; break;
+						case A_AAGUN:
+							mod = 3; break;
+						case A_AIRRADAR:
+							mod = 1.5; break;
+						default:
+							continue;
+					}
+					this._wAA += this.equips[i].AA * mod;
 				}
-				this._wAA += this.equips[i].AA * mod;
+				this._wAA += (this.improves.AAself)? this.improves.AAself : 0;
+				if (MECHANICS.eqBonusAA) this._wAA += (this.statsEqBonus.AA || 0)*SIMCONSTS.eqBonusAAModShip;
+				this._wAA = Math.floor(this._wAA);
 			}
-			this._wAA += (this.improves.AAself)? this.improves.AAself : 0;
-			this._wAA = Math.max(0,this._wAA);
 		}
 	}
-	let wAA = this._wAA;
-	if (this.fleet.combinedWith) {
-		if (this.isescort) wAA *= .48;
-		else wAA *= (isRaid ? .72 : .8);
-	}
-	return wAA;
+	return this._wAA;
 }
 
 Ship.prototype.getAACItype = function(atypes) {
