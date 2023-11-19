@@ -1861,7 +1861,7 @@ CVL.prototype.canOASW = function() {
 	if (this.alwaysOASW) return true;
 	
 	if (this.equips.find(eq => [TORPBOMBER,AUTOGYRO,ASWPLANE].indexOf(eq.type) != -1 && eq.ASW >= 7)) {
-		let threshold = (this.equiptypesB[B_SONAR])? 50 : 65;
+		let threshold = (this.equiptypesB[B_SONAR] && !this.isASWlast)? 50 : 65;
 		let asw = this.ASW;
 		if (!MECHANICS.eqBonusASW) {
 			asw -= (this.statsEqBonus.ASW || 0);
