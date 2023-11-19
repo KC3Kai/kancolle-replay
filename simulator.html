@@ -1102,7 +1102,7 @@
 					</table>
 					<div v-show="isFriendFleet"><label><input type="checkbox" v-model="ffStrong"/><img src="assets/stats/ibuild.png"/>?</label></div>
 					<div v-show="isFriendFleet"><label><input type="checkbox" v-model="ffSkipSame"/>Skip comps with same ship in Main Fleet?</label></div>
-					<div v-show="isFriendFleet"><label>Start Date: <input type="date" v-model="ffDateStart"/></label></div>
+					<div><label>Date: <input type="date" v-model="dateStart"/></label>~<input type="date" v-model="dateEnd"/></div>
 				</div>
 			</div>
 			<input type="button" value="Submit" :disabled="!canClose" @click="onclickLoad" />

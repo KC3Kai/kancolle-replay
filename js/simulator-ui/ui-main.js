@@ -773,7 +773,8 @@ var UI_KCNAVCOMPIMPORTER = Vue.createApp({
 		hqMax: null,
 		ffSkipSame: true,
 		ffStrong: true,
-		ffDateStart: null,
+		dateStart: null,
+		dateEnd: null,
 		
 		selectWorld: 0,
 		selectLetter: 0,
@@ -844,7 +845,8 @@ var UI_KCNAVCOMPIMPORTER = Vue.createApp({
 			url = url.replace('{maps}',this.world + '-' + this.mapnum);
 			url = url.replace('{edges}',this.edges);
 			if (!this.isFriendFleet) {
-				url += '?start=' + (+this.world < 10 ? CONST.kcnavDateStart : '');
+				url += '?start=' + (this.dateStart ? this.dateStart : +this.world < 10 ? CONST.kcnavDateStart : '');
+				if (this.dateEnd != null && this.dateEnd !== '') url += '&end=' + this.dateEnd;
 				if (this.gaugeHPMin != null && this.gaugeHPMin !== '' && this.gaugeHPMin != 0) url += '&minGaugeLevel=' + this.gaugeHPMin;
 				if (this.gaugeHPMax != null && this.gaugeHPMax !== '' && this.gaugeHPMax != 99999) url += '&maxGaugeLevel=' + this.gaugeHPMax;
 				if (this.gaugeNum != null && this.gaugeNum !== '' && this.gaugeNum != 1) url += '&minGauge=' + this.gaugeNum;
@@ -853,7 +855,8 @@ var UI_KCNAVCOMPIMPORTER = Vue.createApp({
 				if (this.hqMin) url += '&minHqLevel=' + this.hqMin;
 				if (this.hqMax) url += '&maxHqLevel=' + this.hqMax;
 			} else {
-				url += '?start=' + (this.ffDateStart ? this.ffDateStart : '');
+				url += '?start=' + (this.dateStart ? this.dateStart : '');
+				if (this.dateEnd != null && this.dateEnd !== '') url += '&end=' + this.dateEnd;
 			}
 			// if (+this.world < 10) {
 				// let d = new Date();
