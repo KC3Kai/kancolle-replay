@@ -20588,6 +20588,7 @@ var SHIPDATA = {
 		image: 'SWoFKai.jpg',
 		type: 'CV',
 		nightattack: 1,
+		cannotCVCI: true,
 		HP: 160,
 		FP: 40,
 		TP: 0,
