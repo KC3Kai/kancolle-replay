@@ -6002,6 +6002,17 @@ var EQDATA = {
 		ASW: 4,
 		LOS: 8,
 	},
+	518: {
+		name: '14cm Twin Gun Mount Kai 2',
+		nameJP: '14cm連装砲改二',
+		added: '2023-11-28',
+		type: MAINGUNM,
+		FP: 5,
+		AR: 2,
+		ACC: 4,
+		ASW: 3,
+		RNG: 2,
+	},
 	1501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
