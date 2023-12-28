@@ -1543,12 +1543,14 @@ function nightPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,NBonly,API
 		if (alive2[i].hasSearchlight) { light2 = true; lightship2 = i; slrerolls2 = alive2[i].hasSearchlight; break; }
 	}
 	var scout1 = null, scout2 = null;
-	if (alive1[0] && alive1[0].fleet.AS != -2 && (NBonly || alive1[0].fleet.AS != 0)) {
-		scout1 = getNightEquipsScout(alive1);
+	let ship1 = alive1[0] || subsalive1[0];
+	if (ship1 && ship1.fleet.AS != -2 && (NBonly || ship1.fleet.AS != 0)) {
+		scout1 = getNightEquipsScout(alive1.concat(subsalive1));
 		if (C && scout1) APIyasen.api_touch_plane[0] = scout1.mid;
 	}
-	if (alive2[0] && alive2[0].fleet.AS != -2 && (NBonly || alive2[0].fleet.AS != 0)) {
-		scout2 = getNightEquipsScout(alive2);
+	let ship2 = alive2[0] || subsalive2[0];
+	if (ship2 && ship2.fleet.AS != -2 && (NBonly || ship2.fleet.AS != 0)) {
+		scout2 = getNightEquipsScout(alive2.concat(subsalive2));
 		if (C && scout2) APIyasen.api_touch_plane[1] = scout2.mid;
 	}
 	let numRounds = Math.max(order1.length,order2.length);
@@ -4325,7 +4327,7 @@ function simNightFirstCombined(F1,F2,Fsupport,LBASwaves,BAPI) {
 	}
 	
 	var APIyasen = BAPI.data;
-	var nightEquips = getNightEquips(alive1,alive2,APIyasen);
+	var nightEquips = getNightEquips(alive1.concat(subsalive1),alive2.concat(subsalive2),APIyasen);
 	
 	if (alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
 		APIyasen.api_n_hougeki1 = {api_at_eflag:[],api_at_list:[],api_damage:[],api_df_list:[],api_sp_list:[],api_cl_list:[],api_n_mother_list:[],api_si_list:[]};
@@ -4488,7 +4490,7 @@ function friendFleetPhase(fleet1,fleet2,alive2,subsalive2,BAPI) {
 	}
 	
 	APIyasen.api_friendly_battle = {};
-	var nightEquips = getNightEquips(fleet1.ships,alive2,APIyasen.api_friendly_battle);
+	var nightEquips = getNightEquips(fleet1.ships,alive2.concat(subsalive2),APIyasen.api_friendly_battle);
 	
 	let APIhou = APIyasen.api_friendly_battle.api_hougeki = {api_at_eflag:[],api_at_list:[],api_damage:[],api_df_list:[],api_sp_list:[],api_cl_list:[],api_n_mother_list:[],api_si_list:[]};
 	

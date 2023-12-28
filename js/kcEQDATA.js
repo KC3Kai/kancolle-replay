@@ -6013,6 +6013,16 @@ var EQDATA = {
 		ASW: 3,
 		RNG: 2,
 	},
+	519: {
+		name: 'SJ Radar + Submarine Conning Tower Equipment',
+		nameJP: 'SJレーダー+潜水艦司令塔装備',
+		added: '2023-12-26',
+		type: SUBRADAR,
+		TP: 5,
+		ACC: 5,
+		EV: 6,
+		LOS: 7,
+	},
 	1501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
