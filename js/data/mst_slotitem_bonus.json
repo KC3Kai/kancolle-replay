@@ -7174,5 +7174,54 @@
 				"num": 1
 			}
 		]
+	},
+	{
+		"ids": [85],
+		"bonuses": [
+			{
+				"bonus": { "tyku": 1, "kaih": 1 },
+				"level": 6
+			},
+			{
+				"bonus": { "tyku": 2 },
+				"level": 6,
+				"requiresAR": 1,
+				"num": 1
+			},
+			{
+				"bonus": { "houg": 1 },
+				"level": 8
+			},
+			{
+				"bonus": { "tyku": 1, "kaih": 1 },
+				"shipCountry": ["DE","IT"],
+				"level": 8
+			},
+			{
+				"bonus": { "kaih": 1, "houm": 1 },
+				"level": 10
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipCountry": ["DE","IT"],
+				"level": 10,
+				"num": 1
+			}
+		]
+	},
+	{
+		"ids": [519],
+		"bonuses": [
+			{
+				"bonus": { "houm": 2, "kaih": 2 },
+				"shipClass": [122],
+				"num": 1
+			},
+			{
+				"bonus": { "raig": 1, "houm": 2, "kaih": 2 },
+				"shipClass": [114],
+				"num": 1
+			}
+		]
 	}
 ]
