@@ -393,8 +393,8 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	if (!noupdate) {
 		// var subonly = true;
 		// for (var j=0; j<ships2.length; j++) if (ships2[j].type != 'SS') subonly = false;
-		updateSupply(ships1,didNB,NBonly,bombing,noammo,false,F2.ships.find(s => s.isFaraway));
-		updateSupply(ships1C,didNB,NBonly,bombing,noammo,false,F2.ships.find(s => s.isFaraway));
+		updateSupply(ships1,didNB,NBonly,bombing,noammo,false,F2.ships);
+		updateSupply(ships1C,didNB,NBonly,bombing,noammo,false,F2.ships);
 	}
 	
 	
@@ -1032,7 +1032,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	
 	//results
 	if (!noupdate) {
-		updateSupply(ships1,didNB,NBonly,bombing,noammo,true,F2.ships.find(s => s.isFaraway) || F2C.ships.find(s => s.isFaraway));
+		updateSupply(ships1,didNB,NBonly,bombing,noammo,true,F2.ships.concat(F2C.ships));
 	}
 	
 	
@@ -1510,8 +1510,8 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	if (!noupdate) {
 		// var subonly = true;
 		// for (var j=0; j<ships2.length; j++) if (ships2[j].type != 'SS') subonly = false;
-		updateSupply(ships1,didNB,NBonly,bombing,noammo,true,F2.ships.find(s => s.isFaraway) || F2C.ships.find(s => s.isFaraway));
-		updateSupply(ships1C,didNB,NBonly,bombing,noammo,true,F2.ships.find(s => s.isFaraway) || F2C.ships.find(s => s.isFaraway));
+		updateSupply(ships1,didNB,NBonly,bombing,noammo,true,F2.ships.concat(F2C.ships));
+		updateSupply(ships1C,didNB,NBonly,bombing,noammo,true,F2.ships.concat(F2C.ships));
 	}
 	
 	
