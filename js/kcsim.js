@@ -1545,12 +1545,12 @@ function nightPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,NBonly,API
 	var scout1 = null, scout2 = null;
 	let ship1 = alive1[0] || subsalive1[0];
 	if (ship1 && ship1.fleet.AS != -2 && (NBonly || ship1.fleet.AS != 0)) {
-		scout1 = getNightEquipsScout(alive1.concat(subsalive1));
+		scout1 = getNightEquipsScout(ship1.fleet.ships);
 		if (C && scout1) APIyasen.api_touch_plane[0] = scout1.mid;
 	}
 	let ship2 = alive2[0] || subsalive2[0];
 	if (ship2 && ship2.fleet.AS != -2 && (NBonly || ship2.fleet.AS != 0)) {
-		scout2 = getNightEquipsScout(alive2.concat(subsalive2));
+		scout2 = getNightEquipsScout(ship2.fleet.ships);
 		if (C && scout2) APIyasen.api_touch_plane[1] = scout2.mid;
 	}
 	let numRounds = Math.max(order1.length,order2.length);
@@ -4194,7 +4194,6 @@ function simLBRaid(F1,F2,BAPI) {
 function getNightEquipsScout(ships) {
 	let nightScout = null;
 	for (let ship of ships) {
-		if (ship.retreated || ship.HP <= 0) continue;
 		for (let equip of ship.equips) {
 			if (!equip.isnightscout) continue;
 			if ((!nightScout || (equip.ACC || 0) > (nightScout.ACC || 0)) && Math.random() < Math.floor(Math.sqrt(ship.LVL)*Math.sqrt(equip.LOS||0))/25) {
@@ -4229,10 +4228,10 @@ function getNightEquips(alive1,alive2,APIyasen) {
 		if (alive2[i].retreated) continue;
 		if (alive2[i].hasSearchlight) { light2 = true; lightship2 = i; slrerolls2 = alive2[i].hasSearchlight; break; }
 	}
-	var scout1 = getNightEquipsScout(alive1);
-	var scout2 = getNightEquipsScout(alive2);
+	var scout1 = getNightEquipsScout(alive1[0].fleet.ships);
+	var scout2 = getNightEquipsScout(alive2[0].fleet.combinedWith ? alive2[0].fleet.ships.concat(alive2[0].fleet.combinedWith.ships) : alive2[0].fleet.ships); //FF only
 	if (C && scout1) APIyasen.api_touch_plane[0] = scout1.mid;
-	if (C && scout2) APIyasen.api_touch_plane[0] = scout2.mid;
+	if (C && scout2) APIyasen.api_touch_plane[1] = scout2.mid;
 	return [[star1,star2],[light1,light2],[scout1,scout2],[slrerolls1,slrerolls2]];
 }
 
