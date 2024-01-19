@@ -134,12 +134,13 @@ var SIM = {
 			this._results.totalTransport += tp;
 		}
 	},
-	_updateResultsTotal: function() {
+	_updateResultsTotal: function(dataInput) {
 		this._results.totalnum++;
 		for (let fleet of FLEETS1) {
 			if (!fleet) continue;
 			for (let ship of fleet.ships) {
-				let useBucket = ship.HP/ship.maxHP <= window.BUCKETPERCENT || window.getRepairTime(ship) > window.BUCKETTIME;
+				let repairTime = window.getRepairTime(ship);
+				let useBucket = (ship.HP/ship.maxHP <= window.BUCKETPERCENT || repairTime > window.BUCKETTIME) && repairTime >= (dataInput.bucketTimeIgnore || 0);
 				if (!window.CARRYOVERHP || useBucket) {
 					let cost = window.getRepairCost(ship);
 					this._results.totalFuelR += cost[0];
@@ -747,7 +748,7 @@ var SIM = {
 		}
 		
 		if (!dataReplay) {
-			this._updateResultsTotal();
+			this._updateResultsTotal(dataInput);
 		
 			if (window.CARRYOVERHP || window.CARRYOVERMORALE) {
 				for (let fleet of FLEETS1) {

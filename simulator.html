@@ -124,8 +124,9 @@
 				<label><input type="checkbox" v-model="settings.airRaidCostW6" /> Use default World 6 costs for Air Raid (4% <img src="assets/stats/fuel.png" /> 8% <img src="assets/stats/ammo.png" />)</label>
 			</div>
 			<div>
-				<div><img src="assets/stats/bucket.png" />: Count use if HP &leq; <input type="number" min="0" max="100" v-model="settings.bucketPercent":class="getClassSetting('bucketPercent')" />% OR repair time &gt; <input type="number" min="0" max="100" v-model="settings.bucketTime" :class="getClassSetting('bucketTime')"/> hours</div>
-				<div><label><input type="checkbox" v-model="settings.carryOverHP" />Carry over ship HP between sims unless <img src="assets/stats/bucket.png" /> conditions</label></div>
+				<div><img src="assets/stats/bucket.png" />: Count use if HP &leq; <input type="number" min="0" max="100" v-model="settings.bucketPercent" :class="getClassSetting('bucketPercent')"/>% OR repair time &gt; <input type="number" min="0" max="100" v-model="settings.bucketTime" :class="getClassSetting('bucketTime')"/> hours</div>
+				<div style="margin-left:26px">Do not count if repair time &lt; <input type="number" min="0" max="100" v-model="settings.bucketTimeIgnore" :class="getClassSetting('bucketTimeIgnore')"/> hours (regardless of above)</div>
+				<div><label><input type="checkbox" v-model="settings.carryOverHP" />Carry over ship HP between sims unless <img src="assets/stats/bucket.png" /> conditions (not including "Do not count if repair time &lt;")</label></div>
 				<div><label><input type="checkbox" v-model="settings.carryOverMorale" />Carry over ship morale between sims</label></div>
 			</div>
 			<div id="divSettingsAdvanced">
@@ -706,7 +707,7 @@
 							</div>
 						</div>
 						
-						<div class="statWide"><img src="assets/stats/hp.png" title="HP Init"/> Init: <input type="number" v-model.number="ship.hpInit" min="1" :max="ship.hp" :class="getClassHP(ship)" @change="onchangeStat($event,ship,'hpInit')"/></div>
+						<div class="statWide"><img src="assets/stats/hp.png" title="HP Init"/> Init: <input type="number" :title="getRepairStr(ship)" v-model.number="ship.hpInit" min="1" :max="ship.hp" :class="getClassHP(ship)" @change="onchangeStat($event,ship,'hpInit')"/></div>
 						<div class="statWide">Morale: <input type="number" v-model.number="ship.morale" min="0" max="100" :class="getClassMorale(ship)" @change="onchangeStat($event,ship,'morale')"/></div>
 						<div class="statHalf" :title="getFuel(ship)+'/'+getFuelMax(ship)"><img src="assets/stats/fuel.png" title="Fuel Percent"/><input type="number" v-model.number="ship.fuelInit" min="0" max="100" @change="onchangeStat($event,ship,'fuelInit')"/></div>
 						<div class="statHalf" :title="getAmmo(ship)+'/'+getAmmoMax(ship)"><img src="assets/stats/ammo.png" title="Ammo Percent"/><input type="number" v-model.number="ship.ammoInit" min="0" max="100" @change="onchangeStat($event,ship,'ammoInit')"/></div>

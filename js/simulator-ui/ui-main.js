@@ -94,6 +94,7 @@ var UI_MAIN = Vue.createApp({
 			arcticCamoEva: SIMCONSTS.arcticCamoEva,
 			bucketPercent: BUCKETPERCENT*100,
 			bucketTime: BUCKETTIME/3600,
+			bucketTimeIgnore: 0,
 			carryOverHP: CARRYOVERHP,
 			carryOverMorale: CARRYOVERMORALE,
 			enableSkipTorpBonus: SIMCONSTS.enableSkipTorpBonus,

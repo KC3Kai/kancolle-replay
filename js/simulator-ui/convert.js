@@ -797,6 +797,7 @@ window.CONVERT = {
 			continueOnTaiha: !dataUI.settings.retreatOnTaiha,
 			bucketHPPercent: dataUI.settings.bucketPercent,
 			bucketTime: dataUI.settings.bucketTime,
+			bucketTimeIgnore: (dataUI.settings.bucketTimeIgnore||0)*60*60,
 			carryOverHP: dataUI.settings.carryOverHP,
 			carryOverMorale: dataUI.settings.carryOverMorale,
 			mechanics: null,
