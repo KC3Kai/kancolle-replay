@@ -101,6 +101,7 @@ If ship/equip "masterId" not in simulator's database, "stats" is required.
 	continueOnTaiha: &lt;bool&gt; (default 0),
 	bucketHPPercent: &lt;int&gt; if HP percent &lt;= bucketHPPercent, report as bucket used (default 0),
 	bucketTime: &lt;int&gt; if repair time in seconds &gt; bucketTime, report as bucket used (default "infinity"),
+	bucketTimeIgnore: &lt;int&gt; if repair time in seconds &lt; bucketTimeIgnore, ignore bucketHPPercent and bucketTime and do not report as bucket used (default 0),
 	didSpecial: &lt;bool&gt; if fleet has already performed special attack, disables special attack for simulator (default 0),
 	settingsFCF: optional {
 		los: &lt;float&gt; required ELoS after FCF use (optional),

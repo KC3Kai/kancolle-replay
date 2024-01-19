@@ -511,6 +511,13 @@ var UI_FLEETEDITOR = Vue.createApp({
 		getAmmoMax: function(ship) {
 			return SHIPDATA[ship.mstId].ammo || 100;
 		},
+		getRepairStr: function(ship) {
+			let timeNow = window.getRepairTime({ mid: ship.mstId, LVL: ship.level, maxHP: ship.hp, HP: ship.hpInit });
+			let timeMax = window.getRepairTime({ mid: ship.mstId, LVL: ship.level,  maxHP: ship.hp, HP: 1 });
+			let hNow = Math.floor(timeNow/3600), mNow = Math.floor((timeNow-hNow*3600)/60), sNow = Math.floor(timeNow-hNow*3600-mNow*60);
+			let hMax = Math.floor(timeMax/3600), mMax = Math.floor((timeMax-hMax*3600)/60), sMax = Math.floor(timeMax-hMax*3600-mMax*60);
+			return 'Repair: ' + hNow + 'h ' + mNow + 'm ' + sNow + 's (max ' + hMax + 'h ' + mMax + 'm ' + sMax + 's)';
+		},
 		
 		doOpen: function(fleet) {
 			this.active = true;
