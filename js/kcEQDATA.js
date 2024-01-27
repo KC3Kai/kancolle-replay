@@ -6023,6 +6023,17 @@ var EQDATA = {
 		EV: 6,
 		LOS: 7,
 	},
+	520: {
+		name: 'Prototype 20.3cm (No.4) Twin Gun Mount',
+		nameJP: '試製20.3cm(4号)連装砲',
+		added: '2024-01-25',
+		type: MAINGUNM,
+		FP: 11,
+		AA: 4,
+		AR: 1,
+		ACC: 2,
+		RNG: 2,
+	},
 	1501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
