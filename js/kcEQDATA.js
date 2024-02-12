@@ -6034,6 +6034,17 @@ var EQDATA = {
 		ACC: 2,
 		RNG: 2,
 	},
+	521: {
+		name: 'Shiun (Skilled)',
+		nameJP: '紫雲(熟練)',
+		added: '2024-01-31',
+		type: SEAPLANE,
+		DIVEBOMB: 1,
+		ACC: 2,
+		EV: 2,
+		ASW: 4,
+		LOS: 9,
+	},
 	1501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
@@ -7740,6 +7751,7 @@ var LBASDATA = {
 	510: { distance: 3, cost: 10 },
 	515: { distance: 4, cost: 11 },
 	516: { distance: 3, cost: 13 },
+	521: { distance: 5, cost: 10 },
 };
 
 
