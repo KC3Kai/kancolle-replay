@@ -7458,5 +7458,60 @@
 				"level": 10
 			}
 		]
+	},
+	{
+		"ids": [524],
+		"bonuses": [
+			{
+				"bonus": { "houg": 1, "tyku": 2, "kaih": 2, "houm": 1 },
+				"shipType": [17,19,20,21,22]
+			},
+			{
+				"bonus": { "tyku": 2, "kaih": 2 },
+				"shipType": [17,19,20,21,22],
+				"requiresAR": 1,
+				"num": 1
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"shipType": [17,19,20,21,22],
+				"level": 1
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"shipType": [17,19,20,21,22],
+				"level": 2
+			},
+			{
+				"bonus": { "tyku": 1 },
+				"shipType": [17,19,20,21,22],
+				"level": 4
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"shipType": [17,19,20,21,22],
+				"level": 6
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipType": [17,19,20,21,22],
+				"level": 7
+			},
+			{
+				"bonus": { "tyku": 1 },
+				"shipType": [17,19,20,21,22],
+				"level": 8
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"shipType": [17,19,20,21,22],
+				"level": 9
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipType": [17,19,20,21,22],
+				"level": 10
+			}
+		]
 	}
 ]
