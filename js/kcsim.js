@@ -217,6 +217,7 @@ var SIMCONSTS = {
 	enableSkipTorpBonus: true,
 	enableAirstrikeSpecialBonus: true,
 	enableASFit: false,
+	enableRangeWeights: false,
 	echelonOld: {shellmod:.6,torpmod:.6,ASWmod:1,AAmod:1, shellacc:1.2,torpacc:.6,NBacc:.8, shellev:1.2,torpev:1.3,NBev:1.1,ASWev:1.3, id:4},
 	echelonNew: {shellmod:.75,torpmod:.6,ASWmod:1.1,AAmod:1, shellacc:1.2,torpacc:.75,NBacc:.9, shellev:1.4,torpev:1.3,NBev:1.3,ASWev:1.3, id:4},
 	nbattack7Old: { dmgMod: 1.3, accMod: 1.1, chanceMod: 1.3, name: 'DDCI (GTR)' },
@@ -3028,6 +3029,13 @@ function airstrikeLBAS(lbas,target,slot,contactMod,contactModLB,isjetphase) {
 }
 
 function orderByRange(ships,order,includeSubs,isOASW) {
+	if (SIMCONSTS.enableRangeWeights && ships.length && !ships.find(ship => ship.isSub)) {
+		let orderShips = SHELL_RANGE_WEIGHTS.getRollShips(ships,includeSubs,isOASW);
+		if (orderShips) {
+			order.push.apply(order,orderShips);
+			return;
+		}
+	}
 	var ranges = []; //fleet 1
 	for (var i=0; i<ships.length; i++) {
 		if (!includeSubs && ships[i].isSub) continue;
@@ -4655,3 +4663,47 @@ function getDetection(shipsF,shipsE) {
 	if (numReconSlots <= 0) return DetectionResult.NotFound;
 	return (shotdownVal <= 0)? DetectionResult.Failure : DetectionResult.FailureLost;
 }
+
+var SHELL_RANGE_WEIGHTS = {
+	_data: null,
+	_cache: { ranges: {}, weightTotals: {} },
+	_keysMiss: null,
+	
+	init: async function() {
+		this._data = await fetch('js/data/shell_range_weights.json').then(resp => resp.ok ? resp.json() : null);
+	},
+	
+	getRangeKey: function(ranges) {
+		let rangesOrder = [...new Set(ranges)].sort((a,b)=>b-a);
+		let key = ranges.join('');
+		return this._cache.ranges[key] || (this._cache.ranges[key] = ranges.map(r => String.fromCharCode(65+rangesOrder.indexOf(r))).join(''));
+	},
+	getRoll: function(rangeKey) {
+		if (!this._data[rangeKey]) return null;
+		let orderKeys = Object.keys(this._data[rangeKey]);
+		let weightTotal = this._cache.weightTotals[rangeKey] || (this._cache.weightTotals[rangeKey] = orderKeys.reduce((a,b) => a + this._data[rangeKey][b],0));
+		let roll = Math.floor(Math.random()*weightTotal);
+		for (let orderKey of orderKeys) {
+			if (roll < this._data[rangeKey][orderKey]) return orderKey;
+			roll -= this._data[rangeKey][orderKey];
+		}
+		return null;
+	},
+	getRollShips: function(ships,includeSubs,isOASW) {
+		let shipsCanShell = ships.filter(ship => !ship.retreated && (includeSubs || !ship.isSub) && ship.canShell(isOASW));
+		let rangeKey = this.getRangeKey(shipsCanShell.map(ship => ship.RNG));
+		let orderKey = this.getRoll(rangeKey);
+		if (!orderKey && shipsCanShell.length) {
+			this._keysMiss[shipsCanShell[0].side][rangeKey] = this._keysMiss[shipsCanShell[0].side][rangeKey] + 1 || 1;
+		}
+		return orderKey && orderKey.split('').map(num => shipsCanShell[+num]);
+	},
+	
+	resetMissing: function() {
+		this._keysMiss = { 0: {}, 1: {} };
+	},
+	getMissing: function(side) {
+		return Object.keys(this._keysMiss[side]).filter(key => key.length >= 2 && key.length > (new Set(key)).size).sort((a,b) => this._keysMiss[side][b] - this._keysMiss[side][a]);
+	},
+};
+SHELL_RANGE_WEIGHTS.init();

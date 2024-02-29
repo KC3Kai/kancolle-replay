@@ -817,6 +817,7 @@ window.CONVERT = {
 				lbas: [],
 				useBalloon: battleUI.useBalloon,
 				useSmoke: battleUI.useSmoke,
+				useAnchorageRepair: battleUI.useAnchorageRepair,
 			};
 			if (battleUI.doNBCond) nodeInput.doNBCond = battleUI.doNBCond;
 			for (let i=0; i<battleUI.lbasWaves.length; i++) {

@@ -1948,7 +1948,12 @@ function LHA(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 };
 LHA.prototype = Object.create(Ship.prototype);
 LHA.prototype.planeasw = 1;
-LHA.prototype.canASW = CAV.prototype.canASW;
+LHA.prototype.canASW = function() {
+	if (this.mid == 945 || this.mid == 727) {
+		return !!this.equiptypes[DEPTHCHARGE];
+	}
+	return CAV.prototype.canASW.call(this);
+}
 
 function DE(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
