@@ -256,6 +256,17 @@
 					<div><a href="https://docs.google.com/spreadsheets/d/1I_HMplw81mR7g9_jUKRmI7ylhlhKkuvGKtrpj3DJ9zo/edit#gid=0" target="_blank">Activation Rate Suggestions</a></div>
 					<div><a href="https://docs.google.com/spreadsheets/d/1sznusxVurE6iCr2s-gLNpBQ_g1BD5mEMDlltluMB1CE/edit#gid=1397813463" target="_blank">Other Suggestions and Data</a></div>
 				</div>
+				<div v-show="settings.showAdvanced">
+					<div><span class="subheader">Shelling Range Tie Randomness Weights:</span></div>
+					<div><label><input type="checkbox" v-model="settings.enableRangeWeights" :class="getClassSetting('enableRangeWeights')"/>Enable heuristic weights</label></div>
+					<div style="color:red">Warning: This setting is experimental and subject to change.</div>
+					<div style="font-style:italic">This setting's weights are based on sampling the number of occurrences of each ordering in DB data: this is only an estimate, the actual formula is unknown. Note this also means that some orderings may be incorrectly impossible to roll in simulator with this setting, if they are extremely rare in the actual game and were never recorded in DB.<br>Only range combinations with sufficient data are included, other combinations default to "uniform weights" (same as without this setting).</div>
+					<div>
+						Explanation:&nbsp;
+						<a href="https://en.kancollewiki.net/Shooting_Order_and_Targeting#Range_Tie_Randomness">[1]</a>&nbsp;
+						<a href="https://docs.google.com/spreadsheets/d/1grAtIhlm2YMN9iyvniJA-j1YNCC-SCnA8q6WUi-Ctpg/edit#gid=0">[2]</a>&nbsp;
+					</div>
+				</div>
 			</div>
 			<div>
 				<input type="button" value="Restore Defaults" @click="onclickRestoreSettings"/>
@@ -421,6 +432,7 @@
 	<div id="divOther">
 	<div id="divChangeLog">
 		<div><span class="header">Change Log:</span></div>
+		<div>2024-02-29 - Anchorage repair node setting, provisional "Shelling Range Tie Randomness Weights" setting (see Show Advanced)</div>
 		<div>2023-09-28 - Provisional Smokescreen settings, see Show Advanced</div>
 		<div>2023-09-04 - Barrage Balloon node setting</div>
 		<div>2023-08-07 - Auto-Set Historical Bonuses settings</div>
@@ -517,6 +529,7 @@
 					</div>
 					<div class="space"><label><input type="checkbox" v-model="battle.useSmoke"/><img src="assets/items/54.png" title="Use Smokescreen"/></label></div>
 					<div><label><input type="checkbox" v-model="battle.useBalloon"/><img src="assets/items/55.png" title="Enable Barrage Balloon Effects"/></label></div>
+					<div class="space"><label><input type="checkbox" v-model="battle.useAnchorageRepair"/><img src="assets/stats/item91.png" title="Use Anchorage Repair BEFORE battle"/></label></div>
 				</div>
 				<div>
 					<div><span class="header">Override Historical Bonuses:</span></div>

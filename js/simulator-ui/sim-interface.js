@@ -33,6 +33,8 @@ var CONST = window.COMMON.getConst({
 		'warn_vanguard': { txt: 'Note: Destroyers have different vanguard evasion mods in event maps, see "Show Advanced" if simulating event maps', excludeImport: true },
 		'warn_enemy_unset_stats': { txt: 'Warning: Node <0> has enemies with unknown and unset evasion/luck stats (still set to 0/1).', excludeImport: true },
 		'warn_debuff_dmg': { txt: 'Warning: "Debuff Dmg" is a legacy setting and may be inaccurate to the mechanic, recommended to modify enemy\'s Armour stat instead.' },
+		'warn_range_weights_f': { txt: 'Warning: Player Fleets - Following range combination weights are unknown and not used: <0>' },
+		'warn_range_weights_e': { txt: 'Warning: Enemy Fleets - Following range combination weights are unknown and not used: <0>' },
 	},
 });
 	
@@ -88,6 +90,7 @@ var SIM = {
 			totalSteelR: 0,
 			totalBuckets: 0,
 			totalDamecon: 0,
+			totalAnchorageRepair: 0,
 			totalGaugeDamage: 0,
 			totalEmptiedPlanes: 0,
 			totalEmptiedLBAS: 0,
@@ -585,6 +588,19 @@ var SIM = {
 				}
 			}
 		}
+		
+		if (dataInput.consts.enableRangeWeights) {
+			SHELL_RANGE_WEIGHTS.resetMissing();
+		}
+	},
+	
+	_checkWarningsPostRun: function(dataInput) {
+		if (dataInput.consts.enableRangeWeights) {
+			let keysMissingF = SHELL_RANGE_WEIGHTS.getMissing(0);
+			if (keysMissingF.length) this._addWarning('warn_range_weights_f', [keysMissingF.join(', ')]);
+			let keysMissingE = SHELL_RANGE_WEIGHTS.getMissing(1);
+			if (keysMissingE.length) this._addWarning('warn_range_weights_e', [keysMissingE.join(', ')]);
+		}
 	},
 	
 	_checkSettingsFCF: function(settingsFCF,fleetF,battleInd=-1) {
@@ -614,6 +630,47 @@ var SIM = {
 			}
 		}
 		return true;
+	},
+	
+	_doAnchorageRepair: function(fleetF) {
+		let type = 0, hpRepairedTotal = 0;
+		let ships = fleetF.ships.slice(1);
+		if (fleetF.combinedWith) ships = ships.concat(fleetF.combinedWith.ships); 
+		let shipR = null;
+		if (shipR = ships.find(ship => ship.mid == 187 && ship.HP/ship.maxHP > .5 && ship.equips.find(eq => eq.type == SRF))) type = 1;
+		else if (shipR = ships.find(ship => ship.mid == 958 && ship.HP/ship.maxHP > .5 && ship.equips.find(eq => eq.type == SRF))) type = 3;
+		else if (shipR = ships.find(ship => ship.mid == 450 && ship.HP/ship.maxHP > .5 && ship.equips.find(eq => eq.type == SRF))) type = 2;
+		if (!type) return 0;
+		
+		let hpPercent = 0, shipsRepair = [];
+		if (type == 1) {
+			hpPercent = .3;
+			if (shipR.equips[0] && shipR.equips[0].type == SRF) shipsRepair.push.apply(shipsRepair,fleetF.ships.slice(0,3));
+			if (shipR.equips[1] && shipR.equips[1].type == SRF) shipsRepair.push.apply(shipsRepair,fleetF.ships.slice(3));
+			if (fleetF.combinedWith && shipR.equips[2] && shipR.equips[2].type == SRF) shipsRepair.push.apply(shipsRepair,fleetF.combinedWith.ships.slice(0,3));
+			if (fleetF.combinedWith && shipR.equips[3] && shipR.equips[3].type == SRF) shipsRepair.push.apply(shipsRepair,fleetF.combinedWith.ships.slice(3));
+		} else if (type == 2) {
+			hpPercent = .25;
+			if (fleetF.combinedWith && shipR.equips[0] && shipR.equips[0].type == SRF) shipsRepair.push.apply(shipsRepair,fleetF.combinedWith.ships.slice(0,3));
+			if (fleetF.combinedWith && shipR.equips[1] && shipR.equips[1].type == SRF) shipsRepair.push.apply(shipsRepair,fleetF.combinedWith.ships.slice(3));
+		} else if (type == 3) {
+			hpPercent = .28;
+			if (fleetF.combinedWith && shipR.equips[0] && shipR.equips[0].type == SRF) shipsRepair.push.apply(shipsRepair,fleetF.combinedWith.ships.slice(0,3));
+			if (fleetF.combinedWith && shipR.equips[1] && shipR.equips[1].type == SRF) shipsRepair.push.apply(shipsRepair,fleetF.combinedWith.ships.slice(3));
+			if (shipR.equips[2] && shipR.equips[2].type == SRF) shipsRepair.push.apply(shipsRepair,fleetF.ships.slice(3));
+		}
+		
+		for (let ship of shipsRepair) {
+			if (!ship) continue;
+			if (ship.HP >= ship.maxHP) continue;
+			if (ship.HP/ship.maxHP <= .25) continue;
+			let hpRepaired = Math.min(ship.maxHP - ship.HP, Math.ceil(hpPercent*ship.maxHP));
+			ship.HP += hpRepaired;
+			hpRepairedTotal += hpRepaired;
+			ship.morale += 7;
+			if (ship.morale > 100) ship.morale = 100;
+		}
+		return hpRepairedTotal;
 	},
 	
 	_doSimSortie: function(dataInput,dataReplay) {
@@ -683,6 +740,14 @@ var SIM = {
 			
 			if (isBossNode) {
 				window.underwaySupply(fleetF);
+			}
+			
+			if (node.useAnchorageRepair) {
+				let cost = this._doAnchorageRepair(fleetF);
+				if (cost && this._results) {
+					this._results.totalSteelR += 3*cost;
+					this._results.totalAnchorageRepair++;
+				}
 			}
 			
 			fleetF.useBalloon = !!node.useBalloon;
@@ -820,7 +885,8 @@ var SIM = {
 			}
 			n += numStep;
 			if (n >= numSim || this.cancelRun) {
-				callback({ progress: n, progressTotal: numSim, result: this._results });
+				this._checkWarningsPostRun(dataInput);
+				callback({ progress: n, progressTotal: numSim, result: this._results, warnings: this._warnings.slice() });
 				let timeTotal = Date.now() - timeStart;
 				console.log('time: ' + (timeTotal/1000) + ' sec');
 				this.cancelRun = false;

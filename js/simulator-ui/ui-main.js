@@ -121,6 +121,7 @@ var UI_MAIN = Vue.createApp({
 			smokeModTorpAccE: SIMCONSTS.smokeModTorpAccE.slice(),
 			smokeModAirAccF: SIMCONSTS.smokeModAirAccF.slice(),
 			smokeModAirAccE: SIMCONSTS.smokeModAirAccE.slice(),
+			enableRangeWeights: SIMCONSTS.enableRangeWeights,
 		},
 		settingsFCF: {
 			los: null,
@@ -288,6 +289,7 @@ var UI_MAIN = Vue.createApp({
 				useNormalSupport: 0,
 				useBalloon: false,
 				useSmoke: false,
+				useAnchorageRepair: false,
 					
 				enemyComps: [],
 			};
