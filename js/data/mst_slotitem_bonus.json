@@ -7580,35 +7580,14 @@
 				"level": 1
 			},
 			{
-				"bonus": { "houg": 1 },
-				"shipType": [13,14],
-				"requiresId": [526],
-				"requiresIdLevel": 2,
-				"level": 2
-			},
-			{
 				"bonus": { "houm": 1 },
 				"shipType": [13,14],
 				"level": 3
 			},
 			{
-				"bonus": { "raig": 1 },
-				"shipType": [13,14],
-				"requiresId": [526],
-				"requiresIdLevel": 4,
-				"level": 4
-			},
-			{
 				"bonus": { "houm": 1 },
 				"shipType": [13,14],
 				"level": 6
-			},
-			{
-				"bonus": { "houg": 1 },
-				"shipType": [13,14],
-				"requiresId": [526],
-				"requiresIdLevel": 8,
-				"level": 8
 			},
 			{
 				"bonus": { "raig": 1 },
@@ -7623,6 +7602,21 @@
 			{
 				"bonus": { "houg": 1, "raig": 1, "houm": 1 },
 				"shipType": [13,14]
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipType": [13,14],
+				"level": 2
+			},
+			{
+				"bonus": { "raig": 1 },
+				"shipType": [13,14],
+				"level": 4
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipType": [13,14],
+				"level": 8
 			}
 		]
 	}
