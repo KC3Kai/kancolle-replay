@@ -398,6 +398,7 @@ var TEXTDATA_EN = {
 				302: "Submarine Fleet Special",
 				400: "Yamato Special (3 ship)",
 				401: "Yamato Special (2 ship)",
+				1000: "Special Type 4 Torpedo",
 			}
 		}
 	},

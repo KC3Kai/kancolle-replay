@@ -2127,6 +2127,35 @@ var MAPDATA = {
 			},
 		}
 	},
+	58: {
+		name: 'Early-Spring 2024 Event',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmDN: 240,
+				bgmNN: 240,
+				bgmDB: 241,
+				bgmNB: 241,
+				bossnode: ['X'],
+			},
+			2: {
+				name: 'E2',
+				bgmDN: 240,
+				bgmNN: 240,
+				bgmDB: 241,
+				bgmNB: 241,
+				bossnode: ['R','Y'],
+			},
+			3: {
+				name: 'E3',
+				bgmDN: 241,
+				bgmNN: 241,
+				bgmDB: 243,
+				bgmNB: 243,
+				bossnode: ['O3','U','Z'],
+			},
+		}
+	},
 }
 
 //-------------------------------------
