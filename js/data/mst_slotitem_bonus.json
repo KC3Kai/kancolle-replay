@@ -7460,6 +7460,54 @@
 		]
 	},
 	{
+		"ids": [522,523],
+		"bonuses": [
+			{
+				"bonus": { "raig": 1, "kaih": 5, "houm": 1, "saku": 3 },
+				"shipType": [14]
+			},
+			{
+				"bonus": { "raig": 1 },
+				"shipType": [14],
+				"level": 1
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipType": [14],
+				"level": 2
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"shipType": [14],
+				"level": 3
+			},
+			{
+				"bonus": { "saku": 1 },
+				"shipType": [14],
+				"level": 5
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipType": [14],
+				"level": 8
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"shipType": [14],
+				"level": 10
+			}
+		]
+	},
+	{
+		"ids": [523],
+		"bonuses": [
+			{
+				"bonus": { "raig": 2, "baku": 2, "kaih": 1, "houm": 1, "saku": 1 },
+				"shipType": [14]
+			}
+		]
+	},
+	{
 		"ids": [524],
 		"bonuses": [
 			{
@@ -7511,6 +7559,70 @@
 				"bonus": { "houg": 1 },
 				"shipType": [17,19,20,21,22],
 				"level": 10
+			}
+		]
+	},
+	{
+		"ids": [525,526],
+		"bonuses": [
+			{
+				"bonus": { "houg": 1, "raig": 2, "kaih": -1 },
+				"shipType": [13,14]
+			},
+			{
+				"bonus": { "houg": 2, "raig": 1, "houm": 2 },
+				"shipBase": [971],
+				"num": 1
+			},
+			{
+				"bonus": { "raig": 1 },
+				"shipType": [13,14],
+				"level": 1
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipType": [13,14],
+				"requiresId": [526],
+				"requiresIdLevel": 2,
+				"level": 2
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipType": [13,14],
+				"level": 3
+			},
+			{
+				"bonus": { "raig": 1 },
+				"shipType": [13,14],
+				"requiresId": [526],
+				"requiresIdLevel": 4,
+				"level": 4
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipType": [13,14],
+				"level": 6
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipType": [13,14],
+				"requiresId": [526],
+				"requiresIdLevel": 8,
+				"level": 8
+			},
+			{
+				"bonus": { "raig": 1 },
+				"shipType": [13,14],
+				"level": 10
+			}
+		]
+	},
+	{
+		"ids": [526],
+		"bonuses": [
+			{
+				"bonus": { "houg": 1, "raig": 1, "houm": 1 },
+				"shipType": [13,14]
 			}
 		]
 	}

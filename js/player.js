@@ -924,7 +924,7 @@ function processAPI(root) {
 		//for reading torpedo phase
 		var processRaigeki = function(rai,f1,ecombined) {
 			var shots = [];
-			var num = Math.max(rai.api_frai.length, rai.api_erai.length);
+			var num = rai.api_frai_list_items ? Math.max(rai.api_frai_list_items.length, rai.api_erai_list_items.length) : Math.max(rai.api_frai.length, rai.api_erai.length);
 			for (var i=0; i<num; i++) {
 				if (OLDFORMAT) {
 					if (rai.api_frai[i+1] > 0) {
@@ -946,21 +946,46 @@ function processAPI(root) {
 						target.hpTrack -= Math.floor(rai.api_eydam[i+1]);
 					}
 				} else {
-					if (rai.api_frai[i] > -1) {
-						var ind = rai.api_frai[i];
-						var target = (ind >= 6 && f2.length < 7)? f2c[ind-6] : f2[ind];
-						var attacker = (i >= 6 && fleet1.length < 7)? fleet1C[i-6] : fleet1[i];
-						var crit = (rai.api_fcl[i] == 2);
-						shots.push([attacker,target,rai.api_fydam[i],crit]);
-						target.hpTrack -= Math.floor(rai.api_fydam[i]);
-					}
-					if (rai.api_erai[i] > -1) {
-						var ind = rai.api_erai[i];
-						var target = (ind >= 6 && fleet1.length < 7)? fleet1C[ind-6] : fleet1[ind];
-						var attacker = (i >= 6 && f2.length < 7)? f2c[i-6] : f2[i];
-						var crit = (rai.api_ecl[i] == 2);
-						shots.push([attacker,target,rai.api_eydam[i],crit]);
-						target.hpTrack -= Math.floor(rai.api_eydam[i]);
+					if (rai.api_frai_list_items) {
+						if (rai.api_frai_list_items[i]) {
+							for (let j=0; j<rai.api_frai_list_items[i].length; j++) {
+								let ind = rai.api_frai_list_items[i][j];
+								let target = (ind >= 6 && f2.length < 7)? f2c[ind-6] : f2[ind];
+								let attacker = (i >= 6 && fleet1.length < 7)? fleet1C[i-6] : fleet1[i];
+								let crit = rai.api_fcl_list_items[i][j] == 2;
+								let dmg = rai.api_fydam_list_items[i][j];
+								shots.push([attacker,target,dmg,crit]);
+								target.hpTrack -= Math.floor(dmg);
+							}
+						}
+						if (rai.api_erai_list_items[i]) {
+							for (let j=0; j<rai.api_erai_list_items[i].length; j++) {
+								let ind = rai.api_erai_list_items[i][j];
+								var target = (ind >= 6 && fleet1.length < 7)? fleet1C[ind-6] : fleet1[ind];
+								var attacker = (i >= 6 && f2.length < 7)? f2c[i-6] : f2[i];
+								let crit = rai.api_ecl_list_items[i][j] == 2;
+								let dmg = rai.api_eydam_list_items[i][j];
+								shots.push([attacker,target,dmg,crit]);
+								target.hpTrack -= Math.floor(dmg);
+							}
+						}
+					} else {
+						if (rai.api_frai[i] > -1) {
+							var ind = rai.api_frai[i];
+							var target = (ind >= 6 && f2.length < 7)? f2c[ind-6] : f2[ind];
+							var attacker = (i >= 6 && fleet1.length < 7)? fleet1C[i-6] : fleet1[i];
+							var crit = (rai.api_fcl[i] == 2);
+							shots.push([attacker,target,rai.api_fydam[i],crit]);
+							target.hpTrack -= Math.floor(rai.api_fydam[i]);
+						}
+						if (rai.api_erai[i] > -1) {
+							var ind = rai.api_erai[i];
+							var target = (ind >= 6 && fleet1.length < 7)? fleet1C[ind-6] : fleet1[ind];
+							var attacker = (i >= 6 && f2.length < 7)? f2c[i-6] : f2[i];
+							var crit = (rai.api_ecl[i] == 2);
+							shots.push([attacker,target,rai.api_eydam[i],crit]);
+							target.hpTrack -= Math.floor(rai.api_eydam[i]);
+						}
 					}
 				}
 			}
@@ -1224,6 +1249,9 @@ function processAPI(root) {
 						if (hou.api_sp_list[j] == 302) attackers = [f[0],f[1],f[3]];
 						var args = [attackers, targets, hou.api_damage[j], hou.api_cl_list[j], hou.api_damage[j].map(n => Math.floor(n) != n)];
 						eventqueue.push([shootSSAttack,args,getState()]); break;
+					case 1000:
+						var args = [d[0], d[1], hou.api_damage[j].reduce((a,b) => Math.floor(Math.max(0,a) + Math.max(0,b)),0), hou.api_cl_list[j].some(n => n == 2), hou.api_damage[j].some(n => n != Math.floor(n)), 1];
+						eventqueue.push([shootTorp,args,getState()]); break;
 				}
 				
 				handleRepair(fleet1);
