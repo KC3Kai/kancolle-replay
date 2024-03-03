@@ -432,6 +432,7 @@
 	<div id="divOther">
 	<div id="divChangeLog">
 		<div><span class="header">Change Log:</span></div>
+		<div>2024-03-03 - Mark fleet preview ship banner if unknown or changed stats</div>
 		<div>2024-02-29 - Anchorage repair node setting, provisional "Shelling Range Tie Randomness Weights" setting (see Show Advanced)</div>
 		<div>2023-09-28 - Provisional Smokescreen settings, see Show Advanced</div>
 		<div>2023-09-04 - Barrage Balloon node setting</div>
@@ -574,6 +575,10 @@
 				</div>
 				<div class="iconsWrap" v-show="!expanded">
 					<div v-for="ship in fleet.ships" class="icon" v-show="ship.ind<numShipShow">
+						<div class="iconOverlay" v-show="hasStatChanged(ship)"><div class="circle" title="Ship has customised stats">&#11044;</div></div>
+						<div class="iconOverlay" v-show="hasStatDebuff(ship)"><div class="debuff" title="Ship has customised stats"><img src="assets/stats/ar.png"/></div></div>
+						<div class="iconOverlay" v-show="hasStatUnknown(ship,[3]) && !hasStatUnknown(ship,[1,2])"><div class="exclamation med" title="Ship has unknown stats">!</div></div>
+						<div class="iconOverlay" v-show="hasStatUnknown(ship,[1,2])"><div class="exclamation high" title="Ship has unknown stats">!</div></div>
 						<img :src="'assets/icons/' + ship.imgName" />
 					</div>
 					<div class="iconForm" v-show="!expanded&&fleet.isEnemy">
@@ -583,6 +588,10 @@
 				</div>
 				<div class="iconsWrap" v-show="!expanded && fleet.combined" v-if="fleet.shipsEscort">
 					<div v-for="ship in fleet.shipsEscort" class="icon" v-show="ship.ind<numShipShow">
+						<div class="iconOverlay" v-show="hasStatChanged(ship)"><div class="circle" title="Ship has customised stats">&#11044;</div></div>
+						<div class="iconOverlay" v-show="hasStatDebuff(ship)"><div class="debuff" title="Ship has customised stats"><img src="assets/stats/ar.png"/></div></div>
+						<div class="iconOverlay" v-show="hasStatUnknown(ship,[3]) && !hasStatUnknown(ship,[1,2])"><div class="exclamation med" title="Ship has unknown stats">!</div></div>
+						<div class="iconOverlay" v-show="hasStatUnknown(ship,[1,2])"><div class="exclamation high" title="Ship has unknown stats">!</div></div>
 						<img :src="'assets/icons/' + ship.imgName" />
 					</div>
 				</div>
@@ -649,7 +658,7 @@
 						<div v-for="stat in statBList" class="statHalf">
 							<img :src="'assets/stats/' + stat.key + '.png'" :title="stat.name"/>
 							<input type="number" v-model.number="ship.statsBase[stat.key]" min="0" max="999"
-								:class="{unknown:!!ship.statsUnknown[stat.key]}" :title="ship.statsUnknown[stat.key]"
+								:class="getClassStat(ship,stat.key)" :title="getTitleStat(ship,stat.key)"
 								@change="onchangeStat($event,ship.statsBase,stat.key)"/>
 							<span v-show="showStatTotal">
 								<span>{{getStatTotal(ship,stat.key)}}</span>
@@ -658,7 +667,7 @@
 							</span>
 						</div>
 						<div class="statHalf"><img src="assets/stats/lk.png" title="Luck"/><input type="number" v-model.number="ship.statsBase.luk" min="0" max="999"
-							:class="{unknown:!!ship.statsUnknown.luk}" :title="ship.statsUnknown.luk"
+							:class="getClassStat(ship,'luk')" :title="getTitleStat(ship,'luk')"
 							@change="onchangeStat($event,ship.statsBase,'luk')"/></div>
 						<div class="statHalf">
 							<img src="assets/stats/rn.png" title="Range"/><input type="number" v-model.number="ship.statsBase.range" min="0" max="9" @change="onchangeStat($event,ship.statsBase,'range')"/>
@@ -685,7 +694,7 @@
 						</div>
 						<div class="statHalf">
 							<img src="assets/stats/rm.png" title="Torpedo Accuracy"/>
-							<input type="number" v-model.number="ship.statsBase.tacc" min="0" max="999" :class="{unknown:!!ship.statsUnknown.tacc}" :title="ship.statsUnknown.tacc" @change="onchangeStat($event,ship.statsBase,'tacc')"/>
+							<input type="number" v-model.number="ship.statsBase.tacc" min="0" max="999" :class="getClassStat(ship,'tacc')" :title="getTitleStat(ship,'tacc')" @change="onchangeStat($event,ship.statsBase,'tacc')"/>
 						</div>
 						
 						<div class="bonusWrap" v-show="canBonus">
@@ -1275,7 +1284,7 @@
 			<div v-show="type=='preset'">
 				<div>
 					<label>Set: <select v-model="keyPreset" :disabled="isUpdate" @change="onchangeNamePreset"><option value="">None</option><option v-for="opt in optionsPresetName" :value="opt.key">{{opt.name}}</option></select></label>
-					<span class="note" v-show="datePreset"> (Updated {{datePreset}})</span>
+					<span class="note" v-show="datePreset"> ({{datePreset}})</span>
 				</div>
 				<div v-show="notePreset">
 					<span class="note" v-show="notePreset">Note: {{notePreset}}</span>

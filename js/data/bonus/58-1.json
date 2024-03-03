@@ -1,0 +1,26 @@
+{
+	"world": 58,
+	"mapnum": 1,
+	"date": "2024-03-03",
+	"note": "",
+	"listBonus": [
+		{
+			"bonuses": [
+				{ "dmg": 1.12, "shipType": [1] },
+				{ "dmg": 1.04, "shipType": [2] },
+				{ "dmg": 1.08, "shipType": [3] },
+				{ "dmg": 1.11, "shipType": [7] },
+				{ "dmg": 1.04, "shipType": [13,14] },
+				{ "dmg": 1.08, "shipType": [16] },
+				{ "dmg": 1.16, "shipBase": [80] },
+				{ "dmg": 1.28, "shipBase": [699] }
+			]
+		},
+		{
+			"nodes": ["R","R1","R2","S","T","W","X"],
+			"bonuses": [
+				{ "dmg": 1.2, "shipBase": [15,16,18,22,38,40,41,49,63,64,100,101,114,631,964] }
+			]
+		}
+	]
+}
