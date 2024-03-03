@@ -73,7 +73,13 @@ div.fleetEditor span.statBonus.negative {
 div.fleetEditor span.statDebuff {
 	color: darkred;
 }
-div.fleetEditor input.unknown {
+div.fleetEditor input.unknownHigh {
+	background-color: #FF8080;
+}
+div.fleetEditor input.unknownMed {
+	background-color: #FFD280;
+}
+div.fleetEditor input.changed {
 	background-color: yellow;
 }
 div.fleetEditor div.bonusWrap {
@@ -247,4 +253,33 @@ div.additionalStatsMain div.sub {
 }
 #divKC3ProfileHelp span.bold {
 	font-weight: bold;
+}
+
+div.iconOverlay {
+	position: absolute;
+	width: 160px;
+}
+div.iconOverlay .exclamation {
+	text-shadow: white -1px -1px 0, white -1px 1px 0, white 1px -1px 0, white 1px 1px 0;
+	padding-right: 5px;
+	margin-top: -2px;
+	margin-right: 3px;
+	text-align: right;
+	font-weight: bold;
+	font-size: 24px;
+}
+div.iconOverlay .exclamation.high {
+	color: red;
+}
+div.iconOverlay .exclamation.med {
+	color: orange;
+}
+div.iconOverlay .circle {
+	padding-right: 5px;
+	text-align: right;
+	color: yellow;
+}
+div.iconOverlay .debuff {
+	padding: 2px;
+	text-align: right;
 }

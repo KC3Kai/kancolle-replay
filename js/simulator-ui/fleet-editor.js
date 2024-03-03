@@ -14,6 +14,8 @@ var CONST = window.COMMON.getConst({
 	equipImgNameDefault: 'empty',
 	
 	tooltipUnknownStat: 'This stat\'s true value is currently unknown.',
+	tooltipUnknownStatPlaceholder: 'This stat\'s true value is unknown, it is a placeholder not backed by data. Recommended to try setting your own value.',
+	tooltipUnknownStatDBEstimate: 'This stat\'s true value is unknown, it is an estimate based on data from DB submissions.',
 	
 	rankExceptTypes: [],
 	rankDefaultSpecial: {},
@@ -38,6 +40,13 @@ var CONST = window.COMMON.getConst({
 	],
 	
 	urlDeckbuilder: 'http://www.kancolle-calc.net/deckbuilder.html?predeck=',
+	
+	STAT_UNKNOWN: {
+		NONE: 1,
+		PLACEHOLDER: 2,
+		DB_ESTIMATE: 3,
+	},
+	statWarnIgnore: ['los','asw'],
 	
 	EQTDATA_COPY: {},
 });
@@ -151,6 +160,7 @@ var FLEET_MODEL = {
 			statsBonus: {
 				
 			},
+			statsDefault: {},
 			statsUnknown: {},
 			equips: [],
 			slots: sdata.SLOTS.slice(),
@@ -172,9 +182,13 @@ var FLEET_MODEL = {
 			obj.statsBase.asw = COMMON.getScaledStat(sdata.ASWbase,sdata.ASW,obj.level);
 			obj.statsBase.los = COMMON.getScaledStat(sdata.LOSbase,sdata.LOS,obj.level);
 		}
+		for (let stat in obj.statsBase) {
+			obj.statsDefault[stat] = obj.statsBase[stat];
+		}
 		if (sdata.unknownstats) {
-			obj.statsUnknown.ev = obj.statsUnknown.asw = obj.statsUnknown.los = CONST.tooltipUnknownStat;
-			if (!isFriend) obj.statsUnknown.luk = obj.statsUnknown.tacc = CONST.tooltipUnknownStat;
+			for (let stat in sdata.unknownstats) {
+				obj.statsUnknown[stat.toLowerCase()] = sdata.unknownstats[stat];
+			}
 		}
 		for (let i=0; i<CONST.numEquipMax; i++) {
 			obj.equips.push(this.getBlankEquip(i));
@@ -285,6 +299,16 @@ window.CMP_FLEET = {
 				FLEET_MODEL.fleetCurrent = null;
 				COMMON.global.fleetEditorClose();
 			}
+		},
+		
+		hasStatUnknown(ship,types) {
+			return !!(ship.statsUnknown && Object.keys(ship.statsUnknown).find(stat => !CONST.statWarnIgnore.includes(stat) && types.includes(ship.statsUnknown[stat]) && ship.statsBase[stat] == ship.statsDefault[stat]));
+		},
+		hasStatChanged(ship) {
+			return !!(COMMON.isShipIdAbyssal(ship.mstId) && ship.statsDefault && ship.statsBase && Object.keys(ship.statsBase).find(stat => ship.statsBase[stat] != ship.statsDefault[stat]));
+		},
+		hasStatDebuff(ship) {
+			return !!(COMMON.isShipIdAbyssal(ship.mstId) && ship.statsDefault && ship.statsBase && ship.statsBase.ar < ship.statsDefault.ar);
 		},
 	},
 	watch: {
@@ -488,6 +512,18 @@ var UI_FLEETEDITOR = Vue.createApp({
 		getStatTotal: function(ship,stat) {
 			if (stat == 'range') return Math.max(ship.statsBase.range,ship.statsEquip.range) + (ship.statsBonus.range || 0);
 			return (+ship.statsBase[stat] || 0) + (+ship.statsEquip[stat] || 0) + ((this.showEquipBonus && +ship.statsBonus[stat]) || 0);
+		},
+		getClassStat: function(ship,stat) {
+			if (ship.statsBase[stat] != ship.statsDefault[stat]) return {changed:COMMON.isShipIdAbyssal(ship.mstId)};
+			if (ship.statsUnknown[stat] == CONST.STAT_UNKNOWN.NONE) return {unknownHigh:true};
+			if (ship.statsUnknown[stat] == CONST.STAT_UNKNOWN.PLACEHOLDER) return {unknownHigh:true};
+			if (ship.statsUnknown[stat] == CONST.STAT_UNKNOWN.DB_ESTIMATE) return {unknownMed:true};
+		},
+		getTitleStat: function(ship,stat) {
+			if (ship.statsBase[stat] != ship.statsDefault[stat]) return null;
+			if (ship.statsUnknown[stat] == CONST.STAT_UNKNOWN.NONE) return CONST.tooltipUnknownStat;
+			if (ship.statsUnknown[stat] == CONST.STAT_UNKNOWN.PLACEHOLDER) return CONST.tooltipUnknownStatPlaceholder;
+			if (ship.statsUnknown[stat] == CONST.STAT_UNKNOWN.DB_ESTIMATE) return CONST.tooltipUnknownStatDBEstimate;
 		},
 		getClassHP: function(ship) {
 			if (ship.hpInit/ship.hp <= .25) return 'damage heavy';

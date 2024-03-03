@@ -2154,6 +2154,18 @@ var MAPDATA = {
 				bgmNB: 243,
 				bossnode: ['O3','U','Z'],
 			},
+			4: {
+				name: 'E4',
+				bgmDN: 241,
+				bgmNN: 242,
+				bgmDB: 244,
+				bgmNB: 244,
+				bossnode: ['G','O','S','Z'],
+				overrideBGM: {
+					'G': { bgmDB: 243, bgmNB: 243 },
+					'O': { bgmDB: 241, bgmNB: 241 },
+				},
+			},
 		}
 	},
 }
