@@ -288,6 +288,7 @@ var UI_MAIN = Vue.createApp({
 				subOnly: false,
 				useNormalSupport: 0,
 				useBalloon: false,
+				useAtoll: false,
 				useSmoke: false,
 				useAnchorageRepair: false,
 					
@@ -1507,6 +1508,7 @@ var UI_AUTOBONUS = Vue.createApp({
 					console.log(keyB, +COMMON.BARRAGE_BALLOON_NODES.includes(keyB))
 					let battle = UI_MAIN.battles.find(battle => battle.id == node.id);
 					if (battle) battle.useBalloon = COMMON.BARRAGE_BALLOON_NODES.includes(keyB);
+					if (battle) battle.useAtoll = COMMON.ATOLL_NODES.includes(keyB);
 				}
 			}
 			if (this.type == 'dewy' && this.keyDewy) {
@@ -1527,6 +1529,7 @@ var UI_AUTOBONUS = Vue.createApp({
 					let keyB = this.keyDewy + '-' + node.letter;
 					let battle = UI_MAIN.battles.find(battle => battle.id == node.id);
 					if (battle) battle.useBalloon = COMMON.BARRAGE_BALLOON_NODES.includes(keyB);
+					if (battle) battle.useAtoll = COMMON.ATOLL_NODES.includes(keyB);
 				}
 			}
 			UI_MAIN.autoBonus = autoBonus;

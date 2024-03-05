@@ -682,7 +682,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 	if (target.type == 'DD' && target.equiptypesB[B_RADAR] && target.hasLookout) evFlat += 10;
 	if (target.hasSearchlight) { evMod *= .2; evFlat *= .2; }
 	
-	if (!attackSpecial) {
+	if (!attackSpecial && !(ship.fleet.useAtoll && ship.numAtollAttacks)) {
 		var NBchance = ship.NBchance(); 
 		NBchance += starshells[0]*4 - starshells[1]*10 + searchlights[0]*7 - searchlights[1]*5;
 		if (ship.HP/ship.maxHP <= .5) NBchance += 18;
@@ -858,7 +858,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 				APIyasen.api_df_list.push([target.apiID]);
 			}
 			APIyasen.api_damage.push([realdmg+DIDPROTECT*.1]);
-			APIyasen.api_sp_list.push(cutin || 0);
+			APIyasen.api_sp_list.push(ship.fleet.useAtoll && ship.numAtollAttacks ? 1000 : cutin || 0);
 			APIyasen.api_cl_list.push([((res>1)?2:1)]);
 			APIyasen.api_n_mother_list.push(+ship.canNBAirAttack());
 		}
@@ -1564,12 +1564,15 @@ function nightPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,NBonly,API
 					apiAdjustHougekiSpecial(APIhou,k);
 				}
 			} else {
-				let target = nightPhaseTarget(order1[i],alive2,subsalive2,slrerolls2,light2).target;
-				if (target) {
-					if (target.isSub) {
-						if (ASW(order1[i],target,(!NBonly&&!order1[i].isescort),APIhou)) subsalive2.splice(subsalive2.indexOf(target),1);
-					} else {
-						if (NBattack(order1[i],target,NBonly,[[star1,star2],[light1,light2],[scout1,scout2]],APIhou)) alive2.splice(alive2.indexOf(target),1);
+				let numAttack = order1[i].fleet.useAtoll ? (order1[i].numAtollAttacks || 1) : 1;
+				for (let n=0; n<numAttack; n++) {
+					let target = nightPhaseTarget(order1[i],alive2,subsalive2,slrerolls2,light2).target;
+					if (target) {
+						if (target.isSub) {
+							if (ASW(order1[i],target,(!NBonly&&!order1[i].isescort),APIhou)) subsalive2.splice(subsalive2.indexOf(target),1);
+						} else {
+							if (NBattack(order1[i],target,NBonly,[[star1,star2],[light1,light2],[scout1,scout2]],APIhou)) alive2.splice(alive2.indexOf(target),1);
+						}
 					}
 				}
 			}
@@ -1638,6 +1641,12 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 		for (let key in APIrai) APIrai[key].shift();
 		for (let i=0; i<APIrai.api_frai.length; i++) APIrai.api_frai[i] = -1;
 		for (let i=0; i<APIrai.api_erai.length; i++) APIrai.api_erai[i] = -1;
+		if (opening) {
+			for (let key of ['api_frai','api_fydam','api_fcl','api_erai','api_eydam','api_ecl']) {
+				APIrai[key + '_list_items'] = APIrai[key].map(n => null);
+				delete APIrai[key];
+			}
+		}
 	}
 	
 	if (combinedAll && !opening) {
@@ -1656,15 +1665,18 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 		for (var i=0; i<alive1.length+subsalive1.length; i++) {
 			var ship = (i < alive1.length) ? alive1[i] : subsalive1[i-alive1.length];
 			if (ship.fleet.combinedWith && !ship.isescort && (!ship.canOpTorpMain || !opening)) continue;
-			if ((opening)? ship.canOpTorp() : ship.canTorp()) {
-				if (combinedAll && !opening) {
-					if (!targetsE2.length) targets2 = targetsM2;
-					else if (!targetsM2.length) targets2 = targetsE2;
-					else targets2 = (Math.random() < .35)? targetsM2 : targetsE2;
-				}
-				var target = choiceWProtect(targets2);
-				if (target) {
-					shots.push([ship,target]);
+			if ((opening)? (ship.canOpTorp() || ship.fleet.useAtoll) : ship.canTorp()) {
+				let numAttack = opening && ship.fleet.useAtoll ? (ship.numAtollAttacks || 0) : 1;
+				for (let n=0; n<numAttack; n++) {
+					if (combinedAll && !opening) {
+						if (!targetsE2.length) targets2 = targetsM2;
+						else if (!targetsM2.length) targets2 = targetsE2;
+						else targets2 = (Math.random() < .35)? targetsM2 : targetsE2;
+					}
+					var target = choiceWProtect(targets2);
+					if (target) {
+						shots.push([ship,target]);
+					}
 				}
 			}
 		}
@@ -1764,16 +1776,30 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 		ship.fleet.giveCredit(ship,realdmg);
 		if (C) {
 			console.log(ship.name+' torpedoes '+target.name+' for '+dmg+' damage, '+target.HP+'/'+target.maxHP+' left');
-			let shipidx = (APIrai.api_frai.length > 7)? ship.apiID2 : ship.num;
-			let targetidx = (APIrai.api_frai.length > 7)? target.apiID2 : target.num;
-			if (NEWFORMAT) {
-				shipidx = ship.apiID2-1; targetidx = target.apiID2-1;
+			let shipidx = ship.apiID2-1, targetidx = target.apiID2-1;
+			if (!NEWFORMAT) {
+				shipidx = (APIrai.api_frai.length > 7)? ship.apiID2 : ship.num;
+				targetidx = (APIrai.api_frai.length > 7)? target.apiID2 : target.num;
 			}
-			APIrai[(ship.side)?'api_erai':'api_frai'][shipidx] = targetidx;
-			let apidam = (target.side)?'api_edam':'api_fdam';
-			APIrai[apidam][targetidx] = APIrai[apidam][targetidx] + realdmg || realdmg;
-			APIrai[(ship.side)?'api_eydam':'api_fydam'][shipidx] = realdmg;
-			APIrai[(ship.side)?'api_ecl':'api_fcl'][shipidx] = (res>1)? 2 : (dmg)? 1 : 0;
+			if (APIrai.api_frai_list_items) {
+				let api_rai = ship.side ? APIrai.api_erai_list_items : APIrai.api_frai_list_items;
+				let api_ydam = ship.side ? APIrai.api_eydam_list_items : APIrai.api_fydam_list_items;
+				let api_cl = ship.side ? APIrai.api_ecl_list_items : APIrai.api_fcl_list_items;
+				if (!api_rai[shipidx]) api_rai[shipidx] = [];
+				api_rai[shipidx].push(targetidx);
+				if (!api_ydam[shipidx]) api_ydam[shipidx] = [];
+				api_ydam[shipidx].push(realdmg);
+				if (!api_cl[shipidx]) api_cl[shipidx] = [];
+				api_cl[shipidx].push((res>1)? 2 : (dmg)? 1 : 0);
+				let apidam = (target.side)?'api_edam':'api_fdam';
+				APIrai[apidam][targetidx] = APIrai[apidam][targetidx] + realdmg || realdmg;
+			} else {
+				APIrai[(ship.side)?'api_erai':'api_frai'][shipidx] = targetidx;
+				let apidam = (target.side)?'api_edam':'api_fdam';
+				APIrai[apidam][targetidx] = APIrai[apidam][targetidx] + realdmg || realdmg;
+				APIrai[(ship.side)?'api_eydam':'api_fydam'][shipidx] = realdmg;
+				APIrai[(ship.side)?'api_ecl':'api_fcl'][shipidx] = (res>1)? 2 : (dmg)? 1 : 0;
+			}
 		}
 	}
 	for (var i=0; i<alive1.length; i++) {   //remove dead things
@@ -3199,9 +3225,11 @@ function apiUpdateFlag(dataroot,isRaid,combineTypeF,combinedE) {
 	for (let key of ['api_opening_atack','api_raigeki']) {
 		let raigeki = dataroot[key];
 		if (!raigeki) continue;
-		if (raigeki.api_frai.find(n => n > -1) != null || raigeki.api_erai.find(n => n > -1) != null) {
+		if (raigeki.api_frai && (raigeki.api_frai.find(n => n > -1) != null || raigeki.api_erai.find(n => n > -1) != null)) {
 			for (let i=0; i<raigeki.api_frai.length; i++) if (raigeki.api_frai[i] == null) raigeki.api_frai[i] = -1;
 			for (let i=0; i<raigeki.api_erai.length; i++) if (raigeki.api_erai[i] == null) raigeki.api_erai[i] = -1;
+		} else if (raigeki.api_frai_list_items && (raigeki.api_frai_list_items.find(n => n != null) || raigeki.api_erai_list_items.find(n => n != null))) {
+			//pass
 		} else {
 			dataroot[key] = null;
 			if (isRaid) delete dataroot[key];

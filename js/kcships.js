@@ -840,9 +840,13 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	
 	if (aswPenetrate > 0) this.aswPenetrate = aswPenetrate;
 	
-	if (this.equips.find(eq => [1574,1575,1586].includes(eq.mid))) this.canAirstrikeSub = true;
+	if (this.equips.find(eq => [1574,1575,1586,1648].includes(eq.mid))) this.canAirstrikeSub = true;
 	
 	if (this.hasArcticCamo && SIMCONSTS.arcticCamoAr) this.AR += +SIMCONSTS.arcticCamoAr || 0;
+	
+	if (this.isAntiAtollShip()) {
+		this.numAtollAttacks = Math.min(2, this.equips.filter(eq => eq.mid == 525 || eq.mid == 526).length);
+	}
 	
 	if (MECHANICS.eqBonus) {
 		let equipsCur = [], levelsCur = [], bonusesPrev = {};
@@ -1174,6 +1178,11 @@ Ship.prototype.addJetSteelCost = function() {
 		if (!equip.isjet) continue;
 		this.jetSteelCost += Math.round(this.planecount[i]*LBASDATA[equip.mid].cost*.2);
 	}
+}
+Ship.prototype.isAntiAtollShip = function() {
+	return this.type == 'SS' || this.type == 'SSV' || this.mid == 507 || this.mid == 586 || (
+		this.mid == 348 && this.equips.find(eq => eq.mid == 33) && this.equips.find(eq => eq.mid == 34 || eq.mid == 87)
+	);
 }
 
 Ship.prototype.canShell = function() { return (this.HP > 0); }
@@ -2182,7 +2191,7 @@ Equip.prototype.setImprovement = function(level) {
 		this.improves.Pshell = .3*level;
 		this.improves.Pnb = .3*level;
 	}
-	if ([10,66,220,275,358,464].includes(this.mid)) {
+	if ([10,66,71,220,275,358,464,524].includes(this.mid)) {
 		this.improves.Pshell = .2*level;
 		this.improves.Pnb = .2*level;
 	}

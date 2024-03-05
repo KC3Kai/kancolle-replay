@@ -333,6 +333,9 @@ window.CONVERT = {
 			if (letter && COMMON.BARRAGE_BALLOON_NODES.includes(keyWorldMap + '-' + letter)) {
 				battleSave.useBalloon = true;
 			}
+			if (letter && COMMON.ATOLL_NODES.includes(keyWorldMap + '-' + letter)) {
+				battleSave.useAtoll = true;
+			}
 			
 			let e_maxhps = bdata.api_e_maxhps;
 			if (bdata.api_maxhps) e_maxhps = bdata.api_maxhps.slice(6 + +(bdata.api_maxhps[0] == -1));
@@ -816,6 +819,7 @@ window.CONVERT = {
 				addCostAmmo: battleUI.addCostAmmo/100,
 				lbas: [],
 				useBalloon: battleUI.useBalloon,
+				useAtoll: battleUI.useAtoll,
 				useSmoke: battleUI.useSmoke,
 				useAnchorageRepair: battleUI.useAnchorageRepair,
 			};

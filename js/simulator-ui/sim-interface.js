@@ -752,6 +752,7 @@ var SIM = {
 			
 			fleetF.useBalloon = !!node.useBalloon;
 			fleetE.useBalloon = !!node.useBalloon;
+			fleetF.useAtoll = !!node.useAtoll;
 			
 			if (fleetF.smokeType) fleetF.smokeUsed = true;
 			fleetF.useSmoke = !node.NBOnly && !fleetF.smokeUsed && !!node.useSmoke;

@@ -2423,7 +2423,10 @@ function shootSSAttack(ships,targets,damages,crits,protects) {
 	addTimeout(function(){ ecomplete = true; }, 4200);
 }
 
-function shootTorp(ship,target,damage,forcecrit,protect) {
+function shootTorp(ship,target,damage,forcecrit,protect,addTank) {
+	if (addTank) {
+		createLandingCraft(ship.graphic.x+230-ship.side*291,ship.graphic.y,Math.atan2(target.graphic.y-ship.graphic.y,target.graphic.x-ship.graphic.x-185+370*ship.side),14);
+	}
 	shipShake(ship,3,0,36);
 	SM.playVoice(ship.mid,'nbattack',ship.id);
 	var speed = (Math.abs(ship.graphic.x-target.graphic.x) < 600)? 4 : 6;
