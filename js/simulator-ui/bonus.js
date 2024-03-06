@@ -14,6 +14,7 @@ COMMON.BONUS_MANAGER = {
 		'58-1': { name: 'Early-Spring 2024 E1' },
 		'58-2': { name: 'Early-Spring 2024 E2' },
 		'58-3': { name: 'Early-Spring 2024 E3' },
+		'58-4': { name: 'Early-Spring 2024 E4' },
 	},
 	_URL_DEWY_INDEX: 'https://api.github.com/repos/sorewachigauyo/kc-event-bonus/git/trees/master?recursive=1',
 	_URL_DEWY_PATH: 'https://raw.githubusercontent.com/sorewachigauyo/kc-event-bonus/master/',
