@@ -875,6 +875,7 @@ var UI_ADDITIONALSTATS = Vue.createApp({
 			los2: null,
 			los3: null,
 			los4: null,
+			transport: null,
 		},
 		ships: [],
 	}),
@@ -1023,6 +1024,7 @@ var UI_ADDITIONALSTATS = Vue.createApp({
 			this.fleet.airPower = fleetSim.fleetAirPower();
 			this.fleet.airPowerCombined = null;
 			this.fleet.airPowerLB = fleetSim.fleetAirPower('isPlane');
+			this.fleet.transport = fleetSim.getTransport();
 			if (fleetSim.combinedWith) {
 				this.fleet.airPowerCombined = fleetSim.fleetAirPower() + fleetSim.combinedWith.fleetAirPower();
 				this.fleet.airPowerLB += fleetSim.combinedWith.fleetAirPower('isPlane');

@@ -953,7 +953,7 @@
 	<div id="divAdditionalStats"><div v-show="active">
 		<vmodal :active="active" @vclose="doClose">
 		<div id="divAdditionalStatsMain" class="additionalStatsMain">
-			<div>Fleet Air Power: {{fleet.airPower}} (<span v-show="fleet.airPowerCombined">combined = {{fleet.airPowerCombined}}, </span>vs LBAS = {{fleet.airPowerLB}})</div>
+			<div>Fleet Air Power: {{fleet.airPower}} (<span v-show="fleet.airPowerCombined">combined = {{fleet.airPowerCombined}}, </span>vs LBAS = {{fleet.airPowerLB}})&nbsp;&nbsp;&nbsp;&nbsp;Transport: {{fleet.transport}}</div>
 			<div>Effective LoS (HQ120): C1 = {{fleet.los1}}, C2 = {{fleet.los2}}, C3 = {{fleet.los3}}, C4 = {{fleet.los4}}</div>
 			<table>
 			<tr><td v-for="s in ships"><img :src="'assets/icons/' + s.imgName"/></td></tr>

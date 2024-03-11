@@ -444,7 +444,7 @@ var SIM = {
 		
 		this._setMechanics(dataInput);
 		
-		if (dataInput.nodes.find(node => node.useSmoke) && !SIMCONSTS.smokeChance.reduce((a,b)=>a+b,0)) {
+		if (dataInput.nodes.find(node => node.useSmoke) && !SIMCONSTS.smokeChance.reduce((a,b)=>a+(b||0),0)) {
 			this._addError('no_smoke');
 		}
 		

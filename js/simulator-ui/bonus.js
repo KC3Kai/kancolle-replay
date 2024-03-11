@@ -185,11 +185,11 @@ COMMON.BONUS_MANAGER = {
 					let numBonus = 0;
 					if (bonus.requireEquipId) {
 						numBonus = ship.equips.filter((eq,i) => bonus.requireEquipId.includes(eq.mstId) && (!bonus.requireSlot || ship.slots[i])).length;
-						if (numBonus <= 0) continue;
+						if (numBonus < (bonus.requireEquipIdNum || 1)) continue;
 					}
 					if (bonus.requireEquipType) {
 						numBonus = ship.equips.filter((eq,i) => bonus.requireEquipType.includes(EQDATA[eq.mstId].type) && (!bonus.requireSlot || ship.slots[i])).length;
-						if (numBonus <= 0) continue;
+						if (numBonus < (bonus.requireEquipTypeNum || 1)) continue;
 					}
 					if (!bonus.perEquip) numBonus = 1;
 					if (!bonusesTotal[nodeId]) bonusesTotal[nodeId] = { dmg: null, acc: null, eva: null };
