@@ -1,7 +1,7 @@
 {
 	"world": 58,
 	"mapnum": 1,
-	"date": "2024-03-03",
+	"date": "2024-03-11",
 	"note": "",
 	"listBonus": [
 		{
@@ -12,8 +12,10 @@
 				{ "dmg": 1.11, "shipType": [7] },
 				{ "dmg": 1.04, "shipType": [13,14] },
 				{ "dmg": 1.08, "shipType": [16] },
+				{ "dmg": 1.08, "shipType": [20] },
 				{ "dmg": 1.16, "shipBase": [80] },
-				{ "dmg": 1.28, "shipBase": [699] }
+				{ "dmg": 1.28, "shipBase": [699] },
+				{ "dmg": 1.15, "shipType": [17,19,20,21,22], "requireEquipId": [524] }
 			]
 		},
 		{
