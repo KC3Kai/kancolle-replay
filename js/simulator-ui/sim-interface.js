@@ -589,13 +589,13 @@ var SIM = {
 			}
 		}
 		
-		if (dataInput.consts.enableRangeWeights) {
+		if (dataInput.consts && dataInput.consts.enableRangeWeights) {
 			SHELL_RANGE_WEIGHTS.resetMissing();
 		}
 	},
 	
 	_checkWarningsPostRun: function(dataInput) {
-		if (dataInput.consts.enableRangeWeights) {
+		if (dataInput.consts && dataInput.consts.enableRangeWeights) {
 			let keysMissingF = SHELL_RANGE_WEIGHTS.getMissing(0);
 			if (keysMissingF.length) this._addWarning('warn_range_weights_f', [keysMissingF.join(', ')]);
 			let keysMissingE = SHELL_RANGE_WEIGHTS.getMissing(1);
