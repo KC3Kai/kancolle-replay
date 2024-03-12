@@ -204,6 +204,7 @@ var SIMCONSTS = {
 	kongouSpecialRate: null,
 	yamatoSpecial3Rate: 80,
 	yamatoSpecial2Rate: 80,
+	subFleetAttackRate: 80,
 	nightZuiunCIRate: 60,
 	arcticCamoAr: 0,
 	arcticCamoEva: 0,
@@ -858,7 +859,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 				APIyasen.api_df_list.push([target.apiID]);
 			}
 			APIyasen.api_damage.push([realdmg+DIDPROTECT*.1]);
-			APIyasen.api_sp_list.push(ship.fleet.useAtoll && ship.numAtollAttacks ? 1000 : cutin || 0);
+			APIyasen.api_sp_list.push(!attackSpecial && ship.fleet.useAtoll && ship.numAtollAttacks ? 1000 : cutin || 0);
 			APIyasen.api_cl_list.push([((res>1)?2:1)]);
 			APIyasen.api_n_mother_list.push(+ship.canNBAirAttack());
 		}
@@ -1144,20 +1145,26 @@ function canSpecialAttackUnique(ship,isNB) {
 	if (!MECHANICS.specialAttacks) return false;
 	if (ship.side == 1) return false;
 	if (MECHANICS.subFleetAttack && ship.type == 'AS' && ship.fleet.id == 0) {
+		if (!isNB && ship.fleet.didSpecial == 1) return false;
 		if (ship.fleet.ships[0] != ship) return false;
 		if (ship.LVL < 30) return false;
 		if (ship.fleet.formation.id != 4 && ship.fleet.formation.id != 5) return false;
 		if (ship.HP/ship.maxHP <= .25) return false;
-		let rate = .6;
-		let types = { 300: { s1: 1, s2: 2 }, 301: { s1: 2, s2: 3 }, 302: { s1: 1, s2: 3 } };
-		for (let id in types) {
-			let ship1 = ship.fleet.ships[types[id].s1], ship2 = ship.fleet.ships[types[id].s2];
-			if (!ship1 || !ship1.isSub || ship1.HP/ship1.maxHP <= .5) continue;
-			if (!ship2 || !ship2.isSub || ship2.HP/ship2.maxHP <= .5) continue;
-			if (Math.random() < rate) {
-				ship.attackSpecial = +id;
-				return true;
-			}
+		if (ship.fleet.ships.length < 3) return false;
+		let ship1 = ship.fleet.ships[1], ship2 = ship.fleet.ships[2], ship3 = ship.fleet.ships[3];
+		if (!ship1.isSub || ship1.retreated || !ship2.isSub || ship2.retreated) return false;
+		
+		let type = 0;
+		if (ship3 && ship3.isSub && !ship3.retreated && ship1.HP/ship1.maxHP > .5 && ship3.HP/ship3.maxHP > .5) type = 302;
+		else if (ship3 && ship3.isSub && !ship3.retreated && ship2.HP/ship2.maxHP > .5 && ship3.HP/ship3.maxHP > .5) type = 301;
+		else if (ship1.HP/ship1.maxHP > .5 && ship2.HP/ship2.maxHP > .5) type = 300;
+		if (!type) return false;
+		
+		let rate = SIMCONSTS.subFleetAttackRate/100;
+		if (Math.random() < rate) {
+			ship.attackSpecial = type;
+			ship.fleet.didSpecial = 1;
+			return true;
 		}
 		return false;
 	}
@@ -1201,6 +1208,7 @@ function canSpecialAttackUnique(ship,isNB) {
 		if (ship.HP/ship.maxHP <= .5) return false;
 		if (ship.fleet.ships[2].CVshelltype || ship.fleet.ships[4].CVshelltype) return false;
 		if (ship.fleet.ships[2].isSub || ship.fleet.ships[4].isSub) return false;
+		if (ship.fleet.ships[2].retreated || ship.fleet.ships[4].retreated) return false;
 		let rate = SIMCONSTS.nelsonTouchRate;
 		if (Math.random() < rate/100) {
 			ship.fleet.didSpecial = 1;
