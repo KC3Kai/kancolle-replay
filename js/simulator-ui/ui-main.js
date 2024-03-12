@@ -89,6 +89,7 @@ var UI_MAIN = Vue.createApp({
 			kongouSpecialRate: SIMCONSTS.kongouSpecialRate,
 			yamatoSpecial3Rate: SIMCONSTS.yamatoSpecial3Rate,
 			yamatoSpecial2Rate: SIMCONSTS.yamatoSpecial2Rate,
+			subFleetAttackRate: SIMCONSTS.subFleetAttackRate,
 			nightZuiunCIRate: SIMCONSTS.nightZuiunCIRate,
 			arcticCamoAr: SIMCONSTS.arcticCamoAr,
 			arcticCamoEva: SIMCONSTS.arcticCamoEva,

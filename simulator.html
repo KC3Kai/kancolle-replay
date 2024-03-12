@@ -190,6 +190,7 @@
 					<tr><td>Kongou Special:</td><td><input type="number" min="0" max="100" v-model="settings.kongouSpecialRate" :class="getClassSetting('kongouSpecialRate')"/>%</td></tr>
 					<tr><td>Yamato Special (3-ship):</td><td><input type="number" min="0" max="100" v-model="settings.yamatoSpecial3Rate" :class="getClassSetting('yamatoSpecial3Rate')"/>%</td></tr>
 					<tr><td>Yamato Special (2-ship):</td><td><input type="number" min="0" max="100" v-model="settings.yamatoSpecial2Rate" :class="getClassSetting('yamatoSpecial2Rate')"/>%</td></tr>
+					<tr><td>Submarine Special Attack:</td><td><input type="number" min="0" max="100" v-model="settings.subFleetAttackRate" :class="getClassSetting('subFleetAttackRate')"/>%</td></tr>
 					</table>
 				</div>
 				<div v-show="settings.showAdvanced">
@@ -303,19 +304,19 @@
 						<div>
 							<div>Final Rank Rate:</div>
 							<table>
-							<tr><th><img src="assets/stats/S.png"/></th><td><span class="resultBold">{{results.rankS}}</span></td></tr>
-							<tr><th><img src="assets/stats/A.png"/></th><td>{{results.rankA}}</td></tr>
-							<tr><th><img src="assets/stats/B.png"/></th><td>{{results.rankB}}</td></tr>
-							<tr><th><img src="assets/stats/C.png"/></th><td>{{results.rankC}}</td></tr>
-							<tr><th><img src="assets/stats/D.png"/></th><td>{{results.rankD}}</td></tr>
-							<tr><th><img src="assets/stats/E.png"/></th><td>{{results.rankE}}</td></tr>
-							<tr><th><img src="assets/stats/retreat.png"/></th><td>{{results.retreat}}</td></tr>
+							<tr><th><img src="assets/stats/S.png" alt="S"/></th><td><span class="resultBold">{{results.rankS}}</span></td></tr>
+							<tr><th><img src="assets/stats/A.png" alt="A"/></th><td>{{results.rankA}}</td></tr>
+							<tr><th><img src="assets/stats/B.png" alt="B"/></th><td>{{results.rankB}}</td></tr>
+							<tr><th><img src="assets/stats/C.png" alt="C"/></th><td>{{results.rankC}}</td></tr>
+							<tr><th><img src="assets/stats/D.png" alt="D"/></th><td>{{results.rankD}}</td></tr>
+							<tr><th><img src="assets/stats/E.png" alt="E"/></th><td>{{results.rankE}}</td></tr>
+							<tr><th><img src="assets/stats/retreat.png" alt="Retreat"/></th><td>{{results.retreat}}</td></tr>
 							</table>
 						</div>
 						<div>
 							<div>Enemy Flagship Sunk Rate:</div>
 							<table>
-							<tr><th><img src="assets/stats/flagsunk.png"/></th><td><span class="resultBold">{{results.flagSunk}}</span></td></tr>
+							<tr><th><img src="assets/stats/flagsunk.png" alt="Flagship Sunk"/></th><td><span class="resultBold">{{results.flagSunk}}</span></td></tr>
 							</table>
 							<div>Avg <span class="resultBold">-{{results.flagSunkHP}}</span> HP per run</div>
 							<div>Avg <span class="resultBold">-{{results.flagSunkHPBoss}}</span> HP per boss</div>
@@ -324,31 +325,31 @@
 						<div v-show="results.numNodes>1">
 							<div>Rank Per Battle:</div>
 							<table class="multi">
-							<tr><th></th><th v-for="n in results.numNodes">{{n}}</th></tr>
-							<tr><th><img src="assets/stats/S.png"/></th><td v-for="stat in results.rankSNode">{{stat}}</td></tr>
-							<tr><th><img src="assets/stats/A.png"/></th><td v-for="stat in results.rankANode">{{stat}}</td></tr>
-							<tr><th><img src="assets/stats/B.png"/></th><td v-for="stat in results.rankBNode">{{stat}}</td></tr>
-							<tr><th><img src="assets/stats/C.png"/></th><td v-for="stat in results.rankCNode">{{stat}}</td></tr>
-							<tr><th><img src="assets/stats/D.png"/></th><td v-for="stat in results.rankDNode">{{stat}}</td></tr>
-							<tr><th><img src="assets/stats/E.png"/></th><td v-for="stat in results.rankENode">{{stat}}</td></tr>
-							<tr><th><img src="assets/stats/flagsunk.png"/></th><td v-for="stat in results.flagSunkNode">{{stat}}</td></tr>
+							<tr><th>&nbsp;</th><th v-for="n in results.numNodes">{{n}}</th></tr>
+							<tr><th><img src="assets/stats/S.png" alt="S"/></th><td v-for="stat in results.rankSNode">{{stat}}</td></tr>
+							<tr><th><img src="assets/stats/A.png" alt="A"/></th><td v-for="stat in results.rankANode">{{stat}}</td></tr>
+							<tr><th><img src="assets/stats/B.png" alt="B"/></th><td v-for="stat in results.rankBNode">{{stat}}</td></tr>
+							<tr><th><img src="assets/stats/C.png" alt="C"/></th><td v-for="stat in results.rankCNode">{{stat}}</td></tr>
+							<tr><th><img src="assets/stats/D.png" alt="D"/></th><td v-for="stat in results.rankDNode">{{stat}}</td></tr>
+							<tr><th><img src="assets/stats/E.png" alt="E"/></th><td v-for="stat in results.rankENode">{{stat}}</td></tr>
+							<tr><th><img src="assets/stats/flagsunk.png" alt="Flagship Sunk"/></th><td v-for="stat in results.flagSunkNode">{{stat}}</td></tr>
 							</table>
 						</div>
 					</div>
 					<div class="resultCol">
 						<div>
-							<div><img src="assets/stats/MVP.png"/> Rate Per Battle:</div>
+							<div><img src="assets/stats/MVP.png" alt="MVP"/> Rate Per Battle:</div>
 							<table class="multi">
-							<tr v-show="results.numNodes>1"><th></th><th v-for="n in results.numNodes">{{n}}</th></tr>
-							<tr v-for="n in 7" v-show="results.hasSF||n<7"><th><img :src="'assets/stats/F' + n + '.png'"/></th><td v-for="stat in results['mvp'+n]">{{stat}}</td></tr>
+							<tr v-show="results.numNodes>1"><th>&nbsp;</th><th v-for="n in results.numNodes">{{n}}</th></tr>
+							<tr v-for="n in 7" v-show="results.hasSF||n<7"><th><img :src="'assets/stats/F' + n + '.png'" :alt="'Ship ' + n"/></th><td v-for="stat in results['mvp'+n]">{{stat}}</td></tr>
 							<tr class="tableSpace" v-show="results.hasCF"></tr>
-							<tr v-for="n in 6" v-show="results.hasCF"><th><img :src="'assets/stats/F' + n + '.png'"/></th><td v-for="stat in results['mvpE'+n]">{{stat}}</td></tr>
+							<tr v-for="n in 6" v-show="results.hasCF"><th><img :src="'assets/stats/F' + n + '.png'" :alt="'Ship ' + n"/></th><td v-for="stat in results['mvpE'+n]">{{stat}}</td></tr>
 							</table>
 						</div>
 						<div>
 							<div>Air State Rate Per Battle:</div>
 							<table class="multi">
-							<tr v-show="results.numNodes>1"><th></th><th v-for="n in results.numNodes">{{n}}</th></tr>
+							<tr v-show="results.numNodes>1"><th>&nbsp;</th><th v-for="n in results.numNodes">{{n}}</th></tr>
 							<tr><th><span class="air good">AS+</span></th><td v-for="stat in results.airASP">{{stat}}</td></tr>
 							<tr><th><span class="air good">AS</span></th><td v-for="stat in results.airAS">{{stat}}</td></tr>
 							<tr><th><span class="air">AP</span></th><td v-for="stat in results.airAP">{{stat}}</td></tr>
@@ -359,20 +360,20 @@
 					</div>
 					<div class="resultCol">
 						<div>
-							<div><img src="assets/stats/taiha.png"/> Rate Per Battle:</div>
+							<div><img src="assets/stats/taiha.png" alt="Heavy Damage"/> Rate Per Battle:</div>
 							<table class="multi">
-							<tr v-show="results.numNodes>1"><th></th><th v-for="n in results.numNodes">{{n}}</th></tr>
+							<tr v-show="results.numNodes>1"><th>&nbsp;</th><th v-for="n in results.numNodes">{{n}}</th></tr>
 							<tr><th>Any</th><td v-for="stat in results.taiha"><span class="resultBold">{{stat}}</span></td></tr>
 							<tr class="tableSpace"></tr>
-							<tr v-for="n in 7" v-show="results.hasSF||n<7"><th><img :src="'assets/stats/F' + n + '.png'"/></th><td v-for="stat in results['taiha'+n]">{{stat}}</td></tr>
+							<tr v-for="n in 7" v-show="results.hasSF||n<7"><th><img :src="'assets/stats/F' + n + '.png'" :alt="'Ship ' + n"/></th><td v-for="stat in results['taiha'+n]">{{stat}}</td></tr>
 							<tr class="tableSpace" v-show="results.hasCF"></tr>
-							<tr v-for="n in 6" v-show="results.hasCF"><th><img :src="'assets/stats/F' + n + '.png'"/></th><td v-for="stat in results['taihaE'+n]">{{stat}}</td></tr>
+							<tr v-for="n in 6" v-show="results.hasCF"><th><img :src="'assets/stats/F' + n + '.png'" :alt="'Ship ' + n"/></th><td v-for="stat in results['taihaE'+n]">{{stat}}</td></tr>
 							</table>
 						</div>
 						<div>
-							<div>No <img src="assets/stats/chuuha.png"/> After Battle:</div>
+							<div>No <img src="assets/stats/chuuha.png" alt="Moderate Damage"/> After Battle:</div>
 							<table class="multi">
-							<tr v-show="results.numNodes>1"><th></th><th v-for="n in results.numNodes">{{n}}</th></tr>
+							<tr v-show="results.numNodes>1"><th>&nbsp;</th><th v-for="n in results.numNodes">{{n}}</th></tr>
 							<tr><th>All</th><td v-for="stat in results.noChuuha">{{stat}}</td></tr>
 							</table>
 						</div>
@@ -381,40 +382,40 @@
 						<div>
 							<div>Avg Resupply:</div>
 							<table>
-							<tr><th><img src="assets/stats/fuel.png"/></th><td>{{results.fuelSupply}}</td></tr>
-							<tr><th><img src="assets/stats/ammo.png"/></th><td>{{results.ammoSupply}}</td></tr>
-							<tr><th><img src="assets/stats/baux.png"/></th><td>{{results.bauxSupply}}</td></tr>
+							<tr><th><img src="assets/stats/fuel.png" alt="Fuel"/></th><td>{{results.fuelSupply}}</td></tr>
+							<tr><th><img src="assets/stats/ammo.png" alt="Ammo"/></th><td>{{results.ammoSupply}}</td></tr>
+							<tr><th><img src="assets/stats/baux.png" alt="Bauxite"/></th><td>{{results.bauxSupply}}</td></tr>
 							</table>
 						</div>
 						<div>
 							<div>Avg Repair:</div>
 							<table>
-							<tr><th><img src="assets/stats/fuel.png"/></th><td>{{results.fuelRepair}}</td></tr>
-							<tr><th><img src="assets/stats/steel.png"/></th><td>{{results.steelRepair}}</td></tr>
-							<tr><th><img src="assets/stats/bucket.png"/></th><td>{{results.bucket}}</td></tr>
-							<tr><th><img src="assets/items/14.png"/></th><td>{{results.damecon}}</td></tr>
+							<tr><th><img src="assets/stats/fuel.png" alt="Fuel"/></th><td>{{results.fuelRepair}}</td></tr>
+							<tr><th><img src="assets/stats/steel.png" alt="Steel"/></th><td>{{results.steelRepair}}</td></tr>
+							<tr><th><img src="assets/stats/bucket.png" alt="Bucket"/></th><td>{{results.bucket}}</td></tr>
+							<tr><th><img src="assets/items/14.png" alt="Repair Team"/></th><td>{{results.damecon}}</td></tr>
 							</table>
 						</div>
 						<div>
-							<div>Avg Resource Per <img src="assets/stats/S.png"/>:</div>
+							<div>Avg Resource Per <img src="assets/stats/S.png" alt="S"/>:</div>
 							<table>
-							<tr><th><img src="assets/stats/fuel.png"/></th><td><span class="resultBold">{{results.fuelS}}</span></td></tr>
-							<tr><th><img src="assets/stats/ammo.png"/></th><td><span class="resultBold">{{results.ammoS}}</span></td></tr>
-							<tr><th><img src="assets/stats/steel.png"/></th><td><span class="resultBold">{{results.steelS}}</span></td></tr>
-							<tr><th><img src="assets/stats/baux.png"/></th><td><span class="resultBold">{{results.bauxS}}</span></td></tr>
-							<tr><th><img src="assets/stats/bucket.png"/></th><td><span class="resultBold">{{results.bucketS}}</span></td></tr>
-							<tr><th><img src="assets/items/14.png"/></th><td><span class="resultBold">{{results.dameconS}}</span></td></tr>
+							<tr><th><img src="assets/stats/fuel.png" alt="Fuel"/></th><td><span class="resultBold">{{results.fuelS}}</span></td></tr>
+							<tr><th><img src="assets/stats/ammo.png" alt="Ammo"/></th><td><span class="resultBold">{{results.ammoS}}</span></td></tr>
+							<tr><th><img src="assets/stats/steel.png" alt="Steel"/></th><td><span class="resultBold">{{results.steelS}}</span></td></tr>
+							<tr><th><img src="assets/stats/baux.png" alt="Bauxite"/></th><td><span class="resultBold">{{results.bauxS}}</span></td></tr>
+							<tr><th><img src="assets/stats/bucket.png" alt="Bucket"/></th><td><span class="resultBold">{{results.bucketS}}</span></td></tr>
+							<tr><th><img src="assets/items/14.png" alt="Repair Team"/></th><td><span class="resultBold">{{results.dameconS}}</span></td></tr>
 							</table>
 						</div>
 						<div>
-							<div>Avg Resource Per <img src="assets/stats/flagsunk.png"/>:</div>
+							<div>Avg Resource Per <img src="assets/stats/flagsunk.png" alt="Flagship Sunk"/>:</div>
 							<table>
-							<tr><th><img src="assets/stats/fuel.png"/></th><td><span class="resultBold">{{results.fuelSunk}}</span></td></tr>
-							<tr><th><img src="assets/stats/ammo.png"/></th><td><span class="resultBold">{{results.ammoSunk}}</span></td></tr>
-							<tr><th><img src="assets/stats/steel.png"/></th><td><span class="resultBold">{{results.steelSunk}}</span></td></tr>
-							<tr><th><img src="assets/stats/baux.png"/></th><td><span class="resultBold">{{results.bauxSunk}}</span></td></tr>
-							<tr><th><img src="assets/stats/bucket.png"/></th><td><span class="resultBold">{{results.bucketSunk}}</span></td></tr>
-							<tr><th><img src="assets/items/14.png"/></th><td><span class="resultBold">{{results.dameconSunk}}</span></td></tr>
+							<tr><th><img src="assets/stats/fuel.png" alt="Fuel"/></th><td><span class="resultBold">{{results.fuelSunk}}</span></td></tr>
+							<tr><th><img src="assets/stats/ammo.png" alt="Ammo"/></th><td><span class="resultBold">{{results.ammoSunk}}</span></td></tr>
+							<tr><th><img src="assets/stats/steel.png" alt="Steel"/></th><td><span class="resultBold">{{results.steelSunk}}</span></td></tr>
+							<tr><th><img src="assets/stats/baux.png" alt="Bauxite"/></th><td><span class="resultBold">{{results.bauxSunk}}</span></td></tr>
+							<tr><th><img src="assets/stats/bucket.png" alt="Bucket"/></th><td><span class="resultBold">{{results.bucketSunk}}</span></td></tr>
+							<tr><th><img src="assets/items/14.png" alt="Repair Team"/></th><td><span class="resultBold">{{results.dameconSunk}}</span></td></tr>
 							</table>
 						</div>
 						<div>
