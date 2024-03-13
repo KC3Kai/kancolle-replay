@@ -19,7 +19,7 @@ var CONST = window.COMMON.getConst({
 		'bad_ship_type': { txt: 'Invalid ship type: <0>' },
 		'bad_formation': { txt: 'Invalid formation: <0>' },
 		'no_fcf_retreat': { txt: 'Initial fleet does not meet set FCF Settings requirements' },
-		'no_smoke': { txt: 'Smoke activation is currently disabled, see Show Advanced for settings' },
+		'no_smoke': { txt: 'Smoke activation is currently disabled, see Show Advanced for settings (must set at least 1 Activation Rate and 1 Multiplier)' },
 		
 		'warn_unknown_equiptype': { txt: 'Warning: Unknown equip type - <0>, effects may be missing' },
 		'warn_unknown_ship': { txt: 'Warning: Unknown ship - <0>, unique effects may be missing' },
@@ -36,6 +36,8 @@ var CONST = window.COMMON.getConst({
 		'warn_range_weights_f': { txt: 'Warning: Player Fleets - Following range combination weights are unknown and not used: <0>' },
 		'warn_range_weights_e': { txt: 'Warning: Enemy Fleets - Following range combination weights are unknown and not used: <0>' },
 	},
+	
+	keysSmoke: ['smokeModShellAccF','smokeModShellAccFRadar','smokeModShellAccE','smokeModShellAccERadar','smokeModASWAccF','smokeModASWAccE','smokeModTorpAccF','smokeModTorpAccE','smokeModAirAccF','smokeModAirAccE'],
 });
 	
 var SIM = {
@@ -444,8 +446,12 @@ var SIM = {
 		
 		this._setMechanics(dataInput);
 		
-		if (dataInput.nodes.find(node => node.useSmoke) && !SIMCONSTS.smokeChance.reduce((a,b)=>a+(b||0),0)) {
-			this._addError('no_smoke');
+		if (dataInput.nodes.find(node => node.useSmoke)) {
+			let isDisabled = !SIMCONSTS.smokeChance.reduce((a,b)=>a+(b||0),0) && !(dataInput.consts && dataInput.consts.smokeChanceUseFormula);
+			isDisabled = isDisabled || CONST.keysSmoke.every(key => SIMCONSTS[key].every(v => v == 1 || v == null || v === ''));
+			if (isDisabled) {
+				this._addError('no_smoke');
+			}
 		}
 		
 		FLEETS1[0] = this._getSimFleet(dataInput.fleetF,0);
@@ -756,6 +762,12 @@ var SIM = {
 			
 			if (fleetF.smokeType) fleetF.smokeUsed = true;
 			fleetF.useSmoke = !node.NBOnly && !fleetF.smokeUsed && !!node.useSmoke;
+			if (fleetF.useSmoke && dataInput.consts && dataInput.consts.smokeChanceUseFormula) {
+				let rates = fleetF.getSmokeRates();
+				for (let i=0; i<rates.length; i++) {
+					SIMCONSTS.smokeChance[i] = rates[i];
+				}
+			}
 			
 			let result;
 			let apiBattle = null;

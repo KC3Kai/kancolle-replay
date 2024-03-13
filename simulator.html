@@ -236,7 +236,9 @@
 					<div style="display:flex">
 						<table>
 							<tr><td colspan="2">Smoke Level:</td><th>1</th><th>2</th><th>3</th></tr>
-							<tr><td colspan="2">Activation Rate:</td><td v-for="i in 3"><input type="number" min="0" max="100" v-model="settings.smokeChance[i-1]" :class="getClassSetting('smokeChance',i-1)"/>%</td></tr>
+							<tr><td colspan="2">Activation Rate:</td><td v-for="i in 3"><input type="number" min="0" max="100" v-model="settings.smokeChance[i-1]" :class="getClassSetting('smokeChance',i-1)" :disabled="settings.smokeChanceUseFormula"/>%</td></tr>
+							<tr><td colspan="5"><label><input type="checkbox" v-model="settings.smokeChanceUseFormula" :class="getClassSetting('smokeChanceUseFormula')"/> Use provisional </label><a href="https://twitter.com/Xe_UCH/status/1767407602554855730">activation rate formula</a></td></tr>
+							<tr><td colspan="5"></td></tr>
 							<tr><td colspan="5">Shelling Accuracy Multiplier:</td></tr>
 							<tr><td style="width:20px"></td><td>Player (No Radar)</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModShellAccF[i-1]" :class="getClassSetting('smokeModShellAccF',i-1)"/></td></tr>
 							<tr><td></td><td>Player (Radar)</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModShellAccFRadar[i-1]" :class="getClassSetting('smokeModShellAccFRadar',i-1)"/></td></tr>
@@ -433,6 +435,7 @@
 	<div id="divOther">
 	<div id="divChangeLog">
 		<div><span class="header">Change Log:</span></div>
+		<div>2024-03-13 - Smoke activation rate provisional formula, see Show Advanced</div>
 		<div>2024-03-05 - Provisional Atoll node setting</div>
 		<div>2024-03-03 - Mark fleet preview ship banner if unknown or changed stats</div>
 		<div>2024-02-29 - Anchorage repair node setting, provisional "Shelling Range Tie Randomness Weights" setting (see Show Advanced)</div>

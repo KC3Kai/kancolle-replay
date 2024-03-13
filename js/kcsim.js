@@ -242,6 +242,7 @@ var SIMCONSTS = {
 	nbOnlyCFAccBase: 69,
 	supportASWAccBase: 50,
 	smokeChance: [0,0,0],
+	smokeChanceUseFormula: false,
 	smokeModShellAccF: [1,1,1],
 	smokeModShellAccFRadar: [1,1,1],
 	smokeModShellAccE: [1,1,1],
