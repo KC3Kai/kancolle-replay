@@ -273,6 +273,41 @@ Fleet.prototype.getNumBalloons = function() {
 	}
 	return 0;
 }
+Fleet.prototype.getSmokeRates = function() {
+	let ships = this.combinedWith ? this.ships.concat(this.combinedWith.ships) : this.ships;
+	let numSmoke = 0, numStarsBase = 0, numStarsKai = 0;
+	for (let ship of ships) {
+		if (ship.retreated || ship.HP <= 0) continue;
+		for (let eq of ship.equips) {
+			if (eq.mid == 500) {
+				numSmoke++;
+				numStarsBase += eq.level || 0;
+			} else if (eq.mid == 501) {
+				numSmoke += 2;
+				numStarsKai += eq.level || 0;
+			}
+		}
+	}
+	let rates = [0,0,0];
+	if (numSmoke <= 0) return rates;
+	
+	let luckFlag = this.isescort ? this.combinedWith.ships[0].LUK : this.ships[0].LUK;
+	if (numSmoke >= 3) {
+		rates[2] = Math.min(100, 3*Math.ceil(5*numSmoke - 15 + 1.5*Math.sqrt(luckFlag) + .3*numStarsBase + .5*numStarsKai) + 1);
+		rates[1] = Math.min(30, 100 - rates[2]);
+		rates[0] = Math.max(0, 100 - rates[2] - rates[1]);
+	} else if (numSmoke == 2) {
+		rates[1] = Math.min(100, 3*Math.ceil(5*numSmoke - 5 + 1.5*Math.sqrt(luckFlag) + .3*numStarsBase + .5*numStarsKai) + 1);
+		rates[0] = Math.max(0, 100 - rates[1]);
+	} else {
+		rates[0] = 100;
+	}
+	
+	let rate0 = Math.min(1, Math.max(0, 3.2 - .2*Math.ceil(Math.sqrt(luckFlag) + .3*numStarsBase + .5*numStarsKai) - numSmoke));
+	for (let i=0; i<rates.length; i++) rates[i] *= (1-rate0);
+	
+	return rates;
+}
 //----------
 
 function Ship(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {

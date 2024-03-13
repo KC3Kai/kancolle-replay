@@ -112,6 +112,7 @@ var UI_MAIN = Vue.createApp({
 			airstrikeAccEFRaid: SIMCONSTS.airstrikeAccEFRaid,
 			airstrikeAccEE: SIMCONSTS.airstrikeAccEE,
 			smokeChance: SIMCONSTS.smokeChance.slice(),
+			smokeChanceUseFormula: SIMCONSTS.smokeChanceUseFormula,
 			smokeModShellAccF: SIMCONSTS.smokeModShellAccF.slice(),
 			smokeModShellAccFRadar: SIMCONSTS.smokeModShellAccFRadar.slice(),
 			smokeModShellAccE: SIMCONSTS.smokeModShellAccE.slice(),
