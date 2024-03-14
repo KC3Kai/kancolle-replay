@@ -91,6 +91,7 @@ If ship/equip "masterId" not in simulator's database, "stats" is required.
 		airRaid: &lt;bool&gt; (default 0),
 		noAmmo: &lt;bool&gt; (default 0),
 		formationOverride: &lt;int&gt; overrides value in fleetF (optional),
+		formationUseLAIfNoSpAttack: &lt;bool&gt; use Line Ahead if single or CF4 if combined, if special attack becomes impossible before this battle, overrides all (optional),
 		lbas: [&lt;int&gt;] waves to send, e.g. [1,1,2,2] (optional),
 		addCostFuel: &lt;float&gt; 0-1 percent, additional fuel per ship subtracted before battle (optional),
 		addCostAmmo: &lt;float&gt; 0-1 percent, additional ammo per ship subtracted before battle (optional),

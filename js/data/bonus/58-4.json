@@ -1,8 +1,8 @@
 {
 	"world": 58,
 	"mapnum": 4,
-	"date": "2024-03-13",
-	"note": "WIP (no LBAS)",
+	"date": "2024-03-14",
+	"note": "WIP (LBAS incomplete, may be inaccurate)",
 	"listBonus": [
 		{
 			"bonuses": [
@@ -13,7 +13,8 @@
 				{ "dmg": 1.04, "shipType": [13,14] },
 				{ "dmg": 1.08, "shipType": [16] },
 				{ "dmg": 1.08, "shipType": [20] },
-				{ "dmg": 1.15, "shipType": [17,19,20,21,22], "requireEquipId": [524] }
+				{ "dmg": 1.12, "shipType": [17,19,20,21,22], "requireEquipId": [524] },
+				{ "dmg": 1.05, "shipType": [17,19,20,21,22], "requireEquipId": [524], "requireEquipIdNum": 2 }
 			]
 		},
 		{
@@ -65,6 +66,29 @@
 				{ "dmg": 1.14, "shipBase": [26,42,43,46,47,50,62,65,71,72,78,79,80,113,124,125,131,135,138,143,405,425,452,458,484,485,527,528,671,674] },
 				{ "dmg": 1.06, "shipType": [1,2,3,21] },
 				{ "dmg": 1.16, "shipType": [4,5,6] }
+			]
+		}
+	],
+	"listBonusLBAS": [
+		{
+			"nodesExclude": ["G","S","Z"],
+			"bonuses": [
+				{ "dmg": 1.2, "basewide": 1, "requireEquipId": [170,178,395,493,504] },
+				{ "dmg": 1.2, "basewide": 1, "requireEquipId": [388,396] }
+			]
+		},
+		{
+			"nodes": ["G"],
+			"bonuses": [
+				{ "dmg": 1.35, "basewide": 1, "requireEquipId": [170,178,395,493,504] },
+				{ "dmg": 1.65, "basewide": 1, "requireEquipId": [388,396] }
+			]
+		},
+		{
+			"nodes": ["S","Z"],
+			"bonuses": [
+				{ "dmg": 1.3, "basewide": 1, "requireEquipId": [170,178,395,493,504] },
+				{ "dmg": 1.56, "basewide": 1, "requireEquipId": [388,396] }
 			]
 		}
 	]

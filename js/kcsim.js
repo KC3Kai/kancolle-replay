@@ -1142,7 +1142,7 @@ function canSpecialAttack(ship,isNB,NBequips,skipUnique) {
 	return false;
 }
 
-function canSpecialAttackUnique(ship,isNB) {
+function canSpecialAttackUnique(ship,isNB,isCheck) {
 	if (!MECHANICS.specialAttacks) return false;
 	if (ship.side == 1) return false;
 	if (MECHANICS.subFleetAttack && ship.type == 'AS' && ship.fleet.id == 0) {
@@ -1161,6 +1161,7 @@ function canSpecialAttackUnique(ship,isNB) {
 		else if (ship1.HP/ship1.maxHP > .5 && ship2.HP/ship2.maxHP > .5) type = 300;
 		if (!type) return false;
 		
+		if (isCheck) return true;
 		let rate = SIMCONSTS.subFleetAttackRate/100;
 		if (Math.random() < rate) {
 			ship.attackSpecial = type;
@@ -1181,6 +1182,7 @@ function canSpecialAttackUnique(ship,isNB) {
 			let groups = [[541,573], [553,554], [411,412], [364,576], [591,592], [591,593], [591,954], [697,659], [446,447]];
 			let group = groups.find(group => group.includes(ship2.mid) && group.includes(ship3.mid));
 			if (group || (ship2.mid == 546 && [541,573].includes(ship3.mid))) {
+				if (isCheck) return true;
 				let rate = SIMCONSTS.yamatoSpecial3Rate;
 				if (Math.random() < rate/100) {
 					ship.fleet.didSpecial = 1;
@@ -1191,6 +1193,7 @@ function canSpecialAttackUnique(ship,isNB) {
 			}
 		}
 		if (([911,916].includes(ship.mid) && [546,178,360,392].includes(ship2.mid)) || (ship.mid == 546 && [911,916].includes(ship2.mid))) {
+			if (isCheck) return true;
 			let rate = SIMCONSTS.yamatoSpecial2Rate;
 			if (Math.random() < rate/100) {
 				ship.fleet.didSpecial = 1;
@@ -1210,6 +1213,7 @@ function canSpecialAttackUnique(ship,isNB) {
 		if (ship.fleet.ships[2].CVshelltype || ship.fleet.ships[4].CVshelltype) return false;
 		if (ship.fleet.ships[2].isSub || ship.fleet.ships[4].isSub) return false;
 		if (ship.fleet.ships[2].retreated || ship.fleet.ships[4].retreated) return false;
+		if (isCheck) return true;
 		let rate = SIMCONSTS.nelsonTouchRate;
 		if (Math.random() < rate/100) {
 			ship.fleet.didSpecial = 1;
@@ -1224,6 +1228,7 @@ function canSpecialAttackUnique(ship,isNB) {
 		if (ship.HP/ship.maxHP <= .5) return false;
 		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[1].type) == -1) return false;
 		if (ship.fleet.ships[1].HP/ship.fleet.ships[1].maxHP <= .25) return false;
+		if (isCheck) return true;
 		let rate = (ship.attackSpecial == 101)? SIMCONSTS.nagatoSpecialRate : SIMCONSTS.mutsuSpecialRate;
 		if (Math.random() < rate/100) {
 			ship.fleet.didSpecial = 1;
@@ -1242,6 +1247,7 @@ function canSpecialAttackUnique(ship,isNB) {
 		}
 		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[1].type) == -1) return false;
 		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[2].type) == -1) return false;
+		if (isCheck) return true;
 		let rate = SIMCONSTS.coloradoSpecialRate;
 		if (Math.random() < rate/100) {
 			ship.fleet.didSpecial = 1;
@@ -1263,6 +1269,7 @@ function canSpecialAttackUnique(ship,isNB) {
 		if (ship.mid == 591 && [592,151,593,954,439,364].indexOf(ship.fleet.ships[1].mid) == -1) return false;
 		if (ship.mid == 592 && [591,152,593,954].indexOf(ship.fleet.ships[1].mid) == -1) return false;
 		if ([593,954].includes(ship.mid) && ![591,592].includes(ship.fleet.ships[1].mid)) return false;
+		if (isCheck) return true;
 		let rate = SIMCONSTS.kongouSpecialRate;
 		if (!rate) {
 			rate = 45;
