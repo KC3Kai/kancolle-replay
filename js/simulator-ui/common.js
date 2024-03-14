@@ -74,6 +74,25 @@ var COMMON = {
 		return +id > 1500;
 	},
 	
+	_specialAttackUIEnable: [
+		{ attackSpecial: 100, formations: [2,12] },
+		{ attackSpecial: 101, formations: [4,12] },
+		{ attackSpecial: 102, formations: [4,12] },
+		{ attackSpecial: 103, formations: [4,12] },
+		{ ids: [546,911,916], formations: [4] },
+		{ types: ['AS'], formations: [4,5] },
+	],
+	checkSpecialAttackUI: function(uiMain,formation) {
+		if (!uiMain) return false;
+		let shipFlag = uiMain.fleetFMain.ships[0];
+		if (FLEET_MODEL.shipIsEmpty(shipFlag)) return false;
+		for (let item of this._specialAttackUIEnable) {
+			if (!item.formations.includes(+formation)) continue;
+			if ((item.attackSpecial && item.attackSpecial == SHIPDATA[shipFlag.mstId].attackSpecial) || (item.ids && item.ids.includes(shipFlag.mstId)) || (item.types && item.types.includes(SHIPDATA[shipFlag.mstId].type))) return true;
+		}
+		return false;
+	},
+	
 	getHash: function(str) {
 		var hash = 0, i, chr;
 		if (str.length === 0) return hash;

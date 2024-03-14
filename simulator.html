@@ -522,6 +522,12 @@
 						<label><input type="radio" value="13" v-model="battle.formation" /><img src="assets/stats/form13.png" /></label>
 						<label><input type="radio" value="14" v-model="battle.formation" /><img src="assets/stats/form14.png" /></label>
 					</div>
+					<div class="space" v-show="hasSpecialAttack()">
+						<label><input type="checkbox" v-model="battle.formationUseLAIfNoSpAttack"/> Use &nbsp;
+						<img src="assets/stats/form1.jpg" alt="Line Ahead" v-show="!hasCombinedFormations"/>
+						<img src="assets/stats/form14.png" alt="CF4" v-show="hasCombinedFormations"/>
+						&nbsp; if Special Attack becomes impossible</label>
+					</div>
 				</div>
 				<div>
 					<div><span class="header">LBAS Waves:</span></div>

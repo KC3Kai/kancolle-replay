@@ -824,6 +824,7 @@ window.CONVERT = {
 				useAnchorageRepair: battleUI.useAnchorageRepair,
 			};
 			if (battleUI.doNBCond) nodeInput.doNBCond = battleUI.doNBCond;
+			if (battleUI.formationUseLAIfNoSpAttack && COMMON.checkSpecialAttackUI(this._UI_MAIN,+battleUI.formation)) nodeInput.formationUseLAIfNoSpAttack = true;
 			for (let i=0; i<battleUI.lbasWaves.length; i++) {
 				if (battleUI.lbasWaves[i]) {
 					nodeInput.lbas.push(Math.floor(i/2)+1);

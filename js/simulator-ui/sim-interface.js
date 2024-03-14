@@ -720,6 +720,11 @@ var SIM = {
 			} else {
 				fleetF.setFormation(dataInput.fleetF.formation,dataInput.fleetF.combineType);
 			}
+			if (node.formationUseLAIfNoSpAttack && !canSpecialAttackUnique(fleetF.ships[0],node.NBOnly,true)) {
+				let formation = fleetF.combinedWith && !node.NBOnly ? 14 : 1;
+				fleetF.setFormation(formation,dataInput.fleetF.combineType);
+				if (+formation < 10 && fleetF.combinedWith) fleetF.combinedWith.setFormation(formation);
+			}
 			
 			let shipsAll = fleetF.combinedWith ? fleetF.ships.concat(fleetF.combinedWith.ships) : fleetF.ships;
 			for (let ship of shipsAll) {

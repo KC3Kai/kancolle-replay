@@ -583,6 +583,9 @@ var UI_MAIN = Vue.createApp({
 		hasBonusFF: function() {
 			return false;
 		},
+		hasSpecialAttack: function() {
+			return COMMON.checkSpecialAttackUI(UI_MAIN,this.battle.formation);
+		},
 		
 		onclickDeleteBattle: function() {
 			UI_MAIN.deleteBattle(this.battle.ind,this.$refs.comps);
