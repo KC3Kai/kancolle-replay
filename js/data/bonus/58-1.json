@@ -16,7 +16,7 @@
 				{ "dmg": 1.16, "shipBase": [80] },
 				{ "dmg": 1.28, "shipBase": [699] },
 				{ "dmg": 1.15, "shipType": [17,19,20,21,22], "requireEquipId": [524] },
-				{ "dmg": 1.05, "shipType": [17,19,20,21,22], "requireEquipId": [524], "requireEquipIdNum": 2 }
+				{ "dmg": 1.06, "shipType": [17,19,20,21,22], "requireEquipId": [524], "requireEquipIdNum": 2 }
 			]
 		},
 		{

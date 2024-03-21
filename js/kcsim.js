@@ -739,6 +739,9 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 			}
 		}
 	}
+	if (!attackSpecial && ship.fleet.useAtoll && ship.numAtollAttacks) {
+		cutin = 1000;
+	}
 	
 	if (ship.getFormation() == VANGUARD1) {
 		preMod *= .5;
@@ -860,7 +863,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 				APIyasen.api_df_list.push([target.apiID]);
 			}
 			APIyasen.api_damage.push([realdmg+DIDPROTECT*.1]);
-			APIyasen.api_sp_list.push(!attackSpecial && ship.fleet.useAtoll && ship.numAtollAttacks ? 1000 : cutin || 0);
+			APIyasen.api_sp_list.push(cutin || 0);
 			APIyasen.api_cl_list.push([((res>1)?2:1)]);
 			APIyasen.api_n_mother_list.push(+ship.canNBAirAttack());
 		}
@@ -1460,7 +1463,7 @@ function shellPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,APIhou,isO
 }
 
 function doShellC(ship,targets,APIhou,isOASW,attackSpecial) {
-	var targetData, targetCFirst = targets.alive2C && Math.random() < .39;
+	var targetData, targetCFirst = targets.alive2C && Math.random() < (isOASW ? .61 : .39);
 	if (ship.isAntiPT) {
 		let hasMain = !!targets.alive2.find(target => target.isPT), hasEscort = !!targets.alive2C.find(target => target.isPT);
 		if (hasMain && !hasEscort) targetCFirst = false;

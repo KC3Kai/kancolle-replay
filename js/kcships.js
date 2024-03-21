@@ -2244,6 +2244,10 @@ Equip.prototype.setImprovement = function(level) {
 	if ([226,227,488].includes(this.mid)) {
 		this.improves.Pshell = 0;
 	}
+	
+	if (this.mid == 138 && level >= 4) {
+		this.AAImprove = .5;
+	}
 }
 Equip.prototype.setProficiency = function(rank,forLBAS) {
 	if (!EQTDATA[this.type].isPlane) return;
