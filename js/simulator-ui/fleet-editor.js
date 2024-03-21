@@ -1028,6 +1028,7 @@ var UI_ADDITIONALSTATS = Vue.createApp({
 			if (fleetSim.combinedWith) {
 				this.fleet.airPowerCombined = fleetSim.fleetAirPower() + fleetSim.combinedWith.fleetAirPower();
 				this.fleet.airPowerLB += fleetSim.combinedWith.fleetAirPower('isPlane');
+				this.fleet.transport += fleetSim.combinedWith.getTransport();
 			}
 			for (let i=1; i<=4; i++) {
 				let los = fleetSim.fleetELoS(i);

@@ -1,7 +1,7 @@
 {
 	"world": 58,
 	"mapnum": 3,
-	"date": "2024-03-11",
+	"date": "2024-03-21",
 	"note": "WIP",
 	"listBonus": [
 		{
@@ -16,10 +16,10 @@
 			]
 		},
 		{
-			"nodesExclude": ["Z"],
+			"nodesExclude": ["N","O3","U","Z"],
 			"bonuses": [
 				{ "dmg": 1.15, "shipType": [17,19,20,21,22], "requireEquipId": [524] },
-				{ "dmg": 1.05, "shipType": [17,19,20,21,22], "requireEquipId": [524], "requireEquipIdNum": 2 }
+				{ "dmg": 1.06, "shipType": [17,19,20,21,22], "requireEquipId": [524], "requireEquipIdNum": 2 }
 			]
 		},
 		{
@@ -29,7 +29,7 @@
 			]
 		},
 		{
-			"nodes": ["P","R","S","T","U"],
+			"nodes": ["L","P","R","S","T","U"],
 			"bonuses": [
 				{ "dmg": 1.18, "shipBase": [50,66,67,68,69,71,72,78,79,102,103,116,124,125,131,135,138,143,425,452,484,485,527,528,674] }
 			]
@@ -51,6 +51,7 @@
 			"nodes": ["Z"],
 			"bonuses": [
 				{ "dmg": 1.95, "shipType": [13,14], "requireEquipId": [525,526] },
+				{ "dmg": 1.25, "shipType": [13,14], "requireEquipId": [62,208] },
 				{ "dmg": 1.45, "shipId": [348,507,586], "requireEquipId": [525,526] }
 			]
 		}
@@ -66,7 +67,7 @@
 			"nodes": ["Z"],
 			"debuffs": [
 				{ "shipId": [2210,2211,2212,2213,2214,2215], "amount": 48 },
-				{ "shipId": [1519,1555,1591,1592,1594,1595,1765,1776], "amount": 14 }
+				{ "shipId": [1506,1519,1555,1591,1592,1595,1765,1776], "amount": 14 }
 			]
 		}
 	]
