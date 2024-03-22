@@ -93,6 +93,7 @@
 				<div><label><input type="checkbox" v-model="settings.retreatOnTaiha" /> Retreat on <img src="assets/stats/taiha.png" /> ?</label> <img v-show="!settings.retreatOnTaiha" src="assets/stats/kuso.png" /></div>
 				<div style="margin-left:20px">Retreat on <img src="assets/stats/taiha.png" /> even if ship has <img src="assets/items/14.png"/> if on Node <select v-model="settingsFCF.dameconNode"><option value="0">None</option><option v-for="(battle,i) in battles" :value="battle.id">{{i+1}}</option></select> or before</div>
 				<div><img src="assets/items/28.png"/><input type="button" value="FCF Settings" @click="onclickSetFCF"/> <span v-show="hasFCFSettings" class="bonusMarker fcf" title="FCF Settings set">&#11044;</span></div>
+				<div><label><input type="checkbox" v-model="settings.replaceImpossibleFormations"/> Replace formation with <span class="tooltip" title="< 3 Ships &#8594; Line Ahead&#10;Diamond &#8594; Double Line&#10;CF3 &#8594; CF1&#10;CF4 &#8594; CF2">closest alternative</span> if not enough ships</label></div>
 			</div>
 			<div>
 				<div><span class="subheader">Historical Bonus:</span></div>

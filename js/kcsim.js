@@ -1044,7 +1044,7 @@ function shellPhaseTarget(ship,alive,subsalive,isOASW) {
 	var result = { type: 0, target: null, alive: null };
 	if (subsalive.length && ship.canASW(isOASW) && (!ship.isASWlast||!alive.length)) {
 		result.type = 2;
-		result.target = choiceWProtect(subsalive);
+		result.target = choiceWProtect(subsalive,null,isOASW);
 		result.alive = subsalive;
 		result.isOASW = isOASW;
 	} else if (alive.length && !isOASW) {
@@ -1152,7 +1152,7 @@ function canSpecialAttackUnique(ship,isNB,isCheck) {
 		if (!isNB && ship.fleet.didSpecial == 1) return false;
 		if (ship.fleet.ships[0] != ship) return false;
 		if (ship.LVL < 30) return false;
-		if (ship.fleet.formation.id != 4 && ship.fleet.formation.id != 5) return false;
+		if (!isCheck && ship.fleet.formation.id != 4 && ship.fleet.formation.id != 5) return false;
 		if (ship.HP/ship.maxHP <= .25) return false;
 		if (ship.fleet.ships.length < 3) return false;
 		let ship1 = ship.fleet.ships[1], ship2 = ship.fleet.ships[2], ship3 = ship.fleet.ships[3];
@@ -1177,7 +1177,7 @@ function canSpecialAttackUnique(ship,isNB,isCheck) {
 		if (ship.fleet.didSpecial) return false;
 		if (ship.fleet.ships[0] != ship || (!isNB && ship.isescort)) return false;
 		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated && !ship.isSub).length < 6) return false;
-		if (ship.fleet.formation.id != 14 && ship.fleet.formation.id != 4) return false;
+		if (!isCheck && ship.fleet.formation.id != 14 && ship.fleet.formation.id != 4) return false;
 		if (ship.HP/ship.maxHP <= .5) return false;
 		let ship2 = ship.fleet.ships[1], ship3 = ship.fleet.ships[2];
 		if (ship2.HP/ship2.maxHP <= .5) return false;
@@ -1211,7 +1211,7 @@ function canSpecialAttackUnique(ship,isNB,isCheck) {
 		if (ship.fleet.didSpecial) return false;
 		if (ship.fleet.ships[0] != ship || (!isNB && ship.isescort)) return false;
 		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated && !ship.isSub).length < 6) return false;
-		if (ship.fleet.formation.id != 12 && ship.fleet.formation.id != 2) return false;
+		if (!isCheck && ship.fleet.formation.id != 12 && ship.fleet.formation.id != 2) return false;
 		if (ship.HP/ship.maxHP <= .5) return false;
 		if (ship.fleet.ships[2].CVshelltype || ship.fleet.ships[4].CVshelltype) return false;
 		if (ship.fleet.ships[2].isSub || ship.fleet.ships[4].isSub) return false;
@@ -1227,7 +1227,7 @@ function canSpecialAttackUnique(ship,isNB,isCheck) {
 		if (ship.fleet.didSpecial) return false;
 		if (ship.fleet.ships[0] != ship || (!isNB && ship.isescort)) return false;
 		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated && !ship.isSub).length < 6) return false;
-		if (ship.fleet.formation.id != 12 && ship.fleet.formation.id != 4) return false;
+		if (!isCheck && ship.fleet.formation.id != 12 && ship.fleet.formation.id != 4) return false;
 		if (ship.HP/ship.maxHP <= .5) return false;
 		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[1].type) == -1) return false;
 		if (ship.fleet.ships[1].HP/ship.fleet.ships[1].maxHP <= .25) return false;
@@ -1242,7 +1242,7 @@ function canSpecialAttackUnique(ship,isNB,isCheck) {
 		if (ship.fleet.didSpecial) return false;
 		if (ship.fleet.ships[0] != ship || (!isNB && ship.isescort)) return false;
 		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated && !ship.isSub).length < 6) return false;
-		if (ship.fleet.formation.id != 12 && ship.fleet.formation.id != 4) return false;
+		if (!isCheck && ship.fleet.formation.id != 12 && ship.fleet.formation.id != 4) return false;
 		let damageThres = MECHANICS.coloradoSpecialFix ? .25 : .5;
 		for (let i=0; i<=2; i++) {
 			let s = ship.fleet.ships[i];
@@ -1264,7 +1264,7 @@ function canSpecialAttackUnique(ship,isNB,isCheck) {
 		if (ship.fleet.ships[0] != ship) return false;
 		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated && !ship.isSub).length < 5) return false;
 		let formations = MECHANICS.kongouSpecialBuff ? [1,4,12,14] : [1,14];
-		if (formations.indexOf(ship.fleet.formation.id) == -1) return false;
+		if (!isCheck && formations.indexOf(ship.fleet.formation.id) == -1) return false;
 		for (let i=0; i<=1; i++) {
 			let s = ship.fleet.ships[i];
 			if (s.HP/s.maxHP <= .5) return false;
@@ -1463,7 +1463,7 @@ function shellPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,APIhou,isO
 }
 
 function doShellC(ship,targets,APIhou,isOASW,attackSpecial) {
-	var targetData, targetCFirst = targets.alive2C && Math.random() < (isOASW ? .61 : .39);
+	var targetData, targetCFirst = targets.alive2C && Math.random() < .39;
 	if (ship.isAntiPT) {
 		let hasMain = !!targets.alive2.find(target => target.isPT), hasEscort = !!targets.alive2C.find(target => target.isPT);
 		if (hasMain && !hasEscort) targetCFirst = false;
@@ -1493,7 +1493,10 @@ function shellPhaseC(order1,order2,targets,APIhou,isOASW) {
 	let numRounds = Math.max(order1.length,order2.length);
 	for (var i=0; i<numRounds; i++) {
 		if (i < order1.length && order1[i].canStillShell(isOASW)) {
-			if (targets.alive2.length + targets.alive2C.length && canSpecialAttack(order1[i])) {
+			if (isOASW) {
+				targetData = shellPhaseTarget(order1[i],[],targets.subsalive2.concat(targets.subsalive2C || []),isOASW);
+				shellPhaseAttack(order1[i],targetData,APIhou);
+			} else if (targets.alive2.length + targets.alive2C.length && canSpecialAttack(order1[i])) {
 				let ships = getSpecialAttackShips(order1[i].fleet.ships,order1[i].attackSpecial,order1[i]);
 				let k=0;
 				for (; k<ships.length; k++) {
@@ -1513,16 +1516,21 @@ function shellPhaseC(order1,order2,targets,APIhou,isOASW) {
 		if (targets.alive2C) num2 += targets.alive2C.length+targets.subsalive2C.length;
 		if (num2 <= 0) break;
 		if (i < order2.length && order2[i].canStillShell(isOASW)) {
-			var targetData, targetCFirst = targets.alive1C && Math.random() < .39;
-			if (targetCFirst) {
-				targetData = shellPhaseTarget(order2[i],targets.alive1C,targets.subsalive1C,isOASW);
-				if (!targetData.target) targetData = shellPhaseTarget(order2[i],targets.alive1,targets.subsalive1,isOASW);
+			if (isOASW) {
+				targetData = shellPhaseTarget(order2[i],[],targets.subsalive1.concat(targets.subsalive1C || []),isOASW);
+				shellPhaseAttack(order2[i],targetData,APIhou);
 			} else {
-				targetData = shellPhaseTarget(order2[i],targets.alive1,targets.subsalive1,isOASW);
-				if (!targetData.target && targets.alive1C) targetData = shellPhaseTarget(order2[i],targets.alive1C,targets.subsalive1C,isOASW);
+				var targetData, targetCFirst = targets.alive1C && Math.random() < .39;
+				if (targetCFirst) {
+					targetData = shellPhaseTarget(order2[i],targets.alive1C,targets.subsalive1C,isOASW);
+					if (!targetData.target) targetData = shellPhaseTarget(order2[i],targets.alive1,targets.subsalive1,isOASW);
+				} else {
+					targetData = shellPhaseTarget(order2[i],targets.alive1,targets.subsalive1,isOASW);
+					if (!targetData.target && targets.alive1C) targetData = shellPhaseTarget(order2[i],targets.alive1C,targets.subsalive1C,isOASW);
+				}
+				targetData.combinedAll = true;
+				shellPhaseAttack(order2[i],targetData,APIhou);
 			}
-			targetData.combinedAll = true;
-			shellPhaseAttack(order2[i],targetData,APIhou);
 		}
 		var num1 = targets.alive1.length+targets.subsalive1.length;
 		if (targets.alive1C) num1 += targets.alive1C.length+targets.subsalive1C.length;
@@ -2834,9 +2842,11 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 	
 	for (var i=0; i<lbas.equips.length; i++) {
 		var eq = lbas.equips[i];
-		if (!eq.isdivebomber && !eq.istorpbomber) continue;
-		if (subsalive2.length <= 0 && !eq.DIVEBOMB && !eq.TP) continue;
-		if (defenders.length) {
+		if (!eq.isPlane) continue;
+		let isASWPlane = MECHANICS.LBASBuff && eq.ASW >= 7;
+		let isSurfacePlane = (eq.isdivebomber || eq.istorpbomber) && (eq.is20th || (eq.type != ASWPLANE && eq.type != AUTOGYRO));
+		if (!isSurfacePlane && !isASWPlane) continue;
+		if (defenders.length && isSurfacePlane) {
 			var defender = defenders[Math.floor(Math.random()*defenders.length)];
 			var supportMod = 1;
 			var shotProp = (Math.random() < .5)? Math.floor(getAAShotProp(defender,lbas.planecount[i],eq.aaResistShip)*supportMod) : 0;
@@ -2855,8 +2865,7 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 			}
 		}
 		
-		let isASWPlane = MECHANICS.LBASBuff && eq.ASW >= 7;
-		var targets = (isASWPlane)? subsalive2.concat(alive2) : alive2;
+		var targets = isASWPlane && isSurfacePlane ? subsalive2.concat(alive2) : isASWPlane ? subsalive2 : alive2;
 		if (targets.length) {
 			if (targets[0].fleet.combinedWith) {
 				var targetsM = [], targetsE = [];
@@ -3063,6 +3072,9 @@ function airstrikeLBAS(lbas,target,slot,contactMod,contactModLB,isjetphase) {
 			} else if (equip.bonusSpecialP) {
 				for (let group in equip.bonusSpecialP) postMod *= equip.bonusSpecialP[group];
 			}
+		}
+		if (equip.type == SEAPLANE) {
+			postMod = 0;
 		}
 		dmg = damage(lbas,target,dmgbase,preMod,res*contactMod*postMod,SIMCONSTS.lbasDmgCap,true);
 		realdmg = takeDamage(target,dmg);
