@@ -79,7 +79,7 @@ var COMMON = {
 		{ attackSpecial: 101, formations: [4,12] },
 		{ attackSpecial: 102, formations: [4,12] },
 		{ attackSpecial: 103, formations: [4,12] },
-		{ ids: [546,911,916], formations: [4] },
+		{ ids: [546,911,916], formations: [4,12] },
 		{ types: ['AS'], formations: [4,5] },
 	],
 	checkSpecialAttackUI: function(uiMain,formation) {

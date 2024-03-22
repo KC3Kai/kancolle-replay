@@ -64,6 +64,7 @@ var UI_MAIN = Vue.createApp({
 		
 		settings: {
 			retreatOnTaiha: true,
+			replaceImpossibleFormations: true,
 			mechanics: [],
 			shellDmgCap: SIMCONSTS.shellDmgCap,
 			aswDmgCap: SIMCONSTS.aswDmgCap,

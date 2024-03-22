@@ -455,7 +455,7 @@ div.kcnavImporterSettingsWrap select.suggestion {
 #divAutoBonus .note {
 	color: red;
 }
-#divAutoBonus .tooltip {
+span.tooltip {
 	text-decoration: underline dotted 1px;
 	cursor: help;
 }

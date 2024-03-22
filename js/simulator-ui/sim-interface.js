@@ -714,17 +714,20 @@ var SIM = {
 				}
 			}
 			
-			if (node.formationOverride) {
-				fleetF.setFormation(node.formationOverride,dataInput.fleetF.combineType);
-				if (+node.formationOverride < 10 && fleetF.combinedWith) fleetF.combinedWith.setFormation(node.formationOverride);
-			} else {
-				fleetF.setFormation(dataInput.fleetF.formation,dataInput.fleetF.combineType);
-			}
+			let formation = +node.formationOverride || +dataInput.fleetF.formation;
 			if (node.formationUseLAIfNoSpAttack && !canSpecialAttackUnique(fleetF.ships[0],node.NBOnly,true)) {
-				let formation = fleetF.combinedWith && !node.NBOnly ? 14 : 1;
-				fleetF.setFormation(formation,dataInput.fleetF.combineType);
-				if (+formation < 10 && fleetF.combinedWith) fleetF.combinedWith.setFormation(formation);
+				formation = fleetF.combinedWith && !node.NBOnly ? 14 : 1;
 			}
+			if (!dataInput.allowAnyFormation) {
+				if (!fleetF.combinedWith && fleetF.ships.filter(ship => !ship.retreated && ship.HP > 0).length < 4) formation = 1;
+				if (node.NBOnly && fleetF.combinedWith && fleetF.combinedWith.ships.filter(ship => !ship.retreated && ship.HP > 0).length < 4) formation = 1;
+				if (formation == 3 && !fleetF.combinedWith && fleetF.ships.filter(ship => !ship.retreated && ship.HP > 0).length < 5) formation = 2;
+				if (node.NBOnly && formation == 3 && fleetF.combinedWith && fleetF.combinedWith.ships.filter(ship => !ship.retreated && ship.HP > 0).length < 5) formation = 2;
+				if (formation == 13 && fleetF.combinedWith && fleetF.combinedWith.ships.filter(ship => !ship.retreated && ship.HP > 0).length < 5) formation = 11;
+				if (formation == 14 && fleetF.combinedWith && fleetF.combinedWith.ships.filter(ship => !ship.retreated && ship.HP > 0).length < 4) formation = 12;
+			}
+			fleetF.setFormation(formation,dataInput.fleetF.combineType);
+			if (+formation < 10 && fleetF.combinedWith) fleetF.combinedWith.setFormation(formation);
 			
 			let shipsAll = fleetF.combinedWith ? fleetF.ships.concat(fleetF.combinedWith.ships) : fleetF.ships;
 			for (let ship of shipsAll) {
