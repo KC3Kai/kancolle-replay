@@ -1,7 +1,7 @@
 {
 	"world": 58,
 	"mapnum": 4,
-	"date": "2024-03-21",
+	"date": "2024-03-25",
 	"note": "WIP (LBAS incomplete, may be inaccurate)",
 	"listBonus": [
 		{
@@ -76,10 +76,17 @@
 	],
 	"listBonusLBAS": [
 		{
-			"nodesExclude": ["G","S","Z"],
+			"nodesExclude": ["C","G","O","S","V","Z"],
 			"bonuses": [
-				{ "dmg": 1.2, "basewide": 1, "requireEquipId": [170,178,395,492,493,504] },
+				{ "dmg": 1.166, "basewide": 1, "requireEquipId": [170,178,395,492,493,504] },
 				{ "dmg": 1.2, "basewide": 1, "requireEquipId": [388,396] }
+			]
+		},
+		{
+			"nodes": ["C","O","V"],
+			"bonuses": [
+				{ "dmg": 1.25, "basewide": 1, "requireEquipId": [170,178,395,492,493,504] },
+				{ "dmg": 1.45, "basewide": 1, "requireEquipId": [388,396] }
 			]
 		},
 		{

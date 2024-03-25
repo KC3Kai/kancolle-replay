@@ -1918,6 +1918,7 @@ CVL.prototype.canASW = function(isOASW) {
 	return false;
 }
 CVL.prototype.canOASW = function() {
+	if (this.isFaraway) return false;
 	if (!this.equips.find(eq => [DIVEBOMBER,TORPBOMBER,AUTOGYRO,ASWPLANE].indexOf(eq.type) != -1 && eq.ASW)) return false;
 	if (this.alwaysOASW) return true;
 	
