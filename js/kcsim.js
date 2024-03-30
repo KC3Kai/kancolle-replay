@@ -205,6 +205,7 @@ var SIMCONSTS = {
 	yamatoSpecial3Rate: 80,
 	yamatoSpecial2Rate: 80,
 	subFleetAttackRate: 80,
+	subFleetAttack2AtkRate: 60,
 	nightZuiunCIRate: 60,
 	arcticCamoAr: 0,
 	arcticCamoEva: 0,
@@ -1305,12 +1306,19 @@ function getSpecialAttackShips(ships,attackSpecial,shipCurrent) {
 		attackers = [ships[0], ships[1]];
 	} else if (attackSpecial == 200) {
 		attackers = [shipCurrent,shipCurrent];
-	} else if (attackSpecial == 300) {
-		attackers = [ships[1], ships[2], ships[1], ships[2]];
-	} else if (attackSpecial == 301) {
-		attackers = [ships[2], ships[3], ships[2], ships[3]];
-	} else if (attackSpecial == 302) {
-		attackers = [ships[1], ships[3], ships[1], ships[3]];
+	} else if ([300,301,302].includes(attackSpecial)) {
+		let ship1, ship2;
+		if (attackSpecial == 300) {
+			ship1 = ships[1]; ship2 = ships[2];
+		} else if (attackSpecial == 301) {
+			ship1 = ships[2]; ship2 = ships[3];
+		} else if (attackSpecial == 302) {
+			ship1 = ships[1]; ship2 = ships[3];
+		}
+		attackers = [ship1];
+		if (ship1.LVL >= 75 && (ship1.equiptypes[SUBRADAR] || Math.random() < SIMCONSTS.subFleetAttack2AtkRate/100)) attackers.push(ship1);
+		attackers.push(ship2);
+		if (ship2.LVL >= 75 && (ship2.equiptypes[SUBRADAR] || Math.random() < SIMCONSTS.subFleetAttack2AtkRate/100)) attackers.push(ship2);
 	} else if (attackSpecial == 400) {
 		attackers = [ships[0], ships[1], ships[2]];
 	} else if (attackSpecial == 401) {
