@@ -6102,7 +6102,7 @@ var EQDATA = {
 	527: {
 		name: 'Type 281 Radar',
 		nameJP: 'Type281 レーダー',
-		added: '2024-03-30',
+		added: '2024-03-28',
 		type: RADARL,
 		AA: 7,
 		ACC: 1,
@@ -6112,7 +6112,7 @@ var EQDATA = {
 	528: {
 		name: 'Type 274 Fire Control Radar',
 		nameJP: 'Type274 射撃管制レーダー',
-		added: '2024-03-30',
+		added: '2024-03-28',
 		type: RADARL,
 		FP: 2,
 		AA: 3,
