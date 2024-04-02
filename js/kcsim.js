@@ -1504,6 +1504,8 @@ function shellPhaseC(order1,order2,targets,APIhou,isOASW) {
 			if (isOASW) {
 				targetData = shellPhaseTarget(order1[i],[],targets.subsalive2.concat(targets.subsalive2C || []),isOASW);
 				shellPhaseAttack(order1[i],targetData,APIhou);
+				targets.subsalive2 = targets.subsalive2.filter(ship => ship.HP > 0);
+				targets.subsalive2C = targets.subsalive2C.filter(ship => ship.HP > 0);
 			} else if (targets.alive2.length + targets.alive2C.length && canSpecialAttack(order1[i])) {
 				let ships = getSpecialAttackShips(order1[i].fleet.ships,order1[i].attackSpecial,order1[i]);
 				let k=0;
@@ -1527,6 +1529,8 @@ function shellPhaseC(order1,order2,targets,APIhou,isOASW) {
 			if (isOASW) {
 				targetData = shellPhaseTarget(order2[i],[],targets.subsalive1.concat(targets.subsalive1C || []),isOASW);
 				shellPhaseAttack(order2[i],targetData,APIhou);
+				targets.subsalive1 = targets.subsalive1.filter(ship => ship.HP > 0);
+				targets.subsalive1C = targets.subsalive1C.filter(ship => ship.HP > 0);
 			} else {
 				var targetData, targetCFirst = targets.alive1C && Math.random() < .39;
 				if (targetCFirst) {
