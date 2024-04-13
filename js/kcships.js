@@ -1611,6 +1611,11 @@ Ship.prototype.getAACItype = function(atypes) {
 		if (this.equips.find(eq => eq.mid == 502 || eq.mid == 503) && concentrated && atypes[A_AIRRADAR]) types.push(46);
 	}
 	
+	if (this.sclass == 23 && SHIPDATA[this.mid].AA >= 70) { //CK3H
+		let numCK3H = this.equips.filter(eq => eq.mid == 529).length;
+		if (numCK3H >= 2 || (numCK3H && (this.equips.find(eq => eq.mid == 505) || this.equips.find(eq => eq.btype == B_RADAR && eq.AA >= 4)))) types.push(47);
+	}
+	
 	var add6 = false;
 	if (this.type=='BB'||this.type=='BBV'||this.type=='FBB') {  //is BB
 		if (atypes[A_GUN] && atypes[A_TYPE3SHELL] && atypes[A_AAFD]) {
