@@ -448,6 +448,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (eq.mid == 525 || eq.mid == 526) {
 			installeqs.T4 = installeqs.T4 + 1 || 1;
 			installeqs.T4stars = installeqs.T4stars + (eq.level || 0) || (eq.level || 0);
+			this.hasDH3 = true;
 		}
 		if (eq.mid == 526) installeqs.T4K = installeqs.T4K + 1 || 1;
 		if (eq.mid == 126) this.numWG = this.numWG + 1 || 1;
