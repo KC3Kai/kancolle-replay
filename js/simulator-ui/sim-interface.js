@@ -344,10 +344,9 @@ var SIM = {
 			
 			if (shipInput.equips) {
 				let r = this._getSimEquipLists(shipInput.equips);
-				if (isSupport) r.profs = [];
-				shipSim.loadEquips(r.equips,r.improves,r.profs,!shipInput.includesEquipStats);
+				shipSim.loadEquips(r.equips,r.improves,r.profs,!shipInput.includesEquipStats,isSupport);
 			} else if (sdata.EQUIPS) {
-				shipSim.loadEquips(sdata.EQUIPS,[],[],true);
+				shipSim.loadEquips(sdata.EQUIPS,[],[],true,isSupport);
 			}
 			for (let i=shipSim.PLANESLOTS.length; i<shipSim.equips.length; i++) {
 				shipSim.PLANESLOTS.push(0);

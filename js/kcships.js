@@ -363,7 +363,7 @@ function Ship(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 		this.isInstall = true;
 	}
 }
-Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
+Ship.prototype.loadEquips = function(equips,levels,profs,addstats,isSupport) {
 	if (!equips || this.equips.length > 0) return;  //don't load if already have equips, do removeEquips() first
 	var atypes = {};
 	var installeqs = {DH1:0,DH2:0,DH3:0,TDH:0,TDH11:0,WG:0,AP:0,T3:0,SB:0,DB:0,DH1stars:0,DH3stars:0};
@@ -372,7 +372,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	var aswPenetrate = 0;
 	for (var i=0; i<equips.length; i++){
 		if (!equips[i]) continue;
-		var eq = new Equip(equips[i],levels[i],profs[i]);
+		var eq = new Equip(equips[i],(isSupport ? 0 : levels[i]),(isSupport ? 0 : profs[i]));
 		
 		if (eq.RNG && eq.RNG > this.RNG) this.RNG = eq.RNG;
 		if (eq.ACC) this.ACC += eq.ACC;
@@ -1426,7 +1426,7 @@ function WGpower(num) {
 }
 
 Ship.prototype.shellPower = function(target,base) {
-	var bonus = (this.improves.Pshell)? Math.floor(this.improves.Pshell) : 0;
+	var bonus = (this.improves.Pshell)? this.improves.Pshell : 0;
 	//var shellbonus = (this.fleet && this.fleet.formation.shellbonus!==undefined)? this.fleet.formation.shellbonus : 5;
 	var shellbonus = (base != null)? base+5 : 5;
 	if (target && target.isInstall) {
@@ -1454,7 +1454,7 @@ Ship.prototype.shellPower = function(target,base) {
 }
 
 Ship.prototype.NBPower = function(target) {
-	var bonus = (this.improves.Pnb)? Math.floor(this.improves.Pnb) : 0;
+	var bonus = (this.improves.Pnb)? this.improves.Pnb : 0;
 	if (target && target.isInstall) {
 		let fp = ((this.isSub)? this.FP + 30 : this.FP) + bonus;
 		switch (target.installtype) {
@@ -1494,7 +1494,7 @@ Ship.prototype.ASWPower = function() {
 	if (MECHANICS.eqBonusASW) {
 		equipASW += this.statsEqBonus.ASW || 0;
 	}
-	var bonus = (this.improves.Pasw)? Math.floor(this.improves.Pasw) : 0;
+	var bonus = (this.improves.Pasw)? this.improves.Pasw : 0;
 	var synergyMod = 1;
 	if (MECHANICS.aswSynergy) {
 		if (hasdcP && hasdcO) synergyMod *= (hassonarS ? 1.25 : 1.1);
@@ -1849,7 +1849,7 @@ CV.prototype.shellPower = function(target,base) {
 	}
 	var bonus = (base||0) + 5;
 	if (target && target.isInstall) tp = 0;
-	var improvebonus = (this.improves.Pshell)? Math.floor(this.improves.Pshell) : 0;
+	var improvebonus = (this.improves.Pshell)? this.improves.Pshell : 0;
 	let fp = this.FP + bonus + improvebonus;
 	if (installOnly) {
 		switch (target.installtype) {
@@ -1975,8 +1975,8 @@ function AO(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
 };
 AO.prototype = Object.create(Ship.prototype);
-AO.prototype.loadEquips = function(equips,levels,profs,addstats) {
-	Ship.prototype.loadEquips.call(this,equips,levels,profs,addstats);
+AO.prototype.loadEquips = function(equips,levels,profs,addstats,isSupport) {
+	Ship.prototype.loadEquips.call(this,equips,levels,profs,addstats,isSupport);
 	
 	if (this.canAirAttack && this.equips.find(eq => eq.type == TORPBOMBER || eq.type == DIVEBOMBER)) {
 		this.planeasw = 2;
@@ -2252,6 +2252,10 @@ Equip.prototype.setImprovement = function(level) {
 	}
 	if ([10,66,71,220,275,358,464,524].includes(this.mid)) {
 		this.improves.Pshell = .2*level;
+		this.improves.Pnb = .2*level;
+	}
+	if (this.type == TORPEDOSS) {
+		this.improves.Ptorp = .2*level;
 		this.improves.Pnb = .2*level;
 	}
 	
