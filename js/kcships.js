@@ -874,9 +874,11 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats,isSupport) {
 	if (this.equiptypes[AAGUN]) this.ptAccMod *= 1.45;
 	if (this.equiptypes[AAGUN] >= 2) this.ptAccMod *= 1.35;
 	if (this.equiptypes[PICKET]) this.ptAccMod *= 1.75;
-	if (this.equiptypes[DIVEBOMBER]) this.ptAccMod *= 1.4;
+	if (this.equiptypes[DIVEBOMBER]) this.ptAccMod *= 1.38;
+	if (this.equiptypes[DIVEBOMBER] >= 2) this.ptAccMod *= 1.2;
 	if (this.equiptypes[SEAPLANEBOMBER] || this.equiptypes[SEAPLANEFIGHTER]) this.ptAccMod *= 1.5;
 	if (numAD) this.ptAccMod *= 1.45;
+	if (numAD >= 2 || installeqs.T4 >= 2) this.ptAccMod *= 1.3;
 	
 	if (this.repairs) this.repairsOrig = this.repairs.slice();
 	

@@ -4395,6 +4395,36 @@
 			{
 				"bonus": { "kaih": 1 },
 				"shipBase": [614]
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipClass": [61],
+				"level": 7
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipBase": [614],
+				"level": 7
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipClass": [61],
+				"level": 8
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipClass": [61],
+				"level": 9
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipClass": [61],
+				"level": 10
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"shipBase": [614],
+				"level": 10
 			}
 		]
 	},
@@ -5913,6 +5943,18 @@
 				"bonus": { "houg": 2, "kaih": 2, "houm": 2 },
 				"shipClass": [79],
 				"requiresId": [245,246,468]
+			},
+			{
+				"bonus": { "kaih": 1, "houm": 1 },
+				"shipClass": [79],
+				"requiresId": [468],
+				"requiresIdLevel": 9
+			},
+			{
+				"bonus": { "houg": 1, "kaih": 1, "houm": 1 },
+				"shipClass": [79],
+				"requiresId": [468],
+				"requiresIdLevel": 10
 			}
 		]
 	},
@@ -5941,6 +5983,11 @@
 				"bonus": { "houg": 1, "houm": 1 },
 				"shipClass": [79],
 				"level": 8
+			},
+			{
+				"bonus": { "tyku": 1 },
+				"shipClass": [79],
+				"level": 9
 			},
 			{
 				"bonus": { "houm": 1 },
@@ -6134,6 +6181,32 @@
 				"bonus": { "houg": 1, "houm": 1 },
 				"shipCountry": ["FR"],
 				"level": 10
+			},
+			{
+				"bonus": { "houm": 2 },
+				"shipClass": [79],
+				"requiresId": [468],
+				"requiresIdLevel": 9
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipClass": [79],
+				"requiresId": [468],
+				"requiresIdLevel": 10
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipClass": [79],
+				"level": 7,
+				"requiresId": [468],
+				"requiresIdLevel": 10
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"shipClass": [79],
+				"level": 9,
+				"requiresId": [468],
+				"requiresIdLevel": 10
 			}
 		]
 	},
@@ -7795,6 +7868,122 @@
 			{
 				"bonus": { "houm": 1 },
 				"shipCountry": ["GB"],
+				"level": 10
+			}
+		]
+	},
+	{
+		"ids": [76,114],
+		"bonuses": [
+			{
+				"bonus": { "houg": 1 },
+				"shipCountry": ["DE"]
+			}
+		]
+	},
+	{
+		"ids": [114],
+		"bonuses": [
+			{
+				"bonus": { "houg": 1 },
+				"shipCountry": ["DE"],
+				"level": 7
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipCountry": ["DE"],
+				"level": 8
+			},
+			{
+				"bonus": { "souk": 1 },
+				"shipCountry": ["DE"],
+				"level": 9
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipCountry": ["DE"],
+				"level": 10
+			}
+		]
+	},
+	{
+		"ids": [123],
+		"bonuses": [
+			{
+				"bonus": { "houg": 1 },
+				"shipCountry": ["DE"],
+				"level": 5
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipCountry": ["DE"],
+				"level": 7
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipCountry": ["DE"],
+				"level": 9
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipCountry": ["DE"],
+				"level": 10
+			}
+		]
+	},
+	{
+		"ids": [124],
+		"bonuses": [
+			{
+				"bonus": { "kaih": 1 },
+				"shipCountry": ["DE"],
+				"requiresId": [76,114,123]
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"shipCountry": ["DE"],
+				"level": 8,
+				"requiresId": [123]
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipCountry": ["DE"],
+				"level": 10,
+				"requiresId": [123]
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipCountry": ["DE"],
+				"level": 7
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipCountry": ["DE"],
+				"level": 8
+			},
+			{
+				"bonus": { "tyku": 1 },
+				"shipCountry": ["DE"],
+				"level": 9
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipCountry": ["DE"],
+				"level": 10
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipCountry": ["IT"],
+				"level": 8
+			},
+			{
+				"bonus": { "tyku": 1 },
+				"shipCountry": ["IT"],
+				"level": 9
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipCountry": ["IT"],
 				"level": 10
 			}
 		]
