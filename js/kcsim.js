@@ -491,7 +491,7 @@ function shell(ship,target,APIhou,attackSpecial,combinedAll) {
 		if (NERFPTIMPS) {
 			acc *= ship.ptAccMod/.7;
 		} else {
-			acc = .42*acc + .24;
+			acc = (.3*acc + Math.sqrt(acc*100)/100 + .15)*1.2;
 			acc *= ship.ptAccMod || 1;
 			if (ship.fleet.formation.id == 6) acc *= 1.2;
 		}
@@ -771,7 +771,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 		if (NERFPTIMPS) {
 			acc *= ship.ptAccMod/.7;
 		} else {
-			acc = (.42*acc + .24)*.7;
+			acc = (.3*acc + Math.sqrt(acc*100)/100 + .15)*1.2*.7;
 			acc *= ship.ptAccMod || 1;
 			if (ship.fleet.formation.id == 6) acc *= 1.2;
 		}
@@ -1755,7 +1755,7 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 		
 		if (target.isPT) {
 			if (!NERFPTIMPS) {
-				acc = .42*acc + .24;
+				acc = (.3*acc + Math.sqrt(acc*100)/100 + .15)*1.2;
 				acc *= .7;
 			}
 			if (BREAKPTIMPS && ship.type == 'DD') acc = 0;
