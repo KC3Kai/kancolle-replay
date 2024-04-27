@@ -2935,8 +2935,11 @@ function airstrikeLBAS(lbas,target,slot,contactMod,contactModLB,isjetphase) {
 	if (MECHANICS.LBASBuff) {
 		acc += .07*(equip.ACC || 0);
 	}
-	if ([444,484].includes(equip.mid)) {
+	if (equip.mid == 444) {
 		if (target.type == 'DD') acc -= .07;
+		if (target.type == 'CL') acc += .07;
+	}
+	if (equip.mid == 484) {
 		if (target.type == 'CL') acc += .07;
 	}
 	if (equip.mid == 453) {
