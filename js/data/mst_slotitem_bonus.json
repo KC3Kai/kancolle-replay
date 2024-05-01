@@ -1023,6 +1023,31 @@
 				"requiresAR": 1,
 				"num": 1,
 				"level": 4
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"shipClass": [54],
+				"level": 6
+			},
+			{
+				"bonus": { "tyku": 1 },
+				"shipClass": [54],
+				"level": 7
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipClass": [54],
+				"level": 8
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"shipClass": [54],
+				"level": 9
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipClass": [54],
+				"level": 10
 			}
 		]
 	},
@@ -1504,6 +1529,56 @@
 			{
 				"bonus": { "houg": 3 },
 				"shipBase": [89]
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipClass": [78],
+				"level": 3
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipClass": [78],
+				"level": 5
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipClass": [78],
+				"level": 7
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"shipClass": [78],
+				"level": 8
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipClass": [78],
+				"level": 9
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipClass": [78],
+				"level": 10
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"shipBase": [89],
+				"level": 3
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipBase": [89],
+				"level": 7
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipBase": [89],
+				"level": 9
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipBase": [89],
+				"level": 10
 			}
 		]
 	},
@@ -7984,6 +8059,41 @@
 			{
 				"bonus": { "houg": 1 },
 				"shipCountry": ["IT"],
+				"level": 10
+			}
+		]
+	},
+	{
+		"ids": [252],
+		"bonuses": [
+			{
+				"bonus": { "kaih": 1 },
+				"shipClass": [78,112],
+				"level": 4
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipClass": [78,112],
+				"level": 6
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipClass": [78,112],
+				"level": 7
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"shipClass": [78,112],
+				"level": 8
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipClass": [78,112],
+				"level": 9
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipClass": [78,112],
 				"level": 10
 			}
 		]
