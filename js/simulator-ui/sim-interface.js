@@ -745,8 +745,14 @@ var SIM = {
 				for (let fleet of [fleetF,fleetF.combinedWith]) {
 					if (!fleet) continue;
 					for (let ship of fleet.ships) {
-						ship.fuelleft -= 10*Math.floor(Math.round(ship.fuel*(ship.fuelleft/10))*(node.addCostFuel || 0))/ship.fuel;
-						ship.ammoleft -= 10*Math.floor(Math.round(ship.ammo*(ship.ammoleft/10))*(node.addCostAmmo || 0))/ship.ammo;
+						let costFuel = Math.floor(Math.round(ship.fuel*(ship.fuelleft/10))*(node.addCostFuel || 0));
+						let costAmmo = Math.floor(Math.round(ship.ammo*(ship.ammoleft/10))*(node.addCostAmmo || 0));
+						if (node.addCostMax != null && node.addCostMax != '') {
+							costFuel = Math.min(node.addCostMax,costFuel);
+							costAmmo = Math.min(node.addCostMax,costAmmo);
+						}
+						ship.fuelleft -= 10*costFuel/ship.fuel;
+						ship.ammoleft -= 10*costAmmo/ship.ammo;
 					}
 				}
 			}

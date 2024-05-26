@@ -288,6 +288,7 @@ var UI_MAIN = Vue.createApp({
 				lbasWaves: [false,false,false,false,false,false],
 				addCostFuel: null,
 				addCostAmmo: null,
+				addCostMax: null,
 				subOnly: false,
 				useNormalSupport: 0,
 				useBalloon: false,
