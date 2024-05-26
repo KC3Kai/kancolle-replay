@@ -818,6 +818,7 @@ window.CONVERT = {
 				formationOverride: +battleUI.formation,
 				addCostFuel: battleUI.addCostFuel/100,
 				addCostAmmo: battleUI.addCostAmmo/100,
+				addCostMax: battleUI.addCostMax,
 				lbas: [],
 				useBalloon: battleUI.useBalloon,
 				useAtoll: battleUI.useAtoll,
