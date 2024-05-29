@@ -1257,7 +1257,7 @@ var EQDATA = {
 		name: '10cm Twin High-Angle Cannon(Late Model)',
 		nameJP: '10cm連装高角砲(砲架)',
 		added: '2013-12-24',
-		type: MAINGUNS, image: 16,
+		type: SECGUN, image: 16,
 		FP: 1,
 		AA: 7,
 		RNG: 1,
