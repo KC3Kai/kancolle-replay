@@ -1006,6 +1006,12 @@
 				<div class="sub" v-show="s.profCritMult!=null">Crit Multiplier: {{s.profCritMult}}</div>
 				<div class="sub" v-show="s.profAir!=null">Air Power: {{s.profAir}}</div>
 			</div></td></tr>
+			<tr><td v-for="s in ships"><div v-show="s.nightContactRates.some(v => v)">
+				<div>Night Contact:</div>
+				<div class="sub" v-show="s.nightContactRates[2]">3+<img style="vertical-align:middle" src="assets/stats/acc.png"/>: {{s.nightContactRates[2]}}%</div>
+				<div class="sub" v-show="s.nightContactRates[1]">2<img style="vertical-align:middle" src="assets/stats/acc.png"/>: {{s.nightContactRates[1]}}%</div>
+				<div class="sub" v-show="s.nightContactRates[0]">1<img style="vertical-align:middle" src="assets/stats/acc.png"/>: {{s.nightContactRates[0]}}%</div>
+			</div></td></tr>
 			<tr><td v-for="s in ships"><div v-show="s.hasImprove">
 				<div>Improvement:</div>
 				<div class="sub" v-show="s.imprShellPow!=null">Shelling Power: {{s.imprShellPow}}</div>
