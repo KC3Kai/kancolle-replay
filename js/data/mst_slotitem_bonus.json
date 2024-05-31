@@ -8258,5 +8258,218 @@
 				"level": 10
 			}
 		]
+	},
+	{
+		"ids": [530],
+		"bonuses": [
+			{
+				"bonus": { "houg": 2 },
+				"shipId": [149,150,151,152,593]
+			},
+			{
+				"bonus": { "houg": 3 },
+				"shipId": [591,954]
+			},
+			{
+				"bonus": { "houg": 4 },
+				"shipId": [592]
+			},
+			{
+				"bonus": { "tyku": 1 },
+				"shipId": [149,150,151,152]
+			},
+			{
+				"bonus": { "tyku": 2 },
+				"shipId": [591,592,954]
+			},
+			{
+				"bonus": { "tyku": 3 },
+				"shipId": [593]
+			},
+			{
+				"bonus": { "houg": 1, "houm": 2 },
+				"shipId": [592]
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipId": [592],
+				"level": 2
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipId": [592],
+				"level": 4
+			},
+			{
+				"bonus": { "souk": 1 },
+				"shipId": [592],
+				"level": 6
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipId": [592],
+				"level": 7
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipId": [592],
+				"level": 8
+			},
+			{
+				"bonus": { "souk": 1 },
+				"shipId": [592],
+				"level": 9
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipId": [592],
+				"level": 10
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipId": [150,152,591,954]
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipId": [150,152,591,954],
+				"level": 2
+			},
+			{
+				"bonus": { "souk": 1 },
+				"shipId": [150,152,591,954],
+				"level": 4
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipId": [150,152,591,954],
+				"level": 6
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipId": [150,152,591,954],
+				"level": 8
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipId": [150,152,591,954],
+				"level": 10
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipId": [149,151,593],
+				"level": 4
+			},
+			{
+				"bonus": { "souk": 1 },
+				"shipId": [149,151,593],
+				"level": 7
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipId": [149,151,593],
+				"level": 10
+			},
+			{
+				"bonus": { "houg": 3, "houm": 3, "kaih": 3 },
+				"shipId": [592],
+				"requiresSR": 1,
+				"num": 1
+			},
+			{
+				"bonus": { "houm": 2 },
+				"shipId": [592],
+				"num": 2
+			},
+			{
+				"bonus": { "houm": 2 },
+				"shipId": [592],
+				"num": 3
+			},
+			{
+				"bonus": { "houm": 2 },
+				"shipId": [592],
+				"num": 4
+			},
+			{
+				"bonus": { "houg": 2, "houm": 2, "kaih": 2 },
+				"shipId": [149,150,151,152,591,593,954],
+				"requiresSR": 1,
+				"num": 1
+			},
+			{
+				"bonus": { "houg": 3 },
+				"shipId": [152,591,592],
+				"requiresSR": 1,
+				"num": 1
+			},
+			{
+				"bonus": { "houg": 2 },
+				"shipId": [150,954],
+				"requiresSR": 1,
+				"num": 1
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipId": [149,151,593],
+				"requiresSR": 1,
+				"num": 1
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipId": [149,150,151,152,591,592,593,954],
+				"requiresAccR": 1,
+				"num": 1
+			},
+			{
+				"bonus": { "raig": 6 },
+				"shipId": [591,592,593,954],
+				"requiresId": [174],
+				"num": 1
+			},
+			{
+				"bonus": { "raig": 1 },
+				"shipId": [591,592,593,954],
+				"requiresId": [174],
+				"requiresIdLevel": 6,
+				"num": 1
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipId": [591,592,593,954],
+				"requiresId": [174],
+				"requiresIdLevel": 8,
+				"num": 1
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipId": [591,592,593,954],
+				"requiresId": [174],
+				"requiresIdLevel": 10,
+				"num": 1
+			},
+			{
+				"bonus": { "houg": 2, "raig": 2, "houm": 2, "kaih": 3 },
+				"shipId": [591,592,593,954],
+				"requiresAccR": 1,
+				"num": 1
+			},
+			{
+				"bonus": { "houg": 2 },
+				"shipId": [591,592],
+				"requiresAccR": 1,
+				"num": 1
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipId": [593,954],
+				"requiresAccR": 1,
+				"num": 1
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipId": [591,592,593,954],
+				"num": 2
+			}
+		]
 	}
 ]

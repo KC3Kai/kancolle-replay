@@ -884,7 +884,7 @@ var UI_ADDITIONALSTATS = Vue.createApp({
 			console.log(fleetSim);
 			this.active = true;
 			this.ships = [];
-			let aaciAll = [];
+			let aaciAll = [], nightScoutAll = [];
 			let ind = 0;
 			for (let ship of fleetSim.ships) {
 				let stats = {
@@ -927,6 +927,7 @@ var UI_ADDITIONALSTATS = Vue.createApp({
 					modSupply: ship.supplyPostMult ? Math.round(100*ship.supplyPostMult)/100 : null,
 					modAnchorage: ship.anchoragePostMult ? Math.round(100*ship.anchoragePostMult)/100 : null,
 					modDock: ship.dockPostMult ? Math.round(100*ship.dockPostMult)/100 : null,
+					nightContactRates: [0,0,0],
 				};
 				if (ship.AStype().length && ship.canAS()) {
 					stats.asTypes = [];
@@ -995,6 +996,9 @@ var UI_ADDITIONALSTATS = Vue.createApp({
 					aaciMap[0] = { rate: rate, rateOrig: rate, obj: obj };
 					aaciAll.push({ ind: ind, aaciMap: aaciMap });
 				}
+				for (let eq of ship.equips) {
+					if (eq.isnightscout) nightScoutAll.push({ acc: eq.ACC, pos: ship.apiID, los: eq.LOS, lvl: ship.LVL, stats: stats });
+				}
 				stats.hasImprove = !!Object.keys(stats).find(k => k.indexOf('impr') == 0 && stats[k]);
 				this.ships.push(stats);
 				ind++;
@@ -1020,6 +1024,22 @@ var UI_ADDITIONALSTATS = Vue.createApp({
 					}
 				}
 				aaciAll[0].aaciMap[0].obj.rateFleet = Math.round(10000*rateLeft)/100;
+			}
+			nightScoutAll.sort((a,b) => b.acc < a.acc ? -1 : b.acc > a.acc ? 1 : a.pos < b.pos ? -1 : 1);
+			let ncRateLeft = 1;
+			for (let obj of nightScoutAll) {
+				let n = obj.acc >= 3 ? 3 : obj.acc <= 1 ? 1 : 2;
+				let rate = ncRateLeft * Math.min(1,Math.floor(Math.sqrt(obj.lvl)*Math.sqrt(obj.los))/25);
+				obj.stats.nightContactRates[n-1] += rate;
+				ncRateLeft -= rate;
+				if (ncRateLeft <= 0) break;
+			}
+			for (let stats of this.ships) {
+				for (let i=0; i<stats.nightContactRates.length; i++) {
+					if (stats.nightContactRates[i]) {
+						stats.nightContactRates[i] = Math.round(10000*stats.nightContactRates[i])/100;
+					}
+				}
 			}
 			this.fleet.airPower = fleetSim.fleetAirPower();
 			this.fleet.airPowerCombined = null;

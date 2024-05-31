@@ -6136,6 +6136,17 @@ var EQDATA = {
 		ASW: 3,
 		RNG: 1,
 	},
+	530: {
+		name: '35.6cm Twin Gun Mount Kai 3C',
+		nameJP: '35.6cm連装砲改三丙',
+		added: '2024-05-31',
+		type: MAINGUNL,
+		FP: 21,
+		AA: 3,
+		AR: 4,
+		ACC: 3,
+		RNG: 3,
+	},
 	1501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
