@@ -789,6 +789,7 @@ var UI_FLEETEDITOR = Vue.createApp({
 		receiveCloseEquip: function() {
 			UI_FLEETEDITOR.refocusEquip();
 		},
+		// c.One click on the text area for importing deck builder data will select all the data.
 		onclickSelectAll: function(event) {
 			event.target.select();
 		}

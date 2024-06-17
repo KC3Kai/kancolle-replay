@@ -548,6 +548,7 @@ var UI_MAIN = Vue.createApp({
 			UI_FCFSETTINGS.doOpen(this.settingsFCF);
 		},
 		
+		// a. Clipboard copy function on results screen (a'. and simple notification function)
 		onclickCopyResults: function(typeString) {
 			let isJP = document.querySelector('#divMain input[value="ja"]').checked;
 			let text = '';
@@ -580,6 +581,7 @@ var UI_MAIN = Vue.createApp({
 			this.displayNotice('copied');
 		},
 		
+		// a'. and simple notification function
 		displayNotice: function(text) {
 			const notice = document.getElementById('notice');
 			notice.textContent = text;
@@ -1713,6 +1715,7 @@ var UI_AUTOBONUS = Vue.createApp({
 	},
 }).component('vmodal',COMMON.CMP_MODAL).component('vloading',COMMON.CMP_LOADING).mount('#divAutoBonus');
 
+// b.Keyboard shortcuts (for now, for the start of calculation)
 window.addEventListener('keydown', function(event) {
   const key = event.key.toLowerCase();
   switch(key) {
