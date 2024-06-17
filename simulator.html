@@ -400,7 +400,7 @@
 							</table>
 						</div>
 						<div>
-							<div>Avg Resource Per <img src="assets/stats/S.png" alt="S"/>:</div>
+							<div>Avg Resource Per <img src="assets/stats/S.png" alt="S"/>:<img @click="onclickCopyResults('S')" src="assets/commons/content-copy-custom.png" class="copyIcons"></div>
 							<table>
 							<tr><th><img src="assets/stats/fuel.png" alt="Fuel"/></th><td><span class="resultBold">{{results.fuelS}}</span></td></tr>
 							<tr><th><img src="assets/stats/ammo.png" alt="Ammo"/></th><td><span class="resultBold">{{results.ammoS}}</span></td></tr>
@@ -411,7 +411,7 @@
 							</table>
 						</div>
 						<div>
-							<div>Avg Resource Per <img src="assets/stats/flagsunk.png" alt="Flagship Sunk"/>:</div>
+							<div>Avg Resource Per <img src="assets/stats/flagsunk.png" alt="Flagship Sunk"/>:<img @click="onclickCopyResults('Flag')" src="assets/commons/content-copy-custom.png" class="copyIcons"></div>
 							<table>
 							<tr><th><img src="assets/stats/fuel.png" alt="Fuel"/></th><td><span class="resultBold">{{results.fuelSunk}}</span></td></tr>
 							<tr><th><img src="assets/stats/ammo.png" alt="Ammo"/></th><td><span class="resultBold">{{results.ammoSunk}}</span></td></tr>
@@ -473,6 +473,9 @@
 		<div>2017-08-08 - Enemy combined fleet, LBAS</div>
 		<div>2017-03-23 - Fifth slot, separate plane improvement and proficiency, changed save/load code, day soft-cap option</div>
 		<div>2016-10-25 - Major reworking and improving of calculations. Added calculations explanations.</div>
+	</div>
+	<div id="notice">
+		テスト
 	</div>
 	<div id="divFooter">
 		<div>Bug reports/feature requests: <a href="https://github.com/KC3Kai/kancolle-replay/issues">Github</a></div>
@@ -623,7 +626,7 @@
 			<div class="headerImport">Load options:</div>
 			<div>
 				<div class="headerSubImport">From text:</div>
-				<div><textarea cols="20" rows="2" autocomplete="off" v-model="loadCode" @focus="onfocusCode" title="Can use: Simulator's default JSON, Deckbuilder JSON, KC3 Replay JSON"></textarea></div>
+				<div><textarea cols="20" rows="2" autocomplete="off" v-model="loadCode" @click="onclickSelectAll" @focus="onfocusCode" title="Can use: Simulator's default JSON, Deckbuilder JSON, KC3 Replay JSON"></textarea></div>
 				<div>
 					<input type="button" value="Load" @click="onclickLoadCode"/>
 					<span v-show="codeIsDeckbuilder"> Fleet: <select v-model.number="loadCodeFleet">
@@ -1071,7 +1074,7 @@
 			</div>
 			<div class="sectionWrap">
 				<div class="sectionLeft">
-					<div><textarea ref="textImport" cols="30" rows="2" autocomplete="off" v-model="textImport"></textarea></div>
+					<div><textarea ref="textImport" cols="30" rows="2" autocomplete="off" @click="onclickSelectAll" v-model="textImport"></textarea></div>
 					<div>
 						<div><input type="button" value="Import" @click="onclickImport"/></div>
 						<div class="sectionWrap">
@@ -1087,7 +1090,7 @@
 					</div>
 				</div>
 				<div>
-					<div><textarea ref="textExport" cols="30" rows="2" autocomplete="off" v-model="textExport"></textarea></div>
+					<div><textarea ref="textExport" cols="30" rows="2" autocomplete="off" @click="onclickSelectAll" v-model="textExport"></textarea></div>
 					<div><input type="button" value="Export Text" @click="onclickExport"/></div>
 					<div><input type="button" value="Open in DeckBuilder" @click="onclickOpenDb"/><input type="button" value="Open in LBAS Sim" @click="onclickOpenLBASSim"/></div>
 				</div>

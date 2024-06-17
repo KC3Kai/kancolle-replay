@@ -64,6 +64,9 @@ div.fleet div.iconForm {
 div.fleet div.iconForm img {
 	height: 40px;
 }
+img.copyIcons {
+	cursor: pointer;
+}
 
 #divBattles {
 	width: fit-content;
@@ -466,6 +469,23 @@ span.tooltip {
 }
 #divAutoBonus div.autoBonusMainFoot > div:last-child {
 	margin-left: auto;
+}
+#notice {
+	position: fixed;
+	bottom: 30px;
+	right: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 190px;
+	height: 65px;
+	border: 2px solid #6ae3ff;
+	border-right: none;
+	font-size: 15px;
+	font-weight: 600;
+	color: #ffffff;
+	background-color: #4EABF5;
+	opacity: 0;
 }
 span.autoBonusStatus {
 	font-weight: bold;

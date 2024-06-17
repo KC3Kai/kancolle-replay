@@ -789,6 +789,9 @@ var UI_FLEETEDITOR = Vue.createApp({
 		receiveCloseEquip: function() {
 			UI_FLEETEDITOR.refocusEquip();
 		},
+		onclickSelectAll: function(event) {
+			event.target.select();
+		}
 	},
 }).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divFleetEditor');
 

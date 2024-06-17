@@ -547,6 +547,47 @@ var UI_MAIN = Vue.createApp({
 		onclickSetFCF: function() {
 			UI_FCFSETTINGS.doOpen(this.settingsFCF);
 		},
+		
+		onclickCopyResults: function(typeString) {
+			let isJP = document.querySelector('#divMain input[value="ja"]').checked;
+			let text = '';
+			
+			const results = this.results;
+			const retreat_rate = Math.floor(results.retreat * 1000) / 10;
+			const s_rate = Math.floor(results.rankS * 1000) / 10;
+			const flagSunk_rate = Math.floor(results.flagSunk * 1000) / 10;
+			if(typeString === 'S') {
+				if(isJP) {
+					text = `撤退率: ${retreat_rate}%, S率: ${s_rate}%\nS勝利あたり\n燃料:   ${results.fuelS}\n弾薬:   ${results.ammoS}\n鋼材:   ${results.steelS}\nボーキ: ${results.bauxS}\nバケツ: ${results.bucketS}`;
+				} else {
+					text = `retreat: ${retreat_rate}%, S rate: ${s_rate}%\nAvg Resource Per S\nfuel:   ${results.fuelS}\nammo:   ${results.ammoS}\nsteel:  ${results.steelS}\nbauX:   ${results.bauxS}\nbucket: ${results.bucketS}`;
+				}
+			} else if(typeString === 'Flag') {
+				if(isJP) {
+					text = `撤退率: ${retreat_rate}%, 旗艦撃沈率: ${flagSunk_rate}%\n旗艦撃沈あたり\n燃料:   ${results.fuelSunk}\n弾薬:   ${results.ammoSunk}\n鋼材:   ${results.steelSunk}\nボーキ: ${results.bauxSunk}\nバケツ: ${results.bucketSunk}`;
+				} else {
+					text = `retreat: ${retreat_rate}%, Flagship Sunk rate: ${flagSunk_rate}%\nAvg Resource Per Flagship Sunk\nfuel:   ${results.fuelSunk}\nammo:   ${results.ammoSunk}\nsteel:  ${results.steelSunk}\nbauX:   ${results.bauxSunk}\nbucket: ${results.bucketSunk}`;
+				}
+			}
+			let textarea = document.createElement('textarea');
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = 0;
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('Copy');
+      document.body.removeChild(textarea);
+			this.displayNotice('copied');
+		},
+		
+		displayNotice: function(text) {
+			const notice = document.getElementById('notice');
+			notice.textContent = text;
+			notice.style.opacity = '1';
+      setTimeout(function() {
+          notice.style.opacity = '0';
+      }, 1000);
+		}
 	},
 }).component('vbattle',{
 	props: ['battle','candelete','isboss'],
@@ -1672,7 +1713,18 @@ var UI_AUTOBONUS = Vue.createApp({
 	},
 }).component('vmodal',COMMON.CMP_MODAL).component('vloading',COMMON.CMP_LOADING).mount('#divAutoBonus');
 
-
+window.addEventListener('keydown', function(event) {
+  const key = event.key.toLowerCase();
+  switch(key) {
+		case 'enter':
+			const focusedElement = document.activeElement;
+			if(focusedElement.tagName !== 'INPUT' && !focusedElement.tagName !== 'TEXTAREA') {
+				UI_MAIN.onclickGo();
+				scrollTo(0, document.querySelector('#divSimStatsButtons input[value="Go"]').getBoundingClientRect().top + window.pageYOffset);
+			}
+			break;
+	}
+});
 
 document.body.onunload = function() {
 	if (UI_MAIN.canSave) {
