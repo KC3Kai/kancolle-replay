@@ -1,15 +1,19 @@
 #divShipSelMain, #divEquipSelMain {
 	background-color: #EDE6D8;
 	width: 720px;
-	height: 560px;
+	height: 760px;
 	border: 1px solid transparent;
 	box-shadow: 0 0 5px black;
+}
+#divEquipSelMain {
+	width: 1200px;
 }
 #divShipSelSearch, #divEquipSelSearch {
 	margin-left: 30px;
 	margin-top: 15px;
 }
 #divShipSelResults, #divEquipSelResults {
+	overscroll-behavior: none;
 	overflow-y: scroll;
 	height: 504px;
 }
@@ -75,7 +79,8 @@ div.selButtonBack > :last-child {
 }
 
 #divShipSelButtonsShip {
-	max-height: 500px;
+	max-height: 700px;
+	overscroll-behavior: none;
 	overflow-y: scroll;
 	margin-left: 30px;
 	margin-top: 15px;
@@ -83,7 +88,7 @@ div.selButtonBack > :last-child {
 	flex-basis: 0;
 	flex-wrap: wrap;
 	font-family: Verdana,Arial,sans-serif;
-    font-size: 1.1em;
+  font-size: 1.1em;
 }
 #divShipSelButtonsShip div.remodelButtonWrap {
 	display: flex;
@@ -102,25 +107,34 @@ div.selButtonBack > :last-child {
 }
 
 #divEquipSelButtonsEquip {
-	max-height: 500px;
+	overscroll-behavior: none;
+	max-height: 700px;
 	overflow-y: scroll;
 	margin: 15px 30px;
 	font-family: Verdana,Arial,sans-serif;
-    font-size: 1.1em;
+  font-size: 1.1em;
 }
 #divEquipSelButtonsEquip div.equipButtonWrap {
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
+	flex-wrap: wrap;
 	flex-basis: 0;
 	margin-bottom: 30px;
 	font-size: 14px;
 }
 #divEquipSelButtonsEquip div.equipButton {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: calc(25% - 20px);
 	display: flex;
 	border: 1px solid black;
-	margin: 1px;
+	margin: 2px;
 	padding-bottom: 2px;
 	background-color: white;
+	border-right: none;
+	border-bottom: none;
+	font-size: 13px;
 }
 #divEquipSelButtonsEquip div.equipButton:hover {
 	background-color: #78BEB5;
@@ -128,10 +142,9 @@ div.selButtonBack > :last-child {
 }
 #divEquipSelButtonsEquip div.equipButton img {
 	vertical-align: middle;
-	margin-left: 12px;
+	margin-left: 2px;
 	margin-right: 2px;
 }
 #divEquipSelButtonsEquip div.equipButton span {
 	vertical-align: middle;
 }
-

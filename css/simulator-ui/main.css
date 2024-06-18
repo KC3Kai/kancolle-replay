@@ -68,6 +68,10 @@ img.copyIcons {
 	cursor: pointer;
 }
 
+#divMain {
+	width: 1086px;
+	margin: auto;
+}
 #divBattles {
 	width: fit-content;
 }
@@ -196,6 +200,9 @@ div.fleetCompAdd > div {
 input.changed {
 	background-color: yellow;
 }
+input[type="button"] {
+	cursor: pointer;
+}
 
 #divSimStatsButtons {
 	margin-top: 10px;
@@ -241,6 +248,8 @@ div.progressBarInner {
 	display: flex;
 }
 #divResultColsWrap div.resultCol {
+	padding-left: 5px;
+	border-left: 1px solid #e3e3e3;
 	margin-right: 20px;
 }
 #divResultColsWrap div.resultCol > div {
@@ -305,6 +314,8 @@ div.progressBarInner {
 }
 
 #divChangeLog {
+	width: 1086px;
+	margin: auto;
 	margin-top: 20px;
 	font-size: 14px;
 }
@@ -312,6 +323,8 @@ div.progressBarInner {
 	font-weight: bold;
 }
 #divFooter {
+	width: 1086px;
+	margin: auto;
 	margin-top: 20px;
 	font-size: 14px;
 }
