@@ -125,6 +125,10 @@ var UI_MAIN = Vue.createApp({
 			smokeModAirAccF: SIMCONSTS.smokeModAirAccF.slice(),
 			smokeModAirAccE: SIMCONSTS.smokeModAirAccE.slice(),
 			enableRangeWeights: SIMCONSTS.enableRangeWeights,
+			overrideSupportChanceDayN: SIMCONSTS.overrideSupportChanceDayN,
+			overrideSupportChanceDayB: SIMCONSTS.overrideSupportChanceDayB,
+			overrideSupportChanceNightN: SIMCONSTS.overrideSupportChanceNightN,
+			overrideSupportChanceNightB: SIMCONSTS.overrideSupportChanceNightB,
 		},
 		settingsFCF: {
 			los: null,

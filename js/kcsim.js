@@ -269,6 +269,10 @@ var SIMCONSTS = {
 	},
 	eqBonusAAModShip: .75,
 	eqBonusAAModFleet: 1,
+	overrideSupportChanceDayN: null,
+	overrideSupportChanceDayB: null,
+	overrideSupportChanceNightN: null,
+	overrideSupportChanceNightB: null,
 }
 SIMCONSTS.vanguardEvShellDDMod = SIMCONSTS.vanguardEvShellDDModNormal.slice();
 SIMCONSTS.vanguardEvTorpDDMod = SIMCONSTS.vanguardEvTorpDDModNormal.slice();
@@ -3471,7 +3475,18 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 	
 	//support phase
 	if (Fsupport && (!NBonly || (MECHANICS.LBASBuff && Fsupport.supportType != 1)) && !aironly && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length > 0) {
-		var chance = Fsupport.supportChance(Fsupport.supportBoss);
+		var chance;
+		if (SIMCONSTS.overrideSupportChanceDayN != null && SIMCONSTS.overrideSupportChanceDayN !== '' && !NBonly && !Fsupport.supportBoss) {
+			chance = SIMCONSTS.overrideSupportChanceDayN/100;
+		} else if (SIMCONSTS.overrideSupportChanceDayB != null && SIMCONSTS.overrideSupportChanceDayB !== '' && !NBonly && Fsupport.supportBoss) {
+			chance = SIMCONSTS.overrideSupportChanceDayB/100;
+		} else if (SIMCONSTS.overrideSupportChanceNightN != null && SIMCONSTS.overrideSupportChanceNightN !== '' && NBonly && !Fsupport.supportBoss) {
+			chance = SIMCONSTS.overrideSupportChanceNightN/100;
+		} else if (SIMCONSTS.overrideSupportChanceNightB != null && SIMCONSTS.overrideSupportChanceNightB !== '' && NBonly && Fsupport.supportBoss) {
+			chance = SIMCONSTS.overrideSupportChanceNightB/100;
+		} else {
+			chance = Fsupport.supportChance(Fsupport.supportBoss);
+		}
 		if (Math.random() < chance) {
 			supportPhase(Fsupport.ships,alive2,subsalive2,Fsupport.supportType,BAPI,Fsupport.supportBoss);
 			removeSunk(alive2); removeSunk(subsalive2);

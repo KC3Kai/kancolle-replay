@@ -944,8 +944,9 @@ window.CONVERT = {
 				}
 				if (found) settingsSave[key] = a;
 			} else {
-				if (settingsUI[key] != SIMCONSTS.defaults[key]) {
-					settingsSave[key] = settingsUI[key];
+				let v = settingsUI[key] === '' ? null : settingsUI[key];
+				if (v != SIMCONSTS.defaults[key]) {
+					settingsSave[key] = v;
 				}
 			}
 		}
@@ -1059,7 +1060,7 @@ window.CONVERT = {
 	loadSaveSettings(settingsSave,settingsUI) {
 		for (let key in settingsSave) {
 			if (key == 'mechanics') continue;
-			if (settingsUI[key] == null) continue;
+			if (settingsUI[key] === undefined) continue;
 			if (Array.isArray(settingsUI[key])) {
 				for (let i=0; i<settingsUI[key].length; i++) {
 					if (settingsSave[key][i] != null) settingsUI[key][i] = settingsSave[key][i];
