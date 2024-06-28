@@ -271,6 +271,14 @@
 						<a href="https://docs.google.com/spreadsheets/d/1grAtIhlm2YMN9iyvniJA-j1YNCC-SCnA8q6WUi-Ctpg/edit#gid=0">[2]</a>&nbsp;
 					</div>
 				</div>
+				<div v-show="settings.showAdvanced">
+					<div><span class="subheader">Override Support Fleet Chance:</span></div>
+					<table>
+					<tr><td>Normal (Day):</td><td><input type="number" min="0" max="100" v-model="settings.overrideSupportChanceDayN" :class="getClassSetting('overrideSupportChanceDayN')"/>%</td></tr>
+					<tr><td>Normal (Night):</td><td><input type="number" min="0" max="100" v-model="settings.overrideSupportChanceNightN" :class="getClassSetting('overrideSupportChanceNightN')"/>%</td></tr>
+					<tr><td>Boss:</td><td><input type="number" min="0" max="100" v-model="settings.overrideSupportChanceDayB" :class="getClassSetting('overrideSupportChanceDayB')"/>%</td></tr>
+					</table>
+				</div>
 			</div>
 			<div>
 				<input type="button" value="Restore Defaults" @click="onclickRestoreSettings"/>
