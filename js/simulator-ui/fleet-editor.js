@@ -508,6 +508,9 @@ var UI_FLEETEDITOR = Vue.createApp({
 		updateCode: function() {
 			this.loadCode = JSON.stringify(CONVERT.uiToSaveFleet(this.fleet));
 		},
+		onclickSelectAll: function(event) {
+			event.target.select();
+		},
 		
 		getStatTotal: function(ship,stat) {
 			if (stat == 'range') return Math.max(ship.statsBase.range,ship.statsEquip.range) + (ship.statsBonus.range || 0);

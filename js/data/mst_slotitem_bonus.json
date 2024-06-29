@@ -8576,6 +8576,39 @@
 		]
 	},
 	{
+		"ids": [531],
+		"bonuses": [
+			{
+				"bonus": { "houm": 1 },
+				"level": 4
+			},
+			{
+				"bonus": { "houg": 1 },
+				"level": 5
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"level": 6
+			},
+			{
+				"bonus": { "houm": 1 },
+				"level": 7
+			},
+			{
+				"bonus": { "houg": 1 },
+				"level": 8
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"level": 9
+			},
+			{
+				"bonus": { "houm": 1 },
+				"level": 10
+			}
+		]
+	},
+	{
 		"ids": [533],
 		"bonuses": [
 			{

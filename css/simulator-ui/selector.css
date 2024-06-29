@@ -12,6 +12,7 @@
 #divShipSelResults, #divEquipSelResults {
 	overflow-y: scroll;
 	height: 504px;
+	overscroll-behavior: contain;
 }
 div.selectResult:hover {
 	cursor: pointer;
@@ -84,6 +85,7 @@ div.selButtonBack > :last-child {
 	flex-wrap: wrap;
 	font-family: Verdana,Arial,sans-serif;
     font-size: 1.1em;
+	overscroll-behavior: contain;
 }
 #divShipSelButtonsShip div.remodelButtonWrap {
 	display: flex;
@@ -107,6 +109,7 @@ div.selButtonBack > :last-child {
 	margin: 15px 30px;
 	font-family: Verdana,Arial,sans-serif;
     font-size: 1.1em;
+	overscroll-behavior: contain;
 }
 #divEquipSelButtonsEquip div.equipButtonWrap {
 	display: flex;
