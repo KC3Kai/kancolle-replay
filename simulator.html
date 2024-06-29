@@ -408,7 +408,7 @@
 							</table>
 						</div>
 						<div>
-							<div>Avg Resource Per <img src="assets/stats/S.png" alt="S"/>:</div>
+							<div>Avg Resource Per <img src="assets/stats/S.png" alt="S"/>:<img @click="onclickCopyResults('S')" src="assets/stats/content-copy-custom.png" class="copyIcons" title="Copy to Clipboard"></div>
 							<table>
 							<tr><th><img src="assets/stats/fuel.png" alt="Fuel"/></th><td><span class="resultBold">{{results.fuelS}}</span></td></tr>
 							<tr><th><img src="assets/stats/ammo.png" alt="Ammo"/></th><td><span class="resultBold">{{results.ammoS}}</span></td></tr>
@@ -419,7 +419,7 @@
 							</table>
 						</div>
 						<div>
-							<div>Avg Resource Per <img src="assets/stats/flagsunk.png" alt="Flagship Sunk"/>:</div>
+							<div>Avg Resource Per <img src="assets/stats/flagsunk.png" alt="Flagship Sunk"/>:<img @click="onclickCopyResults('flagsunk')" src="assets/stats/content-copy-custom.png" class="copyIcons" title="Copy to Clipboard"></div>
 							<table>
 							<tr><th><img src="assets/stats/fuel.png" alt="Fuel"/></th><td><span class="resultBold">{{results.fuelSunk}}</span></td></tr>
 							<tr><th><img src="assets/stats/ammo.png" alt="Ammo"/></th><td><span class="resultBold">{{results.ammoSunk}}</span></td></tr>
@@ -439,11 +439,14 @@
 		</div>
 		
 		<hr>
+		
+		<div id="divNotice" v-show="showNoticeCount">{{noticeTxt}}</div>
 	</div>
 	
 	<div id="divOther">
 	<div id="divChangeLog">
 		<div><span class="header">Change Log:</span></div>
+		<div>2024-06-29 - Statistics: Copy text summary to clipboard buttons</div>
 		<div>2024-03-13 - Smoke activation rate provisional formula, see Show Advanced</div>
 		<div>2024-03-05 - Provisional Atoll node setting</div>
 		<div>2024-03-03 - Mark fleet preview ship banner if unknown or changed stats</div>
@@ -631,7 +634,7 @@
 			<div class="headerImport">Load options:</div>
 			<div>
 				<div class="headerSubImport">From text:</div>
-				<div><textarea cols="20" rows="2" autocomplete="off" v-model="loadCode" @focus="onfocusCode" title="Can use: Simulator's default JSON, Deckbuilder JSON, KC3 Replay JSON"></textarea></div>
+				<div><textarea cols="20" rows="2" autocomplete="off" v-model="loadCode" @focus="onfocusCode" @click="onclickSelectAll" title="Can use: Simulator's default JSON, Deckbuilder JSON, KC3 Replay JSON"></textarea></div>
 				<div>
 					<input type="button" value="Load" @click="onclickLoadCode"/>
 					<span v-show="codeIsDeckbuilder"> Fleet: <select v-model.number="loadCodeFleet">
@@ -1079,7 +1082,7 @@
 			</div>
 			<div class="sectionWrap">
 				<div class="sectionLeft">
-					<div><textarea ref="textImport" cols="30" rows="2" autocomplete="off" v-model="textImport"></textarea></div>
+					<div><textarea ref="textImport" cols="30" rows="2" autocomplete="off" v-model="textImport" @click="onclickSelectAll"></textarea></div>
 					<div>
 						<div><input type="button" value="Import" @click="onclickImport"/></div>
 						<div class="sectionWrap">
@@ -1095,7 +1098,7 @@
 					</div>
 				</div>
 				<div>
-					<div><textarea ref="textExport" cols="30" rows="2" autocomplete="off" v-model="textExport"></textarea></div>
+					<div><textarea ref="textExport" cols="30" rows="2" autocomplete="off" v-model="textExport" @click="onclickSelectAll"></textarea></div>
 					<div><input type="button" value="Export Text" @click="onclickExport"/></div>
 					<div><input type="button" value="Open in DeckBuilder" @click="onclickOpenDb"/><input type="button" value="Open in LBAS Sim" @click="onclickOpenLBASSim"/></div>
 				</div>

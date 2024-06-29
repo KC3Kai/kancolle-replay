@@ -173,6 +173,9 @@ var UI_MAIN = Vue.createApp({
 		
 		lang: 'en',
 		canSave: false,
+		
+		showNoticeCount: 0,
+		noticeTxt: '',
 	}),
 	mounted: function() {
 		this.$i18n.locale = localStorage.sim2_lang || 'en';
@@ -524,6 +527,33 @@ var UI_MAIN = Vue.createApp({
 			SIM.cancelRun = true;
 		},
 		
+		onclickCopyResults: function(typeString) {
+			let t = this.$i18n.t;
+			let txt = '';
+			// txt += `${t('results.retreat_rate')}: ${Math.round(this.results.retreat*1000)/10}%, `;
+			if (typeString == 'S') {
+				txt += `${t('results.S_rate')}: ${Math.round(this.results.rankS*1000)/10}%
+${t('results.avg_per_S')}
+${t('results.fuel')}:	${this.results.fuelS}
+${t('results.ammo')}:	${this.results.ammoS}
+${t('results.steel')}:	${this.results.steelS}
+${t('results.baux')}:	${this.results.bauxS}
+${t('results.buckets')}:	${this.results.bucketS}`;
+			} else if (typeString == 'flagsunk') {
+				txt += `${t('results.flagsunk_rate')}: ${Math.round(this.results.flagSunk*1000)/10}%
+${t('results.avg_per_flagsunk')}
+${t('results.fuel')}:	${this.results.fuelSunk}
+${t('results.ammo')}:	${this.results.ammoSunk}
+${t('results.steel')}:	${this.results.steelSunk}
+${t('results.baux')}:	${this.results.bauxSunk}
+${t('results.buckets')}:	${this.results.bucketSunk}`;
+			}
+			navigator.clipboard.writeText(txt);
+			this.noticeTxt = 'Copied to Clipboard';
+			let n = ++this.showNoticeCount;
+			setTimeout(() => n == this.showNoticeCount && (this.showNoticeCount = 0), 1000);
+		},
+		
 		onclickDeckbuilder: function() {
 			UI_DECKBUILDERIMPORTER.doOpen();
 		},
@@ -698,6 +728,8 @@ var UI_DECKBUILDERIMPORTER = Vue.createApp({
 	methods: {
 		doOpen: function() {
 			this.active = true;
+			let dataDb = this.getDataDb();
+			this.textExport = JSON.stringify(dataDb);
 		},
 		
 		getDataDb: function() {
@@ -761,6 +793,9 @@ var UI_DECKBUILDERIMPORTER = Vue.createApp({
 		onclickOpenLBASSim: function() {
 			let dataDb = this.getDataDb();
 			window.open(CONST.urlLBASSim + encodeURI(JSON.stringify(dataDb)));
+		},
+		onclickSelectAll: function(event) {
+			event.target.select();
 		},
 	},
 }).component('vmodal',COMMON.CMP_MODAL).mount('#divDeckbuilderImporter');
