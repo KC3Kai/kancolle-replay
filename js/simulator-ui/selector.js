@@ -1,4 +1,4 @@
-(() => {
+COMMON.promiseI18n.then(() => {
 
 var CONST = window.COMMON.getConst({
 	MAX_RESULTS: 9999,
@@ -471,6 +471,7 @@ COMMON.global.equipSelectorOpen = function(callbackSubmit,callbackClose,keyInit)
 COMMON.global.equipSelectorClose = function() {
 	UI_EQUIPSELECTOR.doClose();
 }
+COMMON.global.selectorInit = init;
 
 
-})();
+})

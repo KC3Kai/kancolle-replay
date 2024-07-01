@@ -1,4 +1,4 @@
-(() => {
+COMMON.promiseI18n.then(() => {
 
 var CONST = window.COMMON.getConst({
 	numBattlesMax: 9,
@@ -549,7 +549,7 @@ ${t('results.baux')}:	${this.results.bauxSunk}
 ${t('results.buckets')}:	${this.results.bucketSunk}`;
 			}
 			navigator.clipboard.writeText(txt);
-			this.noticeTxt = 'Copied to Clipboard';
+			this.noticeTxt = t('copied_to_clipboard');
 			let n = ++this.showNoticeCount;
 			setTimeout(() => n == this.showNoticeCount && (this.showNoticeCount = 0), 1000);
 		},
@@ -658,9 +658,6 @@ ${t('results.buckets')}:	${this.results.bucketSunk}`;
 		},
 	},
 	methods: {
-		getCompName: function(comp) {
-			return this.fleetname + ' - Comp ' + comp.num;
-		},
 		getCompPercent: function(comp) {
 			let total = this.comps.reduce((a,b) => a + Math.max(0,b.rate),0);
 			if (total <= 0) return Math.round(100/this.comps.length);
@@ -709,7 +706,7 @@ var UI_BONUSEDITOR = Vue.createApp({
 			this.active = false;
 		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).mount('#divBonusEditor');
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divBonusEditor');
 
 
 var UI_DECKBUILDERIMPORTER = Vue.createApp({
@@ -798,7 +795,7 @@ var UI_DECKBUILDERIMPORTER = Vue.createApp({
 			event.target.select();
 		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).mount('#divDeckbuilderImporter');
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divDeckbuilderImporter');
 
 
 var UI_KCNAVCOMPIMPORTER = Vue.createApp({
@@ -986,7 +983,7 @@ var UI_KCNAVCOMPIMPORTER = Vue.createApp({
 			}.bind(this),500);
 		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).mount('#divKCNavCompImporter');
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divKCNavCompImporter');
 
 
 var UI_BONUSIMPORTER = Vue.createApp({
@@ -1211,7 +1208,7 @@ var UI_BONUSIMPORTER = Vue.createApp({
 			}.bind(this),500);
 		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).mount('#divBonusImporter');
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divBonusImporter');
 
 
 var UI_BACKUP = Vue.createApp({
@@ -1302,7 +1299,7 @@ var UI_BACKUP = Vue.createApp({
 			window.location.reload();
 		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).mount('#divSimBackup');;
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divSimBackup');;
 
 
 var UI_FCFSETTINGS = Vue.createApp({
@@ -1365,7 +1362,7 @@ var UI_FCFSETTINGS = Vue.createApp({
 			ship.neverFCF = !ship.neverFCF;
 		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).mount('#divFCFSettings');;
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divFCFSettings');;
 
 
 
@@ -1709,7 +1706,7 @@ var UI_AUTOBONUS = Vue.createApp({
 			this.canStart ? this.$refs.txtLoading.stop() : this.$refs.txtLoading.start();
 		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).component('vloading',COMMON.CMP_LOADING).mount('#divAutoBonus');
+}).component('vmodal',COMMON.CMP_MODAL).component('vloading',COMMON.CMP_LOADING).use(COMMON.i18n).mount('#divAutoBonus');
 
 
 
@@ -1721,4 +1718,4 @@ document.body.onunload = function() {
 
 COMMON.UI_MAIN = UI_MAIN; //debug
 
-})();
+})
