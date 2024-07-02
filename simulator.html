@@ -286,6 +286,7 @@
 				</div>
 				<div v-show="settings.showAdvanced">
 					<div><span class="subheader">{{$t('override_support_chance')}}</span></div>
+					<div :style="{'font-style':($i18n.locale=='en' ? 'italic' : '')}">{{$t('override_support_chance_desc')}}</div>
 					<table>
 					<tr><td>{{$t('normal_day')}}</td><td><input type="number" min="0" max="100" v-model="settings.overrideSupportChanceDayN" :class="getClassSetting('overrideSupportChanceDayN')"/>%</td></tr>
 					<tr><td>{{$t('normal_night')}}</td><td><input type="number" min="0" max="100" v-model="settings.overrideSupportChanceNightN" :class="getClassSetting('overrideSupportChanceNightN')"/>%</td></tr>
@@ -406,7 +407,7 @@
 					</div>
 					<div class="resultCol">
 						<div>
-							<div>{{$t('avg_resupply')}}</div>
+							<div><span class="tooltip" :title="$t('avg_resupply_tooltip')">{{$t('avg_resupply')}}</span>:</div>
 							<table>
 							<tr><th><img src="assets/stats/fuel.png" :alt="$t('fuel')"/></th><td>{{results.fuelSupply}}</td></tr>
 							<tr><th><img src="assets/stats/ammo.png" :alt="$t('ammo')"/></th><td>{{results.ammoSupply}}</td></tr>
@@ -424,7 +425,10 @@
 						</div>
 						<div>
 							<div>
-								<i18n-t keypath="avg_resource_per" scope="global"><template v-slot:img><img src="assets/stats/S.png" alt="S"/></template></i18n-t>
+								<i18n-t keypath="avg_resource_per" scope="global">
+									<template v-slot:avg_res><span class="tooltip" :title="$t('avg_resource_tooltip')">{{$t('avg_resource')}}</span></template>
+									<template v-slot:img><img src="assets/stats/S.png" alt="S"/></template>
+								</i18n-t>
 								<img @click="onclickCopyResults('S')" src="assets/stats/content-copy-custom.png" class="copyIcons" :title="$t('copy_to_clipboard')"/>
 							</div>
 							<table>
@@ -438,7 +442,10 @@
 						</div>
 						<div>
 							<div>
-								<i18n-t keypath="avg_resource_per" scope="global"><template v-slot:img><img src="assets/stats/flagsunk.png" alt="$t('flagship_sunk')"/></template></i18n-t>
+								<i18n-t keypath="avg_resource_per" scope="global">
+									<template v-slot:avg_res><span class="tooltip" :title="$t('avg_resource_tooltip')">{{$t('avg_resource')}}</span></template>
+									<template v-slot:img><img src="assets/stats/flagsunk.png" alt="$t('flagship_sunk')"/></template>
+								</i18n-t>
 								<img @click="onclickCopyResults('flagsunk')" src="assets/stats/content-copy-custom.png" class="copyIcons" :title="$t('copy_to_clipboard')"/>
 							</div>
 							<table>
@@ -1013,10 +1020,10 @@
 			<tr><td v-for="s in ships"><div v-show="s.nbPower!=null">{{$t('nb_power')}} {{s.nbPower}}</div></td></tr>
 			<tr><td v-for="s in ships"><div v-show="s.aswPower!=null">{{$t('asw_power')}} {{s.aswPower}}</div></td></tr>
 			<tr><td v-for="s in ships"><div v-show="s.canOASW">{{$t('can_oasw')}}</div></td></tr>
-			<tr><td v-for="s in ships"><div v-show="s.accBasic!=null">{{$t('standard_accuracy')}} {{s.accBasic}}</div></td></tr>
+			<tr><td v-for="s in ships"><div v-show="s.accBasic!=null"><span class="tooltip" :title="$t('standard_accuracy_tooltip')">{{$t('standard_accuracy')}}</span>: {{s.accBasic}}</div></td></tr>
 			<tr><td v-for="s in ships"><div v-show="s.accFit!=null">{{$t('fit_accuracy')}} {{s.accFit}}</div></td></tr>
 			<tr><td v-for="s in ships"><div v-show="s.accFitNight!=null">{{$t('fit_accuracy_night')}} {{s.accFitNight}}</div></td></tr>
-			<tr><td v-for="s in ships"><div v-show="s.evaBasic!=null">{{$t('standard_evasion')}} {{s.evaBasic}}</div></td></tr>
+			<tr><td v-for="s in ships"><div v-show="s.evaBasic!=null"><span class="tooltip" :title="$t('standard_evasion_tooltip')">{{$t('standard_evasion')}}</span>: {{s.evaBasic}}</div></td></tr>
 			<tr><td v-for="s in ships"><div v-show="s.asTypes!=null">
 				<div>{{$t('artillery_spot_rate')}}</div>
 				<div class="sub">{{$t('in_ASP_AS')}}</div>
