@@ -273,6 +273,7 @@
 				</div>
 				<div v-show="settings.showAdvanced">
 					<div><span class="subheader">Override Support Fleet Chance:</span></div>
+					<div style="font-style:italic">(Fleet Communication Antenna bonuses are currently unknown, these settings may be used to experiment with potential effects.)</div>
 					<table>
 					<tr><td>Normal (Day):</td><td><input type="number" min="0" max="100" v-model="settings.overrideSupportChanceDayN" :class="getClassSetting('overrideSupportChanceDayN')"/>%</td></tr>
 					<tr><td>Normal (Night):</td><td><input type="number" min="0" max="100" v-model="settings.overrideSupportChanceNightN" :class="getClassSetting('overrideSupportChanceNightN')"/>%</td></tr>
@@ -391,7 +392,7 @@
 					</div>
 					<div class="resultCol">
 						<div>
-							<div>Avg Resupply:</div>
+							<div><span class="tooltip" title="Includes Main Fleet + Support Fleets + LBAS">Avg Resupply:</span></div>
 							<table>
 							<tr><th><img src="assets/stats/fuel.png" alt="Fuel"/></th><td>{{results.fuelSupply}}</td></tr>
 							<tr><th><img src="assets/stats/ammo.png" alt="Ammo"/></th><td>{{results.ammoSupply}}</td></tr>
@@ -408,7 +409,7 @@
 							</table>
 						</div>
 						<div>
-							<div>Avg Resource Per <img src="assets/stats/S.png" alt="S"/>:<img @click="onclickCopyResults('S')" src="assets/stats/content-copy-custom.png" class="copyIcons" title="Copy to Clipboard"></div>
+							<div><span class="tooltip" title="Includes Resupply + Repair">Avg Resource</span> Per <img src="assets/stats/S.png" alt="S"/>:<img @click="onclickCopyResults('S')" src="assets/stats/content-copy-custom.png" class="copyIcons" title="Copy to Clipboard"></div>
 							<table>
 							<tr><th><img src="assets/stats/fuel.png" alt="Fuel"/></th><td><span class="resultBold">{{results.fuelS}}</span></td></tr>
 							<tr><th><img src="assets/stats/ammo.png" alt="Ammo"/></th><td><span class="resultBold">{{results.ammoS}}</span></td></tr>
@@ -419,7 +420,7 @@
 							</table>
 						</div>
 						<div>
-							<div>Avg Resource Per <img src="assets/stats/flagsunk.png" alt="Flagship Sunk"/>:<img @click="onclickCopyResults('flagsunk')" src="assets/stats/content-copy-custom.png" class="copyIcons" title="Copy to Clipboard"></div>
+							<div><span class="tooltip" title="Includes Resupply + Repair">Avg Resource</span> Per <img src="assets/stats/flagsunk.png" alt="Flagship Sunk"/>:<img @click="onclickCopyResults('flagsunk')" src="assets/stats/content-copy-custom.png" class="copyIcons" title="Copy to Clipboard"></div>
 							<table>
 							<tr><th><img src="assets/stats/fuel.png" alt="Fuel"/></th><td><span class="resultBold">{{results.fuelSunk}}</span></td></tr>
 							<tr><th><img src="assets/stats/ammo.png" alt="Ammo"/></th><td><span class="resultBold">{{results.ammoSunk}}</span></td></tr>
@@ -984,10 +985,10 @@
 			<tr><td v-for="s in ships"><div v-show="s.nbPower!=null">NB Power: {{s.nbPower}}</div></td></tr>
 			<tr><td v-for="s in ships"><div v-show="s.aswPower!=null">ASW Power: {{s.aswPower}}</div></td></tr>
 			<tr><td v-for="s in ships"><div v-show="s.canOASW">Can OASW</div></td></tr>
-			<tr><td v-for="s in ships"><div v-show="s.accBasic!=null">Standard Accuracy: {{s.accBasic}}</div></td></tr>
+			<tr><td v-for="s in ships"><div v-show="s.accBasic!=null"><span class="tooltip" title="Includes Level term + Luck term + equipment stats">Standard Accuracy</span>: {{s.accBasic}}</div></td></tr>
 			<tr><td v-for="s in ships"><div v-show="s.accFit!=null">Fit Accuracy: {{s.accFit}}</div></td></tr>
 			<tr><td v-for="s in ships"><div v-show="s.accFitNight!=null">Fit Accuracy Night: {{s.accFitNight}}</div></td></tr>
-			<tr><td v-for="s in ships"><div v-show="s.evaBasic!=null">Standard Evasion: {{s.evaBasic}}</div></td></tr>
+			<tr><td v-for="s in ships"><div v-show="s.evaBasic!=null"><span class="tooltip" title="Before Formation Mod and soft-cap">Standard Evasion</span>: {{s.evaBasic}}</div></td></tr>
 			<tr><td v-for="s in ships"><div v-show="s.asTypes!=null">
 				<div>Artillery Spot Rate:</div>
 				<div class="sub">(in AS+ / AS)</div>

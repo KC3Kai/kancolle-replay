@@ -1375,6 +1375,9 @@ function getSpecialAttackMod(ship,attackSpecial) {
 		mod = MECHANICS.kongouSpecialBuff3 ? 2.4 : MECHANICS.kongouSpecialBuff2 ? 2.2 : 1.9;
 		if (ENGAGEMENT == 1.2) mod *= 1.25;
 		else if (ENGAGEMENT == .6) mod *= MECHANICS.kongouSpecialBuff2 ? .8 : .75;
+		let numGun = ship.equips.filter(eq => [503,530].includes(eq.mid)).length;
+		if (numGun >= 2) mod *= 1.15;
+		else if (numGun == 1) mod *= 1.11;
 	} else if (attackSpecial == 300 || attackSpecial == 301 || attackSpecial == 302) {
 		mod = 1.2 + 0.04*Math.sqrt(ship.LVL);
 	} else if (attackSpecial == 400) {

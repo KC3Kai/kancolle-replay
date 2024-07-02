@@ -35,6 +35,7 @@ var CONST = window.COMMON.getConst({
 		'warn_debuff_dmg': { txt: 'Warning: "Debuff Dmg" is a legacy setting and may be inaccurate to the mechanic, recommended to modify enemy\'s Armour stat instead.' },
 		'warn_range_weights_f': { txt: 'Warning: Player Fleets - Following range combination weights are unknown and not used: <0>' },
 		'warn_range_weights_e': { txt: 'Warning: Enemy Fleets - Following range combination weights are unknown and not used: <0>' },
+		'warn_special_attack': { txt: 'Note: Special Attack activation rate calculations are unknown and must be set manually, see Show Advanced to review defaults and adjust settings' },
 	},
 	
 	keysSmoke: ['smokeModShellAccF','smokeModShellAccFRadar','smokeModShellAccE','smokeModShellAccERadar','smokeModASWAccF','smokeModASWAccE','smokeModTorpAccF','smokeModTorpAccE','smokeModAirAccF','smokeModAirAccE'],
@@ -596,6 +597,10 @@ var SIM = {
 		
 		if (dataInput.consts && dataInput.consts.enableRangeWeights) {
 			SHELL_RANGE_WEIGHTS.resetMissing();
+		}
+		
+		if (FLEETS1[0] && FLEETS1[0].ships && canSpecialAttackUnique(FLEETS1[0].ships[0],false,true) || canSpecialAttackUnique(FLEETS1[0].ships[0],true,true)) {
+			this._addWarning('warn_special_attack');
 		}
 	},
 	
