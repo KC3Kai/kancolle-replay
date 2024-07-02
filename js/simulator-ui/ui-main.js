@@ -530,23 +530,30 @@ var UI_MAIN = Vue.createApp({
 		onclickCopyResults: function(typeString) {
 			let t = this.$i18n.t;
 			let txt = '';
-			// txt += `${t('results.retreat_rate')}: ${Math.round(this.results.retreat*1000)/10}%, `;
 			if (typeString == 'S') {
-				txt += `${t('results.S_rate')}: ${Math.round(this.results.rankS*1000)/10}%
+				let rateNonS = 1 - this.results.rankS - this.results.retreat;
+				txt += `${t('results.S_rate')}: ${Math.round(this.results.rankS*1000)/10}% (${t('results.retreat_rate')}: ${Math.round(this.results.retreat*1000)/10}%, ${t('results.non_S_rate')}: ${Math.round(rateNonS*1000)/10}%)
 ${t('results.avg_per_S')}
 ${t('results.fuel')}:	${this.results.fuelS}
 ${t('results.ammo')}:	${this.results.ammoS}
 ${t('results.steel')}:	${this.results.steelS}
 ${t('results.baux')}:	${this.results.bauxS}
 ${t('results.buckets')}:	${this.results.bucketS}`;
+				if (this.results.dameconS) {
+					txt += '\n' + t('results.damecon') + ':\t' + this.results.dameconS;
+				}
 			} else if (typeString == 'flagsunk') {
-				txt += `${t('results.flagsunk_rate')}: ${Math.round(this.results.flagSunk*1000)/10}%
+				let rateNonSunk = 1 - this.results.flagSunk - this.results.retreat;
+				txt += `${t('results.flagsunk_rate')}: ${Math.round(this.results.flagSunk*1000)/10}% (${t('results.retreat_rate')}: ${Math.round(this.results.retreat*1000)/10}%, ${t('results.non_flagsunk_rate')}: ${Math.round(rateNonSunk*1000)/10}%)
 ${t('results.avg_per_flagsunk')}
 ${t('results.fuel')}:	${this.results.fuelSunk}
 ${t('results.ammo')}:	${this.results.ammoSunk}
 ${t('results.steel')}:	${this.results.steelSunk}
 ${t('results.baux')}:	${this.results.bauxSunk}
 ${t('results.buckets')}:	${this.results.bucketSunk}`;
+				if (this.results.dameconSunk) {
+					txt += '\n' + t('results.damecon') + ':\t' + this.results.dameconSunk;
+				}
 			}
 			navigator.clipboard.writeText(txt);
 			this.noticeTxt = 'Copied to Clipboard';

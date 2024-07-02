@@ -122,7 +122,9 @@ let messages = {
 		'results': {
 			'retreat_rate': 'Retreat',
 			'S_rate': 'S Rate',
+			'non_S_rate': 'non-S',
 			'flagsunk_rate': 'Flagship Sunk Rate',
+			'non_flagsunk_rate': 'Flagship Not Sunk',
 			'avg_per_S': 'Avg Resource Per S',
 			'avg_per_flagsunk': 'Avg Resource Per Flagship Sunk',
 			'fuel': 'Fuel',
@@ -130,6 +132,7 @@ let messages = {
 			'steel': 'Steel',
 			'baux': 'Bauxite',
 			'buckets': 'Buckets',
+			'damecon': 'Repair Teams',
 		},
 	},
 	ja: {
@@ -186,7 +189,9 @@ let messages = {
 		'results': {
 			'retreat_rate': '撤退率',
 			'S_rate': 'S率',
+			'non_S_rate': 'S以外',
 			'flagsunk_rate': '旗艦撃沈率',
+			'non_flagsunk_rate': '旗艦撃沈以外',
 			'avg_per_S': 'S勝利あたり',
 			'avg_per_flagsunk': '旗艦撃沈あたり',
 			'fuel': '燃料',
@@ -194,6 +199,7 @@ let messages = {
 			'steel': '鋼材',
 			'baux': 'ボーキ',
 			'buckets': 'バケツ',
+			'damecon': '応急修理要員',
 		},
 	},
 }
