@@ -426,6 +426,14 @@
 	"autobonus_node_default": "(default)",
 	"autobonus_debuffed": ", Debuffed",
 	
+	"kc3kai_import_desc_0": "You can import your in-game fleet using KC3Kai's Basic Profile file.",
+	"kc3kai_import_desc_1": "Set up your fleet in-game.",
+	"kc3kai_import_desc_2": "Return to secretary screen.",
+	"kc3kai_import_desc_3": "Refresh Strategy Room.",
+	"kc3kai_import_desc_4": "On the Profile tab, click {txt_b}",
+	"kc3kai_import_desc_4_b": "Export basic profile to KC3 file",
+	"kc3kai_import_desc_5": "Upload your file here.",
+	
 	"mechanic": {
 		"artillerySpotting": "Artillery Spotting",
 		"AACI": "Anti-Air Cut-In",

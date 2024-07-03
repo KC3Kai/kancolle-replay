@@ -831,12 +831,12 @@
 	<div v-show="showKC3ProfileHelp">
 		<vmodal @vclose="showKC3ProfileHelp=false">
 		<div id="divKC3ProfileHelp">
-			<div>You can import your in-game fleet using KC3Kai's Basic Profile file.</div>
-			<div>1. Set up your fleet in-game.</div>
-			<div>2. <span class="bold">Return to secretary screen.</span></div>
-			<div>3. Refresh Strategy Room.</div>
-			<div>4. On the Profile tab, click <span class="bold">Export basic profile to KC3 file</span></div>
-			<div>5. Upload your file here.</div>
+			<div>{{$t('kc3kai_import_desc_0')}}</div>
+			<div>1. {{$t('kc3kai_import_desc_1')}}</div>
+			<div>2. <span class="bold">{{$t('kc3kai_import_desc_2')}}</span></div>
+			<div>3. {{$t('kc3kai_import_desc_3')}}</div>
+			<div>4. <i18n-t keypath="kc3kai_import_desc_4" scope="global"><template v-slot:txt_b><span class="bold">{{$t('kc3kai_import_desc_4_b')}}</span></template></i18n-t></div>
+			<div>5. {{$t('kc3kai_import_desc_5')}}</div>
 		</div>
 		</vmodal>
 	</div>
