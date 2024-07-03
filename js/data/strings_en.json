@@ -269,6 +269,7 @@
 	"proportional": "Proportional",
 	"flat": "Flat",
 	"aaci": "AACI",
+	"aaci_type": "#{0}",
 	"aaci_none": "None",
 	"aaci_planes": "Planes",
 	"aaci_rate": "Rate",

@@ -269,6 +269,7 @@
 	"proportional": "割合撃墜",
 	"flat": "固定撃墜",
 	"aaci": "対空CI",
+	"aaci_type": "{0}種",
 	"aaci_none": "不発",
 	"aaci_planes": "固定ボーナス",
 	"aaci_rate": "発動率",

@@ -1036,7 +1036,7 @@
 				<div class="sub" v-show="s.aaProp!=null">{{$t('proportional')}}: {{s.aaProp}}%</div>
 				<div class="sub" v-show="s.aaFlat!=null">{{$t('flat')}}: {{s.aaFlat}}</div>
 				<div v-for="type in s.aaciTypes">
-					<div>{{$t('aaci')}} {{type.id ? '#'+type.id : $t('aaci_none')}}:</div>
+					<div>{{$t('aaci')}} {{type.id ? $t('aaci_type',[type.id]) : $t('aaci_none')}}:</div>
 					<div class="sub" v-show="type.id">{{$t('aaci_planes')}}: {{type.num}}</div>
 					<div class="sub">{{$t('aaci_rate')}}: {{type.rate}}%</div>
 					<div class="sub" v-show="type.rateFleet!=null"><div class="sub">({{$t('aaci_rate_fleet')}}: {{type.rateFleet}}%)</div></div>
