@@ -265,19 +265,19 @@ var UI_MAIN = Vue.createApp({
 		},
 		
 		autoBonusStatus: function() {
-			return !this.autoBonus ? 'Off' : 'Active';
+			return !this.autoBonus ? this.$i18n.t('autobonus_off') : this.$i18n.t('autobonus_active');
 		},
 		classAutoBonusStatus: function() {
 			return this.autoBonus ? 'good' : '';
 		},
 		autoBonusName: function() {
 			if (!this.autoBonus) return '';
-			if (this.autoBonus.type == 'preset') return 'Preset: ' + COMMON.BONUS_MANAGER.PRESET_INDEX[this.autoBonus.key].name;
+			if (this.autoBonus.type == 'preset') return this.$i18n.t('autobonus_preset') + ': ' + this.$i18n.t('bonus.' + COMMON.BONUS_MANAGER.PRESET_INDEX[this.autoBonus.key].name);
 			if (this.autoBonus.type == 'dewy') return 'kc-event-bonus: ' + COMMON.BONUS_MANAGER.getDewyName(this.autoBonus.key);
 			return '';
 		},
 		autoBonusNodes: function() {
-			return this.autoBonus ? this.battles.map(battle => this.autoBonus.nodeToLetter[battle.id] || '(default)').join('\u2192') + (this.autoBonus.useDebuff ? ', Debuffed' : '') : '';
+			return this.autoBonus ? this.battles.map(battle => this.autoBonus.nodeToLetter[battle.id] || this.$i18n.t('autobonus_node_default')).join('\u2192') + (this.autoBonus.useDebuff ? this.$i18n.t('autobonus_debuffed') : '') : '';
 		},
 	},
 	methods: {
@@ -476,12 +476,12 @@ var UI_MAIN = Vue.createApp({
 		},
 		callbackSimStats: function(res) {
 			if (res.errors) {
-				this.results.errors = res.errors.filter(obj => this._includeError(obj)).map(obj => obj.txt);
+				this.results.errors = res.errors.filter(obj => this._includeError(obj)).map(obj => ({ key: obj.key, args: obj.args }));
 				this.canSim = true;
 				return;
 			}
 			if (res.warnings) {
-				this.results.warnings = res.warnings.filter(obj => this._includeError(obj)).map(obj => obj.txt);
+				this.results.warnings = res.warnings.filter(obj => this._includeError(obj)).map(obj => ({ key: obj.key, args: obj.args }));
 			}
 			if (res.didReset) {
 				this.results.active = false;
@@ -511,7 +511,7 @@ var UI_MAIN = Vue.createApp({
 			let replay = CONVERT.uiToReplay(this);
 			let errors = SIM.runReplay(CONVERT.uiToSimInput(this),replay);
 			if (errors) {
-				this.results.errors = errors.filter(obj => this._includeError(obj)).map(obj => obj.txt);;
+				this.results.errors = errors.filter(obj => this._includeError(obj)).map(obj => ({ key: obj.key, args: obj.args }));
 				return;
 			}
 			console.log(replay)
