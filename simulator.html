@@ -279,7 +279,7 @@
 					<div style="color:red">{{$t('warning_experimental_subject_to_change')}}</div>
 					<div :style="{'font-style':($i18n.locale=='en' ? 'italic' : '')}"><i18n-t keypath="shelling_range_tie_description" scope="global"><template v-slot:br><br></template></i18n-t></div>
 					<div>
-						{{$t('explanation')}}&nbsp;
+						{{$t('explanation')}}:&nbsp;
 						<a href="https://en.kancollewiki.net/Shooting_Order_and_Targeting#Range_Tie_Randomness">[1]</a>&nbsp;
 						<a href="https://docs.google.com/spreadsheets/d/1grAtIhlm2YMN9iyvniJA-j1YNCC-SCnA8q6WUi-Ctpg/edit#gid=0">[2]</a>&nbsp;
 					</div>
@@ -305,7 +305,7 @@
 			<input type="button" :value="$t('watch_sortie')" :disabled="!canSim" @click="onclickWatch"/> {{$t('opens_in_replayer')}}
 		</div>
 		<div id="divSimStats">
-			<i18n-t keypath="simulate_n_times_and_show_stats" scope="global"><template v-slot:inp_num><input type="number" min="1" max="99999" v-model="numSim" /></template></i18n-t>
+			<i18n-t keypath="simulate_n_times_and_show_stats" scope="global"><template v-slot:inp_num><input type="number" min="1" max="99999" v-model="numSim" /></template></i18n-t>:
 			<div id="divSimStatsButtons">
 				<input type="button" :value="$t('go')" :disabled="!canSim" @click="onclickGo"/>
 				<input type="button" :value="$t('cancel')" v-show="!canSim" :disabled="canSim" @click="onclickCancel"/>
@@ -594,7 +594,7 @@
 					<div><input type="button" :value="$t('import_bonuses_once')" @click="onclickImportBonus"/></div>
 				</div>
 			</div>
-			<div ref="comps"><vfleetcomps :comps="battle.enemyComps" fleetname="Enemy Fleet" canimportkcnav="1"></vfleetcomps></div>
+			<div ref="comps"><vfleetcomps :comps="battle.enemyComps" :fleetname="$t('enemy_fleet')" canimportkcnav="1"></vfleetcomps></div>
 		</div>
 	</template>
 	
@@ -659,9 +659,9 @@
 	<div id="divFleetEditorTemp"><div id="divFleetEditor" class="fleetEditor">
 	<div v-show="active">
 		<div id="divFleetEditorImport">
-			<div class="headerImport">{{$t('load_options')}}</div>
+			<div class="headerImport">{{$t('load_options')}}:</div>
 			<div>
-				<div class="headerSubImport">{{$t('from_text')}}</div>
+				<div class="headerSubImport">{{$t('from_text')}}:</div>
 				<div><textarea cols="20" rows="2" autocomplete="off" v-model="loadCode" @focus="onfocusCode" @click="onclickSelectAll" :title="$t('from_text_note')"></textarea></div>
 				<div>
 					<input type="button" :value="$t('load')" @click="onclickLoadCode"/>
@@ -751,10 +751,18 @@
 						</div>
 						
 						<div class="bonusWrap" v-show="canBonus">
-							<div class="statWide"><span :title="$t('bonus_dmg_desc')">{{$t('bonus_dmg')}}</span>:<input type="number" v-model.number="ship.bonusDmg" min="0" max="99" step="any" @change="onchangeStat($event,ship,'bonusDmg',1)"/></div>
-							<div class="statWide"><span :title="$t('bonus_acc_desc')">{{$t('bonus_acc')}}</span>:<input type="number" v-model.number="ship.bonusAcc" min="0" max="99" step="any" @change="onchangeStat($event,ship,'bonusAcc',1)"/></div>
-							<div class="statWide"><span :title="$t('bonus_eva_desc')">{{$t('bonus_eva')}}</span>:<input type="number" v-model.number="ship.bonusEva" min="0" max="99" step="any" @change="onchangeStat($event,ship,'bonusEva',1)"/></div>
-							<div class="statWide" v-show="fleet.isFriend"><span class="statDebuff" :title="$t('debuff_dmg_desc')">{{$t('debuff_dmg')}}</span>:<input type="number" v-model.number="ship.bonusDmgDebuff" min="0" max="99" step="any" @change="onchangeStat($event,ship,'bonusDmgDebuff',1)"/></div>
+							<div class="statWide"><span :title="$t('bonus_dmg_desc')"><i18n-t keypath="bonus_dmg" scope="global">
+								<template v-slot:br><br></template>
+							</i18n-t>:</span><input type="number" v-model.number="ship.bonusDmg" min="0" max="99" step="any" @change="onchangeStat($event,ship,'bonusDmg',1)"/></div>
+							<div class="statWide"><span :title="$t('bonus_acc_desc')"><i18n-t keypath="bonus_acc" scope="global">
+								<template v-slot:br><br></template>
+							</i18n-t>:</span><input type="number" v-model.number="ship.bonusAcc" min="0" max="99" step="any" @change="onchangeStat($event,ship,'bonusAcc',1)"/></div>
+							<div class="statWide"><span :title="$t('bonus_eva_desc')"><i18n-t keypath="bonus_eva" scope="global">
+								<template v-slot:br><br></template>
+							</i18n-t>:</span><input type="number" v-model.number="ship.bonusEva" min="0" max="99" step="any" @change="onchangeStat($event,ship,'bonusEva',1)"/></div>
+							<div class="statWide" v-show="fleet.isFriend"><span class="statDebuff" :title="$t('debuff_dmg_desc')"><i18n-t keypath="debuff_dmg" scope="global">
+								<template v-slot:br><br></template>
+							</i18n-t>:</span><input type="number" v-model.number="ship.bonusDmgDebuff" min="0" max="99" step="any" @change="onchangeStat($event,ship,'bonusDmgDebuff',1)"/></div>
 						</div>
 						
 						<div class="equipWrap">
@@ -870,10 +878,14 @@
 								<div class="equipLevel" v-show="equip.mstId"><span>&#9733;</span><select v-model.number="equip.level" :title="$t('improvement')"><option value="0"></option><option v-for="n in 10" :value="n">{{n}}</option></select></div>
 							</div>
 							<div class="shipStatWrap"><div class="bonusWrap">
-								<div class="statWide"><span :title="$t('bonus_dmg_desc')">{{$t('bonus_dmg')}}</span>:<input type="number" v-model.number="equip.bonusDmg" min="0" max="99" step="any" :disabled="!equip.mstId" @change="onchangeStat($event,equip,'bonusDmg',1)"/></div>
+								<div class="statWide"><span :title="$t('bonus_dmg_desc')"><i18n-t keypath="bonus_dmg" scope="global">
+								<template v-slot:br><br></template>
+							</i18n-t>:</span><input type="number" v-model.number="equip.bonusDmg" min="0" max="99" step="any" :disabled="!equip.mstId" @change="onchangeStat($event,equip,'bonusDmg',1)"/></div>
 							</div></div>
 							<div class="shipStatWrap"><div class="bonusWrap">
-								<div class="statWide"><span :title="$t('bonus_acc_desc')">{{$t('bonus_acc')}}</span>:<input type="number" v-model.number="equip.bonusAcc" min="0" max="99" step="any" :disabled="!equip.mstId" @change="onchangeStat($event,equip,'bonusAcc',1)"/></div>
+								<div class="statWide"><span :title="$t('bonus_acc_desc')"><i18n-t keypath="bonus_acc" scope="global">
+								<template v-slot:br><br></template>
+							</i18n-t>:</span><input type="number" v-model.number="equip.bonusAcc" min="0" max="99" step="any" :disabled="!equip.mstId" @change="onchangeStat($event,equip,'bonusAcc',1)"/></div>
 							</div></div>
 						</div>
 					</div>
@@ -994,10 +1006,32 @@
 						<div v-for="ship in ships" class="ship">
 							<div><img :src="'assets/icons/' + ship.imgName"/></div>
 							<div class="bonusWrap" v-if="ship.bonusByNode[nodeId]">
-								<div><label>{{$t('bonus_dmg')}}: <input type="number" min="0" max="99" step="any" :placeholder="ship.bonusDmg" v-model.number="ship.bonusByNode[nodeId].bonusDmg"/></label></div>
-								<div><label>{{$t('bonus_acc')}}: <input type="number" min="0" max="99" step="any" :placeholder="ship.bonusAcc" v-model.number="ship.bonusByNode[nodeId].bonusAcc"/></label></div>
-								<div><label>{{$t('bonus_eva')}}: <input type="number" min="0" max="99" step="any" :placeholder="ship.bonusEva" v-model.number="ship.bonusByNode[nodeId].bonusEva"/></label></div>
-								<div v-show="isBossNode"><label><span class="statDebuff" :title="$t('debuff_dmg_desc')">{{$t('debuff_dmg')}}:</span> <input type="number" min="0" max="99" step="any" v-model.number="ship.bonusDmgDebuff"/></label></div>
+								<table>
+								<tr>
+									<td><i18n-t keypath="bonus_dmg" scope="global">
+										<template v-slot:br><br></template>
+									</i18n-t>:</td>
+									<td><input type="number" min="0" max="99" step="any" :placeholder="ship.bonusDmg" v-model.number="ship.bonusByNode[nodeId].bonusDmg"/></td>
+								</tr>
+								<tr>
+									<td><i18n-t keypath="bonus_acc" scope="global">
+										<template v-slot:br><br></template>
+									</i18n-t>:</td>
+									<td><input type="number" min="0" max="99" step="any" :placeholder="ship.bonusAcc" v-model.number="ship.bonusByNode[nodeId].bonusAcc"/></td>
+								</tr>
+								<tr>
+									<td><i18n-t keypath="bonus_eva" scope="global">
+										<template v-slot:br><br></template>
+									</i18n-t>:</td>
+									<td><input type="number" min="0" max="99" step="any" :placeholder="ship.bonusEva" v-model.number="ship.bonusByNode[nodeId].bonusEva"/></td>
+								</tr>
+								<tr v-show="isBossNode">
+									<td><span class="statDebuff" :title="$t('debuff_dmg_desc')"><i18n-t keypath="debuff_dmg" scope="global">
+										<template v-slot:br><br></template>
+									</i18n-t>:</span></td>
+									<td><input type="number" min="0" max="99" step="any" v-model.number="ship.bonusDmgDebuff"/></td>
+								</tr>
+								</table>
 							</div>
 						</div>
 					</div>
@@ -1210,7 +1244,7 @@
 		<vmodal :active="active" @vclose="canClose&&(active=false)">
 		<div id="divBonusImporterMain">
 			<div class="kcnavImporter" v-show="bonusData.length<=0">
-				<div class="header"><i18n-t keypath="import_bonuses_dewy" scope="global"><template v-slot:link_dewy><a href="https://github.com/sorewachigauyo/kc-event-bonus" target="_blank">{{$t('dewy')}}</a></template></i18n-t></div>
+				<div class="header"><i18n-t keypath="import_bonuses_dewy" scope="global"><template v-slot:link_dewy><a href="https://github.com/sorewachigauyo/kc-event-bonus" target="_blank">{{$t('dewy')}}</a></template></i18n-t>:</div>
 				<div class="kcnavImporterSettingsWrap">
 					<div>
 						<table>
@@ -1305,25 +1339,33 @@
 		<div id="divFCFSettingsMain" v-if="settings">
 			<div>
 				<label><span class="header">{{$t('require_los_after_fcf')}}:</span> <input type="number" step="any" v-model.number="settings.los" :class="{'changed':settings.los!=null&&settings.los!==''}"/></label>
-				<select v-model="settings.losC"><option v-for="n in 4" :value="n">C{{n}}</option></select> 
-				{{$t('require_on_node')}} <select v-model="settings.losNode"><option value="0">{{$t('node_all')}}</option><option v-for="(id,i) in nodes" :value="id">{{i+1}}</option></select>
+				<select v-model="settings.losC"><option v-for="n in 4" :value="n">C{{n}}</option></select>
+				&nbsp;<i18n-t keypath="require_on_node" scope="global">
+					<template v-slot:sel_node><select v-model="settings.losNode"><option value="0">{{$t('node_all')}}</option><option v-for="(id,i) in nodes" :value="id">{{i+1}}</option></select></template>
+				</i18n-t>
 			</div>
 			<div>
 				<label><span class="header">{{$t('require_radar_after_fcf')}}:</span> <input type="number" min="0" max="12" v-model.number="settings.radarCount" :class="{'changed':settings.radarCount}"/></label>
-				{{$t('require_on_node')}} <select v-model="settings.radarNode"><option value="0">{{$t('node_all')}}</option><option v-for="(id,i) in nodes" :value="id">{{i+1}}</option></select>
+				&nbsp;<i18n-t keypath="require_on_node" scope="global">
+					<template v-slot:sel_node><select v-model="settings.radarNode"><option value="0">{{$t('node_all')}}</option><option v-for="(id,i) in nodes" :value="id">{{i+1}}</option></select></template>
+				</i18n-t>
 			</div>
 			<div>
 				<div><span class="header">{{$t('require_ship_counts')}}:</span></div>
 				<div v-for="rule in settings.rules">
-					{{rule.shipStr}} &ge; {{rule.count}} {{$t('require_on_node')}} 
-					<select v-model="rule.node"><option value="0">{{$t('node_all')}}</option><option v-for="(id,i) in nodes" :value="id">{{i+1}}</option></select>
+					{{rule.shipStr}} &ge; {{rule.count}}
+					&nbsp;<i18n-t keypath="require_ships_on_node" scope="global">
+						<template v-slot:sel_node><select v-model="rule.node"><option value="0">{{$t('node_all')}}</option><option v-for="(id,i) in nodes" :value="id">{{i+1}}</option></select></template>
+					</i18n-t>
 					&nbsp;<input type="button" value="&#10006;" @click="onclickDelRule(rule)"/>
 				</div>
 				<div>
 					<input v-model="ruleNew.shipStr" :placeholder="$t('ship_counts_desc')" ref="inputShipStrNew"/>
 					&ge; <input type="number" min="0" max="12" v-model="ruleNew.count" ref="inputCountNew"/>
-					{{$t('require_on_node')}} <select v-model="ruleNew.node"><option value="0">{{$t('node_all')}}</option><option v-for="(id,i) in nodes" :value="id">{{i+1}}</option></select>&nbsp;
-					<input type="button" :value="$t('add')" @click="onclickAddRule"/>
+					&nbsp;<i18n-t keypath="require_ships_on_node" scope="global">
+						<template v-slot:sel_node><select v-model="ruleNew.node"><option value="0">{{$t('node_all')}}</option><option v-for="(id,i) in nodes" :value="id">{{i+1}}</option></select></template>
+					</i18n-t>
+					&nbsp;<input type="button" :value="$t('add')" @click="onclickAddRule"/>
 				</div>
 			</div>
 			<div>

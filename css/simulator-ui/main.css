@@ -297,6 +297,9 @@ img.copyIcons {
 #divBonusEditor div.bonusWrap input {
 	width: 70px;
 }
+#divBonusEditor div.bonusWrap table {
+	border-collapse: collapse;
+}
 #divBonusEditor span.statDebuff {
 	color: darkred;
 	font-size: .9em;

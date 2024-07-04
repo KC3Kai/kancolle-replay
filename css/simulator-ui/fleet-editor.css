@@ -52,6 +52,7 @@ div.fleetEditor div.statWide {
 div.fleetEditor div.statWide input[type=number] {
 	width: 80px;
 	margin-left: auto;
+	align-self: center;
 }
 div.fleetEditor div.statHalf {
 	margin: 0 1px;
