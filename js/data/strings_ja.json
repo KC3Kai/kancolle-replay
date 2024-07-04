@@ -381,7 +381,7 @@
 	
 	"require_los_after_fcf": "退避後に必要な索敵値",
 	"require_on_node": "Node {sel_node} において",
-	"require_ship_on_node": "がNode {sel_node} の時点で必要",
+	"require_ships_on_node": "がNode {sel_node} の時点で必要",
 	"node_all": "All",
 	"require_radar_after_fcf": "退避後に必要な水上電探の数",
 	"require_ship_counts": "退避後に必要な艦数及び艦種",
