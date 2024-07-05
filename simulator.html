@@ -27,7 +27,7 @@
 		<h1>KanColle Sortie Simulator</h1>
 		
 		<div>
-			<label><input type="radio" value="en" v-model="$i18n.locale" @change="onchangeLang"/>EN</label> <label><input type="radio" value="ja" v-model="$i18n.locale" @change="onchangeLang"/>JP (艦船/装備)</label>
+			<label><input type="radio" value="en" v-model="$i18n.locale" @change="onchangeLang"/>EN</label> <label><input type="radio" value="ja" v-model="$i18n.locale" @change="onchangeLang"/>JP</label>
 		</div>
 		
 		<div id="divPlayer">
@@ -543,7 +543,7 @@
 					<div class="space"><span class="header">{{$t('add_cost')}}:</span></div>
 					<div><label><img src="assets/stats/fuel.png" /><input type="number" min="0" max="100" v-model="battle.addCostFuel"/>%</label></div>
 					<div><label><img src="assets/stats/ammo.png" /><input type="number" min="0" max="100" v-model="battle.addCostAmmo"/>%</label></div>
-					<div><label>{{$t('max')}}: <input type="number" min="0" max="999" v-model="battle.addCostMax"/></label></div>
+					<div><label><span class="tooltip" :title="$t('add_cost_max_tooltip')">{{$t('add_cost_max')}}</span>: <input type="number" min="0" max="999" v-model="battle.addCostMax"/></label></div>
 				</div>
 				<div>
 					<div><span class="header">{{$t('player_formation')}}:</span></div>
@@ -1227,7 +1227,7 @@
 					</tr>
 					</table>
 					<div v-show="isFriendFleet"><label><input type="checkbox" v-model="ffStrong"/><img src="assets/stats/ibuild.png"/>?</label></div>
-					<div v-show="isFriendFleet"><label><input type="checkbox" v-model="ffSkipSame"/>{{$t('ff_skip_comps')}}</label></div>
+					<div v-show="isFriendFleet" style="width:300px"><label><input type="checkbox" v-model="ffSkipSame"/>{{$t('ff_skip_comps')}}</label></div>
 					<div><label>{{$t('date')}}: <input type="date" v-model="dateStart"/></label>~<input type="date" v-model="dateEnd"/></div>
 				</div>
 			</div>
@@ -1367,6 +1367,7 @@
 					</i18n-t>
 					&nbsp;<input type="button" :value="$t('add')" @click="onclickAddRule"/>
 				</div>
+				<div style="word-break:keep-all;font-size:.9em" v-show="$t('ship_counts_list').length">{{$t('ship_counts_list')}}</div>
 			</div>
 			<div>
 				<span class="header">{{$t('never_use_on')}}:</span>
