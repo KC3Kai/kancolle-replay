@@ -368,7 +368,6 @@ div.modalContent {
 	padding: 20px;
 }
 #divBonusImporterMain {
-	width: 650px;
 	max-height: 400px;
 	overflow-y: auto;
 }
@@ -390,6 +389,9 @@ div.kcnavImporter span.note {
 div.kcnavImporterSettingsWrap {
 	display: flex;
 	margin-bottom: 20px;
+}
+div.kcnavImporterSettingsWrap label {
+	text-wrap: nowrap;
 }
 div.kcnavImporterSettingsWrap > div {
 	margin-right: 40px;

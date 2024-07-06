@@ -1205,7 +1205,7 @@
 					</tr>
 					</table>
 					<div v-show="isFriendFleet"><label><input type="checkbox" v-model="ffStrong"/><img src="assets/stats/ibuild.png"/>?</label></div>
-					<div v-show="isFriendFleet" style="width:300px"><label><input type="checkbox" v-model="ffSkipSame"/>{{$t('ff_skip_comps')}}</label></div>
+					<div v-show="isFriendFleet"><label><input type="checkbox" v-model="ffSkipSame"/>{{$t('ff_skip_comps')}}</label></div>
 					<div><label>{{$t('date')}}: <input type="date" v-model="dateStart"/></label>~<input type="date" v-model="dateEnd"/></div>
 				</div>
 			</div>
@@ -1345,7 +1345,6 @@
 					</i18n-t>
 					&nbsp;<input type="button" :value="$t('add')" @click="onclickAddRule"/>
 				</div>
-				<div style="word-break:keep-all;font-size:.9em" v-show="$t('ship_counts_list').length">{{$t('ship_counts_list')}}</div>
 			</div>
 			<div>
 				<span class="header">{{$t('never_use_on')}}:</span>
