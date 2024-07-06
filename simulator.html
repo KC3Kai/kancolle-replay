@@ -543,7 +543,19 @@
 					<div class="space"><span class="header">{{$t('add_cost')}}:</span></div>
 					<div><label><img src="assets/stats/fuel.png" /><input type="number" min="0" max="100" v-model="battle.addCostFuel"/>%</label></div>
 					<div><label><img src="assets/stats/ammo.png" /><input type="number" min="0" max="100" v-model="battle.addCostAmmo"/>%</label></div>
-					<div><label><span class="tooltip" :title="$t('add_cost_max_tooltip')">{{$t('add_cost_max')}}</span>: <input type="number" min="0" max="999" v-model="battle.addCostMax"/></label></div>
+					<div><label><span class="tooltip" :title="$t('add_cost_max_tooltip')">{{$t('add_cost_max')}}</span>: <input type="number" min="0" max="999" v-model="battle.addCostMax" list="dlMaestromCost"/></label></div>
+					<datalist id="dlMaestromCost">
+						<option value="15">6-2-D</option>
+						<option value="20">1-3-H</option>
+						<option value="30">2-4-C, 3-2-G</option>
+						<option value="40">3-3-C, 3-3-F</option>
+						<option value="60">4-3-E</option>
+						<option value="70">3-4-F, 7-2-A, 5-2-A, 5-3-L</option>
+						<option value="80">5-5-D</option>
+						<option value="100">4-5-R, 5-2-M</option>
+						<option value="120">5-4-K, 5-5-L</option>
+						<option value="150">2-5-G</option>
+					</datalist>
 				</div>
 				<div>
 					<div><span class="header">{{$t('player_formation')}}:</span></div>
@@ -684,7 +696,7 @@
 				<div>
 					<select v-model="loadPresetArea" @change="onchangePresetArea">
 						<option></option>
-						<optgroup v-for="g in presetListArea" :label="g.name"><option v-for="o in g.options" :value="o.value">{{o.name}}</option></optgroup>
+						<optgroup v-for="g in presetListArea" :label="$t('area.' + g.name)"><option v-for="o in g.options" :value="o.value">{{o.name}}</option></optgroup>
 					</select>
 					<select v-model="loadPresetNode" v-show="loadPresetArea" @change="onchangePresetNode"><option v-for="o in presetListNode" :value="o.value">{{o.name}}</option></select>
 					<select v-model="loadPresetComp" v-show="loadPresetArea" @change="onchangePreset"><option v-for="o in presetListComp" :value="o.value">{{o.name}}</option></select>
@@ -751,6 +763,7 @@
 						</div>
 						
 						<div class="bonusWrap" v-show="canBonus">
+							<div v-show="$t('bonus_header').length">{{$t('bonus_header')}}:</div>
 							<div class="statWide"><span :title="$t('bonus_dmg_desc')"><i18n-t keypath="bonus_dmg" scope="global">
 								<template v-slot:br><br></template>
 							</i18n-t>:</span><input type="number" v-model.number="ship.bonusDmg" min="0" max="99" step="any" @change="onchangeStat($event,ship,'bonusDmg',1)"/></div>
@@ -1073,7 +1086,7 @@
 					<div>{{$t('aaci')}} {{type.id ? $t('aaci_type',[type.id]) : $t('aaci_none')}}:</div>
 					<div class="sub" v-show="type.id">{{$t('aaci_planes')}}: {{type.num}}</div>
 					<div class="sub">{{$t('aaci_rate')}}: {{type.rate}}%</div>
-					<div class="sub" v-show="type.rateFleet!=null"><div class="sub">({{$t('aaci_rate_fleet')}}: {{type.rateFleet}}%)</div></div>
+					<div class="sub" v-show="type.rateFleet!=null"><div class="sub">(<span class="tooltip" :title="$t('aaci_rate_fleet_tooltip')">{{$t('aaci_rate_fleet')}}</span>: {{type.rateFleet}}%)</div></div>
 					<div class="sub" v-show="type.id">{{$t('aaci_multiplier')}}: {{type.mod}}</div>
 				</div>
 				<div v-show="s.rocketBarrage!=null">{{$t('rocket_barrage')}}: {{s.rocketBarrage}}%</div>
@@ -1188,7 +1201,7 @@
 					<tr>
 						<td><label for="inputNavImportWorld">{{$t('world')}}:</label></td>
 						<td><input id="inputNavImportWorld" required ref="inputWorld" type="number" min="1" max="99" v-model="world" @change="onchangeWorldMap"/></td>
-						<td><select class="suggestion" v-model="selectWorld" @change="onchangeSelectWorld"><option value="0"></option><option v-for="option in optionsWorld" :value="option.id">{{$t('event.' + option.name)}}</option></select></td>
+						<td><select class="suggestion" v-model="selectWorld" @change="onchangeSelectWorld"><option value="0"></option><option v-for="option in optionsWorld" :value="option.id">{{$t('area.' + option.name)}}</option></select></td>
 					</tr>
 					<tr>
 						<td><label for="inputNavImportMapnum">{{$t('map')}}:</label></td>
@@ -1251,7 +1264,7 @@
 						<tr>
 							<td><label for="inputNavImportWorldB">{{$t('world')}}:</label></td>
 							<td><input id="inputNavImportWorldB" required ref="inputWorld" type="number" min="1" max="99" v-model="world" @change="onchangeWorldMap"/></td>
-							<td><select class="suggestion" v-model="selectWorld" @change="onchangeSelectWorld"><option value="0"></option><option v-for="option in optionsWorld" :value="option.id">{{$t('event.' + option.name)}}</option></select></td>
+							<td><select class="suggestion" v-model="selectWorld" @change="onchangeSelectWorld"><option value="0"></option><option v-for="option in optionsWorld" :value="option.id">{{$t('area.' + option.name)}}</option></select></td>
 						</tr>
 						<tr>
 							<td><label for="inputNavImportMapnumB">{{$t('map')}}:</label></td>
@@ -1372,7 +1385,10 @@
 			<div>
 				<span class="header">{{$t('never_use_on')}}:</span>
 				<div v-for="ships in shipGroups" class="shipGroup">
-					<img v-for="ship in ships" :src="'assets/icons/' + ship.imgName" :style="{'opacity':ship.neverFCF?1:.35}" @click="onclickShipCanRetreat(ship)"/>
+					<div v-for="ship in ships" style="position:relative">
+						<img :src="'assets/icons/' + ship.imgName" :style="{'opacity':ship.neverFCF?1:.35}" @click="onclickShipCanRetreat(ship)"/>
+						<span class="shipType">{{ship.type}}</span>
+					</div>
 				</div>
 			</div>
 			<div>

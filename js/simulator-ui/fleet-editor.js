@@ -127,6 +127,7 @@ var FLEET_MODEL = {
 			
 			mstId: +mstId,
 			name: sdata.name,
+			type: sdata.type,
 			level: level,
 			hp: sdata.HP,
 			hpInit: sdata.HP,
