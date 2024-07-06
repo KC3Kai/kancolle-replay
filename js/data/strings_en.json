@@ -1,4 +1,178 @@
 {
+	"change_log": [
+		{
+			"date": "2024-06-29",
+			"txt": "Statistics: Copy text summary to clipboard buttons"
+		},
+		{
+			"date": "2024-03-13",
+			"txt": "Smoke activation rate provisional formula, see Show Advanced"
+		},
+		{
+			"date": "2024-03-05",
+			"txt": "Provisional Atoll node setting"
+		},
+		{
+			"date": "2024-03-03",
+			"txt": "Mark fleet preview ship banner if unknown or changed stats"
+		},
+		{
+			"date": "2024-02-29",
+			"txt": "Anchorage repair node setting, provisional \"Shelling Range Tie Randomness Weights\" setting (see Show Advanced)"
+		},
+		{
+			"date": "2023-09-28",
+			"txt": "Provisional Smokescreen settings, see Show Advanced"
+		},
+		{
+			"date": "2023-09-04",
+			"txt": "Barrage Balloon node setting"
+		},
+		{
+			"date": "2023-08-07",
+			"txt": "Auto-Set Historical Bonuses settings"
+		},
+		{
+			"date": "2023-06-05",
+			"txt": "Mechanic: AACI Rework (sequential roll and {link0}), Additional Stats show fleetwide AACI rate",
+			"links": [ { "txt": "new AACI priority", "url": "https://docs.google.com/spreadsheets/d/1agGoLv57g5eOXLXtNIKHRoBYy61OQYxibWP6Vi_DMuY/edit#gid=13450409" } ]
+		},
+		{
+			"date": "2023-04-13",
+			"txt": "FCF Settings"
+		},
+		{
+			"date": "2023-03-19",
+			"txt": "Update {link0}",
+			"links": [ { "txt": "BB gun fit", "url": "https://twitter.com/Divinity_123/status/1637255766166863873" } ]
+		},
+		{
+			"date": "2023-03-02",
+			"txt": "Air Support Sub node settings, update {link0} (removed Advanced Setting) + show in Additional Stats",
+			"links": [ { "txt": "Night Zuiun Cut-In trigger rate", "url": "https://twitter.com/yukicacoon/status/1628701453677363202" } ]
+		},
+		{
+			"date": "2023-02-16",
+			"txt": "Mechanic: Autogyro/Liaison Air Battle, provisional Night Zuiun Cut-In"
+		},
+		{
+			"date": "2022-10-05",
+			"txt": "{link0}",
+			"links": [ { "txt": "Provisional Dock Princess mods", "url": "https://docs.google.com/document/d/1TmsVRhmkqjH1bczdoBHtrdcYv7JYD95NVkMrAK5bpK4/edit#heading=h.kuxw81rvevec" } ]
+			
+		},
+		{
+			"date": "2022-09-19",
+			"txt": "Node setting: choose if last node uses Normal or Boss support"
+		},
+		{
+			"date": "2022-09-04",
+			"txt": "new Advanced Setting: {link0}",
+			"links": [ { "txt": "vanguard accuracy multipliers", "url": "https://twitter.com/Divinity_123/status/1566375780380282882" } ]
+		},
+		{
+			"date": "2022-08-27",
+			"txt": "Settings now saved (highlights changed values, Restore Defaults button), new Advanced Setting: combined fleet airstrike damage/accuracy mods"
+		},
+		{
+			"date": "2022-06-21",
+			"txt": "LBAS historical accuracy bonus settings"
+		},
+		{
+			"date": "2022-05-28",
+			"txt": "KCNav/{link0} historical bonus import",
+			"links": [ { "txt": "Dewy", "url": "https://github.com/sorewachigauyo/kc-event-bonus" } ]
+		},
+		{
+			"date": "2022-05-06",
+			"txt": "New UI: strike force, multiple enemy/friend-fleet comps, equipment bonus, override historical bonus per node, LBAS historical bonus damage, add maelstrom cost per node, KCNav enemy/FF comp import, noro6 LBAS Sim import/export, download save backup file"
+		},
+		{
+			"date": "2022-02-16",
+			"txt": "Historical Accuracy + Evasion config"
+		},
+		{
+			"date": "2021-10-17",
+			"txt": "{link0}, {link1}, {link2}",
+			"links": [
+				{ "txt": "PT Imp acc mods", "url": "https://twitter.com/Xe_UCH/status/1426851469945294848" },
+				{ "txt": "Combined Fleet acc bases/mods", "url": "https://twitter.com/Divinity__123/status/1447941755182227458" },
+				{ "txt": "Vanguard evasion values", "url": "https://docs.google.com/spreadsheets/d/14uCat5nahv3A0Zq6d263Ye3U_f1nBYpIMEc9ALegyNA/edit#gid=0" }
+			]
+		},
+		{
+			"date": "2021-07-27",
+			"txt": "Mechanics: DDCI Buff + Submarine Fleet Attack, add Torpedo Squadron Command Facility use, update anti-installation/anti-PT mods, update Echelon mods"
+		},
+		{
+			"date": "2021-03-03",
+			"txt": "Options for new soft caps (torpedo, night, air)"
+		},
+		{
+			"date": "2019-12-18",
+			"txt": "Additional Historical Bonus settings (boss node, boss flagship)"
+		},
+		{
+			"date": "2019-09-18",
+			"txt": "Provisional Anchorage Water Demon mods, underway resupply (applied on last node if equipped)"
+		},
+		{
+			"date": "2019-08-25",
+			"txt": "{link0}",
+			"links": [ { "txt": "Mortar/Rocket anti-installation mods", "url": "https://cdn.discordapp.com/attachments/425302689887289344/614879250419417132/ECrra66VUAAzYMc.jpg_orig.jpg" } ]
+		},
+		{
+			"date": "2019-05-30",
+			"txt": "Add Friend Fleet, updated calculations: anti-installation mods, rocket barrage chance, non-maxed plane proficiency"
+		},
+		{
+			"date": "2019-05-16",
+			"txt": "Update AACI {link0} + {link1}",
+			"links": [
+				{ "txt": "activation rates", "url": "https://docs.google.com/spreadsheets/d/1YUppVErQj7P9f9-ddpdR-e7fTaycjSK9-x4GE9ibCrA" },
+				{ "txt": "priorities", "url": "https://gist.github.com/Nishisonic/62cead1f57a323c737019d6b630fa4a5" }
+			]
+		},
+		{
+			"date": "2019-05-10",
+			"txt": "Mechanics: {link0}, Divebomber Installation Targeting",
+			"links": [ { "txt": "Anti-Air Resist", "url": "https://twitter.com/muu_1106/status/1124658313428213760?s=19" } ]
+		},
+		{
+			"date": "2019-04-21",
+			"txt": "Nelson/Nagato/Mutsu specials night"
+		},
+		{
+			"date": "2019-04-05",
+			"txt": "Carry over HP/Morale option, update presets to Phase 2 comps, vanguard formation"
+		},
+		{
+			"date": "2019-03-11",
+			"txt": "Historical Bonus config, Nelson/Nagato/Mutsu specials (day only currently), new mechanics: new installation mods/new resource costs/new echelon mods"
+		},
+		{
+			"date": "2018-11-26",
+			"txt": "{link0}, enemy combined improvements, LBAS improvements, PT Imp improvements",
+			"links": [ { "txt": "Sim from Data Import", "url": "simulator-import-help.html" } ]
+		},
+		{
+			"date": "2018-08-14",
+			"txt": "CVCI, DD NBCI, ASW soft cap config, rocket barrage"
+		},
+		{
+			"date": "2017-08-08",
+			"txt": "Enemy combined fleet, LBAS"
+		},
+		{
+			"date": "2017-03-23",
+			"txt": "Fifth slot, separate plane improvement and proficiency, changed save/load code, day soft-cap option"
+		},
+		{
+			"date": "2016-10-25",
+			"txt": "Major reworking and improving of calculations. Added calculations explanations."
+		}
+	],
+
 	"kancolle_sortie_simulator": "KanColle Sortie Simulator",
 	"save_load_simulator_backup": "Save/Load Simulator Backup",
 	"import_export_deckbuilder_format": "Import/Export DeckBuilder Format",
@@ -423,7 +597,7 @@
 	"loading": "Loading",
 	"load_error_autobonus_turn_off": "Load error, Auto-Bonus will be turned off",
 	
-	"change_log": "Change Log",
+	"change_log_header": "Change Log",
 	"bug_reports_feature_requests": "Bug reports/feature requests",
 	
 	"autobonus_off": "Off",

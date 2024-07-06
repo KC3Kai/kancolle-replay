@@ -1,4 +1,178 @@
 {
+	"change_log": [
+		{
+			"date": "2024-06-29",
+			"txt": "演算結果をコピーするボタンの実装"
+		},
+		{
+			"date": "2024-03-13",
+			"txt": "発煙装置の暫定計算式を「詳細設定」に追加"
+		},
+		{
+			"date": "2024-03-05",
+			"txt": "環礁マスの仮実装"
+		},
+		{
+			"date": "2024-03-03",
+			"txt": "艦のステータスに変更や不明な部分がある場合に艦アイコンにマークを表示"
+		},
+		{
+			"date": "2024-02-29",
+			"txt": "緊急泊地修理の設定 & 「砲撃戦において同射程の艦が複数存在するときの攻撃順の偏向」を「詳細設定」に追加"
+		},
+		{
+			"date": "2023-09-28",
+			"txt": "発煙装置についての仮設定を「詳細設定」に追加"
+		},
+		{
+			"date": "2023-09-04",
+			"txt": "阻塞気球の設定をNode欄に追加"
+		},
+		{
+			"date": "2023-08-07",
+			"txt": "史実ボーナスの自動設定"
+		},
+		{
+			"date": "2023-06-05",
+			"txt": "Mechanicの対空CIの仕様を更新(多重判定と優先度)。艦隊全体の対空CI発動率を「艦隊詳細」で確認できるように",
+			"links": [ { "txt": "new AACI priority", "url": "https://docs.google.com/spreadsheets/d/1agGoLv57g5eOXLXtNIKHRoBYy61OQYxibWP6Vi_DMuY/edit#gid=13450409" } ]
+		},
+		{
+			"date": "2023-04-13",
+			"txt": "司令部設定"
+		},
+		{
+			"date": "2023-03-19",
+			"txt": "戦艦のフィット砲について更新",
+			"links": [ { "txt": "BB gun fit", "url": "https://twitter.com/Divinity_123/status/1637255766166863873" } ]
+		},
+		{
+			"date": "2023-03-02",
+			"txt": "対潜空襲マス設定、夜間瑞雲夜戦CI発動率(「詳細設定」からは削除し、「艦隊詳細」で確認できるように)",
+			"links": [ { "txt": "Night Zuiun Cut-In trigger rate", "url": "https://twitter.com/yukicacoon/status/1628701453677363202" } ]
+		},
+		{
+			"date": "2023-02-16",
+			"txt": "Mechanicに回転翼機/連絡機に制空能力を付与 & 夜間瑞雲CIの暫定実装"
+		},
+		{
+			"date": "2022-10-05",
+			"txt": "{link0}",
+			"links": [ { "txt": "船渠棲姫への特効補正", "url": "https://docs.google.com/document/d/1TmsVRhmkqjH1bczdoBHtrdcYv7JYD95NVkMrAK5bpK4/edit#heading=h.kuxw81rvevec" } ]
+			
+		},
+		{
+			"date": "2022-09-19",
+			"txt": "最後のNodeで道中支援と決戦支援どちらを適用するか選択できるように"
+		},
+		{
+			"date": "2022-09-04",
+			"txt": "警戒陣の命中補正設定を「詳細設定」に追加",
+			"links": [ { "txt": "vanguard accuracy multipliers", "url": "https://twitter.com/Divinity_123/status/1566375780380282882" } ]
+		},
+		{
+			"date": "2022-08-27",
+			"txt": "「詳細設定」の設定が保持されるようになりました(変更された値はハイライトされ、「設定をリセット」でデフォルトに戻せます)。"
+		},
+		{
+			"date": "2022-06-21",
+			"txt": "基地航空隊の命中ボーナス設定"
+		},
+		{
+			"date": "2022-05-28",
+			"txt": "KCNav/{link0}から史実ボーナスを読み込めるように",
+			"links": [ { "txt": "Dewy", "url": "https://github.com/sorewachigauyo/kc-event-bonus" } ]
+		},
+		{
+			"date": "2022-05-06",
+			"txt": "新しいUI: 遊撃部隊、複数の敵/友軍艦隊編成、装備ボーナス、Nodeごとの史実ボーナスの上書き、基地航空隊史実ボーナスダメージ、Nodeごとの渦潮コストの追加、KCNavから敵/友軍艦隊編成のインポート、制空シミュから基地航空隊のインポート/エクスポート、バックアップファイルのダウンロード"
+		},
+		{
+			"date": "2022-02-16",
+			"txt": "史実ボーナス設定(命中&回避)"
+		},
+		{
+			"date": "2021-10-17",
+			"txt": "{link0}、{link1}、{link2}",
+			"links": [
+				{ "txt": "PT小鬼群の命中補正", "url": "https://twitter.com/Xe_UCH/status/1426851469945294848" },
+				{ "txt": "連合艦隊の基礎値/補正", "url": "https://twitter.com/Divinity__123/status/1447941755182227458" },
+				{ "txt": "警戒陣の回避値", "url": "https://docs.google.com/spreadsheets/d/14uCat5nahv3A0Zq6d263Ye3U_f1nBYpIMEc9ALegyNA/edit#gid=0" }
+			]
+		},
+		{
+			"date": "2021-07-27",
+			"txt": "Mechanics: 駆逐CI強化＋潜水艦隊攻撃、精鋭水雷戦隊 司令部、対地/対PTの補正更新、梯形陣補正更新"
+		},
+		{
+			"date": "2021-03-03",
+			"txt": "新しいキャップのオプション(雷撃、夜戦、航空戦)"
+		},
+		{
+			"date": "2019-12-18",
+			"txt": "史実ボーナスの追加設定(ボスNode, ボス旗艦)"
+		},
+		{
+			"date": "2019-09-18",
+			"txt": "泊地水鬼の暫定的な補正 & 緊急泊地修理（装備していれば最後のノードで適用される）"
+		},
+		{
+			"date": "2019-08-25",
+			"txt": "{link0}",
+			"links": [ { "txt": "迫撃砲/ロケット砲対地補正", "url": "https://cdn.discordapp.com/attachments/425302689887289344/614879250419417132/ECrra66VUAAzYMc.jpg_orig.jpg" } ]
+		},
+		{
+			"date": "2019-05-30",
+			"txt": "友軍艦隊の追加、計算の更新: 対地補正、対空噴進弾幕発動率、機体熟練度のmax以外を実装"
+		},
+		{
+			"date": "2019-05-16",
+			"txt": "対空CIの発動率及び優先順位の更新",
+			"links": [
+				{ "txt": "activation rates", "url": "https://docs.google.com/spreadsheets/d/1YUppVErQj7P9f9-ddpdR-e7fTaycjSK9-x4GE9ibCrA" },
+				{ "txt": "priorities", "url": "https://gist.github.com/Nishisonic/62cead1f57a323c737019d6b630fa4a5" }
+			]
+		},
+		{
+			"date": "2019-05-10",
+			"txt": "Mechanics: {link0}、対地艦爆",
+			"links": [ { "txt": "射撃回避", "url": "https://twitter.com/muu_1106/status/1124658313428213760?s=19" } ]
+		},
+		{
+			"date": "2019-04-21",
+			"txt": "Nelson/長門/陸奥 タッチを夜戦に実装"
+		},
+		{
+			"date": "2019-04-05",
+			"txt": "HP/cond値の持ち越し、プリセットの2期編成へのアップデート、警戒陣"
+		},
+		{
+			"date": "2019-03-11",
+			"txt": "史実ボーナス設定、Nelson/長門/陸奥 タッチ（昼戦のみ）、Mechanics(新規): 対地補正/各マスの消費資源の更新/梯形陣補正"
+		},
+		{
+			"date": "2018-11-26",
+			"txt": "{link0}、敵の組み合わせの改善、基地航空隊の改善、PT小鬼の改善",
+			"links": [ { "txt": "データをインポートしてシミュレーション", "url": "simulator-import-help.html" } ]
+		},
+		{
+			"date": "2018-08-14",
+			"txt": "空母CI、駆逐夜戦CI、対潜キャップ設定、噴進弾幕"
+		},
+		{
+			"date": "2017-08-08",
+			"txt": "敵連合艦隊 & 基地航空隊"
+		},
+		{
+			"date": "2017-03-23",
+			"txt": "5スロット、艦載機改良と熟練度の分離、セーブ/ロードコードの変更、キャップ設定の導入"
+		},
+		{
+			"date": "2016-10-25",
+			"txt": "計算の大幅な手直しと改善。計算の解説を追加。"
+		}
+	],
+
 	"kancolle_sortie_simulator": "艦これ出撃シミュレーター",
 	"save_load_simulator_backup": "Save/Load Simulator Backup",
 	"import_export_deckbuilder_format": "Import/Export DeckBuilder Format",
@@ -161,8 +335,8 @@
 	"resupply_cost": "資源消費タイプ",
 	"submarine_only": "潜水艦のみ",
 	"add_cost": "追加コスト(戦闘開始前に現在の残り資源から)",
-	"add_cost_max": "Max",
-	"add_cost_max_tooltip": "各渦潮マスでの燃料喪失量には上限があり、例えば5-5-Dの渦潮における喪失量は燃料供給量:253のとき35%、つまり88となりますが最大値置換で80になります。",
+	"add_cost_max": "上限値",
+	"add_cost_max_tooltip": "各渦潮マスでの燃料喪失量には上限があり、例えば5-5-Dの渦潮における喪失量は燃料供給量:253のとき35%、つまり88となりますが上限値である80に置き換えられます。",
 	"player_formation": "自艦隊陣形",
 	"use_form_if_special_impossible": "特殊砲撃が不可能な場合、\u00a0{img_form}\u00a0を使用",
 	"line_ahead": "単縦陣",
@@ -423,7 +597,7 @@
 	"loading": "Loading",
 	"load_error_autobonus_turn_off": "ロードエラー: 自動ボーナス設定がOFFになります",
 	
-	"change_log": "更新履歴",
+	"change_log_header": "更新履歴",
 	"bug_reports_feature_requests": "バグ報告/要望",
 	
 	"autobonus_off": "Off",

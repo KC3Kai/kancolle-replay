@@ -471,45 +471,10 @@
 		<div id="divNotice" v-show="showNoticeCount">{{noticeTxt}}</div>
 
 		<div id="divChangeLog">
-			<div><span class="header">{{$t('change_log')}}:</span></div>
-			<div>2024-06-29 - Statistics: Copy text summary to clipboard buttons</div>
-			<div>2024-03-13 - Smoke activation rate provisional formula, see Show Advanced</div>
-			<div>2024-03-05 - Provisional Atoll node setting</div>
-			<div>2024-03-03 - Mark fleet preview ship banner if unknown or changed stats</div>
-			<div>2024-02-29 - Anchorage repair node setting, provisional "Shelling Range Tie Randomness Weights" setting (see Show Advanced)</div>
-			<div>2023-09-28 - Provisional Smokescreen settings, see Show Advanced</div>
-			<div>2023-09-04 - Barrage Balloon node setting</div>
-			<div>2023-08-07 - Auto-Set Historical Bonuses settings</div>
-			<div>2023-06-05 - Mechanic: AACI Rework (sequential roll and <a href="https://docs.google.com/spreadsheets/d/1agGoLv57g5eOXLXtNIKHRoBYy61OQYxibWP6Vi_DMuY/edit#gid=13450409">new AACI priority</a>), Additional Stats show fleetwide AACI rate</div>
-			<div>2023-04-13 - FCF Settings</div>
-			<div>2023-03-19 - Update <a href="https://twitter.com/Divinity_123/status/1637255766166863873">BB gun fit</a></div>
-			<div>2023-03-02 - Air Support Sub node settings, update <a href="https://twitter.com/yukicacoon/status/1628701453677363202">Night Zuiun Cut-In trigger rate</a> (removed Advanced Setting) + show in Additional Stats</div>
-			<div>2023-02-16 - Mechanic: Autogyro/Liaison Air Battle, provisional Night Zuiun Cut-In</div>
-			<div>2022-10-05 - <a href="https://docs.google.com/document/d/1TmsVRhmkqjH1bczdoBHtrdcYv7JYD95NVkMrAK5bpK4/edit#heading=h.kuxw81rvevec">Provisional Dock Princess mods</a></div>
-			<div>2022-09-19 - Node setting: choose if last node uses Normal or Boss support</div>
-			<div>2022-09-04 - new Advanced Setting: <a href="https://twitter.com/Divinity_123/status/1566375780380282882">vanguard accuracy multipliers</a></div>
-			<div>2022-08-27 - Settings now saved (highlights changed values, Restore Defaults button), new Advanced Setting: combined fleet airstrike damage/accuracy mods</div>
-			<div>2022-06-21 - LBAS historical accuracy bonus settings</div>
-			<div>2022-05-28 - KCNav/<a href="https://github.com/sorewachigauyo/kc-event-bonus">Dewy</a> historical bonus import</div>
-			<div>2022-05-06 - New UI: strike force, multiple enemy/friend-fleet comps, equipment bonus, override historical bonus per node, LBAS historical bonus damage, add maelstrom cost per node, KCNav enemy/FF comp import, noro6 LBAS Sim import/export, download save backup file</div>
-			<div>2022-02-16 - Historical Accuracy + Evasion config</div>
-			<div>2021-10-17 - <a href="https://twitter.com/Xe_UCH/status/1426851469945294848">PT Imp acc mods</a>, <a href="https://twitter.com/Divinity__123/status/1447941755182227458">Combined Fleet acc bases/mods</a>, <a href="https://docs.google.com/spreadsheets/d/14uCat5nahv3A0Zq6d263Ye3U_f1nBYpIMEc9ALegyNA/edit#gid=0">Vanguard evasion values</a></div>
-			<div>2021-07-27 - Mechanics: DDCI Buff + Submarine Fleet Attack, add Torpedo Squadron Command Facility use, update anti-installation/anti-PT mods, update Echelon mods</div>
-			<div>2021-03-03 - Options for new soft caps (torpedo, night, air)</div>
-			<div>2019-12-18 - Additional Historical Bonus settings (boss node, boss flagship)</div>
-			<div>2019-09-18 - Provisional Anchorage Water Demon mods, underway resupply (applied on last node if equipped)</div>
-			<div>2019-08-25 - <a href="https://cdn.discordapp.com/attachments/425302689887289344/614879250419417132/ECrra66VUAAzYMc.jpg_orig.jpg">Mortar/Rocket anti-installation mods</a></div>
-			<div>2019-05-30 - Add Friend Fleet, updated calculations: anti-installation mods, rocket barrage chance, non-maxed plane proficiency</div>
-			<div>2019-05-16 - Update AACI <a href="https://docs.google.com/spreadsheets/d/1YUppVErQj7P9f9-ddpdR-e7fTaycjSK9-x4GE9ibCrA">activation rates</a> + <a href="https://gist.github.com/Nishisonic/62cead1f57a323c737019d6b630fa4a5">priorities</a></div>
-			<div>2019-05-10 - Mechanics: <a href="https://twitter.com/muu_1106/status/1124658313428213760?s=19" target="_blank">Anti-Air Resist</a>, Divebomber Installation Targeting</div>
-			<div>2019-04-21 - Nelson/Nagato/Mutsu specials night</div>
-			<div>2019-04-05 - Carry over HP/Morale option, update presets to Phase 2 comps, vanguard formation</div>
-			<div>2019-03-11 - Historical Bonus config, Nelson/Nagato/Mutsu specials (day only currently), new mechanics: new installation mods/new resource costs/new echelon mods</div>
-			<div>2018-11-26 - <a href="simulator-import-help.html" target="_blank">Sim from Data Import</a>, enemy combined improvements, LBAS improvements, PT Imp improvements</div>
-			<div>2018-08-14 - CVCI, DD NBCI, ASW soft cap config, rocket barrage</div>
-			<div>2017-08-08 - Enemy combined fleet, LBAS</div>
-			<div>2017-03-23 - Fifth slot, separate plane improvement and proficiency, changed save/load code, day soft-cap option</div>
-			<div>2016-10-25 - Major reworking and improving of calculations. Added calculations explanations.</div>
+			<div><span class="header">{{$t('change_log_header')}}:</span></div>
+			<div v-for="(obj,idx) in $i18n.messages[$i18n.fallbackLocale].change_log">{{obj.date}} - <i18n-t :keypath="'change_log[' + idx + '].txt'" scope="global">
+				<template v-for="(link,i) in obj.links" v-slot:['link'+i]><a :href="obj.links[i].url" target="_blank">{{$t('change_log[' + idx + '].links[' + i + '].txt')}}</a></template>
+			</i18n-t></div>
 		</div>
 		<div id="divFooter">
 			<div>{{$t('bug_reports_feature_requests')}}: <a href="https://github.com/KC3Kai/kancolle-replay/issues">Github</a></div>
