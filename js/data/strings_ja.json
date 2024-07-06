@@ -1,6 +1,11 @@
 {
 	"change_log": [
 		{
+			"date": "2024-07-XX",
+			"txt": "UI全般に日本語訳実装 (thanks to {link0})",
+			"links": [ { "txt": "X-20A", "url": "https://github.com/X-20A" } ]
+		},
+		{
 			"date": "2024-06-29",
 			"txt": "演算結果をコピーするボタンの実装"
 		},
@@ -30,12 +35,12 @@
 		},
 		{
 			"date": "2023-08-07",
-			"txt": "史実ボーナスの自動設定"
+			"txt": "史実特効の自動設定"
 		},
 		{
 			"date": "2023-06-05",
-			"txt": "Mechanicの対空CIの仕様を更新(多重判定と優先度)。艦隊全体の対空CI発動率を「艦隊詳細」で確認できるように",
-			"links": [ { "txt": "new AACI priority", "url": "https://docs.google.com/spreadsheets/d/1agGoLv57g5eOXLXtNIKHRoBYy61OQYxibWP6Vi_DMuY/edit#gid=13450409" } ]
+			"txt": "Mechanicの{link0}を更新(多重判定と優先度)。艦隊全体の対空CI発動率を「艦隊詳細」で確認できるように",
+			"links": [ { "txt": "対空CIの仕様", "url": "https://docs.google.com/spreadsheets/d/1agGoLv57g5eOXLXtNIKHRoBYy61OQYxibWP6Vi_DMuY/edit#gid=13450409" } ]
 		},
 		{
 			"date": "2023-04-13",
@@ -43,13 +48,13 @@
 		},
 		{
 			"date": "2023-03-19",
-			"txt": "戦艦のフィット砲について更新",
-			"links": [ { "txt": "BB gun fit", "url": "https://twitter.com/Divinity_123/status/1637255766166863873" } ]
+			"txt": "{link0}について更新",
+			"links": [ { "txt": "戦艦のフィット砲", "url": "https://twitter.com/Divinity_123/status/1637255766166863873" } ]
 		},
 		{
 			"date": "2023-03-02",
-			"txt": "対潜空襲マス設定、夜間瑞雲夜戦CI発動率(「詳細設定」からは削除し、「艦隊詳細」で確認できるように)",
-			"links": [ { "txt": "Night Zuiun Cut-In trigger rate", "url": "https://twitter.com/yukicacoon/status/1628701453677363202" } ]
+			"txt": "対潜空襲マス設定、{link0}(「詳細設定」からは削除し、「艦隊詳細」で確認できるように)",
+			"links": [ { "txt": "夜間瑞雲夜戦CI発動率", "url": "https://twitter.com/yukicacoon/status/1628701453677363202" } ]
 		},
 		{
 			"date": "2023-02-16",
@@ -67,8 +72,8 @@
 		},
 		{
 			"date": "2022-09-04",
-			"txt": "警戒陣の命中補正設定を「詳細設定」に追加",
-			"links": [ { "txt": "vanguard accuracy multipliers", "url": "https://twitter.com/Divinity_123/status/1566375780380282882" } ]
+			"txt": "{link0}設定を「詳細設定」に追加",
+			"links": [ { "txt": "警戒陣の命中補正", "url": "https://twitter.com/Divinity_123/status/1566375780380282882" } ]
 		},
 		{
 			"date": "2022-08-27",
@@ -76,20 +81,20 @@
 		},
 		{
 			"date": "2022-06-21",
-			"txt": "基地航空隊の命中ボーナス設定"
+			"txt": "基地航空隊の命中特効設定"
 		},
 		{
 			"date": "2022-05-28",
-			"txt": "KCNav/{link0}から史実ボーナスを読み込めるように",
+			"txt": "KCNav/{link0}から史実特効を読み込めるように",
 			"links": [ { "txt": "Dewy", "url": "https://github.com/sorewachigauyo/kc-event-bonus" } ]
 		},
 		{
 			"date": "2022-05-06",
-			"txt": "新しいUI: 遊撃部隊、複数の敵/友軍艦隊編成、装備ボーナス、Nodeごとの史実ボーナスの上書き、基地航空隊史実ボーナスダメージ、Nodeごとの渦潮コストの追加、KCNavから敵/友軍艦隊編成のインポート、制空シミュから基地航空隊のインポート/エクスポート、バックアップファイルのダウンロード"
+			"txt": "新しいUI: 遊撃部隊、複数の敵/友軍艦隊編成、装備特効、Nodeごとの史実特効の上書き、基地航空隊史実特効ダメージ、Nodeごとの渦潮コストの追加、KCNavから敵/友軍艦隊編成のインポート、制空シミュから基地航空隊のインポート/エクスポート、バックアップファイルのダウンロード"
 		},
 		{
 			"date": "2022-02-16",
-			"txt": "史実ボーナス設定(命中&回避)"
+			"txt": "史実特効設定(命中&回避)"
 		},
 		{
 			"date": "2021-10-17",
@@ -110,7 +115,7 @@
 		},
 		{
 			"date": "2019-12-18",
-			"txt": "史実ボーナスの追加設定(ボスNode, ボス旗艦)"
+			"txt": "史実特効の追加設定(ボスNode, ボス旗艦)"
 		},
 		{
 			"date": "2019-09-18",
@@ -119,7 +124,7 @@
 		{
 			"date": "2019-08-25",
 			"txt": "{link0}",
-			"links": [ { "txt": "迫撃砲/ロケット砲対地補正", "url": "https://cdn.discordapp.com/attachments/425302689887289344/614879250419417132/ECrra66VUAAzYMc.jpg_orig.jpg" } ]
+			"links": [ { "txt": "迫撃砲/ロケット砲対地補正", "url": "https://wikiwiki.jp/kancolle/%E5%AF%BE%E5%9C%B0%E6%94%BB%E6%92%83#AGDamageFormula" } ]
 		},
 		{
 			"date": "2019-05-30",
@@ -127,16 +132,16 @@
 		},
 		{
 			"date": "2019-05-16",
-			"txt": "対空CIの発動率及び優先順位の更新",
+			"txt": "{link0}及び{link1}の更新",
 			"links": [
-				{ "txt": "activation rates", "url": "https://docs.google.com/spreadsheets/d/1YUppVErQj7P9f9-ddpdR-e7fTaycjSK9-x4GE9ibCrA" },
-				{ "txt": "priorities", "url": "https://gist.github.com/Nishisonic/62cead1f57a323c737019d6b630fa4a5" }
+				{ "txt": "対空CIの発動率", "url": "https://docs.google.com/spreadsheets/d/1YUppVErQj7P9f9-ddpdR-e7fTaycjSK9-x4GE9ibCrA" },
+				{ "txt": "優先順位", "url": "https://gist.github.com/Nishisonic/62cead1f57a323c737019d6b630fa4a5" }
 			]
 		},
 		{
 			"date": "2019-05-10",
 			"txt": "Mechanics: {link0}、対地艦爆",
-			"links": [ { "txt": "射撃回避", "url": "https://twitter.com/muu_1106/status/1124658313428213760?s=19" } ]
+			"links": [ { "txt": "射撃回避", "url": "https://wikiwiki.jp/kancolle/%E5%AF%BE%E7%A9%BA%E7%A0%B2%E7%81%AB#avoid_AAfire" } ]
 		},
 		{
 			"date": "2019-04-21",
@@ -148,12 +153,12 @@
 		},
 		{
 			"date": "2019-03-11",
-			"txt": "史実ボーナス設定、Nelson/長門/陸奥 タッチ（昼戦のみ）、Mechanics(新規): 対地補正/各マスの消費資源の更新/梯形陣補正"
+			"txt": "史実特効設定、Nelson/長門/陸奥 タッチ（昼戦のみ）、Mechanics(新規): 対地補正/各マスの消費資源の更新/梯形陣補正"
 		},
 		{
 			"date": "2018-11-26",
-			"txt": "{link0}、敵の組み合わせの改善、基地航空隊の改善、PT小鬼の改善",
-			"links": [ { "txt": "データをインポートしてシミュレーション", "url": "simulator-import-help.html" } ]
+			"txt": "データをurlパラメータからインポートしてシミュレーション({link0})、敵の組み合わせの改善、基地航空隊の改善、PT小鬼の改善",
+			"links": [ { "txt": "サンプル", "url": "simulator-import-help.html" } ]
 		},
 		{
 			"date": "2018-08-14",
@@ -173,7 +178,7 @@
 		}
 	],
 
-	"kancolle_sortie_simulator": "艦これ出撃シミュレーター",
+	"kancolle_sortie_simulator_sub": "艦これ出撃シミュレーター",
 	"save_load_simulator_backup": "Save/Load Simulator Backup",
 	"import_export_deckbuilder_format": "Import/Export DeckBuilder Format",
 	"fleets": "自艦隊",
@@ -192,12 +197,13 @@
 	"retreat_on_taiha_even": "{img_taiha}したときに{img_repair}を積んでいてもNode: {sel_node}より前なら撤退する",
 	"none_node": "None",
 	"fcf_settings": "司令部設定",
+	"fcf_settings_set": "司令部設定",
 	"replace_formations": "陣形に必要な隻数が足りない場合、{closest_alternative}で置き換える",
 	"closest_alternative": "最も近い陣形",
 	"closest_alternative_tooltip": "3隻以下 \u2192 単縦陣\n輪形陣 \u2192 複縦陣\n第三警戒航行序列: 輪形陣 \u2192 第一警戒航行序列: 対潜警戒\n第四警戒航行序列: 戦闘隊形 \u2192 第二警戒航行序列: 前方警戒",
 	"historical_bonus": "史実特効",
-	"auto_set_bonus": "各Nodeへの史実ボーナスをまとめて設定",
-	"import_mapwide_bonuses_once": "マップ全体へのボーナスをまとめて設定",
+	"auto_set_bonus": "艦隊への自動特効設定(推奨)",
+	"import_mapwide_bonuses_once": "マップ全体への特効をまとめて設定(旧機能)",
 	"mechanics": "Mechanics",
 	"day_shelling_softcap": "昼戦(砲撃戦)キャップ",
 	"asw_softcap": "対潜キャップ",
@@ -212,12 +218,12 @@
 	"carry_over_ship_morale": "艦のcond値を持ち越す",
 	"show_advanced": "詳細設定",
 	"vanguard_evasion_bonus": "警戒陣回避ボーナス",
-	"use_flat_evasion_bonus": "一律で適用",
+	"use_flat_evasion_bonus": "絶対値で指定",
 	"shelling": "砲撃",
 	"torpedo": "雷撃",
 	"DD_n": "駆逐{0}",
 	"other_n": "その他艦種{0}",
-	"use_accuracy_multiplier": "個別に指定(倍率)",
+	"use_accuracy_multiplier": "敵艦からの命中倍率で指定(推奨)",
 	"set_event_values": "イベント海域での値をセット",
 	"set_normal_values": "通常海域での値をセット",
 	"special_attack_activation_rate": "特殊砲撃発動率",
@@ -349,7 +355,7 @@
 	"enable_barrage_balloon_effects": "阻塞気球を使用する",
 	"enable_atoll_node_effects": "特四式内火艇/改による越環礁攻撃を実施する",
 	"use_anchorage_repair_before_battle": "戦闘前に緊急泊地修理を実施する",
-	"override_historical_bonuses": "史実ボーナス上書き",
+	"override_historical_bonuses": "史実特効上書き",
 	"enemy_fleet": "敵艦隊",
 	"set_bonuses": "手動セット",
 	"main_fleet_set": "出撃艦隊",
@@ -365,7 +371,7 @@
 	"ship_has_unknown_stats": "不明なステータスが含まれます",
 	
 	"load_options": "編成読み込み",
-	"from_text": "デッキビルダーから",
+	"from_text": "テキストデータから",
 	"from_text_note": "本シミュ、デッキビルダー、KC3 ReplayのJSONファイルが読み込み可能です",
 	"load": "Load",
 	"fleet": "艦隊",
@@ -395,13 +401,13 @@
 	"stat_torpedo_accuracy": "雷撃命中",
 	"bonus_header": "特効",
 	"bonus_dmg": "ダメージ",
-	"bonus_dmg_desc": "マップ全体でダメージボーナスを付与します(倍率)",
+	"bonus_dmg_desc": "マップ全体でダメージ特効を付与します(倍率)",
 	"bonus_acc": "命中",
-	"bonus_acc_desc": "マップ全体で命中ボーナスを付与します(倍率)",
+	"bonus_acc_desc": "マップ全体で命中特効を付与します(倍率)",
 	"bonus_eva": "回避",
-	"bonus_eva_desc": "マップ全体で回避ボーナスを付与します(倍率)",
+	"bonus_eva_desc": "マップ全体で回避特効を付与します(倍率)",
 	"debuff_dmg": "ボス特効",
-	"debuff_dmg_desc": "最終Nodeにおける敵旗艦へのダメージボーナス(倍率)。ボーナスダメージに累積します。※敵旗艦へのボーナスがインポートできない段階でのみ使用してください",
+	"debuff_dmg_desc": "最終Nodeにおける敵旗艦へのダメージ特効(倍率)。特効ダメージに累積します。※敵旗艦への特効がインポートできない段階でのみ使用してください",
 	"slot_size": "搭載数",
 	"proficiency": "艦載機熟練度",
 	"improvement": "改修状況",
@@ -414,8 +420,9 @@
 	"air_sub_support": "攻撃不能",
 	"show_equipped_stats": "装備補正値を見る",
 	"autoscale_stats": "自動調整 {img_hp}/{img_ev}/{img_asw}/{img_los} with {img_lv}",
-	"preserve_bonus_on_change": "艦の変更時にボーナスを維持",
+	"preserve_bonus_on_change": "艦の変更時に特効を維持",
 	"show_additional_stats": "艦隊詳細",
+	"show_additional_stats_lbas": "部隊詳細",
 	"single_fleet": "通常艦隊",
 	"combined_fleet": "連合艦隊",
 	"carrier_task_force": "空母機動部隊",
@@ -520,12 +527,12 @@
 	"kcnav_error": "KCNavでエラーが発生しました",
 	"kcnav_timed_out": "KCNavでエラーが発生しました(タイムアウト)",
 	
-	"import_bonuses_dewy": "{link_dewy}から史実ボーナスをインポート",
+	"import_bonuses_dewy": "{link_dewy}から史実特効をインポート",
 	"dewy": "Dewy",
 	"node": "マス",
 	"debuffed": "装甲破砕済",
-	"from_friend_fleet": "友軍艦隊に検証されたボーナスを適用",
-	"from_targeting_boss": "敵旗艦への攻撃に検証されたボーナスを適用",
+	"from_friend_fleet": "友軍艦隊に検証された特効を適用",
+	"from_targeting_boss": "敵旗艦への攻撃に検証された特効を適用",
 	"import_to_main_fleet": "出撃艦隊に適用",
 	"import_to_friend_fleets": "友軍艦隊に適用",
 	"load_from_dewy": "Dewyから読み込み",
@@ -568,11 +575,11 @@
 	"never_use_on": "離脱を許可しない艦",
 	"note_require_on_node": "「Node: [Node番号] において」は指定したNodeとそれより前の全てのNodeに対して適用します。例.Node番号に2を指定: Node1とNode2に適用し、Node3以降には適用しない",
 	
-	"auto_set_historical_bonus": "史実ボーナスを各Nodeへまとめて指定",
-	"current_data_set_updated": "現在適用しているデータセットが{date}に更新されました。今すぐ全てのボーナスを再適用しますか?",
-	"manually_compiled_bonuses": "手動で編集したボーナス(可能であれば推奨)",
+	"auto_set_historical_bonus": "史実特効の自動設定(艦隊が変更されても自動反映)",
+	"current_data_set_updated": "現在適用しているデータセットが{date}に更新されました。今すぐ全ての特効を再適用しますか?",
+	"manually_compiled_bonuses": "手動で編集した特効(可能であれば推奨)",
 	"simulator_preset": "Simulator Preset",
-	"bonus_ranges_auto_calc": "TsunDBから自動計算されるボーナス範囲",
+	"bonus_ranges_auto_calc": "TsunDBから自動計算される特効範囲",
 	"set": "Set",
 	"none": "None",
 	"note": "メモ",
@@ -588,14 +595,14 @@
 	"use_equal_damage_mod": "ダメージ補正と同じ値を使用",
 	"use_half_damage_mod": "ダメージ補正の半分の値を使用",
 	"include_speculated_ships": "予想される艦を含める",
-	"include_speculated_ships_desc": "まだデータが確認されていないが、過去の編成からボーナスがあると推測される艦",
+	"include_speculated_ships_desc": "まだデータが確認されていないが、過去の編成から特効があると推測される艦",
 	"start": "決定",
 	"dismiss": "破棄",
 	"apply_to_current": "現在の編成に適用",
-	"apply_to_current_desc": "\u2610 これから新しく追加されるすべての艦は、デフォルトでこれらのボーナスを付与されます。\n\u2611 また、これらのボーナスを現在設定されているすべての船に適用します。(ONにしない場合、全て削除)",
+    "apply_to_current_desc": "\u2611 現在の艦隊と、これから新しく追加される全ての艦はデフォルトでこれらのNodeにおける特効を付与されます。\n\u2610 (ONにしない場合、全て削除)",
 	"apply_dmg_only": "ダメージのみ適用",
 	"loading": "Loading",
-	"load_error_autobonus_turn_off": "ロードエラー: 自動ボーナス設定がOFFになります",
+	"load_error_autobonus_turn_off": "ロードエラー: 自動特効設定がOFFになります",
 	
 	"change_log_header": "更新履歴",
 	"bug_reports_feature_requests": "バグ報告/要望",
@@ -620,10 +627,10 @@
 		"AACI": "対空CI",
 		"fitGun": "フィット砲",
 		"OASW": "先制対潜",
-		"CVCI": "昼戦空母CI",
+		"CVCI": "昼戦/夜襲空母CI",
 		"destroyerNBCI": "駆逐艦の夜戦CI",
 		"LBASBuff": "17秋以降の支援艦隊と基地航空隊強化(夜戦マスに支援艦隊派遣、対潜支援、基地航空隊に熟練度実装)",
-		"eqBonus": "装備ボーナス",
+		"eqBonus": "装備特効",
 		"installRevamp": "対地補正(ソフトスキン)",
 		"newSupply": "各マスに新しい燃料/弾薬消費を適用",
 		"enable_echelon": "梯形陣補正",
@@ -631,12 +638,12 @@
 		"divebomberInstall": "対地艦爆",
 		"enable_DDCI": "駆逐艦の夜戦CIの2回攻撃",
 		"subFleetAttack": "潜水艦隊攻撃",
-		"kongouSpecialBuff": "僚艦夜戦突撃",
-		"coloradoSpecialFix": "コロラドタッチ",
-		"eqBonusTorp": "艦攻に装備ボーナス適用",
-		"eqBonusASW": "対潜に装備ボーナス適用",
+		"kongouSpecialBuff": "僚艦夜戦突撃強化(1出撃/2回発動、他の特殊砲撃と併用可、弾薬コスト減少。OFFでも発動は可能)",
+		"coloradoSpecialFix": "コロラドタッチアップデート(2,3番艦が中破でも発動可、特定条件下で異常な倍率になる仕様の廃止)",
+		"eqBonusTorp": "艦攻に装備特効適用",
+		"eqBonusASW": "対潜に装備特効適用",
 		"ffReroll": "友軍艦隊が敵旗艦を狙いづらくなる(狙った場合再抽選する)",
-		"eqBonusAA": "対空に装備ボーナス適用",
+		"eqBonusAA": "対空に装備特効適用",
 		"antiSubRaid": "対潜空襲",
 		"enable_ASWPlaneAir": "回転翼機と連絡機の制空への関与",
 		"enable_AACIRework": "対空CI修正(多重判定 & 優先度)"
@@ -748,7 +755,7 @@
 		"warn_no_subonly": "注意: 敵編成が潜水艦のみの場合の消費資源設定がNode {0} で有効になっていません、意図した設定ですか?",
 		"warn_vanguard": "メモ: イベント海域においては駆逐艦の警戒陣選択時の回避補正が異なります。必要に応じて「詳細設定」から選択してください",
 		"warn_enemy_unset_stats": "注意: Node{0} の敵艦の回避と運は不明であり、未設定です(0か1が設定されています).",
-		"warn_debuff_dmg": "注意: 自艦隊欄の'ダメージボーナス(旗艦)'は古いシステムであり、正確に作動しないかもしれません。代わりに敵の装甲を調整する方法を推奨します",
+		"warn_debuff_dmg": "注意: 自艦隊欄の'ダメージ特効(旗艦)'は古いシステムであり、正確に作動しないかもしれません。代わりに敵の装甲を調整する方法を推奨します",
 		"warn_range_weights_f": "注意: 自艦隊 - 以下の射程における攻撃順の偏向は不明であり、適用されません: {0}",
 		"warn_range_weights_e": "注意: 敵艦隊 - 以下の射程における攻撃順の偏向は不明であり、適用されません: {0}",
 		"warn_special_attack": "メモ: 特殊砲撃の発動率の計算は不明であり、手動で設定する必要があります。「詳細設定」でデフォルト値の確認と発動率の指定ができます"

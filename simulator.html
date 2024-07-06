@@ -24,7 +24,7 @@
 </head>
 <body style="display:none">
 	<div id="divMain">
-		<h1>KanColle Sortie Simulator</h1>
+		<h1 :title="$t('kancolle_sortie_simulator_sub')">KanColle Sortie Simulator</h1>
 		
 		<div>
 			<label><input type="radio" value="en" v-model="$i18n.locale" @change="onchangeLang"/>EN</label> <label><input type="radio" value="ja" v-model="$i18n.locale" @change="onchangeLang"/>JP</label>
@@ -98,7 +98,7 @@
 					<template v-slot:img_repair><img src="assets/items/14.png"/></template>
 					<template v-slot:sel_node><select v-model="settingsFCF.dameconNode"><option value="0">{{$t('none_node')}}</option><option v-for="(battle,i) in battles" :value="battle.id">{{i+1}}</option></select></template>
 				</i18n-t></div>
-				<div><img src="assets/items/28.png"/><input type="button" :value="$t('fcf_settings')" @click="onclickSetFCF"/> <span v-show="hasFCFSettings" class="bonusMarker fcf" title="FCF Settings set">&#11044;</span></div>
+				<div><img src="assets/items/28.png"/><input type="button" :value="$t('fcf_settings')" @click="onclickSetFCF"/> <span v-show="hasFCFSettings" class="bonusMarker fcf" :title="$t('fcf_settings_set')">&#11044;</span></div>
 				<div><label><input type="checkbox" v-model="settings.replaceImpossibleFormations"/> <i18n-t keypath="replace_formations" scope="global">
 					<template v-slot:closest_alternative><span class="tooltip" :title="$t('closest_alternative_tooltip')">{{$t('closest_alternative')}}</span></template>
 				</i18n-t></label></div>
@@ -473,7 +473,7 @@
 		<div id="divChangeLog">
 			<div><span class="header">{{$t('change_log_header')}}:</span></div>
 			<div v-for="(obj,idx) in $i18n.messages[$i18n.fallbackLocale].change_log">{{obj.date}} - <i18n-t :keypath="'change_log[' + idx + '].txt'" scope="global">
-				<template v-for="(link,i) in obj.links" v-slot:['link'+i]><a :href="obj.links[i].url" target="_blank">{{$t('change_log[' + idx + '].links[' + i + '].txt')}}</a></template>
+				<template v-for="(link,i) in obj.links" v-slot:['link'+i]><a :href="$t('change_log[' + idx + '].links[' + i + '].url')" target="_blank">{{$t('change_log[' + idx + '].links[' + i + '].txt')}}</a></template>
 			</i18n-t></div>
 		</div>
 		<div id="divFooter">
@@ -871,7 +871,7 @@
 			</div>
 		</div>
 		<div class="fleetEditorAddl">
-			<input type="button" :value="$t('show_additional_stats')" @click="onclickAdditionalStats"/>
+			<input type="button" :value="$t('show_additional_stats_lbas')" @click="onclickAdditionalStats"/>
 		</div>
 	</template>
 	
