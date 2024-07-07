@@ -1998,7 +1998,7 @@ var MAPDATA = {
 		}
 	},
 	56: {
-		name: 'Early-Spring 2023 Event',
+		name: 'Early-Spring 2023',
 		maps: {
 			1: {
 				name: 'E1',
@@ -2067,7 +2067,7 @@ var MAPDATA = {
 		}
 	},
 	57: {
-		name: 'Summer 2023 Event',
+		name: 'Summer 2023',
 		maps: {
 			1: {
 				name: 'E1',
@@ -2128,7 +2128,7 @@ var MAPDATA = {
 		}
 	},
 	58: {
-		name: 'Early-Spring 2024 Event',
+		name: 'Early-Spring 2024',
 		maps: {
 			1: {
 				name: 'E1',

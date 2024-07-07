@@ -1,4 +1,4 @@
-(() => {
+COMMON.promiseI18n.then(() => {
 
 var CONST = window.COMMON.getConst({
 	numShipMax: 7,
@@ -13,9 +13,9 @@ var CONST = window.COMMON.getConst({
 	shipImgNameDefault: 'Kblank.png',
 	equipImgNameDefault: 'empty',
 	
-	tooltipUnknownStat: 'This stat\'s true value is currently unknown.',
-	tooltipUnknownStatPlaceholder: 'This stat\'s true value is unknown, it is a placeholder not backed by data. Recommended to try setting your own value.',
-	tooltipUnknownStatDBEstimate: 'This stat\'s true value is unknown, it is an estimate based on data from DB submissions.',
+	tooltipUnknownStat: 'stat_true_value_unknown',
+	tooltipUnknownStatPlaceholder: 'stat_true_value_placeholder',
+	tooltipUnknownStatDBEstimate: 'stat_true_value_db_estimate',
 	
 	rankExceptTypes: [],
 	rankDefaultSpecial: {},
@@ -127,6 +127,7 @@ var FLEET_MODEL = {
 			
 			mstId: +mstId,
 			name: sdata.name,
+			type: sdata.type,
 			level: level,
 			hp: sdata.HP,
 			hpInit: sdata.HP,
@@ -523,10 +524,11 @@ var UI_FLEETEDITOR = Vue.createApp({
 			if (ship.statsUnknown[stat] == CONST.STAT_UNKNOWN.DB_ESTIMATE) return {unknownMed:true};
 		},
 		getTitleStat: function(ship,stat) {
-			if (ship.statsBase[stat] != ship.statsDefault[stat]) return null;
+			if (ship.statsBase[stat] != ship.statsDefault[stat]) return '';
 			if (ship.statsUnknown[stat] == CONST.STAT_UNKNOWN.NONE) return CONST.tooltipUnknownStat;
 			if (ship.statsUnknown[stat] == CONST.STAT_UNKNOWN.PLACEHOLDER) return CONST.tooltipUnknownStatPlaceholder;
 			if (ship.statsUnknown[stat] == CONST.STAT_UNKNOWN.DB_ESTIMATE) return CONST.tooltipUnknownStatDBEstimate;
+			return '';
 		},
 		getClassHP: function(ship) {
 			if (ship.hpInit/ship.hp <= .25) return 'damage heavy';
@@ -1066,7 +1068,7 @@ var UI_ADDITIONALSTATS = Vue.createApp({
 			this.active = false;
 		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).mount('#divAdditionalStats');
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divAdditionalStats');
 
 
 var UI_ADDITIONALSTATSLBAS = Vue.createApp({
@@ -1118,7 +1120,7 @@ var UI_ADDITIONALSTATSLBAS = Vue.createApp({
 			this.active = false;
 		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).mount('#divAdditionalStatsLBAS');
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divAdditionalStatsLBAS');
 
 
 
@@ -1144,4 +1146,4 @@ COMMON.global.fleetEditorMoveTemp = function(elFrom) {
 	}
 }
 
-})();
+})

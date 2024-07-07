@@ -61,7 +61,7 @@ var SIM = {
 			}
 		}
 		if (this._saveErrors) {
-			this._errors.push({ txt: txt, excludeClient: !!CONST.errorText[key].excludeClient, excludeImport: !!CONST.errorText[key].excludeImport });
+			this._errors.push({ key: key, args: args, txt: txt, excludeClient: !!CONST.errorText[key].excludeClient, excludeImport: !!CONST.errorText[key].excludeImport });
 		} else {
 			console.log('error: ' + txt);
 		}
@@ -74,7 +74,7 @@ var SIM = {
 			}
 		}
 		if (this._saveErrors) {
-			this._warnings.push({ txt: txt, excludeClient: !!CONST.errorText[key].excludeClient, excludeImport: !!CONST.errorText[key].excludeImport });
+			this._warnings.push({ key: key, args: args, txt: txt, excludeClient: !!CONST.errorText[key].excludeClient, excludeImport: !!CONST.errorText[key].excludeImport });
 		} else {
 			console.log('warning: ' + txt);
 		}

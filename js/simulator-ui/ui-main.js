@@ -1,4 +1,4 @@
-(() => {
+COMMON.promiseI18n.then(() => {
 
 var CONST = window.COMMON.getConst({
 	numBattlesMax: 9,
@@ -265,19 +265,19 @@ var UI_MAIN = Vue.createApp({
 		},
 		
 		autoBonusStatus: function() {
-			return !this.autoBonus ? 'Off' : 'Active';
+			return !this.autoBonus ? this.$i18n.t('autobonus_off') : this.$i18n.t('autobonus_active');
 		},
 		classAutoBonusStatus: function() {
 			return this.autoBonus ? 'good' : '';
 		},
 		autoBonusName: function() {
 			if (!this.autoBonus) return '';
-			if (this.autoBonus.type == 'preset') return 'Preset: ' + COMMON.BONUS_MANAGER.PRESET_INDEX[this.autoBonus.key].name;
+			if (this.autoBonus.type == 'preset') return this.$i18n.t('autobonus_preset') + ': ' + this.$i18n.t('bonus.' + COMMON.BONUS_MANAGER.PRESET_INDEX[this.autoBonus.key].name);
 			if (this.autoBonus.type == 'dewy') return 'kc-event-bonus: ' + COMMON.BONUS_MANAGER.getDewyName(this.autoBonus.key);
 			return '';
 		},
 		autoBonusNodes: function() {
-			return this.autoBonus ? this.battles.map(battle => this.autoBonus.nodeToLetter[battle.id] || '(default)').join('\u2192') + (this.autoBonus.useDebuff ? ', Debuffed' : '') : '';
+			return this.autoBonus ? this.battles.map(battle => this.autoBonus.nodeToLetter[battle.id] || this.$i18n.t('autobonus_node_default')).join('\u2192') + (this.autoBonus.useDebuff ? this.$i18n.t('autobonus_debuffed') : '') : '';
 		},
 	},
 	methods: {
@@ -476,12 +476,12 @@ var UI_MAIN = Vue.createApp({
 		},
 		callbackSimStats: function(res) {
 			if (res.errors) {
-				this.results.errors = res.errors.filter(obj => this._includeError(obj)).map(obj => obj.txt);
+				this.results.errors = res.errors.filter(obj => this._includeError(obj)).map(obj => ({ key: obj.key, args: obj.args }));
 				this.canSim = true;
 				return;
 			}
 			if (res.warnings) {
-				this.results.warnings = res.warnings.filter(obj => this._includeError(obj)).map(obj => obj.txt);
+				this.results.warnings = res.warnings.filter(obj => this._includeError(obj)).map(obj => ({ key: obj.key, args: obj.args }));
 			}
 			if (res.didReset) {
 				this.results.active = false;
@@ -511,7 +511,7 @@ var UI_MAIN = Vue.createApp({
 			let replay = CONVERT.uiToReplay(this);
 			let errors = SIM.runReplay(CONVERT.uiToSimInput(this),replay);
 			if (errors) {
-				this.results.errors = errors.filter(obj => this._includeError(obj)).map(obj => obj.txt);;
+				this.results.errors = errors.filter(obj => this._includeError(obj)).map(obj => ({ key: obj.key, args: obj.args }));
 				return;
 			}
 			console.log(replay)
@@ -556,7 +556,7 @@ ${t('results.buckets')}:	${this.results.bucketSunk}`;
 				}
 			}
 			navigator.clipboard.writeText(txt);
-			this.noticeTxt = 'Copied to Clipboard';
+			this.noticeTxt = t('copied_to_clipboard');
 			let n = ++this.showNoticeCount;
 			setTimeout(() => n == this.showNoticeCount && (this.showNoticeCount = 0), 1000);
 		},
@@ -665,9 +665,6 @@ ${t('results.buckets')}:	${this.results.bucketSunk}`;
 		},
 	},
 	methods: {
-		getCompName: function(comp) {
-			return this.fleetname + ' - Comp ' + comp.num;
-		},
 		getCompPercent: function(comp) {
 			let total = this.comps.reduce((a,b) => a + Math.max(0,b.rate),0);
 			if (total <= 0) return Math.round(100/this.comps.length);
@@ -716,7 +713,7 @@ var UI_BONUSEDITOR = Vue.createApp({
 			this.active = false;
 		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).mount('#divBonusEditor');
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divBonusEditor');
 
 
 var UI_DECKBUILDERIMPORTER = Vue.createApp({
@@ -805,7 +802,7 @@ var UI_DECKBUILDERIMPORTER = Vue.createApp({
 			event.target.select();
 		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).mount('#divDeckbuilderImporter');
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divDeckbuilderImporter');
 
 
 var UI_KCNAVCOMPIMPORTER = Vue.createApp({
@@ -993,7 +990,7 @@ var UI_KCNAVCOMPIMPORTER = Vue.createApp({
 			}.bind(this),500);
 		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).mount('#divKCNavCompImporter');
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divKCNavCompImporter');
 
 
 var UI_BONUSIMPORTER = Vue.createApp({
@@ -1218,7 +1215,7 @@ var UI_BONUSIMPORTER = Vue.createApp({
 			}.bind(this),500);
 		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).mount('#divBonusImporter');
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divBonusImporter');
 
 
 var UI_BACKUP = Vue.createApp({
@@ -1309,7 +1306,7 @@ var UI_BACKUP = Vue.createApp({
 			window.location.reload();
 		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).mount('#divSimBackup');;
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divSimBackup');;
 
 
 var UI_FCFSETTINGS = Vue.createApp({
@@ -1372,7 +1369,7 @@ var UI_FCFSETTINGS = Vue.createApp({
 			ship.neverFCF = !ship.neverFCF;
 		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).mount('#divFCFSettings');;
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divFCFSettings');;
 
 
 
@@ -1716,7 +1713,15 @@ var UI_AUTOBONUS = Vue.createApp({
 			this.canStart ? this.$refs.txtLoading.stop() : this.$refs.txtLoading.start();
 		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).component('vloading',COMMON.CMP_LOADING).mount('#divAutoBonus');
+}).component('vmodal',COMMON.CMP_MODAL).component('vloading',COMMON.CMP_LOADING).use(COMMON.i18n).mount('#divAutoBonus');
+
+
+
+var UI_OTHER = Vue.createApp({
+	data: () => ({
+		
+	})
+}).use(COMMON.i18n).mount('#divOther');
 
 
 
@@ -1728,4 +1733,4 @@ document.body.onunload = function() {
 
 COMMON.UI_MAIN = UI_MAIN; //debug
 
-})();
+})
