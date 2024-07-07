@@ -1717,6 +1717,14 @@ var UI_AUTOBONUS = Vue.createApp({
 
 
 
+var UI_OTHER = Vue.createApp({
+	data: () => ({
+		
+	})
+}).use(COMMON.i18n).mount('#divOther');
+
+
+
 document.body.onunload = function() {
 	if (UI_MAIN.canSave) {
 		localStorage.sim2 = JSON.stringify(CONVERT.uiToSave(UI_MAIN));

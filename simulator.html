@@ -469,7 +469,9 @@
 		<hr>
 		
 		<div id="divNotice" v-show="showNoticeCount">{{noticeTxt}}</div>
-
+	</div>
+	
+	<div id="divOther">
 		<div id="divChangeLog">
 			<div><span class="header">{{$t('change_log_header')}}:</span></div>
 			<div v-for="(obj,idx) in $i18n.messages[$i18n.fallbackLocale].change_log">{{obj.date}} - <i18n-t :keypath="'change_log[' + idx + '].txt'" scope="global">
