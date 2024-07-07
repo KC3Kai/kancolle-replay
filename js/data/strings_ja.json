@@ -1,7 +1,7 @@
 {
 	"change_log": [
 		{
-			"date": "2024-07-XX",
+			"date": "2024-07-07",
 			"txt": "UI全般に日本語訳実装 (thanks to {link0})",
 			"links": [ { "txt": "X-20A", "url": "https://github.com/X-20A" } ]
 		},
