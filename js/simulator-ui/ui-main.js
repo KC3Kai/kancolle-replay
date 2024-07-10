@@ -176,6 +176,7 @@ var UI_MAIN = Vue.createApp({
 		
 		showNoticeCount: 0,
 		noticeTxt: '',
+		showMechanics: false,
 	}),
 	mounted: function() {
 		this.$i18n.locale = localStorage.sim2_lang || 'en';
@@ -215,34 +216,82 @@ var UI_MAIN = Vue.createApp({
 				}
 				setTimeout(function() {
 					if (document.querySelector('#divSettingsAdvanced input.changed')) this.settings.showAdvanced = true;
+					if (document.querySelector('#divSettingsMechanics input.changed') || this.settings.mechanics.find(m => !m.enabled)) this.showMechanics = true;
 				}.bind(this),1);
 			}.bind(this);
 			if (window.location.hash.length >= 3) {
-				let dataHash;
-				try {
-					dataHash = JSON.parse(decodeURIComponent(window.location.hash.substr(1)));
-				} catch(e) {
-					console.log('bad JSON hash:');
-					console.error(e);
-				}
-				window.location.hash = '';
-				if (dataHash) {
-					if (dataHash.fleet1 && dataHash.battles && !dataHash.source) { //replay import
-						console.log('replay import');
-						dataReplay = dataHash;
-						dataSave = CONVERT.replayToSave(dataReplay);
-						this.settings.airRaidCostW6 = dataReplay.world == 6;
-						if (localStorage.sim2 && !CONVERT.saveIsEmpty(JSON.parse(localStorage.sim2))) {
-							let style = document.createElement('style');
-							style.innerText = '#divMain > *, #divOther { display: none; }';
-							document.head.appendChild(style);
-							UI_BACKUP.doOpen(() => { document.head.removeChild(style); finishInit(); });
+				if (window.location.hash.substr(0,8) == '#backup=') {
+					let ab;
+					try {
+						ab = COMMON.base64ToArrayBuffer(window.location.hash.substr(8));
+					} catch(e) {
+						console.log('bad backup url (buffer)');
+						console.error(e);
+					}
+					if (ab) {
+						document.body.style = 'display:none';
+						window.location.hash = '';
+						LZMA.decompress(ab, (dataStr) => {
+							document.body.style = '';
+							let dataJSON;
+							if (dataStr === null) {
+								console.log('bad backup url (null)')
+							} else {
+								try {
+									dataJSON = JSON.parse(dataStr);
+								} catch(e) {
+									console.log('bad JSON backup url:');
+									console.error(e);
+								}
+							}
+							if (dataJSON) {
+								console.log('backup url import');
+								dataSave = dataJSON;
+								if (localStorage.sim2 && !CONVERT.saveIsEmpty(JSON.parse(localStorage.sim2))) {
+									let style = document.createElement('style');
+									style.innerText = '#divMain > *, #divOther { display: none; }';
+									document.head.appendChild(style);
+									UI_BACKUP.doOpen(() => { document.head.removeChild(style); finishInit(); });
+									return;
+								} else {
+									finishInit();
+								}
+							} else {
+								if (!dataSave && localStorage.sim2) {
+									dataSave = JSON.parse(localStorage.sim2);
+								}
+								finishInit();
+							}
+						});
+						return;
+					}
+				} else {
+					let dataHash;
+					try {
+						dataHash = JSON.parse(decodeURIComponent(window.location.hash.substr(1)));
+					} catch(e) {
+						console.log('bad JSON hash:');
+						console.error(e);
+					}
+					window.location.hash = '';
+					if (dataHash) {
+						if (dataHash.fleet1 && dataHash.battles && !dataHash.source) { //replay import
+							console.log('replay import');
+							dataReplay = dataHash;
+							dataSave = CONVERT.replayToSave(dataReplay);
+							this.settings.airRaidCostW6 = dataReplay.world == 6;
+							if (localStorage.sim2 && !CONVERT.saveIsEmpty(JSON.parse(localStorage.sim2))) {
+								let style = document.createElement('style');
+								style.innerText = '#divMain > *, #divOther { display: none; }';
+								document.head.appendChild(style);
+								UI_BACKUP.doOpen(() => { document.head.removeChild(style); finishInit(); });
+								return;
+							}
+						} else if (dataHash.fleetF && dataHash.nodes) { //sim data
+							console.log('sim data');
+							this.initSimImport(dataHash);
 							return;
 						}
-					} else if (dataHash.fleetF && dataHash.nodes) { //sim data
-						console.log('sim data');
-						this.initSimImport(dataHash);
-						return;
 					}
 				}
 			}
@@ -560,6 +609,17 @@ ${t('results.buckets')}:	${this.results.bucketSunk}`;
 			let n = ++this.showNoticeCount;
 			setTimeout(() => n == this.showNoticeCount && (this.showNoticeCount = 0), 1000);
 		},
+		onclickScreenShot: function() {
+			html2canvas(this.$refs.divResults).then(canvas => {
+				let filename = 'KanColle_Sortie_Simulator_Statistics_' + (new Date).toISOString().slice(0,19).replace(/:/g,'-') + '.png';
+				let a = window.document.createElement('a');
+				a.href = canvas.toDataURL('image/png');
+				a.download = filename;
+				document.body.appendChild(a);
+				a.click();
+				document.body.removeChild(a);
+			});
+		},
 		
 		onclickDeckbuilder: function() {
 			UI_DECKBUILDERIMPORTER.doOpen();
@@ -836,7 +896,7 @@ var UI_KCNAVCOMPIMPORTER = Vue.createApp({
 		optionsLetter: [],
 	}),
 	mounted: function() {
-		let keys = [1,2,3,7,4,5,6].concat(Object.keys(MAPDATA).filter(id => +id > 7 && +id >= CONST.kcnavEventFirst).sort((a,b) => +a-+b));
+		let keys = [1,2,3,7,4,5,6].concat(Object.keys(MAPDATA).filter(id => +id > 7 && +id >= CONST.kcnavEventFirst).sort((a,b) => +b-+a));
 		for (let id of keys) {
 			this.optionsWorld.push({ id: +id, name: MAPDATA[id].name.replace('Event ','') });
 		}
@@ -1225,6 +1285,9 @@ var UI_BACKUP = Vue.createApp({
 		isReplayImport: false,
 		confirmReset: false,
 		showImportError: false,
+		shareURLLoading: false,
+		showShareURLCopied: false,
+		showShareURLError: false,
 		
 		callback: null,
 	}),
@@ -1240,6 +1303,9 @@ var UI_BACKUP = Vue.createApp({
 				this.canClose = false;
 				this.callback = callbackReplayImport;
 			}
+			this.shareURLLoading = false;
+			this.showShareURLCopied = false;
+			this.showShareURLError = false;
 		},
 		
 		onclickDownload: function() {
@@ -1304,6 +1370,29 @@ var UI_BACKUP = Vue.createApp({
 			UI_MAIN.canSave = false;
 			localStorage.sim2 = '';
 			window.location.reload();
+		},
+		
+		onclickShareURL: function() {
+			this.shareURLLoading = true;
+			LZMA.compress(JSON.stringify(CONVERT.uiToSave(UI_MAIN)), 9, (ab) => {
+				// let url = window.location.href.split(/[?#]/)[0] + '#backup=' + COMMON.arrayBufferToBase64(ab);
+				let url = 'https://kc3kai.github.io/kancolle-replay/simulator.html' + '#backup=' + COMMON.arrayBufferToBase64(ab);
+				fetch('https://tinyurl.com/api-create.php?url=' + encodeURIComponent(url)).then(async(res) => {
+					let txt = await res.text();
+					console.log(txt);
+					if (!res.ok) {
+						throw new Error('tinyurl: ' + txt);
+						return;
+					}
+					navigator.clipboard.writeText(txt + '+');
+					this.showShareURLCopied = true;
+					this.showShareURLError = false;
+				}).catch(error => {
+					console.log(error);
+					this.showShareURLCopied = false;
+					this.showShareURLError = true;
+				});
+			});
 		},
 	},
 }).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divSimBackup');;
@@ -1413,7 +1502,14 @@ var UI_AUTOBONUS = Vue.createApp({
 		hashes: { preset: {}, dewy: {} },
 	}),
 	mounted: function() {
-		for (let key in COMMON.BONUS_MANAGER.PRESET_INDEX) {
+		for (let key of Object.keys(COMMON.BONUS_MANAGER.PRESET_INDEX).sort((keyA,keyB) => {
+			let sA = keyA.split('-'), sB = keyB.split('-');
+			if (sA[0] == sB[0]) return +sA[1]-+sB[1];
+			if (+sA[0] < 10 && +sB[0] < 10) return +sA[0]-+sB[0];
+			if (+sA[0] > 10 && +sB[0] > 10) return +sB[0]-+sA[0];
+			if (+sA[0] < 10 && +sB[0] > 10) return -1;
+			if (+sA[0] > 10 && +sB[0] < 10) return 1;
+		})) {
 			this.optionsPresetName.push({ name: COMMON.BONUS_MANAGER.PRESET_INDEX[key].name, key: key });
 		}
 	},

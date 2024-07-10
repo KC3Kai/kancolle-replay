@@ -21,6 +21,8 @@
 	<script src="js/vue-i18n.global.prod.js"></script>
 	<script src="reader/lz-string.js"></script>
 	<script src="js/simulator-ui/common.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/lzma/src/lzma_worker.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body style="display:none">
 	<div id="divMain">
@@ -114,20 +116,27 @@
 				</div>
 			</div>
 			<div id="divSettingsMechanics">
-				<span class="subheader">{{$t('mechanics')}}:</span>
-				<div v-for="mechanic in settings.mechanics">
-					<label><input type="checkbox" v-model="mechanic.enabled" @change="onchangeMechanic(mechanic)"/> {{$t('mechanic.' + mechanic.key)}}</label>
+				<div class="collapseButton" @click="showMechanics=!showMechanics">
+					<div><span class="subheader">{{$t('mechanics')}}:</span></div>
+					<div>
+						<span v-show="!showMechanics">[+]</span>
+						<span v-show="showMechanics">[&#8722;]</span>
+					</div>
 				</div>
-			</div>
-			<div>
-				<table>
-				<tr><td><label for="mechShellDmgCap">{{$t('day_shelling_softcap')}}:</label></td><td><input id="mechShellDmgCap" type="number" v-model="settings.shellDmgCap" :class="getClassSetting('shellDmgCap')" min="0" max="9999" /></td></tr>
-				<tr><td><label for="mechASWDmgCap">{{$t('asw_softcap')}}:</label></td><td><input id="mechASWDmgCap" type="number" v-model="settings.aswDmgCap" :class="getClassSetting('aswDmgCap')" min="0" max="9999" /></td></tr>
-				<tr><td><label for="mechTorpedoDmgCap">{{$t('torpedo_softcap')}}:</label></td><td><input id="mechTorpedoDmgCap" type="number" v-model="settings.torpedoDmgCap" :class="getClassSetting('torpedoDmgCap')" min="0" max="9999" /></td></tr>
-				<tr><td><label for="mechNightDmgCap">{{$t('night_softcap')}}:</label></td><td><input id="mechNightDmgCap" type="number" v-model="settings.nightDmgCap" :class="getClassSetting('nightDmgCap')" min="0" max="9999" /></td></tr>
-				<tr><td><label for="mechAirDmgCap">{{$t('air_softcap')}}:</label></td><td><input id="mechAirDmgCap" type="number" v-model="settings.airDmgCap" :class="getClassSetting('airDmgCap')" min="0" max="9999" /></td></tr>
-				<tr><td><label for="mechSupportDmgCap">{{$t('support_softcap')}}:</label></td><td><input id="mechSupportDmgCap" type="number" v-model="settings.supportDmgCap" :class="getClassSetting('supportDmgCap')" min="0" max="9999" /></td></tr>
-				</table>
+				<div class="subsection" v-show="showMechanics">
+					<div v-for="mechanic in settings.mechanics">
+						<label><input type="checkbox" v-model="mechanic.enabled" @change="onchangeMechanic(mechanic)"/> {{$t('mechanic.' + mechanic.key)}}</label>
+					</div>
+					<br>
+					<table>
+					<tr><td><label for="mechShellDmgCap">{{$t('day_shelling_softcap')}}:</label></td><td><input id="mechShellDmgCap" type="number" v-model="settings.shellDmgCap" :class="getClassSetting('shellDmgCap')" min="0" max="9999" /></td></tr>
+					<tr><td><label for="mechASWDmgCap">{{$t('asw_softcap')}}:</label></td><td><input id="mechASWDmgCap" type="number" v-model="settings.aswDmgCap" :class="getClassSetting('aswDmgCap')" min="0" max="9999" /></td></tr>
+					<tr><td><label for="mechTorpedoDmgCap">{{$t('torpedo_softcap')}}:</label></td><td><input id="mechTorpedoDmgCap" type="number" v-model="settings.torpedoDmgCap" :class="getClassSetting('torpedoDmgCap')" min="0" max="9999" /></td></tr>
+					<tr><td><label for="mechNightDmgCap">{{$t('night_softcap')}}:</label></td><td><input id="mechNightDmgCap" type="number" v-model="settings.nightDmgCap" :class="getClassSetting('nightDmgCap')" min="0" max="9999" /></td></tr>
+					<tr><td><label for="mechAirDmgCap">{{$t('air_softcap')}}:</label></td><td><input id="mechAirDmgCap" type="number" v-model="settings.airDmgCap" :class="getClassSetting('airDmgCap')" min="0" max="9999" /></td></tr>
+					<tr><td><label for="mechSupportDmgCap">{{$t('support_softcap')}}:</label></td><td><input id="mechSupportDmgCap" type="number" v-model="settings.supportDmgCap" :class="getClassSetting('supportDmgCap')" min="0" max="9999" /></td></tr>
+					</table>
+				</div>
 			</div>
 			<div>
 				<label><input type="checkbox" v-model="settings.airRaidCostW6" /> {{$t('use_default_w6_air_raid')}} (4% <img src="assets/stats/fuel.png" /> 8% <img src="assets/stats/ammo.png" />)</label>
@@ -144,154 +153,162 @@
 				<div><label><input type="checkbox" v-model="settings.carryOverMorale" />{{$t('carry_over_ship_morale')}}</label></div>
 			</div>
 			<div id="divSettingsAdvanced">
-				<div><input type="button" :value="$t('show_advanced')" @click="settings.showAdvanced=!settings.showAdvanced" /></div>
-				<div v-show="settings.showAdvanced">
-					<span class="subheader">{{$t('vanguard_evasion_bonus')}}:</span>
-					<div style="display:flex">
-						<div>
-							<label><input type="radio" value="1" v-model="settings.vanguardUseType"/> {{$t('use_flat_evasion_bonus')}}</label>
-							<table>
-							<tr><td></td><td>{{$t('shelling')}}</td><td>{{$t('torpedo')}}</td></tr>
-							<tr><td>{{$t('DD_n',['1'])}}:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[0]" :class="getClassSetting('vanguardEvShellDD',0)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[0]" :class="getClassSetting('vanguardEvTorpDD',0)" :disabled="settings.vanguardUseType!=1"/></td></tr>
-							<tr><td>{{$t('DD_n',['2'])}}:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[1]" :class="getClassSetting('vanguardEvShellDD',1)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[1]" :class="getClassSetting('vanguardEvTorpDD',1)" :disabled="settings.vanguardUseType!=1"/></td></tr>
-							<tr><td>{{$t('DD_n',['3'])}}:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[2]" :class="getClassSetting('vanguardEvShellDD',2)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[2]" :class="getClassSetting('vanguardEvTorpDD',2)" :disabled="settings.vanguardUseType!=1"/></td></tr>
-							<tr><td>{{$t('DD_n',['4'])}}:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[3]" :class="getClassSetting('vanguardEvShellDD',3)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[3]" :class="getClassSetting('vanguardEvTorpDD',3)" :disabled="settings.vanguardUseType!=1"/></td></tr>
-							<tr><td>{{$t('DD_n',['5'])}}:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[4]" :class="getClassSetting('vanguardEvShellDD',4)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[4]" :class="getClassSetting('vanguardEvTorpDD',4)" :disabled="settings.vanguardUseType!=1"/></td></tr>
-							<tr><td>{{$t('DD_n',['6'])}}:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[5]" :class="getClassSetting('vanguardEvShellDD',5)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[5]" :class="getClassSetting('vanguardEvTorpDD',5)" :disabled="settings.vanguardUseType!=1"/></td></tr>
-							<tr><td>{{$t('DD_n',['7'])}}:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[6]" :class="getClassSetting('vanguardEvShellDD',6)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[6]" :class="getClassSetting('vanguardEvTorpDD',6)" :disabled="settings.vanguardUseType!=1"/></td></tr>
-							<tr><td>{{$t('other_n',['1'])}}:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[0]" :class="getClassSetting('vanguardEvShellOther',0)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[0]" :class="getClassSetting('vanguardEvTorpOther',0)" :disabled="settings.vanguardUseType!=1"/></td></tr>
-							<tr><td>{{$t('other_n',['2'])}}:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[1]" :class="getClassSetting('vanguardEvShellOther',1)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[1]" :class="getClassSetting('vanguardEvTorpOther',1)" :disabled="settings.vanguardUseType!=1"/></td></tr>
-							<tr><td>{{$t('other_n',['3'])}}:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[2]" :class="getClassSetting('vanguardEvShellOther',2)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[2]" :class="getClassSetting('vanguardEvTorpOther',2)" :disabled="settings.vanguardUseType!=1"/></td></tr>
-							<tr><td>{{$t('other_n',['4'])}}:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[3]" :class="getClassSetting('vanguardEvShellOther',3)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[3]" :class="getClassSetting('vanguardEvTorpOther',3)" :disabled="settings.vanguardUseType!=1"/></td></tr>
-							<tr><td>{{$t('other_n',['5'])}}:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[4]" :class="getClassSetting('vanguardEvShellOther',4)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[4]" :class="getClassSetting('vanguardEvTorpOther',4)" :disabled="settings.vanguardUseType!=1"/></td></tr>
-							<tr><td>{{$t('other_n',['6'])}}:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[5]" :class="getClassSetting('vanguardEvShellOther',5)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[5]" :class="getClassSetting('vanguardEvTorpOther',5)" :disabled="settings.vanguardUseType!=1"/></td></tr>
-							<tr><td>{{$t('other_n',['7'])}}:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[6]" :class="getClassSetting('vanguardEvShellOther',6)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[6]" :class="getClassSetting('vanguardEvTorpOther',6)" :disabled="settings.vanguardUseType!=1"/></td></tr>
-							</table>
+				<div class="collapseButton" @click="settings.showAdvanced=!settings.showAdvanced">
+					<div><span class="subheader">{{$t('show_advanced')}}:</span></div>
+					<div>
+						<span v-show="!settings.showAdvanced">[+]</span>
+						<span v-show="settings.showAdvanced">[&#8722;]</span>
+					</div>
+				</div>
+				<div class="subsection" v-show="settings.showAdvanced">
+					<div>
+						<span class="subheader">{{$t('vanguard_evasion_bonus')}}:</span>
+						<div style="display:flex">
+							<div>
+								<label><input type="radio" value="1" v-model="settings.vanguardUseType"/> {{$t('use_flat_evasion_bonus')}}</label>
+								<table>
+								<tr><td></td><td>{{$t('shelling')}}</td><td>{{$t('torpedo')}}</td></tr>
+								<tr><td>{{$t('DD_n',['1'])}}:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[0]" :class="getClassSetting('vanguardEvShellDD',0)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[0]" :class="getClassSetting('vanguardEvTorpDD',0)" :disabled="settings.vanguardUseType!=1"/></td></tr>
+								<tr><td>{{$t('DD_n',['2'])}}:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[1]" :class="getClassSetting('vanguardEvShellDD',1)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[1]" :class="getClassSetting('vanguardEvTorpDD',1)" :disabled="settings.vanguardUseType!=1"/></td></tr>
+								<tr><td>{{$t('DD_n',['3'])}}:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[2]" :class="getClassSetting('vanguardEvShellDD',2)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[2]" :class="getClassSetting('vanguardEvTorpDD',2)" :disabled="settings.vanguardUseType!=1"/></td></tr>
+								<tr><td>{{$t('DD_n',['4'])}}:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[3]" :class="getClassSetting('vanguardEvShellDD',3)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[3]" :class="getClassSetting('vanguardEvTorpDD',3)" :disabled="settings.vanguardUseType!=1"/></td></tr>
+								<tr><td>{{$t('DD_n',['5'])}}:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[4]" :class="getClassSetting('vanguardEvShellDD',4)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[4]" :class="getClassSetting('vanguardEvTorpDD',4)" :disabled="settings.vanguardUseType!=1"/></td></tr>
+								<tr><td>{{$t('DD_n',['6'])}}:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[5]" :class="getClassSetting('vanguardEvShellDD',5)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[5]" :class="getClassSetting('vanguardEvTorpDD',5)" :disabled="settings.vanguardUseType!=1"/></td></tr>
+								<tr><td>{{$t('DD_n',['7'])}}:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellDD[6]" :class="getClassSetting('vanguardEvShellDD',6)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpDD[6]" :class="getClassSetting('vanguardEvTorpDD',6)" :disabled="settings.vanguardUseType!=1"/></td></tr>
+								<tr><td>{{$t('other_n',['1'])}}:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[0]" :class="getClassSetting('vanguardEvShellOther',0)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[0]" :class="getClassSetting('vanguardEvTorpOther',0)" :disabled="settings.vanguardUseType!=1"/></td></tr>
+								<tr><td>{{$t('other_n',['2'])}}:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[1]" :class="getClassSetting('vanguardEvShellOther',1)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[1]" :class="getClassSetting('vanguardEvTorpOther',1)" :disabled="settings.vanguardUseType!=1"/></td></tr>
+								<tr><td>{{$t('other_n',['3'])}}:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[2]" :class="getClassSetting('vanguardEvShellOther',2)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[2]" :class="getClassSetting('vanguardEvTorpOther',2)" :disabled="settings.vanguardUseType!=1"/></td></tr>
+								<tr><td>{{$t('other_n',['4'])}}:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[3]" :class="getClassSetting('vanguardEvShellOther',3)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[3]" :class="getClassSetting('vanguardEvTorpOther',3)" :disabled="settings.vanguardUseType!=1"/></td></tr>
+								<tr><td>{{$t('other_n',['5'])}}:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[4]" :class="getClassSetting('vanguardEvShellOther',4)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[4]" :class="getClassSetting('vanguardEvTorpOther',4)" :disabled="settings.vanguardUseType!=1"/></td></tr>
+								<tr><td>{{$t('other_n',['6'])}}:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[5]" :class="getClassSetting('vanguardEvShellOther',5)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[5]" :class="getClassSetting('vanguardEvTorpOther',5)" :disabled="settings.vanguardUseType!=1"/></td></tr>
+								<tr><td>{{$t('other_n',['7'])}}:</td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvShellOther[6]" :class="getClassSetting('vanguardEvShellOther',6)" :disabled="settings.vanguardUseType!=1"/></td><td><input type="number" min="0" max="999" v-model="settings.vanguardEvTorpOther[6]" :class="getClassSetting('vanguardEvTorpOther',6)" :disabled="settings.vanguardUseType!=1"/></td></tr>
+								</table>
+							</div>
+							<div style="margin-left:20px">
+								<label><input type="radio" value="2" v-model="settings.vanguardUseType"/> {{$t('use_accuracy_multiplier')}}</label>
+								<table>
+								<tr><td></td><td>{{$t('shelling')}}</td><td>{{$t('torpedo')}}</td></tr>
+								<tr><td>{{$t('DD_n',['1'])}}:</td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvShellDDMod[0]" :class="getClassSetting('vanguardEvShellDDMod',0)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvTorpDDMod[0]" :class="getClassSetting('vanguardEvTorpDDMod',0)" :disabled="settings.vanguardUseType!=2"/></td></tr>
+								<tr><td>{{$t('DD_n',['2'])}}:</td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvShellDDMod[1]" :class="getClassSetting('vanguardEvShellDDMod',1)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvTorpDDMod[1]" :class="getClassSetting('vanguardEvTorpDDMod',1)" :disabled="settings.vanguardUseType!=2"/></td></tr>
+								<tr><td>{{$t('DD_n',['3'])}}:</td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvShellDDMod[2]" :class="getClassSetting('vanguardEvShellDDMod',2)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvTorpDDMod[2]" :class="getClassSetting('vanguardEvTorpDDMod',2)" :disabled="settings.vanguardUseType!=2"/></td></tr>
+								<tr><td>{{$t('DD_n',['4'])}}:</td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvShellDDMod[3]" :class="getClassSetting('vanguardEvShellDDMod',3)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvTorpDDMod[3]" :class="getClassSetting('vanguardEvTorpDDMod',3)" :disabled="settings.vanguardUseType!=2"/></td></tr>
+								<tr><td>{{$t('DD_n',['5'])}}:</td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvShellDDMod[4]" :class="getClassSetting('vanguardEvShellDDMod',4)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvTorpDDMod[4]" :class="getClassSetting('vanguardEvTorpDDMod',4)" :disabled="settings.vanguardUseType!=2"/></td></tr>
+								<tr><td>{{$t('DD_n',['6'])}}:</td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvShellDDMod[5]" :class="getClassSetting('vanguardEvShellDDMod',5)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvTorpDDMod[5]" :class="getClassSetting('vanguardEvTorpDDMod',5)" :disabled="settings.vanguardUseType!=2"/></td></tr>
+								<tr><td>{{$t('DD_n',['7'])}}:</td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvShellDDMod[6]" :class="getClassSetting('vanguardEvShellDDMod',6)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvTorpDDMod[6]" :class="getClassSetting('vanguardEvTorpDDMod',6)" :disabled="settings.vanguardUseType!=2"/></td></tr>
+								<tr><td>{{$t('other_n',['1'])}}:</td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvShellOtherMod[0]" :class="getClassSetting('vanguardEvShellOtherMod',0)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvTorpOtherMod[0]" :class="getClassSetting('vanguardEvTorpOtherMod',0)" :disabled="settings.vanguardUseType!=2"/></td></tr>
+								<tr><td>{{$t('other_n',['2'])}}:</td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvShellOtherMod[1]" :class="getClassSetting('vanguardEvShellOtherMod',1)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvTorpOtherMod[1]" :class="getClassSetting('vanguardEvTorpOtherMod',1)" :disabled="settings.vanguardUseType!=2"/></td></tr>
+								<tr><td>{{$t('other_n',['3'])}}:</td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvShellOtherMod[2]" :class="getClassSetting('vanguardEvShellOtherMod',2)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvTorpOtherMod[2]" :class="getClassSetting('vanguardEvTorpOtherMod',2)" :disabled="settings.vanguardUseType!=2"/></td></tr>
+								<tr><td>{{$t('other_n',['4'])}}:</td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvShellOtherMod[3]" :class="getClassSetting('vanguardEvShellOtherMod',3)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvTorpOtherMod[3]" :class="getClassSetting('vanguardEvTorpOtherMod',3)" :disabled="settings.vanguardUseType!=2"/></td></tr>
+								<tr><td>{{$t('other_n',['5'])}}:</td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvShellOtherMod[4]" :class="getClassSetting('vanguardEvShellOtherMod',4)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvTorpOtherMod[4]" :class="getClassSetting('vanguardEvTorpOtherMod',4)" :disabled="settings.vanguardUseType!=2"/></td></tr>
+								<tr><td>{{$t('other_n',['6'])}}:</td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvShellOtherMod[5]" :class="getClassSetting('vanguardEvShellOtherMod',5)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvTorpOtherMod[5]" :class="getClassSetting('vanguardEvTorpOtherMod',5)" :disabled="settings.vanguardUseType!=2"/></td></tr>
+								<tr><td>{{$t('other_n',['7'])}}:</td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvShellOtherMod[6]" :class="getClassSetting('vanguardEvShellOtherMod',6)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvTorpOtherMod[6]" :class="getClassSetting('vanguardEvTorpOtherMod',6)" :disabled="settings.vanguardUseType!=2"/></td></tr>
+								</table>
+								<input type="button" :value="$t('set_event_values')" @click="onclickVanguardSet('event')"/> <input type="button" :value="$t('set_normal_values')" @click="onclickVanguardSet('normal')"/>
+							</div>
 						</div>
-						<div style="margin-left:20px">
-							<label><input type="radio" value="2" v-model="settings.vanguardUseType"/> {{$t('use_accuracy_multiplier')}}</label>
-							<table>
-							<tr><td></td><td>{{$t('shelling')}}</td><td>{{$t('torpedo')}}</td></tr>
-							<tr><td>{{$t('DD_n',['1'])}}:</td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvShellDDMod[0]" :class="getClassSetting('vanguardEvShellDDMod',0)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvTorpDDMod[0]" :class="getClassSetting('vanguardEvTorpDDMod',0)" :disabled="settings.vanguardUseType!=2"/></td></tr>
-							<tr><td>{{$t('DD_n',['2'])}}:</td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvShellDDMod[1]" :class="getClassSetting('vanguardEvShellDDMod',1)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvTorpDDMod[1]" :class="getClassSetting('vanguardEvTorpDDMod',1)" :disabled="settings.vanguardUseType!=2"/></td></tr>
-							<tr><td>{{$t('DD_n',['3'])}}:</td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvShellDDMod[2]" :class="getClassSetting('vanguardEvShellDDMod',2)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvTorpDDMod[2]" :class="getClassSetting('vanguardEvTorpDDMod',2)" :disabled="settings.vanguardUseType!=2"/></td></tr>
-							<tr><td>{{$t('DD_n',['4'])}}:</td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvShellDDMod[3]" :class="getClassSetting('vanguardEvShellDDMod',3)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvTorpDDMod[3]" :class="getClassSetting('vanguardEvTorpDDMod',3)" :disabled="settings.vanguardUseType!=2"/></td></tr>
-							<tr><td>{{$t('DD_n',['5'])}}:</td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvShellDDMod[4]" :class="getClassSetting('vanguardEvShellDDMod',4)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvTorpDDMod[4]" :class="getClassSetting('vanguardEvTorpDDMod',4)" :disabled="settings.vanguardUseType!=2"/></td></tr>
-							<tr><td>{{$t('DD_n',['6'])}}:</td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvShellDDMod[5]" :class="getClassSetting('vanguardEvShellDDMod',5)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvTorpDDMod[5]" :class="getClassSetting('vanguardEvTorpDDMod',5)" :disabled="settings.vanguardUseType!=2"/></td></tr>
-							<tr><td>{{$t('DD_n',['7'])}}:</td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvShellDDMod[6]" :class="getClassSetting('vanguardEvShellDDMod',6)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvTorpDDMod[6]" :class="getClassSetting('vanguardEvTorpDDMod',6)" :disabled="settings.vanguardUseType!=2"/></td></tr>
-							<tr><td>{{$t('other_n',['1'])}}:</td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvShellOtherMod[0]" :class="getClassSetting('vanguardEvShellOtherMod',0)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvTorpOtherMod[0]" :class="getClassSetting('vanguardEvTorpOtherMod',0)" :disabled="settings.vanguardUseType!=2"/></td></tr>
-							<tr><td>{{$t('other_n',['2'])}}:</td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvShellOtherMod[1]" :class="getClassSetting('vanguardEvShellOtherMod',1)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvTorpOtherMod[1]" :class="getClassSetting('vanguardEvTorpOtherMod',1)" :disabled="settings.vanguardUseType!=2"/></td></tr>
-							<tr><td>{{$t('other_n',['3'])}}:</td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvShellOtherMod[2]" :class="getClassSetting('vanguardEvShellOtherMod',2)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvTorpOtherMod[2]" :class="getClassSetting('vanguardEvTorpOtherMod',2)" :disabled="settings.vanguardUseType!=2"/></td></tr>
-							<tr><td>{{$t('other_n',['4'])}}:</td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvShellOtherMod[3]" :class="getClassSetting('vanguardEvShellOtherMod',3)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvTorpOtherMod[3]" :class="getClassSetting('vanguardEvTorpOtherMod',3)" :disabled="settings.vanguardUseType!=2"/></td></tr>
-							<tr><td>{{$t('other_n',['5'])}}:</td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvShellOtherMod[4]" :class="getClassSetting('vanguardEvShellOtherMod',4)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvTorpOtherMod[4]" :class="getClassSetting('vanguardEvTorpOtherMod',4)" :disabled="settings.vanguardUseType!=2"/></td></tr>
-							<tr><td>{{$t('other_n',['6'])}}:</td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvShellOtherMod[5]" :class="getClassSetting('vanguardEvShellOtherMod',5)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvTorpOtherMod[5]" :class="getClassSetting('vanguardEvTorpOtherMod',5)" :disabled="settings.vanguardUseType!=2"/></td></tr>
-							<tr><td>{{$t('other_n',['7'])}}:</td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvShellOtherMod[6]" :class="getClassSetting('vanguardEvShellOtherMod',6)" :disabled="settings.vanguardUseType!=2"/></td><td><input type="number" min="0" max="1" step=".01" v-model="settings.vanguardEvTorpOtherMod[6]" :class="getClassSetting('vanguardEvTorpOtherMod',6)" :disabled="settings.vanguardUseType!=2"/></td></tr>
-							</table>
-							<input type="button" :value="$t('set_event_values')" @click="onclickVanguardSet('event')"/> <input type="button" :value="$t('set_normal_values')" @click="onclickVanguardSet('normal')"/>
+						<div>
+						
 						</div>
 					</div>
 					<div>
-					
-					</div>
-				</div>
-				<div v-show="settings.showAdvanced">
-					<span class="subheader">{{$t('special_attack_activation_rate')}}:</span>
-					<table>
-					<tr><td>{{$t('nelson_touch')}}:</td><td><input type="number" min="0" max="100" v-model="settings.nelsonTouchRate" :class="getClassSetting('nelsonTouchRate')"/>%</td></tr>
-					<tr><td>{{$t('nagato_special')}}:</td><td><input type="number" min="0" max="100" v-model="settings.nagatoSpecialRate" :class="getClassSetting('nagatoSpecialRate')"/>%</td></tr>
-					<tr><td>{{$t('mutsu_special')}}:</td><td><input type="number" min="0" max="100" v-model="settings.mutsuSpecialRate" :class="getClassSetting('mutsuSpecialRate')"/>%</td></tr>
-					<tr><td>{{$t('colorado_special')}}:</td><td><input type="number" min="0" max="100" v-model="settings.coloradoSpecialRate" :class="getClassSetting('coloradoSpecialRate')"/>%</td></tr>
-					<tr><td>{{$t('kongou_special')}}:</td><td><input type="number" min="0" max="100" v-model="settings.kongouSpecialRate" :class="getClassSetting('kongouSpecialRate')"/>%</td></tr>
-					<tr><td>{{$t('yamato_special_3')}}:</td><td><input type="number" min="0" max="100" v-model="settings.yamatoSpecial3Rate" :class="getClassSetting('yamatoSpecial3Rate')"/>%</td></tr>
-					<tr><td>{{$t('yamato_special_2')}}:</td><td><input type="number" min="0" max="100" v-model="settings.yamatoSpecial2Rate" :class="getClassSetting('yamatoSpecial2Rate')"/>%</td></tr>
-					<tr><td>{{$t('submarine_special')}}:</td><td><input type="number" min="0" max="100" v-model="settings.subFleetAttackRate" :class="getClassSetting('subFleetAttackRate')"/>%</td></tr>
-					</table>
-				</div>
-				<div v-show="settings.showAdvanced">
-					<label><input type="checkbox" v-model="settings.enableSkipTorpBonus"/>{{$t('use_provisional_B-25')}}</label>
-				</div>
-				<div v-show="settings.showAdvanced">
-					<span class="subheader">{{$t('cf_airstrike_base_mods')}}:</span>
-					<table>
-					<tr><td></td><td colspan="2">{{$t('damage_base',['25'])}}:</td><td> </td><td colspan="2">{{$t('accuracy_base',['95'])}}:</td></tr>
-					<tr><td></td><td>{{$t('main')}}</td><td>{{$t('escort')}}</td><td> </td><td>{{$t('main')}}</td><td>{{$t('escort')}}</td></tr>
-					<tr>
-						<td>{{$t('player_target_battle')}}</td>
-						<td><input type="number" min="-999" max="999" v-model="settings.airstrikeDmgMF" :class="getClassSetting('airstrikeDmgMF')"/></td>
-						<td><input type="number" min="-999" max="999" v-model="settings.airstrikeDmgEF" :class="getClassSetting('airstrikeDmgEF')"/></td><td> </td>
-						<td><input type="number" min="-999" max="999" v-model="settings.airstrikeAccMF" :class="getClassSetting('airstrikeAccMF')"/></td>
-						<td><input type="number" min="-999" max="999" v-model="settings.airstrikeAccEF" :class="getClassSetting('airstrikeAccEF')"/></td>
-					</tr>
-					<tr>
-						<td>{{$t('player_target_raid')}}</td>
-						<td><input type="number" min="-999" max="999" v-model="settings.airstrikeDmgMFRaid" :class="getClassSetting('airstrikeDmgMFRaid')"/></td>
-						<td><input type="number" min="-999" max="999" v-model="settings.airstrikeDmgEFRaid" :class="getClassSetting('airstrikeDmgEFRaid')"/></td><td> </td>
-						<td><input type="number" min="-999" max="999" v-model="settings.airstrikeAccMFRaid" :class="getClassSetting('airstrikeAccMFRaid')"/></td>
-						<td><input type="number" min="-999" max="999" v-model="settings.airstrikeAccEFRaid" :class="getClassSetting('airstrikeAccEFRaid')"/></td>
-					</tr>
-					<tr>
-						<td>{{$t('enemy_target')}}</td>
-						<td><input type="number" min="-999" max="999" v-model="settings.airstrikeDmgME" :class="getClassSetting('airstrikeDmgME')"/></td>
-						<td><input type="number" min="-999" max="999" v-model="settings.airstrikeDmgEE" :class="getClassSetting('airstrikeDmgEE')"/></td><td> </td>
-						<td><input type="number" min="-999" max="999" v-model="settings.airstrikeAccME" :class="getClassSetting('airstrikeAccME')"/></td>
-						<td><input type="number" min="-999" max="999" v-model="settings.airstrikeAccEE" :class="getClassSetting('airstrikeAccEE')"/></td>
-					</tr>
-					</table>
-				</div>
-				<div v-show="settings.showAdvanced">
-					<span class="subheader"><img src="assets/items/23.png"/> {{$t('arctic_camo_bonuses')}}:</span>
-					<table>
-					<tr><td>{{$t('armour')}}:</td><td><input type="number" min="0" max="999" v-model="settings.arcticCamoAr" :class="getClassSetting('arcticCamoAr')"/></td></tr>
-					<tr><td>{{$t('evasion_shelling')}}:</td><td><input type="number" min="0" max="999" v-model="settings.arcticCamoEva" :class="getClassSetting('arcticCamoEva')"/></td></tr>
-					</table>
-				</div>
-				<div v-show="settings.showAdvanced">
-					<span class="subheader"><img src="assets/items/54.png"/> {{$t('smokescreen_mods')}}:</span>
-					<div style="display:flex">
+						<span class="subheader">{{$t('special_attack_activation_rate')}}:</span>
 						<table>
-							<tr><td colspan="2">{{$t('smoke_level')}}:</td><th>1</th><th>2</th><th>3</th></tr>
-							<tr><td colspan="2">{{$t('activation_rate')}}:</td><td v-for="i in 3"><input type="number" min="0" max="100" v-model="settings.smokeChance[i-1]" :class="getClassSetting('smokeChance',i-1)" :disabled="settings.smokeChanceUseFormula"/>%</td></tr>
-							<tr><td colspan="5"><label><input type="checkbox" v-model="settings.smokeChanceUseFormula" :class="getClassSetting('smokeChanceUseFormula')"/> <i18n-t keypath="use_provisional_link" scope="global"><template v-slot:link><a href="https://twitter.com/Xe_UCH/status/1767407602554855730" target="_blank">{{$t('activation_formula')}}</a></template></i18n-t></label></td></tr>
-							<tr><td colspan="5"></td></tr>
-							<tr><td colspan="5">{{$t('shelling_accuracy_multiplier')}}:</td></tr>
-							<tr><td style="width:20px"></td><td>{{$t('player_no_radar')}}</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModShellAccF[i-1]" :class="getClassSetting('smokeModShellAccF',i-1)"/></td></tr>
-							<tr><td></td><td>{{$t('player_radar')}}</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModShellAccFRadar[i-1]" :class="getClassSetting('smokeModShellAccFRadar',i-1)"/></td></tr>
-							<tr><td></td><td>{{$t('enemy_no_radar')}}</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModShellAccE[i-1]" :class="getClassSetting('smokeModShellAccE',i-1)"/></td></tr>
-							<tr><td></td><td>{{$t('enemy_radar')}}</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModShellAccERadar[i-1]" :class="getClassSetting('smokeModShellAccERadar',i-1)"/></td></tr>
-							<tr><td colspan="5">{{$t('asw_accuracy_multiplier')}}:</td></tr>
-							<tr><td></td><td>{{$t('player')}}</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModASWAccF[i-1]" :class="getClassSetting('smokeModASWAccF',i-1)"/></td></tr>
-							<tr><td></td><td>{{$t('enemy')}}</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModASWAccE[i-1]" :class="getClassSetting('smokeModASWAccE',i-1)"/></td></tr>
-							<tr><td colspan="5">{{$t('torpedo_accuracy_multiplier')}}:</td></tr>
-							<tr><td></td><td>{{$t('player')}}</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModTorpAccF[i-1]" :class="getClassSetting('smokeModTorpAccF',i-1)"/></td></tr>
-							<tr><td></td><td>{{$t('enemy')}}</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModTorpAccE[i-1]" :class="getClassSetting('smokeModTorpAccE',i-1)"/></td></tr>
-							<tr><td colspan="5">{{$t('airstrike_accuracy_multiplier')}}:</td></tr>
-							<tr><td></td><td>{{$t('player')}}</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModAirAccF[i-1]" :class="getClassSetting('smokeModAirAccF',i-1)"/></td></tr>
-							<tr><td></td><td>{{$t('enemy')}}</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModAirAccE[i-1]" :class="getClassSetting('smokeModAirAccE',i-1)"/></td></tr>
+						<tr><td>{{$t('nelson_touch')}}:</td><td><input type="number" min="0" max="100" v-model="settings.nelsonTouchRate" :class="getClassSetting('nelsonTouchRate')"/>%</td></tr>
+						<tr><td>{{$t('nagato_special')}}:</td><td><input type="number" min="0" max="100" v-model="settings.nagatoSpecialRate" :class="getClassSetting('nagatoSpecialRate')"/>%</td></tr>
+						<tr><td>{{$t('mutsu_special')}}:</td><td><input type="number" min="0" max="100" v-model="settings.mutsuSpecialRate" :class="getClassSetting('mutsuSpecialRate')"/>%</td></tr>
+						<tr><td>{{$t('colorado_special')}}:</td><td><input type="number" min="0" max="100" v-model="settings.coloradoSpecialRate" :class="getClassSetting('coloradoSpecialRate')"/>%</td></tr>
+						<tr><td>{{$t('kongou_special')}}:</td><td><input type="number" min="0" max="100" v-model="settings.kongouSpecialRate" :class="getClassSetting('kongouSpecialRate')"/>%</td></tr>
+						<tr><td>{{$t('yamato_special_3')}}:</td><td><input type="number" min="0" max="100" v-model="settings.yamatoSpecial3Rate" :class="getClassSetting('yamatoSpecial3Rate')"/>%</td></tr>
+						<tr><td>{{$t('yamato_special_2')}}:</td><td><input type="number" min="0" max="100" v-model="settings.yamatoSpecial2Rate" :class="getClassSetting('yamatoSpecial2Rate')"/>%</td></tr>
+						<tr><td>{{$t('submarine_special')}}:</td><td><input type="number" min="0" max="100" v-model="settings.subFleetAttackRate" :class="getClassSetting('subFleetAttackRate')"/>%</td></tr>
 						</table>
 					</div>
-					<div><input type="button" :value="$t('set_simulator_suggested_values')" @click="onclickSmokeSet"/> {{$t('airstrike_may_be_inaccurate')}}</div>
-					<div><a href="https://docs.google.com/spreadsheets/d/1I_HMplw81mR7g9_jUKRmI7ylhlhKkuvGKtrpj3DJ9zo/edit#gid=0" target="_blank">{{$t('activation_rate_suggestions')}}</a></div>
-					<div><a href="https://docs.google.com/spreadsheets/d/1sznusxVurE6iCr2s-gLNpBQ_g1BD5mEMDlltluMB1CE/edit#gid=1397813463" target="_blank">{{$t('other_suggestions_and_data')}}</a></div>
-				</div>
-				<div v-show="settings.showAdvanced">
-					<div><span class="subheader">{{$t('shelling_range_tie_randomness_weights')}}:</span></div>
-					<div><label><input type="checkbox" v-model="settings.enableRangeWeights" :class="getClassSetting('enableRangeWeights')"/>{{$t('enable_heuristic_weights')}}</label></div>
-					<div style="color:red">{{$t('warning_experimental_subject_to_change')}}</div>
-					<div :style="{'font-style':($i18n.locale=='en' ? 'italic' : '')}"><i18n-t keypath="shelling_range_tie_description" scope="global"><template v-slot:br><br></template></i18n-t></div>
 					<div>
-						{{$t('explanation')}}:&nbsp;
-						<a href="https://en.kancollewiki.net/Shooting_Order_and_Targeting#Range_Tie_Randomness">[1]</a>&nbsp;
-						<a href="https://docs.google.com/spreadsheets/d/1grAtIhlm2YMN9iyvniJA-j1YNCC-SCnA8q6WUi-Ctpg/edit#gid=0">[2]</a>&nbsp;
+						<label><input type="checkbox" v-model="settings.enableSkipTorpBonus" :class="getClassSetting('enableSkipTorpBonus')"/><span class="subheader">{{$t('use_provisional_B-25')}}</span></label>
 					</div>
-				</div>
-				<div v-show="settings.showAdvanced">
-					<div><span class="subheader">{{$t('override_support_chance')}}:</span></div>
-					<div :style="{'font-style':($i18n.locale=='en' ? 'italic' : '')}">{{$t('override_support_chance_desc')}}</div>
-					<table>
-					<tr><td>{{$t('normal_day')}}:</td><td><input type="number" min="0" max="100" v-model="settings.overrideSupportChanceDayN" :class="getClassSetting('overrideSupportChanceDayN')"/>%</td></tr>
-					<tr><td>{{$t('normal_night')}}:</td><td><input type="number" min="0" max="100" v-model="settings.overrideSupportChanceNightN" :class="getClassSetting('overrideSupportChanceNightN')"/>%</td></tr>
-					<tr><td>{{$t('boss')}}:</td><td><input type="number" min="0" max="100" v-model="settings.overrideSupportChanceDayB" :class="getClassSetting('overrideSupportChanceDayB')"/>%</td></tr>
-					</table>
+					<div>
+						<span class="subheader">{{$t('cf_airstrike_base_mods')}}:</span>
+						<table>
+						<tr><td></td><td colspan="2">{{$t('damage_base',['25'])}}:</td><td> </td><td colspan="2">{{$t('accuracy_base',['95'])}}:</td></tr>
+						<tr><td></td><td>{{$t('main')}}</td><td>{{$t('escort')}}</td><td> </td><td>{{$t('main')}}</td><td>{{$t('escort')}}</td></tr>
+						<tr>
+							<td>{{$t('player_target_battle')}}</td>
+							<td><input type="number" min="-999" max="999" v-model="settings.airstrikeDmgMF" :class="getClassSetting('airstrikeDmgMF')"/></td>
+							<td><input type="number" min="-999" max="999" v-model="settings.airstrikeDmgEF" :class="getClassSetting('airstrikeDmgEF')"/></td><td> </td>
+							<td><input type="number" min="-999" max="999" v-model="settings.airstrikeAccMF" :class="getClassSetting('airstrikeAccMF')"/></td>
+							<td><input type="number" min="-999" max="999" v-model="settings.airstrikeAccEF" :class="getClassSetting('airstrikeAccEF')"/></td>
+						</tr>
+						<tr>
+							<td>{{$t('player_target_raid')}}</td>
+							<td><input type="number" min="-999" max="999" v-model="settings.airstrikeDmgMFRaid" :class="getClassSetting('airstrikeDmgMFRaid')"/></td>
+							<td><input type="number" min="-999" max="999" v-model="settings.airstrikeDmgEFRaid" :class="getClassSetting('airstrikeDmgEFRaid')"/></td><td> </td>
+							<td><input type="number" min="-999" max="999" v-model="settings.airstrikeAccMFRaid" :class="getClassSetting('airstrikeAccMFRaid')"/></td>
+							<td><input type="number" min="-999" max="999" v-model="settings.airstrikeAccEFRaid" :class="getClassSetting('airstrikeAccEFRaid')"/></td>
+						</tr>
+						<tr>
+							<td>{{$t('enemy_target')}}</td>
+							<td><input type="number" min="-999" max="999" v-model="settings.airstrikeDmgME" :class="getClassSetting('airstrikeDmgME')"/></td>
+							<td><input type="number" min="-999" max="999" v-model="settings.airstrikeDmgEE" :class="getClassSetting('airstrikeDmgEE')"/></td><td> </td>
+							<td><input type="number" min="-999" max="999" v-model="settings.airstrikeAccME" :class="getClassSetting('airstrikeAccME')"/></td>
+							<td><input type="number" min="-999" max="999" v-model="settings.airstrikeAccEE" :class="getClassSetting('airstrikeAccEE')"/></td>
+						</tr>
+						</table>
+					</div>
+					<div>
+						<span class="subheader"><img src="assets/items/23.png"/> {{$t('arctic_camo_bonuses')}}:</span>
+						<table>
+						<tr><td>{{$t('armour')}}:</td><td><input type="number" min="0" max="999" v-model="settings.arcticCamoAr" :class="getClassSetting('arcticCamoAr')"/></td></tr>
+						<tr><td>{{$t('evasion_shelling')}}:</td><td><input type="number" min="0" max="999" v-model="settings.arcticCamoEva" :class="getClassSetting('arcticCamoEva')"/></td></tr>
+						</table>
+					</div>
+					<div>
+						<span class="subheader"><img src="assets/items/54.png"/> {{$t('smokescreen_mods')}}:</span>
+						<div style="display:flex">
+							<table>
+								<tr><td colspan="2">{{$t('smoke_level')}}:</td><th>1</th><th>2</th><th>3</th></tr>
+								<tr><td colspan="2">{{$t('activation_rate')}}:</td><td v-for="i in 3"><input type="number" min="0" max="100" v-model="settings.smokeChance[i-1]" :class="getClassSetting('smokeChance',i-1)" :disabled="settings.smokeChanceUseFormula"/>%</td></tr>
+								<tr><td colspan="5"><label><input type="checkbox" v-model="settings.smokeChanceUseFormula" :class="getClassSetting('smokeChanceUseFormula')"/> <i18n-t keypath="use_provisional_link" scope="global"><template v-slot:link><a href="https://twitter.com/Xe_UCH/status/1767407602554855730" target="_blank">{{$t('activation_formula')}}</a></template></i18n-t></label></td></tr>
+								<tr><td colspan="5"></td></tr>
+								<tr><td colspan="5">{{$t('shelling_accuracy_multiplier')}}:</td></tr>
+								<tr><td style="width:20px"></td><td>{{$t('player_no_radar')}}</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModShellAccF[i-1]" :class="getClassSetting('smokeModShellAccF',i-1)"/></td></tr>
+								<tr><td></td><td>{{$t('player_radar')}}</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModShellAccFRadar[i-1]" :class="getClassSetting('smokeModShellAccFRadar',i-1)"/></td></tr>
+								<tr><td></td><td>{{$t('enemy_no_radar')}}</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModShellAccE[i-1]" :class="getClassSetting('smokeModShellAccE',i-1)"/></td></tr>
+								<tr><td></td><td>{{$t('enemy_radar')}}</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModShellAccERadar[i-1]" :class="getClassSetting('smokeModShellAccERadar',i-1)"/></td></tr>
+								<tr><td colspan="5">{{$t('asw_accuracy_multiplier')}}:</td></tr>
+								<tr><td></td><td>{{$t('player')}}</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModASWAccF[i-1]" :class="getClassSetting('smokeModASWAccF',i-1)"/></td></tr>
+								<tr><td></td><td>{{$t('enemy')}}</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModASWAccE[i-1]" :class="getClassSetting('smokeModASWAccE',i-1)"/></td></tr>
+								<tr><td colspan="5">{{$t('torpedo_accuracy_multiplier')}}:</td></tr>
+								<tr><td></td><td>{{$t('player')}}</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModTorpAccF[i-1]" :class="getClassSetting('smokeModTorpAccF',i-1)"/></td></tr>
+								<tr><td></td><td>{{$t('enemy')}}</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModTorpAccE[i-1]" :class="getClassSetting('smokeModTorpAccE',i-1)"/></td></tr>
+								<tr><td colspan="5">{{$t('airstrike_accuracy_multiplier')}}:</td></tr>
+								<tr><td></td><td>{{$t('player')}}</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModAirAccF[i-1]" :class="getClassSetting('smokeModAirAccF',i-1)"/></td></tr>
+								<tr><td></td><td>{{$t('enemy')}}</td><td v-for="i in 3"><input type="number" min="0" max="1" step=".01" v-model="settings.smokeModAirAccE[i-1]" :class="getClassSetting('smokeModAirAccE',i-1)"/></td></tr>
+							</table>
+						</div>
+						<div><input type="button" :value="$t('set_simulator_suggested_values')" @click="onclickSmokeSet"/> {{$t('airstrike_may_be_inaccurate')}}</div>
+						<div><a href="https://docs.google.com/spreadsheets/d/1I_HMplw81mR7g9_jUKRmI7ylhlhKkuvGKtrpj3DJ9zo/edit#gid=0" target="_blank">{{$t('activation_rate_suggestions')}}</a></div>
+						<div><a href="https://docs.google.com/spreadsheets/d/1sznusxVurE6iCr2s-gLNpBQ_g1BD5mEMDlltluMB1CE/edit#gid=1397813463" target="_blank">{{$t('other_suggestions_and_data')}}</a></div>
+					</div>
+					<div>
+						<div><span class="subheader">{{$t('shelling_range_tie_randomness_weights')}}:</span></div>
+						<div><label><input type="checkbox" v-model="settings.enableRangeWeights" :class="getClassSetting('enableRangeWeights')"/>{{$t('enable_heuristic_weights')}}</label></div>
+						<div style="color:red">{{$t('warning_experimental_subject_to_change')}}</div>
+						<div :style="{'font-style':($i18n.locale=='en' ? 'italic' : '')}"><i18n-t keypath="shelling_range_tie_description" scope="global"><template v-slot:br><br></template></i18n-t></div>
+						<div>
+							{{$t('explanation')}}:&nbsp;
+							<a href="https://en.kancollewiki.net/Shooting_Order_and_Targeting#Range_Tie_Randomness">[1]</a>&nbsp;
+							<a href="https://docs.google.com/spreadsheets/d/1grAtIhlm2YMN9iyvniJA-j1YNCC-SCnA8q6WUi-Ctpg/edit#gid=0">[2]</a>&nbsp;
+						</div>
+					</div>
+					<div>
+						<div><span class="subheader">{{$t('override_support_chance')}}:</span></div>
+						<div :style="{'font-style':($i18n.locale=='en' ? 'italic' : '')}">{{$t('override_support_chance_desc')}}</div>
+						<table>
+						<tr><td>{{$t('normal_day')}}:</td><td><input type="number" min="0" max="100" v-model="settings.overrideSupportChanceDayN" :class="getClassSetting('overrideSupportChanceDayN')"/>%</td></tr>
+						<tr><td>{{$t('normal_night')}}:</td><td><input type="number" min="0" max="100" v-model="settings.overrideSupportChanceNightN" :class="getClassSetting('overrideSupportChanceNightN')"/>%</td></tr>
+						<tr><td>{{$t('boss')}}:</td><td><input type="number" min="0" max="100" v-model="settings.overrideSupportChanceDayB" :class="getClassSetting('overrideSupportChanceDayB')"/>%</td></tr>
+						</table>
+					</div>
 				</div>
 			</div>
 			<div>
@@ -321,8 +338,11 @@
 				<div v-for="warning in results.warnings">{{$t('sim_warning.' + warning.key, warning.args)}}</div>
 			</div>
 			
-			<div id="divResults" v-show="results.active">
-				<h3>{{$t('statistics')}}</h3>
+			<div id="divResults" ref="divResults" v-show="results.active">
+				<h3>
+					{{$t('statistics')}}
+					<svg @click="onclickScreenShot" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 22px;cursor: pointer;fill: #9b9b9b;margin-left: 4px;"><path d="M20,4H16.83L15,2H9L7.17,4H4A2,2 0 0,0 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6A2,2 0 0,0 20,4M20,18H4V6H8.05L9.88,4H14.12L15.95,6H20V18M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15Z" /></svg>
+				</h3>
 				<div class="note">{{$t('note_calc_wip')}}</div>
 				<div class="noteBold" v-show="results.showCFWarning">{{$t('warn_combined_fleet')}}</div>
 				<div>{{$t('number_of_runs')}}: {{results.totalNum}}</div>
@@ -1293,6 +1313,12 @@
 			<div class="sectionWrap">
 				<div>
 					<div><input type="button" :value="$t('download')" @click="onclickDownload"/></div>
+				</div>
+				<div v-show="!isReplayImport">
+					<hr>
+					<input type="button" :value="$t('create_shared_link')" :disabled="shareURLLoading" @click="onclickShareURL"/>
+					<span style="color:green" v-show="showShareURLCopied">&nbsp;{{$t('copied_to_clipboard')}}</span>
+					<span class="error" v-show="showShareURLError">&nbsp;{{$t('error')}}</span>
 				</div>
 				<div v-show="!isReplayImport">
 					<hr>

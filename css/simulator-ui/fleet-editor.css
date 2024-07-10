@@ -276,6 +276,7 @@ div.iconOverlay .exclamation.med {
 	color: orange;
 }
 div.iconOverlay .circle {
+	text-shadow: black -1px -1px 0, black -1px 1px 0, black 1px -1px 0, black 1px 1px 0;
 	padding-right: 5px;
 	text-align: right;
 	color: yellow;
