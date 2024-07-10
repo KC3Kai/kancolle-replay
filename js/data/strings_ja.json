@@ -567,6 +567,7 @@
 	"reset_confirm": "確認",
 	"continue": "再試行",
 	"create_shared_link": "共有URLを生成(TinyURL)",
+	"create_shared_link_note": "",
 	
 	"require_los_after_fcf": "退避後に必要な索敵値",
 	"require_on_node": "Node {sel_node} において",
