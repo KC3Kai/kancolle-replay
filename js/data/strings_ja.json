@@ -1,6 +1,10 @@
 {
 	"change_log": [
 		{
+			"date": "2024-07-10",
+			"txt": "共有リンク(TinyURL)生成機能と演算結果のスクリーンショットボタンの実装"
+		},
+		{
 			"date": "2024-07-07",
 			"txt": "UI全般に日本語訳実装 (thanks to {link0})",
 			"links": [ { "txt": "X-20A", "url": "https://github.com/X-20A" } ]
@@ -421,8 +425,8 @@
 	"show_equipped_stats": "装備補正値を見る",
 	"autoscale_stats": "自動調整 {img_hp}/{img_ev}/{img_asw}/{img_los} with {img_lv}",
 	"preserve_bonus_on_change": "艦の変更時に特効を維持",
-	"show_additional_stats": "艦隊詳細",
-	"show_additional_stats_lbas": "部隊詳細",
+	"show_additional_stats": "\u24d8 艦隊詳細",
+	"show_additional_stats_lbas": "\u24d8 部隊詳細",
 	"single_fleet": "通常艦隊",
 	"combined_fleet": "連合艦隊",
 	"carrier_task_force": "空母機動部隊",
@@ -551,7 +555,7 @@
 	"average_all": "平均値を採用",
 	"confirm": "決定",
 	
-	"warn_replay_import": "警告: リプレイからのデータのインポートにより既存のデータが上書きされます。",
+	"warn_replay_import": "警告: データのインポートにより既存のデータが上書きされます。",
 	"download_backup_of_current": "現在の艦隊とNodeデータのバックアップをダウンロードしますか？",
 	"download_a_backup": "現在の艦隊とNodeデータのバックアップをダウンロードします。",
 	"download": "Download",
@@ -562,6 +566,7 @@
 	"reset_all_data": "データを全て削除してページを再読み込み",
 	"reset_confirm": "確認",
 	"continue": "再試行",
+	"create_shared_link": "共有URLを生成(TinyURL)",
 	
 	"require_los_after_fcf": "退避後に必要な索敵値",
 	"require_on_node": "Node {sel_node} において",

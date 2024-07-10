@@ -1,6 +1,10 @@
 {
 	"change_log": [
 		{
+			"date": "2024-07-10",
+			"txt": "Create Shared Link (TinyURL) in Save/Load Simulator Backup, screenshot button for Statistics"
+		},
+		{
 			"date": "2024-07-07",
 			"txt": "Added full JP UI translation (thanks to {link0})",
 			"links": [ { "txt": "X-20A", "url": "https://github.com/X-20A" } ]
@@ -421,8 +425,8 @@
 	"show_equipped_stats": "Show Equipped Stats",
 	"autoscale_stats": "Auto-Scale {img_hp}/{img_ev}/{img_asw}/{img_los} with {img_lv}",
 	"preserve_bonus_on_change": "Preserve Bonus on ship change",
-	"show_additional_stats": "Show Additional Stats",
-	"show_additional_stats_lbas": "Show Additional Stats",
+	"show_additional_stats": "\u24d8 Show Additional Stats",
+	"show_additional_stats_lbas": "\u24d8 Show Additional Stats",
 	"single_fleet": "Single Fleet",
 	"combined_fleet": "Combined Fleet",
 	"carrier_task_force": "Carrier Task Force",
@@ -551,7 +555,7 @@
 	"average_all": "Average All",
 	"confirm": "Confirm",
 	
-	"warn_replay_import": "Warning: Replay import will overwrite existing data.",
+	"warn_replay_import": "Warning: Import will overwrite existing data.",
 	"download_backup_of_current": "Download backup of current fleet and node data?",
 	"download_a_backup": "Download a backup of current fleet and node data to a file.",
 	"download": "Download",
@@ -562,6 +566,7 @@
 	"reset_all_data": "Reset All Data (Reloads Page)",
 	"reset_confirm": "Confirm",
 	"continue": "Continue",
+	"create_shared_link": "Create Shared Link (TinyURL)",
 	
 	"require_los_after_fcf": "Require LoS (after FCF)",
 	"require_on_node": "on Node {sel_node}",

@@ -187,11 +187,27 @@ div.fleetCompAdd > div {
 #divSettings > div {
 	margin-bottom: 25px;
 }
-#divSettingsAdvanced > div {
-	margin-bottom: 15px;
+#divSettingsAdvanced div.subsection > div {
+	padding-top: 20px;
 }
 input.changed {
 	background-color: yellow;
+}
+#divSettings div.collapseButton {
+	display: flex;
+	height: 20px;
+	width: 500px;
+	cursor: pointer;
+	border: 1px solid black;
+	background-color: #F0F0F0;
+	padding-left: 5px;
+}
+#divSettings div.collapseButton :last-child {
+	margin-left: auto;
+}
+#divSettings div.subsection {
+	border-left: 1px solid black;
+	padding-left: 10px;
 }
 
 #divSimStatsButtons {
@@ -217,6 +233,10 @@ div.progressBarInner {
 #divResultsOuter {
 	margin-bottom: 30px;
 	display: block !important;
+}
+#divResults {
+	width: fit-content;
+	padding: 0 10px;
 }
 #divResultsErrors {
 	margin-top: 10px;
@@ -246,6 +266,7 @@ div.progressBarInner {
 #divResults h3 {
 	margin-bottom: 0;
 	padding: 0;
+	display: flex;
 }
 #divResults img {
 	vertical-align: middle;
