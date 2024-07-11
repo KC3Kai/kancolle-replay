@@ -274,6 +274,14 @@ var SIMCONSTS = {
 	overrideSupportChanceDayB: null,
 	overrideSupportChanceNightN: null,
 	overrideSupportChanceNightB: null,
+	balloonSelfAirMod: [1,1,1],
+	balloonSelfAirFlat: [0,0,0],
+	balloonSelfLBASMod: [1,1,1],
+	balloonSelfLBASFlat: [0,0,0],
+	balloonOppoAirMod: [1,1,1],
+	balloonOppoAirFlat: [0,0,0],
+	balloonOppoLBASMod: [1,1,1],
+	balloonOppoLBASFlat: [0,0,0],
 }
 SIMCONSTS.vanguardEvShellDDMod = SIMCONSTS.vanguardEvShellDDModNormal.slice();
 SIMCONSTS.vanguardEvTorpDDMod = SIMCONSTS.vanguardEvTorpDDModNormal.slice();
@@ -1852,17 +1860,28 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 			acc += (target.isescort ? (SIMCONSTS.airstrikeAccEE || 0) : (SIMCONSTS.airstrikeAccME || 0))/100;
 		}
 	}
-	if (ship.bonusSpecialAcc) acc *= getBonusAcc(ship,target,true);
 	if (SIMCONSTS.enableSkipTorpBonus && equip.isSkipBomber) {
 		if (['FBB','BB','BBV','CVL','CV'].includes(target.type)) acc += .28;
 		else if (['CA','CAV'].includes(target.type)) acc += .21;
 		else acc += .14;
 	}
+	if (ship.bonusSpecialAcc) acc *= getBonusAcc(ship,target,true);
 	
 	let smokeType = ship.fleet.smokeType || target.fleet.smokeType;
 	if (smokeType) {
 		let smokeModAcc = ship.side == 0 ? SIMCONSTS.smokeModAirAccF : SIMCONSTS.smokeModAirAccE;
 		acc *= smokeModAcc[smokeType-1];
+	}
+	
+	if (ship.fleet.useBalloon) {
+		let num = ship.fleet.getNumBalloons();
+		acc *= SIMCONSTS.balloonSelfAirMod[num-1] ?? 1;
+		acc += SIMCONSTS.balloonSelfAirFlat[num-1]/100 ?? 0;
+	}
+	if (target.fleet.useBalloon) {
+		let num = target.fleet.getNumBalloons();
+		acc *= SIMCONSTS.balloonOppoAirMod[num-1] ?? 1;
+		acc += SIMCONSTS.balloonOppoAirFlat[num-1]/100 ?? 0;
 	}
 	
 	var res = rollHit(accuracyAndCrit(ship,target,acc,1,0,0,!issupport && 2),!issupport && ship.critdmgbonus);
@@ -2980,6 +2999,18 @@ function airstrikeLBAS(lbas,target,slot,contactMod,contactModLB,isjetphase) {
 			for (let group in equip.bonusSpecialAccP) acc *= equip.bonusSpecialAccP[group];
 		}
 	}
+	
+	if (FLEETS1[0] && FLEETS1[0].useBalloon) {
+		let num = FLEETS1[0].getNumBalloons();
+		acc *= SIMCONSTS.balloonSelfLBASMod[num-1] ?? 1;
+		acc += SIMCONSTS.balloonSelfLBASFlat[num-1]/100 ?? 0;
+	}
+	if (target.fleet.useBalloon) {
+		let num = target.fleet.getNumBalloons();
+		acc *= SIMCONSTS.balloonOppoLBASMod[num-1] ?? 1;
+		acc += SIMCONSTS.balloonOppoLBASFlat[num-1]/100 ?? 0;
+	}
+	
 	lbas.critratebonus = critratebonus; lbas.ACCplane = ACCplane;
 	var res = rollHit(accuracyAndCrit(lbas,target,acc,1,0,0,true),critdmgbonus);
 	lbas.critratebonus = 0; lbas.ACCplane = 0;

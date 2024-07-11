@@ -349,13 +349,15 @@ div.overlayDark {
 	background-color: black;
 	opacity: .3;
 	cursor: pointer;
+	z-index: 200;
 }
 div.modalContent {
 	position: fixed;
 	top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+	left: 50%;
+	transform: translate(-50%, -50%);
 	outline: none;
+	z-index: 200;
 }
 
 #divDeckbuilderImporterMain {
@@ -530,4 +532,39 @@ span.autoBonusStatus.good {
 	font-weight: 600;
 	color: #ffffff;
 	background-color: #4EABF5;
+}
+
+#divNavBar {
+	position: fixed;
+	display: flex;
+	align-items: center;
+	background-color: #DDEEFF;
+	width: 100%;
+	left: 0;
+	top: 0;
+	z-index: 100;
+}
+#divNavBar span.title {
+	font-size: 24px;
+	font-weight: bold;
+}
+#divNavButtons {
+	display: flex;
+	align-items: center;
+	margin-left: 20px;
+}
+div.navButton {
+	cursor: pointer;
+	font-size: 20px;
+	margin: 0 10px;
+}
+div.navButton:hover {
+	color: blue;
+}
+div.scrollAnchor {
+	position: relative;
+}
+div.scrollAnchor > div {
+	position: absolute;
+	top: -20px;
 }

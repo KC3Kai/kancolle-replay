@@ -26,14 +26,22 @@
 </head>
 <body style="display:none">
 	<div id="divMain">
-		<h1 :title="$t('kancolle_sortie_simulator_sub')">KanColle Sortie Simulator</h1>
-		
-		<div>
-			<label><input type="radio" value="en" v-model="$i18n.locale" @change="onchangeLang"/>EN</label> <label><input type="radio" value="ja" v-model="$i18n.locale" @change="onchangeLang"/>JP</label>
+		<div id="divNavBar" :style="{'pointer-events':isDragging?'none':''}">
+			<div><span class="title" :title="$t('kancolle_sortie_simulator_sub')">KanColle Sortie Simulator</span></div>
+			<div id="divNavButtons">
+				<div class="navButton" @click="onclickNavButton('divPlayerScroll')">{{$t('fleets')}}</div>
+				<div class="navButton" @click="onclickNavButton('divBattlesScroll')">{{$t('battles')}}</div>
+				<div class="navButton" @click="onclickNavButton('divSettingsScroll')">{{$t('settings')}}</div>
+				<div class="navButton" @click="onclickNavButton('divSimulationScroll',$event)">{{$t('simulation')}}</div>
+			</div>
 		</div>
+		<div class="scrollAnchor"><div ref="divPlayerScroll"></div></div>
+		<div style="height:10px"></div>
 		
 		<div id="divPlayer">
 			<div class="fleetSection">
+				<label><input type="radio" value="en" v-model="$i18n.locale" @change="onchangeLang"/>EN</label> <label><input type="radio" value="ja" v-model="$i18n.locale" @change="onchangeLang"/>JP</label>
+				&nbsp;&nbsp;&nbsp;&nbsp;
 				<input type="button" :value="$t('save_load_simulator_backup')" @click="onclickBackup"/>&nbsp;
 				<input type="button" :value="$t('import_export_deckbuilder_format')" @click="onclickDeckbuilder"/>&nbsp;
 			</div>
@@ -77,6 +85,7 @@
 		</div>
 		
 		<hr>
+		<div class="scrollAnchor"><div ref="divBattlesScroll"></div></div>
 		<div id="divBattles">
 			<h2>{{$t('battles')}}</h2>
 			<div class="battleNext">
@@ -91,6 +100,7 @@
 		</div>
 		
 		<hr>
+		<div class="scrollAnchor"><div ref="divSettingsScroll"></div></div>
 		<div id="divSettings">
 			<h2>{{$t('settings')}}</h2>
 			<div>
@@ -317,6 +327,7 @@
 		</div>
 		<hr>
 		
+		<div class="scrollAnchor"><div ref="divSimulationScroll"></div></div>
 		<h2>{{$t('simulation')}}</h2>
 		<div id="divSimWatch">
 			<input type="button" :value="$t('watch_sortie')" :disabled="!canSim" @click="onclickWatch"/> {{$t('opens_in_replayer')}}
