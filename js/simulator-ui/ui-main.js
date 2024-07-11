@@ -129,6 +129,14 @@ var UI_MAIN = Vue.createApp({
 			overrideSupportChanceDayB: SIMCONSTS.overrideSupportChanceDayB,
 			overrideSupportChanceNightN: SIMCONSTS.overrideSupportChanceNightN,
 			overrideSupportChanceNightB: SIMCONSTS.overrideSupportChanceNightB,
+			balloonSelfAirMod: SIMCONSTS.balloonSelfAirMod.slice(),
+			balloonSelfAirFlat: SIMCONSTS.balloonSelfAirFlat.slice(),
+			balloonSelfLBASMod: SIMCONSTS.balloonSelfLBASMod.slice(),
+			balloonSelfLBASFlat: SIMCONSTS.balloonSelfLBASFlat.slice(),
+			balloonOppoAirMod: SIMCONSTS.balloonOppoAirMod.slice(),
+			balloonOppoAirFlat: SIMCONSTS.balloonOppoAirFlat.slice(),
+			balloonOppoLBASMod: SIMCONSTS.balloonOppoLBASMod.slice(),
+			balloonOppoLBASFlat: SIMCONSTS.balloonOppoLBASFlat.slice(),
 		},
 		settingsFCF: {
 			los: null,
@@ -177,6 +185,8 @@ var UI_MAIN = Vue.createApp({
 		showNoticeCount: 0,
 		noticeTxt: '',
 		showMechanics: false,
+		
+		isDragging: false,
 	}),
 	mounted: function() {
 		this.$i18n.locale = localStorage.sim2_lang || 'en';
@@ -611,6 +621,11 @@ ${t('results.buckets')}:	${this.results.bucketSunk}`;
 		},
 		onclickScreenShot: function() {
 			html2canvas(this.$refs.divResults).then(canvas => {
+				canvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({ 'image/png':blob })]));
+				this.noticeTxt = this.$i18n.t('copied_to_clipboard');
+				let n = ++this.showNoticeCount;
+				setTimeout(() => n == this.showNoticeCount && (this.showNoticeCount = 0), 1000);
+				
 				let filename = 'KanColle_Sortie_Simulator_Statistics_' + (new Date).toISOString().slice(0,19).replace(/:/g,'-') + '.png';
 				let a = window.document.createElement('a');
 				a.href = canvas.toDataURL('image/png');
@@ -647,6 +662,13 @@ ${t('results.buckets')}:	${this.results.bucketSunk}`;
 		
 		onclickSetFCF: function() {
 			UI_FCFSETTINGS.doOpen(this.settingsFCF);
+		},
+		
+		onclickNavButton: function(ref,e) {
+			this.$refs[ref].scrollIntoView({ behavior: 'smooth' });
+			if (ref == 'divSimulationScroll' && e.ctrlKey) {
+				this.onclickGo();
+			}
 		},
 	},
 }).component('vbattle',{

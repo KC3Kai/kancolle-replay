@@ -594,6 +594,7 @@ var UI_FLEETEDITOR = Vue.createApp({
 			this.isDraggingShip = true;
 			this.selectedShipsProp = shipsProp;
 			this.selectedShipInd = ship.ind;
+			if (COMMON.UI_MAIN) COMMON.UI_MAIN.isDragging = true;
 		},
 		ondropShip: function(shipTo,shipsPropTo) {
 			if (!this.isDraggingShip) return;
@@ -606,6 +607,7 @@ var UI_FLEETEDITOR = Vue.createApp({
 		},
 		ondragendShip: function() {
 			this.isDraggingShip = false;
+			if (COMMON.UI_MAIN) COMMON.UI_MAIN.isDragging = false;
 		},
 		
 		onclickEquip: METHODS_COMMON.methods.onclickEquip,
