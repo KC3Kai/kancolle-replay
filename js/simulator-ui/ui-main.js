@@ -620,6 +620,7 @@ ${t('results.buckets')}:	${this.results.bucketSunk}`;
 			setTimeout(() => n == this.showNoticeCount && (this.showNoticeCount = 0), 1000);
 		},
 		onclickScreenShot: function() {
+			this.$refs.divResults.style.backgroundColor = window.getComputedStyle(document.body).backgroundColor;
 			html2canvas(this.$refs.divResults).then(canvas => {
 				canvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({ 'image/png':blob })]));
 				this.noticeTxt = this.$i18n.t('copied_to_clipboard');
@@ -634,6 +635,7 @@ ${t('results.buckets')}:	${this.results.bucketSunk}`;
 				a.click();
 				document.body.removeChild(a);
 			});
+			this.$refs.divResults.style.backgroundColor = '';
 		},
 		
 		onclickDeckbuilder: function() {
