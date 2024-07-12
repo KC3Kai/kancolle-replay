@@ -277,6 +277,12 @@
 	"explanation": "詳細",
 	"override_support_chance": "支援艦隊来援率上書き",
 	"override_support_chance_desc": "(艦隊通信アンテナ、及び通信装置&要員は来援率上昇の法則がまだ分かっていません。想定される効果を反映させたい場合は手動で値を設定する必要があります)",
+	"balloon_acc_effects": "阻塞気球使用時の航空戦命中補正",
+	"balloon_own_fleet": "Own Fleet's Balloons",
+	"balloon_opposing_fleet": "Opposing Fleet's Balloons",
+	"balloon_airstrike": "航空戦",
+	"balloon_lbas": "基地航空隊",
+	"balloon_acc": "命中",
 	
 	"normal_day": "道中支援(昼戦)",
 	"normal_night": "道中支援(夜戦)",
