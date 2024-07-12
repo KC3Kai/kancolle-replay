@@ -277,6 +277,7 @@
 	"explanation": "Explanation",
 	"override_support_chance": "Override Support Fleet Chance",
 	"override_support_chance_desc": "(Fleet Communication Antenna bonuses are currently unknown, these settings may be used to experiment with potential effects.)",
+	
 	"normal_day": "Normal (Day)",
 	"normal_night": "Normal (Night)",
 	"boss": "Boss",
@@ -510,6 +511,8 @@
 	"export_text": "Export Text",
 	"open_in_deckbuilder": "Open in DeckBuilder",
 	"open_in_aircalc": "Open in Air Sim",
+	"open_in_jervis": "Open in FleetHub (Jervis)",
+	"open_in_compass_sim": "Open in Compass Sim",
 	
 	"world": "World",
 	"map": "Map",
