@@ -32,7 +32,11 @@
 				<div class="navButton" @click="onclickNavButton('divPlayerScroll')">{{$t('fleets')}}</div>
 				<div class="navButton" @click="onclickNavButton('divBattlesScroll')">{{$t('battles')}}</div>
 				<div class="navButton" @click="onclickNavButton('divSettingsScroll')">{{$t('settings')}}</div>
-				<div class="navButton" @click="onclickNavButton('divSimulationScroll',$event)">{{$t('simulation')}}</div>
+				<div class="navButton" @click="onclickNavButton('divSimulationScroll')">{{$t('simulation')}}</div>
+			</div>
+			<div id="divNavSimShortcut">
+				<input type="button" value="&#9654;" @click="onclickNavSim"/>
+				<span>&nbsp;{{$t('simulate_n_times',[numSim])}}</span>
 			</div>
 		</div>
 		<div class="scrollAnchor"><div ref="divPlayerScroll"></div></div>
@@ -318,6 +322,55 @@
 						<tr><td>{{$t('normal_night')}}:</td><td><input type="number" min="0" max="100" v-model="settings.overrideSupportChanceNightN" :class="getClassSetting('overrideSupportChanceNightN')"/>%</td></tr>
 						<tr><td>{{$t('boss')}}:</td><td><input type="number" min="0" max="100" v-model="settings.overrideSupportChanceDayB" :class="getClassSetting('overrideSupportChanceDayB')"/>%</td></tr>
 						</table>
+					</div>
+					<div>
+						<div><span class="subheader"><img src="assets/items/55.png"/> {{$t('balloon_acc_effects')}}:</span></div>
+						<div>{{$t('balloon_own_fleet')}}:</div>
+						<div style="margin-left:20px;display:flex;gap:20px">
+							<div>{{$t('balloon_airstrike')}}:
+							<table>
+							<tr v-for="i in 3">
+								<th>{{i}}:</th>
+								<td>
+									({{$t('balloon_acc')}} &#215; <input type="number" min="1" max="2" step=".01" v-model="settings.balloonSelfAirMod[i-1]" :class="getClassSetting('balloonSelfAirMod',i-1)"/>)
+									+ <input type="number" min="0" max="99" step="1"v-model="settings.balloonSelfAirFlat[i-1]" :class="getClassSetting('balloonSelfAirFlat',i-1)"/>
+								</td>
+							</tr>
+							</table></div>
+							<div>{{$t('balloon_lbas')}}:
+							<table>
+							<tr v-for="i in 3">
+								<th>{{i}}:</th>
+								<td>
+									({{$t('balloon_acc')}} &#215; <input type="number" min="1" max="2" step=".01" v-model="settings.balloonSelfLBASMod[i-1]" :class="getClassSetting('balloonSelfLBASMod',i-1)"/>)
+									+ <input type="number" min="0" max="99" step="1"v-model="settings.balloonSelfLBASFlat[i-1]" :class="getClassSetting('balloonSelfLBASFlat',i-1)"/>
+								</td>
+							</tr>
+							</table></div>
+						</div>
+						<div>{{$t('balloon_opposing_fleet')}}:</div>
+						<div style="margin-left:20px;display:flex;gap:20px">
+							<div>{{$t('balloon_airstrike')}}:
+							<table>
+							<tr v-for="i in 3">
+								<th>{{i}}:</th>
+								<td>
+									({{$t('balloon_acc')}} &#215; <input type="number" min="0" max="1" step=".01" v-model="settings.balloonOppoAirMod[i-1]" :class="getClassSetting('balloonOppoAirMod',i-1)"/>)
+									+ <input type="number" min="-99" max="0" step="1" v-model="settings.balloonOppoAirFlat[i-1]" :class="getClassSetting('balloonOppoAirFlat',i-1)"/>
+								</td>
+							</tr>
+							</table></div>
+							<div>{{$t('balloon_lbas')}}:
+							<table>
+							<tr v-for="i in 3">
+								<th>{{i}}:</th>
+								<td>
+									({{$t('balloon_acc')}} &#215; <input type="number" min="0" max="1" step=".01" v-model="settings.balloonOppoLBASMod[i-1]" :class="getClassSetting('balloonOppoLBASMod',i-1)"/>)
+									+ <input type="number" min="-99" max="0" step="1" v-model="settings.balloonOppoLBASFlat[i-1]" :class="getClassSetting('balloonOppoLBASFlat',i-1)"/>
+								</td>
+							</tr>
+							</table></div>
+						</div>
 					</div>
 				</div>
 			</div>

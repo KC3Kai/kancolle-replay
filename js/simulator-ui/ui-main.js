@@ -670,9 +670,10 @@ ${t('results.buckets')}:	${this.results.bucketSunk}`;
 		
 		onclickNavButton: function(ref,e) {
 			this.$refs[ref].scrollIntoView({ behavior: 'smooth' });
-			if (ref == 'divSimulationScroll' && e.ctrlKey) {
-				this.onclickGo();
-			}
+		},
+		onclickNavSim: function() {
+			this.$refs.divSimulationScroll.scrollIntoView({ behavior: 'smooth' });
+			this.onclickGo();
 		},
 	},
 }).component('vbattle',{
