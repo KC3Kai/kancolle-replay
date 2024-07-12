@@ -291,6 +291,7 @@
 	"simulation": "Simulation",
 	"watch_sortie": "Watch a Sortie",
 	"opens_in_replayer": "(Opens in Replayer)",
+	"simulate_n_times": "(Simulate {0} times)",
 	"simulate_n_times_and_show_stats": "Simulate {inp_num} times and show statistics",
 	"go": "Go",
 	"cancel": "Cancel",

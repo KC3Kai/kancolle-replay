@@ -32,7 +32,11 @@
 				<div class="navButton" @click="onclickNavButton('divPlayerScroll')">{{$t('fleets')}}</div>
 				<div class="navButton" @click="onclickNavButton('divBattlesScroll')">{{$t('battles')}}</div>
 				<div class="navButton" @click="onclickNavButton('divSettingsScroll')">{{$t('settings')}}</div>
-				<div class="navButton" @click="onclickNavButton('divSimulationScroll',$event)">{{$t('simulation')}}</div>
+				<div class="navButton" @click="onclickNavButton('divSimulationScroll')">{{$t('simulation')}}</div>
+			</div>
+			<div id="divNavSimShortcut">
+				<input type="button" value="&#9654;" @click="onclickNavSim"/>
+				<span>&nbsp;{{$t('simulate_n_times',[numSim])}}</span>
 			</div>
 		</div>
 		<div class="scrollAnchor"><div ref="divPlayerScroll"></div></div>
