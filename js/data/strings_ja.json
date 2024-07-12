@@ -123,7 +123,7 @@
 		},
 		{
 			"date": "2019-09-18",
-			"txt": "泊地水鬼の暫定的な補正 & 緊急泊地修理（装備していれば最後のノードで適用される）"
+			"txt": "泊地水鬼の暫定的な補正 & 緊急泊地修理（装備していれば最後のNodeで適用される）"
 		},
 		{
 			"date": "2019-08-25",
@@ -277,6 +277,7 @@
 	"explanation": "詳細",
 	"override_support_chance": "支援艦隊来援率上書き",
 	"override_support_chance_desc": "(艦隊通信アンテナ、及び通信装置&要員は来援率上昇の法則がまだ分かっていません。想定される効果を反映させたい場合は手動で値を設定する必要があります)",
+	
 	"normal_day": "道中支援(昼戦)",
 	"normal_night": "道中支援(夜戦)",
 	"boss": "決戦支援",
@@ -323,7 +324,7 @@
 	"bucket": "バケツ",
 	"repair_team": "ダメコン",
 	"avg_repair": "平均入渠コスト",
-	"avg_resource_per": "最終ノード{img}あたり",
+	"avg_resource_per": "最終Node{img}あたり",
 	"avg_resource": "平均消費資源",
 	"avg_resource_tooltip": "補給 + 入渠コスト",
 	"copy_to_clipboard": "クリップボードにコピー",
@@ -510,6 +511,8 @@
 	"export_text": "艦隊&基地航空隊データを出力",
 	"open_in_deckbuilder": "デッキビルダーで開く",
 	"open_in_aircalc": "制空シミュで開く",
+	"open_in_jervis": "作戦室で開く",
+	"open_in_compass_sim": "羅針盤シミュで開く",
 	
 	"world": "海域",
 	"map": "エリア",

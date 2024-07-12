@@ -1182,8 +1182,9 @@
 				</div>
 				<div>
 					<div><textarea ref="textExport" cols="30" rows="2" autocomplete="off" v-model="textExport" @click="onclickSelectAll"></textarea></div>
-					<div><input type="button" :value="$t('export_text')" @click="onclickExport"/></div>
-					<div><input type="button" :value="$t('open_in_deckbuilder')" @click="onclickOpenDb"/><input type="button" :value="$t('open_in_aircalc')" @click="onclickOpenLBASSim"/></div>
+					<!-- <div><input type="button" :value="$t('export_text')" @click="onclickExport"/></div> -->
+					<div><input type="button" :value="$t('open_in_aircalc')" @click="onclickOpenLBASSim"/>&nbsp;<input type="button" :value="$t('open_in_jervis')" @click="onclickOpenJervis"/></div>
+					<div><input type="button" :value="$t('open_in_compass_sim')" @click="onclickOpenCompassSim"/>&nbsp;<input type="button" :value="$t('open_in_deckbuilder')" @click="onclickOpenDb"/></div>
 				</div>
 			</div>
 		</div>

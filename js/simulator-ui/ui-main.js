@@ -9,6 +9,8 @@ var CONST = window.COMMON.getConst({
 	
 	urlDeckbuilder: 'http://www.kancolle-calc.net/deckbuilder.html?predeck=',
 	urlLBASSim: 'https://noro6.github.io/kc-web?predeck=',
+	urlJervis: 'https://jervis.vercel.app/?predeck=',
+	urlCompassSim: 'https://x-20a.github.io/compass/?predeck=',
 	urlKCNavEnemyComps: 'https://tsunkit.net/api/routing/maps/{maps}/edges/{edges}/enemycomps',
 	urlKCNavFriendFleets: 'https://tsunkit.net/api/routing/maps/{maps}/edges/{edges}/friendfleets',
 	urlKCNavAbnormalDamage: 'https://tsunkit.net/api/routing/abnormaldamage',
@@ -881,6 +883,14 @@ var UI_DECKBUILDERIMPORTER = Vue.createApp({
 		onclickOpenLBASSim: function() {
 			let dataDb = this.getDataDb();
 			window.open(CONST.urlLBASSim + encodeURI(JSON.stringify(dataDb)));
+		},
+		onclickOpenJervis: function() {
+			let dataDb = this.getDataDb();
+			window.open(CONST.urlJervis + encodeURI(JSON.stringify(dataDb)));
+		},
+		onclickOpenCompassSim: function() {
+			let dataDb = this.getDataDb();
+			window.open(CONST.urlCompassSim + encodeURI(JSON.stringify(dataDb)));
 		},
 		onclickSelectAll: function(event) {
 			event.target.select();
