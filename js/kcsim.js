@@ -1875,13 +1875,17 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 	
 	if (ship.fleet.useBalloon) {
 		let num = ship.fleet.getNumBalloons();
-		acc *= SIMCONSTS.balloonSelfAirMod[num-1] ?? 1;
-		acc += SIMCONSTS.balloonSelfAirFlat[num-1]/100 ?? 0;
+		if (num) {
+			acc *= SIMCONSTS.balloonSelfAirMod[num-1] ?? 1;
+			acc += SIMCONSTS.balloonSelfAirFlat[num-1]/100 ?? 0;
+		}
 	}
 	if (target.fleet.useBalloon) {
 		let num = target.fleet.getNumBalloons();
-		acc *= SIMCONSTS.balloonOppoAirMod[num-1] ?? 1;
-		acc += SIMCONSTS.balloonOppoAirFlat[num-1]/100 ?? 0;
+		if (num) {
+			acc *= SIMCONSTS.balloonOppoAirMod[num-1] ?? 1;
+			acc += SIMCONSTS.balloonOppoAirFlat[num-1]/100 ?? 0;
+		}
 	}
 	
 	var res = rollHit(accuracyAndCrit(ship,target,acc,1,0,0,!issupport && 2),!issupport && ship.critdmgbonus);
@@ -3002,13 +3006,17 @@ function airstrikeLBAS(lbas,target,slot,contactMod,contactModLB,isjetphase) {
 	
 	if (FLEETS1[0] && FLEETS1[0].useBalloon) {
 		let num = FLEETS1[0].getNumBalloons();
-		acc *= SIMCONSTS.balloonSelfLBASMod[num-1] ?? 1;
-		acc += SIMCONSTS.balloonSelfLBASFlat[num-1]/100 ?? 0;
+		if (num) {
+			acc *= SIMCONSTS.balloonSelfLBASMod[num-1] ?? 1;
+			acc += SIMCONSTS.balloonSelfLBASFlat[num-1]/100 ?? 0;
+		}
 	}
 	if (target.fleet.useBalloon) {
 		let num = target.fleet.getNumBalloons();
-		acc *= SIMCONSTS.balloonOppoLBASMod[num-1] ?? 1;
-		acc += SIMCONSTS.balloonOppoLBASFlat[num-1]/100 ?? 0;
+		if (num) {
+			acc *= SIMCONSTS.balloonOppoLBASMod[num-1] ?? 1;
+			acc += SIMCONSTS.balloonOppoLBASFlat[num-1]/100 ?? 0;
+		}
 	}
 	
 	lbas.critratebonus = critratebonus; lbas.ACCplane = ACCplane;
