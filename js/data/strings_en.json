@@ -294,6 +294,7 @@
 	"simulate_n_times": "(Simulate {0} times)",
 	"simulate_n_times_and_show_stats": "Simulate {inp_num} times and show statistics",
 	"go": "Go",
+	"stop": "Stop",
 	"cancel": "Cancel",
 	"clear": "Clear",
 	"statistics": "Statistics",
@@ -621,7 +622,7 @@
 	"load_error_autobonus_turn_off": "Load error, Auto-Bonus will be turned off",
 	
 	"change_log_header": "Change Log",
-	"bug_reports_feature_requests": "Bug reports/feature requests",
+	"bug_reports_feature_requests": "Bug reports/feature requests: {link_github} or DM fourinone from {link_discord}",
 	
 	"autobonus_off": "Off",
 	"autobonus_active": "Active",

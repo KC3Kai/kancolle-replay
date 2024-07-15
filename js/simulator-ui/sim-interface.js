@@ -4,7 +4,7 @@ var CONST = window.COMMON.getConst({
 	shipTypeIdToHull: { 1:'DE',2:'DD',3:'CL',4:'CLT',5:'CA',6:'CAV',7:'CVL',8:'FBB',9:'BB',10:'BBV',11:'CV',13:'SS',14:'SSV',15:'AT',16:'AV',17:'LHA',18:'CVB',19:'AR',20:'AS',21:'CT',22:'AO' },
 
 	numSimDefault: 1000,
-	numSimMax: 100000,
+	numSimMax: 10000000,
 	numSimStep: 500,
 	
 	errorText: {
