@@ -386,15 +386,18 @@
 			<input type="button" :value="$t('watch_sortie')" :disabled="!canSim" @click="onclickWatch"/> {{$t('opens_in_replayer')}}
 		</div>
 		<div id="divSimStats">
-			<i18n-t keypath="simulate_n_times_and_show_stats" scope="global"><template v-slot:inp_num><input type="number" min="1" max="99999" v-model="numSim" /></template></i18n-t>:
+			<i18n-t keypath="simulate_n_times_and_show_stats" scope="global"><template v-slot:inp_num><input type="number" min="1" :max="numSimMax" v-model="numSim" /></template></i18n-t>:
 			<div id="divSimStatsButtons">
 				<input type="button" :value="$t('go')" :disabled="!canSim" @click="onclickGo"/>
-				<input type="button" :value="$t('cancel')" v-show="!canSim" :disabled="canSim" @click="onclickCancel"/>
 				<input type="button" :value="$t('clear')" v-show="results.active&&canSim" @click="onclickClear"/>
 			</div>
 		</div>
 		<div id="divResultsOuter">
-			<div class="progressBarOuter" v-show="!canSim"><div class="progressBarInner" :style="{width:simProgress+'%'}"></div></div>
+			<div style="display:flex;gap:10px" v-show="!canSim">
+				<div class="progressBarOuter"><div class="progressBarInner" :style="{width:simProgressPercent+'%'}"></div></div>
+				<div><input type="button" :value="$t('stop')" v-show="!canSim" :disabled="canSim" @click="onclickCancel"/></div>
+				<div>({{simProgressNum}}/{{simProgressTotal}})</div>
+			</div>
 			<div id="divResultsErrors">
 				<div v-for="error in results.errors">{{$t('sim_error.' + error.key, error.args)}}</div>
 			</div>
@@ -563,7 +566,10 @@
 			</i18n-t></div>
 		</div>
 		<div id="divFooter">
-			<div>{{$t('bug_reports_feature_requests')}}: <a href="https://github.com/KC3Kai/kancolle-replay/issues">Github</a></div>
+			<div><i18n-t keypath="bug_reports_feature_requests" scope="global">
+				<template v-slot:link_github><a href="https://github.com/KC3Kai/kancolle-replay/issues">Github</a></template>
+				<template v-slot:link_discord><a href="https://discord.gg/RtSadWM">English KC Discord</a></template>
+			</i18n-t></div>
 		</div>
 	</div>
 	

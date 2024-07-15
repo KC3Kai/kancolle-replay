@@ -5,7 +5,7 @@ var CONST = window.COMMON.getConst({
 	numCompMax: 12,
 	
 	numSimDefault: 10000,
-	numSimMax: 99999,
+	numSimMax: 10000000,
 	
 	urlDeckbuilder: 'http://www.kancolle-calc.net/deckbuilder.html?predeck=',
 	urlLBASSim: 'https://noro6.github.io/kc-web?predeck=',
@@ -153,7 +153,8 @@ var UI_MAIN = Vue.createApp({
 		
 		canSim: true,
 		numSim: CONST.numSimDefault,
-		simProgress: 0,
+		simProgressNum: 0,
+		simProgressTotal: 0,
 		results: {
 			active: false,
 			showCFWarning: false,
@@ -339,6 +340,13 @@ var UI_MAIN = Vue.createApp({
 		},
 		autoBonusNodes: function() {
 			return this.autoBonus ? this.battles.map(battle => this.autoBonus.nodeToLetter[battle.id] || this.$i18n.t('autobonus_node_default')).join('\u2192') + (this.autoBonus.useDebuff ? this.$i18n.t('autobonus_debuffed') : '') : '';
+		},
+		
+		numSimMax: function() {
+			return CONST.numSimMax;
+		},
+		simProgressPercent: function() {
+			return Math.round(100*this.simProgressNum/this.simProgressTotal);
 		},
 	},
 	methods: {
@@ -548,7 +556,8 @@ var UI_MAIN = Vue.createApp({
 				this.results.active = false;
 			}
 			if (res.progress != null) {
-				this.simProgress = Math.round(100*res.progress/res.progressTotal);
+				this.simProgressNum = res.progress;
+				this.simProgressTotal = res.progressTotal;
 			}
 			if (res.result) {
 				this.results.active = true;
@@ -672,7 +681,7 @@ ${t('results.buckets')}:	${this.results.bucketSunk}`;
 			this.$refs[ref].scrollIntoView({ behavior: 'smooth' });
 		},
 		onclickNavSim: function() {
-			this.$refs.divSimulationScroll.scrollIntoView({ behavior: 'smooth' });
+			this.$refs.divSimulationScroll.scrollIntoView();
 			this.onclickGo();
 		},
 	},
