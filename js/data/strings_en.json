@@ -1,6 +1,10 @@
 {
 	"change_log": [
 		{
+			"date": "2024-07-22",
+			"txt": "Plane Bonus settings (bonuses tied to plane slots)"
+		},
+		{
 			"date": "2024-07-10",
 			"txt": "Create Shared Link (TinyURL) in Save/Load Simulator Backup, screenshot button for Statistics"
 		},
@@ -204,7 +208,7 @@
 	"fcf_settings_set": "FCF Settings set",
 	"replace_formations": "Replace formation with {closest_alternative} if not enough ships",
 	"closest_alternative": "closest alternative",
-	"closest_alternative_tooltip": "< 3 Ships \u2192 Line Ahead\nDiamond \u2192 Double Line\nCF3 \u2192 CF1\nCF4 \u2192 CF2",
+	"closest_alternative_tooltip": "\u2264 3 Ships \u2192 Line Ahead\nDiamond \u2192 Double Line\nCF3 \u2192 CF1\nCF4 \u2192 CF2",
 	"historical_bonus": "Historical Bonus",
 	"auto_set_bonus": "Auto-Set Historical Bonuses",
 	"import_mapwide_bonuses_once": "Import Mapwide Bonuses Once",
@@ -419,6 +423,9 @@
 	"bonus_acc_desc": "Mapwide Historical Accuracy Bonus Multiplier",
 	"bonus_eva": "Bonus Eva",
 	"bonus_eva_desc": "Mapwide Historical Evasion Bonus Multiplier",
+	"dmg": "Dmg",
+	"acc": "Acc",
+	"eva": "Eva",
 	"debuff_dmg": "Debuff Dmg",
 	"debuff_dmg_desc": "Multiplier applied to LAST NODE FLAGSHIP only, stacks with above\nNote: This is a legacy setting and may be inaccurate to the mechanic, recommended to modify enemy's Armour stat instead.",
 	"slot_size": "Slot Size",
@@ -638,6 +645,20 @@
 	"kc3kai_import_desc_4": "On the Profile tab, click {txt_b}",
 	"kc3kai_import_desc_4_b": "Export basic profile to KC3 file",
 	"kc3kai_import_desc_5": "Upload your file here.",
+	
+	"plane_bonus_ship": "Plane Bonus",
+	"plane_bonus_lbas": "Plane Bonus",
+	"group_n_ship": "{0}",
+	"group_n_lbas": "{0}",
+	"air_attacks_only": "Air Attacks Only",
+	"air_attacks_only_tooltip": "Airstrike, Carrier Shelling, Carrier Night Air Attack, Plane ASW",
+	"max_plane_bonus_ship": "Max Plane Bonus",
+	"max_plane_bonus_lbas": "Max Plane Bonus",
+	"max_total_bonus": "Max Total Bonus",
+	"plane_bonus_note_1_ship": "\u2022 Applied only if at least 1 associated plane has slots remaining",
+	"plane_bonus_note_1_lbas": "\u2022 Applied only if at least 1 associated plane has slots remaining",
+	"plane_bonus_note_2_ship": "\u2022 Applied to the entire ship, stacks with the ship's normal Bonus settings",
+	"plane_bonus_note_2_lbas": "\u2022 Applied to all planes in the entire land base, stacks with each plane's normal Bonus settings",
 	
 	"mechanic": {
 		"artillerySpotting": "Artillery Spotting",

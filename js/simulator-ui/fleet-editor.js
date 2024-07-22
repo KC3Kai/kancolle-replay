@@ -29,6 +29,8 @@ var CONST = window.COMMON.getConst({
 	modHPMax: 2,
 	modASWMax: 9,
 	
+	planeBonusGroupsMax: 9,
+	
 	statBList: [
 		{ key: 'fp', name: 'Firepower' },
 		{ key: 'tp', name: 'Torpedo' },
@@ -559,6 +561,12 @@ var UI_FLEETEDITOR = Vue.createApp({
 			let hMax = Math.floor(timeMax/3600), mMax = Math.floor((timeMax-hMax*3600)/60), sMax = Math.floor(timeMax-hMax*3600-mMax*60);
 			return 'Repair: ' + hNow + 'h ' + mNow + 'm ' + sNow + 's (max ' + hMax + 'h ' + mMax + 'm ' + sMax + 's)';
 		},
+		getShipHasPlane: function(ship) {
+			return !!ship.equips.find(equip => equip.mstId && EQTDATA[EQDATA[equip.mstId].type].isPlane);
+		},
+		getShipHasPlaneBonus: function(ship) {
+			return !!ship.equips.find(equip => equip.bonusGroups);
+		},
 		
 		doOpen: function(fleet) {
 			this.active = true;
@@ -773,6 +781,11 @@ var UI_FLEETEDITOR = Vue.createApp({
 			}
 		},
 		
+		onclickPlaneBonus: function(ship) {
+			if (!this.getShipHasPlane(ship)) return;
+			UI_PLANEBONUS.doOpen(ship);
+		},
+		
 		refocusShip: function() {
 			setTimeout(() => this.$refs[this.selectedShipsProp+this.selectedShipInd][0].focus(),1);
 		},
@@ -825,6 +838,17 @@ window.CMP_LBASEDITOR = {
 			}
 			
 			COMMON.BONUS_MANAGER.applyAutoLBAS(base.ind);
+		},
+		
+		getBaseHasPlane: function(base) {
+			return !!base.equips.find(equip => equip.mstId && EQTDATA[EQDATA[equip.mstId].type].isPlane);
+		},
+		getBaseHasPlaneBonus: function(base) {
+			return !!base.equips.find(equip => equip.bonusGroups);
+		},
+		onclickPlaneBonus: function(base) {
+			if (!this.getBaseHasPlane(base)) return;
+			UI_PLANEBONUS.doOpen(base,null,true);
 		},
 		
 		onclickEquip: METHODS_COMMON.methods.onclickEquip,
@@ -1125,6 +1149,126 @@ var UI_ADDITIONALSTATSLBAS = Vue.createApp({
 }).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divAdditionalStatsLBAS');
 
 
+var UI_PLANEBONUS = Vue.createApp({
+	data: () => ({
+		active: false,
+		canClose: true,
+		
+		ship: null,
+		equips: [],
+		groups: [],
+		nodeId: null,
+		isLBAS: false,
+	}),
+	computed: {
+		hasBonusOnEquip: function() {
+			return this.isLBAS && this.ship.equips.find(eq => ['bonusDmg','bonusAcc'].find(key => ![0,1,'',null,undefined].includes(eq[key])));
+		},
+	},
+	methods: {
+		doOpen: function(ship,nodeId,isLBAS) {
+			this.active = true;
+			this.equips = [];
+			this.groups = [];
+			this.nodeId = nodeId || null;
+			this.isLBAS = !!isLBAS;
+			
+			this.ship = ship;
+			for (let equip of ship.equips) {
+				if (FLEET_MODEL.equipIsEmpty(equip)) continue;
+				if (!EQTDATA[EQDATA[equip.mstId].type].isPlane) continue;
+				this.equips.push(equip);
+			}
+			
+			for (let n=1; n<=CONST.planeBonusGroupsMax; n++) {
+				this.groups.push({
+					num: n,
+					bonusDmg: 1,
+					bonusAcc: 1,
+					bonusEva: 1,
+					airOnly: false,
+					equipIdx: Array(this.equips.length).fill(false),
+				});
+			}
+			for (let i=0; i<this.equips.length; i++) {
+				let equipObj = this.equips[i];
+				if (this.nodeId) {
+					if (!this.equips[i].bonusByNode) continue;
+					equipObj = this.equips[i].bonusByNode[this.nodeId];
+				}
+				if (!equipObj || !equipObj.bonusGroups) continue;
+				for (let group in equipObj.bonusGroups) {
+					let found = false;
+					for (let key of ['bonusDmg','bonusAcc','bonusEva']) {
+						if (![1,'',null,undefined].includes(equipObj.bonusGroups[group][key])) {
+							this.groups[group-1][key] = equipObj.bonusGroups[group][key];
+							found = true;
+						}
+					}
+					if (found) {
+						this.groups[group-1].airOnly = !equipObj.bonusGroups[group].notAirOnly;
+						this.groups[group-1].equipIdx[i] = true;
+					}
+				}
+			}
+		},
+		doClose: function() {
+			this.update();
+			this.active = false;
+		},
+		
+		update: function() {
+			for (let equip of this.equips) {
+				let equipObj = equip;
+				if (this.nodeId) {
+					if (!equip.bonusByNode) equip.bonusByNode = {};
+					if (!equip.bonusByNode[this.nodeId]) equip.bonusByNode[this.nodeId] = {};
+					equipObj = equip.bonusByNode[this.nodeId];
+				}
+				delete equipObj.bonusGroups;
+			}
+			for (let group of this.groups) {
+				for (let i=0; i<group.equipIdx.length; i++) {
+					if (!group.equipIdx[i]) continue;
+					let equipObj = this.nodeId ? this.equips[i].bonusByNode[this.nodeId] : this.equips[i];
+					if (!equipObj.bonusGroups) equipObj.bonusGroups = {};
+					if (!equipObj.bonusGroups[group.num]) equipObj.bonusGroups[group.num] = { bonusDmg: 1, bonusAcc: 1, bonusEva: 1, notAirOnly: !group.airOnly };
+					for (let key of ['bonusDmg','bonusAcc','bonusEva']) {
+						if (![1,'',null,undefined].includes(group[key])) {
+							equipObj.bonusGroups[group.num][key] = group[key];
+						}
+					}
+				}
+			}
+			for (let equip of this.equips) {
+				let equipObj = equip;
+				if (this.nodeId) equipObj = equip.bonusByNode[this.nodeId];
+				if (equipObj.bonusGroups && !Object.keys(equipObj.bonusGroups).find(group => ['bonusDmg','bonusAcc','bonusEva'].find(key => ![1,'',null,undefined].includes(equipObj.bonusGroups[group][key])))) {
+					delete equipObj.bonusGroups;
+				}
+			}
+		},
+		
+		getBonusTotal: function(key) {
+			let mod = 1;
+			for (let group of this.groups) {
+				if (group[key] != '' && group[key] != null && group.equipIdx.find(v => v)) mod *= group[key];
+			}
+			return Math.round(1e10*mod)/1e10;
+		},
+		getBonusTotalShip: function(key) {
+			let shipObj = this.ship;
+			if (this.nodeId && this.ship.bonusByNode && this.ship.bonusByNode[this.nodeId] && this.ship.bonusByNode[this.nodeId][key]) {
+				shipObj = this.ship.bonusByNode[this.nodeId];
+			}
+			return Math.round(1e10 * this.getBonusTotal(key) * (shipObj[key] != '' && shipObj[key] != null ? shipObj[key] : 1))/1e10;
+		},
+		getBonusTotalEquip: function(key,equip) {
+			return Math.round(1e10 * this.getBonusTotal(key) * (equip[key] != '' && equip[key] != null ? equip[key] : 1))/1e10;
+		},
+	},
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divPlaneBonus');
+
 
 COMMON.global.fleetEditorOpen = function(fleet) {
 	UI_FLEETEDITOR.doOpen(fleet);
@@ -1146,6 +1290,9 @@ COMMON.global.fleetEditorMoveTemp = function(elFrom) {
 		UI_FLEETEDITOR.doClose();
 		document.getElementById('divFleetEditorTemp').appendChild(e);
 	}
+}
+COMMON.global.fleetEditorOpenPlaneBonus = function(ship,nodeId) {
+	UI_PLANEBONUS.doOpen(ship,nodeId);
 }
 
 })

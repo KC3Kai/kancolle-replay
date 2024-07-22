@@ -285,3 +285,42 @@ div.iconOverlay .debuff {
 	padding: 2px;
 	text-align: right;
 }
+
+#divPlaneBonus input[type=number] {
+	width: 80px;
+}
+#divPlaneBonus td {
+	text-align: center;
+}
+#divPlaneBonus .bonusHeader {
+	text-wrap: nowrap;
+}
+#divPlaneBonus .equipHeader {
+	display: flex;
+	align-items: center;
+	height: 100%;
+}
+#divPlaneBonus img.equipIcon {
+	width: 24px;
+	height: 24px;
+}
+#divPlaneBonus img.equipIcon.top {
+	position: absolute;
+}
+#divPlaneBonus .equipName {
+	font-size: 10px;
+	margin-left: 5px;
+	max-width: 100px;
+}
+#divPlaneBonusTotals {
+	margin-top: 20px;
+	display: flex;
+	align-items: end;
+	gap: 30px;
+}
+#divPlaneBonusTotals th, #divPlaneBonusTotals td {
+	padding: 0 10px;
+}
+#divPlaneBonusNotes {
+	margin-bottom: 20px;
+}
