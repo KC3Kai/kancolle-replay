@@ -487,7 +487,7 @@ function shell(ship,target,APIhou,attackSpecial,combinedAll) {
 	acc *= accMod2;
 	
 	if (ship.bonusSpecialAcc && (evFlat < 20 || SIMCONSTS.vanguardUseType != 1)) acc *= getBonusAcc(ship,target);
-	if (SIMCONSTS.enablePlaneBonus && ship.CVshelltype) acc *= getBonusSpecialPlane(ship,'bonusSpecialAccP');
+	if (SIMCONSTS.enablePlaneBonus && (ship.CVshelltype || ship.bonusSpecialPNotAirOnly)) acc *= getBonusSpecialPlane(ship,'bonusSpecialAccP',ship.CVshelltype);
 	
 	let smokeType = ship.fleet.smokeType || target.fleet.smokeType;
 	if (smokeType) {
@@ -542,7 +542,7 @@ function shell(ship,target,APIhou,attackSpecial,combinedAll) {
 	}
 	
 	if (ship.bonusSpecial) postModExtra *= getBonusDmg(ship,target);
-	if (SIMCONSTS.enablePlaneBonus && ship.CVshelltype) postModExtra *= getBonusSpecialPlane(ship);
+	if (SIMCONSTS.enablePlaneBonus && (ship.CVshelltype || ship.bonusSpecialPNotAirOnly)) postModExtra *= getBonusSpecialPlane(ship,'bonusSpecialP',ship.CVshelltype);
 	
 	if (C) console.log('	pre:', preMod, 'postCI:', postModCI, 'postExtra:', postModExtra)
 	
@@ -778,7 +778,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 	acc *= accMod2;
 	
 	if (ship.bonusSpecialAcc && (evFlat < 20 || SIMCONSTS.vanguardUseType != 1)) acc *= getBonusAcc(ship,target);
-	if (SIMCONSTS.enablePlaneBonus && ship.canNBAirAttack()) acc *= getBonusSpecialPlane(ship,'bonusSpecialAccP');
+	if (SIMCONSTS.enablePlaneBonus && (ship.canNBAirAttack() || ship.bonusSpecialPNotAirOnly)) acc *= getBonusSpecialPlane(ship,'bonusSpecialAccP',ship.canNBAirAttack());
 	
 	if (target.isPT) {
 		if (NERFPTIMPS) {
@@ -814,7 +814,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 	}
 	
 	if (ship.bonusSpecial) postMod *= getBonusDmg(ship,target);
-	if (SIMCONSTS.enablePlaneBonus && ship.canNBAirAttack()) postMod *= getBonusSpecialPlane(ship);
+	if (SIMCONSTS.enablePlaneBonus && (ship.canNBAirAttack() || ship.bonusSpecialPNotAirOnly)) postMod *= getBonusSpecialPlane(ship,'bonusSpecialP',ship.canNBAirAttack());
 	
 	let critdmgbonus = ship.canNBAirAttack() ? ship.critdmgbonus : 1;
 	
@@ -939,7 +939,7 @@ function ASW(ship,target,isnight,APIhou,isOASW) {
 	var acc = hitRate(ship,80,sonarAcc,accMod);
 	if (ship.bonusSpecialAcc) acc *= getBonusAcc(ship,target);
 	let usePlaneProf = ship.planeasw && !isOASW && ship.type != 'CV' && ship.type != 'AO';
-	if (SIMCONSTS.enablePlaneBonus && usePlaneProf) acc *= getBonusSpecialPlane(ship,'bonusSpecialAccP');
+	if (SIMCONSTS.enablePlaneBonus && (usePlaneProf || ship.bonusSpecialPNotAirOnly)) acc *= getBonusSpecialPlane(ship,'bonusSpecialAccP',usePlaneProf);
 	
 	let smokeType = ship.fleet.smokeType || target.fleet.smokeType;
 	if (smokeType) {
@@ -952,7 +952,7 @@ function ASW(ship,target,isnight,APIhou,isOASW) {
 	var premod = (isnight)? 0 : ship.getFormation().ASWmod*ENGAGEMENT*ship.damageMod();
 	let postMod = 1;
 	if (ship.bonusSpecial) postMod *= getBonusDmg(ship,target);
-	if (SIMCONSTS.enablePlaneBonus && usePlaneProf) postMod *= getBonusSpecialPlane(ship);
+	if (SIMCONSTS.enablePlaneBonus && (usePlaneProf || ship.bonusSpecialPNotAirOnly)) postMod *= getBonusSpecialPlane(ship,'bonusSpecialP',usePlaneProf);
 	if (res) {
 		let pow = Math.floor(softCap(ship.ASWPower()*premod, SIMCONSTS.aswDmgCap))*postMod;
 		dmg = damageCommon(ship,target,pow,res);
@@ -992,6 +992,7 @@ function laser(ship,targets,APIhou) {
 	if (!formationCountered(ship.fleet.formation.id,targets[0].fleet.formation.id)) accMod *= ship.getFormation().shellacc;
 	var acc = hitRate(ship,90,0,accMod);
 	if (ship.bonusSpecialAcc) acc *= getBonusAcc(ship,targets[0]);
+	if (SIMCONSTS.enablePlaneBonus && ship.bonusSpecialPNotAirOnly) acc *= getBonusSpecialPlane(ship,'bonusSpecialAccP',false);
 	var evMod = ship.getFormation().shellev;
 	var targetids = [], damages = [], crits = [];
 	for (var i=0; i<targets.length; i++) {
@@ -999,6 +1000,7 @@ function laser(ship,targets,APIhou) {
 		var res = rollHit(accuracyAndCrit(ship,targets[i],acc,evMod,0,1.3));
 		var dmg = 0, realdmg = 0;
 		if (ship.bonusSpecial) postMod *= getBonusDmg(ship,targets[i]);
+		if (SIMCONSTS.enablePlaneBonus && ship.bonusSpecialPNotAirOnly) postMod *= getBonusSpecialPlane(ship,'bonusSpecialP',false);
 		if (res) {
 			let pow = Math.floor(softCap(ship.shellPower(targets[i])*preMod, SIMCONSTS.shellDmgCap))*postMod;
 			dmg = damageCommon(ship,targets[i],pow,res);
@@ -1762,6 +1764,7 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 		
 		var acc = hitRate(ship,85,accflat,accMod);
 		if (ship.bonusSpecialAcc) acc *= getBonusAcc(ship,target);
+		if (SIMCONSTS.enablePlaneBonus && ship.bonusSpecialPNotAirOnly) acc *= getBonusSpecialPlane(ship,'bonusSpecialAccP',false);
 		
 		let smokeType = ship.fleet.smokeType || target.fleet.smokeType;
 		if (smokeType) {
@@ -1797,6 +1800,7 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 			postMod *= ship.frenchBBPostMult;
 		}
 		if (ship.bonusSpecial) postMod *= getBonusDmg(ship,target);
+		if (SIMCONSTS.enablePlaneBonus && ship.bonusSpecialPNotAirOnly) postMod *= getBonusSpecialPlane(ship,'bonusSpecialP',false);
 		
 		var res = rollHit(accuracyAndCrit(ship,target,acc,target.getFormation().torpev,evFlat,1.5));
 		var realdmg = 0, dmg = 0;
@@ -1866,6 +1870,7 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 		else acc += .14;
 	}
 	if (ship.bonusSpecialAcc) acc *= getBonusAcc(ship,target,true);
+	if (SIMCONSTS.enablePlaneBonus) acc *= getBonusSpecialPlane(ship,'bonusSpecialAccP',true);
 	
 	let smokeType = ship.fleet.smokeType || target.fleet.smokeType;
 	if (smokeType) {
@@ -1946,7 +1951,7 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 			if (equip.isdivebomber) postMod *= target.divebombWeak || 1;
 		}
 		if (ship.bonusSpecial) postMod *= getBonusDmg(ship,target);
-		if (SIMCONSTS.enablePlaneBonus) postMod *= getBonusSpecialPlane(ship);
+		if (SIMCONSTS.enablePlaneBonus) postMod *= getBonusSpecialPlane(ship,'bonusSpecialP',true);
 		let pow = Math.floor(softCap((base+Math.sqrt(ship.planecount[slot])*planebase)*preMod, SIMCONSTS.airDmgCap))*contactMod*postMod;
 		if (!SIMCONSTS.enableAirstrikeSpecialBonus && target.isPT && !NERFPTIMPS) {
 			pow *= (Math.random() < .5 ? .5 : .8);
@@ -2003,6 +2008,7 @@ function accuracyAndCrit(ship,target,hit,evMod,evFlat,critMod,isPlanes,critBonus
 		}
 		dodge *= mod;
 	}
+	if (SIMCONSTS.enablePlaneBonus && target.bonusSpecialPNotAirOnly) dodge *= getBonusSpecialPlane(target,'bonusSpecialEvaP',false);
 	if (target.bonusEvMod) {
 		dodge *= target.bonusEvMod;
 	}
@@ -2058,13 +2064,14 @@ function getBonusAcc(ship,target,isAir) {
 	return mod;
 }
 
-function getBonusSpecialPlane(ship,key='bonusSpecialP') {
+function getBonusSpecialPlane(ship,key='bonusSpecialP',isAir) {
 	let mod = 1, groups = {};
 	for (let i=0; i<ship.equips.length; i++) {
 		if (ship.planecount[i] <= 0) continue;
 		let eq = ship.equips[i];
 		if (eq[key]) {
 			for (let group in eq[key]) {
+				if (!isAir && (!ship.bonusSpecialPNotAirOnly || !ship.bonusSpecialPNotAirOnly[group])) continue;
 				groups[group] = eq[key][group];
 			}
 		}
@@ -2871,6 +2878,7 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 	if (FLEETS1[0]) contactMod *= 1 + (FLEETS1[0].getNumBalloons()/50);
 	if (defenders.length) contactMod *= 1 - (defenders[0].fleet.getNumBalloons()/20);
 	
+	let attacks = [];
 	for (var i=0; i<lbas.equips.length; i++) {
 		var eq = lbas.equips[i];
 		if (!eq.isPlane) continue;
@@ -2914,25 +2922,29 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 			}
 			var target = choiceWProtect(targets);
 			if (!target) continue;
-			var dmg = airstrikeLBAS(lbas,target,i,contactMod,contactModLB,isjetphase);
-			if (C) {
-				var showtorpedo = lbas.equips[i].istorpbomber;
-				if (lbas.equips[i].type == LANDBOMBER && target.isInstall) showtorpedo = false;
-				if (lbas.equips[i].isSkipBomber) showtorpedo = false;
-				if (target.isSub) showtorpedo = false;
-				if (target.isescort) {
-					APIkouku.api_stage3_combined[(target.side)?'api_edam':'api_fdam'][target.num] += dmg;
-					APIkouku.api_stage3_combined[(target.side)?'api_ecl_flag':'api_fcl_flag'][target.num] = 0;
-					if (showtorpedo) APIkouku.api_stage3_combined[(target.side)?'api_erai_flag':'api_frai_flag'][target.num] = 1;
-					else APIkouku.api_stage3_combined[(target.side)?'api_ebak_flag':'api_fbak_flag'][target.num] = 1;
-					if (lbas.equips[i].isSkipBomber) APIkouku.api_stage3_combined[target.side?'api_e_sp_list':'api_f_sp_list'][target.num] = [1];
-				} else {
-					APIkouku.api_stage3[(target.side)?'api_edam':'api_fdam'][target.num] += dmg;
-					APIkouku.api_stage3[(target.side)?'api_ecl_flag':'api_fcl_flag'][target.num] = 0;
-					if (showtorpedo) APIkouku.api_stage3[(target.side)?'api_erai_flag':'api_frai_flag'][target.num] = 1;
-					else APIkouku.api_stage3[(target.side)?'api_ebak_flag':'api_fbak_flag'][target.num] = 1;
-					if (lbas.equips[i].isSkipBomber) APIkouku.api_stage3[target.side?'api_e_sp_list':'api_f_sp_list'][target.num] = [1];
-				}
+			attacks.push([lbas,target,i]);
+		}
+	}		
+	for (let attack of attacks) {
+		let lbas = attack[0], target = attack[1], i = attack[2];
+		var dmg = airstrikeLBAS(lbas,target,i,contactMod,contactModLB,isjetphase);
+		if (C) {
+			var showtorpedo = lbas.equips[i].istorpbomber;
+			if (lbas.equips[i].type == LANDBOMBER && target.isInstall) showtorpedo = false;
+			if (lbas.equips[i].isSkipBomber) showtorpedo = false;
+			if (target.isSub) showtorpedo = false;
+			if (target.isescort) {
+				APIkouku.api_stage3_combined[(target.side)?'api_edam':'api_fdam'][target.num] += dmg;
+				APIkouku.api_stage3_combined[(target.side)?'api_ecl_flag':'api_fcl_flag'][target.num] = 0;
+				if (showtorpedo) APIkouku.api_stage3_combined[(target.side)?'api_erai_flag':'api_frai_flag'][target.num] = 1;
+				else APIkouku.api_stage3_combined[(target.side)?'api_ebak_flag':'api_fbak_flag'][target.num] = 1;
+				if (lbas.equips[i].isSkipBomber) APIkouku.api_stage3_combined[target.side?'api_e_sp_list':'api_f_sp_list'][target.num] = [1];
+			} else {
+				APIkouku.api_stage3[(target.side)?'api_edam':'api_fdam'][target.num] += dmg;
+				APIkouku.api_stage3[(target.side)?'api_ecl_flag':'api_fcl_flag'][target.num] = 0;
+				if (showtorpedo) APIkouku.api_stage3[(target.side)?'api_erai_flag':'api_frai_flag'][target.num] = 1;
+				else APIkouku.api_stage3[(target.side)?'api_ebak_flag':'api_fbak_flag'][target.num] = 1;
+				if (lbas.equips[i].isSkipBomber) APIkouku.api_stage3[target.side?'api_e_sp_list':'api_f_sp_list'][target.num] = [1];
 			}
 		}
 	}
@@ -2998,10 +3010,11 @@ function airstrikeLBAS(lbas,target,slot,contactMod,contactModLB,isjetphase) {
 	}
 	if (SIMCONSTS.enablePlaneBonus) {
 		if (equip.bonusSpecialPUseAll) {
-			acc *= getBonusSpecialPlane(lbas,'bonusSpecialAccP');
+			acc *= getBonusSpecialPlane(lbas,'bonusSpecialAccP',true);
 		} else if (equip.bonusSpecialAccP) {
 			for (let group in equip.bonusSpecialAccP) acc *= equip.bonusSpecialAccP[group];
 		}
+		if (equip.bonusSpecialAccPSelf) acc *= equip.bonusSpecialAccPSelf;
 	}
 	
 	if (FLEETS1[0] && FLEETS1[0].useBalloon) {
@@ -3118,10 +3131,11 @@ function airstrikeLBAS(lbas,target,slot,contactMod,contactModLB,isjetphase) {
 		if (target.fleet.combinedWith) postMod *= 1.1;
 		if (SIMCONSTS.enablePlaneBonus) {
 			if (equip.bonusSpecialPUseAll) {
-				postMod *= getBonusSpecialPlane(lbas);
+				postMod *= getBonusSpecialPlane(lbas,'bonusSpecialP',true);
 			} else if (equip.bonusSpecialP) {
 				for (let group in equip.bonusSpecialP) postMod *= equip.bonusSpecialP[group];
 			}
+			if (equip.bonusSpecialPSelf) postMod *= equip.bonusSpecialPSelf;
 		}
 		if (equip.type == SEAPLANE) {
 			postMod = 0;

@@ -712,7 +712,7 @@ ${t('results.buckets')}:	${this.results.bucketSunk}`;
 	methods: {
 		hasBonusMain: function() {
 			for (let key of ['ships','shipsEscort']) {
-				if (UI_MAIN.fleetFMain[key] && UI_MAIN.fleetFMain[key].find(ship => !FLEET_MODEL.shipIsEmpty(ship) && ship.bonusByNode[this.battle.id] && Object.values(ship.bonusByNode[this.battle.id]).find(v => v))) return true;
+				if (UI_MAIN.fleetFMain[key] && UI_MAIN.fleetFMain[key].find(ship => !FLEET_MODEL.shipIsEmpty(ship) && ((ship.bonusByNode[this.battle.id] && Object.values(ship.bonusByNode[this.battle.id]).find(v => v))) || this.getShipHasPlaneBonus(ship))) return true;
 			}
 			return false;
 		},
@@ -724,6 +724,9 @@ ${t('results.buckets')}:	${this.results.bucketSunk}`;
 		},
 		hasSpecialAttack: function() {
 			return COMMON.checkSpecialAttackUI(UI_MAIN,this.battle.formation);
+		},
+		getShipHasPlaneBonus: function(ship) {
+			return !!(ship.equips && ship.equips.find(equip => equip.bonusByNode && equip.bonusByNode[this.battle.id] && equip.bonusByNode[this.battle.id].bonusGroups));
 		},
 		
 		onclickDeleteBattle: function() {
@@ -807,6 +810,21 @@ var UI_BONUSEDITOR = Vue.createApp({
 		},
 		doClose: function() {
 			this.active = false;
+		},
+		
+		getShipHasPlane: function(ship) {
+			return !!ship.equips.find(equip => equip.mstId && EQTDATA[EQDATA[equip.mstId].type].isPlane);
+		},
+		getShipHasPlaneBonus: function(ship) {
+			return !!ship.equips.find(equip => equip.bonusByNode && equip.bonusByNode[this.nodeId] && equip.bonusByNode[this.nodeId].bonusGroups);
+		},
+		getShipHasPlaneBonusMapwide: function(ship) {
+			if (this.getShipHasPlaneBonus(ship)) return false;
+			return !!ship.equips.find(equip => equip.bonusGroups);
+		},
+		onclickPlaneBonus: function(ship) {
+			if (!this.getShipHasPlane(ship)) return;
+			COMMON.global.fleetEditorOpenPlaneBonus(ship,this.nodeId);
 		},
 	},
 }).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divBonusEditor');

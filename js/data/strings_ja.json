@@ -1,6 +1,10 @@
 {
 	"change_log": [
 		{
+			"date": "2024-07-22",
+			"txt": "艦載機特効設定(スロットごと)"
+		},
+		{
 			"date": "2024-07-10",
 			"txt": "共有リンク(TinyURL)生成機能と演算結果のスクリーンショットボタンの実装"
 		},
@@ -419,6 +423,9 @@
 	"bonus_acc_desc": "マップ全体で命中特効を付与します(倍率)",
 	"bonus_eva": "回避",
 	"bonus_eva_desc": "マップ全体で回避特効を付与します(倍率)",
+	"dmg": "ダメージ",
+	"acc": "命中",
+	"eva": "回避",
 	"debuff_dmg": "ボス特効",
 	"debuff_dmg_desc": "最終Nodeにおける敵旗艦へのダメージ特効(倍率)。特効ダメージに累積します。※敵旗艦への特効がインポートできない段階でのみ使用してください",
 	"slot_size": "搭載数",
@@ -451,7 +458,7 @@
 	"effective_los": "索敵値 (HQ120)",
 	"shell_power": "砲戦火力",
 	"nb_power": "夜戦火力",
-	"asw_power": "対潜",
+	"asw_power": "対潜攻撃力",
 	"can_oasw": "先制対潜",
 	"standard_accuracy": "命中",
 	"standard_accuracy_tooltip": "レベル、運、装備を加味した値",
@@ -638,6 +645,20 @@
 	"kc3kai_import_desc_4": "プロフィールタブに移動して{txt_b}を選択。",
 	"kc3kai_import_desc_4_b": "「Export basic profile to KC3 file」",
 	"kc3kai_import_desc_5": "ここにファイルをアップロード。",
+	
+	"plane_bonus_ship": "艦載機特効",
+	"plane_bonus_lbas": "基地特効",
+	"group_n_ship": "{0}群",
+	"group_n_lbas": "{0}",
+	"air_attacks_only": "航空攻撃のみ",
+	"air_attacks_only_tooltip": "開幕航空攻撃、砲戦(空母)、夜間航空攻撃、対潜(空母)",
+	"max_plane_bonus_ship": "艦載機特効総計",
+	"max_plane_bonus_lbas": "航空隊特効総計",
+	"max_total_bonus": "特効総計",
+	"plane_bonus_note_1_ship": "\u2022 スロットに艦載機が1機以上残っている場合に適用されます",
+	"plane_bonus_note_1_lbas": "\u2022 部隊の稼働機が1機以上残っている場合に適用されます",
+	"plane_bonus_note_2_ship": "\u2022 艦ごとに計算され、艦と艦載機の特効は累積します",
+	"plane_bonus_note_2_lbas": "\u2022 航空隊ごとに計算され、航空隊内の各部隊に一律で適用されます",
 	
 	"mechanic": {
 		"artillerySpotting": "弾着観測射撃",

@@ -164,15 +164,68 @@ COMMON.BONUS_MANAGER = {
 			if (obj.bonusEva) obj.bonusEva = Math.round(1e10*obj.bonusEva)/1e10;
 		}
 	},
+	_applyAutoBonusPresetPlaneEnd: function(ship,autoBonus,isFF,bonuses,nodeId,isLBAS) {
+		let groupNum = 1;
+		for (let bonus of bonuses) {
+			let didBonus = false;
+			for (let equip of ship.equips) {
+				if (bonus.requireEquipId && !bonus.requireEquipId.includes(equip.mstId)) continue;
+				if (bonus.requireEquipType && !bonus.requireEquipType.includes(EQDATA[equip.mstId].type)) continue;
+				
+				let equipObj = equip;
+				if (nodeId != -1 && !isFF) {
+					if (!equip.bonusByNode) equip.bonusByNode = {};
+					if (!equip.bonusByNode[nodeId]) equip.bonusByNode[nodeId] = {};
+					equipObj = equip.bonusByNode[nodeId];
+				}
+				if (!equipObj.bonusGroups) equipObj.bonusGroups = {};
+				
+				equipObj.bonusGroups[groupNum] = {
+					bonusDmg: bonus.dmg || 1,
+					bonusAcc: bonus.acc || 1,
+					bonusEva: bonus.eva || 1,
+					notAirOnly: !!bonus.notAirOnly,
+				};
+				if (autoBonus.accEvaType == 0 || autoBonus.accEvaType == 4) {
+					equipObj.bonusGroups[groupNum].bonusAcc = equipObj.bonusGroups[groupNum].bonusEva = 1;
+				}
+				if (autoBonus.accEvaType == 2) {
+					equipObj.bonusGroups[groupNum].bonusAcc = equipObj.bonusGroups[groupNum].bonusEva = equipObj.bonusGroups[groupNum].bonusDmg;
+				}
+				if (autoBonus.accEvaType == 3) {
+					equipObj.bonusGroups[groupNum].bonusAcc = equipObj.bonusGroups[groupNum].bonusEva = Math.round(1e10*(1+(equipObj.bonusGroups[groupNum].bonusDmg-1)/2))/1e10;
+				}
+				if (isLBAS) {
+					delete equipObj.bonusGroups[groupNum].bonusEva;
+					delete equipObj.bonusGroups[groupNum].notAirOnly;
+				}
+				if (bonus.perEquip) {
+					groupNum++;
+				}
+				didBonus = true;
+			}
+			if (!bonus.perEquip && didBonus) groupNum++;
+		}
+	},
 	_applyAutoBonusPreset: async function(ship,autoBonus,isFF) {
 		let result = await this.getPreset(autoBonus.key);
 		let data = result.data;
 		if (!data.listBonus) return;
 		let bonusesTotal = {};
 		let nodeIds = isFF ? [this._UI_MAIN.battles.at(-1).id] : [-1].concat(Object.keys(autoBonus.nodeToLetter));
+		
+		for (let equip of ship.equips) {
+			delete equip.bonusGroups;
+			if (equip.bonusByNode) {
+				for (let id in equip.bonusByNode) delete equip.bonusByNode[id].bonusGroups;
+			}
+		}
+		
 		for (let nodeId of nodeIds) {
 			let letter = autoBonus.nodeToLetter[nodeId];
 			if (!isFF && nodeId != -1 && !data.listBonus.find(item => (item.nodes && item.nodes.includes(letter)) || (item.nodesExclude && item.nodesExclude.includes(letter)))) continue;
+			
+			let bonusesPlane = [];
 			for (let item of data.listBonus) {
 				if (item.nodes && !item.nodes.includes(letter)) continue;
 				if (item.nodesExclude && item.nodesExclude.includes(letter)) continue;
@@ -182,6 +235,10 @@ COMMON.BONUS_MANAGER = {
 					if (bonus.shipClass && !bonus.shipClass.includes(SHIPDATA[ship.mstId].sclass)) continue;
 					if (bonus.shipBase && !bonus.shipBase.includes(window.getBaseId(ship.mstId))) continue;
 					if (bonus.shipId && !bonus.shipId.includes(ship.mstId)) continue;
+					if (bonus.isPlane) {
+						bonusesPlane.push(bonus);
+						continue;
+					}
 					let numBonus = 0;
 					if (bonus.requireEquipId) {
 						numBonus = ship.equips.filter((eq,i) => bonus.requireEquipId.includes(eq.mstId) && (!bonus.requireSlot || ship.slots[i])).length;
@@ -201,6 +258,9 @@ COMMON.BONUS_MANAGER = {
 						}
 					}
 				}
+			}
+			if (bonusesPlane.length) {
+				this._applyAutoBonusPresetPlaneEnd(ship,autoBonus,isFF,bonusesPlane,nodeId);
 			}
 		}
 		this._applyAutoBonusCommonEnd(ship,autoBonus,isFF,bonusesTotal);
@@ -274,12 +334,14 @@ COMMON.BONUS_MANAGER = {
 				if (FLEET_MODEL.equipIsEmpty(eq)) continue;
 				eq.bonusDmg = 1;
 				if (autoBonus.accEvaType == 1) eq.bonusAcc = 1;
+				delete eq.bonusGroups;
 			}
 			let letter = autoBonus.nodeToLetter[baseToNode[base.ind]];
+			let bonusesPlane = [];
 			for (let item of result.data.listBonusLBAS) {
 				if (item.nodes && !item.nodes.includes(letter)) continue;
 				if (item.nodesExclude && item.nodesExclude.includes(letter)) continue;
-				for (let bonus of item.bonuses) {
+				for (let bonus of item.bonuses.filter(b => !b.isPlane)) {
 					let equipsBonus = [];
 					if (bonus.requireEquipId) {
 						equipsBonus = equipsAll.filter((eq,i) => bonus.requireEquipId.includes(eq.mstId) && (!bonus.requireSlot || base.slots[i]));
@@ -298,6 +360,7 @@ COMMON.BONUS_MANAGER = {
 						}
 					}
 				}
+				this._applyAutoBonusPresetPlaneEnd(base,autoBonus,false,item.bonuses.filter(b => b.isPlane),-1,true);
 			}
 			for (let eq of equipsAll) {
 				eq.bonusDmg = Math.round(1e10*eq.bonusDmg)/1e10;

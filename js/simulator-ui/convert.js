@@ -6,7 +6,7 @@ var CONST = window.COMMON.getConst({});
 window.CONVERT = {
 	_fleetPropsSaved: ['type','formation'],
 	_shipPropsSaved: ['mstId','level','hp','hpInit','morale','fuelInit','ammoInit','statsBase','slots','bonusDmg','bonusAcc','bonusEva','bonusDmgDebuff','isFaraway','neverFCF'],
-	_equipPropsSaved: ['mstId','level','rank','bonusDmg','bonusAcc'],
+	_equipPropsSaved: ['mstId','level','rank','bonusDmg','bonusAcc','bonusGroups'],
 	
 	_UI_MAIN: null,
 	_dataKC3: null,
@@ -424,10 +424,6 @@ window.CONVERT = {
 				equips: [],
 			};
 			if (shipDb.lv > 0) shipSave.level = shipDb.lv;
-			let statsBase = {};
-			if (shipDb.luck > -1) statsBase.luk = shipDb.luck;
-			if (shipDb.hp && shipDb.hp > -1) statsBase.hp = shipDb.hp;
-			if (Object.keys(statsBase).length) shipSave.statsBase = statsBase;
 			let itemX = null;
 			for (let keyI in shipDb.items) {
 				let equipDb = shipDb.items[keyI];
@@ -445,6 +441,16 @@ window.CONVERT = {
 				}
 			}
 			if (itemX) shipSave.equips.push(itemX);
+			let statsBase = {};
+			if (shipDb.luck > -1) statsBase.luk = shipDb.luck;
+			if (shipDb.hp && shipDb.hp > -1) statsBase.hp = shipDb.hp;
+			if (shipDb.asw && shipDb.asw > -1) {
+				let eqs = shipSave.equips.filter(eq => !FLEET_MODEL.equipIsEmpty(eq));
+				let statsBonus = window.getBonusStats(shipSave.mstId,eqs.map(eq => eq.mstId),eqs.map(eq => eq.level || 0));
+				let asw = shipDb.asw - eqs.map(eq => EQDATA[eq.mstId].ASW || 0).reduce((a,b) => a+b,0) - (statsBonus.ASW || 0);
+				if (asw > -1) statsBase.asw = asw;
+			}
+			if (Object.keys(statsBase).length) shipSave.statsBase = statsBase;
 		}
 		return shipsSave;
 	},
@@ -518,8 +524,12 @@ window.CONVERT = {
 				let equipDb = shipsDb[k].items[kI] = { id: equipSave.mstId };
 				if (equipSave.level > 0) equipDb.rf = equipSave.level;
 				if (equipSave.rank > 0) equipDb.mas = equipSave.rank;
+				shipDb.asw += EQDATA[equipSave.mstId].ASW || 0;
 				if (kI == 'ix') break;
 			}
+			let eqs = shipSave.equips.filter(eq => !FLEET_MODEL.equipIsEmpty(eq));
+			let statsBonus = window.getBonusStats(shipSave.mstId,eqs.map(eq => eq.mstId),eqs.map(eq => eq.level || 0));
+			shipDb.asw += statsBonus.ASW || 0;
 		}
 		return shipsDb;
 	},
@@ -682,11 +692,25 @@ window.CONVERT = {
 			for (let i=0; i<shipUI.equips.length; i++) {
 				let equipUI = shipUI.equips[i];
 				if (FLEET_MODEL.equipIsEmpty(equipUI)) continue;
-				shipInput.equips.push({
+				let equipInput = {
 					masterId: equipUI.mstId,
 					improve: equipUI.level,
 					proficiency: equipUI.rank,
-				});
+				};
+				if (equipUI.bonusGroups) {
+					equipInput.bonusGroups = this._copyObj(equipUI.bonusGroups);
+				}
+				if (nodeIdToNum && equipUI.bonusByNode) {
+					let bonusesByNode = {};
+					for (let id in equipUI.bonusByNode) {
+						if (!nodeIdToNum[id]) continue;
+						if (equipUI.bonusByNode[id].bonusGroups) {
+							bonusesByNode[nodeIdToNum[id]] = { bonusGroups: this._copyObj(equipUI.bonusByNode[id].bonusGroups) };
+						}
+					}
+					if (Object.keys(bonusesByNode).length) equipInput.bonusesByNode = bonusesByNode;
+				}
+				shipInput.equips.push(equipInput);
 				shipInput.stats.SLOTS.push(shipUI.slots[i] || 0);
 			}
 			
@@ -752,6 +776,7 @@ window.CONVERT = {
 					bonuses.bonusAcc = equipUI.bonusAcc;
 				}
 				if (Object.keys(bonuses).length) equipInput.bonuses = bonuses;
+				if (equipUI.bonusGroups) equipInput.bonusGroups = this._copyObj(equipUI.bonusGroups);
 				baseInput.equips.push(equipInput);
 				baseInput.slots.push(baseUI.slots[i]);
 			}
@@ -872,22 +897,33 @@ window.CONVERT = {
 	},
 	
 	
+	_uiToSaveBonusByNode: function(objUI) {
+		let bonusByNode = {};
+		let nodeIds = this._UI_MAIN.battles.map(b => b.id);
+		for (let nodeId in objUI.bonusByNode) {
+			if (!nodeIds.includes(+nodeId)) continue;
+			if (!Object.values(objUI.bonusByNode[nodeId]).find(v => v)) continue;
+			bonusByNode[nodeId] = this._copyObj(objUI.bonusByNode[nodeId]);
+		}
+		return bonusByNode;
+	},
 	uiToSaveEquip: function(equipUI) {
 		if (equipUI.mstId <= 0) return null;
-		return this._copyObj(equipUI,this._equipPropsSaved);
+		let equipSave = this._copyObj(equipUI,this._equipPropsSaved);
+		
+		if (equipUI.bonusByNode) {
+			let bonusByNode = this._uiToSaveBonusByNode(equipUI);
+			if (Object.keys(bonusByNode).length) equipSave.bonusByNode = bonusByNode;
+		}
+		
+		return equipSave;
 	},
 	uiToSaveShip: function(shipUI) {
 		if (!shipUI.active) return null;
 		if (shipUI.mstId <= 0) return null;
 		let shipSave = this._copyObj(shipUI,this._shipPropsSaved);
 		
-		let bonusByNode = {};
-		let nodeIds = this._UI_MAIN.battles.map(b => b.id);
-		for (let nodeId in shipUI.bonusByNode) {
-			if (!nodeIds.includes(+nodeId)) continue;
-			if (!Object.values(shipUI.bonusByNode[nodeId]).find(v => v)) continue;
-			bonusByNode[nodeId] = this._copyObj(shipUI.bonusByNode[nodeId]);
-		}
+		let bonusByNode = this._uiToSaveBonusByNode(shipUI);
 		if (Object.keys(bonusByNode).length) shipSave.bonusByNode = bonusByNode;
 		
 		if (shipUI.equips) {

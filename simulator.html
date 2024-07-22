@@ -388,14 +388,14 @@
 		<div id="divSimStats">
 			<i18n-t keypath="simulate_n_times_and_show_stats" scope="global"><template v-slot:inp_num><input type="number" min="1" :max="numSimMax" v-model="numSim" /></template></i18n-t>:
 			<div id="divSimStatsButtons">
-				<input type="button" :value="$t('go')" :disabled="!canSim" @click="onclickGo"/>
+				<input type="button" :value="'&#9654; ' + $t('go')" :disabled="!canSim" @click="onclickGo"/>
 				<input type="button" :value="$t('clear')" v-show="results.active&&canSim" @click="onclickClear"/>
 			</div>
 		</div>
 		<div id="divResultsOuter">
 			<div style="display:flex;gap:10px" v-show="!canSim">
 				<div class="progressBarOuter"><div class="progressBarInner" :style="{width:simProgressPercent+'%'}"></div></div>
-				<div><input type="button" :value="$t('stop')" v-show="!canSim" :disabled="canSim" @click="onclickCancel"/></div>
+				<div><input type="button" :value="'&#9724; ' + $t('stop')" v-show="!canSim" :disabled="canSim" @click="onclickCancel"/></div>
 				<div>({{simProgressNum}}/{{simProgressTotal}})</div>
 			</div>
 			<div id="divResultsErrors">
@@ -833,6 +833,10 @@
 							<div class="statWide" v-show="fleet.isFriend"><span class="statDebuff" :title="$t('debuff_dmg_desc')"><i18n-t keypath="debuff_dmg" scope="global">
 								<template v-slot:br><br></template>
 							</i18n-t>:</span><input type="number" v-model.number="ship.bonusDmgDebuff" min="0" max="99" step="any" @change="onchangeStat($event,ship,'bonusDmgDebuff',1)"/></div>
+							<div class="statWide">
+								<input type="button" :value="$t('plane_bonus_ship')" :disabled="!getShipHasPlane(ship)" @click="onclickPlaneBonus(ship)"/>&nbsp;
+								<div v-show="getShipHasPlaneBonus(ship)" class="bonusMarker plane">&#11044;</div>
+							</div>
 						</div>
 						
 						<div class="equipWrap">
@@ -958,6 +962,10 @@
 							</i18n-t>:</span><input type="number" v-model.number="equip.bonusAcc" min="0" max="99" step="any" :disabled="!equip.mstId" @change="onchangeStat($event,equip,'bonusAcc',1)"/></div>
 							</div></div>
 						</div>
+					</div>
+					<div style="display:flex;gap:5px">
+						<input type="button" :value="$t('plane_bonus_lbas')" :disabled="!getBaseHasPlane(base)" @click="onclickPlaneBonus(base)"/>
+						<span v-show="getBaseHasPlaneBonus(base)" class="bonusMarker plane">&#11044;</span>
 					</div>
 				</div>
 			</div>
@@ -1100,6 +1108,13 @@
 										<template v-slot:br><br></template>
 									</i18n-t>:</span></td>
 									<td><input type="number" min="0" max="99" step="any" v-model.number="ship.bonusDmgDebuff"/></td>
+								</tr>
+								<tr>
+									<td colspan="2"><div style="display:flex;gap:5px">
+										<input type="button" :value="$t('plane_bonus_ship')" :disabled="!getShipHasPlane(ship)" @click="onclickPlaneBonus(ship)"/>
+										<span v-show="getShipHasPlaneBonusMapwide(ship)" class="bonusMarker plane overridable">&#11044;</span>
+										<span v-show="getShipHasPlaneBonus(ship)" class="bonusMarker plane">&#11044;</span>
+									</div></td>
 								</tr>
 								</table>
 							</div>
@@ -1544,6 +1559,66 @@
 		</div>
 		</vmodal>
 	</div></div>
+	
+	<div id="divPlaneBonus"><div v-show="active">
+		<vmodal :active="active" @vclose="canClose&&doClose()">
+		<div id="divPlaneBonusMain" v-if="ship">
+			<div id="divPlaneBonusNotes">
+				<div v-show="!isLBAS">{{$t('plane_bonus_note_1_ship')}}</div>
+				<div v-show="isLBAS">{{$t('plane_bonus_note_1_lbas')}}</div>
+				<div v-show="!isLBAS">{{$t('plane_bonus_note_2_ship')}}</div>
+				<div v-show="isLBAS">{{$t('plane_bonus_note_2_lbas')}}</div>
+			</div>
+			<table>
+			<tr>
+				<th colspan="2"><div style="width:125px"></div></th>
+				<th v-for="n in groups.length" v-if="!isLBAS">{{$t('group_n_ship',[n])}}</th>
+				<th v-for="n in groups.length" v-if="isLBAS">{{$t('group_n_lbas',[n])}}</th>
+			</tr>
+			<tr>
+				<th colspan="2" class="bonusHeader">{{$t('bonus_dmg')}}:</th>
+				<td v-for="group in groups"><input type="number" v-model.number="group.bonusDmg" min="0" max="99" step=".01"/></td>
+			</tr>
+			<tr>
+				<th colspan="2" class="bonusHeader">{{$t('bonus_acc')}}:</th>
+				<td v-for="group in groups"><input type="number" v-model.number="group.bonusAcc" min="0" max="99" step=".01"/></td>
+			</tr>
+			<tr v-show="!isLBAS">
+				<th colspan="2" class="bonusHeader">{{$t('bonus_eva')}}:</th>
+				<td v-for="group in groups"><input type="number" v-model.number="group.bonusEva" min="0" max="99" step=".01"/></td>
+			</tr>
+			<tr v-show="!isLBAS">
+				<th colspan="2" class="bonusHeader"><span class="tooltip" :title="$t('air_attacks_only_tooltip')">{{$t('air_attacks_only')}}</span>:</th>
+				<td v-for="group in groups"><input type="checkbox" v-model="group.airOnly"/></td>
+			</tr>
+			<tr style="height:10px"></tr>
+			<tr v-for="n in equips.length">
+				<th><div class="equipHeader">
+					<img class="equipIcon" src="assets/items/0.png" />
+					<img class="equipIcon top" :src="'assets/items/' + equips[n-1].imgName + '.png'"/>
+				</div></th>
+				<th class="equipName">{{$t('equip_name_'+(equips[n-1].name||'0'))}}</th>
+				<td v-for="group in groups"><input type="checkbox" v-model="group.equipIdx[n-1]"/></td>
+			</tr>
+			</table>
+			<div id="divPlaneBonusTotals">
+				<div><table>
+				<tr><th></th><th><span v-show="!isLBAS">{{$t('max_plane_bonus_ship')}}</span><span v-show="isLBAS">{{$t('max_plane_bonus_lbas')}}</span></th><th v-show="!isLBAS">{{$t('max_total_bonus')}}</th></tr>
+				<tr><th>{{$t('dmg')}}:</th><td>{{getBonusTotal('bonusDmg')}}</td><td v-show="!isLBAS">{{getBonusTotalShip('bonusDmg')}}</td></tr>
+				<tr><th>{{$t('acc')}}:</th><td>{{getBonusTotal('bonusAcc')}}</td><td v-show="!isLBAS">{{getBonusTotalShip('bonusAcc')}}</td></tr>
+				<tr v-show="!isLBAS"><th>{{$t('eva')}}:</th><td>{{getBonusTotal('bonusEva')}}</td><td>{{getBonusTotalShip('bonusEva')}}</td></tr>
+				</table></div>
+				<div><table v-if="isLBAS && hasBonusOnEquip">
+				<tr><th :colspan="this.ship.equips.length">{{$t('max_total_bonus')}}</th></tr>
+				<tr><th v-for="equip in this.ship.equips" class="equipName" v-show="equip.mstId">{{$t('equip_name_'+(equip.name||'0'))}}</th></tr>
+				<tr><td v-for="equip in this.ship.equips" v-show="equip.mstId">{{getBonusTotalEquip('bonusDmg',equip)}}</td></tr>
+				<tr><td v-for="equip in this.ship.equips" v-show="equip.mstId">{{getBonusTotalEquip('bonusAcc',equip)}}</td></tr>
+				</table></div>
+			</div>
+		</div>
+		</vmodal>
+	</div></div>
+	
 	
 	<template id="tmpModal">
 		<div class="overlayDark" tabindex="1" @focus.prevent="focusContentTop" @click="$emit('vclose')"></div>
