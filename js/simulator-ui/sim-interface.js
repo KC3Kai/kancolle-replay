@@ -253,6 +253,40 @@ var SIM = {
 			}
 		}
 	},
+	_setBonusesPlane: function(shipSim,battleNum) {
+		shipSim.bonusSpecialPNotAirOnly = null;
+		let bonusSpecialPNotAirOnly = {};
+		for (let equipSim of shipSim.equips) {
+			equipSim.bonusSpecialP = equipSim.bonusSpecialAccP = equipSim.bonusSpecialEvaP = null;
+			if (equipSim._bonusPByNode[battleNum] === undefined) {
+				let bonusGroups = equipSim._dataOrig.bonusGroups;
+				if (equipSim._dataOrig.bonusesByNode && equipSim._dataOrig.bonusesByNode[battleNum] && equipSim._dataOrig.bonusesByNode[battleNum].bonusGroups) {
+					bonusGroups = equipSim._dataOrig.bonusesByNode[battleNum].bonusGroups;
+				}
+				if (!bonusGroups) {
+					equipSim._bonusPByNode[battleNum] = null;
+				} else {
+					equipSim._bonusPByNode[battleNum] = { bonusSpecialP: {}, bonusSpecialAccP: {}, bonusSpecialEvaP: {}, bonusSpecialPNotAirOnly: {} };
+					for (let group in bonusGroups) {
+						if (bonusGroups[group].bonusDmg && bonusGroups[group].bonusDmg != 1) equipSim._bonusPByNode[battleNum].bonusSpecialP[group] = bonusGroups[group].bonusDmg;
+						if (bonusGroups[group].bonusAcc && bonusGroups[group].bonusAcc != 1) equipSim._bonusPByNode[battleNum].bonusSpecialAccP[group] = bonusGroups[group].bonusAcc;
+						if (bonusGroups[group].bonusEva && bonusGroups[group].bonusEva != 1) equipSim._bonusPByNode[battleNum].bonusSpecialEvaP[group] = bonusGroups[group].bonusEva;
+						if (bonusGroups[group].notAirOnly) equipSim._bonusPByNode[battleNum].bonusSpecialPNotAirOnly[group] = true;
+					}
+					if (!Object.keys(equipSim._bonusPByNode[battleNum].bonusSpecialP).length) equipSim._bonusPByNode[battleNum].bonusSpecialP = null;
+					if (!Object.keys(equipSim._bonusPByNode[battleNum].bonusSpecialAccP).length) equipSim._bonusPByNode[battleNum].bonusSpecialAccP = null;
+					if (!Object.keys(equipSim._bonusPByNode[battleNum].bonusSpecialEvaP).length) equipSim._bonusPByNode[battleNum].bonusSpecialEvaP = null;
+				}
+			}
+			if (equipSim._bonusPByNode[battleNum]) {
+				equipSim.bonusSpecialP = equipSim._bonusPByNode[battleNum].bonusSpecialP;
+				equipSim.bonusSpecialAccP = equipSim._bonusPByNode[battleNum].bonusSpecialAccP;
+				equipSim.bonusSpecialEvaP = equipSim._bonusPByNode[battleNum].bonusSpecialEvaP;
+				for (let group in equipSim._bonusPByNode[battleNum].bonusSpecialPNotAirOnly) bonusSpecialPNotAirOnly[group] = true;
+			}
+		}
+		if (Object.keys(bonusSpecialPNotAirOnly).length) shipSim.bonusSpecialPNotAirOnly = bonusSpecialPNotAirOnly;
+	},
 	
 	
 	
@@ -357,6 +391,20 @@ var SIM = {
 			this._setBonuses(shipSim,shipInput.bonuses);
 			
 			shipSim._dataOrig = shipInput;
+			for (let equipInput of shipInput.equips) {
+				for (let equipSim of shipSim.equips) {
+					if (equipSim._dataOrig) continue;
+					if (equipSim.mid == equipInput.masterId) {
+						equipSim._dataOrig = equipInput;
+						break;
+					}
+				}
+			}
+			for (let equipSim of shipSim.equips) {
+				equipSim._bonusPByNode = {};
+			}
+			
+			this._setBonusesPlane(shipSim,1);
 			
 			shipsSim.push(shipSim);
 		}
@@ -401,9 +449,20 @@ var SIM = {
 						}
 						for (let i=0; i<baseSim.equips.length; i++) {
 							let bonuses = baseInput.equips[i].bonuses;
-							if (!bonuses) continue;
-							if (bonuses.bonusDmg) baseSim.equips[i].bonusSpecialP = { 1: bonuses.bonusDmg };
-							if (bonuses.bonusAcc) baseSim.equips[i].bonusSpecialAccP = { 1: bonuses.bonusAcc };
+							if (bonuses) {
+								if (bonuses.bonusDmg) baseSim.equips[i].bonusSpecialPSelf = bonuses.bonusDmg;
+								if (bonuses.bonusAcc) baseSim.equips[i].bonusSpecialAccPSelf = bonuses.bonusAcc;
+							}
+							let bonusGroups = baseInput.equips[i].bonusGroups;
+							if (bonusGroups) {
+								for (let eq of baseSim.equips) eq.bonusSpecialPUseAll = true;
+								baseSim.equips[i].bonusSpecialP = {};
+								baseSim.equips[i].bonusSpecialAccP = {};
+								for (let group in bonusGroups) {
+									if (bonusGroups[group].bonusDmg && bonusGroups[group].bonusDmg != 1) baseSim.equips[i].bonusSpecialP[group] = bonusGroups[group].bonusDmg;
+									if (bonusGroups[group].bonusAcc && bonusGroups[group].bonusAcc != 1) baseSim.equips[i].bonusSpecialAccP[group] = bonusGroups[group].bonusAcc;
+								}
+							}
 						}
 					}
 				}
@@ -744,6 +803,8 @@ var SIM = {
 				}
 				let bonusDebuff = isBossNode ? ship._dataOrig.bonusesDebuff : null;
 				this._setBonuses(ship,bonus,bonusDebuff,isBossNode && shipBossFlag.mid);
+				
+				this._setBonusesPlane(ship,battleInd+1);
 			}
 			
 			if (node.addCostFuel || node.addCostAmmo) {
