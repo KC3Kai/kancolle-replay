@@ -1222,6 +1222,7 @@ function canSpecialAttackUnique(ship,isNB,isCheck) {
 		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[1].type) == -1) return false;
 		if (ship.fleet.ships[1].HP/ship.fleet.ships[1].maxHP <= .25) return false;
 		if (isCheck) return true;
+		if (ship.fleet.combineType == 1 && ship.fleet.battleType == '12v6') return false;
 		let rate = (ship.attackSpecial == 101)? SIMCONSTS.nagatoSpecialRate : SIMCONSTS.mutsuSpecialRate;
 		if (Math.random() < rate/100) {
 			ship.fleet.didSpecial = 1;
@@ -1265,9 +1266,7 @@ function canSpecialAttackUnique(ship,isNB,isCheck) {
 		if (isCheck) return true;
 		let rate = SIMCONSTS.kongouSpecialRate;
 		if (!rate) {
-			rate = 45;
-			if (ship.equips.find(eq => eq.type == RADARL && eq.LOS >= 8)) rate += ([591,593,954].includes(ship.mid))? 35 : 10;
-			if (ship.equiptypes[SEARCHLIGHTL]) rate += (ship.mid == 592)? 35 : 10;
+			rate = 0;
 		}
 		if (Math.random() < rate/100) {
 			if (MECHANICS.kongouSpecialBuff) {

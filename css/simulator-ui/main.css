@@ -582,10 +582,18 @@ div.navButton:hover {
 	color: blue;
 	background-color: #afdaff;
 }
+div.navButton.sub {
+	font-size: 16px;
+	padding: 10px;
+}
+div.navDropdown {
+	position: absolute;
+	background-color: #dcdcdc;
+}
 div.scrollAnchor {
 	position: relative;
 }
 div.scrollAnchor > div {
 	position: absolute;
-	top: -20px;
+	top: -30px;
 }

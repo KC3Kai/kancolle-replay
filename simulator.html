@@ -29,9 +29,30 @@
 		<div id="divNavBar" :style="{'pointer-events':isDragging?'none':''}">
 			<div><span class="title" :title="$t('kancolle_sortie_simulator_sub')">KanColle Sortie Simulator</span></div>
 			<div id="divNavButtons">
-				<div class="navButton" @click="onclickNavButton('divPlayerScroll')">{{$t('fleets')}}</div>
-				<div class="navButton" @click="onclickNavButton('divBattlesScroll')">{{$t('battles')}}</div>
-				<div class="navButton" @click="onclickNavButton('divSettingsScroll')">{{$t('settings')}}</div>
+				<div @mouseover="showDropdownPlayer=true" @mouseout="showDropdownPlayer=false">
+					<div class="navButton" @click="onclickNavButton('divPlayerScroll')">{{$t('fleets')}}</div>
+					<div v-show="showDropdownPlayer" class="navDropdown">
+						<div class="navButton sub" @click="onclickNavButton('divPlayerMainScroll')">{{$t('main_fleet')}}</div>
+						<div class="navButton sub" @click="onclickNavButton('divPlayerSupportNScroll')">{{$t('support_fleet_normal')}}</div>
+						<div class="navButton sub" @click="onclickNavButton('divPlayerSupportBScroll')">{{$t('support_fleet_boss')}}</div>
+						<div class="navButton sub" @click="onclickNavButton('divPlayerLBASScroll')">{{$t('lbas')}}</div>
+						<div class="navButton sub" @click="onclickNavButton('divPlayerFFScroll')">{{$t('friend_fleet')}}</div>
+					</div>
+				</div>
+				<div @mouseover="showDropdownBattles=true" @mouseout="showDropdownBattles=false">
+					<div class="navButton" @click="onclickNavButton('divBattlesScroll')">{{$t('battles')}}</div>
+					<div v-show="showDropdownBattles" class="navDropdown">
+						<div class="navButton sub" v-for="n in battles.length" @click="onclickNavButton('divBattlesNodeScroll',n-1)">{{$t('node_n',[n])}}</div>
+					</div>
+				</div>
+				<div @mouseover="showDropdownSettings=true" @mouseout="showDropdownSettings=false">
+					<div class="navButton" @click="onclickNavButton('divSettingsScroll')">{{$t('settings')}}</div>
+					<div v-show="showDropdownSettings" class="navDropdown">
+						<div class="navButton sub" @click="onclickNavButton('divSettingsHistoricalScroll')">{{$t('historical_bonus')}}</div>
+						<div class="navButton sub" @click="onclickNavButton('divSettingsMechanicsScroll')">{{$t('mechanics')}}</div>
+						<div class="navButton sub" @click="onclickNavButton('divSettingsAdvancedScroll')">{{$t('show_advanced')}}</div>
+					</div>
+				</div>
 				<div class="navButton" @click="onclickNavButton('divSimulationScroll')">{{$t('simulation')}}</div>
 			</div>
 			<div id="divNavSimShortcut">
@@ -51,17 +72,21 @@
 			</div>
 			<h2>{{$t('fleets')}}</h2>
 			<div class="fleetSection">
+				<div class="scrollAnchor"><div ref="divPlayerMainScroll"></div></div>
 				<vfleet :fleet="fleetFMain" :fleetname="$t('main_fleet')"></vfleet>
 			</div>
 			<div class="fleetSection">
+				<div class="scrollAnchor"><div ref="divPlayerSupportNScroll"></div></div>
 				<vfleet :fleet="fleetFSupportN" :fleetname="$t('support_fleet_normal')"></vfleet>
 				<label><input type="checkbox" v-model="useSupportN"/> {{$t('use_normal_support')}}</label>
 			</div>
 			<div class="fleetSection">
+				<div class="scrollAnchor"><div ref="divPlayerSupportBScroll"></div></div>
 				<vfleet :fleet="fleetFSupportB" :fleetname="$t('support_fleet_boss')"></vfleet>
 				<label><input type="checkbox" v-model="useSupportB"/> {{$t('use_boss_support')}}</label>
 			</div>
 			<div class="fleetSection">
+				<div class="scrollAnchor"><div ref="divPlayerLBASScroll"></div></div>
 				<div class="fleet lbas">
 					<div class="preview" @click="lbExpanded=!lbExpanded">
 						<div class="header" ref="header">
@@ -83,6 +108,7 @@
 				</div>
 			</div>
 			<div class="fleetSection">
+				<div class="scrollAnchor"><div ref="divPlayerFFScroll"></div></div>
 				<vfleetcomps :comps="fleetsFFriend" :fleetname="$t('friend_fleet')" canimportkcnav="1" isfriendfleet="1"></vfleetcomps>
 				<label><input type="checkbox" v-model="useFF"/> {{$t('use_friend_fleet')}}</label>
 			</div>
@@ -96,6 +122,7 @@
 				<input type="button" :value="$t('insert_node')" @click="onclickInsertBattle(0)" />
 			</div>
 			<div v-for="battle in battles" :key="battle.id">
+				<div class="scrollAnchor"><div ref="divBattlesNodeScroll"></div></div>
 				<vbattle :battle="battle" :candelete="canDeleteBattles" :isboss="battle.ind==battles.length-1"></vbattle>
 				<div class="battleNext">
 					<input type="button" :value="$t('insert_node')" @click="onclickInsertBattle(battle.ind+1)" />
@@ -120,6 +147,21 @@
 				</i18n-t></label></div>
 			</div>
 			<div>
+				<div><img src="assets/stats/bucket.png" />: <i18n-t keypath="bucket_count_use" scope="global">
+					<template v-slot:inp_hp><input type="number" min="0" max="100" v-model="settings.bucketPercent" :class="getClassSetting('bucketPercent')"/></template>
+					<template v-slot:inp_time><input type="number" min="0" max="100" v-model="settings.bucketTime" :class="getClassSetting('bucketTime')"/></template>
+				</i18n-t></div>
+				<div style="margin-left:26px"><i18n-t keypath="bucket_do_not_count_use" scope="global">
+					<template v-slot:inp_time><input type="number" min="0" max="100" v-model="settings.bucketTimeIgnore" :class="getClassSetting('bucketTimeIgnore')"/></template>
+				</i18n-t></div>
+				<div><label><input type="checkbox" v-model="settings.carryOverHP" /><i18n-t keypath="carry_over_ship_hp" scope="global"><template v-slot:img_bucket><img src="assets/stats/bucket.png" /></template></i18n-t></label></div>
+				<div><label><input type="checkbox" v-model="settings.carryOverMorale" />{{$t('carry_over_ship_morale')}}</label></div>
+			</div>
+			<div>
+				<label><input type="checkbox" v-model="settings.airRaidCostW6" /> {{$t('use_default_w6_air_raid')}} (4% <img src="assets/stats/fuel.png" /> 8% <img src="assets/stats/ammo.png" />)</label>
+			</div>
+			<div>
+				<div class="scrollAnchor"><div ref="divSettingsHistoricalScroll"></div></div>
 				<div><span class="subheader">{{$t('historical_bonus')}}:</span></div>
 				<div>
 					<input type="button" :value="$t('auto_set_bonus')" @click="onclickAutoBonus"/>
@@ -130,6 +172,7 @@
 				</div>
 			</div>
 			<div id="divSettingsMechanics">
+				<div class="scrollAnchor"><div ref="divSettingsMechanicsScroll"></div></div>
 				<div class="collapseButton" @click="showMechanics=!showMechanics">
 					<div><span class="subheader">{{$t('mechanics')}}:</span></div>
 					<div>
@@ -152,21 +195,8 @@
 					</table>
 				</div>
 			</div>
-			<div>
-				<label><input type="checkbox" v-model="settings.airRaidCostW6" /> {{$t('use_default_w6_air_raid')}} (4% <img src="assets/stats/fuel.png" /> 8% <img src="assets/stats/ammo.png" />)</label>
-			</div>
-			<div>
-				<div><img src="assets/stats/bucket.png" />: <i18n-t keypath="bucket_count_use" scope="global">
-					<template v-slot:inp_hp><input type="number" min="0" max="100" v-model="settings.bucketPercent" :class="getClassSetting('bucketPercent')"/></template>
-					<template v-slot:inp_time><input type="number" min="0" max="100" v-model="settings.bucketTime" :class="getClassSetting('bucketTime')"/></template>
-				</i18n-t></div>
-				<div style="margin-left:26px"><i18n-t keypath="bucket_do_not_count_use" scope="global">
-					<template v-slot:inp_time><input type="number" min="0" max="100" v-model="settings.bucketTimeIgnore" :class="getClassSetting('bucketTimeIgnore')"/></template>
-				</i18n-t></div>
-				<div><label><input type="checkbox" v-model="settings.carryOverHP" /><i18n-t keypath="carry_over_ship_hp" scope="global"><template v-slot:img_bucket><img src="assets/stats/bucket.png" /></template></i18n-t></label></div>
-				<div><label><input type="checkbox" v-model="settings.carryOverMorale" />{{$t('carry_over_ship_morale')}}</label></div>
-			</div>
 			<div id="divSettingsAdvanced">
+				<div class="scrollAnchor"><div ref="divSettingsAdvancedScroll"></div></div>
 				<div class="collapseButton" @click="settings.showAdvanced=!settings.showAdvanced">
 					<div><span class="subheader">{{$t('show_advanced')}}:</span></div>
 					<div>
@@ -227,14 +257,45 @@
 					<div>
 						<span class="subheader">{{$t('special_attack_activation_rate')}}:</span>
 						<table>
-						<tr><td>{{$t('nelson_touch')}}:</td><td><input type="number" min="0" max="100" v-model="settings.nelsonTouchRate" :class="getClassSetting('nelsonTouchRate')"/>%</td></tr>
-						<tr><td>{{$t('nagato_special')}}:</td><td><input type="number" min="0" max="100" v-model="settings.nagatoSpecialRate" :class="getClassSetting('nagatoSpecialRate')"/>%</td></tr>
-						<tr><td>{{$t('mutsu_special')}}:</td><td><input type="number" min="0" max="100" v-model="settings.mutsuSpecialRate" :class="getClassSetting('mutsuSpecialRate')"/>%</td></tr>
-						<tr><td>{{$t('colorado_special')}}:</td><td><input type="number" min="0" max="100" v-model="settings.coloradoSpecialRate" :class="getClassSetting('coloradoSpecialRate')"/>%</td></tr>
-						<tr><td>{{$t('kongou_special')}}:</td><td><input type="number" min="0" max="100" v-model="settings.kongouSpecialRate" :class="getClassSetting('kongouSpecialRate')"/>%</td></tr>
-						<tr><td>{{$t('yamato_special_3')}}:</td><td><input type="number" min="0" max="100" v-model="settings.yamatoSpecial3Rate" :class="getClassSetting('yamatoSpecial3Rate')"/>%</td></tr>
-						<tr><td>{{$t('yamato_special_2')}}:</td><td><input type="number" min="0" max="100" v-model="settings.yamatoSpecial2Rate" :class="getClassSetting('yamatoSpecial2Rate')"/>%</td></tr>
-						<tr><td>{{$t('submarine_special')}}:</td><td><input type="number" min="0" max="100" v-model="settings.subFleetAttackRate" :class="getClassSetting('subFleetAttackRate')"/>%</td></tr>
+						<tr>
+							<td>{{$t('nelson_touch')}}:</td><td><input type="number" min="0" max="100" v-model="settings.nelsonTouchRate" :class="getClassSetting('nelsonTouchRate')" :disabled="settings.nelsonTouchUseFormula"/>%</td>
+							<td><label><input type="checkbox" v-model="settings.nelsonTouchUseFormula"/> <i18n-t keypath="use_provisional_link" scope="global">
+								<template v-slot:link><a href="https://twitter.com/Xe_UCH/status/1398930917184270337">{{$t('formula')}}</a></template>
+							</i18n-t>: {{getNelsonTouchFormula()}}%</label></td>
+						</tr>
+						<tr>
+							<td>{{$t('nagato_special')}}:</td><td><input type="number" min="0" max="100" v-model="settings.nagatoSpecialRate" :class="getClassSetting('nagatoSpecialRate')" :disabled="settings.nagatoSpecialUseFormula"/>%</td>
+							<td><label><input type="checkbox" v-model="settings.nagatoSpecialUseFormula"/> <i18n-t keypath="use_provisional_link" scope="global">
+								<template v-slot:link><a href="https://twitter.com/kanprint/status/1490311067742142467">{{$t('formula')}}</a></template>
+							</i18n-t>: {{getNagatoSpecialFormula()}}%</label></td>
+						</tr>
+						<tr>
+							<td>{{$t('mutsu_special')}}:</td><td><input type="number" min="0" max="100" v-model="settings.mutsuSpecialRate" :class="getClassSetting('mutsuSpecialRate')" :disabled="settings.mutsuSpecialUseFormula"/>%</td>
+							<td><label><input type="checkbox" v-model="settings.mutsuSpecialUseFormula"/> <i18n-t keypath="use_provisional_link" scope="global">
+								<template v-slot:link><a href="https://twitter.com/kanprint/status/1490311067742142467">{{$t('formula')}}</a></template>
+							</i18n-t>: {{getNagatoSpecialFormula()}}%</label></td>
+						</tr>
+						<tr>
+							<td>{{$t('colorado_special')}}:</td><td><input type="number" min="0" max="100" v-model="settings.coloradoSpecialRate" :class="getClassSetting('coloradoSpecialRate')"/>%</td>
+						</tr>
+						<tr>
+							<td>{{$t('kongou_special')}}:</td><td><input type="number" min="0" max="100" v-model="settings.kongouSpecialRate" :class="getClassSetting('kongouSpecialRate')" :disabled="settings.kongouSpecialUseFormula"/>%</td>
+							<td><label><input type="checkbox" v-model="settings.kongouSpecialUseFormula"/> <i18n-t keypath="use_provisional_link" scope="global">
+								<template v-slot:link><a href="https://github.com/madonoharu/fleethub/blob/f8eedd47d1cde63ffdb740a1454f509eeea0be20/crates/fleethub-core/src/attack/fleet_cutin.rs#L608">{{$t('formula')}}</a></template>
+							</i18n-t>: {{getKongouSpecialFormula()}}%</label></td>
+						</tr>
+						<tr>
+							<td>{{$t('yamato_special_3')}}:</td><td><input type="number" min="0" max="100" v-model="settings.yamatoSpecial3Rate" :class="getClassSetting('yamatoSpecial3Rate')"/>%</td>
+						</tr>
+						<tr>
+							<td>{{$t('yamato_special_2')}}:</td><td><input type="number" min="0" max="100" v-model="settings.yamatoSpecial2Rate" :class="getClassSetting('yamatoSpecial2Rate')" :disabled="settings.yamatoSpecial2UseFormula"/>%</td>
+							<td><label><input type="checkbox" v-model="settings.yamatoSpecial2UseFormula"/> <i18n-t keypath="use_provisional_link" scope="global">
+								<template v-slot:link><a href="https://en.kancollewiki.net/Special_Attacks#Yamato-class_2-Ship_Special_Attack">{{$t('formula')}}</a></template>
+							</i18n-t>: {{getYamatoSpecial2Formula()}}%</label></td>
+						</tr>
+						<tr>
+							<td>{{$t('submarine_special')}}:</td><td><input type="number" min="0" max="100" v-model="settings.subFleetAttackRate" :class="getClassSetting('subFleetAttackRate')"/>%</td>
+						</tr>
 						</table>
 					</div>
 					<div>

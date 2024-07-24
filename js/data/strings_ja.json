@@ -259,6 +259,7 @@
 	"smoke_level": "煙幕レベル",
 	"activation_rate": "発動率",
 	"use_provisional_link": "{link}を使用する",
+	"formula": "暫定計算式",
 	"activation_formula": "暫定計算式",
 	"shelling_accuracy_multiplier": "砲撃命中率",
 	"player_no_radar": "自艦隊(電探なし)",
