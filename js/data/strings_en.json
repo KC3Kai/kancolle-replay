@@ -259,6 +259,7 @@
 	"smoke_level": "Smoke Level",
 	"activation_rate": "Activation Rate",
 	"use_provisional_link": "Use provisional {link}",
+	"formula": "formula",
 	"activation_formula": "activation rate formula",
 	"shelling_accuracy_multiplier": "Shelling Accuracy Multiplier",
 	"player_no_radar": "Player (No Radar)",

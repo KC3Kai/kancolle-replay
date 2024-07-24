@@ -93,6 +93,11 @@ var UI_MAIN = Vue.createApp({
 			yamatoSpecial3Rate: SIMCONSTS.yamatoSpecial3Rate,
 			yamatoSpecial2Rate: SIMCONSTS.yamatoSpecial2Rate,
 			subFleetAttackRate: SIMCONSTS.subFleetAttackRate,
+			nelsonTouchUseFormula: false,
+			nagatoSpecialUseFormula: false,
+			mutsuSpecialUseFormula: false,
+			kongouSpecialUseFormula: true,
+			yamatoSpecial2UseFormula: false,
 			nightZuiunCIRate: SIMCONSTS.nightZuiunCIRate,
 			arcticCamoAr: SIMCONSTS.arcticCamoAr,
 			arcticCamoEva: SIMCONSTS.arcticCamoEva,
@@ -190,6 +195,9 @@ var UI_MAIN = Vue.createApp({
 		showMechanics: false,
 		
 		isDragging: false,
+		showDropdownPlayer: false,
+		showDropdownBattles: false,
+		showDropdownSettings: false,
 	}),
 	mounted: function() {
 		this.$i18n.locale = localStorage.sim2_lang || 'en';
@@ -677,12 +685,60 @@ ${t('results.buckets')}:	${this.results.bucketSunk}`;
 			UI_FCFSETTINGS.doOpen(this.settingsFCF);
 		},
 		
-		onclickNavButton: function(ref,e) {
-			this.$refs[ref].scrollIntoView({ behavior: 'smooth' });
+		onclickNavButton: function(ref,idx) {
+			let e = this.$refs[ref];
+			if (idx != null) e = this.$refs[ref][idx];
+			e.scrollIntoView({ behavior: 'smooth' });
 		},
 		onclickNavSim: function() {
 			this.$refs.divSimulationScroll.scrollIntoView();
 			this.onclickGo();
+		},
+		
+		
+		getNelsonTouchFormula: function() {
+			if (FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[0]) || FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[2]) || FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[4])) return 0;
+			let rate = 12;
+			rate += 2*Math.sqrt(this.fleetFMain.ships[0].level) + Math.sqrt(this.fleetFMain.ships[0].statsBase.luk);
+			rate += Math.sqrt(this.fleetFMain.ships[2].level) + .5*Math.sqrt(this.fleetFMain.ships[2].statsBase.luk);
+			rate += Math.sqrt(this.fleetFMain.ships[4].level) + .5*Math.sqrt(this.fleetFMain.ships[4].statsBase.luk);
+			return Math.max(0, Math.min(100, Math.floor(rate)));
+		},
+		getNagatoSpecialFormula: function() {
+			if (FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[0]) || FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[1])) return 0;
+			let rate = 30;
+			rate += Math.sqrt(this.fleetFMain.ships[0].level) + 1.2*Math.sqrt(this.fleetFMain.ships[0].statsBase.luk);
+			rate += Math.sqrt(this.fleetFMain.ships[1].level) + 1.2*Math.sqrt(this.fleetFMain.ships[1].statsBase.luk);
+			return Math.max(0, Math.min(100, Math.floor(rate)));
+		},
+		getKongouSpecialFormula: function() {
+			if (FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[0]) || FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[1])) return 0;
+			let rate = -55;
+			rate += 6*Math.sqrt(this.fleetFMain.ships[0].level) + 1.2*Math.sqrt(this.fleetFMain.ships[0].statsBase.luk);
+			rate += 3*Math.sqrt(this.fleetFMain.ships[1].level) + .6*Math.sqrt(this.fleetFMain.ships[1].statsBase.luk);
+			if (this.fleetFMain.ships[0].mstId == 591) {
+				if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 8)) rate += 31;
+				if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [42].includes(EQDATA[eq.mstId].type))) rate += 10;
+			} else if (this.fleetFMain.ships[0].mstId == 592) {
+				if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 8)) rate += 10;
+				if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [42].includes(EQDATA[eq.mstId].type))) rate += 31;
+			} else if (this.fleetFMain.ships[0].mstId == 593) {
+				if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 8)) rate += 16;
+			} else if (this.fleetFMain.ships[0].mstId == 954) {
+				if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 8)) rate += 21;
+			}
+			return Math.max(0, Math.min(100, Math.floor(rate)));
+		},
+		getYamatoSpecial2Formula: function() {
+			if (FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[0]) || FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[1])) return 0;
+			let rate = 35;
+			rate += Math.sqrt(this.fleetFMain.ships[0].level) + Math.sqrt(this.fleetFMain.ships[0].statsBase.luk);
+			rate += Math.sqrt(this.fleetFMain.ships[1].level) + Math.sqrt(this.fleetFMain.ships[1].statsBase.luk);
+			if ([911,916].includes(this.fleetFMain.ships[0].mstId)) rate += 2;
+			if (SHIPDATA[this.fleetFMain.ships[1].mstId].sclass == 37) rate += 5;
+			if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 5)) rate += 10;
+			if (this.fleetFMain.ships[1].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 5)) rate += 10;
+			return Math.max(0, Math.min(100, Math.floor(rate)));
 		},
 	},
 }).component('vbattle',{

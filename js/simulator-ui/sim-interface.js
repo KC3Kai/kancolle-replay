@@ -258,7 +258,7 @@ var SIM = {
 		let bonusSpecialPNotAirOnly = {};
 		for (let equipSim of shipSim.equips) {
 			equipSim.bonusSpecialP = equipSim.bonusSpecialAccP = equipSim.bonusSpecialEvaP = null;
-			if (equipSim._bonusPByNode[battleNum] === undefined) {
+			if (equipSim._bonusPByNode && equipSim._bonusPByNode[battleNum] === undefined) {
 				let bonusGroups = equipSim._dataOrig.bonusGroups;
 				if (equipSim._dataOrig.bonusesByNode && equipSim._dataOrig.bonusesByNode[battleNum] && equipSim._dataOrig.bonusesByNode[battleNum].bonusGroups) {
 					bonusGroups = equipSim._dataOrig.bonusesByNode[battleNum].bonusGroups;
@@ -278,7 +278,7 @@ var SIM = {
 					if (!Object.keys(equipSim._bonusPByNode[battleNum].bonusSpecialEvaP).length) equipSim._bonusPByNode[battleNum].bonusSpecialEvaP = null;
 				}
 			}
-			if (equipSim._bonusPByNode[battleNum]) {
+			if (equipSim._bonusPByNode && equipSim._bonusPByNode[battleNum]) {
 				equipSim.bonusSpecialP = equipSim._bonusPByNode[battleNum].bonusSpecialP;
 				equipSim.bonusSpecialAccP = equipSim._bonusPByNode[battleNum].bonusSpecialAccP;
 				equipSim.bonusSpecialEvaP = equipSim._bonusPByNode[battleNum].bonusSpecialEvaP;
@@ -391,17 +391,19 @@ var SIM = {
 			this._setBonuses(shipSim,shipInput.bonuses);
 			
 			shipSim._dataOrig = shipInput;
-			for (let equipInput of shipInput.equips) {
-				for (let equipSim of shipSim.equips) {
-					if (equipSim._dataOrig) continue;
-					if (equipSim.mid == equipInput.masterId) {
-						equipSim._dataOrig = equipInput;
-						break;
+			if (shipInput.equips) {
+				for (let equipInput of shipInput.equips) {
+					for (let equipSim of shipSim.equips) {
+						if (equipSim._dataOrig) continue;
+						if (equipSim.mid == equipInput.masterId) {
+							equipSim._dataOrig = equipInput;
+							break;
+						}
 					}
 				}
-			}
-			for (let equipSim of shipSim.equips) {
-				equipSim._bonusPByNode = {};
+				for (let equipSim of shipSim.equips) {
+					equipSim._bonusPByNode = {};
+				}
 			}
 			
 			this._setBonusesPlane(shipSim,1);
@@ -429,7 +431,10 @@ var SIM = {
 				this._addError('bad_formation',[fleetInput.formation]);
 			}
 			fleetSim.reset();
-			if (fleetSim.combinedWith) fleetSim.combinedWith.reset();
+			if (fleetSim.combinedWith) {
+				fleetSim.combinedWith.reset();
+				fleetSim.combineType = fleetInput.combineType;
+			}
 			result = fleetSim;
 		}
 		return result;
@@ -860,15 +865,19 @@ var SIM = {
 				fleetF.resetBattle();
 				fleetF.combinedWith.resetBattle();
 				if (fleetE.combinedWith) {
+					fleetF.battleType = '12v12';
 					result = sim12vs12(dataInput.fleetF.combineType,fleetF,fleetF.combinedWith,fleetE,fleetFSupport,lbWaves,doNB,node.NBOnly,node.airOnly,node.airRaid,node.noAmmo,apiBattle,false,fleetFF);
 				} else {
+					fleetF.battleType = '12v6';
 					result = simCombined(dataInput.fleetF.combineType,fleetF,fleetF.combinedWith,fleetE,fleetFSupport,lbWaves,doNB,node.NBOnly,node.airOnly,node.airRaid,node.noAmmo,apiBattle,false,fleetFF);
 				}
 			} else {
 				fleetF.resetBattle();
 				if (fleetE.combinedWith) {
+					fleetF.battleType = '6v12';
 					result = sim6vs12(fleetF,fleetE,fleetFSupport,lbWaves,doNB,node.NBOnly,node.airOnly,node.airRaid,node.noAmmo,apiBattle,false,fleetFF);
 				} else {
+					fleetF.battleType = '6v6';
 					result = sim(fleetF,fleetE,fleetFSupport,lbWaves,doNB,node.NBOnly,node.airOnly,node.airRaid,node.noAmmo,apiBattle,false,fleetFF);
 				}
 			}

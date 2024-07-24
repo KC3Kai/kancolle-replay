@@ -809,6 +809,21 @@ window.CONVERT = {
 				mechInput.consts[key] = dataUI.settings[key];
 			}
 		}
+		if (dataUI.settings.nelsonTouchUseFormula) {
+			mechInput.consts.nelsonTouchRate = dataUI.getNelsonTouchFormula();
+		}
+		if (dataUI.settings.nagatoSpecialUseFormula) {
+			mechInput.consts.nagatoSpecialRate = dataUI.getNagatoSpecialFormula();
+		}
+		if (dataUI.settings.mutsuSpecialUseFormula) {
+			mechInput.consts.mutsuSpecialRate = dataUI.getNagatoSpecialFormula();
+		}
+		if (dataUI.settings.kongouSpecialUseFormula) {
+			mechInput.consts.kongouSpecialRate = dataUI.getKongouSpecialFormula();
+		}
+		if (dataUI.settings.yamatoSpecial2UseFormula) {
+			mechInput.consts.yamatoSpecial2Rate = dataUI.getYamatoSpecial2Formula();
+		}
 		return mechInput;
 	},
 	uiToSimInput: function(dataUI) {
