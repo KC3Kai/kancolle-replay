@@ -42,7 +42,7 @@
 				<div @mouseover="showDropdownBattles=true" @mouseout="showDropdownBattles=false">
 					<div class="navButton" @click="onclickNavButton('divBattlesScroll')">{{$t('battles')}}</div>
 					<div v-show="showDropdownBattles" class="navDropdown">
-						<div class="navButton sub" v-for="n in battles.length" @click="onclickNavButton('divBattlesNodeScroll',n-1)">{{$t('node_n',[n])}}</div>
+						<div class="navButton sub" v-for="n in battles.length" @click="onclickNavButton('divBattlesNodeScroll'+(n-1),0)">{{$t('node_n',[n])}}</div>
 					</div>
 				</div>
 				<div @mouseover="showDropdownSettings=true" @mouseout="showDropdownSettings=false">
@@ -121,8 +121,8 @@
 			<div class="battleNext">
 				<input type="button" :value="$t('insert_node')" @click="onclickInsertBattle(0)" />
 			</div>
-			<div v-for="battle in battles" :key="battle.id">
-				<div class="scrollAnchor"><div ref="divBattlesNodeScroll"></div></div>
+			<div v-for="(battle,i) in battles" :key="battle.id">
+				<div class="scrollAnchor"><div :ref="'divBattlesNodeScroll'+i"></div></div>
 				<vbattle :battle="battle" :candelete="canDeleteBattles" :isboss="battle.ind==battles.length-1"></vbattle>
 				<div class="battleNext">
 					<input type="button" :value="$t('insert_node')" @click="onclickInsertBattle(battle.ind+1)" />
