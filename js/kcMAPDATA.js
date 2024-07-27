@@ -2168,6 +2168,35 @@ var MAPDATA = {
 			},
 		}
 	},
+	59: {
+		name: 'Summer 2024',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmDN: 247,
+				bgmNN: 247,
+				bgmDB: 248,
+				bgmNB: 248,
+				bossnode: ['M'],
+			},
+			2: {
+				name: 'E2',
+				bgmDN: 247,
+				bgmNN: 247,
+				bgmDB: 248,
+				bgmNB: 248,
+				bossnode: ['E','U','W'],
+			},
+			3: {
+				name: 'E3',
+				bgmDN: 248,
+				bgmNN: 248,
+				bgmDB: 249,
+				bgmNB: 249,
+				bossnode: ['F','K','S','X'],
+			},
+		}
+	},
 }
 
 //-------------------------------------
