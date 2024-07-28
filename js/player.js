@@ -1107,6 +1107,8 @@ function processAPI(root) {
 						eventqueue.push([shootNelsonTouch,args,getState()]); break;
 					case 101:
 					case 102:
+					case 105:
+					case 106:
 					case 401:
 						var attackers = (hou.api_at_eflag && hou.api_at_eflag[j])? [f2[0],f2[0],f2[1]] : [f1[0],f1[0],f1[1]];
 						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
@@ -1218,6 +1220,8 @@ function processAPI(root) {
 						eventqueue.push([shootNelsonTouch,args,getState()]); break;
 					case 101:
 					case 102:
+					case 105:
+					case 106:
 					case 401:
 						var attackers = (hou.api_at_eflag && hou.api_at_eflag[j])? [f2[0],f2[0],f2[1]] : [f1[0],f1[0],f1[1]];
 						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
