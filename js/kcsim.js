@@ -208,6 +208,8 @@ var SIMCONSTS = {
 	yamatoSpecial2Rate: 80,
 	subFleetAttackRate: 80,
 	subFleetAttack2AtkRate: 60,
+	richelieuSpecialRate: 60,
+	qeSpecialRate: 60,
 	nightZuiunCIRate: 60,
 	arcticCamoAr: 0,
 	arcticCamoEva: 0,
@@ -1278,6 +1280,21 @@ function canSpecialAttackUnique(ship,isNB,isCheck) {
 			}
 			return true;
 		}
+	} else if (ship.attackSpecial == 105) {
+		if (ship.fleet.didSpecial) return false;
+		if (ship.fleet.ships[0] != ship || (!isNB && ship.isescort)) return false;
+		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated && !ship.isSub).length < 6) return false;
+		if (!isCheck && ship.fleet.formation.id != 12 && ship.fleet.formation.id != 2) return false;
+		if (ship.HP/ship.maxHP <= .5) return false;
+		if (![392,724,969].includes(ship.fleet.ships[1].mid)) return false;
+		if (ship.fleet.ships[1].HP/ship.fleet.ships[1].maxHP <= .25) return false;
+		if (isCheck) return true;
+		let rate = SIMCONSTS.richelieuSpecialRate;
+		if (Math.random() < rate/100) {
+			ship.fleet.didSpecial = 1;
+			if (ship.fleet.combinedWith) ship.fleet.combinedWith.didSpecial = 2;
+			return true;
+		}
 	}
 	return false;
 }
@@ -1292,6 +1309,8 @@ function getSpecialAttackShips(ships,attackSpecial,shipCurrent) {
 		attackers = [ships[0], ships[1], ships[2]];
 	} else if (attackSpecial == 104) {
 		attackers = [ships[0], ships[1]];
+	} else if (attackSpecial == 105) {
+		attackers = [ships[0], ships[0], ships[1]];
 	} else if (attackSpecial == 200) {
 		attackers = [shipCurrent,shipCurrent];
 	} else if ([300,301,302].includes(attackSpecial)) {
@@ -1387,6 +1406,11 @@ function getSpecialAttackMod(ship,attackSpecial) {
 		let numGun = ship.equips.filter(eq => [503,530].includes(eq.mid)).length;
 		if (numGun >= 2) mod *= 1.15;
 		else if (numGun == 1) mod *= 1.11;
+	} else if (attackSpecial == 105) {
+		mod = ship.isflagship && [392,969].includes(ship.mid) ? 1.3 : 1.24;
+		modAcc = 1.4;
+		if (ship.equiptypesB[B_APSHELL]) { mod *= 1.35; modAcc *= 1.15; }
+		if (ship.equiptypesB[B_RADAR]) { mod *= 1.15; modAcc *= 1.15; }
 	} else if (attackSpecial == 300 || attackSpecial == 301 || attackSpecial == 302) {
 		mod = 1.2 + 0.04*Math.sqrt(ship.LVL);
 	} else if (attackSpecial == 400) {
@@ -3791,7 +3815,7 @@ function getRankRaid(shipsF,shipsFC) {
 function updateSupply(ships,didNB,NBonly,bombing,noammo,isECombined,shipsE) {
 	let costSpecial = null, shipsSpecial = null, hasFaraway = shipsE.find(s => s.isFaraway);
 	if (ships[0].fleet.didSpecial == 1) {
-		if (ships[0].attackSpecialT == 101 || ships[0].attackSpecialT == 102) costSpecial = 1.5;
+		if (ships[0].attackSpecialT == 101 || ships[0].attackSpecialT == 102 || ships[0].attackSpecialT == 105) costSpecial = 1.5;
 		else if (ships[0].attackSpecialT == 104) costSpecial = MECHANICS.kongouSpecialBuff ? 1.2 : 1.3;
 		else if (ships[0].attackSpecialT == 400) costSpecial = 1.8;
 		else if (ships[0].attackSpecialT == 401) costSpecial = 1.6;
