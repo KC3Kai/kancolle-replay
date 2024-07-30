@@ -243,6 +243,7 @@
 	"yamato_special_3": "大和タッチ (3隻)",
 	"yamato_special_2": "大和タッチ (2隻)",
 	"submarine_special": "潜水艦隊攻撃",
+	"richelieu_special": "Richelieuタッチ",
 	"use_provisional_B-25": "深海棲艦による跳躍爆撃にはB-25のボーナスを仮適用",
 	"cf_airstrike_base_mods": "連合艦隊の航空戦における補正値",
 	"damage_base": "ダメージ(基礎: {0})",
@@ -767,7 +768,10 @@
 		"Early-Spring 2024 E1": "2024早春 E1",
 		"Early-Spring 2024 E2": "2024早春 E2",
 		"Early-Spring 2024 E3": "2024早春 E3",
-		"Early-Spring 2024 E4": "2024早春 E4"
+		"Early-Spring 2024 E4": "2024早春 E4",
+		"Summer 2024 E1": "2024夏 E1",
+		"Summer 2024 E2": "2024夏 E2",
+		"Summer 2024 E3": "2024夏 E3"
 	},
 	"sim_error": {
 		"bad_data": "データの形式が正しくありません",

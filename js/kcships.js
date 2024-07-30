@@ -807,7 +807,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats,isSupport) {
 	if (this.equips.find(eq => eq.mid == 194)) this.frenchBBPostMult *= 1.2;
 	if (this.equiptypes[DIVEBOMBER]) this.frenchBBPostMult *= 1.1;
 	if (this.equiptypes[DIVEBOMBER] >= 2) this.frenchBBPostMult *= 1.15;
-	if ([70,79].includes(this.sclass)) this.frenchBBPostMult *= 1.15;
+	if ([70,79,128,129].includes(this.sclass)) this.frenchBBPostMult *= 1.15;
 	
 	this.anchoragePostMult = 1;
 	if (numMortar) this.anchoragePostMult *= 1.1;

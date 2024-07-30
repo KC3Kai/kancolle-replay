@@ -93,6 +93,7 @@ var UI_MAIN = Vue.createApp({
 			yamatoSpecial3Rate: SIMCONSTS.yamatoSpecial3Rate,
 			yamatoSpecial2Rate: SIMCONSTS.yamatoSpecial2Rate,
 			subFleetAttackRate: SIMCONSTS.subFleetAttackRate,
+			richelieuSpecialRate: SIMCONSTS.richelieuSpecialRate,
 			nelsonTouchUseFormula: false,
 			nagatoSpecialUseFormula: false,
 			mutsuSpecialUseFormula: false,
