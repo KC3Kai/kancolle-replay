@@ -6220,6 +6220,7 @@ var EQDATA = {
 		nameJP: 'Loire 130M改(熟練)',
 		added: '2024-07-27',
 		type: SEAPLANE, image: 50,
+		isnightscout: true,
 		FP: 2,
 		ACC: 3,
 		ASW: 5,
