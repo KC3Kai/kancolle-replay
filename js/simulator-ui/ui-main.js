@@ -94,11 +94,11 @@ var UI_MAIN = Vue.createApp({
 			yamatoSpecial2Rate: SIMCONSTS.yamatoSpecial2Rate,
 			subFleetAttackRate: SIMCONSTS.subFleetAttackRate,
 			richelieuSpecialRate: SIMCONSTS.richelieuSpecialRate,
-			nelsonTouchUseFormula: false,
-			nagatoSpecialUseFormula: false,
-			mutsuSpecialUseFormula: false,
+			nelsonTouchUseFormula: true,
+			nagatoSpecialUseFormula: true,
+			mutsuSpecialUseFormula: true,
 			kongouSpecialUseFormula: true,
-			yamatoSpecial2UseFormula: false,
+			yamatoSpecial2UseFormula: true,
 			nightZuiunCIRate: SIMCONSTS.nightZuiunCIRate,
 			arcticCamoAr: SIMCONSTS.arcticCamoAr,
 			arcticCamoEva: SIMCONSTS.arcticCamoEva,
@@ -699,20 +699,65 @@ ${t('results.buckets')}:	${this.results.bucketSunk}`;
 		
 		getNelsonTouchFormula: function() {
 			if (FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[0]) || FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[2]) || FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[4])) return 0;
+			let rate = 25;
+			rate += 1.1*Math.sqrt(this.fleetFMain.ships[0].level) + 1.4*Math.sqrt(this.fleetFMain.ships[0].statsBase.luk);
+			rate += Math.sqrt(this.fleetFMain.ships[2].level);
+			rate += Math.sqrt(this.fleetFMain.ships[4].level);
+			return Math.max(0, Math.min(100, Math.floor(rate)));
+		},
+		getNagatoSpecialFormula: function() {
+			if (FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[0]) || FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[1])) return 0;
+			let rate = 25;
+			rate += Math.sqrt(this.fleetFMain.ships[0].level) + 1.5*Math.sqrt(this.fleetFMain.ships[0].statsBase.luk);
+			rate += Math.sqrt(this.fleetFMain.ships[1].level) + 1.5*Math.sqrt(this.fleetFMain.ships[1].statsBase.luk);
+			return Math.max(0, Math.min(100, Math.floor(rate)));
+		},
+		getKongouSpecialFormula: function() {
+			if (FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[0]) || FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[1])) return 0;
+			let rate = -33;
+			rate += 3.5*Math.sqrt(this.fleetFMain.ships[0].level) + 1.1*Math.sqrt(this.fleetFMain.ships[0].statsBase.luk);
+			rate += 3.5*Math.sqrt(this.fleetFMain.ships[1].level) + 1.1*Math.sqrt(this.fleetFMain.ships[1].statsBase.luk);
+			if (this.fleetFMain.ships[0].mstId == 591) {
+				if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 8)) rate += 30;
+				if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [42].includes(EQDATA[eq.mstId].type))) rate += 10;
+			} else if (this.fleetFMain.ships[0].mstId == 592) {
+				if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 8)) rate += 10;
+				if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [42].includes(EQDATA[eq.mstId].type))) rate += 30;
+			} else if (this.fleetFMain.ships[0].mstId == 593) {
+				if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 8)) rate += 15;
+			} else if (this.fleetFMain.ships[0].mstId == 954) {
+				if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 8)) rate += 20;
+			}
+			return Math.max(0, Math.min(100, Math.floor(rate)));
+		},
+		getYamatoSpecial2Formula: function() {
+			if (FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[0]) || FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[1])) return 0;
+			let rate = 33;
+			rate += Math.sqrt(this.fleetFMain.ships[0].level) + 1.25*Math.sqrt(this.fleetFMain.ships[0].statsBase.luk);
+			rate += Math.sqrt(this.fleetFMain.ships[1].level) + 1.25*Math.sqrt(this.fleetFMain.ships[1].statsBase.luk);
+			if ([911,916].includes(this.fleetFMain.ships[1].mstId)) rate += 4;
+			if ([143,148,546].includes(this.fleetFMain.ships[1].mstId)) rate += 7;
+			if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].ACC >= 8)) rate += 10;
+			if (this.fleetFMain.ships[1].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].ACC >= 8)) rate += 10;
+			return Math.max(0, Math.min(100, Math.floor(rate)));
+		},
+		
+		getNelsonTouchFormulaJervis: function() {
+			if (FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[0]) || FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[2]) || FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[4])) return 0;
 			let rate = 12;
 			rate += 2*Math.sqrt(this.fleetFMain.ships[0].level) + Math.sqrt(this.fleetFMain.ships[0].statsBase.luk);
 			rate += Math.sqrt(this.fleetFMain.ships[2].level) + .5*Math.sqrt(this.fleetFMain.ships[2].statsBase.luk);
 			rate += Math.sqrt(this.fleetFMain.ships[4].level) + .5*Math.sqrt(this.fleetFMain.ships[4].statsBase.luk);
 			return Math.max(0, Math.min(100, Math.floor(rate)));
 		},
-		getNagatoSpecialFormula: function() {
+		getNagatoSpecialFormulaJervis: function() {
 			if (FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[0]) || FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[1])) return 0;
 			let rate = 30;
 			rate += Math.sqrt(this.fleetFMain.ships[0].level) + 1.2*Math.sqrt(this.fleetFMain.ships[0].statsBase.luk);
 			rate += Math.sqrt(this.fleetFMain.ships[1].level) + 1.2*Math.sqrt(this.fleetFMain.ships[1].statsBase.luk);
 			return Math.max(0, Math.min(100, Math.floor(rate)));
 		},
-		getKongouSpecialFormula: function() {
+		getKongouSpecialFormulaJervis: function() {
 			if (FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[0]) || FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[1])) return 0;
 			let rate = -55;
 			rate += 6*Math.sqrt(this.fleetFMain.ships[0].level) + 1.2*Math.sqrt(this.fleetFMain.ships[0].statsBase.luk);
@@ -730,7 +775,7 @@ ${t('results.buckets')}:	${this.results.bucketSunk}`;
 			}
 			return Math.max(0, Math.min(100, Math.floor(rate)));
 		},
-		getYamatoSpecial2Formula: function() {
+		getYamatoSpecial2FormulaJervis: function() {
 			if (FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[0]) || FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[1])) return 0;
 			let rate = 35;
 			rate += Math.sqrt(this.fleetFMain.ships[0].level) + Math.sqrt(this.fleetFMain.ships[0].statsBase.luk);
