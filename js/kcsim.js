@@ -1289,6 +1289,7 @@ function canSpecialAttackUnique(ship,isNB,isCheck) {
 		if (![392,724,969].includes(ship.fleet.ships[1].mid)) return false;
 		if (ship.fleet.ships[1].HP/ship.fleet.ships[1].maxHP <= .25) return false;
 		if (isCheck) return true;
+		if (ship.fleet.combineType == 1 && ship.fleet.battleType == '12v6') return false;
 		let rate = SIMCONSTS.richelieuSpecialRate;
 		if (Math.random() < rate/100) {
 			ship.fleet.didSpecial = 1;
