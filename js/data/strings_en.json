@@ -802,7 +802,7 @@
 		"warn_debuff_dmg": "Warning: \"Debuff Dmg\" is a legacy setting and may be inaccurate to the mechanic, recommended to modify enemy's Armour stat instead.",
 		"warn_range_weights_f": "Warning: Player Fleets - Following range combination weights are unknown and not used: {0}",
 		"warn_range_weights_e": "Warning: Enemy Fleets - Following range combination weights are unknown and not used: {0}",
-		"warn_special_attack": "Note: Special Attack activation rate calculations are unknown and must be set manually, see Show Advanced to review defaults and adjust settings"
+		"warn_special_attack": "Note: Special Attack activation rate calculations are unknown or provisional and must be set manually, see Show Advanced to review defaults and adjust settings"
 	},
 	
 	"ui_search": "Search",
