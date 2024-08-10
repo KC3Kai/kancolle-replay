@@ -6276,7 +6276,7 @@ var EQDATA = {
 		LOS: 2,
 	},
 	543: {
-		name: 'SBD VS-2(偵察飛行隊)',
+		name: 'SBD VS-2 (Reconnaissance Squadron)',
 		nameJP: 'SBD VS-2(偵察飛行隊)',
 		added: '2024-08-08',
 		type: CARRIERSCOUT,
@@ -6289,7 +6289,7 @@ var EQDATA = {
 		LOS: 6,
 	},
 	544: {
-		name: 'SBD VB-2(爆撃飛行隊)',
+		name: 'SBD VB-2 (Bombing Squadron)',
 		nameJP: 'SBD VB-2(爆撃飛行隊)',
 		added: '2024-08-08',
 		type: DIVEBOMBER,
@@ -6302,7 +6302,7 @@ var EQDATA = {
 		LOS: 2,
 	},
 	545: {
-		name: '天山一二型甲改二(村田隊/電探装備)',
+		name: 'Tenzan Model 12A Kai 2 (Murata Squadron w/ Radar)',
 		nameJP: '天山一二型甲改二(村田隊/電探装備)',
 		added: '2024-08-08',
 		type: TORPBOMBER, image: 46,
@@ -7855,7 +7855,7 @@ var EQDATA = {
 		RNG: 2,
 	},
 	1650: {
-		name: '深海野牛艦戦 Mk.II',
+		name: 'Abyssal Buffalo Fighter Mk.II',
 		nameJP: '深海野牛艦戦 Mk.II',
 		added: '2024-08-08',
 		type: FIGHTER, image: 45,
@@ -7869,7 +7869,7 @@ var EQDATA = {
 		RNG: 1,
 	},
 	1651: {
-		name: '深海不屈艦爆 Mk.II',
+		name: 'Abyssal Dauntless Dive Bomber Mk.II',
 		nameJP: '深海不屈艦爆 Mk.II',
 		added: '2024-08-08',
 		type: DIVEBOMBER,
@@ -7885,7 +7885,7 @@ var EQDATA = {
 		RNG: 2,
 	},
 	1652: {
-		name: '深海打撃艦攻 Mk.II',
+		name: 'Abyssal Devastation Torpedo Bomber Mk.II',
 		nameJP: '深海打撃艦攻 Mk.II',
 		added: '2024-08-08',
 		type: TORPBOMBER, image: 46,
