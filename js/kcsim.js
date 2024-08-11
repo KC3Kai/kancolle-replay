@@ -1174,7 +1174,7 @@ function canSpecialAttackUnique(ship,isNB,isCheck) {
 		let ship2 = ship.fleet.ships[1], ship3 = ship.fleet.ships[2];
 		if (ship2.HP/ship2.maxHP <= .5) return false;
 		if ([911,916].includes(ship.mid) && ship3.HP/ship3.maxHP > .5) {
-			let groups = [[541,573], [553,554], [411,412], [364,576], [591,592], [591,593], [591,954], [697,659], [446,447]];
+			let groups = [[541,573], [553,554], [411,412], [364,576], [364,733], [576,577], [591,592], [591,593], [591,954], [697,659], [1496,918], [446,447], [392,724], [969,724]];
 			let group = groups.find(group => group.includes(ship2.mid) && group.includes(ship3.mid));
 			if (group || (ship2.mid == 546 && [541,573].includes(ship3.mid))) {
 				if (isCheck) return true;
@@ -1187,7 +1187,7 @@ function canSpecialAttackUnique(ship,isNB,isCheck) {
 				}
 			}
 		}
-		if (([911,916].includes(ship.mid) && [546,178,360,392].includes(ship2.mid)) || (ship.mid == 546 && [911,916].includes(ship2.mid))) {
+		if (([911,916].includes(ship.mid) && [546,178,360,392,969,724].includes(ship2.mid)) || (ship.mid == 546 && [911,916].includes(ship2.mid))) {
 			if (isCheck) return true;
 			let rate = SIMCONSTS.yamatoSpecial2Rate;
 			if (Math.random() < rate/100) {
