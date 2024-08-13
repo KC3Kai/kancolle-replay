@@ -6307,6 +6307,7 @@ var EQDATA = {
 		added: '2024-08-08',
 		type: TORPBOMBER, image: 46,
 		btype: B_NIGHTBOMBER,
+		aaResistShip: .6,
 		TP: 16,
 		AA: 1,
 		ACC: 3,
