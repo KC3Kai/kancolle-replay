@@ -771,7 +771,9 @@
 		"Early-Spring 2024 E4": "2024早春 E4",
 		"Summer 2024 E1": "2024夏 E1",
 		"Summer 2024 E2": "2024夏 E2",
-		"Summer 2024 E3": "2024夏 E3"
+		"Summer 2024 E3": "2024夏 E3",
+		"Summer 2024 E4": "2024夏 E4",
+		"Summer 2024 E5": "2024夏 E5"
 	},
 	"sim_error": {
 		"bad_data": "データの形式が正しくありません",

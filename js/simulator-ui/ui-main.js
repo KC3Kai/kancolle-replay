@@ -713,20 +713,21 @@ ${t('results.buckets')}:	${this.results.bucketSunk}`;
 			return Math.max(0, Math.min(100, Math.floor(rate)));
 		},
 		getKongouSpecialFormula: function() {
-			if (FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[0]) || FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[1])) return 0;
+			let shipsF = this.fleetFMain.type > 0 && this.fleetFMain.shipsEscort ? this.fleetFMain.shipsEscort : this.fleetFMain.ships;
+			if (FLEET_MODEL.shipIsEmpty(shipsF[0]) || FLEET_MODEL.shipIsEmpty(shipsF[1])) return 0;
 			let rate = -33;
-			rate += 3.5*Math.sqrt(this.fleetFMain.ships[0].level) + 1.1*Math.sqrt(this.fleetFMain.ships[0].statsBase.luk);
-			rate += 3.5*Math.sqrt(this.fleetFMain.ships[1].level) + 1.1*Math.sqrt(this.fleetFMain.ships[1].statsBase.luk);
-			if (this.fleetFMain.ships[0].mstId == 591) {
-				if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 8)) rate += 30;
-				if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [42].includes(EQDATA[eq.mstId].type))) rate += 10;
-			} else if (this.fleetFMain.ships[0].mstId == 592) {
-				if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 8)) rate += 10;
-				if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [42].includes(EQDATA[eq.mstId].type))) rate += 30;
-			} else if (this.fleetFMain.ships[0].mstId == 593) {
-				if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 8)) rate += 15;
-			} else if (this.fleetFMain.ships[0].mstId == 954) {
-				if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 8)) rate += 20;
+			rate += 3.5*Math.sqrt(shipsF[0].level) + 1.1*Math.sqrt(shipsF[0].statsBase.luk);
+			rate += 3.5*Math.sqrt(shipsF[1].level) + 1.1*Math.sqrt(shipsF[1].statsBase.luk);
+			if (shipsF[0].mstId == 591) {
+				if (shipsF[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 8)) rate += 30;
+				if (shipsF[0].equips.find(eq => eq.mstId && [42].includes(EQDATA[eq.mstId].type))) rate += 10;
+			} else if (shipsF[0].mstId == 592) {
+				if (shipsF[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 8)) rate += 10;
+				if (shipsF[0].equips.find(eq => eq.mstId && [42].includes(EQDATA[eq.mstId].type))) rate += 30;
+			} else if (shipsF[0].mstId == 593) {
+				if (shipsF[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 8)) rate += 15;
+			} else if (shipsF[0].mstId == 954) {
+				if (shipsF[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 8)) rate += 20;
 			}
 			return Math.max(0, Math.min(100, Math.floor(rate)));
 		},
