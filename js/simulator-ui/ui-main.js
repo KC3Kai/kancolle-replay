@@ -1026,6 +1026,14 @@ var UI_DECKBUILDERIMPORTER = Vue.createApp({
 		onclickSelectAll: function(event) {
 			event.target.select();
 		},
+		
+		oninputTextImport: function() {
+			if (!this.textImport) return;
+			let m = this.textImport.match(/"t":\s*(\d),/);
+			if (m && [1,2,3].includes(+m[1])) {
+				this.fleetNumMain = 10 + +m[1];
+			}
+		},
 	},
 }).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divDeckbuilderImporter');
 

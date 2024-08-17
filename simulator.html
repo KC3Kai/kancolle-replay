@@ -795,7 +795,7 @@
 			<div class="headerImport">{{$t('load_options')}}:</div>
 			<div>
 				<div class="headerSubImport">{{$t('from_text')}}:</div>
-				<div><textarea cols="20" rows="2" autocomplete="off" v-model="loadCode" @focus="onfocusCode" @click="onclickSelectAll" :title="$t('from_text_note')"></textarea></div>
+				<div><textarea cols="20" rows="2" autocomplete="off" v-model="loadCode" @focus="onfocusCode" @click="onclickSelectAll" @input="oninputLoadCode" :title="$t('from_text_note')"></textarea></div>
 				<div>
 					<input type="button" :value="$t('load')" @click="onclickLoadCode"/>
 					<span v-show="codeIsDeckbuilder"> {{$t('fleet')}}: <select v-model.number="loadCodeFleet">
@@ -1303,7 +1303,7 @@
 			</div>
 			<div class="sectionWrap">
 				<div class="sectionLeft">
-					<div><textarea ref="textImport" cols="30" rows="2" autocomplete="off" v-model="textImport" @click="onclickSelectAll"></textarea></div>
+					<div><textarea ref="textImport" cols="30" rows="2" autocomplete="off" v-model="textImport" @click="onclickSelectAll" @input="oninputTextImport"></textarea></div>
 					<div>
 						<div><input type="button" value="Import" @click="onclickImport"/></div>
 						<div class="sectionWrap">
