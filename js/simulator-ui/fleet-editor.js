@@ -705,6 +705,13 @@ var UI_FLEETEDITOR = Vue.createApp({
 				this.loadData(data);
 			}
 		},
+		oninputLoadCode: function() {
+			if (!this.loadCode) return;
+			let m = this.loadCode.match(/"t":\s*(\d),/);
+			if (m && [1,2,3].includes(+m[1])) {
+				this.loadCodeFleet = 10 + +m[1];
+			}
+		},
 		onchangeFileKC3: function(e) {
 			if (!e.target.files.length) return;
 			let reader = new FileReader();
