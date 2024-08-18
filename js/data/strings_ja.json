@@ -202,7 +202,7 @@
 	"insert_node": "Node追加",
 	"settings": "設定",
 	"retreat_on_taiha": "{img_taiha}したら撤退する",
-	"retreat_on_taiha_even": "{img_taiha}したときに{img_repair}を積んでいてもNode: {sel_node}より前なら撤退する",
+	"retreat_on_taiha_even": "{img_taiha}したときに{img_repair}を積んでいてもNode: {sel_node} か、それより前なら撤退する",
 	"none_node": "None",
 	"fcf_settings": "司令部設定",
 	"fcf_settings_set": "Active",
