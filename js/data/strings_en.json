@@ -1,6 +1,10 @@
 {
 	"change_log": [
 		{
+			"date": "2024-08-22",
+			"txt": "Watch a Sortie: add filter for specific conditions"
+		},
+		{
 			"date": "2024-07-22",
 			"txt": "Plane Bonus settings (bonuses tied to plane slots)"
 		},
