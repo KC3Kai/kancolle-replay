@@ -447,6 +447,8 @@
 		<div class="scrollAnchor"><div ref="divSimulationScroll"></div></div>
 		<h2>{{$t('simulation')}}</h2>
 		<div id="divSimWatch">
+            <!-- <input type="button" :value="$t('auto_set_bonus')" @click="onclickAutoBonus"/> -->
+            <input type="button" value="Set Conditions" :disabled="!canSim" @click="onclickReplayCondition"/>
 			<input type="button" :value="$t('watch_sortie')" :disabled="!canSim" @click="onclickWatch"/> {{$t('opens_in_replayer')}}
 		</div>
 		<div id="divSimStats">
@@ -1682,6 +1684,27 @@
 		</div>
 		</vmodal>
 	</div></div>
+	
+    <div id="divReplayCondition">
+        <div v-show="active">
+            <vmodal :active="active" @vclose="canClose&&doClose()">
+                <div id="divReplayConditionMain">
+                    Node: 
+                    <select v-model="nodeNum"><option value="0"></option><option v-for="(id,i) in nodes" :value="i+1">{{i+1}}</option></select>
+                    Rank: 
+                    <select v-model="rank">
+                        <option value="S">S</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="flagsunk">Flagship sunk</option>
+                    </select>
+                    Limit: 
+                    <input type="number" v-model="limit">
+                    <input type="button" value="Search" @click="onclickNarrowDown(nodeNum, rank, limit)" :disabled="!canStartFlag">
+                </div>
+            </vmodal>
+        </div>
+    </div>
 	
 	
 	<template id="tmpModal">

@@ -532,6 +532,21 @@ span.autoBonusStatus.good {
 }
 
 
+#divReplayConditionMain {
+    background-color: #DDEEFF;
+    border: 1px solid transparent;
+    box-shadow: 0 0 5px black;
+    padding: 20px;
+}
+#divReplayConditionMain > input[type="number"] {
+    width: 70px;
+}
+#divReplayConditionMain > input[type="button"] {
+    padding: 2px;
+    margin-left: 5px;
+}
+
+
 #divNotice {
 	position: fixed;
 	bottom: 30px;

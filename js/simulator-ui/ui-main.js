@@ -593,7 +593,7 @@ var UI_MAIN = Vue.createApp({
 				this.results.errors = errors.filter(obj => this._includeError(obj)).map(obj => ({ key: obj.key, args: obj.args }));
 				return;
 			}
-			console.log(replay)
+			console.log('replay', replay)
 			let s = JSON.stringify(replay);
 			window.open('battleplayer.html#'+s,'_blank');
 		},
@@ -695,6 +695,9 @@ ${t('results.buckets')}:	${this.results.bucketSunk}`;
 			this.$refs.divSimulationScroll.scrollIntoView();
 			this.onclickGo();
 		},
+        onclickReplayCondition: function() {
+            UI_REPLAYCONDITION.doOpen();
+        },
 		
 		
 		getNelsonTouchFormula: function() {
@@ -1983,6 +1986,56 @@ var UI_AUTOBONUS = Vue.createApp({
 		},
 	},
 }).component('vmodal',COMMON.CMP_MODAL).component('vloading',COMMON.CMP_LOADING).use(COMMON.i18n).mount('#divAutoBonus');
+    
+    
+    
+var UI_REPLAYCONDITION = Vue.createApp({
+    data: () => ({
+        active: false,
+        canClose: true,
+        nodes: [],
+        nodeNum: 0,
+        rank: null,
+        limit: 100,
+        canStartFlag: false,
+    }),
+    watch: {
+        nodeNum: 'updateCanStartFlag',
+        rank: 'updateCanStartFlag',
+        limit: 'updateCanStartFlag',
+    },
+    methods: {
+        doOpen: function(settings) {
+            this.active = true;
+            this.nodes = [];
+            for (let battle of UI_MAIN.battles) {
+                this.nodes.push(battle.id);
+            }
+            console.log(this.nodes);
+        },
+        doClose: function() {
+            this.active = false;
+        },
+        updateCanStartFlag() {
+            const validRanks = ['S', 'A', 'B', 'flagsunk'];
+            this.canStartFlag = this.nodeNum > 0 && validRanks.includes(this.rank) && this.limit > 0;
+        },
+        onclickNarrowDown: async function(nodeNum, rank, limit) {
+            if (!UI_MAIN.canSim) return;
+            UI_MAIN.results.errors = [];
+            let replay = CONVERT.uiToReplay(UI_MAIN);
+            let errors = await SIM.narrowDownReplay(CONVERT.uiToSimInput(UI_MAIN),replay,nodeNum,rank,limit);
+            if (errors) {
+                UI_MAIN.results.errors = errors.filter(obj => UI_MAIN._includeError(obj)).map(obj => ({ key: obj.key, args: obj.args }));
+                return;
+            }
+            console.log('replay', replay)
+            let s = JSON.stringify(replay);
+            window.open('battleplayer.html#'+s,'_blank');
+        },
+    },
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divReplayCondition');
+
 
 
 

@@ -36,6 +36,7 @@ var CONST = window.COMMON.getConst({
 		'warn_range_weights_f': { txt: 'Warning: Player Fleets - Following range combination weights are unknown and not used: <0>' },
 		'warn_range_weights_e': { txt: 'Warning: Enemy Fleets - Following range combination weights are unknown and not used: <0>' },
 		'warn_special_attack': { txt: 'Note: Special Attack activation rate calculations are unknown and must be set manually, see Show Advanced to review defaults and adjust settings' },
+        'situation_did_not_occur': { txt: 'The specified situation did not occur.' },
 	},
 	
 	keysSmoke: ['smokeModShellAccF','smokeModShellAccFRadar','smokeModShellAccE','smokeModShellAccERadar','smokeModASWAccF','smokeModASWAccE','smokeModTorpAccF','smokeModTorpAccE','smokeModAirAccF','smokeModAirAccE'],
@@ -43,6 +44,7 @@ var CONST = window.COMMON.getConst({
 	
 var SIM = {
 	_results: null,
+    _searchResults: [],
 	_errors: [],
 	_warnings: [],
 	_saveErrors: true,
@@ -747,7 +749,7 @@ var SIM = {
 		return hpRepairedTotal;
 	},
 	
-	_doSimSortie: function(dataInput,dataReplay) {
+	_doSimSortie: function(dataInput,dataReplay,isSearch) {
 		for (let i=0; i<this._compListsEnemy.length; i++) {
 			if (!this._compListsEnemy[i]) continue;
 			FLEETS2[i] = this._rollComp(this._compListsEnemy[i]);
@@ -908,13 +910,19 @@ var SIM = {
 					isRetreat = fleetF.combinedWith ? !canContinue(fleetF.ships,fleetF.combinedWith.ships,true,ignoreDamecon) : !canContinue(fleetF.ships,null,true,ignoreDamecon);
 				}
 			}
+            
+            if(isSearch) {
+                const rank = result.rank;
+                const flagsunk = result.flagsunk;
+                this._searchResults.push([rank, flagsunk]);
+            }
 			
 			for (let ship of shipsAll) delete ship._tempFCF;
 			if (isRetreat) break;
 		}
 		
-		if (!dataReplay) {
-			this._updateResultsTotal(dataInput);
+		if (!dataReplay || isSearch) {
+			if(!dataReplay) this._updateResultsTotal(dataInput);
 		
 			if (window.CARRYOVERHP || window.CARRYOVERMORALE) {
 				for (let fleet of FLEETS1) {
@@ -1010,6 +1018,44 @@ var SIM = {
 		
 		this._doSimSortie(dataInput,dataReplay);
 	},
+    
+    narrowDownReplay: async function(dataInput, dataReplay, nodeNum, rank, limit) {
+        window.C = true;
+        
+        this._load(dataInput);
+        if (this._errors.length) {
+            return this._errors.slice();
+        }
+        
+        let breakFlag = false;
+        for(let i = 0;i < limit;i++) {
+            
+            await this._doSimSortie(dataInput,dataReplay,true);
+            
+            if(this._searchResults[nodeNum - 1]) {
+                const searchResult = this._searchResults[nodeNum - 1];
+                if(rank !== 'flagsunk') {
+                    if(rank === searchResult[0]) {
+                        breakFlag = true;
+                    }
+                } else {
+                    if(searchResult[1]) {
+                        alert(`at ${i + 1} times`);
+                        breakFlag = true;
+                    }
+                }
+            }
+            
+            this._searchResults = [];
+            console.clear();
+            
+            if(breakFlag) return;
+            
+            dataReplay.battles = [];
+        }
+        this._addError('situation_did_not_occur');
+        return this._errors.slice();
+    },
 	
 	resetStats: function() {
 		this._inputPrev = {};
