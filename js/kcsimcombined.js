@@ -49,12 +49,13 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	
 	//code here
 	if (C) {
-		console.log('ENGAGEMENT: '+ENGAGEMENT);
+		simConsole.clear();
+		simConsole.log('ENGAGEMENT: '+ENGAGEMENT);
 		var dataroot = (NBonly)? BAPI.yasen : BAPI.data;
 		dataroot.api_formation = [F1.formation.id,F2.formation.id,{1:1,.8:2,1.2:3,.6:4}[ENGAGEMENT]];
 		apiSetBasic(dataroot,ships1,ships2,ships1C);
 	}
-	if (C) console.log(API);
+	if (C) simConsole.log(API);
 	
 	var doShell2 = false;
 	for (var i=0; i<ships1.length; i++) {
@@ -718,12 +719,13 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	
 	//initial
 	if (C) {
-		console.log('ENGAGEMENT: '+ENGAGEMENT);
+		simConsole.clear();
+		simConsole.log('ENGAGEMENT: '+ENGAGEMENT);
 		var dataroot = (NBonly)? BAPI.yasen : BAPI.data;
 		dataroot.api_formation = [F1.formation.id,F2.formation.id,{1:1,.8:2,1.2:3,.6:4}[ENGAGEMENT]];
 		apiSetBasic(dataroot,ships1,ships2,null,ships2C);
 	}
-	if (C) console.log(API);
+	if (C) simConsole.log(API);
 	
 	var doShell2 = false;
 	for (var i=0; i<ships1.length; i++) {
@@ -1126,12 +1128,13 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	if (bombing) aironly = true;
 	
 	if (C) {
-		console.log('ENGAGEMENT: '+ENGAGEMENT);
+		simConsole.clear();
+		simConsole.log('ENGAGEMENT: '+ENGAGEMENT);
 		var dataroot = (NBonly)? BAPI.yasen : BAPI.data;
 		dataroot.api_formation = [F1.formation.id,F2.formation.id,{1:1,.8:2,1.2:3,.6:4}[ENGAGEMENT]];
 		apiSetBasic(dataroot,ships1,ships2,ships1C,ships2C);
 	}
-	if (C) console.log(API);
+	if (C) simConsole.log(API);
 	
 	var doShell2 = false;
 	for (var i=0; i<ships1.length; i++) {

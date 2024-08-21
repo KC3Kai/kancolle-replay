@@ -6,6 +6,7 @@ var CONST = window.COMMON.getConst({
 	
 	numSimDefault: 10000,
 	numSimMax: 10000000,
+	watchCountMax: 500,
 	
 	urlDeckbuilder: 'http://www.kancolle-calc.net/deckbuilder.html?predeck=',
 	urlLBASSim: 'https://noro6.github.io/kc-web?predeck=',
@@ -158,7 +159,12 @@ var UI_MAIN = Vue.createApp({
 		autoBonus: null,
 		
 		canSim: true,
+		watchCondition: 0,
+		watchCount: 0,
+		watchFound: false,
+		isRunningWatch: false,
 		numSim: CONST.numSimDefault,
+		showProgress: false,
 		simProgressNum: 0,
 		simProgressTotal: 0,
 		results: {
@@ -356,6 +362,10 @@ var UI_MAIN = Vue.createApp({
 		},
 		simProgressPercent: function() {
 			return Math.round(100*this.simProgressNum/this.simProgressTotal);
+		},
+		
+		styleWatchCount: function() {
+			return this.isRunningWatch ? {} : this.watchFound ? { 'color': 'green' } : { 'color': 'red' };
 		},
 	},
 	methods: {
@@ -556,6 +566,7 @@ var UI_MAIN = Vue.createApp({
 			if (res.errors) {
 				this.results.errors = res.errors.filter(obj => this._includeError(obj)).map(obj => ({ key: obj.key, args: obj.args }));
 				this.canSim = true;
+				this.showProgress = false;
 				return;
 			}
 			if (res.warnings) {
@@ -572,6 +583,7 @@ var UI_MAIN = Vue.createApp({
 				this.results.active = true;
 				this.updateResults(res.result);
 				this.canSim = true;
+				this.showProgress = false;
 				console.log(res.result);
 			}
 		},
@@ -580,22 +592,64 @@ var UI_MAIN = Vue.createApp({
 			this.results.errors = [];
 			this.numSim = Math.min(this.numSim,CONST.numSimMax);
 			this.canSim = false;
+			this.showProgress = true;
 			SIM.runStats(CONVERT.uiToSimInput(this),this.callbackSimStats);
 			
 			this.results.showCFWarning = !!(this.fleetFMain.combined || this.battles.find(battle => +battle.formation == 6 || battle.enemyComps.find(comp => comp.fleet.combined || comp.fleet.formation == 6)));
 		},
-		onclickWatch: function() {
-			if (!this.canSim) return;
-			this.results.errors = [];
-			let replay = CONVERT.uiToReplay(this);
-			let errors = SIM.runReplay(CONVERT.uiToSimInput(this),replay);
-			if (errors) {
-				this.results.errors = errors.filter(obj => this._includeError(obj)).map(obj => ({ key: obj.key, args: obj.args }));
+		
+		_getWatch: function(replay,numRun=0) {
+			if (!this.isRunningWatch) {
+				this.canSim = true;
+				this.watchFound = false;
 				return;
 			}
+			
+			replay.battles = [];
+			let errors = SIM.runReplay(CONVERT.uiToSimInput(this),replay,this.watchCondition);
+			if (errors) {
+				this.results.errors = errors.filter(obj => this._includeError(obj)).map(obj => ({ key: obj.key, args: obj.args }));
+				this.canSim = true;
+				this.isRunningWatch = false;
+				return;
+			}
+			
+			if (+this.watchCondition) {
+				this.watchCount = ++numRun;
+				if (numRun >= CONST.watchCountMax) {
+					this.canSim = true;
+					this.watchFound = false;
+					this.isRunningWatch = false;
+					return;
+				}
+				let found = (this.watchCondition == 1 && SIM.simResultPrev.battleNum < this.battles.length)
+					|| (this.watchCondition == 2 && SIM.simResultPrev.battleNum == this.battles.length)
+					|| (this.watchCondition == 3 && SIM.simResultPrev.battleNum == this.battles.length && SIM.simResultPrev.result.flagsunk)
+					|| (this.watchCondition == 4 && SIM.simResultPrev.battleNum == this.battles.length && ['S','A'].includes(SIM.simResultPrev.result.rank))
+					|| (this.watchCondition == 5 && SIM.simResultPrev.battleNum == this.battles.length && SIM.simResultPrev.result.rank == 'S');
+				if (!found) {
+					setTimeout(() => this._getWatch(replay,numRun),1);
+					return;
+				} else {
+					simConsole.print();
+				}
+			}
+			
 			console.log(replay)
 			let s = JSON.stringify(replay);
 			window.open('battleplayer.html#'+s,'_blank');
+			this.canSim = true;
+			this.isRunningWatch = false;
+			this.watchFound = true;
+		},
+		onclickWatch: function() {
+			if (!this.canSim) return;
+			this.canSim = false;
+			this.isRunningWatch = true;
+			this.watchCount = 0;
+			this.results.errors = [];
+			let replay = CONVERT.uiToReplay(this);
+			this._getWatch(replay,0);
 		},
 		onclickClear: function() {
 			if (!this.canSim) return;

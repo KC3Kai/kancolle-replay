@@ -447,7 +447,19 @@
 		<div class="scrollAnchor"><div ref="divSimulationScroll"></div></div>
 		<h2>{{$t('simulation')}}</h2>
 		<div id="divSimWatch">
-			<input type="button" :value="$t('watch_sortie')" :disabled="!canSim" @click="onclickWatch"/> {{$t('opens_in_replayer')}}
+			<div><input type="button" :value="$t('watch_sortie')" :disabled="!canSim" @click="onclickWatch"/> {{$t('opens_in_replayer')}}</div>
+			<div style="margin-left:26px"><span>{{$t('extra_condition')}}: </span>
+				<select v-model.number="watchCondition">
+					<option value="0">{{$t('cond_none')}}</option>
+					<option value="1">{{$t('cond_no_reach_boss')}}</option>
+					<option value="2">{{$t('cond_reach_boss')}}</option>
+					<option value="3">{{$t('cond_flagsunk')}}</option>
+					<option value="4">{{$t('cond_rankA')}}</option>
+					<option value="5">{{$t('cond_rankS')}}</option>
+				</select>
+				<span v-show="watchCount" :style="styleWatchCount">&nbsp;{{$tc('n_attempts',watchCount)}}</span>
+				<span v-show="isRunningWatch">&nbsp;<input type="button" :value="$t('watch_cancel')" @click="isRunningWatch=false"/></span>
+			</div>
 		</div>
 		<div id="divSimStats">
 			<i18n-t keypath="simulate_n_times_and_show_stats" scope="global"><template v-slot:inp_num><input type="number" min="1" :max="numSimMax" v-model="numSim" /></template></i18n-t>:
@@ -457,7 +469,7 @@
 			</div>
 		</div>
 		<div id="divResultsOuter">
-			<div style="display:flex;gap:10px" v-show="!canSim">
+			<div style="display:flex;gap:10px" v-show="!canSim && showProgress">
 				<div class="progressBarOuter"><div class="progressBarInner" :style="{width:simProgressPercent+'%'}"></div></div>
 				<div><input type="button" :value="'&#9724; ' + $t('stop')" v-show="!canSim" :disabled="canSim" @click="onclickCancel"/></div>
 				<div>({{simProgressNum}}/{{simProgressTotal}})</div>
