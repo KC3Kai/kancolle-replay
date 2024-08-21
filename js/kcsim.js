@@ -161,6 +161,23 @@ var NBATTACKDATA = {
 	2004: { dmgMod: 1.24, accMod: 1.07, chanceMod: 1.35, isSpecial: true, id: 200, name: 'NZuiun CI (Z)' },
 }
 
+let simConsole = {
+	_lines: [],
+	log: function(line) {
+		if (C === 2) {
+			this._lines.push(line);
+		} else {
+			console.log(line);
+		}
+	},
+	print: function() {
+		for (let line of this._lines) console.log(line)
+	},
+	clear: function() {
+		this._lines = [];
+	},
+};
+
 var FLEETS1 = [];
 var FLEETS2 = [];
 var FLEETS1S = [null,null];
@@ -410,7 +427,7 @@ function shell(ship,target,APIhou,attackSpecial,combinedAll) {
 	let AStypes;
 	if (MECHANICS.artillerySpotting && (AStypes = ship.canAS()) && ship.fleet.AS > 0 && !attackSpecial) {
 		var ASchance = ship.ASchance(ship.fleet.AS,combinedAll);
-		if (C) console.log('AS chance: '+ASchance);
+		if (C) simConsole.log('AS chance: '+ASchance);
 		
 		for (var i=0; i<AStypes.length; i++) {
 			if (da || cutin) break;
@@ -546,7 +563,7 @@ function shell(ship,target,APIhou,attackSpecial,combinedAll) {
 	if (ship.bonusSpecial) postModExtra *= getBonusDmg(ship,target);
 	if (SIMCONSTS.enablePlaneBonus && (ship.CVshelltype || ship.bonusSpecialPNotAirOnly)) postModExtra *= getBonusSpecialPlane(ship,'bonusSpecialP',ship.CVshelltype);
 	
-	if (C) console.log('	pre:', preMod, 'postCI:', postModCI, 'postExtra:', postModExtra)
+	if (C) simConsole.log('	pre:', preMod, 'postCI:', postModCI, 'postExtra:', postModExtra)
 	
 	let resArr = [], dmgArr = [], realdmgArr = [];
 	let numAttacks = da ? 2 : 1;
@@ -574,7 +591,7 @@ function shell(ship,target,APIhou,attackSpecial,combinedAll) {
 	}
 	
 	if (C) {
-		console.log(ship.name+' shells '+target.name+' for '+dmgArr.join(', ')+' damage, '+target.HP+'/'+target.maxHP+' left');
+		simConsole.log(ship.name+' shells '+target.name+' for '+dmgArr.join(', ')+' damage, '+target.HP+'/'+target.maxHP+' left');
 		if (APIhou.api_at_eflag) {
 			let off = (NEWFORMAT)? -1 : 0;
 			APIhou.api_at_eflag.push(ship.side);
@@ -695,7 +712,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 		NBchance += starshells[0]*4 - starshells[1]*10 + searchlights[0]*7 - searchlights[1]*5;
 		if (ship.HP/ship.maxHP <= .5) NBchance += 18;
 		NBchance *= .01;
-		if (C) console.log('base NB chance: '+NBchance);
+		if (C) simConsole.log('base NB chance: '+NBchance);
 
 		for (let NBtype of ship.NBtypes()) {
 			if (da || cutin) break;
@@ -741,7 +758,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 				}
 				preMod *= dmgMod;
 				accMod *= attackData.accMod;
-				if (C) console.log(attackData.name);
+				if (C) simConsole.log(attackData.name);
 			}
 		}
 	}
@@ -840,7 +857,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 		dmgArr.push(dmg); realdmgArr.push(realdmg); resArr.push(res);
 	}
 	if (C) {
-		console.log(ship.name+' nbattacks '+target.name+' for '+dmgArr.join(', ')+' damage, '+target.HP+'/'+target.maxHP+' left');
+		simConsole.log(ship.name+' nbattacks '+target.name+' for '+dmgArr.join(', ')+' damage, '+target.HP+'/'+target.maxHP+' left');
 		if (APIyasen.api_at_eflag) {
 			APIyasen.api_at_eflag.push(ship.side);
 			APIyasen.api_at_list.push(ship.apiID2-1);
@@ -962,7 +979,7 @@ function ASW(ship,target,isnight,APIhou,isOASW) {
 	}
 	ship.fleet.giveCredit(ship,realdmg);
 	if (C) {
-		console.log(ship.name+' ASWs '+target.name+' for '+dmg+' damage, '+target.HP+'/'+target.maxHP+' left');
+		simConsole.log(ship.name+' ASWs '+target.name+' for '+dmg+' damage, '+target.HP+'/'+target.maxHP+' left');
 		if (APIhou.api_at_eflag) {
 			let off = (NEWFORMAT)? -1 : 0;
 			APIhou.api_at_eflag.push(ship.side);
@@ -1011,7 +1028,7 @@ function laser(ship,targets,APIhou) {
 		ship.fleet.giveCredit(ship,realdmg);
 		if (C) {
 			let off = (NEWFORMAT)? -1 : 0;
-			console.log(ship.name+' LASERS '+targets[i].name+' FOR '+dmg+' DAMAGE, '+targets[i].HP+'/'+targets[i].maxHP+' left');
+			simConsole.log(ship.name+' LASERS '+targets[i].name+' FOR '+dmg+' DAMAGE, '+targets[i].HP+'/'+targets[i].maxHP+' left');
 			targetids.push((APIhou.api_at_eflag)? targets[i].apiID2+off : targets[i].apiID);
 			damages.push(realdmg);
 			crits.push(((res>1)?2:1));
@@ -1838,7 +1855,7 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 		}
 		ship.fleet.giveCredit(ship,realdmg);
 		if (C) {
-			console.log(ship.name+' torpedoes '+target.name+' for '+dmg+' damage, '+target.HP+'/'+target.maxHP+' left');
+			simConsole.log(ship.name+' torpedoes '+target.name+' for '+dmg+' damage, '+target.HP+'/'+target.maxHP+' left');
 			let shipidx = ship.apiID2-1, targetidx = target.apiID2-1;
 			if (!NEWFORMAT) {
 				shipidx = (APIrai.api_frai.length > 7)? ship.apiID2 : ship.num;
@@ -1924,7 +1941,7 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 	if (target.isSub) planebase = equip.ASW;
 	planebase = planebase || 0;
 	if (planebase && !target.isSub) planebase += (equip.airstrikePowerImprove || 0);
-	if (C) console.log('		'+slot+' '+planebase);
+	if (C) simConsole.log('		'+slot+' '+planebase);
 	if (res) {
 		if (MECHANICS.eqBonusTorp && !issupport && !isjetphase) {
 			planebase += ship.getEquipBonusCVTorp(slot);
@@ -1985,7 +2002,7 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 	}
 	ship.fleet.giveCredit(ship,realdmg);
 	if(C) {
-		console.log(ship.name+' airstrikes '+target.name+' for '+dmg+' damage, '+target.HP+'/'+target.maxHP+' left, CONTACT: '+contactMod);
+		simConsole.log(ship.name+' airstrikes '+target.name+' for '+dmg+' damage, '+target.HP+'/'+target.maxHP+' left, CONTACT: '+contactMod);
 	}
 	return realdmg;
 }
@@ -2008,7 +2025,7 @@ function takeDamage(ship,damage) {
 }
 
 function hitRate(ship,accBase,accFlat,accMod) {
-	if (C) console.log('hit: '+accBase+' '+accFlat+' '+accMod);
+	if (C) simConsole.log('hit: '+accBase+' '+accFlat+' '+accMod);
 	return (accBase + 2*Math.sqrt(ship.LVL) + 1.5*Math.sqrt(ship.LUK) + accFlat)*accMod*.01;
 }
 
@@ -2040,7 +2057,7 @@ function accuracyAndCrit(ship,target,hit,evMod,evFlat,critMod,isPlanes,critBonus
 		dodge += target.bonusEvFlat*.01;
 	}
 	
-	if (C) console.log('	hit: '+hit+' dodge: '+dodge + ' (' + evFlat + ')');
+	if (C) simConsole.log('	hit: '+hit+' dodge: '+dodge + ' (' + evFlat + ')');
 	acc = Math.max(hit-dodge,.1);
 	acc *= target.moraleModEv();
 	acc = Math.min(.96,acc);
@@ -2051,7 +2068,7 @@ function accuracyAndCrit(ship,target,hit,evMod,evFlat,critMod,isPlanes,critBonus
 		if (ship.critratebonus) crit += ship.critratebonus*.01;
 	}
 	crit += critBonusFlat || 0;
-	if (C) console.log('	accfinal: '+acc+', crit: '+crit);
+	if (C) simConsole.log('	accfinal: '+acc+', crit: '+crit);
 	return [acc,crit];
 }
 
@@ -2107,16 +2124,16 @@ function getBonusSpecialPlane(ship,key='bonusSpecialP',isAir) {
 }
 
 function damageCommon(ship,target,pow,res) {
-	if (C) console.log('	' + ship.id + ' ' + target.id + ' ' + pow + ' ' + res);
+	if (C) simConsole.log('	' + ship.id + ' ' + target.id + ' ' + pow + ' ' + res);
 	if (res > 1) {
 		pow = Math.floor(pow*res);
 	}
 	
-	if (C) console.log('	before def: '+pow);
+	if (C) simConsole.log('	before def: '+pow);
 	let ar = target.AR + (target.improves.AR || 0);
 	if (target.isSub && ship.aswPenetrate) ar = Math.max(1,ar-ship.aswPenetrate);
 	let dmg = pow - (.7*ar+.6*Math.floor(Math.random()*Math.floor(ar)) - (target.debuff||0));
-	if (C) console.log('	after def: '+dmg);
+	if (C) simConsole.log('	after def: '+dmg);
 	
 	if (ship.ammoleft < 5) dmg *= .2*ship.ammoleft;
 	
@@ -2124,8 +2141,8 @@ function damageCommon(ship,target,pow,res) {
 	if (dmg <= 0) dmg = getScratchDamage(target.HP);
 	if (C) {
 		let modAmmo = ship.ammoleft < 5 ? .2*ship.ammoleft : 1;
-		console.log('	min:', Math.floor((pow - ar*.7 - Math.floor(ar-1)*.6)*modAmmo), 'max:', Math.floor((pow - ar*.7)*modAmmo));
-		console.log('	returned: '+dmg);
+		simConsole.log('	min:', Math.floor((pow - ar*.7 - Math.floor(ar-1)*.6)*modAmmo), 'max:', Math.floor((pow - ar*.7)*modAmmo));
+		simConsole.log('	returned: '+dmg);
 	}
 	return dmg;
 }
@@ -2156,7 +2173,7 @@ function compareAP(fleet1,fleet2,eqtFilter1,includeEscort,eqtFilter2) {
 	else if (ap2 >= ap1*3) { fleet1.AS = -2; fleet2.AS = 2; }
 	else if (ap2 >= ap1*1.5) { fleet1.AS = -1; fleet2.AS = 1; }
 	else { fleet1.AS = fleet2.AS = 0; }
-	if (C) console.log('AS: '+ap1+' '+ap2+' '+fleet1.AS + ' '+fleet2.AS);
+	if (C) simConsole.log('AS: '+ap1+' '+ap2+' '+fleet1.AS + ' '+fleet2.AS);
 }
 
 function choiceWProtect(targets,searchlightRerolls,includeEscort,ignoreVanguard) {
@@ -2183,7 +2200,7 @@ function choiceWProtect(targets,searchlightRerolls,includeEscort,ignoreVanguard)
 		for (var i=0; i<targets.length; i++) {
 			if (targets[i] != target && targets[i].HP/targets[i].maxHP > .75 && (includeEscort || !targets[i].isescort) && !targets[i].isInstall) defenders.push(targets[i]);
 		}
-		if (C) { console.log('***FLAGSHIP PROTECT '+rate+' '+defenders.length); console.log(defenders); }
+		if (C) { simConsole.log('***FLAGSHIP PROTECT '+rate+' '+defenders.length); simConsole.log(defenders); }
 		if (defenders.length <= 0) return target;
 		DIDPROTECT = true;
 		let defender = defenders[Math.floor(Math.random()*(defenders.length))];
@@ -2376,7 +2393,7 @@ function getContact(carriers) {
 	if (carriers[0].airState() == 2) { chance = losPower/25; cmod = 14; }
 	else if (carriers[0].airState() == 1) { chance = losPower/40; cmod = 16; }
 	else { chance = losPower/55; cmod = 18; }
-	if (C) console.log('CONTACT CHANCE 1: '+chance);
+	if (C) simConsole.log('CONTACT CHANCE 1: '+chance);
 	//phase 2
 	if (Math.random() < chance) {
 		var contacter = null;
@@ -2386,7 +2403,7 @@ function getContact(carriers) {
 				var equip = ship.equips[i];
 				if (!EQTDATA[equip.type].canContact || !equip.LOS) continue;
 				if (contacter && ((contacter.ACC||0) >= (equip.ACC||0))) continue;
-				if (C) console.log('    CHANCE 2: '+(equip.LOS/cmod));
+				if (C) simConsole.log('    CHANCE 2: '+(equip.LOS/cmod));
 				if (Math.random() < equip.LOS/cmod) contacter = equip;
 			}
 		}
@@ -2474,7 +2491,7 @@ function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupp
 					} else {
 						shotFix = Math.floor(n1*.6 + n2);
 					}
-					if (C) console.log('AACI resist: ' + ship.equips[slot].aaResistShip + ' ' + ship.equips[slot].aaResistFleet + ' ' + n1 + ' ' + n2 + ' ' + shotFix);
+					if (C) simConsole.log('AACI resist: ' + ship.equips[slot].aaResistShip + ' ' + ship.equips[slot].aaResistFleet + ' ' + n1 + ' ' + n2 + ' ' + shotFix);
 				}
 				
 				if (C) {
@@ -2484,7 +2501,7 @@ function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupp
 					ship.equips[slot].lostnums.push(shotProp+shotFlat+shotFix);
 				}
 				ship.planecount[slot] = Math.max(0,ship.planecount[slot]-shotProp-shotFlat-shotFix);
-				if (C) console.log('	anti air: '+defender.name+' '+defender.AA+' '+shotProp+' '+shotFlat+' '+shotFix+' '+ship.planecount[slot]);
+				if (C) simConsole.log('	anti air: '+defender.name+' '+defender.AA+' '+shotProp+' '+shotFlat+' '+shotFix+' '+ship.planecount[slot]);
 		
 				if (ship.planecount[slot]<=0) {
 					ship.planecount[slot] = 0;
@@ -2686,7 +2703,7 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 				realdmg = takeDamage(target,dmg);
 			} else { realdmg = 0; }
 			if (C) {
-				console.log(ship.name+' support attacks '+target.name+' for '+dmg+' damage');
+				simConsole.log(ship.name+' support attacks '+target.name+' for '+dmg+' damage');
 				let off = (NEWFORMAT)? -1 : 0;
 				hou.api_cl_list[target.apiID2+off] = Math.max(hou.api_cl_list[target.apiID2+off],((res>1)? 2 : (dmg)? 1 : 0));
 				hou.api_damage[target.apiID2+off] += realdmg;
@@ -2768,7 +2785,7 @@ function supportASW(carriers,targets,defenders,APIkouku,combinedAll) {
 					ship.equips[slot].lostnums.push(shotProp+shotFlat+shotFix);
 				}
 				ship.planecount[slot] = Math.max(0,ship.planecount[slot]-shotProp-shotFlat-shotFix);
-				if (C) console.log('	anti air: '+defender.name+' '+defender.AA+' '+shotProp+' '+shotFlat+' '+shotFix+' '+ship.planecount[slot]);
+				if (C) simConsole.log('	anti air: '+defender.name+' '+defender.AA+' '+shotProp+' '+shotFlat+' '+shotFix+' '+ship.planecount[slot]);
 			
 				if (ship.planecount[slot]<=0) {
 					ship.planecount[slot] = 0;
@@ -2819,7 +2836,7 @@ function airstrikeSupportASW(ship,target,slot,contactMod) {
 	var dmg = 0, realdmg = 0;
 	var planebase = equip.ASW;
 	planebase = planebase || 0;
-	if (C) console.log('		'+slot+' '+planebase);
+	if (C) simConsole.log('		'+slot+' '+planebase);
 	if (res) {
 		let dmgBase = Math.floor(planebase*.6)*Math.sqrt(ship.planecount[slot]) + 3;
 		let postMod = 1.75;
@@ -2833,7 +2850,7 @@ function airstrikeSupportASW(ship,target,slot,contactMod) {
 	}
 	ship.fleet.giveCredit(ship,realdmg);
 	if(C) {
-		console.log(ship.name+' support ASWs '+target.name+' for '+dmg+' damage, '+target.HP+'/'+target.maxHP+' left, CONTACT: '+contactMod);
+		simConsole.log(ship.name+' support ASWs '+target.name+' for '+dmg+' damage, '+target.HP+'/'+target.maxHP+' left, CONTACT: '+contactMod);
 	}
 	return realdmg;
 }
@@ -2919,7 +2936,7 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 			if (C) {
 				APIkouku.api_stage2.api_f_count += lbas.planecount[i];
 				APIkouku.api_stage2.api_f_lostcount += shotProp+shotFlat+shotFix;
-				console.log(lbas.planecount[i] + ' ' + defender.name + ' ' + shotProp + ' ' + shotFlat);
+				simConsole.log(lbas.planecount[i] + ' ' + defender.name + ' ' + shotProp + ' ' + shotFlat);
 			}
 			lbas.planecount[i] = Math.max(0,lbas.planecount[i]-shotProp-shotFlat-shotFix);
 			if (lbas.planecount[i] <= 0) {
@@ -3179,7 +3196,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod,contactModLB,isjetphase) {
 		realdmg = takeDamage(target,dmg);
 	}
 	if(C) {
-		console.log('LBAS airstrikes '+target.name+' for '+dmg+' damage, '+target.HP+'/'+target.maxHP+' left, CONTACT: '+contactMod);
+		simConsole.log('LBAS airstrikes '+target.name+' for '+dmg+' damage, '+target.HP+'/'+target.maxHP+' left, CONTACT: '+contactMod);
 	}
 	return realdmg;
 }
@@ -3435,7 +3452,8 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 	if (bombing) aironly = true;
 	
 	if (C) {
-		console.log('ENGAGEMENT: '+ENGAGEMENT);
+		simConsole.clear();
+		simConsole.log('ENGAGEMENT: '+ENGAGEMENT);
 		var dataroot = (NBonly)? BAPI.yasen : BAPI.data;
 		dataroot.api_formation = [F1.formation.id,F2.formation.id,{1:1,.8:2,1.2:3,.6:4}[ENGAGEMENT]];
 		apiSetBasic(dataroot,ships1,ships2);
@@ -3878,7 +3896,7 @@ function updateSupply(ships,didNB,NBonly,bombing,noammo,isECombined,shipsE) {
 			if (ships[i].ammoleft < 0) ships[i].ammoleft = 0;
 		}
 		
-		if (C) console.log('FUEL LEFT: '+ships[i].fuelleft+' AMMO LEFT: '+ships[i].ammoleft);
+		if (C) simConsole.log('FUEL LEFT: '+ships[i].fuelleft+' AMMO LEFT: '+ships[i].ammoleft);
 	}
 }
 
@@ -3922,7 +3940,7 @@ function updateMorale(ships1,rank,mvp,NBonly,didNB) {
 	for (var i=0; i<ships1.length; i++) {
 		if (ships1[i].morale > 100) ships1[i].morale = 100;
 		if (ships1[i].morale < 0) ships1[i].morale = 0;
-		if (C) console.log(ships1[i].name+' '+ships1[i].morale);
+		if (C) simConsole.log(ships1[i].name+' '+ships1[i].morale);
 	}
 }
 
@@ -4306,8 +4324,8 @@ function simLBRaid(F1,F2,BAPI) {
 				if (C) {
 					APIkouku.api_stage1[(ship.side)? 'api_e_count':'api_f_count'] += ship.planecount[j];
 					APIkouku.api_stage1[(ship.side)? 'api_e_lostcount':'api_f_lostcount'] += lostcount;
-					console.log('slot: '+lbSlot+' ratio: '+sRatio+' lost: '+lostcount+'/'+ship.planecount[j]);
-					console.log(interceptor);
+					simConsole.log('slot: '+lbSlot+' ratio: '+sRatio+' lost: '+lostcount+'/'+ship.planecount[j]);
+					simConsole.log(interceptor);
 				}
 				ship.planecount[j] -= lostcount;
 				if (ship.planecount[j] < 0) ship.planecount[j] = 0;
@@ -4446,7 +4464,7 @@ function simNightFirstCombined(F1,F2,Fsupport,LBASwaves,BAPI) {
 	F1.AS = F2.AS = F2C.AS = 0;
 	
 	if (C) {
-		console.log('ENGAGEMENT: '+ENGAGEMENT);
+		simConsole.log('ENGAGEMENT: '+ENGAGEMENT);
 		var dataroot = BAPI.data;
 		dataroot.api_formation = [F1.formation.id,F2.formation.id,{1:1,.8:2,1.2:3,.6:4}[ENGAGEMENT]];
 		dataroot.api_dock_id = 1;

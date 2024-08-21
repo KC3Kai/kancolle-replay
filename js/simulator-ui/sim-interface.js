@@ -52,6 +52,7 @@ var SIM = {
 	_unsetEnemy: null,
 	
 	cancelRun: false,
+	simResultPrev: null,
 
 	_addError: function(key,args) {
 		let txt = CONST.errorText[key].txt;
@@ -881,6 +882,7 @@ var SIM = {
 					result = sim(fleetF,fleetE,fleetFSupport,lbWaves,doNB,node.NBOnly,node.airOnly,node.airRaid,node.noAmmo,apiBattle,false,fleetFF);
 				}
 			}
+			this.simResultPrev = { battleNum: battleInd+1, result: result };
 			
 			if (!dataReplay) {
 				this._updateResultsNode(result,battleInd);
@@ -999,9 +1001,9 @@ var SIM = {
 		setTimeout(runStep.bind(this),1);
 	},
 	
-	runReplay: function(dataInput,dataReplay) {
-		console.log(dataInput);
-		window.C = true;
+	runReplay: function(dataInput,dataReplay,noLog) {
+		if (!noLog) console.log(dataInput);
+		window.C = noLog ? 2 : 1;
 		
 		this._load(dataInput);
 		if (this._errors.length) {
