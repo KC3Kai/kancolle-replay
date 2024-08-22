@@ -36,6 +36,7 @@ var CONST = window.COMMON.getConst({
 		'warn_range_weights_f': { txt: 'Warning: Player Fleets - Following range combination weights are unknown and not used: <0>' },
 		'warn_range_weights_e': { txt: 'Warning: Enemy Fleets - Following range combination weights are unknown and not used: <0>' },
 		'warn_special_attack': { txt: 'Note: Special Attack activation rate calculations are unknown and must be set manually, see Show Advanced to review defaults and adjust settings' },
+		'warn_smoke_formula': { txt: '' },
 	},
 	
 	keysSmoke: ['smokeModShellAccF','smokeModShellAccFRadar','smokeModShellAccE','smokeModShellAccERadar','smokeModASWAccF','smokeModASWAccE','smokeModTorpAccF','smokeModTorpAccE','smokeModAirAccF','smokeModAirAccE'],
@@ -666,6 +667,10 @@ var SIM = {
 		
 		if (FLEETS1[0] && FLEETS1[0].ships && canSpecialAttackUnique(FLEETS1[0].ships[0],false,true) || canSpecialAttackUnique(FLEETS1[0].ships[0],true,true)) {
 			this._addWarning('warn_special_attack');
+		}
+		
+		if (dataInput.nodes.find(node => node.useSmoke) && dataInput.consts && dataInput.consts.smokeChanceUseFormula) {
+			this._addWarning('warn_smoke_formula',FLEETS1[0].getSmokeRates());
 		}
 	},
 	
