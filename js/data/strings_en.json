@@ -370,6 +370,7 @@
 	"only_day_rank_less_than_A": "Only if Day Rank less than A",
 	"only_day_rank_less_than_B": "Only if Day Rank less than B",
 	"only_flag_not_sunk": "Only if Enemy Flagship not sunk",
+	"only_flag_not_sunk_tooltip": "If enemy combined fleet, does not do Night Battle if the enemy escort fleet would be fought AND Friend Fleet is not used.",
 	"resupply_cost": "Resupply Cost",
 	"submarine_only": "Submarine Only",
 	"add_cost": "Add Cost (% of current supply before battle)",

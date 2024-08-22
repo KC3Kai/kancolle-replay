@@ -767,7 +767,7 @@ ${t('results.buckets')}:	${this.results.bucketSunk}`;
 			return Math.max(0, Math.min(100, Math.floor(rate)));
 		},
 		getKongouSpecialFormula: function() {
-			let shipsF = this.fleetFMain.type > 0 && this.fleetFMain.shipsEscort ? this.fleetFMain.shipsEscort : this.fleetFMain.ships;
+			let shipsF = this.fleetFMain.type > 0 && this.fleetFMain.type != 7 && this.fleetFMain.shipsEscort ? this.fleetFMain.shipsEscort : this.fleetFMain.ships;
 			if (FLEET_MODEL.shipIsEmpty(shipsF[0]) || FLEET_MODEL.shipIsEmpty(shipsF[1])) return 0;
 			let rate = -33;
 			rate += 3.5*Math.sqrt(shipsF[0].level) + 1.1*Math.sqrt(shipsF[0].statsBase.luk);

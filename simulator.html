@@ -663,11 +663,11 @@
 						<label><input type="radio" value="4" v-model="battle.nodeType" /><img src="assets/maps/nodeAir.png" :title="$t('battle_air_only')" /></label>
 					</div>
 					<div v-show="hasNB"><label><input type="checkbox" v-model="battle.doNB" /><img src="assets/stats/nightbattle.png"/>{{$t('night_battle')}}</label></div>
-					<div v-show="hasNB && battle.doNB"><label><select v-model="battle.doNBCond">
+					<div v-show="hasNB && battle.doNB"><label><select v-model="battle.doNBCond" :title="battle.doNBCond=='flagsunk' ? $t('only_flag_not_sunk_tooltip') : null">
 						<option value="">{{$t('always_if_possible')}}</option>
 						<option value="A">{{$t('only_day_rank_less_than_A')}}</option>
 						<option value="B">{{$t('only_day_rank_less_than_B')}}</option>
-						<option value="flagsunk">{{$t('only_flag_not_sunk')}}</option>
+						<option value="flagsunk" :title="$t('only_flag_not_sunk_tooltip')">{{$t('only_flag_not_sunk')}}</option>
 					</select></label></div>
 				</div>
 				<div>
