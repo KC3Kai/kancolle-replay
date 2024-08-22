@@ -370,6 +370,7 @@
 	"only_day_rank_less_than_A": "A未満なら",
 	"only_day_rank_less_than_B": "B未満なら",
 	"only_flag_not_sunk": "敵旗艦が健在なら",
+	"only_flag_not_sunk_tooltip": "If enemy combined fleet, does not do Night Battle if the enemy escort fleet would be fought AND Friend Fleet is not used.",
 	"resupply_cost": "資源消費タイプ",
 	"submarine_only": "潜水艦のみ",
 	"add_cost": "追加コスト(戦闘開始前に現在の残り資源から)",
