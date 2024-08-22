@@ -370,7 +370,7 @@
 	"only_day_rank_less_than_A": "A未満なら",
 	"only_day_rank_less_than_B": "B未満なら",
 	"only_flag_not_sunk": "敵旗艦が健在なら",
-	"only_flag_not_sunk_tooltip": "If enemy combined fleet, does not do Night Battle if the enemy escort fleet would be fought AND Friend Fleet is not used.",
+	"only_flag_not_sunk_tooltip": "敵連合艦隊第一艦隊との夜戦権が無い場合は夜戦を行わない(友軍艦隊を使用する場合を除く)",
 	"resupply_cost": "資源消費タイプ",
 	"submarine_only": "潜水艦のみ",
 	"add_cost": "追加コスト(戦闘開始前に現在の残り資源から)",
@@ -818,7 +818,8 @@
 		"warn_debuff_dmg": "注意: 自艦隊欄の'ダメージ特効(旗艦)'は古いシステムであり、正確に作動しないかもしれません。代わりに敵の装甲を調整する方法を推奨します",
 		"warn_range_weights_f": "注意: 自艦隊 - 以下の射程における攻撃順の偏向は不明であり、適用されません: {0}",
 		"warn_range_weights_e": "注意: 敵艦隊 - 以下の射程における攻撃順の偏向は不明であり、適用されません: {0}",
-		"warn_special_attack": "メモ: 特殊砲撃の発動率の計算は不明であり、手動で設定する必要があります。「詳細設定」でデフォルト値の確認と発動率の指定ができます"
+		"warn_special_attack": "メモ: 特殊砲撃の発動率の計算は不明であり、手動で設定する必要があります。「詳細設定」でデフォルト値の確認と発動率の指定ができます",
+		"warn_smoke_formula": "メモ: 煙幕発生率は暫定計算式より、出撃時点: 1重 = {0}%, 2重 = {1}%, 3重 = {2}%"
 	},
 	
 	"ui_search": "検索",

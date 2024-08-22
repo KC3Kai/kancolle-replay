@@ -1480,7 +1480,7 @@
 					<hr>
 					<input type="button" :value="$t('create_shared_link')" :disabled="shareURLLoading" @click="onclickShareURL"/>
 					<span v-show="$i18n.locale=='ja'">&nbsp;<a href="https://twitter.com/momemi_kc/status/1811049862663684576" target="_blank">(!)</a></span>
-					<span v-show="$i18n.locale!='ja'" style="color:darkorange">&nbsp;<span class="tooltip" :title="$t('create_shared_link_note')">(!)</span>
+					<span v-show="$i18n.locale!='ja'" style="color:darkorange">&nbsp;<span class="tooltip" :title="$t('create_shared_link_note')">(!)</span></span>
 					<span style="color:green" v-show="showShareURLCopied">&nbsp;{{$t('copied_to_clipboard')}}</span>
 					<span class="error" v-show="showShareURLError">&nbsp;{{$t('error')}}</span>
 				</div>
