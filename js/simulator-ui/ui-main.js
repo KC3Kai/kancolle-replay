@@ -62,6 +62,7 @@ var UI_MAIN = Vue.createApp({
 		useSupportN: true,
 		useSupportB: true,
 		useFF: true,
+		ffLuckSet: 50,
 		
 		battles: [],
 		
@@ -192,6 +193,12 @@ var UI_MAIN = Vue.createApp({
 			fuelS: 0, ammoS: 0, steelS: 0, bauxS: 0, bucketS: 0, dameconS: 0,
 			fuelSunk: 0, ammoSunk: 0, steelSunk: 0, bauxSunk: 0, bucketSunk: 0, dameconSunk: 0,
 			emptiedPlane: 0, emptiedLBAS: 0,
+			showMore: false,
+			fuelA: 0, ammoA: 0, steelA: 0, bauxA: 0, bucketA: 0, dameconA: 0,
+			fuelB: 0, ammoB: 0, steelB: 0, bauxB: 0, bucketB: 0, dameconB: 0,
+			fuelHP: 0, ammoHP: 0, steelHP: 0, bauxHP: 0, bucketHP: 0, dameconHP: 0,
+			fuelTP: 0, ammoTP: 0, steelTP: 0, bauxTP: 0, bucketTP: 0, dameconTP: 0,
+			perHPRes: 1, perTPRes: 1,
 		},
 		
 		lang: 'en',
@@ -367,6 +374,43 @@ var UI_MAIN = Vue.createApp({
 		styleWatchCount: function() {
 			return this.isRunningWatch ? {} : this.watchFound ? { 'color': 'green' } : { 'color': 'red' };
 		},
+		
+		resultsFuelHPPer: function() {
+			return Math.round(1000*this.results.perHPRes*this.results.fuelHP)/1000;
+		},
+		resultsAmmoHPPer: function() {
+			return Math.round(1000*this.results.perHPRes*this.results.ammoHP)/1000;
+		},
+		resultsSteelHPPer: function() {
+			return Math.round(1000*this.results.perHPRes*this.results.steelHP)/1000;
+		},
+		resultsBauxHPPer: function() {
+			return Math.round(1000*this.results.perHPRes*this.results.bauxHP)/1000;
+		},
+		resultsBucketHPPer: function() {
+			return Math.round(1000*this.results.perHPRes*this.results.bucketHP)/1000;
+		},
+		resultsDameconHPPer: function() {
+			return Math.round(1000*this.results.perHPRes*this.results.dameconHP)/1000;
+		},
+		resultsFuelTPPer: function() {
+			return Math.round(1000*this.results.perTPRes*this.results.fuelTP)/1000;
+		},
+		resultsAmmoTPPer: function() {
+			return Math.round(1000*this.results.perTPRes*this.results.ammoTP)/1000;
+		},
+		resultsSteelTPPer: function() {
+			return Math.round(1000*this.results.perTPRes*this.results.steelTP)/1000;
+		},
+		resultsBauxTPPer: function() {
+			return Math.round(1000*this.results.perTPRes*this.results.bauxTP)/1000;
+		},
+		resultsBucketTPPer: function() {
+			return Math.round(1000*this.results.perTPRes*this.results.bucketTP)/1000;
+		},
+		resultsDameconTPPer: function() {
+			return Math.round(1000*this.results.perTPRes*this.results.dameconTP)/1000;
+		},
 	},
 	methods: {
 		addNewBattle: function(indAt) {
@@ -465,6 +509,36 @@ var UI_MAIN = Vue.createApp({
 			this.results.bauxS = formatNum((resultSim.totalBauxS) / totalNum / rateS);
 			this.results.bucketS = formatNum((resultSim.totalBuckets) / totalNum / rateS);
 			this.results.dameconS = formatNum((resultSim.totalDamecon) / totalNum / rateS);
+			
+			let rateA = (nodeLast.ranks.S + nodeLast.ranks.A) / totalNum;
+			this.results.fuelA = formatNum((resultSim.totalFuelS + resultSim.totalFuelR) / totalNum / rateA);
+			this.results.ammoA = formatNum((resultSim.totalAmmoS) / totalNum / rateA);
+			this.results.steelA = formatNum((resultSim.totalSteelR) / totalNum / rateA);
+			this.results.bauxA = formatNum((resultSim.totalBauxS) / totalNum / rateA);
+			this.results.bucketA = formatNum((resultSim.totalBuckets) / totalNum / rateA);
+			this.results.dameconA = formatNum((resultSim.totalDamecon) / totalNum / rateA);
+			
+			let rateB = (nodeLast.ranks.S + nodeLast.ranks.A + nodeLast.ranks.B) / totalNum;
+			this.results.fuelB = formatNum((resultSim.totalFuelS + resultSim.totalFuelR) / totalNum / rateB);
+			this.results.ammoB = formatNum((resultSim.totalAmmoS) / totalNum / rateB);
+			this.results.steelB = formatNum((resultSim.totalSteelR) / totalNum / rateB);
+			this.results.bauxB = formatNum((resultSim.totalBauxS) / totalNum / rateB);
+			this.results.bucketB = formatNum((resultSim.totalBuckets) / totalNum / rateB);
+			this.results.dameconB = formatNum((resultSim.totalDamecon) / totalNum / rateB);
+			
+			this.results.fuelHP = (resultSim.totalFuelS + resultSim.totalFuelR) / resultSim.totalGaugeDamage;
+			this.results.ammoHP = (resultSim.totalAmmoS) / resultSim.totalGaugeDamage;
+			this.results.steelHP = (resultSim.totalSteelR) / resultSim.totalGaugeDamage;
+			this.results.bauxHP = (resultSim.totalBauxS) / resultSim.totalGaugeDamage;
+			this.results.bucketHP = (resultSim.totalBuckets) / resultSim.totalGaugeDamage;
+			this.results.dameconHP = (resultSim.totalDamecon) / resultSim.totalGaugeDamage;
+			
+			this.results.fuelTP = (resultSim.totalFuelS + resultSim.totalFuelR) / resultSim.totalTransport;
+			this.results.ammoTP = (resultSim.totalAmmoS) / resultSim.totalTransport;
+			this.results.steelTP = (resultSim.totalSteelR) / resultSim.totalTransport;
+			this.results.bauxTP = (resultSim.totalBauxS) / resultSim.totalTransport;
+			this.results.bucketTP = (resultSim.totalBuckets) / resultSim.totalTransport;
+			this.results.dameconTP = (resultSim.totalDamecon) / resultSim.totalTransport;
 			
 			this.results.emptiedPlane = formatNum(resultSim.totalEmptiedPlanes / totalNum);
 			this.results.emptiedLBAS = formatNum(resultSim.totalEmptiedLBAS / totalNum);
@@ -675,6 +749,30 @@ ${t('results.buckets')}:	${this.results.bucketS}`;
 				if (this.results.dameconS) {
 					txt += '\n' + t('results.damecon') + ':\t' + this.results.dameconS;
 				}
+			} else if (typeString == 'A') {
+				let rateA = this.results.rankS + this.results.rankA, rateNonA = 1 - rateA - this.results.retreat;
+				txt += `${t('results.A_rate')}: ${Math.round(rateA*1000)/10}% (${t('results.retreat_rate')}: ${Math.round(this.results.retreat*1000)/10}%, ${t('results.non_A_rate')}: ${Math.round(rateNonA*1000)/10}%)
+${t('results.avg_per_A')}
+${t('results.fuel')}:	${this.results.fuelA}
+${t('results.ammo')}:	${this.results.ammoA}
+${t('results.steel')}:	${this.results.steelA}
+${t('results.baux')}:	${this.results.bauxA}
+${t('results.buckets')}:	${this.results.bucketA}`;
+				if (this.results.dameconA) {
+					txt += '\n' + t('results.damecon') + ':\t' + this.results.dameconA;
+				}
+			} else if (typeString == 'B') {
+				let rateB = this.results.rankS + this.results.rankA + this.results.rankB, rateNonB = 1 - rateB - this.results.retreat;
+				txt += `${t('results.B_rate')}: ${Math.round(rateB*1000)/10}% (${t('results.retreat_rate')}: ${Math.round(this.results.retreat*1000)/10}%, ${t('results.non_B_rate')}: ${Math.round(rateNonB*1000)/10}%)
+${t('results.avg_per_B')}
+${t('results.fuel')}:	${this.results.fuelB}
+${t('results.ammo')}:	${this.results.ammoB}
+${t('results.steel')}:	${this.results.steelB}
+${t('results.baux')}:	${this.results.bauxB}
+${t('results.buckets')}:	${this.results.bucketB}`;
+				if (this.results.dameconB) {
+					txt += '\n' + t('results.damecon') + ':\t' + this.results.dameconB;
+				}
 			} else if (typeString == 'flagsunk') {
 				let rateNonSunk = 1 - this.results.flagSunk - this.results.retreat;
 				txt += `${t('results.flagsunk_rate')}: ${Math.round(this.results.flagSunk*1000)/10}% (${t('results.retreat_rate')}: ${Math.round(this.results.retreat*1000)/10}%, ${t('results.non_flagsunk_rate')}: ${Math.round(rateNonSunk*1000)/10}%)
@@ -686,6 +784,26 @@ ${t('results.baux')}:	${this.results.bauxSunk}
 ${t('results.buckets')}:	${this.results.bucketSunk}`;
 				if (this.results.dameconSunk) {
 					txt += '\n' + t('results.damecon') + ':\t' + this.results.dameconSunk;
+				}
+			} else if (typeString == 'hp') {
+				txt += `${t('results.avg_per_hp',[this.results.perHPRes])}
+${t('results.fuel')}:	${this.resultsFuelHPPer}
+${t('results.ammo')}:	${this.resultsAmmoHPPer}
+${t('results.steel')}:	${this.resultsSteelHPPer}
+${t('results.baux')}:	${this.resultsBauxHPPer}
+${t('results.buckets')}:	${this.resultsBucketHPPer}`;
+				if (this.results.dameconHP) {
+					txt += '\n' + t('results.damecon') + ':\t' + this.resultsDameconHPPer;
+				}
+			} else if (typeString == 'tp') {
+				txt += `${t('results.avg_per_tp',[this.results.perTPRes])}
+${t('results.fuel')}:	${this.resultsFuelTPPer}
+${t('results.ammo')}:	${this.resultsAmmoTPPer}
+${t('results.steel')}:	${this.resultsSteelTPPer}
+${t('results.baux')}:	${this.resultsBauxTPPer}
+${t('results.buckets')}:	${this.resultsBucketTPPer}`;
+				if (this.results.dameconTP) {
+					txt += '\n' + t('results.damecon') + ':\t' + this.resultsDameconTPPer;
 				}
 			}
 			navigator.clipboard.writeText(txt);
@@ -840,6 +958,17 @@ ${t('results.buckets')}:	${this.results.bucketSunk}`;
 			if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 5)) rate += 10;
 			if (this.fleetFMain.ships[1].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 5)) rate += 10;
 			return Math.max(0, Math.min(100, Math.floor(rate)));
+		},
+		
+		onclickFFSetLuck: function(val) {
+			if (val === null) return;
+			for (let comp of this.fleetsFFriend) {
+				for (let ship of comp.fleet.ships) {
+					if (FLEET_MODEL.shipIsEmpty(ship)) continue;
+					let luckMin = SHIPDATA[ship.mstId].LUK, luckMax = SHIPDATA[ship.mstId].LUKmax || SHIPDATA[ship.mstId].LUK;
+					ship.statsBase.luk = val == 'min' ? luckMin : val == 'max' ? luckMax : Math.max(luckMin,Math.min(luckMax,+val));
+				}
+			}
 		},
 	},
 }).component('vbattle',{

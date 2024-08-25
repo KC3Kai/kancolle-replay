@@ -110,7 +110,15 @@
 			<div class="fleetSection">
 				<div class="scrollAnchor"><div ref="divPlayerFFScroll"></div></div>
 				<vfleetcomps :comps="fleetsFFriend" :fleetname="$t('friend_fleet')" canimportkcnav="1" isfriendfleet="1"></vfleetcomps>
-				<label><input type="checkbox" v-model="useFF"/> {{$t('use_friend_fleet')}}</label>
+				<div style="display:flex;gap:20px">
+					<div><label><input type="checkbox" v-model="useFF"/> {{$t('use_friend_fleet')}}</label></div>
+					<div>
+						{{$t('set_all_ff_luck_to')}}:&nbsp;
+						<input type="button" :value="$t('ff_luck_base')" @click="onclickFFSetLuck('min')"/>&nbsp;
+						<input type="button" :value="$t('ff_luck_max')" @click="onclickFFSetLuck('max')"/>&nbsp;
+						<input type="button" :value="$t('ff_luck_value')" @click="onclickFFSetLuck(ffLuckSet)"/><input type="number" v-model.number="ffLuckSet" min="0" max="999"/>
+					</div>
+				</div>
 			</div>
 		</div>
 		
@@ -489,7 +497,7 @@
 				<div class="note">{{$t('note_calc_wip')}}</div>
 				<div class="noteBold" v-show="results.showCFWarning">{{$t('warn_combined_fleet')}}</div>
 				<div>{{$t('number_of_runs')}}: {{results.totalNum}}</div>
-				<div id="divResultColsWrap">
+				<div class="divResultColsWrap">
 					<div class="resultCol">
 						<div>
 							<div>{{$t('final_rank_rate')}}:</div>
@@ -626,6 +634,80 @@
 						</div>
 					</div>
 				</div>
+				<div class="divResultColsWrap" v-show="results.showMore">
+					<div class="resultCol">
+						<div>
+							<i18n-t keypath="avg_resource_per_or_better" scope="global">
+								<template v-slot:avg_res><span class="tooltip" :title="$t('avg_resource_tooltip')">{{$t('avg_resource')}}</span></template>
+								<template v-slot:img><img src="assets/stats/A.png" alt="A"/></template>
+							</i18n-t>:
+							<img @click="onclickCopyResults('A')" src="assets/stats/content-copy-custom.png" class="copyIcons" :title="$t('copy_to_clipboard')"/>
+						</div>
+						<table>
+						<tr><th><img src="assets/stats/fuel.png" :alt="$t('fuel')"/></th><td><span class="resultBold">{{results.fuelA}}</span></td></tr>
+						<tr><th><img src="assets/stats/ammo.png" :alt="$t('ammo')"/></th><td><span class="resultBold">{{results.ammoA}}</span></td></tr>
+						<tr><th><img src="assets/stats/steel.png" :alt="$t('steel')"/></th><td><span class="resultBold">{{results.steelA}}</span></td></tr>
+						<tr><th><img src="assets/stats/baux.png" :alt="$t('baux')"/></th><td><span class="resultBold">{{results.bauxA}}</span></td></tr>
+						<tr><th><img src="assets/stats/bucket.png" :alt="$t('bucket')"/></th><td><span class="resultBold">{{results.bucketA}}</span></td></tr>
+						<tr><th><img src="assets/items/14.png" :alt="$t('repair_team')"/></th><td><span class="resultBold">{{results.dameconA}}</span></td></tr>
+						</table>
+					</div>
+					<div class="resultCol">
+						<div>
+							<i18n-t keypath="avg_resource_per_or_better" scope="global">
+								<template v-slot:avg_res><span class="tooltip" :title="$t('avg_resource_tooltip')">{{$t('avg_resource')}}</span></template>
+								<template v-slot:img><img src="assets/stats/B.png" alt="B"/></template>
+							</i18n-t>:
+							<img @click="onclickCopyResults('B')" src="assets/stats/content-copy-custom.png" class="copyIcons" :title="$t('copy_to_clipboard')"/>
+						</div>
+						<table>
+						<tr><th><img src="assets/stats/fuel.png" :alt="$t('fuel')"/></th><td><span class="resultBold">{{results.fuelB}}</span></td></tr>
+						<tr><th><img src="assets/stats/ammo.png" :alt="$t('ammo')"/></th><td><span class="resultBold">{{results.ammoB}}</span></td></tr>
+						<tr><th><img src="assets/stats/steel.png" :alt="$t('steel')"/></th><td><span class="resultBold">{{results.steelB}}</span></td></tr>
+						<tr><th><img src="assets/stats/baux.png" :alt="$t('baux')"/></th><td><span class="resultBold">{{results.bauxB}}</span></td></tr>
+						<tr><th><img src="assets/stats/bucket.png" :alt="$t('bucket')"/></th><td><span class="resultBold">{{results.bucketB}}</span></td></tr>
+						<tr><th><img src="assets/items/14.png" :alt="$t('repair_team')"/></th><td><span class="resultBold">{{results.dameconB}}</span></td></tr>
+						</table>
+					</div>
+					<div class="resultCol">
+						<div>
+							<i18n-t keypath="avg_resource_per_hp" scope="global">
+								<template v-slot:avg_res><span class="tooltip" :title="$t('avg_resource_tooltip')">{{$t('avg_resource')}}</span></template>
+								<template v-slot:input><input type="number" min="1" max="99999" v-model.number="results.perHPRes"/></template>
+							</i18n-t>:
+							<img @click="onclickCopyResults('hp')" src="assets/stats/content-copy-custom.png" class="copyIcons" :title="$t('copy_to_clipboard')"/>
+						</div>
+						<table>
+						<tr><th><img src="assets/stats/fuel.png" :alt="$t('fuel')"/></th><td><span class="resultBold">{{resultsFuelHPPer}}</span></td></tr>
+						<tr><th><img src="assets/stats/ammo.png" :alt="$t('ammo')"/></th><td><span class="resultBold">{{resultsAmmoHPPer}}</span></td></tr>
+						<tr><th><img src="assets/stats/steel.png" :alt="$t('steel')"/></th><td><span class="resultBold">{{resultsSteelHPPer}}</span></td></tr>
+						<tr><th><img src="assets/stats/baux.png" :alt="$t('baux')"/></th><td><span class="resultBold">{{resultsBauxHPPer}}</span></td></tr>
+						<tr><th><img src="assets/stats/bucket.png" :alt="$t('bucket')"/></th><td><span class="resultBold">{{resultsBucketHPPer}}</span></td></tr>
+						<tr><th><img src="assets/items/14.png" :alt="$t('repair_team')"/></th><td><span class="resultBold">{{resultsDameconHPPer}}</span></td></tr>
+						</table>
+					</div>
+					<div class="resultCol">
+						<div>
+							<i18n-t keypath="avg_resource_per_tp" scope="global">
+								<template v-slot:avg_res><span class="tooltip" :title="$t('avg_resource_tooltip')">{{$t('avg_resource')}}</span></template>
+								<template v-slot:input><input type="number" min="1" max="9999" v-model.number="results.perTPRes"/></template>
+							</i18n-t>:
+							<img @click="onclickCopyResults('tp')" src="assets/stats/content-copy-custom.png" class="copyIcons" :title="$t('copy_to_clipboard')"/>
+						</div>
+						<table>
+						<tr><th><img src="assets/stats/fuel.png" :alt="$t('fuel')"/></th><td><span class="resultBold">{{resultsFuelTPPer}}</span></td></tr>
+						<tr><th><img src="assets/stats/ammo.png" :alt="$t('ammo')"/></th><td><span class="resultBold">{{resultsAmmoTPPer}}</span></td></tr>
+						<tr><th><img src="assets/stats/steel.png" :alt="$t('steel')"/></th><td><span class="resultBold">{{resultsSteelTPPer}}</span></td></tr>
+						<tr><th><img src="assets/stats/baux.png" :alt="$t('baux')"/></th><td><span class="resultBold">{{resultsBauxTPPer}}</span></td></tr>
+						<tr><th><img src="assets/stats/bucket.png" :alt="$t('bucket')"/></th><td><span class="resultBold">{{resultsBucketTPPer}}</span></td></tr>
+						<tr><th><img src="assets/items/14.png" :alt="$t('repair_team')"/></th><td><span class="resultBold">{{resultsDameconTPPer}}</span></td></tr>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div v-show="results.active">
+				<input type="button" value="Show More" v-show="!results.showMore" @click="results.showMore=true"/>
+				<input type="button" value="Show Less" v-show="results.showMore" @click="results.showMore=false"/>
 			</div>
 		</div>
 		

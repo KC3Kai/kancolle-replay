@@ -260,14 +260,14 @@ div.progressBarInner {
 	color: red;
 	font-weight: bold;
 }
-#divResultColsWrap {
+div.divResultColsWrap {
 	margin-top: 20px;
 	display: flex;
 }
-#divResultColsWrap div.resultCol {
+div.divResultColsWrap div.resultCol {
 	margin-right: 20px;
 }
-#divResultColsWrap div.resultCol > div {
+div.divResultColsWrap div.resultCol > div {
 	margin-bottom: 20px;
 }
 #divResults h3 {
