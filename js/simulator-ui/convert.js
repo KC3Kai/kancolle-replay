@@ -585,6 +585,8 @@ window.CONVERT = {
 				for (let equip of shipSave.equips) {
 					equip.mstId = this._convertEquipId20221109(equip.mstId);
 				}
+			} else {
+				if (SHIPDATA[shipSave.mstId] && SHIPDATA[shipSave.mstId].LUKmax) shipSave.statsBase.luk = SHIPDATA[shipSave.mstId].LUKmax;
 			}
 			shipsSave.push(shipSave);
 		}

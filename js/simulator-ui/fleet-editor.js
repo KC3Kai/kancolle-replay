@@ -441,6 +441,7 @@ var UI_FLEETEDITOR = Vue.createApp({
 			
 			let shipPrev = this.fleet[shipsProp][ind];
 			let ship = this.fleet[shipsProp][ind] = FLEET_MODEL.getDefaultShip(mstId,ind);
+			if (this.fleet.isFriend && SHIPDATA[mstId] && SHIPDATA[mstId].LUKmax) ship.statsBase.luk = SHIPDATA[mstId].LUKmax;
 			let eqDef;
 			if (mstId > 0 && (eqDef = SHIPDATA[mstId].EQUIPS)) {
 				for (let i=0; i<eqDef.length; i++) {
@@ -520,7 +521,7 @@ var UI_FLEETEDITOR = Vue.createApp({
 			return (+ship.statsBase[stat] || 0) + (+ship.statsEquip[stat] || 0) + ((this.showEquipBonus && +ship.statsBonus[stat]) || 0);
 		},
 		getClassStat: function(ship,stat) {
-			if (ship.statsBase[stat] != ship.statsDefault[stat]) return {changed:COMMON.isShipIdAbyssal(ship.mstId)};
+			if (ship.statsBase[stat] != ship.statsDefault[stat]) return {changed:COMMON.isShipIdAbyssal(ship.mstId) || stat == 'luk'};
 			if (ship.statsUnknown[stat] == CONST.STAT_UNKNOWN.NONE) return {unknownHigh:true};
 			if (ship.statsUnknown[stat] == CONST.STAT_UNKNOWN.PLACEHOLDER) return {unknownHigh:true};
 			if (ship.statsUnknown[stat] == CONST.STAT_UNKNOWN.DB_ESTIMATE) return {unknownMed:true};

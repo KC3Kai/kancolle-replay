@@ -1182,6 +1182,7 @@ var UI_DECKBUILDERIMPORTER = Vue.createApp({
 			}
 			if (this.importLBAS) {
 				CONVERT.loadSaveLBAS(CONVERT.deckbuilderToSaveLBAS(dataDb),UI_MAIN.landBases);
+				COMMON.BONUS_MANAGER.applyAutoLBAS();
 			}
 			COMMON.global.fleetEditorMoveTemp();
 		},
@@ -1382,6 +1383,28 @@ var UI_KCNAVCOMPIMPORTER = Vue.createApp({
 					}
 				}
 				let compsSave = CONVERT.kcnavToSaveComps(compsNav.result);
+				
+				if (this.isFriendFleet) {
+					let improveSpecial = COMMON.friendFleetImproveSpecial[this.world + '-' + this.mapnum];
+					if (improveSpecial) {
+						let improveSpecialByKey = {};
+						for (let ships of improveSpecial) {
+							let key = ships.map(ship => ship.id).join(',');
+							improveSpecialByKey[key] = ships;
+						}
+						for (let comp of compsSave) {
+							let key = comp.fleet.ships.map(ship => ship.mstId).join(',');
+							if (!improveSpecialByKey[key]) continue;
+							for (let i=0; i<improveSpecialByKey[key].length; i++) {
+								let ship = comp.fleet.ships[i];
+								for (let j=0; j<improveSpecialByKey[key][i].improvement.length; j++) {
+									ship.equips[j].level = improveSpecialByKey[key][i].improvement[j];
+								}
+							}
+						}
+					}
+				}
+				
 				compsSave.sort((a,b) => b.rate - a.rate);
 				for (let i=this.comps.length; i>compsSave.length; i--) UI_MAIN.deleteComp(this.comps);
 				for (let comp of this.comps) comp.fleet = FLEET_MODEL.getBlankFleet(comp.fleet);
