@@ -149,6 +149,7 @@
 					<template v-slot:img_repair><img src="assets/items/14.png"/></template>
 					<template v-slot:sel_node><select v-model="settingsFCF.dameconNode"><option value="0">{{$t('none_node')}}</option><option v-for="(battle,i) in battles" :value="battle.id">{{i+1}}</option></select></template>
 				</i18n-t></div>
+				<div style="margin-left:10px"><i18n-t keypath="retreat_on_chuuha" scope="global"><template v-slot:img_chuuha><img src="assets/stats/chuuha.png"/></template></i18n-t>: <input type="button" :value="$t('settings')" @click="onclickSetRetreat"/> <span v-show="hasChuuhaSettings" class="bonusMarker chuuha">&#11044;</span></div>
 				<div><img src="assets/items/28.png"/><input type="button" :value="$t('fcf_settings')" @click="onclickSetFCF"/> <span v-show="hasFCFSettings" class="bonusMarker fcf" :title="$t('fcf_settings_set')">&#11044;</span></div>
 				<div><label><input type="checkbox" v-model="settings.replaceImpossibleFormations"/> <i18n-t keypath="replace_formations" scope="global">
 					<template v-slot:closest_alternative><span class="tooltip" :title="$t('closest_alternative_tooltip')">{{$t('closest_alternative')}}</span></template>
@@ -574,6 +575,9 @@
 							<tr v-show="results.numNodes>1"><th>&nbsp;</th><th v-for="n in results.numNodes">{{n}}</th></tr>
 							<tr><th>{{$t('all')}}</th><td v-for="stat in results.noChuuha">{{stat}}</td></tr>
 							</table>
+						</div>
+						<div v-show="results.fcfUsed">
+							<div><i18n-t keypath="fcf_used" scope="global"><template v-slot:img_fcf><img src="assets/items/28.png"/></template></i18n-t>: {{results.fcfUsed}}</div>
 						</div>
 					</div>
 					<div class="resultCol">
@@ -1631,6 +1635,22 @@
 			</div>
 			<div>
 				<span class="note">{{$t('note_require_on_node')}}</span>
+			</div>
+		</div>
+		</vmodal>
+	</div></div>
+	
+	<div id="divRetreatSettings"><div v-show="active">
+		<vmodal :active="active" @vclose="canClose&&(active=false)">
+		<div id="divRetreatSettingsMain">
+			<div>
+				<span class="header"><i18n-t keypath="retreat_on_chuuha" scope="global"><template v-slot:img_chuuha><img src="assets/stats/chuuha.png" style="vertical-align:middle"/></template></i18n-t>:</span>
+				<div v-for="ships in shipGroups" class="shipGroup">
+					<div v-for="ship in ships" style="position:relative">
+						<img :src="'assets/icons/' + ship.imgName" :style="{'opacity':ship.retreatOnChuuha?1:.35}" @click="onclickShip(ship)"/>
+						<span class="shipType">{{ship.type}}</span>
+					</div>
+				</div>
 			</div>
 		</div>
 		</vmodal>

@@ -100,6 +100,7 @@ var SIM = {
 			totalEmptiedPlanes: 0,
 			totalEmptiedLBAS: 0,
 			totalTransport: 0,
+			totalFCFUsed: 0,
 			nodes: [],
 		};
 		for (let n=0; n<numNodes; n++) {
@@ -144,6 +145,7 @@ var SIM = {
 	},
 	_updateResultsTotal: function(dataInput) {
 		this._results.totalnum++;
+		let foundRetreated = false;
 		for (let fleet of FLEETS1) {
 			if (!fleet) continue;
 			for (let ship of fleet.ships) {
@@ -171,8 +173,10 @@ var SIM = {
 				}
 				this._results.totalSteelR += ship.jetSteelCost || 0;
 				if (ship.repairs) this._results.totalDamecon += ship.repairsOrig.length - ship.repairs.length;
+				if (ship.retreated) foundRetreated = true;
 			}
 		}
+		if (foundRetreated) this._results.totalFCFUsed++;
 		for (let fleet of [FLEETS1S[0],FLEETS1S[1]]) {
 			if (!fleet) continue;
 			for (let ship of fleet.ships) {
@@ -893,8 +897,10 @@ var SIM = {
 				this._updateResultsNode(result,battleInd);
 			}
 			
+			if (isBossNode) break;
 			let ignoreDamecon = dataInput.settingsFCF && dataInput.settingsFCF.dameconNode && battleInd+1 <= dataInput.settingsFCF.dameconNode;
 			let isRetreat = fleetF.combinedWith ? !canContinue(fleetF.ships,fleetF.combinedWith.ships,false,ignoreDamecon) : !canContinue(fleetF.ships,null,false,ignoreDamecon);
+			isRetreat = isRetreat || !!shipsAll.find(ship => ship._dataOrig.retreatOnChuuha && ship.HP/ship.maxHP <= .5);
 			if (!isRetreat) {
 				let undoFCF = false;
 				if (dataInput.settingsFCF && battleInd < dataInput.nodes.length-1) {

@@ -47,6 +47,9 @@ div.bonusMarker.lbas {
 .bonusMarker.fcf {
 	color: #C8AAFF;
 }
+.bonusMarker.chuuha {
+	color: orange;
+}
 .bonusMarker.plane {
 	color: green;
 	font-size: 14px;
@@ -455,25 +458,25 @@ div.kcnavImporterSettingsWrap select.suggestion {
 	margin-left: auto;
 }
 
-#divFCFSettingsMain {
+#divFCFSettingsMain, #divRetreatSettingsMain {
 	background-color: #DDEEFF;
 	border: 1px solid transparent;
 	box-shadow: 0 0 5px black;
 	padding: 20px;
 }
-#divFCFSettingsMain > div:not(:first-child) {
+#divFCFSettingsMain > div:not(:first-child), #divRetreatSettingsMain > div:not(:first-child) {
 	margin-top: 10px;
 }
-#divFCFSettingsMain span.header {
+#divFCFSettingsMain span.header, #divRetreatSettingsMain span.header {
 	font-weight: bold;
 }
-#divFCFSettingsMain div.shipGroup {
+#divFCFSettingsMain div.shipGroup, #divRetreatSettingsMain div.shipGroup {
 	display: flex;
 }
-#divFCFSettingsMain div.shipGroup img:hover {
+#divFCFSettingsMain div.shipGroup img:hover, #divRetreatSettingsMain div.shipGroup img:hover {
 	cursor: pointer;
 }
-#divFCFSettingsMain div.shipGroup span.shipType {
+#divFCFSettingsMain div.shipGroup span.shipType, #divRetreatSettingsMain div.shipGroup span.shipType {
 	padding: 1px;
 	font-size: 16px;
 	font-weight: bold;

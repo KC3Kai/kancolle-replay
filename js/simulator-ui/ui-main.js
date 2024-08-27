@@ -193,6 +193,7 @@ var UI_MAIN = Vue.createApp({
 			fuelS: 0, ammoS: 0, steelS: 0, bauxS: 0, bucketS: 0, dameconS: 0,
 			fuelSunk: 0, ammoSunk: 0, steelSunk: 0, bauxSunk: 0, bucketSunk: 0, dameconSunk: 0,
 			emptiedPlane: 0, emptiedLBAS: 0,
+			fcfUsed: 0,
 			showMore: false,
 			fuelA: 0, ammoA: 0, steelA: 0, bauxA: 0, bucketA: 0, dameconA: 0,
 			fuelB: 0, ammoB: 0, steelB: 0, bauxB: 0, bucketB: 0, dameconB: 0,
@@ -346,6 +347,9 @@ var UI_MAIN = Vue.createApp({
 				|| (this.fleetFMain.ships && this.fleetFMain.ships.find(s => s.neverFCF))
 				|| (this.fleetFMain.shipsEscort && this.fleetFMain.shipsEscort.find(s => s.neverFCF))
 			);
+		},
+		hasChuuhaSettings: function() {
+			return !!((this.fleetFMain.ships && this.fleetFMain.ships.find(s => s.retreatOnChuuha)) || (this.fleetFMain.shipsEscort && this.fleetFMain.shipsEscort.find(s => s.retreatOnChuuha)));
 		},
 		
 		autoBonusStatus: function() {
@@ -540,6 +544,7 @@ var UI_MAIN = Vue.createApp({
 			this.results.bucketTP = (resultSim.totalBuckets) / resultSim.totalTransport;
 			this.results.dameconTP = (resultSim.totalDamecon) / resultSim.totalTransport;
 			
+			this.results.fcfUsed = formatNum(resultSim.totalFCFUsed / totalNum);
 			this.results.emptiedPlane = formatNum(resultSim.totalEmptiedPlanes / totalNum);
 			this.results.emptiedLBAS = formatNum(resultSim.totalEmptiedLBAS / totalNum);
 			
@@ -856,6 +861,9 @@ ${t('results.buckets')}:	${this.resultsBucketTPPer}`;
 		
 		onclickSetFCF: function() {
 			UI_FCFSETTINGS.doOpen(this.settingsFCF);
+		},
+		onclickSetRetreat: function() {
+			UI_RETREATSETTINGS.doOpen();
 		},
 		
 		onclickNavButton: function(ref,idx) {
@@ -1844,9 +1852,27 @@ var UI_FCFSETTINGS = Vue.createApp({
 	},
 }).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divFCFSettings');;
 
-
-
-
+var UI_RETREATSETTINGS = Vue.createApp({
+	data: () => ({
+		active: false,
+		canClose: true,
+		
+		shipGroups: [],
+	}),
+	methods: {
+		doOpen: function() {
+			this.active = true;
+			this.shipGroups = [];
+			this.shipGroups.push(UI_MAIN.fleetFMain.ships.filter(ship => !FLEET_MODEL.shipIsEmpty(ship)));
+			if (UI_MAIN.fleetFMain.shipsEscort && UI_MAIN.fleetFMain.combined) this.shipGroups.push(UI_MAIN.fleetFMain.shipsEscort.filter(ship => !FLEET_MODEL.shipIsEmpty(ship)));
+		},
+		
+		onclickShip: function(ship) {
+			ship.retreatOnChuuha = !ship.retreatOnChuuha;
+		},
+	},
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divRetreatSettings');;
+	
 
 var UI_AUTOBONUS = Vue.createApp({
 	data: () => ({
