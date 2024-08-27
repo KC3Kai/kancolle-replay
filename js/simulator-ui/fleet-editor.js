@@ -175,6 +175,7 @@ var FLEET_MODEL = {
 			bonusByNode: {},
 			
 			neverFCF: false,
+			retreatOnChuuha: false,
 			
 			isFaraway: false,
 		};
