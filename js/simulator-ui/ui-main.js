@@ -1387,20 +1387,25 @@ var UI_KCNAVCOMPIMPORTER = Vue.createApp({
 				if (this.isFriendFleet) {
 					let improveSpecial = COMMON.friendFleetImproveSpecial[this.world + '-' + this.mapnum];
 					if (improveSpecial) {
-						let improveSpecialByKey = {};
-						for (let ships of improveSpecial) {
-							let key = ships.map(ship => ship.id).join(',');
-							improveSpecialByKey[key] = ships;
+						let compSaveByKey = {};
+						for (let compSave of compsSave) {
+							let key = compSave.fleet.ships.map(ship => ship.mstId).join(',');
+							compSaveByKey[key] = compSave;
+							compSave.rate = 0;
 						}
-						for (let comp of compsSave) {
-							let key = comp.fleet.ships.map(ship => ship.mstId).join(',');
-							if (!improveSpecialByKey[key]) continue;
-							for (let i=0; i<improveSpecialByKey[key].length; i++) {
-								let ship = comp.fleet.ships[i];
-								for (let j=0; j<improveSpecialByKey[key][i].improvement.length; j++) {
-									ship.equips[j].level = improveSpecialByKey[key][i].improvement[j];
+						let rateLeft = 1;
+						for (let item of improveSpecial) {
+							let key = item.ships.map(ship => ship.id).join(',');
+							let compSave = compSaveByKey[key];
+							if (!compSave) continue;
+							for (let i=0; i<item.ships.length; i++) {
+								let shipSave = compSave.fleet.ships[i];
+								for (let j=0; j<item.ships[i].improvement.length; j++) {
+									shipSave.equips[j].level = item.ships[i].improvement[j];
 								}
 							}
+							compSave.rate = Math.round(10*item.rate*rateLeft) || 1;
+							rateLeft *= (1-item.rate/100);
 						}
 					}
 				}

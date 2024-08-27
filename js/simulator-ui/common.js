@@ -96,16 +96,16 @@ var COMMON = {
 	
 	friendFleetImproveSpecial: {
 		'59-4': [
-			[{ "id": 264, "improvement": [10,10,0,10] }, { "id": 487, "improvement": [10,10] }, { "id": 647, "improvement": [10,10,10] }, { "id": 627, "improvement": [10,10,10] }],
-			[{ "id": 156, "improvement": [4] }, { "id": 411, "improvement": [10,10,0,10] }, { "id": 412, "improvement": [10,10,10] }, { "id": 501, "improvement": [10,10,10] }, { "id": 968, "improvement": [10,10,10] }],
-			[{ "id": 411, "improvement": [10,10,10] }, { "id": 319, "improvement": [10,10,0,10] }, { "id": 194, "improvement": [10,10,0,10] }, { "id": 564, "improvement": [8,10,10] }, { "id": 327, "improvement": [10,10,10] }],
-			[{ "id": 319, "improvement": [10,10,10,10] }, { "id": 194, "improvement": [10,10] }, { "id": 246, "improvement": [9,10,10] }, { "id": 497, "improvement": [10,10,10] }, { "id": 961, "improvement": [10,10,10] }],
-			[{ "id": 734, "improvement": [8,8] }, { "id": 659, "improvement": [0,0,10] }, { "id": 697, "improvement": [] }, { "id": 928, "improvement": [9,9] }, { "id": 689, "improvement": [] }, { "id": 726, "improvement": [4] }],
-			[{ "id": 411, "improvement": [10,10,10] }, { "id": 564, "improvement": [8,10,10] }, { "id": 327, "improvement": [10,10,10] }],
-			[{ "id": 487, "improvement": [10,10] }, { "id": 647, "improvement": [10,10,10] }, { "id": 627, "improvement": [10,10,10] }],
-			[{ "id": 928, "improvement": [9,9] }, { "id": 726, "improvement": [] }, { "id": 689, "improvement": [4] }],
-			[{ "id": 564, "improvement": [8,10,10] }, { "id": 327, "improvement": [10,10,10] }],
-			[{ "id": 647, "improvement": [10,10,10] }, { "id": 627, "improvement": [10,10,10] }]
+			{ "ships": [{ "id": 411, "improvement": [10,10,10] }, { "id": 319, "improvement": [10,10,0,10] }, { "id": 194, "improvement": [10,10,0,10] }, { "id": 564, "improvement": [8,10,10] }, { "id": 327, "improvement": [10,10,10] }], "rate": 25 },
+			{ "ships": [{ "id": 156, "improvement": [4] }, { "id": 411, "improvement": [10,10,0,10] }, { "id": 412, "improvement": [10,10,10] }, { "id": 501, "improvement": [10,10,10] }, { "id": 968, "improvement": [10,10,10] }], "rate": 30 },
+			{ "ships": [{ "id": 734, "improvement": [8,8] }, { "id": 659, "improvement": [0,0,10] }, { "id": 697, "improvement": [] }, { "id": 928, "improvement": [9,9] }, { "id": 689, "improvement": [] }, { "id": 726, "improvement": [4] }], "rate": 50 },
+			{ "ships": [{ "id": 319, "improvement": [10,10,10,10] }, { "id": 194, "improvement": [10,10] }, { "id": 246, "improvement": [9,10,10] }, { "id": 497, "improvement": [10,10,10] }, { "id": 961, "improvement": [10,10,10] }], "rate": 70 },
+			{ "ships": [{ "id": 264, "improvement": [10,10,0,10] }, { "id": 487, "improvement": [10,10] }, { "id": 647, "improvement": [10,10,10] }, { "id": 627, "improvement": [10,10,10] }], "rate": 99 },
+			{ "ships": [{ "id": 411, "improvement": [10,10,10] }, { "id": 564, "improvement": [8,10,10] }, { "id": 327, "improvement": [10,10,10] }], "rate": 20 },
+			{ "ships": [{ "id": 487, "improvement": [10,10] }, { "id": 647, "improvement": [10,10,10] }, { "id": 627, "improvement": [10,10,10] }], "rate": 25 },
+			{ "ships": [{ "id": 928, "improvement": [9,9] }, { "id": 726, "improvement": [] }, { "id": 689, "improvement": [4] }], "rate": 33.333 },
+			{ "ships": [{ "id": 647, "improvement": [10,10,10] }, { "id": 627, "improvement": [10,10,10] }], "rate": 50 },
+			{ "ships": [{ "id": 564, "improvement": [8,10,10] }, { "id": 327, "improvement": [10,10,10] }], "rate": 100 }
 		]
 	},
 	
