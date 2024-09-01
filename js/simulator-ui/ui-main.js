@@ -765,10 +765,10 @@ ${t('results.steel')}:	${this.results.steelS}
 ${t('results.baux')}:	${this.results.bauxS}
 ${t('results.buckets')}:	${this.results.bucketS}`;
 				if (this.results.dameconS) {
-					txt += '\n' + t('results.damecon') + ':\t' + this.results.dameconS;
+					txt += '\n' + t('results.damecon') + ': ' + this.results.dameconS;
 				}
 				if (this.results.underwayS) {
-					txt += '\n' + t('results.underway') + ':\t' + this.results.underwayS;
+					txt += '\n' + t('results.underway') + ': ' + this.results.underwayS;
 				}
 			} else if (typeString == 'A') {
 				let rateA = this.results.rankS + this.results.rankA, rateNonA = 1 - rateA - this.results.retreat;
@@ -780,10 +780,10 @@ ${t('results.steel')}:	${this.results.steelA}
 ${t('results.baux')}:	${this.results.bauxA}
 ${t('results.buckets')}:	${this.results.bucketA}`;
 				if (this.results.dameconA) {
-					txt += '\n' + t('results.damecon') + ':\t' + this.results.dameconA;
+					txt += '\n' + t('results.damecon') + ': ' + this.results.dameconA;
 				}
 				if (this.results.underwayA) {
-					txt += '\n' + t('results.underway') + ':\t' + this.results.underwayA;
+					txt += '\n' + t('results.underway') + ': ' + this.results.underwayA;
 				}
 			} else if (typeString == 'B') {
 				let rateB = this.results.rankS + this.results.rankA + this.results.rankB, rateNonB = 1 - rateB - this.results.retreat;
@@ -795,10 +795,10 @@ ${t('results.steel')}:	${this.results.steelB}
 ${t('results.baux')}:	${this.results.bauxB}
 ${t('results.buckets')}:	${this.results.bucketB}`;
 				if (this.results.dameconB) {
-					txt += '\n' + t('results.damecon') + ':\t' + this.results.dameconB;
+					txt += '\n' + t('results.damecon') + ': ' + this.results.dameconB;
 				}
 				if (this.results.underwayB) {
-					txt += '\n' + t('results.underway') + ':\t' + this.results.underwayB;
+					txt += '\n' + t('results.underway') + ': ' + this.results.underwayB;
 				}
 			} else if (typeString == 'flagsunk') {
 				let rateNonSunk = 1 - this.results.flagSunk - this.results.retreat;
@@ -810,10 +810,10 @@ ${t('results.steel')}:	${this.results.steelSunk}
 ${t('results.baux')}:	${this.results.bauxSunk}
 ${t('results.buckets')}:	${this.results.bucketSunk}`;
 				if (this.results.dameconSunk) {
-					txt += '\n' + t('results.damecon') + ':\t' + this.results.dameconSunk;
+					txt += '\n' + t('results.damecon') + ': ' + this.results.dameconSunk;
 				}
 				if (this.results.underwaySunk) {
-					txt += '\n' + t('results.underway') + ':\t' + this.results.underwaySunk;
+					txt += '\n' + t('results.underway') + ': ' + this.results.underwaySunk;
 				}
 			} else if (typeString == 'hp') {
 				txt += `${t('results.avg_per_hp',[this.results.perHPRes])}
@@ -823,10 +823,10 @@ ${t('results.steel')}:	${this.resultsSteelHPPer}
 ${t('results.baux')}:	${this.resultsBauxHPPer}
 ${t('results.buckets')}:	${this.resultsBucketHPPer}`;
 				if (this.results.dameconHP) {
-					txt += '\n' + t('results.damecon') + ':\t' + this.resultsDameconHPPer;
+					txt += '\n' + t('results.damecon') + ': ' + this.resultsDameconHPPer;
 				}
 				if (this.results.underwayHP) {
-					txt += '\n' + t('results.underway') + ':\t' + this.resultsUnderwayHPPer;
+					txt += '\n' + t('results.underway') + ': ' + this.resultsUnderwayHPPer;
 				}
 			} else if (typeString == 'tp') {
 				txt += `${t('results.avg_per_tp',[this.results.perTPRes])}
@@ -836,10 +836,10 @@ ${t('results.steel')}:	${this.resultsSteelTPPer}
 ${t('results.baux')}:	${this.resultsBauxTPPer}
 ${t('results.buckets')}:	${this.resultsBucketTPPer}`;
 				if (this.results.dameconTP) {
-					txt += '\n' + t('results.damecon') + ':\t' + this.resultsDameconTPPer;
+					txt += '\n' + t('results.damecon') + ': ' + this.resultsDameconTPPer;
 				}
 				if (this.results.underwayTP) {
-					txt += '\n' + t('results.underway') + ':\t' + this.resultsUnderwayTPPer;
+					txt += '\n' + t('results.underway') + ': ' + this.resultsUnderwayTPPer;
 				}
 			}
 			navigator.clipboard.writeText(txt);
