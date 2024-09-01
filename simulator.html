@@ -587,6 +587,7 @@
 							<tr><th><img src="assets/stats/fuel.png" :alt="$t('fuel')"/></th><td>{{results.fuelSupply}}</td></tr>
 							<tr><th><img src="assets/stats/ammo.png" :alt="$t('ammo')"/></th><td>{{results.ammoSupply}}</td></tr>
 							<tr><th><img src="assets/stats/baux.png" :alt="$t('baux')"/></th><td>{{results.bauxSupply}}</td></tr>
+							<!-- <tr v-show="results.underway"><th><img src="assets/items/35.png" class="iconSlotitem" :alt="$t('underway_resupply')"/></th><td>{{results.underway}}</td></tr> -->
 							</table>
 						</div>
 						<div>
@@ -595,7 +596,7 @@
 							<tr><th><img src="assets/stats/fuel.png" :alt="$t('fuel')"/></th><td>{{results.fuelRepair}}</td></tr>
 							<tr><th><img src="assets/stats/steel.png" :alt="$t('steel')"/></th><td>{{results.steelRepair}}</td></tr>
 							<tr><th><img src="assets/stats/bucket.png" :alt="$t('bucket')"/></th><td>{{results.bucket}}</td></tr>
-							<tr><th><img src="assets/items/14.png" :alt="$t('repair_team')"/></th><td>{{results.damecon}}</td></tr>
+							<tr v-show="results.damecon"><th><img src="assets/items/14.png" class="iconSlotitem" :alt="$t('repair_team')"/></th><td>{{results.damecon}}</td></tr>
 							</table>
 						</div>
 						<div>
@@ -612,7 +613,8 @@
 							<tr><th><img src="assets/stats/steel.png" :alt="$t('steel')"/></th><td><span class="resultBold">{{results.steelS}}</span></td></tr>
 							<tr><th><img src="assets/stats/baux.png" :alt="$t('baux')"/></th><td><span class="resultBold">{{results.bauxS}}</span></td></tr>
 							<tr><th><img src="assets/stats/bucket.png" :alt="$t('bucket')"/></th><td><span class="resultBold">{{results.bucketS}}</span></td></tr>
-							<tr><th><img src="assets/items/14.png" :alt="$t('repair_team')"/></th><td><span class="resultBold">{{results.dameconS}}</span></td></tr>
+							<tr v-show="results.damecon"><th><img src="assets/items/14.png" class="iconSlotitem" :alt="$t('repair_team')"/></th><td><span class="resultBold">{{results.dameconS}}</span></td></tr>
+							<tr v-show="results.underway"><th><img src="assets/items/35.png" class="iconSlotitem" :alt="$t('underway_resupply')"/></th><td><span class="resultBold">{{results.underwayS}}</span></td></tr>
 							</table>
 						</div>
 						<div>
@@ -629,7 +631,8 @@
 							<tr><th><img src="assets/stats/steel.png" :alt="$t('steel')"/></th><td><span class="resultBold">{{results.steelSunk}}</span></td></tr>
 							<tr><th><img src="assets/stats/baux.png" :alt="$t('baux')"/></th><td><span class="resultBold">{{results.bauxSunk}}</span></td></tr>
 							<tr><th><img src="assets/stats/bucket.png" :alt="$t('bucket')"/></th><td><span class="resultBold">{{results.bucketSunk}}</span></td></tr>
-							<tr><th><img src="assets/items/14.png" :alt="$t('repair_team')"/></th><td><span class="resultBold">{{results.dameconSunk}}</span></td></tr>
+							<tr v-show="results.damecon"><th><img src="assets/items/14.png" class="iconSlotitem" :alt="$t('repair_team')"/></th><td><span class="resultBold">{{results.dameconSunk}}</span></td></tr>
+							<tr v-show="results.underway"><th><img src="assets/items/35.png" class="iconSlotitem" :alt="$t('underway_resupply')"/></th><td><span class="resultBold">{{results.underwaySunk}}</span></td></tr>
 							</table>
 						</div>
 						<div>
@@ -653,7 +656,8 @@
 						<tr><th><img src="assets/stats/steel.png" :alt="$t('steel')"/></th><td><span class="resultBold">{{results.steelA}}</span></td></tr>
 						<tr><th><img src="assets/stats/baux.png" :alt="$t('baux')"/></th><td><span class="resultBold">{{results.bauxA}}</span></td></tr>
 						<tr><th><img src="assets/stats/bucket.png" :alt="$t('bucket')"/></th><td><span class="resultBold">{{results.bucketA}}</span></td></tr>
-						<tr><th><img src="assets/items/14.png" :alt="$t('repair_team')"/></th><td><span class="resultBold">{{results.dameconA}}</span></td></tr>
+						<tr v-show="results.damecon"><th><img src="assets/items/14.png" class="iconSlotitem" :alt="$t('repair_team')"/></th><td><span class="resultBold">{{results.dameconA}}</span></td></tr>
+						<tr v-show="results.underway"><th><img src="assets/items/35.png" class="iconSlotitem" :alt="$t('underway_resupply')"/></th><td><span class="resultBold">{{results.underwayA}}</span></td></tr>
 						</table>
 					</div>
 					<div class="resultCol">
@@ -670,7 +674,8 @@
 						<tr><th><img src="assets/stats/steel.png" :alt="$t('steel')"/></th><td><span class="resultBold">{{results.steelB}}</span></td></tr>
 						<tr><th><img src="assets/stats/baux.png" :alt="$t('baux')"/></th><td><span class="resultBold">{{results.bauxB}}</span></td></tr>
 						<tr><th><img src="assets/stats/bucket.png" :alt="$t('bucket')"/></th><td><span class="resultBold">{{results.bucketB}}</span></td></tr>
-						<tr><th><img src="assets/items/14.png" :alt="$t('repair_team')"/></th><td><span class="resultBold">{{results.dameconB}}</span></td></tr>
+						<tr v-show="results.damecon"><th><img src="assets/items/14.png" class="iconSlotitem" :alt="$t('repair_team')"/></th><td><span class="resultBold">{{results.dameconB}}</span></td></tr>
+						<tr v-show="results.underway"><th><img src="assets/items/35.png" class="iconSlotitem" :alt="$t('underway_resupply')"/></th><td><span class="resultBold">{{results.underwayB}}</span></td></tr>
 						</table>
 					</div>
 					<div class="resultCol">
@@ -687,7 +692,8 @@
 						<tr><th><img src="assets/stats/steel.png" :alt="$t('steel')"/></th><td><span class="resultBold">{{resultsSteelHPPer}}</span></td></tr>
 						<tr><th><img src="assets/stats/baux.png" :alt="$t('baux')"/></th><td><span class="resultBold">{{resultsBauxHPPer}}</span></td></tr>
 						<tr><th><img src="assets/stats/bucket.png" :alt="$t('bucket')"/></th><td><span class="resultBold">{{resultsBucketHPPer}}</span></td></tr>
-						<tr><th><img src="assets/items/14.png" :alt="$t('repair_team')"/></th><td><span class="resultBold">{{resultsDameconHPPer}}</span></td></tr>
+						<tr v-show="results.damecon"><th><img src="assets/items/14.png" class="iconSlotitem" :alt="$t('repair_team')"/></th><td><span class="resultBold">{{resultsDameconHPPer}}</span></td></tr>
+						<tr v-show="results.underway"><th><img src="assets/items/35.png" class="iconSlotitem" :alt="$t('underway_resupply')"/></th><td><span class="resultBold">{{resultsUnderwayHPPer}}</span></td></tr>
 						</table>
 					</div>
 					<div class="resultCol">
@@ -704,7 +710,8 @@
 						<tr><th><img src="assets/stats/steel.png" :alt="$t('steel')"/></th><td><span class="resultBold">{{resultsSteelTPPer}}</span></td></tr>
 						<tr><th><img src="assets/stats/baux.png" :alt="$t('baux')"/></th><td><span class="resultBold">{{resultsBauxTPPer}}</span></td></tr>
 						<tr><th><img src="assets/stats/bucket.png" :alt="$t('bucket')"/></th><td><span class="resultBold">{{resultsBucketTPPer}}</span></td></tr>
-						<tr><th><img src="assets/items/14.png" :alt="$t('repair_team')"/></th><td><span class="resultBold">{{resultsDameconTPPer}}</span></td></tr>
+						<tr v-show="results.damecon"><th><img src="assets/items/14.png" class="iconSlotitem" :alt="$t('repair_team')"/></th><td><span class="resultBold">{{resultsDameconTPPer}}</span></td></tr>
+						<tr v-show="results.underway"><th><img src="assets/items/35.png" class="iconSlotitem" :alt="$t('underway_resupply')"/></th><td><span class="resultBold">{{resultsUnderwayTPPer}}</span></td></tr>
 						</table>
 					</div>
 				</div>

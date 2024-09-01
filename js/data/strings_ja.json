@@ -356,6 +356,7 @@
 	"baux": "ボーキ",
 	"bucket": "バケツ",
 	"repair_team": "ダメコン",
+	"underway_resupply": "洋上補給",
 	"avg_repair": "平均入渠コスト",
 	"avg_resource_per": "最終Node{img}あたり",
 	"avg_resource_per_or_better": "最終Node{img}以上あたり",
@@ -902,6 +903,7 @@
 		"steel": "鋼材",
 		"baux": "ボーキ",
 		"buckets": "バケツ",
-		"damecon": "ダメコン"
+		"damecon": "ダメコン",
+		"underway": "洋上補給"
 	}
 }

@@ -101,6 +101,7 @@ var SIM = {
 			totalEmptiedLBAS: 0,
 			totalTransport: 0,
 			totalFCFUsed: 0,
+			totalUnderway: 0,
 			nodes: [],
 		};
 		for (let n=0; n<numNodes; n++) {
@@ -145,7 +146,7 @@ var SIM = {
 	},
 	_updateResultsTotal: function(dataInput) {
 		this._results.totalnum++;
-		let foundRetreated = false;
+		let foundRetreated = false, foundUnderway = false;
 		for (let fleet of FLEETS1) {
 			if (!fleet) continue;
 			for (let ship of fleet.ships) {
@@ -174,9 +175,15 @@ var SIM = {
 				this._results.totalSteelR += ship.jetSteelCost || 0;
 				if (ship.repairs) this._results.totalDamecon += ship.repairsOrig.length - ship.repairs.length;
 				if (ship.retreated) foundRetreated = true;
+				if (ship._fuelUnderway) foundUnderway = true;
 			}
 		}
 		if (foundRetreated) this._results.totalFCFUsed++;
+		if (foundUnderway) {
+			let n = FLEETS1[0].ships.reduce((t,ship) => +(!ship.retreated && (ship.equiptypes[OILDRUM] || 0)) + t, 0);
+			if (FLEETS1[1] && FLEETS1[1].ships) n += FLEETS1[1].ships.reduce((t,ship) => +(!ship.retreated && (ship.equiptypes[OILDRUM] || 0)) + t, 0);
+			this._results.totalUnderway += Math.min(3,n);
+		}
 		for (let fleet of [FLEETS1S[0],FLEETS1S[1]]) {
 			if (!fleet) continue;
 			for (let ship of fleet.ships) {

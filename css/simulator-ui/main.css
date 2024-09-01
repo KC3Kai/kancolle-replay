@@ -281,6 +281,9 @@ div.divResultColsWrap div.resultCol > div {
 #divResults img {
 	vertical-align: middle;
 }
+#divResults img.iconSlotitem {
+	margin: -5px;
+}
 #divResults span.resultBold {
 	font-weight: bold;
 }

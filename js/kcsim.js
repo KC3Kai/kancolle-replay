@@ -3901,10 +3901,11 @@ function updateSupply(ships,didNB,NBonly,bombing,noammo,isECombined,shipsE) {
 }
 
 function underwaySupply(fleet) {
-	let ships = fleet.ships, num = fleet.numUnderwaySupply || 0;
+	if (!fleet.numUnderwaySupply && !(fleet.combinedWith && fleet.combinedWith.numUnderwaySupply)) return;
+	let ships = fleet.ships, num = fleet.ships.reduce((t,ship) => +(!ship.retreated && (ship.equiptypes[OILDRUM] || 0)) + t, 0);
 	if (fleet.combinedWith) {
 		ships = ships.concat(fleet.combinedWith.ships);
-		num += (fleet.combinedWith.numUnderwaySupply || 0);
+		num += fleet.combinedWith.ships.reduce((t,ship) => +(!ship.retreated && (ship.equiptypes[OILDRUM] || 0)) + t, 0);
 	}
 	if (num == 0) return;
 	let amount;
