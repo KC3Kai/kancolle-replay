@@ -189,16 +189,16 @@ var UI_MAIN = Vue.createApp({
 			taihaE1: [], taihaE2: [], taihaE3: [], taihaE4: [], taihaE5: [], taihaE6: [],
 			noChuuha: [],
 			fuelSupply: 0, ammoSupply: 0, bauxSupply: 0,
-			fuelRepair: 0, steelRepair: 0, bucket: 0, damecon: 0,
-			fuelS: 0, ammoS: 0, steelS: 0, bauxS: 0, bucketS: 0, dameconS: 0,
-			fuelSunk: 0, ammoSunk: 0, steelSunk: 0, bauxSunk: 0, bucketSunk: 0, dameconSunk: 0,
+			fuelRepair: 0, steelRepair: 0, bucket: 0, damecon: 0, underway: 0,
+			fuelS: 0, ammoS: 0, steelS: 0, bauxS: 0, bucketS: 0, dameconS: 0, underwayS: 0,
+			fuelSunk: 0, ammoSunk: 0, steelSunk: 0, bauxSunk: 0, bucketSunk: 0, dameconSunk: 0, underwaySunk: 0,
 			emptiedPlane: 0, emptiedLBAS: 0,
 			fcfUsed: 0,
 			showMore: false,
-			fuelA: 0, ammoA: 0, steelA: 0, bauxA: 0, bucketA: 0, dameconA: 0,
-			fuelB: 0, ammoB: 0, steelB: 0, bauxB: 0, bucketB: 0, dameconB: 0,
-			fuelHP: 0, ammoHP: 0, steelHP: 0, bauxHP: 0, bucketHP: 0, dameconHP: 0,
-			fuelTP: 0, ammoTP: 0, steelTP: 0, bauxTP: 0, bucketTP: 0, dameconTP: 0,
+			fuelA: 0, ammoA: 0, steelA: 0, bauxA: 0, bucketA: 0, dameconA: 0, underwayA: 0,
+			fuelB: 0, ammoB: 0, steelB: 0, bauxB: 0, bucketB: 0, dameconB: 0, underwayB: 0,
+			fuelHP: 0, ammoHP: 0, steelHP: 0, bauxHP: 0, bucketHP: 0, dameconHP: 0, underwayHP: 0,
+			fuelTP: 0, ammoTP: 0, steelTP: 0, bauxTP: 0, bucketTP: 0, dameconTP: 0, underwayTP: 0,
 			perHPRes: 1, perTPRes: 1,
 		},
 		
@@ -397,6 +397,9 @@ var UI_MAIN = Vue.createApp({
 		resultsDameconHPPer: function() {
 			return Math.round(1000*this.results.perHPRes*this.results.dameconHP)/1000;
 		},
+		resultsUnderwayHPPer: function() {
+			return Math.round(1000*this.results.perHPRes*this.results.underwayHP)/1000;
+		},
 		resultsFuelTPPer: function() {
 			return Math.round(1000*this.results.perTPRes*this.results.fuelTP)/1000;
 		},
@@ -414,6 +417,9 @@ var UI_MAIN = Vue.createApp({
 		},
 		resultsDameconTPPer: function() {
 			return Math.round(1000*this.results.perTPRes*this.results.dameconTP)/1000;
+		},
+		resultsUnderwayTPPer: function() {
+			return Math.round(1000*this.results.perTPRes*this.results.underwayTP)/1000;
 		},
 	},
 	methods: {
@@ -505,6 +511,7 @@ var UI_MAIN = Vue.createApp({
 			this.results.steelRepair = formatNum(resultSim.totalSteelR / totalNum);
 			this.results.bucket = formatNum(resultSim.totalBuckets / totalNum);
 			this.results.damecon = formatNum(resultSim.totalDamecon / totalNum);
+			this.results.underway = formatNum(resultSim.totalUnderway / totalNum);
 			
 			let rateS = nodeLast.ranks.S / totalNum;
 			this.results.fuelS = formatNum((resultSim.totalFuelS + resultSim.totalFuelR) / totalNum / rateS);
@@ -513,6 +520,7 @@ var UI_MAIN = Vue.createApp({
 			this.results.bauxS = formatNum((resultSim.totalBauxS) / totalNum / rateS);
 			this.results.bucketS = formatNum((resultSim.totalBuckets) / totalNum / rateS);
 			this.results.dameconS = formatNum((resultSim.totalDamecon) / totalNum / rateS);
+			this.results.underwayS = formatNum((resultSim.totalUnderway) / totalNum / rateS);
 			
 			let rateA = (nodeLast.ranks.S + nodeLast.ranks.A) / totalNum;
 			this.results.fuelA = formatNum((resultSim.totalFuelS + resultSim.totalFuelR) / totalNum / rateA);
@@ -521,6 +529,7 @@ var UI_MAIN = Vue.createApp({
 			this.results.bauxA = formatNum((resultSim.totalBauxS) / totalNum / rateA);
 			this.results.bucketA = formatNum((resultSim.totalBuckets) / totalNum / rateA);
 			this.results.dameconA = formatNum((resultSim.totalDamecon) / totalNum / rateA);
+			this.results.underwayA = formatNum((resultSim.totalUnderway) / totalNum / rateA);
 			
 			let rateB = (nodeLast.ranks.S + nodeLast.ranks.A + nodeLast.ranks.B) / totalNum;
 			this.results.fuelB = formatNum((resultSim.totalFuelS + resultSim.totalFuelR) / totalNum / rateB);
@@ -529,6 +538,7 @@ var UI_MAIN = Vue.createApp({
 			this.results.bauxB = formatNum((resultSim.totalBauxS) / totalNum / rateB);
 			this.results.bucketB = formatNum((resultSim.totalBuckets) / totalNum / rateB);
 			this.results.dameconB = formatNum((resultSim.totalDamecon) / totalNum / rateB);
+			this.results.underwayB = formatNum((resultSim.totalUnderway) / totalNum / rateB);
 			
 			this.results.fuelHP = (resultSim.totalFuelS + resultSim.totalFuelR) / resultSim.totalGaugeDamage;
 			this.results.ammoHP = (resultSim.totalAmmoS) / resultSim.totalGaugeDamage;
@@ -536,6 +546,7 @@ var UI_MAIN = Vue.createApp({
 			this.results.bauxHP = (resultSim.totalBauxS) / resultSim.totalGaugeDamage;
 			this.results.bucketHP = (resultSim.totalBuckets) / resultSim.totalGaugeDamage;
 			this.results.dameconHP = (resultSim.totalDamecon) / resultSim.totalGaugeDamage;
+			this.results.underwayHP = (resultSim.totalUnderway) / resultSim.totalGaugeDamage;
 			
 			this.results.fuelTP = (resultSim.totalFuelS + resultSim.totalFuelR) / resultSim.totalTransport;
 			this.results.ammoTP = (resultSim.totalAmmoS) / resultSim.totalTransport;
@@ -543,6 +554,7 @@ var UI_MAIN = Vue.createApp({
 			this.results.bauxTP = (resultSim.totalBauxS) / resultSim.totalTransport;
 			this.results.bucketTP = (resultSim.totalBuckets) / resultSim.totalTransport;
 			this.results.dameconTP = (resultSim.totalDamecon) / resultSim.totalTransport;
+			this.results.underwayTP = (resultSim.totalUnderway) / resultSim.totalTransport;
 			
 			this.results.fcfUsed = formatNum(resultSim.totalFCFUsed / totalNum);
 			this.results.emptiedPlane = formatNum(resultSim.totalEmptiedPlanes / totalNum);
@@ -555,6 +567,7 @@ var UI_MAIN = Vue.createApp({
 			this.results.bauxSunk = formatNum((resultSim.totalBauxS) / totalNum / rateSunk);
 			this.results.bucketSunk = formatNum((resultSim.totalBuckets) / totalNum / rateSunk);
 			this.results.dameconSunk = formatNum((resultSim.totalDamecon) / totalNum / rateSunk);
+			this.results.underwaySunk = formatNum((resultSim.totalUnderway) / totalNum / rateSunk);
 			
 			for (let i=0; i<resultSim.nodes.length; i++) {
 				let node = resultSim.nodes[i];
@@ -754,6 +767,9 @@ ${t('results.buckets')}:	${this.results.bucketS}`;
 				if (this.results.dameconS) {
 					txt += '\n' + t('results.damecon') + ':\t' + this.results.dameconS;
 				}
+				if (this.results.underwayS) {
+					txt += '\n' + t('results.underway') + ':\t' + this.results.underwayS;
+				}
 			} else if (typeString == 'A') {
 				let rateA = this.results.rankS + this.results.rankA, rateNonA = 1 - rateA - this.results.retreat;
 				txt += `${t('results.A_rate')}: ${Math.round(rateA*1000)/10}% (${t('results.retreat_rate')}: ${Math.round(this.results.retreat*1000)/10}%, ${t('results.non_A_rate')}: ${Math.round(rateNonA*1000)/10}%)
@@ -765,6 +781,9 @@ ${t('results.baux')}:	${this.results.bauxA}
 ${t('results.buckets')}:	${this.results.bucketA}`;
 				if (this.results.dameconA) {
 					txt += '\n' + t('results.damecon') + ':\t' + this.results.dameconA;
+				}
+				if (this.results.underwayA) {
+					txt += '\n' + t('results.underway') + ':\t' + this.results.underwayA;
 				}
 			} else if (typeString == 'B') {
 				let rateB = this.results.rankS + this.results.rankA + this.results.rankB, rateNonB = 1 - rateB - this.results.retreat;
@@ -778,6 +797,9 @@ ${t('results.buckets')}:	${this.results.bucketB}`;
 				if (this.results.dameconB) {
 					txt += '\n' + t('results.damecon') + ':\t' + this.results.dameconB;
 				}
+				if (this.results.underwayB) {
+					txt += '\n' + t('results.underway') + ':\t' + this.results.underwayB;
+				}
 			} else if (typeString == 'flagsunk') {
 				let rateNonSunk = 1 - this.results.flagSunk - this.results.retreat;
 				txt += `${t('results.flagsunk_rate')}: ${Math.round(this.results.flagSunk*1000)/10}% (${t('results.retreat_rate')}: ${Math.round(this.results.retreat*1000)/10}%, ${t('results.non_flagsunk_rate')}: ${Math.round(rateNonSunk*1000)/10}%)
@@ -790,6 +812,9 @@ ${t('results.buckets')}:	${this.results.bucketSunk}`;
 				if (this.results.dameconSunk) {
 					txt += '\n' + t('results.damecon') + ':\t' + this.results.dameconSunk;
 				}
+				if (this.results.underwaySunk) {
+					txt += '\n' + t('results.underway') + ':\t' + this.results.underwaySunk;
+				}
 			} else if (typeString == 'hp') {
 				txt += `${t('results.avg_per_hp',[this.results.perHPRes])}
 ${t('results.fuel')}:	${this.resultsFuelHPPer}
@@ -800,6 +825,9 @@ ${t('results.buckets')}:	${this.resultsBucketHPPer}`;
 				if (this.results.dameconHP) {
 					txt += '\n' + t('results.damecon') + ':\t' + this.resultsDameconHPPer;
 				}
+				if (this.results.underwayHP) {
+					txt += '\n' + t('results.underway') + ':\t' + this.resultsUnderwayHPPer;
+				}
 			} else if (typeString == 'tp') {
 				txt += `${t('results.avg_per_tp',[this.results.perTPRes])}
 ${t('results.fuel')}:	${this.resultsFuelTPPer}
@@ -809,6 +837,9 @@ ${t('results.baux')}:	${this.resultsBauxTPPer}
 ${t('results.buckets')}:	${this.resultsBucketTPPer}`;
 				if (this.results.dameconTP) {
 					txt += '\n' + t('results.damecon') + ':\t' + this.resultsDameconTPPer;
+				}
+				if (this.results.underwayTP) {
+					txt += '\n' + t('results.underway') + ':\t' + this.resultsUnderwayTPPer;
 				}
 			}
 			navigator.clipboard.writeText(txt);
@@ -1222,8 +1253,8 @@ var UI_DECKBUILDERIMPORTER = Vue.createApp({
 		oninputTextImport: function() {
 			if (!this.textImport) return;
 			let m = this.textImport.match(/"t":\s*(\d),/);
-			if (m && [1,2,3].includes(+m[1])) {
-				this.fleetNumMain = 10 + +m[1];
+			if (m && [0,1,2,3].includes(+m[1])) {
+				this.fleetNumMain = +m[1] == 0 ? 1 : 10 + +m[1];
 			}
 		},
 	},

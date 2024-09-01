@@ -356,6 +356,7 @@
 	"baux": "Bauxite",
 	"bucket": "Bucket",
 	"repair_team": "Repair Team",
+	"underway_resupply": "Underway Replenishment",
 	"avg_repair": "Avg Repair",
 	"avg_resource_per": "{avg_res} Per {img}",
 	"avg_resource_per_or_better": "{avg_res} Per {img} or Better",
@@ -902,6 +903,7 @@
 		"steel": "Steel",
 		"baux": "Bauxite",
 		"buckets": "Buckets",
-		"damecon": "Repair Teams"
+		"damecon": "Repair Teams",
+		"underway": "Underway Replenishments"
 	}
 }
