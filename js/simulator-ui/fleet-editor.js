@@ -709,7 +709,7 @@ var UI_FLEETEDITOR = Vue.createApp({
 		},
 		oninputLoadCode: function() {
 			if (!this.loadCode) return;
-			if (!this.isPlayer) return;
+			if (!this.fleet.isPlayer) return;
 			let m = this.loadCode.match(/"t":\s*(\d),/);
 			if (m && [0,1,2,3].includes(+m[1])) {
 				this.loadCodeFleet = +m[1] == 0 ? 1 : 10 + +m[1];
