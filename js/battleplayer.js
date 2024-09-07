@@ -237,12 +237,28 @@ if (qs.fromImg) {
 	}
 } else if (window.location.hash.length > 5) {
 	let hash = window.location.hash.substr(1);
+	let doLoadCode = true;
 	if (hash.indexOf('fromLZString=') == 0) {
 		document.getElementById('code').value = LZString.decompressFromEncodedURIComponent(hash.substr('fromLZString='.length));
+	} else if (hash.indexOf('fromLZMA=') == 0) {
+		doLoadCode = false;
+		let ab = null;
+		try {
+			ab = base64ToArrayBuffer(hash.substr('fromLZMA='.length));
+		} catch(e) {
+			console.error(e);
+			document.getElementById('error').innerText = 'Error';
+		}
+		if (ab) {
+			LZMA.decompress(ab, (dataStr) => {
+				document.getElementById('code').value = dataStr;
+				loadCode();
+			});
+		}
 	} else {
 		document.getElementById('code').value = decodeURIComponent(hash);
 	}
-	loadCode();
+	if (doLoadCode) loadCode();
 	window.location.hash = '';
 }
 
@@ -263,4 +279,41 @@ Howler.ctx.onstatechange = function() {
 	if (Howler.ctx.state == 'running') {
 		hideOverlaySuspend();
 	}
+}
+
+function arrayBufferToBase64(buffer) {
+	let binary = '';
+	let bytes = new Uint8Array(buffer);
+	let len = bytes.byteLength;
+	for (let i = 0; i < len; i++) {
+		binary += String.fromCharCode(bytes[i]);
+	}
+	return window.btoa(binary);
+}
+function base64ToArrayBuffer(base64) {
+	let binary_string = window.atob(base64);
+	let len = binary_string.length;
+	let bytes = new Uint8Array(len);
+	for (let i = 0; i < len; i++) {
+		bytes[i] = binary_string.charCodeAt(i);
+	}
+	return bytes;
+}
+function onclickCreateSharedLink() {
+	if (!API || Object.keys(API).length <= 0) return;
+	LZMA.compress(JSON.stringify(API), 9, (ab) => {
+		let url = 'https://kc3kai.github.io/kancolle-replay/battleplayer.html#fromLZMA=' + arrayBufferToBase64(ab);
+		fetch('https://tinyurl.com/api-create.php?url=' + encodeURIComponent(url)).then(async(res) => {
+			let txt = await res.text();
+			console.log(txt);
+			if (!res.ok) {
+				throw new Error('tinyurl: ' + txt);
+				return;
+			}
+			navigator.clipboard.writeText(txt + '+');
+			document.getElementById('error').innerText = 'Copied to Clipboard';
+		}).catch(error => {
+			document.getElementById('error').innerText = 'Error';
+		});
+	});
 }
