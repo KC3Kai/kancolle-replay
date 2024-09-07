@@ -148,6 +148,8 @@
 					<template v-slot:img_taiha><img src="assets/stats/taiha.png"/></template>
 					<template v-slot:img_repair><img src="assets/items/14.png"/></template>
 					<template v-slot:sel_node><select v-model="settingsFCF.dameconNode"><option value="0">{{$t('none_node')}}</option><option v-for="(battle,i) in battles" :value="battle.id">{{i+1}}</option></select></template>
+					<template v-slot:inp_num><input type="number" min="0" max="12" :placeholder="$t('na')" v-model.number="settings.dameconNumTaiha" :class="getClassSetting('dameconNumTaiha')"/></template>
+					<template v-slot:br><br></template>
 				</i18n-t></div>
 				<div style="margin-left:10px"><i18n-t keypath="retreat_on_chuuha" scope="global"><template v-slot:img_chuuha><img src="assets/stats/chuuha.png"/></template></i18n-t>: <input type="button" :value="$t('settings')" @click="onclickSetRetreat"/> <span v-show="hasChuuhaSettings" class="bonusMarker chuuha">&#11044;</span></div>
 				<div><img src="assets/items/28.png"/><input type="button" :value="$t('fcf_settings')" @click="onclickSetFCF"/> <span v-show="hasFCFSettings" class="bonusMarker fcf" :title="$t('fcf_settings_set')">&#11044;</span></div>
@@ -1574,7 +1576,7 @@
 					<input type="button" :value="$t('create_shared_link')" :disabled="shareURLLoading" @click="onclickShareURL"/>
 					<span v-show="$i18n.locale=='ja'">&nbsp;<a href="https://twitter.com/momemi_kc/status/1811049862663684576" target="_blank">(!)</a></span>
 					<span v-show="$i18n.locale!='ja'" style="color:darkorange">&nbsp;<span class="tooltip" :title="$t('create_shared_link_note')">(!)</span></span>
-					<span style="color:green" v-show="showShareURLCopied">&nbsp;{{$t('copied_to_clipboard')}}</span>
+					<span v-show="showShareURLCopied">&nbsp;<a :href="shareURL" target="_blank">{{$t('copied_to_clipboard')}}</a></span>
 					<span class="error" v-show="showShareURLError">&nbsp;{{$t('error')}}</span>
 				</div>
 				<div v-show="!isReplayImport">
@@ -1657,6 +1659,10 @@
 						<img :src="'assets/icons/' + ship.imgName" :style="{'opacity':ship.retreatOnChuuha?1:.35}" @click="onclickShip(ship)"/>
 						<span class="shipType">{{ship.type}}</span>
 					</div>
+				</div>
+				<div>
+					<label><input type="radio" v-model.number="retreatIfAll" value="0" @change="onchangeRetreatIfAll"/> <i18n-t keypath="if_any_are_chuuha" scope="global"><template v-slot:img_chuuha><img src="assets/stats/chuuha.png" style="vertical-align:middle"/></template></i18n-t></label>&nbsp;&nbsp;&nbsp;&nbsp;
+					<label><input type="radio" v-model.number="retreatIfAll" value="1" @change="onchangeRetreatIfAll"/> <i18n-t keypath="if_all_are_chuuha" scope="global"><template v-slot:img_chuuha><img src="assets/stats/chuuha.png" style="vertical-align:middle"/></template></i18n-t></label>
 				</div>
 			</div>
 		</div>

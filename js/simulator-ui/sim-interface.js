@@ -906,8 +906,14 @@ var SIM = {
 			
 			if (isBossNode) break;
 			let ignoreDamecon = dataInput.settingsFCF && dataInput.settingsFCF.dameconNode && battleInd+1 <= dataInput.settingsFCF.dameconNode;
+			if (!ignoreDamecon && dataInput.dameconNumTaiha != null && dataInput.dameconNumTaiha != '') {
+				ignoreDamecon = dataInput.dameconNumTaiha <= shipsAll.filter(ship => ship.HP/ship.maxHP <= .25 && ship.repairs && ship.repairs.length).length;
+			}
 			let isRetreat = fleetF.combinedWith ? !canContinue(fleetF.ships,fleetF.combinedWith.ships,false,ignoreDamecon) : !canContinue(fleetF.ships,null,false,ignoreDamecon);
-			isRetreat = isRetreat || !!shipsAll.find(ship => ship._dataOrig.retreatOnChuuha && ship.HP/ship.maxHP <= .5);
+			if (!isRetreat) {
+				let numShipsRetreatChuuha = shipsAll.filter(ship => ship._dataOrig.retreatOnChuuha && ship.HP/ship.maxHP <= .5).length;
+				isRetreat = numShipsRetreatChuuha > 0 && (!dataInput.retreatOnChuuhaIfAll || shipsAll.filter(ship => ship._dataOrig.retreatOnChuuha).length == numShipsRetreatChuuha);
+			}
 			if (!isRetreat) {
 				let undoFCF = false;
 				if (dataInput.settingsFCF && battleInd < dataInput.nodes.length-1) {

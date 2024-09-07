@@ -68,6 +68,8 @@ var UI_MAIN = Vue.createApp({
 		
 		settings: {
 			retreatOnTaiha: true,
+			dameconNumTaiha: null,
+			retreatOnChuuhaIfAll: 0,
 			replaceImpossibleFormations: true,
 			mechanics: [],
 			shellDmgCap: SIMCONSTS.shellDmgCap,
@@ -886,6 +888,7 @@ ${t('results.buckets')}:	${this.resultsBucketTPPer}`;
 			style.innerText = '#divMain > *, #divOther { display: none; }';
 			document.head.appendChild(style);
 			this.canSim = false;
+			this.showProgress = true;
 			this.results.isFromImport = true;
 			SIM.runStats(dataInput,this.callbackSimStats);
 		},
@@ -1711,6 +1714,7 @@ var UI_BACKUP = Vue.createApp({
 		shareURLLoading: false,
 		showShareURLCopied: false,
 		showShareURLError: false,
+		shareURL: '',
 		
 		callback: null,
 	}),
@@ -1808,6 +1812,7 @@ var UI_BACKUP = Vue.createApp({
 						return;
 					}
 					navigator.clipboard.writeText(txt + '+');
+					this.shareURL = txt + '+';
 					this.showShareURLCopied = true;
 					this.showShareURLError = false;
 				}).catch(error => {
@@ -1889,6 +1894,7 @@ var UI_RETREATSETTINGS = Vue.createApp({
 		canClose: true,
 		
 		shipGroups: [],
+		retreatIfAll: 0,
 	}),
 	methods: {
 		doOpen: function() {
@@ -1896,10 +1902,14 @@ var UI_RETREATSETTINGS = Vue.createApp({
 			this.shipGroups = [];
 			this.shipGroups.push(UI_MAIN.fleetFMain.ships.filter(ship => !FLEET_MODEL.shipIsEmpty(ship)));
 			if (UI_MAIN.fleetFMain.shipsEscort && UI_MAIN.fleetFMain.combined) this.shipGroups.push(UI_MAIN.fleetFMain.shipsEscort.filter(ship => !FLEET_MODEL.shipIsEmpty(ship)));
+			this.retreatIfAll = UI_MAIN.settings.retreatOnChuuhaIfAll ?? 0;
 		},
 		
 		onclickShip: function(ship) {
 			ship.retreatOnChuuha = !ship.retreatOnChuuha;
+		},
+		onchangeRetreatIfAll: function() {
+			UI_MAIN.settings.retreatOnChuuhaIfAll = +this.retreatIfAll;
 		},
 	},
 }).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divRetreatSettings');;

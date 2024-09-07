@@ -18,6 +18,7 @@
 	<script type="text/javascript" src="reader/steganography.js"></script>
 	<script type="text/javascript" src="reader/lz-string.js"></script>
 	<script src="js/battleText/playertext-table.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/lzma/src/lzma_worker.min.js"></script>
 	<script type="text/javascript">
 		function loadImage(file) {
 			var preview = document.getElementById('imgpreview');
@@ -186,8 +187,8 @@
 							<input type="button" value="Load" onclick="loadImgURL($('#textimgurl').val())" />
 						</div>
 						<hr>
-						<div style="height:200px">
-							<img src="" id="imgpreview" height="200" alt="Image preview...">
+						<div style="height:180px">
+							<img src="" id="imgpreview" height="180" alt="Image preview...">
 						</div>
 					</div>
 
@@ -202,8 +203,9 @@
 							<input type="button" value="Sample Code 1" onclick="$('#code').val(APIsample);" />
 							<input type="button" value="Sample Code 2" onclick="$('#code').val(APIsample2);" />
 						</div>
-						<div style="height: 15px;">
+						<div style="display:flex;width:300px">
 							<span id="error" style="color:red; font-size: 10px;"></span>
+							<input type="button" value="Create Shared Link (TinyURL)" style="margin-left:auto;margin-top:5px" onclick="onclickCreateSharedLink()"/>
 						</div>
 
 					</div>

@@ -841,6 +841,8 @@ window.CONVERT = {
 			fleetFriendComps: dataUI.useFF ? this.uiToSimInputComps(dataUI.fleetsFFriend) : null,
 			nodes: [],
 			continueOnTaiha: !dataUI.settings.retreatOnTaiha,
+			dameconNumTaiha: dataUI.settings.dameconNumTaiha,
+			retreatOnChuuhaIfAll: dataUI.settings.retreatOnChuuhaIfAll,
 			allowAnyFormation: !dataUI.settings.replaceImpossibleFormations,
 			bucketHPPercent: dataUI.settings.bucketPercent,
 			bucketTime: dataUI.settings.bucketTime,
