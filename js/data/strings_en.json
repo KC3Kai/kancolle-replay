@@ -314,7 +314,7 @@
 	"cond_no_reach_boss": "Did Not Reach Boss",
 	"cond_reach_boss": "Reached Boss",
 	"cond_flagsunk": "Boss Flagship Sunk",
-	"cond_rankA": "Boss A+ Rank",
+	"cond_rankA": "Boss A Rank",
 	"cond_rankS": "Boss S Rank",
 	"n_attempts": "{n} attempts|{n} attempt|{n} attempts",
 	"watch_cancel": "Cancel",

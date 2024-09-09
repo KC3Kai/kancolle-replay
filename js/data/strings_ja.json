@@ -314,7 +314,7 @@
 	"cond_no_reach_boss": "途中撤退",
 	"cond_reach_boss": "ボス到達",
 	"cond_flagsunk": "ボス旗艦撃沈",
-	"cond_rankA": "ボスA勝利以上",
+	"cond_rankA": "ボスA勝利",
 	"cond_rankS": "ボスS勝利",
 	"n_attempts": "{n}回試行",
 	"watch_cancel": "中断",
