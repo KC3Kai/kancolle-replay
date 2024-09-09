@@ -719,7 +719,7 @@ var UI_MAIN = Vue.createApp({
 				let found = (this.watchCondition == 1 && SIM.simResultPrev.battleNum < this.battles.length)
 					|| (this.watchCondition == 2 && SIM.simResultPrev.battleNum == this.battles.length)
 					|| (this.watchCondition == 3 && SIM.simResultPrev.battleNum == this.battles.length && SIM.simResultPrev.result.flagsunk)
-					|| (this.watchCondition == 4 && SIM.simResultPrev.battleNum == this.battles.length && ['S','A'].includes(SIM.simResultPrev.result.rank))
+					|| (this.watchCondition == 4 && SIM.simResultPrev.battleNum == this.battles.length && ['A'].includes(SIM.simResultPrev.result.rank))
 					|| (this.watchCondition == 5 && SIM.simResultPrev.battleNum == this.battles.length && SIM.simResultPrev.result.rank == 'S');
 				if (!found) {
 					setTimeout(() => this._getWatch(replay,numRun),1);
