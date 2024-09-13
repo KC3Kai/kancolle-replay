@@ -61,9 +61,6 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	for (var i=0; i<ships1.length; i++) {
 		if (ships1[i].enableSecondShelling) doShell2 = true;
 	}
-	for (var i=0; i<ships1C.length; i++) {
-		if (ships1C[i].enableSecondShelling) doShell2 = true;
-	}
 	for (var i=0; i<ships2.length; i++) {
 		if (ships2[i].enableSecondShelling) doShell2 = true;
 	}
