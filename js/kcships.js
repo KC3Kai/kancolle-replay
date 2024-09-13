@@ -766,6 +766,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats,isSupport) {
 		if (this.equiptypes[ARMYUNIT] >= 3) this.supplyPostMult *= 1.2;
 		if (this.equips.find(eq => eq.mid == 498 || eq.mid == 499)) this.supplyPostMult *= 1.2;
 		if (this.equips.find(eq => eq.mid == 496 || eq.mid == 499)) this.supplyPostMult *= 1.55;
+		if (this.equiptypes[ARMYUNIT] && hasLC) this.supplyPostMult /= 1.7; //estimate https://discord.com/channels/118339803660943369/178613137430282240/1220862314278948948
 	} else {
 		if (this.numWG >= 2) this.supplyPostMult*=1.625;
 		else if (this.numWG == 1) this.supplyPostMult*=1.25;
