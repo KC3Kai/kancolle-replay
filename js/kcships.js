@@ -1224,7 +1224,7 @@ Ship.prototype.getEquipBonusCVTorp = function(slot) {
 Ship.prototype.getFormation = function() {
 	if (!this.fleet || !this.fleet.formation) return null;
 	if (this.fleet.formation.id != 6) return this.fleet.formation;
-	let threshold = Math.floor(this.fleet.ships.length/2);
+	let threshold = this.isescort ? Math.max(2,Math.floor(this.fleet.combinedWith.ships.length/2)) : Math.floor(this.fleet.ships.length/2);
 	return (this.num <= threshold)? VANGUARD1 : VANGUARD2;
 }
 Ship.prototype.addJetSteelCost = function() {

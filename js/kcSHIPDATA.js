@@ -19353,9 +19353,9 @@ var SHIPDATA = {
 		TP: 45, TPbase: 0,
 		AA: 100, AAbase: 85,
 		AR: 72, ARbase: 55,
-		EV: 83, EVbase: 39,
+		EV: 83, EVbase: 38,
 		ASW: 45, ASWbase: 0,
-		LOS: 90, LOSbase: 38,
+		LOS: 90, LOSbase: 40,
 		LUK: 39, LUKmax: 99,
 		RNG: 2,
 		SPD: 10,
@@ -33267,7 +33267,7 @@ var SHIPDATA = {
 		unknownstats: { EV: 2, LOS: 2, LUK: 2 },
 		RNG: 4,
 		SPD: 10,
-		SLOTS: [48, 44, 46, 42, 0],
+		SLOTS: [48, 50, 46, 36, 0],
 		EQUIPS: [1581, 1574, 1582, 1583, 1608],
 	},
 	2128: {
@@ -33311,7 +33311,7 @@ var SHIPDATA = {
 		unknownstats: { EV: 2, LOS: 2, LUK: 2 },
 		RNG: 4,
 		SPD: 10,
-		SLOTS: [48, 44, 46, 42, 0],
+		SLOTS: [48, 50, 46, 36, 0],
 		EQUIPS: [1581, 1574, 1582, 1583, 1608],
 	},
 	2130: {
@@ -36112,7 +36112,7 @@ var SHIPDATA = {
 		unknownstats: { EV: 2, ASW: 2, LOS: 2, LUK: 2, TACC: 2 },
 		RNG: 4,
 		SPD: 10,
-		SLOTS: [32, 60, 20, 20, 0],
+		SLOTS: [34, 58, 20, 20, 0],
 		EQUIPS: [1650, 1651, 1652, 1648, 1608],
 	},
 	2260: {
@@ -36156,7 +36156,7 @@ var SHIPDATA = {
 		unknownstats: { EV: 2, ASW: 2, LOS: 2, LUK: 2, TACC: 2 },
 		RNG: 4,
 		SPD: 10,
-		SLOTS: [44, 74, 32, 32, 0],
+		SLOTS: [42, 76, 32, 32, 0],
 		EQUIPS: [1650, 1651, 1652, 1648, 1608],
 	},
 	3001: {
