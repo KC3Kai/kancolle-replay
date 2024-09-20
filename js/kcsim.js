@@ -666,7 +666,7 @@ function shell(ship,target,APIhou,attackSpecial,combinedAll) {
 
 function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 	var starshells = NBequips[0], searchlights = NBequips[1], nightscouts = NBequips[2];
-	if (!ship.canNB()) return false;
+	if (!ship.canNB() && attackSpecial != 100) return false;
 	var da = false; //1 = combined damage, 2 = separate damages
 	var cutin = false, cutinR = 0;
 	
