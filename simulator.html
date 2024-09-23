@@ -1653,7 +1653,7 @@
 		<vmodal :active="active" @vclose="canClose&&(active=false)">
 		<div id="divRetreatSettingsMain">
 			<div>
-				<span class="header"><i18n-t keypath="no_retreat_on_taiha" scope="global"><template v-slot:img_taiha><img src="assets/stats/taiha.png" style="vertical-align:middle"/></template></i18n-t>:</span>
+				<span class="header"><i18n-t keypath="no_retreat_on_taiha" scope="global"><template v-slot:img_taiha><img src="assets/stats/taiha.png" style="vertical-align:middle"/></template></i18n-t>:</span> <img v-show="shipGroups.find(ships => ships.find(ship => ship.noRetreatOnTaiha))" src="assets/stats/kuso.png" style="vertical-align:middle" />
 				<div v-for="ships in shipGroups" class="shipGroup">
 					<div v-for="ship in ships" style="position:relative">
 						<img :src="'assets/icons/' + ship.imgName" :style="{'opacity':ship.noRetreatOnTaiha?1:.35}" @click="onclickShipNoTaiha(ship)"/>
