@@ -353,6 +353,9 @@ var UI_MAIN = Vue.createApp({
 		hasChuuhaSettings: function() {
 			return !!((this.fleetFMain.ships && this.fleetFMain.ships.find(s => s.retreatOnChuuha)) || (this.fleetFMain.shipsEscort && this.fleetFMain.shipsEscort.find(s => s.retreatOnChuuha)));
 		},
+		hasNoTaihaSettings: function() {
+			return !!((this.fleetFMain.ships && this.fleetFMain.ships.find(s => s.noRetreatOnTaiha)) || (this.fleetFMain.shipsEscort && this.fleetFMain.shipsEscort.find(s => s.noRetreatOnTaiha)));
+		},
 		
 		autoBonusStatus: function() {
 			return !this.autoBonus ? this.$i18n.t('autobonus_off') : this.$i18n.t('autobonus_active');
@@ -1905,8 +1908,13 @@ var UI_RETREATSETTINGS = Vue.createApp({
 			this.retreatIfAll = UI_MAIN.settings.retreatOnChuuhaIfAll ?? 0;
 		},
 		
-		onclickShip: function(ship) {
+		onclickShipNoTaiha: function(ship) {
+			ship.noRetreatOnTaiha = !ship.noRetreatOnTaiha;
+			if (ship.noRetreatOnTaiha && ship.retreatOnChuuha) ship.retreatOnChuuha = false;
+		},
+		onclickShipChuuha: function(ship) {
 			ship.retreatOnChuuha = !ship.retreatOnChuuha;
+			if (ship.retreatOnChuuha && ship.noRetreatOnTaiha) ship.noRetreatOnTaiha = false;
 		},
 		onchangeRetreatIfAll: function() {
 			UI_MAIN.settings.retreatOnChuuhaIfAll = +this.retreatIfAll;

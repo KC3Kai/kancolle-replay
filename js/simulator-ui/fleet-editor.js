@@ -176,6 +176,7 @@ var FLEET_MODEL = {
 			
 			neverFCF: false,
 			retreatOnChuuha: false,
+			noRetreatOnTaiha: false,
 			
 			isFaraway: false,
 		};

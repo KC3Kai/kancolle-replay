@@ -5,7 +5,7 @@ var CONST = window.COMMON.getConst({});
 
 window.CONVERT = {
 	_fleetPropsSaved: ['type','formation'],
-	_shipPropsSaved: ['mstId','level','hp','hpInit','morale','fuelInit','ammoInit','statsBase','slots','bonusDmg','bonusAcc','bonusEva','bonusDmgDebuff','isFaraway','neverFCF','retreatOnChuuha'],
+	_shipPropsSaved: ['mstId','level','hp','hpInit','morale','fuelInit','ammoInit','statsBase','slots','bonusDmg','bonusAcc','bonusEva','bonusDmgDebuff','isFaraway','neverFCF','retreatOnChuuha','noRetreatOnTaiha'],
 	_equipPropsSaved: ['mstId','level','rank','bonusDmg','bonusAcc','bonusGroups'],
 	
 	_UI_MAIN: null,
@@ -738,6 +738,7 @@ window.CONVERT = {
 			}
 			if (shipUI.neverFCF) shipInput.neverFCF = 1;
 			if (shipUI.retreatOnChuuha) shipInput.retreatOnChuuha = 1;
+			if (shipUI.noRetreatOnTaiha) shipInput.noRetreatOnTaiha = 1;
 			
 			shipsInput.push(shipInput);
 		}			
