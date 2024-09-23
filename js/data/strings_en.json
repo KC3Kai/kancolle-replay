@@ -213,6 +213,8 @@
 	"retreat_on_taiha_even": "Retreat on {img_taiha} even if ship has {img_repair} if on Node {sel_node} or before OR number of {img_taiha} ships \u2265 {inp_num}",
 	"na": "N/A",
 	"none_node": "None",
+	"other_retreat_settings": "Other Retreat Settings",
+	"no_retreat_on_taiha": "Don't Retreat on {img_taiha}",
 	"retreat_on_chuuha": "Retreat on {img_chuuha}",
 	"if_any_are_chuuha": "If ANY of the selected are {img_chuuha}",
 	"if_all_are_chuuha": "If ALL of the selected are {img_chuuha}",

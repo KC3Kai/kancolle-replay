@@ -151,7 +151,7 @@
 					<template v-slot:inp_num><input type="number" min="0" max="12" :placeholder="$t('na')" v-model.number="settings.dameconNumTaiha" :class="getClassSetting('dameconNumTaiha')"/></template>
 					<template v-slot:br><br></template>
 				</i18n-t></div>
-				<div style="margin-left:10px"><i18n-t keypath="retreat_on_chuuha" scope="global"><template v-slot:img_chuuha><img src="assets/stats/chuuha.png"/></template></i18n-t>: <input type="button" :value="$t('settings')" @click="onclickSetRetreat"/> <span v-show="hasChuuhaSettings" class="bonusMarker chuuha">&#11044;</span></div>
+				<div style="margin-left:20px"><input type="button" :value="$t('other_retreat_settings')" @click="onclickSetRetreat"/> <span v-show="hasChuuhaSettings||hasNoTaihaSettings" class="bonusMarker chuuha">&#11044;</span></div>
 				<div><img src="assets/items/28.png"/><input type="button" :value="$t('fcf_settings')" @click="onclickSetFCF"/> <span v-show="hasFCFSettings" class="bonusMarker fcf" :title="$t('fcf_settings_set')">&#11044;</span></div>
 				<div><label><input type="checkbox" v-model="settings.replaceImpossibleFormations"/> <i18n-t keypath="replace_formations" scope="global">
 					<template v-slot:closest_alternative><span class="tooltip" :title="$t('closest_alternative_tooltip')">{{$t('closest_alternative')}}</span></template>
@@ -1653,10 +1653,19 @@
 		<vmodal :active="active" @vclose="canClose&&(active=false)">
 		<div id="divRetreatSettingsMain">
 			<div>
+				<span class="header"><i18n-t keypath="no_retreat_on_taiha" scope="global"><template v-slot:img_taiha><img src="assets/stats/taiha.png" style="vertical-align:middle"/></template></i18n-t>:</span>
+				<div v-for="ships in shipGroups" class="shipGroup">
+					<div v-for="ship in ships" style="position:relative">
+						<img :src="'assets/icons/' + ship.imgName" :style="{'opacity':ship.noRetreatOnTaiha?1:.35}" @click="onclickShipNoTaiha(ship)"/>
+						<span class="shipType">{{ship.type}}</span>
+					</div>
+				</div>
+			</div>
+			<div>
 				<span class="header"><i18n-t keypath="retreat_on_chuuha" scope="global"><template v-slot:img_chuuha><img src="assets/stats/chuuha.png" style="vertical-align:middle"/></template></i18n-t>:</span>
 				<div v-for="ships in shipGroups" class="shipGroup">
 					<div v-for="ship in ships" style="position:relative">
-						<img :src="'assets/icons/' + ship.imgName" :style="{'opacity':ship.retreatOnChuuha?1:.35}" @click="onclickShip(ship)"/>
+						<img :src="'assets/icons/' + ship.imgName" :style="{'opacity':ship.retreatOnChuuha?1:.35}" @click="onclickShipChuuha(ship)"/>
 						<span class="shipType">{{ship.type}}</span>
 					</div>
 				</div>

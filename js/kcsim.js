@@ -4029,11 +4029,13 @@ function canContinue(ships1,ships1C,ignoreFCF,ignoreDamecon) {
 	if (DORETREAT) {
 		for (var i=1; i<ships1.length; i++) {
 			if (ships1[i].retreated) continue;
+			if (ships1[i]._dataOrig && ships1[i]._dataOrig.noRetreatOnTaiha) continue;
 			if (ships1[i].HP/ships1[i].maxHP <= .25 && (ignoreDamecon||!ships1[i].repairs||!ships1[i].repairs.length) && ships1[i] != retreater) return false;
 		}
 		if (ships1C) {
 			for (var i=1; i<ships1C.length; i++) {
 				if (ships1C[i].retreated) continue;
+				if (ships1C[i]._dataOrig && ships1C[i]._dataOrig.noRetreatOnTaiha) continue;
 				if (ships1C[i].HP/ships1C[i].maxHP <= .25 && (ignoreDamecon||!ships1C[i].repairs||!ships1C[i].repairs.length) && ships1C[i] != retreater) return false;
 			}
 		}

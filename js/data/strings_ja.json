@@ -213,6 +213,8 @@
 	"retreat_on_taiha_even": "{img_taiha}したときダメコンを装備していても、{br}\u3000\u30fbNode{sel_node} か、それより前{br}\u3000\u30fb{img_taiha}が{inp_num}隻以上{br}\u3000のいずれかであれば撤退する",
 	"na": "無効",
 	"none_node": "None",
+	"other_retreat_settings": "撤退設定",
+	"no_retreat_on_taiha": "{img_taiha}しても撤退しない",
 	"retreat_on_chuuha": "{img_chuuha}したら撤退する",
 	"if_any_are_chuuha": "選択したいずれかの艦が{img_chuuha}したら",
 	"if_all_are_chuuha": "選択した全ての艦が{img_chuuha}したら",
