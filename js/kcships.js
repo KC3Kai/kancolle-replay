@@ -939,7 +939,7 @@ Ship.prototype.getFit = function() {
 		let num46cm = this.equips.filter(eq => [9].includes(eq.mid)).length;
 		let numP46cm = this.equips.filter(eq => [117].includes(eq.mid)).length;
 		let num41cm = this.equips.filter(eq => [8,105,236,290,298,299,300,318,330,331,332,381,385,390].includes(eq.mid)).length;
-		let num356cm = this.equips.filter(eq => [7,76,103,104,114,190,192,289,328,329,502,503].includes(eq.mid)).length;
+		let num356cm = this.equips.filter(eq => [7,76,103,104,114,190,192,289,328,329,502,503,530].includes(eq.mid)).length;
 		let num381mm = this.equips.filter(eq => [133,137].includes(eq.mid)).length;
 		let num16inchMk7 = this.equips.filter(eq => [161,183].includes(eq.mid)).length;
 		let num46cmK = this.equips.filter(eq => [276].includes(eq.mid)).length;

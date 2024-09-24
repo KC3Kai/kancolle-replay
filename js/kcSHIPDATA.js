@@ -16680,6 +16680,7 @@ var SHIPDATA = {
 		nid: 394,
 		added: '2024-09-24',
 		fitclass: 1,
+		attackSpecial: 104,
 		HP: 85, HPmax: 98,
 		FP: 106, FPbase: 79,
 		TP: 40, TPbase: 17,
