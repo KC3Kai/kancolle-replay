@@ -1282,6 +1282,7 @@ function canSpecialAttackUnique(ship,isNB,isCheck) {
 		if (ship.mid == 591 && [592,151,593,954,439,364].indexOf(ship.fleet.ships[1].mid) == -1) return false;
 		if (ship.mid == 592 && [591,152,593,954].indexOf(ship.fleet.ships[1].mid) == -1) return false;
 		if ([593,954].includes(ship.mid) && ![591,592].includes(ship.fleet.ships[1].mid)) return false;
+		if (ship.mid == 694 && [591,592,697].indexOf(ship.fleet.ships[1].mid) == -1) return false;
 		if (isCheck) return true;
 		let rate = SIMCONSTS.kongouSpecialRate;
 		if (!rate) {
