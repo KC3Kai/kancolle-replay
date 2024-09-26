@@ -162,7 +162,7 @@ var UI_MAIN = Vue.createApp({
 		autoBonus: null,
 		
 		canSim: true,
-		watchCondition: 0,
+		watchCondition: 'none',
 		watchCount: 0,
 		watchFound: false,
 		isRunningWatch: false,
@@ -186,10 +186,13 @@ var UI_MAIN = Vue.createApp({
 			mvp1: [], mvp2: [], mvp3: [], mvp4: [], mvp5: [], mvp6: [], mvp7: [],
 			mvpE1: [], mvpE2: [], mvpE3: [], mvpE4: [], mvpE5: [], mvpE6: [],
 			airASP: [], airAS: [], airAP: [], airAD: [], airAI: [],
-			taiha: [],
+			taiha: [], noChuuha: [], dameconAny: [], sunkFAny: [],
 			taiha1: [], taiha2: [], taiha3: [], taiha4: [], taiha5: [], taiha6: [], taiha7: [],
+			damecon1: [], damecon2: [], damecon3: [], damecon4: [], damecon5: [], damecon6: [], damecon7: [],
+			sunkF1: [], sunkF2: [], sunkF3: [], sunkF4: [], sunkF5: [], sunkF6: [], sunkF7: [],
 			taihaE1: [], taihaE2: [], taihaE3: [], taihaE4: [], taihaE5: [], taihaE6: [],
-			noChuuha: [],
+			dameconE1: [], dameconE2: [], dameconE3: [], dameconE4: [], dameconE5: [], dameconE6: [],
+			sunkFE1: [], sunkFE2: [], sunkFE3: [], sunkFE4: [], sunkFE5: [], sunkFE6: [],
 			fuelSupply: 0, ammoSupply: 0, bauxSupply: 0,
 			fuelRepair: 0, steelRepair: 0, bucket: 0, damecon: 0, underway: 0,
 			fuelS: 0, ammoS: 0, steelS: 0, bauxS: 0, bucketS: 0, dameconS: 0, underwayS: 0,
@@ -583,13 +586,19 @@ var UI_MAIN = Vue.createApp({
 				this.results.flagSunkNode[i] = formatNum(node.flagsunk / node.num);
 				this.results.taiha[i] = formatNum(node.taiha / node.num);
 				this.results.noChuuha[i] = formatNum(node.undamaged / node.num);
+				this.results.dameconAny[i] = formatNum(node.dameconAny / node.num);
+				this.results.sunkFAny[i] = formatNum(node.sunkFAny / node.num);
 				for (let num=1; num<=7; num++) {
 					this.results['mvp'+num][i] = formatNum(node.mvps[num-1] / node.num);
 					this.results['taiha'+num][i] = formatNum(node.taihaIndiv[num-1] / node.num);
+					this.results['damecon'+num][i] = formatNum(node.dameconIndiv[num-1] / node.num);
+					this.results['sunkF'+num][i] = formatNum(node.sunkFIndiv[num-1] / node.num);
 				}
 				for (let num=1; num<=6; num++) {
 					this.results['mvpE'+num][i] = formatNum(node.mvpsC[num-1] / node.num);
 					this.results['taihaE'+num][i] = formatNum(node.taihaIndivC[num-1] / node.num);
+					this.results['dameconE'+num][i] = formatNum(node.dameconIndivC[num-1] / node.num);
+					this.results['sunkFE'+num][i] = formatNum(node.sunkFIndivC[num-1] / node.num);
 				}
 				this.results.airAI[i] = formatNum(node.airStates[0] / node.num);
 				this.results.airAD[i] = formatNum(node.airStates[1] / node.num);
@@ -703,7 +712,7 @@ var UI_MAIN = Vue.createApp({
 			}
 			
 			replay.battles = [];
-			let errors = SIM.runReplay(CONVERT.uiToSimInput(this),replay,this.watchCondition);
+			let errors = SIM.runReplay(CONVERT.uiToSimInput(this),replay,this.watchCondition!='none');
 			if (errors) {
 				this.results.errors = errors.filter(obj => this._includeError(obj)).map(obj => ({ key: obj.key, args: obj.args }));
 				this.canSim = true;
@@ -711,7 +720,7 @@ var UI_MAIN = Vue.createApp({
 				return;
 			}
 			
-			if (+this.watchCondition) {
+			if (this.watchCondition != 'none') {
 				this.watchCount = ++numRun;
 				if (numRun >= CONST.watchCountMax) {
 					this.canSim = true;
@@ -719,11 +728,15 @@ var UI_MAIN = Vue.createApp({
 					this.isRunningWatch = false;
 					return;
 				}
-				let found = (this.watchCondition == 1 && SIM.simResultPrev.battleNum < this.battles.length)
-					|| (this.watchCondition == 2 && SIM.simResultPrev.battleNum == this.battles.length)
-					|| (this.watchCondition == 3 && SIM.simResultPrev.battleNum == this.battles.length && SIM.simResultPrev.result.flagsunk)
-					|| (this.watchCondition == 4 && SIM.simResultPrev.battleNum == this.battles.length && ['A'].includes(SIM.simResultPrev.result.rank))
-					|| (this.watchCondition == 5 && SIM.simResultPrev.battleNum == this.battles.length && SIM.simResultPrev.result.rank == 'S');
+				let found = (this.watchCondition == 'no_boss' && SIM.simResultPrev.battleNum < this.battles.length)
+					|| (this.watchCondition == 'boss' && SIM.simResultPrev.battleNum == this.battles.length)
+					|| (this.watchCondition == 'flagsunk' && SIM.simResultPrev.battleNum == this.battles.length && SIM.simResultPrev.result.flagsunk)
+					|| (this.watchCondition == 'S' && SIM.simResultPrev.battleNum == this.battles.length && SIM.simResultPrev.result.rank == 'S')
+					|| (this.watchCondition == 'A' && SIM.simResultPrev.battleNum == this.battles.length && SIM.simResultPrev.result.rank == 'A')
+					|| (this.watchCondition == 'B' && SIM.simResultPrev.battleNum == this.battles.length && SIM.simResultPrev.result.rank == 'B')
+					|| (this.watchCondition == 'C' && SIM.simResultPrev.battleNum == this.battles.length && SIM.simResultPrev.result.rank == 'C')
+					|| (this.watchCondition == 'D' && SIM.simResultPrev.battleNum == this.battles.length && SIM.simResultPrev.result.rank == 'D')
+					|| (this.watchCondition == 'E' && SIM.simResultPrev.battleNum == this.battles.length && SIM.simResultPrev.result.rank == 'E');
 				if (!found) {
 					setTimeout(() => this._getWatch(replay,numRun),1);
 					return;

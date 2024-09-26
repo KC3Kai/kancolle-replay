@@ -460,13 +460,17 @@
 		<div id="divSimWatch">
 			<div><input type="button" :value="$t('watch_sortie')" :disabled="!canSim" @click="onclickWatch"/> {{$t('opens_in_replayer')}}</div>
 			<div style="margin-left:26px"><span>{{$t('extra_condition')}}: </span>
-				<select v-model.number="watchCondition">
-					<option value="0">{{$t('cond_none')}}</option>
-					<option value="1">{{$t('cond_no_reach_boss')}}</option>
-					<option value="2">{{$t('cond_reach_boss')}}</option>
-					<option value="3">{{$t('cond_flagsunk')}}</option>
-					<option value="4">{{$t('cond_rankA')}}</option>
-					<option value="5">{{$t('cond_rankS')}}</option>
+				<select v-model="watchCondition">
+					<option value="none">{{$t('cond_none')}}</option>
+					<option value="no_boss">{{$t('cond_no_reach_boss')}}</option>
+					<option value="boss">{{$t('cond_reach_boss')}}</option>
+					<option value="flagsunk">{{$t('cond_flagsunk')}}</option>
+					<option value="S">{{$t('cond_rankS')}}</option>
+					<option value="A">{{$t('cond_rankA')}}</option>
+					<option value="B">{{$t('cond_rankB')}}</option>
+					<option value="C">{{$t('cond_rankC')}}</option>
+					<option value="D">{{$t('cond_rankD')}}</option>
+					<option value="E">{{$t('cond_rankE')}}</option>
 				</select>
 				<span v-show="watchCount" :style="styleWatchCount">&nbsp;{{$tc('n_attempts',watchCount)}}</span>
 				<span v-show="isRunningWatch">&nbsp;<input type="button" :value="$t('watch_cancel')" @click="isRunningWatch=false"/></span>
@@ -715,6 +719,34 @@
 						<tr v-show="results.damecon"><th><img src="assets/items/14.png" class="iconSlotitem" :alt="$t('repair_team')"/></th><td><span class="resultBold">{{resultsDameconTPPer}}</span></td></tr>
 						<tr v-show="results.underway"><th><img src="assets/items/35.png" class="iconSlotitem" :alt="$t('underway_resupply')"/></th><td><span class="resultBold">{{resultsUnderwayTPPer}}</span></td></tr>
 						</table>
+					</div>
+				</div>
+				<div class="divResultColsWrap" v-show="results.showMore">
+					<div class="resultCol" v-show="results.dameconAny.find(n => n)">
+						<div>
+							<div><i18n-t keypath="damecon_rate_per_battle" scope="global"><template v-slot:img_damecon><img src="assets/items/14.png" :alt="$t('repair_team')"/></template></i18n-t>:</div>
+							<table class="multi">
+							<tr v-show="results.numNodes>1"><th>&nbsp;</th><th v-for="n in results.numNodes">{{n}}</th></tr>
+							<tr><th>{{$t('any')}}</th><td v-for="stat in results.dameconAny"><span class="resultBold">{{stat}}</span></td></tr>
+							<tr class="tableSpace"></tr>
+							<tr v-for="n in 7" v-show="results.hasSF||n<7"><th><img :src="'assets/stats/F' + n + '.png'" :alt="$t('ship_n',[n])"/></th><td v-for="stat in results['damecon'+n]">{{stat}}</td></tr>
+							<tr class="tableSpace" v-show="results.hasCF"></tr>
+							<tr v-for="n in 6" v-show="results.hasCF"><th><img :src="'assets/stats/F' + n + '.png'" :alt="$t('ship_n',[n])"/></th><td v-for="stat in results['dameconE'+n]">{{stat}}</td></tr>
+							</table>
+						</div>
+					</div>
+					<div class="resultCol" v-show="results.sunkFAny.find(n => n)">
+						<div>
+							<div><i18n-t keypath="player_sunk_rate_per_battle" scope="global"><template v-slot:img_sunk><img src="assets/stats/kuso.png"/></template></i18n-t>:</div>
+							<table class="multi">
+							<tr v-show="results.numNodes>1"><th>&nbsp;</th><th v-for="n in results.numNodes">{{n}}</th></tr>
+							<tr><th>{{$t('any')}}</th><td v-for="stat in results.sunkFAny"><span class="resultBold">{{stat}}</span></td></tr>
+							<tr class="tableSpace"></tr>
+							<tr v-for="n in 7" v-show="results.hasSF||n<7"><th><img :src="'assets/stats/F' + n + '.png'" :alt="$t('ship_n',[n])"/></th><td v-for="stat in results['sunkF'+n]">{{stat}}</td></tr>
+							<tr class="tableSpace" v-show="results.hasCF"></tr>
+							<tr v-for="n in 6" v-show="results.hasCF"><th><img :src="'assets/stats/F' + n + '.png'" :alt="$t('ship_n',[n])"/></th><td v-for="stat in results['sunkFE'+n]">{{stat}}</td></tr>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>
