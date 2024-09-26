@@ -1191,7 +1191,7 @@ function canSpecialAttackUnique(ship,isNB,isCheck) {
 		let ship2 = ship.fleet.ships[1], ship3 = ship.fleet.ships[2];
 		if (ship2.HP/ship2.maxHP <= .5) return false;
 		if ([911,916].includes(ship.mid) && ship3.HP/ship3.maxHP > .5) {
-			let groups = [[541,573], [553,554], [411,412], [364,576], [364,733], [576,577], [591,592], [591,593], [591,954], [697,659], [1496,918], [446,447], [392,724], [969,724]];
+			let groups = [[541,573], [553,554], [411,412], [364,576], [364,733], [576,577], [591,592], [591,593], [591,954], [591,694], [592,694], [697,659], [1496,918], [446,447], [392,724], [969,724]];
 			let group = groups.find(group => group.includes(ship2.mid) && group.includes(ship3.mid));
 			if (group || (ship2.mid == 546 && [541,573].includes(ship3.mid))) {
 				if (isCheck) return true;
@@ -1279,10 +1279,10 @@ function canSpecialAttackUnique(ship,isNB,isCheck) {
 			let s = ship.fleet.ships[i];
 			if (s.HP/s.maxHP <= .5) return false;
 		}
-		if (ship.mid == 591 && [592,151,593,954,439,364].indexOf(ship.fleet.ships[1].mid) == -1) return false;
-		if (ship.mid == 592 && [591,152,593,954].indexOf(ship.fleet.ships[1].mid) == -1) return false;
-		if ([593,954].includes(ship.mid) && ![591,592].includes(ship.fleet.ships[1].mid)) return false;
-		if (ship.mid == 694 && [591,592,697].indexOf(ship.fleet.ships[1].mid) == -1) return false;
+		if (ship.mid == 591 && [592,151,593,954,694,439,364].indexOf(ship.fleet.ships[1].mid) == -1) return false;
+		if (ship.mid == 592 && [591,152,694,593,954].indexOf(ship.fleet.ships[1].mid) == -1) return false;
+		if ([593,954].includes(ship.mid) && ![591,592,694].includes(ship.fleet.ships[1].mid)) return false;
+		if (ship.mid == 694 && [591,592,593,954,697].indexOf(ship.fleet.ships[1].mid) == -1) return false;
 		if (isCheck) return true;
 		let rate = SIMCONSTS.kongouSpecialRate;
 		if (!rate) {
@@ -2020,6 +2020,7 @@ function takeDamage(ship,damage) {
 		if (repair == 42) ship.HP = Math.floor(.2*ship.maxHP);
 		else if (repair == 43) { ship.HP = ship.maxHP; ship.fuelleft = ship.ammoleft = 10; }
 		if (ship.side==0) ship.protection = true;
+		ship.dameconUsed = 1;
 	}
 	
 	return damage;
@@ -3418,21 +3419,21 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 	var alive1 = [], alive2 = [], subsalive1 = [], subsalive2 = [];
 	var hasInstall1 = false, hasInstall2 = false;
 	for (var i=0; i<ships1.length; i++) {
+		ships1[i].HPprev = ships1[i].HP;
 		if (ships1[i].HP <= 0) continue;
 		if (ships1[i].retreated) continue;
 		if(ships1[i].isSub) subsalive1.push(ships1[i]);
 		else alive1.push(ships1[i]);
-		ships1[i].HPprev = ships1[i].HP;
 		if (!MECHANICS.morale) ships1[i].morale = 49;
 		if (ships1[i].isInstall) hasInstall1 = true;
 		ships1[i].morale -= (NBonly ? 2 : 3);
 	}
 	for (var i=0; i<ships2.length; i++) {
+		ships2[i].HPprev = ships2[i].HP;
 		if (ships2[i].HP <= 0) continue;
 		if (ships2[i].retreated) continue;
 		if(ships2[i].isSub) subsalive2.push(ships2[i]);
 		else alive2.push(ships2[i]);
-		ships2[i].HPprev = ships2[i].HP;
 		if (ships2[i].isInstall) hasInstall2 = true;
 	}
 	
@@ -3787,21 +3788,21 @@ function getRank(ships1,ships2,ships1C) {
 	var dmg1 = 0, dmg2 = 0, sunk1 = 0, sunk2 = 0, dtotal1 = 0, dtotal2 = 0;
 	for (var i=0; i<ships2.length; i++) {
 		if (ships2[i].HP <= 0) sunk2++;
-		dmg2 += ships2[i].HPprev - Math.max(0,ships2[i].HP);
-		dtotal2 += ships2[i].HPprev;
+		dmg2 += Math.max(0,ships2[i].HPprev) - Math.max(0,ships2[i].HP);
+		dtotal2 += Math.max(0,ships2[i].HPprev);
 	}
 	for (var i=0; i<ships1.length; i++) {
 		if (ships1[i].retreated) continue;
-		if (ships1[i].HP <= 0) sunk1++;
-		dmg1 += ships1[i].HPprev - Math.max(0,ships1[i].HP);
-		dtotal1 += ships1[i].HPprev;
+		if (ships1[i].HPprev > 0 && ships1[i].HP <= 0) sunk1++;
+		dmg1 += Math.max(0,ships1[i].HPprev) - Math.max(0,ships1[i].HP);
+		dtotal1 += Math.max(0,ships1[i].HPprev);
 	}
 	if (ships1C) {
 		for (var i=0; i<ships1C.length; i++) {
 			if (ships1C[i].retreated) continue;
-			if (ships1C[i].HP <= 0) sunk1++;
-			dmg1 += ships1C[i].HPprev - Math.max(0,ships1C[i].HP);
-			dtotal1 += ships1C[i].HPprev;
+			if (ships1C[i].HPprev > 0 && ships1C[i].HP <= 0) sunk1++;
+			dmg1 += Math.max(0,ships1C[i].HPprev) - Math.max(0,ships1C[i].HP);
+			dtotal1 += Math.max(0,ships1C[i].HPprev);
 		}
 	}
 	dmg1 /= dtotal1; dmg2 /= dtotal2;
@@ -3994,9 +3995,10 @@ function canContinue(ships1,ships1C,ignoreFCF,ignoreDamecon) {
 			let repair = ship.repairs.shift();
 			if (repair == 42) ship.HP = Math.floor(.5*ship.maxHP);
 			else if (repair == 43) { ship.HP = ship.maxHP; ship.fuelleft = ship.ammoleft = 10; }
-			return true;
+			ship.dameconUsed = 1;
+		} else {
+			return false;
 		}
-		return false;
 	}
 	
 	if (!ignoreFCF && !ships1C && ships1[0].hasFCF && ships1[0].hasFCF[272] && ships1[0].fleet.ships.length >= 7) {
@@ -4432,29 +4434,29 @@ function simNightFirstCombined(F1,F2,Fsupport,LBASwaves,BAPI) {
 	var alive1 = [], alive2 = [], alive2C = [], subsalive1 = [], subsalive2 = [], subsalive2C = [];
 	var hasInstall1 = false, hasInstall2 = false, hasInstall2C = false;
 	for (var i=0; i<ships1.length; i++) {
+		ships1[i].HPprev = ships1[i].HP;
 		if (ships1[i].HP <= 0) continue;
 		if (ships1[i].retreated) continue;
 		if(ships1[i].isSub) subsalive1.push(ships1[i]);
 		else alive1.push(ships1[i]);
-		ships1[i].HPprev = ships1[i].HP;
 		if (!MECHANICS.morale) ships1[i].morale = 49;
 		if (ships1[i].isInstall) hasInstall1 = true;
 	}
 	for (var i=0; i<ships2.length; i++) {
+		ships2[i].HPprev = ships2[i].HP;
 		if (ships2[i].HP <= 0) continue;
 		if (ships2[i].retreated) continue;
 		if(ships2[i].isSub) subsalive2.push(ships2[i]);
 		else alive2.push(ships2[i]);
-		ships2[i].HPprev = ships2[i].HP;
 		if (!MECHANICS.morale) ships2[i].morale = 49;
 		if (ships2[i].isInstall) hasInstall2 = true;
 	}
 	for (var i=0; i<ships2C.length; i++) {
+		ships2C[i].HPprev = ships2C[i].HP;
 		if (ships2C[i].HP <= 0) continue;
 		if (ships2C[i].retreated) continue;
 		if(ships2C[i].isSub) subsalive2C.push(ships2C[i]);
 		else alive2C.push(ships2C[i]);
-		ships2C[i].HPprev = ships2C[i].HP;
 		if (!MECHANICS.morale) ships2C[i].morale = 49;
 		if (ships2C[i].isInstall) hasInstall2C = true;
 	}

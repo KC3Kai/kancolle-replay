@@ -140,6 +140,7 @@ Fleet.prototype.resetBattle = function() {
 	this.clearFleetLoS();
 	this.DMGTOTALS.fill(0);
 	delete this.smokeType;
+	for (let ship of this.ships) ship.dameconUsed = 0;
 }
 Fleet.prototype.giveCredit = function(ship,damage) {
 	this.DMGTOTALS[this.ships.indexOf(ship)] += damage;
@@ -1658,7 +1659,7 @@ Ship.prototype.getAACItype = function(atypes) {
 		types.push(31);
 	}
 	if ((this.mid == 478 || this.mid == 477) && atypes[A_HAGUN] && atypes[A_AAGUN] > concentrated) types.push(24); //Tatsuta Kai Ni + Tenryuu Kai Ni
-	if (([67,78,82,88,108,112].indexOf(this.sclass) != -1 || [149,150,151,152,591,592,593,954].indexOf(this.mid) != -1) && ((hasID[191] && hasID[300]) || (hasID[301] && hasID[191]) || (hasID[301] >= 2))) types.push(32); //royal navy + Kongou-class
+	if (([67,78,82,88,108,112].indexOf(this.sclass) != -1 || [149,150,151,152,591,592,593,954,694].indexOf(this.mid) != -1) && ((hasID[191] && hasID[300]) || (hasID[301] && hasID[191]) || (hasID[301] >= 2))) types.push(32); //royal navy + Kongou-class
 	
 	return types;
 }

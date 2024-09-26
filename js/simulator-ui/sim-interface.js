@@ -51,6 +51,7 @@ var SIM = {
 	_compListFF: null,
 	_inputPrev: {},
 	_unsetEnemy: null,
+	_resultsCountDamecon: false,
 	
 	cancelRun: false,
 	simResultPrev: null,
@@ -114,6 +115,12 @@ var SIM = {
 				taiha: 0,
 				taihaIndiv: [0,0,0,0,0,0,0],
 				taihaIndivC: [0,0,0,0,0,0],
+				sunkFAny: 0,
+				sunkFIndiv: [0,0,0,0,0,0,0],
+				sunkFIndivC: [0,0,0,0,0,0],
+				dameconAny: 0,
+				dameconIndiv: [0,0,0,0,0,0,0],
+				dameconIndivC: [0,0,0,0,0,0],
 				undamaged: 0,
 				airStates: [0,0,0,0,0],
 			});
@@ -142,6 +149,35 @@ var SIM = {
 			if (FLEETS1[1]) tp += FLEETS1[1].getTransport();
 			if (resultSim.rank == 'A') tp = Math.floor(tp*.7);
 			this._results.totalTransport += tp;
+		}
+		if (this._resultsCountDamecon) {
+			let dameconAny = false, sunkFAny = false;
+			for (let i=0; i<FLEETS1[0].ships.length; i++) {
+				let ship = FLEETS1[0].ships[i];
+				if (ship.dameconUsed) {
+					rNode.dameconIndiv[i]++;
+					dameconAny = true;
+				}
+				if (ship.HPprev > 0 && ship.HP < 0) {
+					rNode.sunkFIndiv[i]++;
+					sunkFAny = true;
+				}
+			}
+			if (FLEETS1[1]) {
+				for (let i=0; i<FLEETS1[1].ships.length; i++) {
+					let ship = FLEETS1[1].ships[i];
+					if (ship.dameconUsed) {
+						rNode.dameconIndivC[i]++;
+						dameconAny = true;
+					}
+					if (ship.HPprev > 0 && ship.HP < 0) {
+						rNode.sunkFIndivC[i]++;
+						sunkFAny = true;
+					}
+				}
+			}
+			if (dameconAny) rNode.dameconAny++;
+			if (sunkFAny) rNode.sunkFAny++;
 		}
 	},
 	_updateResultsTotal: function(dataInput) {
@@ -683,6 +719,8 @@ var SIM = {
 		if (dataInput.nodes.find(node => node.useSmoke) && dataInput.consts && dataInput.consts.smokeChanceUseFormula) {
 			this._addWarning('warn_smoke_formula',FLEETS1[0].getSmokeRates());
 		}
+		
+		this._resultsCountDamecon = !!(dataInput.continueOnTaiha || shipsAll.find(ship => ship.noRetreatOnTaiha) || shipsAll.find(ship => ship.equips.find(eq => eq.masterId == 42 || eq.masterId == 43)));
 	},
 	
 	_checkWarningsPostRun: function(dataInput) {
@@ -900,11 +938,13 @@ var SIM = {
 			}
 			this.simResultPrev = { battleNum: battleInd+1, result: result };
 			
-			if (!dataReplay) {
-				this._updateResultsNode(result,battleInd);
+			if (isBossNode) {
+				if (!dataReplay) {
+					this._updateResultsNode(result,battleInd);
+				}
+				break;
 			}
 			
-			if (isBossNode) break;
 			let ignoreDamecon = dataInput.settingsFCF && dataInput.settingsFCF.dameconNode && battleInd+1 <= dataInput.settingsFCF.dameconNode;
 			if (!ignoreDamecon && dataInput.dameconNumTaiha != null && dataInput.dameconNumTaiha != '') {
 				ignoreDamecon = dataInput.dameconNumTaiha <= shipsAll.filter(ship => ship.HP/ship.maxHP <= .25 && ship.repairs && ship.repairs.length).length;
@@ -933,6 +973,10 @@ var SIM = {
 					}
 					isRetreat = fleetF.combinedWith ? !canContinue(fleetF.ships,fleetF.combinedWith.ships,true,ignoreDamecon) : !canContinue(fleetF.ships,null,true,ignoreDamecon);
 				}
+			}
+			
+			if (!dataReplay) {
+				this._updateResultsNode(result,battleInd);
 			}
 			
 			for (let ship of shipsAll) delete ship._tempFCF;
