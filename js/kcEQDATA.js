@@ -6314,6 +6314,15 @@ var EQDATA = {
 		ASW: 7,
 		LOS: 6,
 	},
+	546: {
+		name: 'Prototype Shinden (LB Interceptor)',
+		nameJP: '試製 震電(局地戦闘機)',
+		added: '2024-09-27',
+		type: INTERCEPTOR, image: 57,
+		AA: 14,
+		ACC: 5,
+		EV: 4,
+	},
 	1501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
@@ -8143,6 +8152,7 @@ var LBASDATA = {
 	543: { distance: 4, cost: 5 },
 	544: { distance: 4, cost: 5 },
 	545: { distance: 6, cost: 8 },
+	546: { distance: 2, cost: 9 },
 };
 
 
