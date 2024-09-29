@@ -367,7 +367,7 @@ function Ship(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 Ship.prototype.loadEquips = function(equips,levels,profs,addstats,isSupport) {
 	if (!equips || this.equips.length > 0) return;  //don't load if already have equips, do removeEquips() first
 	var atypes = {};
-	var installeqs = {DH1:0,DH2:0,DH3:0,TDH:0,TDH11:0,WG:0,AP:0,T3:0,SB:0,DB:0,DH1stars:0,DH3stars:0};
+	var installeqs = {DH1:0,DH2:0,DH3:0,TDH:0,TDH11:0,WG:0,AP:0,T3:0,SB:0,DB:0,DH1stars:0,DH3stars:0}, armyeqs = {};
 	var fitcounts = {};
 	var tpEquip = 0;
 	var aswPenetrate = 0;
@@ -453,6 +453,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats,isSupport) {
 		}
 		if (eq.mid == 526) installeqs.T4K = installeqs.T4K + 1 || 1;
 		if (eq.mid == 126) this.numWG = this.numWG + 1 || 1;
+		if (eq.type == ARMYUNIT) armyeqs[eq.mid] = armyeqs[eq.mid] + 1 || 1;
 		
 		if (eq.LOS) this.LOSeq += eq.LOS;
 		if (eq.TP) tpEquip += eq.TP;
@@ -542,6 +543,42 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats,isSupport) {
 		this.installFlat *= 1.5;
 		this.installFlat += 33;
 	}
+	if (armyeqs[496] || armyeqs[499]) {
+		installModAll *= 1.2;
+		this.installFlat *= 1.2;
+		this.installFlat += 60;
+	}
+	if (armyeqs[497] || armyeqs[498]) {
+		installModAll *= 1.5;
+		this.installFlat *= 1.5;
+		this.installFlat += 70;
+	}
+	if (armyeqs[498]) {
+		installModAll *= 1.5;
+		this.installFlat *= 1.5;
+		this.installFlat += 50;
+	}
+	if (armyeqs[499]) {
+		installModAll *= 1.6;
+		this.installFlat *= 1.6;
+		this.installFlat += 70;
+	}
+	if (this.equiptypes[ARMYUNIT] >= 2) {
+		installModAll *= 2;
+		this.installFlat *= 2;
+		this.installFlat += 100;
+		if (armyeqs[499] || (this.equiptypes[ARMYUNIT] || 0) + (this.equiptypes[LANDINGTANK] || 0) >= 3) {
+			installModAll *= 3;
+			this.installFlat *= 3;
+			this.installFlat += 150;
+		}
+		if (installeqs.T4) {
+			this.installFlat += 100;
+		}
+		if (installeqs.T4K) {
+			this.installFlat += 72;
+		}
+	}
 	if (installeqs.T4) {
 		installModAll *= 1.2;
 		this.installFlat *= 1.2;
@@ -555,7 +592,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats,isSupport) {
 	
 	let abSynergyMult = 1, abSynergyFlat = 0, numAB = (installeqs.soukoutei || 0) + (installeqs.armedDaihatsu || 0);
 	if ((installeqs.soukoutei == 1 || installeqs.armedDaihatsu == 1) && (installeqs.soukoutei || 0) < 2 && (installeqs.armedDaihatsu || 0) < 2) {
-		let numA = this.equips.filter(eq => [68,166,193,436,449,525,526].includes(eq.mid)).length;
+		let numA = this.equips.filter(eq => [68,166,193,436,449,514,525,526].includes(eq.mid)).length;
 		let numB = this.equips.filter(eq => [167,230,482,494,495,514].includes(eq.mid)).length;
 		if (installeqs.soukoutei == 1 && installeqs.armedDaihatsu == 1) {
 			if (numA + numB >= 2) {
@@ -577,23 +614,6 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats,isSupport) {
 	this.installFlat *= abSynergyMult;
 	this.installFlat += abSynergyFlat;
 	
-	if (this.equips.find(eq => eq.mid == 496)) {
-		installModAll *= 4.05;
-		this.installFlat += 60;
-	}
-	if (this.equips.find(eq => eq.mid == 497)) {
-		installModAll *= 3.2;
-		this.installFlat += 63;
-	}
-	if (this.equips.find(eq => eq.mid == 498)) {
-		installModAll *= 4.57;
-		this.installFlat += 161;
-	}
-	if (this.equips.find(eq => eq.mid == 499)) {
-		installModAll *= 7.14;
-		this.installFlat += 166;
-	}
-	
 	if (this.numWG) this.installFlat += WGpower(this.numWG);
 	if (installeqs.mortarC >= 4) this.installFlat += 180;
 	else if (installeqs.mortarC == 3) this.installFlat += 150;
@@ -612,9 +632,15 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats,isSupport) {
 	else if (installeqs.rocket4C == 2) this.installFlat += 170;
 	else if (installeqs.rocket4C) this.installFlat += 80;
 	
-	let hasLC = installeqs.DH1 || installeqs.DH2 || installeqs.T4;
+	let hasLC = installeqs.DH1 || installeqs.DH2 || installeqs.T4 || this.equiptypes[ARMYUNIT];
 	let numMortar = (installeqs.mortar || 0) + (installeqs.mortarC || 0);
 	let numRocket4 = (installeqs.rocket4 || 0) + (installeqs.rocket4C || 0);
+	installeqs.TDH = (installeqs.TDH || 0) + (armyeqs[496] || 0) + (armyeqs[499] || 0);
+	installeqs.DH2 = (installeqs.DH2 || 0) + (armyeqs[496] || 0) + (armyeqs[499] || 0);
+	installeqs.panzer3 = (installeqs.panzer3 || 0) + (armyeqs[496] || 0) + (armyeqs[499] || 0);
+	installeqs.panzer3J = (installeqs.panzer3J || 0) + (armyeqs[499] || 0);
+	installeqs.chiha = (installeqs.chiha || 0) + (armyeqs[497] || 0);
+	installeqs.chihaKai = (installeqs.chihaKai || 0) + (armyeqs[498] || 0);
 	
 	this.softSkinMult = 1;
 	if (this.hasT3Shell) this.softSkinMult *= 2.5;
@@ -638,6 +664,9 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats,isSupport) {
 		this.softSkinMult *= installModAll;
 		if (numAB) this.softSkinMultDay = 1.1;
 		if (numAB >= 2 || installeqs.T4 >= 2) this.softSkinMultDay *= 1.1;
+		if (this.equiptypes[ARMYUNIT]) this.softSkinMult *= 1.4;
+		if (this.equiptypes[ARMYUNIT] >= 2) this.softSkinMult *= 1.2;
+		if (this.equiptypes[ARMYUNIT] >= 3) this.softSkinMult *= 1.1;
 	} else {
 		if (installeqs.TDH11) this.softSkinMult *= 1.39;
 	}
@@ -761,13 +790,9 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats,isSupport) {
 		if (installeqs.DH3 >= 2 || installeqs.T4K) this.supplyPostMult *= 1.5;
 		if (numAB) this.supplyPostMult *= 1.5;
 		if (numAB >= 2 || installeqs.T4 >= 2) this.supplyPostMult *= 1.1;
-		
-		if (this.equiptypes[ARMYUNIT]) this.supplyPostMult *= 3.15;
-		if (this.equiptypes[ARMYUNIT] >= 2) this.supplyPostMult *= 2.33;
+		if (this.equiptypes[ARMYUNIT]) this.supplyPostMult *= 1.85;
+		if (this.equiptypes[ARMYUNIT] >= 2) this.supplyPostMult *= 1.45;
 		if (this.equiptypes[ARMYUNIT] >= 3) this.supplyPostMult *= 1.2;
-		if (this.equips.find(eq => eq.mid == 498 || eq.mid == 499)) this.supplyPostMult *= 1.2;
-		if (this.equips.find(eq => eq.mid == 496 || eq.mid == 499)) this.supplyPostMult *= 1.55;
-		if (this.equiptypes[ARMYUNIT] && hasLC) this.supplyPostMult /= 1.7; //estimate https://discord.com/channels/118339803660943369/178613137430282240/1220862314278948948
 	} else {
 		if (this.numWG >= 2) this.supplyPostMult*=1.625;
 		else if (this.numWG == 1) this.supplyPostMult*=1.25;
