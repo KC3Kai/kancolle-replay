@@ -519,7 +519,7 @@ EQTDATA[LANDINGTANK] = {
 	name: 'Misc',
 	image: 36,
 	btype: B_LC3,
-	improve: {Pshell:1,Pnb:1},
+	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['SS','SSV','AV','LHA'],
 	canequipS: [147, 198, 199, 200, 352, 418, 464, 468, 470, 478, 487, 488, 489, 490, 497, 500, 506, 541, 547, 548, 556, 564, 568, 569, 573, 578, 587, 588, 623, 647, 656, 657, 662, 663, 666, 667, 668, 670, 899, 908, 915, 916, 954, 960, 961],
 	cannotequipS: [445, 491, 581, 943],

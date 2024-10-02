@@ -183,7 +183,7 @@ window.CONVERT = {
 			}
 			for (let i=0; i<shipReplay.equip.length; i++) {
 				let equipSave = { mstId: shipReplay.equip[i] };
-				if (shipReplay.stars) equipSave.level = shipReplay.stars[i];
+				if (shipReplay.stars && shipReplay.stars[i] > -1) equipSave.level = shipReplay.stars[i];
 				if (shipReplay.ace && shipReplay.ace[i] > -1) equipSave.rank = shipReplay.ace[i];
 				shipSave.equips.push(equipSave);
 			}
