@@ -169,7 +169,8 @@
 				<div><label><input type="checkbox" v-model="settings.carryOverMorale" />{{$t('carry_over_ship_morale')}}</label></div>
 			</div>
 			<div>
-				<label><input type="checkbox" v-model="settings.airRaidCostW6" /> {{$t('use_default_w6_air_raid')}} (4% <img src="assets/stats/fuel.png" /> 8% <img src="assets/stats/ammo.png" />)</label>
+				<div><label><input type="checkbox" v-model="settings.airRaidCostW6" /> {{$t('use_default_w6_air_raid')}} (4% <img src="assets/stats/fuel.png" /> 8% <img src="assets/stats/ammo.png" />)</label></div>
+				<div><label><input type="checkbox" v-model="enableAntiSubRaid" /> <span class="tooltip" :title="$t('enable_anti_sub_raid_desc')">{{$t('enable_anti_sub_raid')}}</span></label></div>
 			</div>
 			<div>
 				<div class="scrollAnchor"><div ref="divSettingsHistoricalScroll"></div></div>
@@ -193,7 +194,7 @@
 				</div>
 				<div class="subsection" v-show="showMechanics">
 					<div v-for="mechanic in settings.mechanics">
-						<label><input type="checkbox" v-model="mechanic.enabled" @change="onchangeMechanic(mechanic)"/> {{$t('mechanic.' + mechanic.key)}}</label>
+						<label v-if="!mechanic.hide"><input type="checkbox" v-model="mechanic.enabled" @change="onchangeMechanic(mechanic)"/> {{$t('mechanic.' + mechanic.key)}}</label>
 					</div>
 					<br>
 					<table>

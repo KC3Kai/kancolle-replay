@@ -234,6 +234,8 @@
 	"air_softcap": "Air Soft-Cap",
 	"support_softcap": "Support Soft-Cap",
 	"use_default_w6_air_raid": "Use default World 6 costs for Air Raid",
+	"enable_anti_sub_raid": "Enable Anti-Sub Air Raid",
+	"enable_anti_sub_raid_desc": "Used only in event maps, disable if simulating normal world maps",
 	"bucket_count_use": "Count use if HP \u2264 {inp_hp}% OR repair time > {inp_time} hours",
 	"bucket_do_not_count_use": "Do not count if repair time < {inp_time} hours (regardless of above)",
 	"carry_over_ship_hp": "Carry over ship HP between sims unless {img_bucket} conditions (not including \"Do not count if repair time <\")",
