@@ -43,7 +43,7 @@ var MECHANICS_LIST = [
 	{ key: 'eqBonusASW', name: 'ASW Use Equipment Bonus' },
 	{ key: 'ffReroll', name: 'Friend Fleet Flagship Reroll' },
 	{ key: 'eqBonusAA', name: 'Anti-Air Use Equipment Bonus' },
-	{ key: 'antiSubRaid', name: 'Anti-Sub Air Raid' },
+	{ key: 'antiSubRaid', name: 'Anti-Sub Air Raid', hide: true },
 	{ key: 'enable_ASWPlaneAir', name: 'Autogyro/Liaison Air Battle' },
 	{ key: 'enable_AACIRework', name: 'AACI Rework (Sequential Roll + New Priority)' },
 ];
@@ -234,7 +234,7 @@ var UI_MAIN = Vue.createApp({
 			}
 		}
 		for (let obj of MECHANICS_LIST) {
-			this.settings.mechanics.push({ key: obj.key, name: obj.name, enabled: true });
+			this.settings.mechanics.push({ key: obj.key, name: obj.name, enabled: true, hide: !!obj.hide });
 		}
 		this.addNewBattle();
 		
@@ -321,6 +321,7 @@ var UI_MAIN = Vue.createApp({
 							dataReplay = dataHash;
 							dataSave = CONVERT.replayToSave(dataReplay);
 							this.settings.airRaidCostW6 = dataReplay.world == 6;
+							this.enableAntiSubRaid = !(dataReplay.world < 20);
 							if (localStorage.sim2 && !CONVERT.saveIsEmpty(JSON.parse(localStorage.sim2))) {
 								let style = document.createElement('style');
 								style.innerText = '#divMain > *, #divOther { display: none; }';
@@ -428,6 +429,11 @@ var UI_MAIN = Vue.createApp({
 		},
 		resultsUnderwayTPPer: function() {
 			return Math.round(1000*this.results.perTPRes*this.results.underwayTP)/1000;
+		},
+		
+		enableAntiSubRaid: {
+			get() { return !!this.settings.mechanics.length && this.settings.mechanics.find(m => m.key == 'antiSubRaid').enabled },
+			set(v) { this.settings.mechanics.find(m => m.key == 'antiSubRaid').enabled = v },
 		},
 	},
 	methods: {
