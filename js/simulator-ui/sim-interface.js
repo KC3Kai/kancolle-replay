@@ -825,6 +825,10 @@ var SIM = {
 	
 		for (let battleInd=0; battleInd<dataInput.nodes.length; battleInd++) {
 			let node = dataInput.nodes[battleInd];
+			if (node.offrouteRate && Math.random() < node.offrouteRate) {
+				break;
+			}
+			
 			let isBossNode = battleInd == dataInput.nodes.length-1;
 			let fleetF = FLEETS1[0];
 			let fleetE = FLEETS2[battleInd];

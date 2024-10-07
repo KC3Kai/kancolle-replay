@@ -797,6 +797,9 @@
 						<option value="B">{{$t('only_day_rank_less_than_B')}}</option>
 						<option value="flagsunk" :title="$t('only_flag_not_sunk_tooltip')">{{$t('only_flag_not_sunk')}}</option>
 					</select></label></div>
+					<div class="space">
+						<label><span class="header">{{$t('offroute_before_battle')}}: </span><input type="number" min="0" max="100" v-model.number="battle.offrouteRate" :class="{changed:!!battle.offrouteRate}"/>%</label>
+					</div>
 				</div>
 				<div>
 					<div><span class="header">{{$t('resupply_cost')}}:</span></div>

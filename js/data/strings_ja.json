@@ -394,6 +394,7 @@
 	"only_day_rank_less_than_B": "B未満なら",
 	"only_flag_not_sunk": "敵旗艦が健在なら",
 	"only_flag_not_sunk_tooltip": "敵連合艦隊第一艦隊との夜戦権が無い場合は夜戦を行わない(友軍艦隊を使用する場合を除く)",
+	"offroute_before_battle": "戦闘前帰還率",
 	"resupply_cost": "資源消費タイプ",
 	"submarine_only": "潜水艦のみ",
 	"add_cost": "追加コスト(戦闘開始前に現在の残り資源から)",
