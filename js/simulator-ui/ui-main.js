@@ -458,6 +458,7 @@ var UI_MAIN = Vue.createApp({
 				useAtoll: false,
 				useSmoke: false,
 				useAnchorageRepair: false,
+				offrouteRate: 0,
 					
 				enemyComps: [],
 			};
@@ -734,7 +735,7 @@ var UI_MAIN = Vue.createApp({
 					this.isRunningWatch = false;
 					return;
 				}
-				let found = (this.watchCondition == 'no_boss' && SIM.simResultPrev.battleNum < this.battles.length)
+				let found = SIM.simResultPrev && ((this.watchCondition == 'no_boss' && SIM.simResultPrev.battleNum < this.battles.length)
 					|| (this.watchCondition == 'boss' && SIM.simResultPrev.battleNum == this.battles.length)
 					|| (this.watchCondition == 'flagsunk' && SIM.simResultPrev.battleNum == this.battles.length && SIM.simResultPrev.result.flagsunk)
 					|| (this.watchCondition == 'S' && SIM.simResultPrev.battleNum == this.battles.length && SIM.simResultPrev.result.rank == 'S')
@@ -742,7 +743,7 @@ var UI_MAIN = Vue.createApp({
 					|| (this.watchCondition == 'B' && SIM.simResultPrev.battleNum == this.battles.length && SIM.simResultPrev.result.rank == 'B')
 					|| (this.watchCondition == 'C' && SIM.simResultPrev.battleNum == this.battles.length && SIM.simResultPrev.result.rank == 'C')
 					|| (this.watchCondition == 'D' && SIM.simResultPrev.battleNum == this.battles.length && SIM.simResultPrev.result.rank == 'D')
-					|| (this.watchCondition == 'E' && SIM.simResultPrev.battleNum == this.battles.length && SIM.simResultPrev.result.rank == 'E');
+					|| (this.watchCondition == 'E' && SIM.simResultPrev.battleNum == this.battles.length && SIM.simResultPrev.result.rank == 'E'));
 				if (!found) {
 					setTimeout(() => this._getWatch(replay,numRun),1);
 					return;

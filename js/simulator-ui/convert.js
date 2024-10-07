@@ -870,6 +870,7 @@ window.CONVERT = {
 				useAtoll: battleUI.useAtoll,
 				useSmoke: battleUI.useSmoke,
 				useAnchorageRepair: battleUI.useAnchorageRepair,
+				offrouteRate: battleUI.offrouteRate/100,
 			};
 			if (battleUI.doNBCond) nodeInput.doNBCond = battleUI.doNBCond;
 			if (battleUI.formationUseLAIfNoSpAttack && COMMON.checkSpecialAttackUI(this._UI_MAIN,+battleUI.formation)) nodeInput.formationUseLAIfNoSpAttack = true;
