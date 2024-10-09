@@ -241,6 +241,12 @@ var SIMCONSTS = {
 	enableAirstrikeSpecialBonus: true,
 	enableASFit: false,
 	enableRangeWeights: false,
+	enableLBASFormula2: true,
+	enableSummerHarbourLBASBonus: true,
+	lbasAccBase: .9,
+	lbasEvaModSingle: .86,
+	lbasEvaModCombined: .68,
+	lbasEvaModCombinedB25: .7,
 	echelonOld: {shellmod:.6,torpmod:.6,ASWmod:1,AAmod:1, shellacc:1.2,torpacc:.6,NBacc:.8, shellev:1.2,torpev:1.3,NBev:1.1,ASWev:1.3, id:4},
 	echelonNew: {shellmod:.75,torpmod:.6,ASWmod:1.1,AAmod:1, shellacc:1.2,torpacc:.75,NBacc:.9, shellev:1.4,torpev:1.3,NBev:1.3,ASWev:1.3, id:4},
 	nbattack7Old: { dmgMod: 1.3, accMod: 1.1, chanceMod: 1.3, name: 'DDCI (GTR)' },
@@ -1907,9 +1913,10 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 		}
 	}
 	if (SIMCONSTS.enableSkipTorpBonus && equip.isSkipBomber) {
-		if (['FBB','BB','BBV','CVL','CV'].includes(target.type)) acc += .28;
-		else if (['CA','CAV'].includes(target.type)) acc += .21;
-		else acc += .14;
+		if (['FBB','BB','BBV','CVL','CV'].includes(target.type)) acc += .31;
+		else if (['CA','CAV'].includes(target.type)) acc += .22;
+		else if (['CL','CLT','AV'].includes(target.type)) acc += .18;
+		else if (['DD'].includes(target.type) && !target.isPT) acc += .14;
 	}
 	if (ship.bonusSpecialAcc) acc *= getBonusAcc(ship,target,true);
 	if (SIMCONSTS.enablePlaneBonus) acc *= getBonusSpecialPlane(ship,'bonusSpecialAccP',true);
@@ -1976,7 +1983,7 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 		}
 		var postMod = (issupport && MECHANICS.LBASBuff)? 1.35 : 1;
 		if (SIMCONSTS.enableAirstrikeSpecialBonus) {
-			if ([1557,1696,1697,1698].includes(target.mid)) {
+			if ([1557].includes(target.mid)) {
 				postMod *= Math.random() < .4 ? 2.2 : 1.4;
 			} else if ([1586,1620,1781,1782,2105,2106,2107,2108].includes(target.mid)) {
 				postMod *= Math.random() < .4 ? 2.2 : 1.7;
@@ -1986,6 +1993,22 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 				postMod *= Math.random() < .4 ? 2.4 : 1.5;
 			} else if ([1665,1666,1667].includes(target.mid)) {
 				postMod *= Math.random() < .4 ? 1.7 : 1;
+			} else if ([1696,1697,1698].includes(target.mid)) {
+				postMod *= Math.random() < .4 ? 1.8 : 1.3;
+			} else if ([1708,1709,1710].includes(target.mid)) {
+				postMod *= Math.random() < .4 ? 1.3 : 1;
+			} else if ([1751].includes(target.mid)) {
+				postMod *= Math.random() < .4 ? 1.6 : 1.3;
+			} else if ([1755,1756,1757,1758,1759,1760].includes(target.mid)) {
+				postMod *= Math.random() < .4 ? 1.2 : .9;
+			} else if ([1834,1835,1836,1837,1838,1839].includes(target.mid)) {
+				postMod *= Math.random() < .4 ? 1.3 : 1.1;
+			} else if ([2178,2179,2196,2197].includes(target.mid)) {
+				postMod *= Math.random() < .4 ? 1.6 : 1.4;
+			} else if ([2188,2189,2190,2191].includes(target.mid)) {
+				postMod *= Math.random() < .4 ? 1.9 : 1.5;
+			} else if (SIMCONSTS.enableSummerHarbourLBASBonus && [2023,2024,2025,2026,2027,2028,2243,2244,2245,2246].includes(target.mid)) {
+				postMod *= Math.random() < .4 ? 1.4 : 1.2;
 			} else {
 				if (equip.isdivebomber) postMod *= target.divebombWeak || 1;
 			}
@@ -2031,7 +2054,7 @@ function hitRate(ship,accBase,accFlat,accMod) {
 	return (accBase + 2*Math.sqrt(ship.LVL) + 1.5*Math.sqrt(ship.LUK) + accFlat)*accMod*.01;
 }
 
-function accuracyAndCrit(ship,target,hit,evMod,evFlat,critMod,isPlanes,critBonusFlat) {
+function accuracyAndCrit(ship,target,hit,evMod,evFlat,critMod,isPlanes,critBonusFlat,evModPost=1) {
 	if (evMod===undefined) evMod = 1;
 	
 	var evade = (target.EV+Math.sqrt(target.LUK*2)) * evMod; //formation
@@ -2039,6 +2062,7 @@ function accuracyAndCrit(ship,target,hit,evMod,evFlat,critMod,isPlanes,critBonus
 	dodge*=.01;
 	if (target.fuelleft < 7.5) dodge -= (7.5-target.fuelleft)/10;
 	if (evFlat) dodge += evFlat*.01;
+	dodge *= evModPost;
 	
 	if (target.bonusSpecialEv) {
 		let mod = 1;
@@ -3006,7 +3030,7 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 function airstrikeLBAS(lbas,target,slot,contactMod,contactModLB,isjetphase) {
 	if (!contactMod) contactMod = 1;
 	var equip = lbas.equips[slot];
-	var acc = .95;
+	var acc = SIMCONSTS.enableLBASFormula2 ? SIMCONSTS.lbasAccBase : .95;
 	var critdmgbonus = 1, critratebonus = 0, ACCplane = 0;
 	if ((equip.type != LANDBOMBER || MECHANICS.LBASBuff) && !isjetphase) {
 		let exp = equip.exp || 0, rank = equip.rank || 0;
@@ -3032,24 +3056,48 @@ function airstrikeLBAS(lbas,target,slot,contactMod,contactModLB,isjetphase) {
 	if (MECHANICS.LBASBuff) {
 		acc += .07*(equip.ACC || 0);
 	}
+	if (SIMCONSTS.enableLBASFormula2) {
+		if ([1557,1586].includes(target.mid)) {
+			acc *= 1.1;
+		}
+		if (target.isSummerBB) {
+			acc *= 1.1;
+		}
+		if ([1665,1666,1667].includes(target.mid)) {
+			acc *= 1.06;
+		}
+		if ([2178,2179,2196,2197].includes(target.mid)) {
+			acc *= 1.06;
+		}
+		if ([2180,2181].includes(target.mid)) {
+			acc *= 1.15;
+		}
+		if (target.isPT) {
+			acc *= (equip.mid == 459 ? .85 : .95);
+		}
+	}
 	if (equip.mid == 444) {
 		if (target.type == 'DD') acc -= .07;
-		if (target.type == 'CL') acc += .07;
+		if (['CL','CLT','CVL','FBB','BB','BBV','CV'].includes(target.type)) acc += .07;
 	}
 	if (equip.mid == 484) {
-		if (target.type == 'CL') acc += .07;
+		if (target.type == 'DD') acc -= .05;
+		if (['CL','CLT','CA','CAV','CVL','FBB','BB','BBV','CV'].includes(target.type)) acc += .05;
 	}
 	if (equip.mid == 453) {
 		if (target.type == 'DD') acc += .07;
 	}
 	if (equip.mid == 454) {
-		if (target.type == 'DD') acc -= .15;
-		if (target.type == 'CL') acc += .07;
+		if (target.type == 'DD') acc -= .17;
+		if (['CL','CLT'].includes(target.type)) acc += .07;
+		if (['CA','CAV','CVL','FBB','BB','BBV','CV'].includes(target.type)) acc += .05;
 	}
 	if (equip.mid == 459 || (SIMCONSTS.enableSkipTorpBonus && equip.isSkipBomber)) {
-		if (['FBB','BB','BBV','CVL','CV'].includes(target.type)) acc += .28;
-		else if (['CA','CAV'].includes(target.type)) acc += .21;
-		else acc += .14;
+		if (target.isInstall) acc -= .09
+		else if (['FBB','BB','BBV','CVL','CV','AT'].includes(target.type)) acc += .31;
+		else if (['CA','CAV'].includes(target.type)) acc += .22;
+		else if (['CL','CLT','AV'].includes(target.type)) acc += .18;
+		else if (['DD'].includes(target.type) && !target.isPT) acc += .13;
 	}
 	if (SIMCONSTS.enablePlaneBonus) {
 		if (equip.bonusSpecialPUseAll) {
@@ -3076,38 +3124,48 @@ function airstrikeLBAS(lbas,target,slot,contactMod,contactModLB,isjetphase) {
 	}
 	
 	lbas.critratebonus = critratebonus; lbas.ACCplane = ACCplane;
-	var res = rollHit(accuracyAndCrit(lbas,target,acc,1,0,0,true),critdmgbonus);
+	let evModPost = 1;
+	if (SIMCONSTS.enableLBASFormula2) {
+		evModPost = target.fleet.combinedWith ? (equip.mid == 459 ? SIMCONSTS.lbasEvaModCombinedB25 : SIMCONSTS.lbasEvaModCombined) : SIMCONSTS.lbasEvaModSingle;
+	}
+	var res = rollHit(accuracyAndCrit(lbas,target,acc,1,0,0,true,null,evModPost),critdmgbonus);
 	lbas.critratebonus = 0; lbas.ACCplane = 0;
 	var dmg = 0, realdmg = 0;
-	var planebase;
-	if (equip.type == LANDBOMBER || equip.type == LANDBOMBERL) planebase = (target.isInstall)? equip.DIVEBOMB : equip.TP;
-	else planebase = (equip.isdivebomber)? equip.DIVEBOMB : equip.TP;
-	if (target.isSub) planebase = equip.ASW;
-	if (MECHANICS.hayabusa65Buff && equip.mid == 224) {
-		if (['DD'].indexOf(target.type) != -1) planebase = 25;
-	}
-	if (MECHANICS.hayabusa65Buff && equip.mid == 491) {
-		if (['DD'].indexOf(target.type) != -1) planebase = 30;
-	}
-	planebase = planebase || 0;
-	if (planebase && !target.isSub) planebase += (equip.airstrikePowerImprove || 0);
 	if (res) {
+		var planebase;
+		if (equip.type == LANDBOMBER || equip.type == LANDBOMBERL) planebase = (target.isInstall)? equip.DIVEBOMB : equip.TP;
+		else planebase = (equip.isdivebomber)? equip.DIVEBOMB : equip.TP;
+		if (target.isSub) planebase = equip.ASW;
+		if (MECHANICS.hayabusa65Buff && equip.mid == 224) {
+			if (['DD'].indexOf(target.type) != -1) planebase = 25;
+		}
+		if (MECHANICS.hayabusa65Buff && equip.mid == 491) {
+			if (['DD'].indexOf(target.type) != -1) planebase = 30;
+		}
+		planebase = planebase || 0;
 		if (equip.mid == 405 && !target.isInstall) {
 			if (['DD'].indexOf(target.type) != -1) planebase *= 1.1;
 		}
+		if (equip.mid == 406 && !target.isInstall) {
+			if (['FBB','BB','BBV'].indexOf(target.type) != -1) planebase *= 1.5;
+		}
 		if (equip.mid == 444 && !target.isInstall) {
 			if (['DD','CL','CLT','CA','CAV'].includes(target.type)) planebase *= 1.15;
-			if (['CVL','FBB','BB','BBV','CV'].includes(target.type)) planebase *= 1.14;
+			if (['CVL','FBB','BB','BBV','CV'].includes(target.type)) planebase *= 1.13;
 		}
 		if (equip.mid == 454 && !target.isInstall) {
 			if (['DD','CL','CLT','CA','CAV'].includes(target.type)) planebase *= 1.16;
 			if (['CVL','FBB','BB','BBV','CV'].includes(target.type)) planebase *= 1.14;
 		}
-		if (equip.mid == 484 && !target.isInstall) {
-			if (['CL','CLT'].includes(target.type)) planebase *= 1.16;
-			if (['DD','CA','CAV'].includes(target.type)) planebase *= 1.15;
-			if (['CVL','FBB','BB','BBV','CV'].includes(target.type)) planebase *= 1.14;
+		if (equip.mid == 484) {
+			if (target.isInstall) {
+				planebase += 2.1;
+			} else {
+				if (['DD','CL','CLT','CA','CAV'].includes(target.type)) planebase += 2.6;
+				if (['CVL','FBB','BB','BBV','CV'].includes(target.type)) planebase += 2.25;
+			}
 		}
+		if (planebase && !target.isSub) planebase += (equip.airstrikePowerImprove || 0);
 		let slotMod = isjetphase ? 1 : 1.8;
 		var dmgbase = 25+planebase*Math.sqrt(slotMod*lbas.planecount[slot]);
 		var preMod = (equip.type == LANDBOMBER || equip.type == LANDBOMBERL)? .8 : 1;
@@ -3117,12 +3175,6 @@ function airstrikeLBAS(lbas,target,slot,contactMod,contactModLB,isjetphase) {
 		}
 		preMod *= (contactModLB || 1);
 		var postMod = equip.type == LANDBOMBER ? 1.8 : 1;
-		// https://discordapp.com/channels/118339803660943369/425302689887289344/805523354844135494
-		// CV/CVB unconfirmed, assumed based on ap shell weakness
-		if (equip.mid == 406 && !target.isInstall) {
-			if (['CA','CAV','CV','CVB'].indexOf(target.type) != -1) preMod *= 1.15;
-			if (['FBB','BB','BBV'].indexOf(target.type) != -1) preMod *= 1.35;
-		}
 		if (equip.mid == 459 || (SIMCONSTS.enableSkipTorpBonus && equip.isSkipBomber)) {
 			if (target.isInstall) {
 				preMod *= .9;
@@ -3154,14 +3206,18 @@ function airstrikeLBAS(lbas,target,slot,contactMod,contactModLB,isjetphase) {
 				} else {
 					postMod *= Math.random() < .4 ? 2.5 : 1.6;
 				}
-			} else if ([1696,1697,1698,1751].includes(target.mid)) {
+			} else if ([1696,1697,1698].includes(target.mid)) {
 				postMod *= Math.random() < .4 ? 1.8 : 1.5;
+			} else if ([1751].includes(target.mid)) {
+				postMod *= Math.random() < .4 ? 1.7 : 1.3;
 			} else if ([2178,2179,2196,2197].includes(target.mid)) {
 				postMod *= Math.random() < .4 ? 2.2 : 1.5;
 			} else if ([2180,2181].includes(target.mid)) {
 				postMod *= Math.random() < .4 ? 1.6 : 1.3;
 			} else if ([2188,2189,2190,2191].includes(target.mid)) {
-				postMod *= Math.random() < .4 ? 1.9 : 1.4;
+				postMod *= Math.random() < .4 ? 1.8 : 1.4;
+			} else if (SIMCONSTS.enableSummerHarbourLBASBonus && [2023,2024,2025,2026,2027,2028,2243,2244,2245,2246].includes(target.mid)) {
+				postMod *= Math.random() < .4 ? 1.5 : 1.2;
 			} else {
 				preMod *= (target.LBWeak || 1);
 				if (equip.isdivebomber) postMod *= (target.divebombWeak || 1);

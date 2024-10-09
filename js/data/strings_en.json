@@ -1,6 +1,11 @@
 {
 	"change_log": [
 		{
+			"date": "2024-10-09",
+			"txt": "Update {link0}",
+			"links": [ { "txt": "LBAS accuracy formula", "url": "https://twitter.com/Divinity_123/status/1843665369762087318" } ]
+		},
+		{
 			"date": "2024-08-22",
 			"txt": "Watch a Sortie: add filter for specific conditions"
 		},
