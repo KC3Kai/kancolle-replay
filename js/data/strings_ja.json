@@ -363,6 +363,7 @@
 	"no_chuuha_after_battle": "戦闘後に{img_chuuha}艦がいない割合",
 	"moderate_damage": "中破",
 	"all": "All",
+	"node_reached": "Node到達率",
 	"fcf_used": "{img_fcf}退避率",
 	"avg_resupply": "平均補給コスト",
 	"avg_resupply_tooltip": "出撃艦隊 + 支援艦隊 + 基地航空隊出撃&補充コスト",

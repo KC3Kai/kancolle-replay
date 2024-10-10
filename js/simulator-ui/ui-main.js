@@ -198,7 +198,7 @@ var UI_MAIN = Vue.createApp({
 			fuelS: 0, ammoS: 0, steelS: 0, bauxS: 0, bucketS: 0, dameconS: 0, underwayS: 0,
 			fuelSunk: 0, ammoSunk: 0, steelSunk: 0, bauxSunk: 0, bucketSunk: 0, dameconSunk: 0, underwaySunk: 0,
 			emptiedPlane: 0, emptiedLBAS: 0,
-			fcfUsed: 0,
+			fcfUsed: 0, nodeReached: [],
 			showMore: false,
 			fuelA: 0, ammoA: 0, steelA: 0, bauxA: 0, bucketA: 0, dameconA: 0, underwayA: 0,
 			fuelB: 0, ammoB: 0, steelB: 0, bauxB: 0, bucketB: 0, dameconB: 0, underwayB: 0,
@@ -586,6 +586,7 @@ var UI_MAIN = Vue.createApp({
 			
 			for (let i=0; i<resultSim.nodes.length; i++) {
 				let node = resultSim.nodes[i];
+				this.results.nodeReached[i] = formatNum(node.num / totalNum);
 				for (let letter in node.ranks) {
 					let key = 'rank'+letter;
 					this.results[key+'Node'][i] = formatNum(node.ranks[letter] / node.num);

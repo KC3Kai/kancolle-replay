@@ -583,6 +583,13 @@
 							<tr><th>{{$t('all')}}</th><td v-for="stat in results.noChuuha">{{stat}}</td></tr>
 							</table>
 						</div>
+						<div v-show="results.numNodes>1">
+							<div>{{$t('node_reached')}}:</div>
+							<table class="multi">
+							<tr><th v-for="n in results.numNodes">{{n}}</th></tr>
+							<tr><td v-for="stat in results.nodeReached">{{stat}}</td></tr>
+							</table>
+						</div>
 						<div v-show="results.fcfUsed">
 							<div><i18n-t keypath="fcf_used" scope="global"><template v-slot:img_fcf><img src="assets/items/28.png"/></template></i18n-t>: {{results.fcfUsed}}</div>
 						</div>
