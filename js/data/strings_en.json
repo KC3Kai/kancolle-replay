@@ -363,6 +363,7 @@
 	"no_chuuha_after_battle": "No {img_chuuha} After Battle",
 	"moderate_damage": "Moderate Damage",
 	"all": "All",
+	"node_reached": "Node Reached",
 	"fcf_used": "{img_fcf}Used",
 	"avg_resupply": "Avg Resupply",
 	"avg_resupply_tooltip": "Includes Main Fleet + Support Fleets + LBAS",
