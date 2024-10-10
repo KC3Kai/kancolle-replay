@@ -364,6 +364,7 @@
 	"moderate_damage": "中破",
 	"all": "All",
 	"node_reached": "Node到達率",
+	"can_advance_after_desc": "最終Nodeの後に資源マスへ進める確率(旗艦大破のみ撤退)",
 	"fcf_used": "{img_fcf}退避率",
 	"avg_resupply": "平均補給コスト",
 	"avg_resupply_tooltip": "出撃艦隊 + 支援艦隊 + 基地航空隊出撃&補充コスト",

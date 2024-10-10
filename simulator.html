@@ -586,8 +586,8 @@
 						<div v-show="results.numNodes>1">
 							<div>{{$t('node_reached')}}:</div>
 							<table class="multi">
-							<tr><th v-for="n in results.numNodes">{{n}}</th></tr>
-							<tr><td v-for="stat in results.nodeReached">{{stat}}</td></tr>
+							<tr><th v-for="n in results.numNodes">{{n}}</th><th><img src="assets/maps/nodeAnchor.png" style="width:20px" :title="$t('can_advance_after_desc')"/></th></tr>
+							<tr><td v-for="stat in results.nodeReached">{{stat}}</td><td>{{results.canAdvanceAfter}}</td></tr>
 							</table>
 						</div>
 						<div v-show="results.fcfUsed">

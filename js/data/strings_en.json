@@ -364,6 +364,7 @@
 	"moderate_damage": "Moderate Damage",
 	"all": "All",
 	"node_reached": "Node Reached",
+	"can_advance_after_desc": "Rate of being able to advance to a resource node after final node (ignoring heavy-damage except for flagship)",
 	"fcf_used": "{img_fcf}Used",
 	"avg_resupply": "Avg Resupply",
 	"avg_resupply_tooltip": "Includes Main Fleet + Support Fleets + LBAS",

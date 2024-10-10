@@ -198,7 +198,7 @@ var UI_MAIN = Vue.createApp({
 			fuelS: 0, ammoS: 0, steelS: 0, bauxS: 0, bucketS: 0, dameconS: 0, underwayS: 0,
 			fuelSunk: 0, ammoSunk: 0, steelSunk: 0, bauxSunk: 0, bucketSunk: 0, dameconSunk: 0, underwaySunk: 0,
 			emptiedPlane: 0, emptiedLBAS: 0,
-			fcfUsed: 0, nodeReached: [],
+			fcfUsed: 0, nodeReached: [], canAdvanceAfter: 0,
 			showMore: false,
 			fuelA: 0, ammoA: 0, steelA: 0, bauxA: 0, bucketA: 0, dameconA: 0, underwayA: 0,
 			fuelB: 0, ammoB: 0, steelB: 0, bauxB: 0, bucketB: 0, dameconB: 0, underwayB: 0,
@@ -518,6 +518,7 @@ var UI_MAIN = Vue.createApp({
 			this.results.flagSunkHP = formatNum(resultSim.totalGaugeDamage / totalNum);
 			this.results.flagSunkHPBoss = formatNum(resultSim.totalGaugeDamage / nodeLast.num);
 			this.results.transport = formatNum(resultSim.totalTransport / totalNum);
+			this.results.canAdvanceAfter = formatNum(resultSim.totalCanAdvanceAfter / totalNum);
 			
 			this.results.fuelSupply = formatNum(resultSim.totalFuelS / totalNum);
 			this.results.ammoSupply = formatNum(resultSim.totalAmmoS / totalNum);

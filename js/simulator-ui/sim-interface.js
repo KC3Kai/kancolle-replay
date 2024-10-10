@@ -103,6 +103,7 @@ var SIM = {
 			totalTransport: 0,
 			totalFCFUsed: 0,
 			totalUnderway: 0,
+			totalCanAdvanceAfter: 0,
 			nodes: [],
 		};
 		for (let n=0; n<numNodes; n++) {
@@ -252,6 +253,8 @@ var SIM = {
 		}
 		let shipBossFlag = FLEETS2.at(-1).ships[0];
 		this._results.totalGaugeDamage += shipBossFlag.maxHP - Math.max(0,shipBossFlag.HP);
+		let ship1 = FLEETS1[0].ships[0];
+		if (ship1 && this.simResultPrev && this.simResultPrev.battleNum == dataInput.nodes.length && (ship1.HP/ship1.maxHP > .25 || (ship1.repairs && ship1.repairs.length))) this._results.totalCanAdvanceAfter++;
 	},
 
 	_inputEquivalent: function(v1,v2) {
