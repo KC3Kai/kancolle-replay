@@ -163,15 +163,15 @@ var NBATTACKDATA = {
 
 let simConsole = {
 	_lines: [],
-	log: function(line) {
+	log: function(...lines) {
 		if (C === 2) {
-			this._lines.push(line);
+			this._lines.push(lines);
 		} else {
-			console.log(line);
+			console.log(...lines);
 		}
 	},
 	print: function() {
-		for (let line of this._lines) console.log(line)
+		for (let lines of this._lines) console.log(...lines)
 	},
 	clear: function() {
 		this._lines = [];
@@ -1468,6 +1468,7 @@ function getSpecialAttackMod(ship,attackSpecial) {
 		if (ship.equips.find(eq => [142,460].includes(eq.mid))) mod *= 1.1;
 		if (ship.equiptypesB[B_APSHELL]) mod *= 1.35;
 		if (ship.equips.find(eq => eq.btype == B_RADAR && eq.LOS >= 5)) mod *= 1.15;
+		modAcc = mod;
 	} else if (NBATTACKDATA[ship.attackSpecialType] && NBATTACKDATA[ship.attackSpecialType].isSpecial) {
 		mod = NBATTACKDATA[ship.attackSpecialType].dmgMod;
 		modAcc = NBATTACKDATA[ship.attackSpecialType].accMod;
@@ -1984,36 +1985,49 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 		var postMod = (issupport && MECHANICS.LBASBuff)? 1.35 : 1;
 		if (SIMCONSTS.enableAirstrikeSpecialBonus) {
 			if ([1557].includes(target.mid)) {
-				postMod *= Math.random() < .4 ? 2.2 : 1.4;
+				postMod *= Math.random() < .4 ? 2.0 : 1.4;
 			} else if ([1586,1620,1781,1782,2105,2106,2107,2108].includes(target.mid)) {
 				postMod *= Math.random() < .4 ? 2.2 : 1.7;
 			} else if (target.isPT) {
 				postMod *= Math.random() < .4 ? .8 : .5;
 			} else if (target.installtype == 3 || target.isSupplyDepot) {
-				postMod *= Math.random() < .4 ? 2.4 : 1.5;
+				postMod *= Math.random() < .5 ? 2.4 : 1.5;
 			} else if ([1665,1666,1667].includes(target.mid)) {
-				postMod *= Math.random() < .4 ? 1.7 : 1;
+				postMod *= Math.random() < .4 ? 1.7 : 1.3;
 			} else if ([1696,1697,1698].includes(target.mid)) {
 				postMod *= Math.random() < .4 ? 1.8 : 1.3;
+			} else if ([1699,1700,1701,1702,1703,1704,2023,2024,2025,2026,2027,2028,2243,2244,2245,2246].includes(target.mid)) {
+				postMod *= Math.random() < .4 ? 1.4 : 1.2;
 			} else if ([1708,1709,1710].includes(target.mid)) {
 				postMod *= Math.random() < .4 ? 1.3 : 1;
 			} else if ([1751].includes(target.mid)) {
 				postMod *= Math.random() < .4 ? 1.6 : 1.3;
 			} else if ([1755,1756,1757,1758,1759,1760].includes(target.mid)) {
 				postMod *= Math.random() < .4 ? 1.2 : .9;
-			} else if ([1834,1835,1836,1837,1838,1839].includes(target.mid)) {
-				postMod *= Math.random() < .4 ? 1.3 : 1.1;
 			} else if ([2178,2179,2196,2197].includes(target.mid)) {
 				postMod *= Math.random() < .4 ? 1.6 : 1.4;
 			} else if ([2188,2189,2190,2191].includes(target.mid)) {
 				postMod *= Math.random() < .4 ? 1.9 : 1.5;
-			} else if (SIMCONSTS.enableSummerHarbourLBASBonus && [2023,2024,2025,2026,2027,2028,2243,2244,2245,2246].includes(target.mid)) {
-				postMod *= Math.random() < .4 ? 1.4 : 1.2;
 			} else {
 				if (equip.isdivebomber) postMod *= target.divebombWeak || 1;
 			}
 		} else {
 			if (equip.isdivebomber) postMod *= target.divebombWeak || 1;
+		}
+		if (SIMCONSTS.enableModDock && target.isDock) {
+			postMod *= ship.dockPostMult;
+		}
+		if (SIMCONSTS.enableModSummerBB && target.isSummerBB) {
+			postMod *= ship.summerBBPostMult;
+		}
+		if (SIMCONSTS.enableModSummerCA && target.isSummerCA) {
+			postMod *= ship.summerCAPostMult;
+		}
+		if (SIMCONSTS.enableModSummerCV && target.isSummerCV) {
+			postMod *= ship.summerCVPostMult;
+		}
+		if (SIMCONSTS.enableModFrenchBB && target.isFrenchBB) {
+			postMod *= ship.frenchBBPostMult;
 		}
 		if (ship.bonusSpecial) postMod *= getBonusDmg(ship,target);
 		if (SIMCONSTS.enablePlaneBonus) postMod *= getBonusSpecialPlane(ship,'bonusSpecialP',true);
@@ -2537,7 +2551,7 @@ function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupp
 				}
 			}
 			
-			let targetsR = MECHANICS.antiSubRaid && isRaid && ship.canAirstrikeSub ? defenders : targets;
+			let targetsR = MECHANICS.antiSubRaid && isRaid && ship.equips[slot].ASW >= 11 ? defenders : targets;
 			if (targetsR.length) {
 				if (false) {
 					var targetsM = [], targetsE = [];
@@ -2942,8 +2956,6 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 		}
 	}
 	lbas.AS = airStateNow;
-	if (FLEETS1[0]) contactMod *= 1 + (FLEETS1[0].getNumBalloons()/50);
-	if (defenders.length) contactMod *= 1 - (defenders[0].fleet.getNumBalloons()/20);
 	
 	let attacks = [];
 	for (var i=0; i<lbas.equips.length; i++) {
@@ -2994,7 +3006,10 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 	}		
 	for (let attack of attacks) {
 		let lbas = attack[0], target = attack[1], i = attack[2];
-		var dmg = airstrikeLBAS(lbas,target,i,contactMod,contactModLB,isjetphase);
+		let balloonMod = 1;
+		if (FLEETS1[0]) balloonMod *= 1 + (FLEETS1[0].getNumBalloons()/50);
+		if (defenders.length) balloonMod *= 1 - (defenders[0].fleet.getNumBalloons()/20);
+		var dmg = airstrikeLBAS(lbas,target,i,contactMod*balloonMod,contactModLB,isjetphase);
 		if (C) {
 			var showtorpedo = lbas.equips[i].istorpbomber;
 			if (lbas.equips[i].type == LANDBOMBER && target.isInstall) showtorpedo = false;
@@ -3134,7 +3149,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod,contactModLB,isjetphase) {
 	if (res) {
 		var planebase;
 		if (equip.type == LANDBOMBER || equip.type == LANDBOMBERL) planebase = (target.isInstall)? equip.DIVEBOMB : equip.TP;
-		else planebase = (equip.isdivebomber)? equip.DIVEBOMB : equip.TP;
+		else planebase = (equip.isdivebomber)? equip.DIVEBOMB : target.isInstall ? Math.floor(equip.TP/2) : equip.TP;
 		if (target.isSub) planebase = equip.ASW;
 		if (MECHANICS.hayabusa65Buff && equip.mid == 224) {
 			if (['DD'].indexOf(target.type) != -1) planebase = 25;
@@ -3191,33 +3206,27 @@ function airstrikeLBAS(lbas,target,slot,contactMod,contactModLB,isjetphase) {
 		// }
 		if (SIMCONSTS.enableAirstrikeSpecialBonus) {
 			if ([1557,1586].includes(target.mid)) {
-				postMod *= Math.random() < .4 ? 3 : 1.7;
+				postMod *= Math.random() < .35 ? 3 : 1.7;
 			} else if (target.isPT) {
 				postMod *= Math.random() < .4 ? .7 : .4;
 			} else if ([1653,1654,1655,1656,1657,1658].includes(target.mid)) {
-				if (equip.type == TORPBOMBER) {
-					postMod *= Math.random() < .4 ? 2.2 : 1.1;
-				} else {
-					postMod *= Math.random() < .4 ? 3.5 : 1.7;
-				}
+				postMod *= Math.random() < .4 ? 3.5 : 1.7;
 			} else if ([1665,1666,1667].includes(target.mid)) {
-				if (equip.type == TORPBOMBER) {
-					postMod *= Math.random() < .4 ? 1.56 : 1;
-				} else {
-					postMod *= Math.random() < .4 ? 2.5 : 1.6;
-				}
+				postMod *= Math.random() < .5 ? 2.5 : 1.6;
+			} else if ([1668,1669,1670,1671,1672].includes(target.mid)) {
+				postMod *= Math.random() < .4 ? 2.0 : 1.5;
 			} else if ([1696,1697,1698].includes(target.mid)) {
 				postMod *= Math.random() < .4 ? 1.8 : 1.5;
+			} else if ([1699,1700,1701,1702,1703,1704].includes(target.mid) || (SIMCONSTS.enableSummerHarbourLBASBonus && [2023,2024,2025,2026,2027,2028,2243,2244,2245,2246].includes(target.mid))) {
+				postMod *= Math.random() < .5 ? 1.5 : 1.2;
 			} else if ([1751].includes(target.mid)) {
 				postMod *= Math.random() < .4 ? 1.7 : 1.3;
 			} else if ([2178,2179,2196,2197].includes(target.mid)) {
-				postMod *= Math.random() < .4 ? 2.2 : 1.5;
+				postMod *= Math.random() < .5 ? 2.2 : 1.5;
 			} else if ([2180,2181].includes(target.mid)) {
-				postMod *= Math.random() < .4 ? 1.6 : 1.3;
+				postMod *= Math.random() < .5 ? 1.6 : 1.3;
 			} else if ([2188,2189,2190,2191].includes(target.mid)) {
 				postMod *= Math.random() < .4 ? 1.8 : 1.4;
-			} else if (SIMCONSTS.enableSummerHarbourLBASBonus && [2023,2024,2025,2026,2027,2028,2243,2244,2245,2246].includes(target.mid)) {
-				postMod *= Math.random() < .4 ? 1.5 : 1.2;
 			} else {
 				preMod *= (target.LBWeak || 1);
 				if (equip.isdivebomber) postMod *= (target.divebombWeak || 1);
