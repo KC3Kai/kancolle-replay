@@ -6323,6 +6323,17 @@ var EQDATA = {
 		ACC: 5,
 		EV: 4,
 	},
+	549: {
+		name: 'Type 3 Command Liaison Aircraft Kai 2',
+		nameJP: '三式指揮連絡機改二',
+		added: '2024-11-08',
+		type: ASWPLANE,
+		FP: 2,
+		DIVEBOMB: 2,
+		ACC: 2,
+		ASW: 10,
+		LOS: 3,
+	},
 	1501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
