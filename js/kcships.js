@@ -1220,11 +1220,12 @@ Ship.prototype.updateProficiencyBonus = function() {
 Ship.prototype.getEquipBonusCVTorp = function(slot) {
 	if (slot >= this.equips.length || (!this.equips[slot].istorpbomber && !this.equips[slot].isdivebomber)) return 0;
 	let bonusTotal = 0;
-	let bonusMin = 0, statMax = 0, carryMax = 0, slotMax = -1;
+	let statMax = 0, carryMax = 0, slotMax = -1, equipToBonus = {};
 	for (let i=0; i<this.equips.length; i++) {
 		let eq = this.equips[i];
 		if (!eq.isPlane) continue;
-		if (eq.statsEqBonus.TP && (!bonusMin || bonusMin > eq.statsEqBonus.TP)) bonusMin = eq.statsEqBonus.TP;
+		if (equipToBonus[eq.mid] == null) equipToBonus[eq.mid] = 0;
+		equipToBonus[eq.mid] += eq.statsEqBonus.TP || 0;
 		let stat = eq.isdivebomber ? (eq.DIVEBOMB || 0) : (eq.TP || 0);
 		if (stat > statMax) {
 			statMax = stat;
@@ -1235,7 +1236,19 @@ Ship.prototype.getEquipBonusCVTorp = function(slot) {
 			slotMax = i;
 		}
 	}
-	if (slotMax == slot) bonusTotal += bonusMin || 0;
+	if (slotMax == slot) {
+		if (equipToBonus[522] != undefined || equipToBonus[523] != undefined) {
+			bonusTotal += (equipToBonus[522] || 0) + (equipToBonus[523] || 0);
+		} else {
+			let eqList = [238,239,521,118,369,368, 372,373,374,425,424].concat(Object.keys(equipToBonus).filter(a => equipToBonus[a]).sort((a,b) => +b-+a).map(a => +a));
+			for (let id of eqList) {
+				if (equipToBonus[id] != undefined) {
+					bonusTotal += equipToBonus[id] || 0;
+					break;
+				}
+			}
+		}
+	}
 	
 	let bonusCrewTPMin = 0, bonusCrewDBMin = 0;
 	for (let eq of this.equips) {
@@ -2306,7 +2319,7 @@ Equip.prototype.setImprovement = function(level) {
 		this.improves.Pshell = 0;
 	}
 	
-	if (this.mid == 138 && level >= 4) {
+	if (this.type == FLYINGBOAT && level >= 4) {
 		this.AAImprove = .5;
 	}
 }
