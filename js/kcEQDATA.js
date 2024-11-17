@@ -8164,6 +8164,7 @@ var LBASDATA = {
 	544: { distance: 4, cost: 5 },
 	545: { distance: 6, cost: 8 },
 	546: { distance: 2, cost: 9 },
+	549: { distance: 3, cost: 5 },
 };
 
 
