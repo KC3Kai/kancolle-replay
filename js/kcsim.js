@@ -2268,6 +2268,11 @@ function AADefenceFighters(carriers,showplanes,APIkouku,eqtFilter) {
 					}
 					var randplus = Math.floor((Math.floor(1000*rplus)+1)*Math.random())/1000;
 					let modJet = ship.equips[j].isjet ? .6 : 1;
+					if (eqtFilter == 'isfighter' && [AUTOGYRO,ASWPLANE].includes(ship.equips[j].type) && !ship.equips[j].is20th) { //estimate
+						if (ship.airState() == -2) modJet = .9;
+						else if (ship.airState() == -1) modJet = .5;
+						else modJet = .3;
+					}
 					lostcount = Math.floor(ship.planecount[j]*(rmin+randplus)*modJet);
 				} else {
 					var rmax;
@@ -2962,9 +2967,9 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 		var eq = lbas.equips[i];
 		if (!eq.isPlane) continue;
 		let isASWPlane = MECHANICS.LBASBuff && eq.ASW >= 7;
-		let isSurfacePlane = (eq.isdivebomber || eq.istorpbomber) && (eq.is20th || (eq.type != ASWPLANE && eq.type != AUTOGYRO));
+		let isSurfacePlane = (eq.isdivebomber || eq.istorpbomber) && (eq.DIVEBOMB || (eq.type != ASWPLANE && eq.type != AUTOGYRO));
 		if (!isSurfacePlane && !isASWPlane) continue;
-		if (defenders.length && isSurfacePlane) {
+		if (defenders.length && (eq.isdivebomber || eq.istorpbomber)) {
 			var defender = defenders[Math.floor(Math.random()*defenders.length)];
 			var supportMod = 1;
 			var shotProp = (Math.random() < .5)? Math.floor(getAAShotProp(defender,lbas.planecount[i],eq.aaResistShip)*supportMod) : 0;
