@@ -1604,6 +1604,9 @@ Ship.prototype.getAACItype = function(atypes) {
 	if ([330,346,357,537,538,968].includes(this.mid)) {
 		if (this.equips.filter(eq => eq.mid == 533).length >= 2 && this.equips.find(eq => eq.btype == B_RADAR && eq.AA >= 4)) types.push(48);
 	}
+	if ([981].includes(this.mid)) {
+		if (atypes[A_HAFD] >= 2 && this.equips.find(eq => eq.btype == B_RADAR && eq.AA >= 4)) types.push(49);
+	}
 	if (this.sclass == 54) {  //Akizuki-class
 		if (atypes[A_HAGUN] >= 2 && this.equiptypesB[B_RADAR]) types.push(1);
 		if (atypes[A_HAGUN] && this.equiptypesB[B_RADAR]) types.push(2);
