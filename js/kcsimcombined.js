@@ -3,29 +3,29 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	var alive1 = [], alive1C = [], alive2 = [], subsalive1 = [], subsalive1C = [], subsalive2 = [];
 	var hasInstall1 = false, hasInstall2 = false, hasInstall1C = false;
 	for (var i=0; i<ships1.length; i++) {
+		ships1[i].HPprev = ships1[i].HP;
 		if (ships1[i].HP <= 0) continue;
 		if (ships1[i].retreated) continue;
 		if(ships1[i].isSub) subsalive1.push(ships1[i]);
 		else alive1.push(ships1[i]);
-		ships1[i].HPprev = ships1[i].HP;
 		if (!MECHANICS.morale) ships1[i].morale = 49;
 		if (ships1[i].isInstall) hasInstall1 = true;
 	}
 	for (var i=0; i<ships1C.length; i++) {
+		ships1C[i].HPprev = ships1C[i].HP;
 		if (ships1C[i].HP <= 0) continue;
 		if (ships1C[i].retreated) continue;
 		if(ships1C[i].isSub) subsalive1C.push(ships1C[i]);
 		else alive1C.push(ships1C[i]);
-		ships1C[i].HPprev = ships1C[i].HP;
 		if (!MECHANICS.morale) ships1C[i].morale = 49;
 		if (ships1C[i].isInstall) hasInstall1C = true;
 	}
 	for (var i=0; i<ships2.length; i++) {
+		ships2[i].HPprev = ships2[i].HP;
 		if (ships2[i].HP <= 0) continue;
 		if (ships2[i].retreated) continue;
 		if(ships2[i].isSub) subsalive2.push(ships2[i]);
 		else alive2.push(ships2[i]);
-		ships2[i].HPprev = ships2[i].HP;
 		if (!MECHANICS.morale) ships2[i].morale = 49;
 		if (ships2[i].isInstall) hasInstall2 = true;
 	}
@@ -49,19 +49,17 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	
 	//code here
 	if (C) {
-		console.log('ENGAGEMENT: '+ENGAGEMENT);
+		simConsole.clear();
+		simConsole.log('ENGAGEMENT: '+ENGAGEMENT);
 		var dataroot = (NBonly)? BAPI.yasen : BAPI.data;
 		dataroot.api_formation = [F1.formation.id,F2.formation.id,{1:1,.8:2,1.2:3,.6:4}[ENGAGEMENT]];
 		apiSetBasic(dataroot,ships1,ships2,ships1C);
 	}
-	if (C) console.log(API);
+	if (C) simConsole.log(API);
 	
 	var doShell2 = false;
 	for (var i=0; i<ships1.length; i++) {
 		if (ships1[i].enableSecondShelling) doShell2 = true;
-	}
-	for (var i=0; i<ships1C.length; i++) {
-		if (ships1C[i].enableSecondShelling) doShell2 = true;
 	}
 	for (var i=0; i<ships2.length; i++) {
 		if (ships2[i].enableSecondShelling) doShell2 = true;
@@ -667,35 +665,49 @@ function simStatsCombined(numsims,type,foptions) {
 
 
 //-------------------------------
+function isNBFightEscort(ships2,ships2C) {
+	var count = 0, allsunk = true;
+	for (var i=0; i<ships2.length; i++) if (ships2[i].HP > 0) { allsunk = false; break; }
+	for (var i=0; i<ships2C.length; i++) {
+		let point = 0;
+		if (ships2C[i].HP/ships2C[i].maxHP > .5) point = 1;
+		else if (ships2C[i].HP/ships2C[i].maxHP > .25) point = .5;
+		else if (ships2C[i].HP/ships2C[i].maxHP > 0) point = .25;
+		count += point;
+	}
+	if (ships2C[0].HP > 0) count += 1;
+	return (allsunk || count >= 3);
+}
+
 function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,noupdate,friendFleet) {
 	var F2C = F2.combinedWith;
 	var ships1 = F1.ships, ships2 = F2.ships, ships2C = F2C.ships;
 	var alive1 = [], alive2 = [], alive2C = [], subsalive1 = [], subsalive2 = [], subsalive2C = [];
 	var hasInstall1 = false, hasInstall2 = false, hasInstall2C = false;
 	for (var i=0; i<ships1.length; i++) {
+		ships1[i].HPprev = ships1[i].HP;
 		if (ships1[i].HP <= 0) continue;
 		if (ships1[i].retreated) continue;
 		if(ships1[i].isSub) subsalive1.push(ships1[i]);
 		else alive1.push(ships1[i]);
-		ships1[i].HPprev = ships1[i].HP;
 		if (!MECHANICS.morale) ships1[i].morale = 49;
 		if (ships1[i].isInstall) hasInstall1 = true;
 	}
 	for (var i=0; i<ships2.length; i++) {
+		ships2[i].HPprev = ships2[i].HP;
 		if (ships2[i].HP <= 0) continue;
 		if (ships2[i].retreated) continue;
 		if(ships2[i].isSub) subsalive2.push(ships2[i]);
 		else alive2.push(ships2[i]);
-		ships2[i].HPprev = ships2[i].HP;
 		if (!MECHANICS.morale) ships2[i].morale = 49;
 		if (ships2[i].isInstall) hasInstall2 = true;
 	}
 	for (var i=0; i<ships2C.length; i++) {
+		ships2C[i].HPprev = ships2C[i].HP;
 		if (ships2C[i].HP <= 0) continue;
 		if (ships2C[i].retreated) continue;
 		if(ships2C[i].isSub) subsalive2C.push(ships2C[i]);
 		else alive2C.push(ships2C[i]);
-		ships2C[i].HPprev = ships2C[i].HP;
 		if (!MECHANICS.morale) ships2C[i].morale = 49;
 		if (ships2C[i].isInstall) hasInstall2C = true;
 	}
@@ -718,12 +730,13 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	
 	//initial
 	if (C) {
-		console.log('ENGAGEMENT: '+ENGAGEMENT);
+		simConsole.clear();
+		simConsole.log('ENGAGEMENT: '+ENGAGEMENT);
 		var dataroot = (NBonly)? BAPI.yasen : BAPI.data;
 		dataroot.api_formation = [F1.formation.id,F2.formation.id,{1:1,.8:2,1.2:3,.6:4}[ENGAGEMENT]];
 		apiSetBasic(dataroot,ships1,ships2,null,ships2C);
 	}
-	if (C) console.log(API);
+	if (C) simConsole.log(API);
 	
 	var doShell2 = false;
 	for (var i=0; i<ships1.length; i++) {
@@ -963,7 +976,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 		if (['A','B'].includes(doNB)) {
 			if (['E','D','C','B','A','S'].indexOf(getRank(ships1,ships2.concat(ships2C))) >= ['E','D','C','B','A','S'].indexOf(doNB)) doNB = false;
 		} else if (doNB == 'flagsunk') {
-			if (ships2[0].HP <= 0) doNB = false;
+			if (ships2[0].HP <= 0 || (!friendFleet && isNBFightEscort(ships2,ships2C))) doNB = false;
 		}
 	}
 	
@@ -987,17 +1000,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	var didNB = false;
 	if ((doNB||NBonly) && alive1.length+subsalive1.length > 0 && hasAlive2) {
 		didNB = !NBonly;
-		var count = 0, allsunk = true;
-		for (var i=0; i<ships2.length; i++) if (ships2[i].HP > 0) { allsunk = false; break; }
-		for (var i=0; i<ships2C.length; i++) {
-			let point = 0;
-			if (ships2C[i].HP/ships2C[i].maxHP > .5) point = 1;
-			else if (ships2C[i].HP/ships2C[i].maxHP > .25) point = .5;
-			else if (ships2C[i].HP/ships2C[i].maxHP > 0) point = .25;
-			count += point;
-		}
-		if (ships2C[0].HP > 0) count += 1;
-		var fightescort = (allsunk || count >= 3);
+		let fightescort = isNBFightEscort(ships2,ships2C);
 		
 		var order1 = [], order2 = [];
 		for (var i=0; i<ships1.length; i++) {
@@ -1077,38 +1080,38 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	var alive1 = [], alive1C = [], alive2 = [], alive2C = [], subsalive1 = [], subsalive1C = [], subsalive2 = [], subsalive2C = [];
 	var hasInstall1 = false, hasInstall2 = false, hasInstall1C = false, hasInstall2C = false;
 	for (var i=0; i<ships1.length; i++) {
+		ships1[i].HPprev = ships1[i].HP;
 		if (ships1[i].HP <= 0) continue;
 		if (ships1[i].retreated) continue;
 		if(ships1[i].isSub) subsalive1.push(ships1[i]);
 		else alive1.push(ships1[i]);
-		ships1[i].HPprev = ships1[i].HP;
 		if (!MECHANICS.morale) ships1[i].morale = 49;
 		if (ships1[i].isInstall) hasInstall1 = true;
 	}
 	for (var i=0; i<ships1C.length; i++) {
+		ships1C[i].HPprev = ships1C[i].HP;
 		if (ships1C[i].HP <= 0) continue;
 		if (ships1C[i].retreated) continue;
 		if(ships1C[i].isSub) subsalive1C.push(ships1C[i]);
 		else alive1C.push(ships1C[i]);
-		ships1C[i].HPprev = ships1C[i].HP;
 		if (!MECHANICS.morale) ships1C[i].morale = 49;
 		if (ships1C[i].isInstall) hasInstall1C = true;
 	}
 	for (var i=0; i<ships2.length; i++) {
+		ships2[i].HPprev = ships2[i].HP;
 		if (ships2[i].HP <= 0) continue;
 		if (ships2[i].retreated) continue;
 		if(ships2[i].isSub) subsalive2.push(ships2[i]);
 		else alive2.push(ships2[i]);
-		ships2[i].HPprev = ships2[i].HP;
 		if (!MECHANICS.morale) ships2[i].morale = 49;
 		if (ships2[i].isInstall) hasInstall2 = true;
 	}
 	for (var i=0; i<ships2C.length; i++) {
+		ships2C[i].HPprev = ships2C[i].HP;
 		if (ships2C[i].HP <= 0) continue;
 		if (ships2C[i].retreated) continue;
 		if(ships2C[i].isSub) subsalive2C.push(ships2C[i]);
 		else alive2C.push(ships2C[i]);
-		ships2C[i].HPprev = ships2C[i].HP;
 		if (!MECHANICS.morale) ships2C[i].morale = 49;
 		if (ships2C[i].isInstall) hasInstall2C = true;
 	}
@@ -1126,12 +1129,13 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	if (bombing) aironly = true;
 	
 	if (C) {
-		console.log('ENGAGEMENT: '+ENGAGEMENT);
+		simConsole.clear();
+		simConsole.log('ENGAGEMENT: '+ENGAGEMENT);
 		var dataroot = (NBonly)? BAPI.yasen : BAPI.data;
 		dataroot.api_formation = [F1.formation.id,F2.formation.id,{1:1,.8:2,1.2:3,.6:4}[ENGAGEMENT]];
 		apiSetBasic(dataroot,ships1,ships2,ships1C,ships2C);
 	}
-	if (C) console.log(API);
+	if (C) simConsole.log(API);
 	
 	var doShell2 = false;
 	for (var i=0; i<ships1.length; i++) {
@@ -1439,7 +1443,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		if (['A','B'].includes(doNB)) {
 			if (['E','D','C','B','A','S'].indexOf(getRank(ships1,ships2.concat(ships2C),ships1C)) >= ['E','D','C','B','A','S'].indexOf(doNB)) doNB = false;
 		} else if (doNB == 'flagsunk') {
-			if (ships2[0].HP <= 0) doNB = false;
+			if (ships2[0].HP <= 0 || (!friendFleet && isNBFightEscort(ships2,ships2C))) doNB = false;
 		}
 	}
 	
@@ -1463,17 +1467,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	var didNB = false;
 	if ((doNB||NBonly) && alive1C.length+subsalive1C.length > 0 && hasAlive2) {
 		didNB = !NBonly;
-		var count = 0, allsunk = true;
-		for (var i=0; i<ships2.length; i++) if (ships2[i].HP > 0) { allsunk = false; break; }
-		for (var i=0; i<ships2C.length; i++) {
-			let point = 0;
-			if (ships2C[i].HP/ships2C[i].maxHP > .5) point = 1;
-			else if (ships2C[i].HP/ships2C[i].maxHP > .25) point = .5;
-			else if (ships2C[i].HP/ships2C[i].maxHP > 0) point = .25;
-			count += point;
-		}
-		if (ships2C[0].HP > 0) count += 1;
-		var fightescort = (allsunk || count >= 3);
+		let fightescort = isNBFightEscort(ships2,ships2C);
 		
 		var order1 = [], order2 = [];
 		for (var i=0; i<ships1C.length; i++) {

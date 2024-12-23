@@ -1998,7 +1998,7 @@ var MAPDATA = {
 		}
 	},
 	56: {
-		name: 'Early-Spring 2023 Event',
+		name: 'Early-Spring 2023',
 		maps: {
 			1: {
 				name: 'E1',
@@ -2067,7 +2067,7 @@ var MAPDATA = {
 		}
 	},
 	57: {
-		name: 'Summer 2023 Event',
+		name: 'Summer 2023',
 		maps: {
 			1: {
 				name: 'E1',
@@ -2124,6 +2124,92 @@ var MAPDATA = {
 				bgmDB: 235,
 				bgmNB: 235,
 				bossnode: ['H','P','Z'],
+			},
+		}
+	},
+	58: {
+		name: 'Early-Spring 2024',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmDN: 240,
+				bgmNN: 240,
+				bgmDB: 241,
+				bgmNB: 241,
+				bossnode: ['X'],
+			},
+			2: {
+				name: 'E2',
+				bgmDN: 240,
+				bgmNN: 240,
+				bgmDB: 241,
+				bgmNB: 241,
+				bossnode: ['R','Y'],
+			},
+			3: {
+				name: 'E3',
+				bgmDN: 241,
+				bgmNN: 241,
+				bgmDB: 243,
+				bgmNB: 243,
+				bossnode: ['O3','U','Z'],
+			},
+			4: {
+				name: 'E4',
+				bgmDN: 241,
+				bgmNN: 242,
+				bgmDB: 244,
+				bgmNB: 244,
+				bossnode: ['G','O','S','Z'],
+				overrideBGM: {
+					'G': { bgmDB: 243, bgmNB: 243 },
+					'O': { bgmDB: 241, bgmNB: 241 },
+				},
+			},
+		}
+	},
+	59: {
+		name: 'Summer 2024',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmDN: 247,
+				bgmNN: 247,
+				bgmDB: 248,
+				bgmNB: 248,
+				bossnode: ['M'],
+			},
+			2: {
+				name: 'E2',
+				bgmDN: 247,
+				bgmNN: 247,
+				bgmDB: 248,
+				bgmNB: 248,
+				bossnode: ['E','U','W'],
+			},
+			3: {
+				name: 'E3',
+				bgmDN: 248,
+				bgmNN: 248,
+				bgmDB: 249,
+				bgmNB: 249,
+				bossnode: ['F','K','S','X'],
+			},
+			4: {
+				name: 'E4',
+				bgmDN: 251,
+				bgmNN: 251,
+				bgmDB: 252,
+				bgmNB: 252,
+				bossnode: ['L','S','Z'],
+			},
+			5: {
+				name: 'E5',
+				bgmDN: 252,
+				bgmNN: 252,
+				bgmDB: 253,
+				bgmNB: 253,
+				bossnode: ['C2','L','R','V','ZZ'],
 			},
 		}
 	},

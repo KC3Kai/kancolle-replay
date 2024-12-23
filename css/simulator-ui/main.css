@@ -47,6 +47,16 @@ div.bonusMarker.lbas {
 .bonusMarker.fcf {
 	color: #C8AAFF;
 }
+.bonusMarker.chuuha {
+	color: orange;
+}
+.bonusMarker.plane {
+	color: green;
+	font-size: 14px;
+}
+.bonusMarker.overridable {
+	opacity: .25;
+}
 div.fleet div.header div.expand {
 	margin-left: auto;
 }
@@ -187,11 +197,27 @@ div.fleetCompAdd > div {
 #divSettings > div {
 	margin-bottom: 25px;
 }
-#divSettingsAdvanced > div {
-	margin-bottom: 15px;
+#divSettingsAdvanced div.subsection > div {
+	padding-top: 20px;
 }
 input.changed {
 	background-color: yellow;
+}
+#divSettings div.collapseButton {
+	display: flex;
+	height: 20px;
+	width: 500px;
+	cursor: pointer;
+	border: 1px solid black;
+	background-color: #F0F0F0;
+	padding-left: 5px;
+}
+#divSettings div.collapseButton :last-child {
+	margin-left: auto;
+}
+#divSettings div.subsection {
+	border-left: 1px solid black;
+	padding-left: 10px;
 }
 
 #divSimStatsButtons {
@@ -218,6 +244,10 @@ div.progressBarInner {
 	margin-bottom: 30px;
 	display: block !important;
 }
+#divResults {
+	width: fit-content;
+	padding: 0 10px;
+}
 #divResultsErrors {
 	margin-top: 10px;
 	color: red;
@@ -233,22 +263,26 @@ div.progressBarInner {
 	color: red;
 	font-weight: bold;
 }
-#divResultColsWrap {
+div.divResultColsWrap {
 	margin-top: 20px;
 	display: flex;
 }
-#divResultColsWrap div.resultCol {
+div.divResultColsWrap div.resultCol {
 	margin-right: 20px;
 }
-#divResultColsWrap div.resultCol > div {
+div.divResultColsWrap div.resultCol > div {
 	margin-bottom: 20px;
 }
 #divResults h3 {
 	margin-bottom: 0;
 	padding: 0;
+	display: flex;
 }
 #divResults img {
 	vertical-align: middle;
+}
+#divResults img.iconSlotitem {
+	margin: -5px;
 }
 #divResults span.resultBold {
 	font-weight: bold;
@@ -276,6 +310,9 @@ div.progressBarInner {
 #divResults tr.tableSpace {
 	height: 10px;
 }
+img.copyIcons {
+	cursor: pointer;
+}
 
 #divBonusEditorMain {
 	background-color: #DDEEFF;
@@ -291,8 +328,11 @@ div.progressBarInner {
 #divBonusEditor div.bonusWrap {
 	text-align: right;
 }
-#divBonusEditor div.bonusWrap input {
+#divBonusEditor div.bonusWrap input[type=number] {
 	width: 70px;
+}
+#divBonusEditor div.bonusWrap table {
+	border-collapse: collapse;
 }
 #divBonusEditor span.statDebuff {
 	color: darkred;
@@ -322,13 +362,15 @@ div.overlayDark {
 	background-color: black;
 	opacity: .3;
 	cursor: pointer;
+	z-index: 200;
 }
 div.modalContent {
 	position: fixed;
 	top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+	left: 50%;
+	transform: translate(-50%, -50%);
 	outline: none;
+	z-index: 200;
 }
 
 #divDeckbuilderImporterMain {
@@ -362,7 +404,6 @@ div.modalContent {
 	padding: 20px;
 }
 #divBonusImporterMain {
-	width: 650px;
 	max-height: 400px;
 	overflow-y: auto;
 }
@@ -384,6 +425,9 @@ div.kcnavImporter span.note {
 div.kcnavImporterSettingsWrap {
 	display: flex;
 	margin-bottom: 20px;
+}
+div.kcnavImporterSettingsWrap label {
+	text-wrap: nowrap;
 }
 div.kcnavImporterSettingsWrap > div {
 	margin-right: 40px;
@@ -417,23 +461,32 @@ div.kcnavImporterSettingsWrap select.suggestion {
 	margin-left: auto;
 }
 
-#divFCFSettingsMain {
+#divFCFSettingsMain, #divRetreatSettingsMain {
 	background-color: #DDEEFF;
 	border: 1px solid transparent;
 	box-shadow: 0 0 5px black;
 	padding: 20px;
 }
-#divFCFSettingsMain > div:not(:first-child) {
+#divFCFSettingsMain > div:not(:first-child), #divRetreatSettingsMain > div:not(:first-child) {
 	margin-top: 10px;
 }
-#divFCFSettingsMain span.header {
+#divFCFSettingsMain span.header, #divRetreatSettingsMain span.header {
 	font-weight: bold;
 }
-#divFCFSettingsMain div.shipGroup {
+#divFCFSettingsMain div.shipGroup, #divRetreatSettingsMain div.shipGroup {
 	display: flex;
 }
-#divFCFSettingsMain div.shipGroup img:hover {
+#divFCFSettingsMain div.shipGroup img:hover, #divRetreatSettingsMain div.shipGroup img:hover {
 	cursor: pointer;
+}
+#divFCFSettingsMain div.shipGroup span.shipType, #divRetreatSettingsMain div.shipGroup span.shipType {
+	padding: 1px;
+	font-size: 16px;
+	font-weight: bold;
+	text-shadow: 0 0 5px white;
+	right: 0;
+	position: absolute;
+	pointer-events: none;
 }
 
 
@@ -455,7 +508,7 @@ div.kcnavImporterSettingsWrap select.suggestion {
 #divAutoBonus .note {
 	color: red;
 }
-#divAutoBonus .tooltip {
+span.tooltip {
 	text-decoration: underline dotted 1px;
 	cursor: help;
 }
@@ -475,4 +528,78 @@ span.autoBonusStatus.good {
 }
 .invisible {
 	visibility: hidden;
+}
+
+#divPlaneBonusMain {
+	background-color: #DDEEFF;
+	border: 1px solid transparent;
+	box-shadow: 0 0 5px black;
+	padding: 20px;
+}
+
+
+#divNotice {
+	position: fixed;
+	bottom: 30px;
+	right: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 190px;
+	height: 65px;
+	border: 2px solid #6ae3ff;
+	border-right: none;
+	font-size: 15px;
+	font-weight: 600;
+	color: #ffffff;
+	background-color: #4EABF5;
+}
+
+#divNavBar {
+	position: fixed;
+	display: flex;
+	align-items: center;
+	background-color: #DDEEFF;
+	width: 100%;
+	left: 0;
+	top: 0;
+	z-index: 100;
+}
+#divNavBar span.title {
+	font-size: 24px;
+	font-weight: bold;
+}
+#divNavButtons {
+	display: flex;
+	align-items: center;
+	margin-left: 20px;
+}
+#divNavSimShortcut {
+	border-left: 1px solid black;
+	padding-left: 30px;
+	margin: 0 20px;
+}
+div.navButton {
+	cursor: pointer;
+	font-size: 20px;
+	padding: 0 10px;
+}
+div.navButton:hover {
+	color: blue;
+	background-color: #afdaff;
+}
+div.navButton.sub {
+	font-size: 16px;
+	padding: 10px;
+}
+div.navDropdown {
+	position: absolute;
+	background-color: #dcdcdc;
+}
+div.scrollAnchor {
+	position: relative;
+}
+div.scrollAnchor > div {
+	position: absolute;
+	top: -30px;
 }

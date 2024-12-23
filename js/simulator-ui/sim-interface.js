@@ -4,7 +4,7 @@ var CONST = window.COMMON.getConst({
 	shipTypeIdToHull: { 1:'DE',2:'DD',3:'CL',4:'CLT',5:'CA',6:'CAV',7:'CVL',8:'FBB',9:'BB',10:'BBV',11:'CV',13:'SS',14:'SSV',15:'AT',16:'AV',17:'LHA',18:'CVB',19:'AR',20:'AS',21:'CT',22:'AO' },
 
 	numSimDefault: 1000,
-	numSimMax: 100000,
+	numSimMax: 10000000,
 	numSimStep: 500,
 	
 	errorText: {
@@ -19,7 +19,7 @@ var CONST = window.COMMON.getConst({
 		'bad_ship_type': { txt: 'Invalid ship type: <0>' },
 		'bad_formation': { txt: 'Invalid formation: <0>' },
 		'no_fcf_retreat': { txt: 'Initial fleet does not meet set FCF Settings requirements' },
-		'no_smoke': { txt: 'Smoke activation is currently disabled, see Show Advanced for settings' },
+		'no_smoke': { txt: 'Smoke activation is currently disabled, see Show Advanced for settings (must set at least 1 Activation Rate and 1 Multiplier)' },
 		
 		'warn_unknown_equiptype': { txt: 'Warning: Unknown equip type - <0>, effects may be missing' },
 		'warn_unknown_ship': { txt: 'Warning: Unknown ship - <0>, unique effects may be missing' },
@@ -33,7 +33,13 @@ var CONST = window.COMMON.getConst({
 		'warn_vanguard': { txt: 'Note: Destroyers have different vanguard evasion mods in event maps, see "Show Advanced" if simulating event maps', excludeImport: true },
 		'warn_enemy_unset_stats': { txt: 'Warning: Node <0> has enemies with unknown and unset evasion/luck stats (still set to 0/1).', excludeImport: true },
 		'warn_debuff_dmg': { txt: 'Warning: "Debuff Dmg" is a legacy setting and may be inaccurate to the mechanic, recommended to modify enemy\'s Armour stat instead.' },
+		'warn_range_weights_f': { txt: 'Warning: Player Fleets - Following range combination weights are unknown and not used: <0>' },
+		'warn_range_weights_e': { txt: 'Warning: Enemy Fleets - Following range combination weights are unknown and not used: <0>' },
+		'warn_special_attack': { txt: 'Note: Special Attack activation rate calculations are unknown and must be set manually, see Show Advanced to review defaults and adjust settings' },
+		'warn_smoke_formula': { txt: '' },
 	},
+	
+	keysSmoke: ['smokeModShellAccF','smokeModShellAccFRadar','smokeModShellAccE','smokeModShellAccERadar','smokeModASWAccF','smokeModASWAccE','smokeModTorpAccF','smokeModTorpAccE','smokeModAirAccF','smokeModAirAccE'],
 });
 	
 var SIM = {
@@ -45,8 +51,10 @@ var SIM = {
 	_compListFF: null,
 	_inputPrev: {},
 	_unsetEnemy: null,
+	_resultsCountDamecon: false,
 	
 	cancelRun: false,
+	simResultPrev: null,
 
 	_addError: function(key,args) {
 		let txt = CONST.errorText[key].txt;
@@ -56,7 +64,7 @@ var SIM = {
 			}
 		}
 		if (this._saveErrors) {
-			this._errors.push({ txt: txt, excludeClient: !!CONST.errorText[key].excludeClient, excludeImport: !!CONST.errorText[key].excludeImport });
+			this._errors.push({ key: key, args: args, txt: txt, excludeClient: !!CONST.errorText[key].excludeClient, excludeImport: !!CONST.errorText[key].excludeImport });
 		} else {
 			console.log('error: ' + txt);
 		}
@@ -69,7 +77,7 @@ var SIM = {
 			}
 		}
 		if (this._saveErrors) {
-			this._warnings.push({ txt: txt, excludeClient: !!CONST.errorText[key].excludeClient, excludeImport: !!CONST.errorText[key].excludeImport });
+			this._warnings.push({ key: key, args: args, txt: txt, excludeClient: !!CONST.errorText[key].excludeClient, excludeImport: !!CONST.errorText[key].excludeImport });
 		} else {
 			console.log('warning: ' + txt);
 		}
@@ -88,10 +96,14 @@ var SIM = {
 			totalSteelR: 0,
 			totalBuckets: 0,
 			totalDamecon: 0,
+			totalAnchorageRepair: 0,
 			totalGaugeDamage: 0,
 			totalEmptiedPlanes: 0,
 			totalEmptiedLBAS: 0,
 			totalTransport: 0,
+			totalFCFUsed: 0,
+			totalUnderway: 0,
+			totalCanAdvanceAfter: 0,
 			nodes: [],
 		};
 		for (let n=0; n<numNodes; n++) {
@@ -104,6 +116,12 @@ var SIM = {
 				taiha: 0,
 				taihaIndiv: [0,0,0,0,0,0,0],
 				taihaIndivC: [0,0,0,0,0,0],
+				sunkFAny: 0,
+				sunkFIndiv: [0,0,0,0,0,0,0],
+				sunkFIndivC: [0,0,0,0,0,0],
+				dameconAny: 0,
+				dameconIndiv: [0,0,0,0,0,0,0],
+				dameconIndivC: [0,0,0,0,0,0],
 				undamaged: 0,
 				airStates: [0,0,0,0,0],
 			});
@@ -133,9 +151,39 @@ var SIM = {
 			if (resultSim.rank == 'A') tp = Math.floor(tp*.7);
 			this._results.totalTransport += tp;
 		}
+		if (this._resultsCountDamecon) {
+			let dameconAny = false, sunkFAny = false;
+			for (let i=0; i<FLEETS1[0].ships.length; i++) {
+				let ship = FLEETS1[0].ships[i];
+				if (ship.dameconUsed) {
+					rNode.dameconIndiv[i]++;
+					dameconAny = true;
+				}
+				if (ship.HPprev > 0 && ship.HP < 0) {
+					rNode.sunkFIndiv[i]++;
+					sunkFAny = true;
+				}
+			}
+			if (FLEETS1[1]) {
+				for (let i=0; i<FLEETS1[1].ships.length; i++) {
+					let ship = FLEETS1[1].ships[i];
+					if (ship.dameconUsed) {
+						rNode.dameconIndivC[i]++;
+						dameconAny = true;
+					}
+					if (ship.HPprev > 0 && ship.HP < 0) {
+						rNode.sunkFIndivC[i]++;
+						sunkFAny = true;
+					}
+				}
+			}
+			if (dameconAny) rNode.dameconAny++;
+			if (sunkFAny) rNode.sunkFAny++;
+		}
 	},
 	_updateResultsTotal: function(dataInput) {
 		this._results.totalnum++;
+		let foundRetreated = false, foundUnderway = false;
 		for (let fleet of FLEETS1) {
 			if (!fleet) continue;
 			for (let ship of fleet.ships) {
@@ -163,7 +211,15 @@ var SIM = {
 				}
 				this._results.totalSteelR += ship.jetSteelCost || 0;
 				if (ship.repairs) this._results.totalDamecon += ship.repairsOrig.length - ship.repairs.length;
+				if (ship.retreated) foundRetreated = true;
+				if (ship._fuelUnderway) foundUnderway = true;
 			}
+		}
+		if (foundRetreated) this._results.totalFCFUsed++;
+		if (foundUnderway) {
+			let n = FLEETS1[0].ships.reduce((t,ship) => +(!ship.retreated && (ship.equiptypes[OILDRUM] || 0)) + t, 0);
+			if (FLEETS1[1] && FLEETS1[1].ships) n += FLEETS1[1].ships.reduce((t,ship) => +(!ship.retreated && (ship.equiptypes[OILDRUM] || 0)) + t, 0);
+			this._results.totalUnderway += Math.min(3,n);
 		}
 		for (let fleet of [FLEETS1S[0],FLEETS1S[1]]) {
 			if (!fleet) continue;
@@ -197,6 +253,8 @@ var SIM = {
 		}
 		let shipBossFlag = FLEETS2.at(-1).ships[0];
 		this._results.totalGaugeDamage += shipBossFlag.maxHP - Math.max(0,shipBossFlag.HP);
+		let ship1 = FLEETS1[0].ships[0];
+		if (ship1 && this.simResultPrev && this.simResultPrev.battleNum == dataInput.nodes.length && (ship1.HP/ship1.maxHP > .25 || (ship1.repairs && ship1.repairs.length))) this._results.totalCanAdvanceAfter++;
 	},
 
 	_inputEquivalent: function(v1,v2) {
@@ -246,6 +304,40 @@ var SIM = {
 				shipSim.bonusSpecial.push({ mod: bonusesDebuff.bonusDmg, on: [debuffOnId] });
 			}
 		}
+	},
+	_setBonusesPlane: function(shipSim,battleNum) {
+		shipSim.bonusSpecialPNotAirOnly = null;
+		let bonusSpecialPNotAirOnly = {};
+		for (let equipSim of shipSim.equips) {
+			equipSim.bonusSpecialP = equipSim.bonusSpecialAccP = equipSim.bonusSpecialEvaP = null;
+			if (equipSim._bonusPByNode && equipSim._bonusPByNode[battleNum] === undefined) {
+				let bonusGroups = equipSim._dataOrig.bonusGroups;
+				if (equipSim._dataOrig.bonusesByNode && equipSim._dataOrig.bonusesByNode[battleNum] && equipSim._dataOrig.bonusesByNode[battleNum].bonusGroups) {
+					bonusGroups = equipSim._dataOrig.bonusesByNode[battleNum].bonusGroups;
+				}
+				if (!bonusGroups) {
+					equipSim._bonusPByNode[battleNum] = null;
+				} else {
+					equipSim._bonusPByNode[battleNum] = { bonusSpecialP: {}, bonusSpecialAccP: {}, bonusSpecialEvaP: {}, bonusSpecialPNotAirOnly: {} };
+					for (let group in bonusGroups) {
+						if (bonusGroups[group].bonusDmg && bonusGroups[group].bonusDmg != 1) equipSim._bonusPByNode[battleNum].bonusSpecialP[group] = bonusGroups[group].bonusDmg;
+						if (bonusGroups[group].bonusAcc && bonusGroups[group].bonusAcc != 1) equipSim._bonusPByNode[battleNum].bonusSpecialAccP[group] = bonusGroups[group].bonusAcc;
+						if (bonusGroups[group].bonusEva && bonusGroups[group].bonusEva != 1) equipSim._bonusPByNode[battleNum].bonusSpecialEvaP[group] = bonusGroups[group].bonusEva;
+						if (bonusGroups[group].notAirOnly) equipSim._bonusPByNode[battleNum].bonusSpecialPNotAirOnly[group] = true;
+					}
+					if (!Object.keys(equipSim._bonusPByNode[battleNum].bonusSpecialP).length) equipSim._bonusPByNode[battleNum].bonusSpecialP = null;
+					if (!Object.keys(equipSim._bonusPByNode[battleNum].bonusSpecialAccP).length) equipSim._bonusPByNode[battleNum].bonusSpecialAccP = null;
+					if (!Object.keys(equipSim._bonusPByNode[battleNum].bonusSpecialEvaP).length) equipSim._bonusPByNode[battleNum].bonusSpecialEvaP = null;
+				}
+			}
+			if (equipSim._bonusPByNode && equipSim._bonusPByNode[battleNum]) {
+				equipSim.bonusSpecialP = equipSim._bonusPByNode[battleNum].bonusSpecialP;
+				equipSim.bonusSpecialAccP = equipSim._bonusPByNode[battleNum].bonusSpecialAccP;
+				equipSim.bonusSpecialEvaP = equipSim._bonusPByNode[battleNum].bonusSpecialEvaP;
+				for (let group in equipSim._bonusPByNode[battleNum].bonusSpecialPNotAirOnly) bonusSpecialPNotAirOnly[group] = true;
+			}
+		}
+		if (Object.keys(bonusSpecialPNotAirOnly).length) shipSim.bonusSpecialPNotAirOnly = bonusSpecialPNotAirOnly;
 	},
 	
 	
@@ -339,10 +431,9 @@ var SIM = {
 			
 			if (shipInput.equips) {
 				let r = this._getSimEquipLists(shipInput.equips);
-				if (isSupport) r.profs = [];
-				shipSim.loadEquips(r.equips,r.improves,r.profs,!shipInput.includesEquipStats);
+				shipSim.loadEquips(r.equips,r.improves,r.profs,!shipInput.includesEquipStats,isSupport);
 			} else if (sdata.EQUIPS) {
-				shipSim.loadEquips(sdata.EQUIPS,[],[],true);
+				shipSim.loadEquips(sdata.EQUIPS,[],[],true,isSupport);
 			}
 			for (let i=shipSim.PLANESLOTS.length; i<shipSim.equips.length; i++) {
 				shipSim.PLANESLOTS.push(0);
@@ -352,6 +443,22 @@ var SIM = {
 			this._setBonuses(shipSim,shipInput.bonuses);
 			
 			shipSim._dataOrig = shipInput;
+			if (shipInput.equips) {
+				for (let equipInput of shipInput.equips) {
+					for (let equipSim of shipSim.equips) {
+						if (equipSim._dataOrig) continue;
+						if (equipSim.mid == equipInput.masterId) {
+							equipSim._dataOrig = equipInput;
+							break;
+						}
+					}
+				}
+				for (let equipSim of shipSim.equips) {
+					equipSim._bonusPByNode = {};
+				}
+			}
+			
+			this._setBonusesPlane(shipSim,1);
 			
 			shipsSim.push(shipSim);
 		}
@@ -376,7 +483,10 @@ var SIM = {
 				this._addError('bad_formation',[fleetInput.formation]);
 			}
 			fleetSim.reset();
-			if (fleetSim.combinedWith) fleetSim.combinedWith.reset();
+			if (fleetSim.combinedWith) {
+				fleetSim.combinedWith.reset();
+				fleetSim.combineType = fleetInput.combineType;
+			}
 			result = fleetSim;
 		}
 		return result;
@@ -396,9 +506,20 @@ var SIM = {
 						}
 						for (let i=0; i<baseSim.equips.length; i++) {
 							let bonuses = baseInput.equips[i].bonuses;
-							if (!bonuses) continue;
-							if (bonuses.bonusDmg) baseSim.equips[i].bonusSpecialP = { 1: bonuses.bonusDmg };
-							if (bonuses.bonusAcc) baseSim.equips[i].bonusSpecialAccP = { 1: bonuses.bonusAcc };
+							if (bonuses) {
+								if (bonuses.bonusDmg) baseSim.equips[i].bonusSpecialPSelf = bonuses.bonusDmg;
+								if (bonuses.bonusAcc) baseSim.equips[i].bonusSpecialAccPSelf = bonuses.bonusAcc;
+							}
+							let bonusGroups = baseInput.equips[i].bonusGroups;
+							if (bonusGroups) {
+								for (let eq of baseSim.equips) eq.bonusSpecialPUseAll = true;
+								baseSim.equips[i].bonusSpecialP = {};
+								baseSim.equips[i].bonusSpecialAccP = {};
+								for (let group in bonusGroups) {
+									if (bonusGroups[group].bonusDmg && bonusGroups[group].bonusDmg != 1) baseSim.equips[i].bonusSpecialP[group] = bonusGroups[group].bonusDmg;
+									if (bonusGroups[group].bonusAcc && bonusGroups[group].bonusAcc != 1) baseSim.equips[i].bonusSpecialAccP[group] = bonusGroups[group].bonusAcc;
+								}
+							}
 						}
 					}
 				}
@@ -441,8 +562,12 @@ var SIM = {
 		
 		this._setMechanics(dataInput);
 		
-		if (dataInput.nodes.find(node => node.useSmoke) && !SIMCONSTS.smokeChance.reduce((a,b)=>a+b,0)) {
-			this._addError('no_smoke');
+		if (dataInput.nodes.find(node => node.useSmoke)) {
+			let isDisabled = !SIMCONSTS.smokeChance.reduce((a,b)=>a+(b||0),0) && !(dataInput.consts && dataInput.consts.smokeChanceUseFormula);
+			isDisabled = isDisabled || CONST.keysSmoke.every(key => SIMCONSTS[key].every(v => v == 1 || v == null || v === ''));
+			if (isDisabled) {
+				this._addError('no_smoke');
+			}
 		}
 		
 		FLEETS1[0] = this._getSimFleet(dataInput.fleetF,0);
@@ -585,6 +710,29 @@ var SIM = {
 				}
 			}
 		}
+		
+		if (dataInput.consts && dataInput.consts.enableRangeWeights) {
+			SHELL_RANGE_WEIGHTS.resetMissing();
+		}
+		
+		if (FLEETS1[0] && FLEETS1[0].ships && canSpecialAttackUnique(FLEETS1[0].ships[0],false,true) || canSpecialAttackUnique(FLEETS1[0].ships[0],true,true)) {
+			this._addWarning('warn_special_attack');
+		}
+		
+		if (dataInput.nodes.find(node => node.useSmoke) && dataInput.consts && dataInput.consts.smokeChanceUseFormula) {
+			this._addWarning('warn_smoke_formula',FLEETS1[0].getSmokeRates());
+		}
+		
+		this._resultsCountDamecon = !!(dataInput.continueOnTaiha || shipsAll.find(ship => ship.noRetreatOnTaiha) || shipsAll.find(ship => ship.equips.find(eq => eq.masterId == 42 || eq.masterId == 43)));
+	},
+	
+	_checkWarningsPostRun: function(dataInput) {
+		if (dataInput.consts && dataInput.consts.enableRangeWeights) {
+			let keysMissingF = SHELL_RANGE_WEIGHTS.getMissing(0);
+			if (keysMissingF.length) this._addWarning('warn_range_weights_f', [keysMissingF.join(', ')]);
+			let keysMissingE = SHELL_RANGE_WEIGHTS.getMissing(1);
+			if (keysMissingE.length) this._addWarning('warn_range_weights_e', [keysMissingE.join(', ')]);
+		}
 	},
 	
 	_checkSettingsFCF: function(settingsFCF,fleetF,battleInd=-1) {
@@ -616,6 +764,47 @@ var SIM = {
 		return true;
 	},
 	
+	_doAnchorageRepair: function(fleetF) {
+		let type = 0, hpRepairedTotal = 0;
+		let ships = fleetF.ships.slice(1);
+		if (fleetF.combinedWith) ships = ships.concat(fleetF.combinedWith.ships); 
+		let shipR = null;
+		if (shipR = ships.find(ship => ship.mid == 187 && ship.HP/ship.maxHP > .5 && ship.equips.find(eq => eq.type == SRF))) type = 1;
+		else if (shipR = ships.find(ship => ship.mid == 958 && ship.HP/ship.maxHP > .5 && ship.equips.find(eq => eq.type == SRF))) type = 3;
+		else if (shipR = ships.find(ship => ship.mid == 450 && ship.HP/ship.maxHP > .5 && ship.equips.find(eq => eq.type == SRF))) type = 2;
+		if (!type) return 0;
+		
+		let hpPercent = 0, shipsRepair = [];
+		if (type == 1) {
+			hpPercent = .3;
+			if (shipR.equips[0] && shipR.equips[0].type == SRF) shipsRepair.push.apply(shipsRepair,fleetF.ships.slice(0,3));
+			if (shipR.equips[1] && shipR.equips[1].type == SRF) shipsRepair.push.apply(shipsRepair,fleetF.ships.slice(3));
+			if (fleetF.combinedWith && shipR.equips[2] && shipR.equips[2].type == SRF) shipsRepair.push.apply(shipsRepair,fleetF.combinedWith.ships.slice(0,3));
+			if (fleetF.combinedWith && shipR.equips[3] && shipR.equips[3].type == SRF) shipsRepair.push.apply(shipsRepair,fleetF.combinedWith.ships.slice(3));
+		} else if (type == 2) {
+			hpPercent = .25;
+			if (fleetF.combinedWith && shipR.equips[0] && shipR.equips[0].type == SRF) shipsRepair.push.apply(shipsRepair,fleetF.combinedWith.ships.slice(0,3));
+			if (fleetF.combinedWith && shipR.equips[1] && shipR.equips[1].type == SRF) shipsRepair.push.apply(shipsRepair,fleetF.combinedWith.ships.slice(3));
+		} else if (type == 3) {
+			hpPercent = .28;
+			if (fleetF.combinedWith && shipR.equips[0] && shipR.equips[0].type == SRF) shipsRepair.push.apply(shipsRepair,fleetF.combinedWith.ships.slice(0,3));
+			if (fleetF.combinedWith && shipR.equips[1] && shipR.equips[1].type == SRF) shipsRepair.push.apply(shipsRepair,fleetF.combinedWith.ships.slice(3));
+			if (shipR.equips[2] && shipR.equips[2].type == SRF) shipsRepair.push.apply(shipsRepair,fleetF.ships.slice(3));
+		}
+		
+		for (let ship of shipsRepair) {
+			if (!ship) continue;
+			if (ship.HP >= ship.maxHP) continue;
+			if (ship.HP/ship.maxHP <= .25) continue;
+			let hpRepaired = Math.min(ship.maxHP - ship.HP, Math.ceil(hpPercent*ship.maxHP));
+			ship.HP += hpRepaired;
+			hpRepairedTotal += hpRepaired;
+			ship.morale += 7;
+			if (ship.morale > 100) ship.morale = 100;
+		}
+		return hpRepairedTotal;
+	},
+	
 	_doSimSortie: function(dataInput,dataReplay) {
 		for (let i=0; i<this._compListsEnemy.length; i++) {
 			if (!this._compListsEnemy[i]) continue;
@@ -639,6 +828,10 @@ var SIM = {
 	
 		for (let battleInd=0; battleInd<dataInput.nodes.length; battleInd++) {
 			let node = dataInput.nodes[battleInd];
+			if (node.offrouteRate && Math.random() < node.offrouteRate) {
+				break;
+			}
+			
 			let isBossNode = battleInd == dataInput.nodes.length-1;
 			let fleetF = FLEETS1[0];
 			let fleetE = FLEETS2[battleInd];
@@ -651,12 +844,20 @@ var SIM = {
 				}
 			}
 			
-			if (node.formationOverride) {
-				fleetF.setFormation(node.formationOverride,dataInput.fleetF.combineType);
-				if (+node.formationOverride < 10 && fleetF.combinedWith) fleetF.combinedWith.setFormation(node.formationOverride);
-			} else {
-				fleetF.setFormation(dataInput.fleetF.formation,dataInput.fleetF.combineType);
+			let formation = +node.formationOverride || +dataInput.fleetF.formation;
+			if (node.formationUseLAIfNoSpAttack && !canSpecialAttackUnique(fleetF.ships[0],node.NBOnly,true)) {
+				formation = fleetF.combinedWith && !node.NBOnly ? 14 : 1;
 			}
+			if (!dataInput.allowAnyFormation) {
+				if (!fleetF.combinedWith && fleetF.ships.filter(ship => !ship.retreated && ship.HP > 0).length < 4) formation = 1;
+				if (node.NBOnly && fleetF.combinedWith && fleetF.combinedWith.ships.filter(ship => !ship.retreated && ship.HP > 0).length < 4) formation = 1;
+				if (formation == 3 && !fleetF.combinedWith && fleetF.ships.filter(ship => !ship.retreated && ship.HP > 0).length < 5) formation = 2;
+				if (node.NBOnly && formation == 3 && fleetF.combinedWith && fleetF.combinedWith.ships.filter(ship => !ship.retreated && ship.HP > 0).length < 5) formation = 2;
+				if (formation == 13 && fleetF.combinedWith && fleetF.combinedWith.ships.filter(ship => !ship.retreated && ship.HP > 0).length < 5) formation = 11;
+				if (formation == 14 && fleetF.combinedWith && fleetF.combinedWith.ships.filter(ship => !ship.retreated && ship.HP > 0).length < 4) formation = 12;
+			}
+			fleetF.setFormation(formation,dataInput.fleetF.combineType);
+			if (+formation < 10 && fleetF.combinedWith) fleetF.combinedWith.setFormation(formation);
 			
 			let shipsAll = fleetF.combinedWith ? fleetF.ships.concat(fleetF.combinedWith.ships) : fleetF.ships;
 			for (let ship of shipsAll) {
@@ -669,14 +870,22 @@ var SIM = {
 				}
 				let bonusDebuff = isBossNode ? ship._dataOrig.bonusesDebuff : null;
 				this._setBonuses(ship,bonus,bonusDebuff,isBossNode && shipBossFlag.mid);
+				
+				this._setBonusesPlane(ship,battleInd+1);
 			}
 			
 			if (node.addCostFuel || node.addCostAmmo) {
 				for (let fleet of [fleetF,fleetF.combinedWith]) {
 					if (!fleet) continue;
 					for (let ship of fleet.ships) {
-						ship.fuelleft -= 10*Math.floor(Math.round(ship.fuel*(ship.fuelleft/10))*(node.addCostFuel || 0))/ship.fuel;
-						ship.ammoleft -= 10*Math.floor(Math.round(ship.ammo*(ship.ammoleft/10))*(node.addCostAmmo || 0))/ship.ammo;
+						let costFuel = Math.floor(Math.round(ship.fuel*(ship.fuelleft/10))*(node.addCostFuel || 0));
+						let costAmmo = Math.floor(Math.round(ship.ammo*(ship.ammoleft/10))*(node.addCostAmmo || 0));
+						if (node.addCostMax != null && node.addCostMax != '') {
+							costFuel = Math.min(node.addCostMax,costFuel);
+							costAmmo = Math.min(node.addCostMax,costAmmo);
+						}
+						ship.fuelleft -= 10*costFuel/ship.fuel;
+						ship.ammoleft -= 10*costAmmo/ship.ammo;
 					}
 				}
 			}
@@ -685,11 +894,26 @@ var SIM = {
 				window.underwaySupply(fleetF);
 			}
 			
+			if (node.useAnchorageRepair) {
+				let cost = this._doAnchorageRepair(fleetF);
+				if (cost && this._results) {
+					this._results.totalSteelR += 3*cost;
+					this._results.totalAnchorageRepair++;
+				}
+			}
+			
 			fleetF.useBalloon = !!node.useBalloon;
 			fleetE.useBalloon = !!node.useBalloon;
+			fleetF.useAtoll = !!node.useAtoll;
 			
 			if (fleetF.smokeType) fleetF.smokeUsed = true;
 			fleetF.useSmoke = !node.NBOnly && !fleetF.smokeUsed && !!node.useSmoke;
+			if (fleetF.useSmoke && dataInput.consts && dataInput.consts.smokeChanceUseFormula) {
+				let rates = fleetF.getSmokeRates();
+				for (let i=0; i<rates.length; i++) {
+					SIMCONSTS.smokeChance[i] = rates[i];
+				}
+			}
 			
 			let result;
 			let apiBattle = null;
@@ -703,25 +927,40 @@ var SIM = {
 				fleetF.resetBattle();
 				fleetF.combinedWith.resetBattle();
 				if (fleetE.combinedWith) {
+					fleetF.battleType = '12v12';
 					result = sim12vs12(dataInput.fleetF.combineType,fleetF,fleetF.combinedWith,fleetE,fleetFSupport,lbWaves,doNB,node.NBOnly,node.airOnly,node.airRaid,node.noAmmo,apiBattle,false,fleetFF);
 				} else {
+					fleetF.battleType = '12v6';
 					result = simCombined(dataInput.fleetF.combineType,fleetF,fleetF.combinedWith,fleetE,fleetFSupport,lbWaves,doNB,node.NBOnly,node.airOnly,node.airRaid,node.noAmmo,apiBattle,false,fleetFF);
 				}
 			} else {
 				fleetF.resetBattle();
 				if (fleetE.combinedWith) {
+					fleetF.battleType = '6v12';
 					result = sim6vs12(fleetF,fleetE,fleetFSupport,lbWaves,doNB,node.NBOnly,node.airOnly,node.airRaid,node.noAmmo,apiBattle,false,fleetFF);
 				} else {
+					fleetF.battleType = '6v6';
 					result = sim(fleetF,fleetE,fleetFSupport,lbWaves,doNB,node.NBOnly,node.airOnly,node.airRaid,node.noAmmo,apiBattle,false,fleetFF);
 				}
 			}
+			this.simResultPrev = { battleNum: battleInd+1, result: result };
 			
-			if (!dataReplay) {
-				this._updateResultsNode(result,battleInd);
+			if (isBossNode) {
+				if (!dataReplay) {
+					this._updateResultsNode(result,battleInd);
+				}
+				break;
 			}
 			
 			let ignoreDamecon = dataInput.settingsFCF && dataInput.settingsFCF.dameconNode && battleInd+1 <= dataInput.settingsFCF.dameconNode;
+			if (!ignoreDamecon && dataInput.dameconNumTaiha != null && dataInput.dameconNumTaiha != '') {
+				ignoreDamecon = dataInput.dameconNumTaiha <= shipsAll.filter(ship => ship.HP/ship.maxHP <= .25 && ship.repairs && ship.repairs.length).length;
+			}
 			let isRetreat = fleetF.combinedWith ? !canContinue(fleetF.ships,fleetF.combinedWith.ships,false,ignoreDamecon) : !canContinue(fleetF.ships,null,false,ignoreDamecon);
+			if (!isRetreat) {
+				let numShipsRetreatChuuha = shipsAll.filter(ship => ship._dataOrig.retreatOnChuuha && ship.HP/ship.maxHP <= .5).length;
+				isRetreat = numShipsRetreatChuuha > 0 && (!dataInput.retreatOnChuuhaIfAll || shipsAll.filter(ship => ship._dataOrig.retreatOnChuuha).length == numShipsRetreatChuuha);
+			}
 			if (!isRetreat) {
 				let undoFCF = false;
 				if (dataInput.settingsFCF && battleInd < dataInput.nodes.length-1) {
@@ -741,6 +980,10 @@ var SIM = {
 					}
 					isRetreat = fleetF.combinedWith ? !canContinue(fleetF.ships,fleetF.combinedWith.ships,true,ignoreDamecon) : !canContinue(fleetF.ships,null,true,ignoreDamecon);
 				}
+			}
+			
+			if (!dataReplay) {
+				this._updateResultsNode(result,battleInd);
 			}
 			
 			for (let ship of shipsAll) delete ship._tempFCF;
@@ -820,7 +1063,8 @@ var SIM = {
 			}
 			n += numStep;
 			if (n >= numSim || this.cancelRun) {
-				callback({ progress: n, progressTotal: numSim, result: this._results });
+				this._checkWarningsPostRun(dataInput);
+				callback({ progress: n, progressTotal: numSim, result: this._results, warnings: this._warnings.slice() });
 				let timeTotal = Date.now() - timeStart;
 				console.log('time: ' + (timeTotal/1000) + ' sec');
 				this.cancelRun = false;
@@ -832,9 +1076,9 @@ var SIM = {
 		setTimeout(runStep.bind(this),1);
 	},
 	
-	runReplay: function(dataInput,dataReplay) {
-		console.log(dataInput);
-		window.C = true;
+	runReplay: function(dataInput,dataReplay,noLog) {
+		if (!noLog) console.log(dataInput);
+		window.C = noLog ? 2 : 1;
 		
 		this._load(dataInput);
 		if (this._errors.length) {

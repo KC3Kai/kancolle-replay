@@ -575,7 +575,7 @@ var BATTLE = (function() {
 		    eAttack = [],
 		    eTargets = [];
 
-		var num = Math.max(rai.api_frai.length, rai.api_erai.length);
+		var num = rai.api_frai_list_items ? Math.max(rai.api_frai_list_items.length, rai.api_erai_list_items.length) : Math.max(rai.api_frai.length, rai.api_erai.length);
 		for (var i = 0; i < num; i++) {
 			if (version == 1) {
 				if (rai.api_frai[i + 1] > 0) {
@@ -606,30 +606,63 @@ var BATTLE = (function() {
 
 				}
 			} else {
-				if (rai.api_frai[i] > -1) {
-					fTorpedos.push((i >= 6 && player.mainFleet.length <= 6) ? player.escortFleet[i - 6] : player.mainFleet[i]);
-					fAttack.push({
-						atk : rai.api_fydam[i],
-						crit : ((rai.api_fcl[i] == 2)? 2 : 1)
-					});
+				if (rai.api_frai_list_items) {
+					if (rai.api_frai_list_items[i]) {
+						for (let j=0; j<rai.api_frai_list_items[i].length; j++) {
+							fTorpedos.push((i >= 6 && player.mainFleet.length <= 6) ? player.escortFleet[i - 6] : player.mainFleet[i]);
+							fAttack.push({
+								atk : rai.api_fydam_list_items[i][j],
+								crit : ((rai.api_fcl_list_items[i][j] == 2)? 2 : 1)
+							});
 
-					if (rai.api_frai[i] >= 6 && opponent.mainFleet.length <= 6) {
-						fTargets.push(opponent.escortFleet[rai.api_frai[i] - 6]);
-					} else {
-						fTargets.push(opponent.mainFleet[rai.api_frai[i]]);
+							if (rai.api_frai_list_items[i][j] >= 6 && opponent.mainFleet.length <= 6) {
+								fTargets.push(opponent.escortFleet[rai.api_frai_list_items[i][j] - 6]);
+							} else {
+								fTargets.push(opponent.mainFleet[rai.api_frai_list_items[i][j]]);
+							}
+						}
 					}
-				}
-				if (rai.api_erai[i] > -1) {
-					eTorpedos.push((i >= 6 && opponent.mainFleet.length <= 6) ? opponent.escortFleet[i - 6] : opponent.mainFleet[i]);
-					eAttack.push({
-						atk : rai.api_eydam[i],
-						crit : ((rai.api_ecl[i] == 2)? 2 : 1)
-					});
+					if (rai.api_erai_list_items[i]) {
+						for (let j=0; j<rai.api_erai_list_items[i].length; j++) {
+							eTorpedos.push((i >= 6 && opponent.mainFleet.length <= 6) ? opponent.escortFleet[i - 6] : opponent.mainFleet[i]);
+							eAttack.push({
+								atk : rai.api_eydam_list_items[i][j],
+								crit : ((rai.api_ecl_list_items[i][j] == 2)? 2 : 1)
+							});
 
-					if (rai.api_erai[i] >= 6 && player.mainFleet.length <= 6) {
-						eTargets.push(player.escortFleet[rai.api_erai[i] - 6]);
-					} else {
-						eTargets.push(player.mainFleet[rai.api_erai[i]]);
+							if (rai.api_erai_list_items[i][j] >= 6 && player.mainFleet.length <= 6) {
+								eTargets.push(player.escortFleet[rai.api_erai_list_items[i][j] - 6]);
+							} else {
+								eTargets.push(player.mainFleet[rai.api_erai_list_items[i][j]]);
+							}
+						}
+					}
+				} else {
+					if (rai.api_frai[i] > -1) {
+						fTorpedos.push((i >= 6 && player.mainFleet.length <= 6) ? player.escortFleet[i - 6] : player.mainFleet[i]);
+						fAttack.push({
+							atk : rai.api_fydam[i],
+							crit : ((rai.api_fcl[i] == 2)? 2 : 1)
+						});
+
+						if (rai.api_frai[i] >= 6 && opponent.mainFleet.length <= 6) {
+							fTargets.push(opponent.escortFleet[rai.api_frai[i] - 6]);
+						} else {
+							fTargets.push(opponent.mainFleet[rai.api_frai[i]]);
+						}
+					}
+					if (rai.api_erai[i] > -1) {
+						eTorpedos.push((i >= 6 && opponent.mainFleet.length <= 6) ? opponent.escortFleet[i - 6] : opponent.mainFleet[i]);
+						eAttack.push({
+							atk : rai.api_eydam[i],
+							crit : ((rai.api_ecl[i] == 2)? 2 : 1)
+						});
+
+						if (rai.api_erai[i] >= 6 && player.mainFleet.length <= 6) {
+							eTargets.push(player.escortFleet[rai.api_erai[i] - 6]);
+						} else {
+							eTargets.push(player.mainFleet[rai.api_erai[i]]);
+						}
 					}
 				}
 			}

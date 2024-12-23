@@ -1,14 +1,17 @@
-(() => {
+COMMON.promiseI18n.then(() => {
 
 var CONST = window.COMMON.getConst({
 	numBattlesMax: 9,
 	numCompMax: 12,
 	
 	numSimDefault: 10000,
-	numSimMax: 99999,
+	numSimMax: 10000000,
+	watchCountMax: 500,
 	
 	urlDeckbuilder: 'http://www.kancolle-calc.net/deckbuilder.html?predeck=',
 	urlLBASSim: 'https://noro6.github.io/kc-web?predeck=',
+	urlJervis: 'https://jervis.vercel.app/?predeck=',
+	urlCompassSim: 'https://x-20a.github.io/compass/?predeck=',
 	urlKCNavEnemyComps: 'https://tsunkit.net/api/routing/maps/{maps}/edges/{edges}/enemycomps',
 	urlKCNavFriendFleets: 'https://tsunkit.net/api/routing/maps/{maps}/edges/{edges}/friendfleets',
 	urlKCNavAbnormalDamage: 'https://tsunkit.net/api/routing/abnormaldamage',
@@ -40,7 +43,7 @@ var MECHANICS_LIST = [
 	{ key: 'eqBonusASW', name: 'ASW Use Equipment Bonus' },
 	{ key: 'ffReroll', name: 'Friend Fleet Flagship Reroll' },
 	{ key: 'eqBonusAA', name: 'Anti-Air Use Equipment Bonus' },
-	{ key: 'antiSubRaid', name: 'Anti-Sub Air Raid' },
+	{ key: 'antiSubRaid', name: 'Anti-Sub Air Raid', hide: true },
 	{ key: 'enable_ASWPlaneAir', name: 'Autogyro/Liaison Air Battle' },
 	{ key: 'enable_AACIRework', name: 'AACI Rework (Sequential Roll + New Priority)' },
 ];
@@ -59,11 +62,15 @@ var UI_MAIN = Vue.createApp({
 		useSupportN: true,
 		useSupportB: true,
 		useFF: true,
+		ffLuckSet: 50,
 		
 		battles: [],
 		
 		settings: {
 			retreatOnTaiha: true,
+			dameconNumTaiha: null,
+			retreatOnChuuhaIfAll: 0,
+			replaceImpossibleFormations: true,
 			mechanics: [],
 			shellDmgCap: SIMCONSTS.shellDmgCap,
 			aswDmgCap: SIMCONSTS.aswDmgCap,
@@ -89,6 +96,13 @@ var UI_MAIN = Vue.createApp({
 			kongouSpecialRate: SIMCONSTS.kongouSpecialRate,
 			yamatoSpecial3Rate: SIMCONSTS.yamatoSpecial3Rate,
 			yamatoSpecial2Rate: SIMCONSTS.yamatoSpecial2Rate,
+			subFleetAttackRate: SIMCONSTS.subFleetAttackRate,
+			richelieuSpecialRate: SIMCONSTS.richelieuSpecialRate,
+			nelsonTouchUseFormula: true,
+			nagatoSpecialUseFormula: true,
+			mutsuSpecialUseFormula: true,
+			kongouSpecialUseFormula: true,
+			yamatoSpecial2UseFormula: true,
 			nightZuiunCIRate: SIMCONSTS.nightZuiunCIRate,
 			arcticCamoAr: SIMCONSTS.arcticCamoAr,
 			arcticCamoEva: SIMCONSTS.arcticCamoEva,
@@ -111,6 +125,7 @@ var UI_MAIN = Vue.createApp({
 			airstrikeAccEFRaid: SIMCONSTS.airstrikeAccEFRaid,
 			airstrikeAccEE: SIMCONSTS.airstrikeAccEE,
 			smokeChance: SIMCONSTS.smokeChance.slice(),
+			smokeChanceUseFormula: SIMCONSTS.smokeChanceUseFormula,
 			smokeModShellAccF: SIMCONSTS.smokeModShellAccF.slice(),
 			smokeModShellAccFRadar: SIMCONSTS.smokeModShellAccFRadar.slice(),
 			smokeModShellAccE: SIMCONSTS.smokeModShellAccE.slice(),
@@ -121,6 +136,19 @@ var UI_MAIN = Vue.createApp({
 			smokeModTorpAccE: SIMCONSTS.smokeModTorpAccE.slice(),
 			smokeModAirAccF: SIMCONSTS.smokeModAirAccF.slice(),
 			smokeModAirAccE: SIMCONSTS.smokeModAirAccE.slice(),
+			enableRangeWeights: SIMCONSTS.enableRangeWeights,
+			overrideSupportChanceDayN: SIMCONSTS.overrideSupportChanceDayN,
+			overrideSupportChanceDayB: SIMCONSTS.overrideSupportChanceDayB,
+			overrideSupportChanceNightN: SIMCONSTS.overrideSupportChanceNightN,
+			overrideSupportChanceNightB: SIMCONSTS.overrideSupportChanceNightB,
+			balloonSelfAirMod: SIMCONSTS.balloonSelfAirMod.slice(),
+			balloonSelfAirFlat: SIMCONSTS.balloonSelfAirFlat.slice(),
+			balloonSelfLBASMod: SIMCONSTS.balloonSelfLBASMod.slice(),
+			balloonSelfLBASFlat: SIMCONSTS.balloonSelfLBASFlat.slice(),
+			balloonOppoAirMod: SIMCONSTS.balloonOppoAirMod.slice(),
+			balloonOppoAirFlat: SIMCONSTS.balloonOppoAirFlat.slice(),
+			balloonOppoLBASMod: SIMCONSTS.balloonOppoLBASMod.slice(),
+			balloonOppoLBASFlat: SIMCONSTS.balloonOppoLBASFlat.slice(),
 		},
 		settingsFCF: {
 			los: null,
@@ -134,8 +162,14 @@ var UI_MAIN = Vue.createApp({
 		autoBonus: null,
 		
 		canSim: true,
+		watchCondition: 'none',
+		watchCount: 0,
+		watchFound: false,
+		isRunningWatch: false,
 		numSim: CONST.numSimDefault,
-		simProgress: 0,
+		showProgress: false,
+		simProgressNum: 0,
+		simProgressTotal: 0,
 		results: {
 			active: false,
 			showCFWarning: false,
@@ -152,19 +186,38 @@ var UI_MAIN = Vue.createApp({
 			mvp1: [], mvp2: [], mvp3: [], mvp4: [], mvp5: [], mvp6: [], mvp7: [],
 			mvpE1: [], mvpE2: [], mvpE3: [], mvpE4: [], mvpE5: [], mvpE6: [],
 			airASP: [], airAS: [], airAP: [], airAD: [], airAI: [],
-			taiha: [],
+			taiha: [], noChuuha: [], dameconAny: [], sunkFAny: [],
 			taiha1: [], taiha2: [], taiha3: [], taiha4: [], taiha5: [], taiha6: [], taiha7: [],
+			damecon1: [], damecon2: [], damecon3: [], damecon4: [], damecon5: [], damecon6: [], damecon7: [],
+			sunkF1: [], sunkF2: [], sunkF3: [], sunkF4: [], sunkF5: [], sunkF6: [], sunkF7: [],
 			taihaE1: [], taihaE2: [], taihaE3: [], taihaE4: [], taihaE5: [], taihaE6: [],
-			noChuuha: [],
+			dameconE1: [], dameconE2: [], dameconE3: [], dameconE4: [], dameconE5: [], dameconE6: [],
+			sunkFE1: [], sunkFE2: [], sunkFE3: [], sunkFE4: [], sunkFE5: [], sunkFE6: [],
 			fuelSupply: 0, ammoSupply: 0, bauxSupply: 0,
-			fuelRepair: 0, steelRepair: 0, bucket: 0, damecon: 0,
-			fuelS: 0, ammoS: 0, steelS: 0, bauxS: 0, bucketS: 0, dameconS: 0,
-			fuelSunk: 0, ammoSunk: 0, steelSunk: 0, bauxSunk: 0, bucketSunk: 0, dameconSunk: 0,
+			fuelRepair: 0, steelRepair: 0, bucket: 0, damecon: 0, underway: 0,
+			fuelS: 0, ammoS: 0, steelS: 0, bauxS: 0, bucketS: 0, dameconS: 0, underwayS: 0,
+			fuelSunk: 0, ammoSunk: 0, steelSunk: 0, bauxSunk: 0, bucketSunk: 0, dameconSunk: 0, underwaySunk: 0,
 			emptiedPlane: 0, emptiedLBAS: 0,
+			fcfUsed: 0, nodeReached: [], canAdvanceAfter: 0,
+			showMore: false,
+			fuelA: 0, ammoA: 0, steelA: 0, bauxA: 0, bucketA: 0, dameconA: 0, underwayA: 0,
+			fuelB: 0, ammoB: 0, steelB: 0, bauxB: 0, bucketB: 0, dameconB: 0, underwayB: 0,
+			fuelHP: 0, ammoHP: 0, steelHP: 0, bauxHP: 0, bucketHP: 0, dameconHP: 0, underwayHP: 0,
+			fuelTP: 0, ammoTP: 0, steelTP: 0, bauxTP: 0, bucketTP: 0, dameconTP: 0, underwayTP: 0,
+			perHPRes: 1, perTPRes: 1,
 		},
 		
 		lang: 'en',
 		canSave: false,
+		
+		showNoticeCount: 0,
+		noticeTxt: '',
+		showMechanics: false,
+		
+		isDragging: false,
+		showDropdownPlayer: false,
+		showDropdownBattles: false,
+		showDropdownSettings: false,
 	}),
 	mounted: function() {
 		this.$i18n.locale = localStorage.sim2_lang || 'en';
@@ -181,7 +234,7 @@ var UI_MAIN = Vue.createApp({
 			}
 		}
 		for (let obj of MECHANICS_LIST) {
-			this.settings.mechanics.push({ key: obj.key, name: obj.name, enabled: true });
+			this.settings.mechanics.push({ key: obj.key, name: obj.name, enabled: true, hide: !!obj.hide });
 		}
 		this.addNewBattle();
 		
@@ -204,34 +257,83 @@ var UI_MAIN = Vue.createApp({
 				}
 				setTimeout(function() {
 					if (document.querySelector('#divSettingsAdvanced input.changed')) this.settings.showAdvanced = true;
+					if (document.querySelector('#divSettingsMechanics input.changed') || this.settings.mechanics.find(m => !m.enabled)) this.showMechanics = true;
 				}.bind(this),1);
 			}.bind(this);
 			if (window.location.hash.length >= 3) {
-				let dataHash;
-				try {
-					dataHash = JSON.parse(decodeURIComponent(window.location.hash.substr(1)));
-				} catch(e) {
-					console.log('bad JSON hash:');
-					console.error(e);
-				}
-				window.location.hash = '';
-				if (dataHash) {
-					if (dataHash.fleet1 && dataHash.battles && !dataHash.source) { //replay import
-						console.log('replay import');
-						dataReplay = dataHash;
-						dataSave = CONVERT.replayToSave(dataReplay);
-						this.settings.airRaidCostW6 = dataReplay.world == 6;
-						if (localStorage.sim2 && !CONVERT.saveIsEmpty(JSON.parse(localStorage.sim2))) {
-							let style = document.createElement('style');
-							style.innerText = '#divMain > *, #divOther { display: none; }';
-							document.head.appendChild(style);
-							UI_BACKUP.doOpen(() => { document.head.removeChild(style); finishInit(); });
+				if (window.location.hash.substr(0,8) == '#backup=') {
+					let ab;
+					try {
+						ab = COMMON.base64ToArrayBuffer(window.location.hash.substr(8));
+					} catch(e) {
+						console.log('bad backup url (buffer)');
+						console.error(e);
+					}
+					if (ab) {
+						document.body.style = 'display:none';
+						window.location.hash = '';
+						LZMA.decompress(ab, (dataStr) => {
+							document.body.style = '';
+							let dataJSON;
+							if (dataStr === null) {
+								console.log('bad backup url (null)')
+							} else {
+								try {
+									dataJSON = JSON.parse(dataStr);
+								} catch(e) {
+									console.log('bad JSON backup url:');
+									console.error(e);
+								}
+							}
+							if (dataJSON) {
+								console.log('backup url import');
+								dataSave = dataJSON;
+								if (localStorage.sim2 && !CONVERT.saveIsEmpty(JSON.parse(localStorage.sim2))) {
+									let style = document.createElement('style');
+									style.innerText = '#divMain > *, #divOther { display: none; }';
+									document.head.appendChild(style);
+									UI_BACKUP.doOpen(() => { document.head.removeChild(style); finishInit(); });
+									return;
+								} else {
+									finishInit();
+								}
+							} else {
+								if (!dataSave && localStorage.sim2) {
+									dataSave = JSON.parse(localStorage.sim2);
+								}
+								finishInit();
+							}
+						});
+						return;
+					}
+				} else {
+					let dataHash;
+					try {
+						dataHash = JSON.parse(decodeURIComponent(window.location.hash.substr(1)));
+					} catch(e) {
+						console.log('bad JSON hash:');
+						console.error(e);
+					}
+					window.location.hash = '';
+					if (dataHash) {
+						if (dataHash.fleet1 && dataHash.battles && !dataHash.source) { //replay import
+							console.log('replay import');
+							dataReplay = dataHash;
+							dataSave = CONVERT.replayToSave(dataReplay);
+							this.settings.airRaidCostW6 = dataReplay.world == 6;
+							this.enableAntiSubRaid = !(dataReplay.world < 20);
+							if (localStorage.sim2 && !CONVERT.saveIsEmpty(JSON.parse(localStorage.sim2))) {
+								let style = document.createElement('style');
+								style.innerText = '#divMain > *, #divOther { display: none; }';
+								document.head.appendChild(style);
+								UI_BACKUP.doOpen(() => { document.head.removeChild(style); finishInit(); });
+								return;
+							}
+						} else if (dataHash.fleetF && dataHash.nodes) { //sim data
+							console.log('sim data');
+							this.initSimImport(dataHash);
 							return;
 						}
-					} else if (dataHash.fleetF && dataHash.nodes) { //sim data
-						console.log('sim data');
-						this.initSimImport(dataHash);
-						return;
 					}
 				}
 			}
@@ -252,21 +354,86 @@ var UI_MAIN = Vue.createApp({
 				|| (this.fleetFMain.shipsEscort && this.fleetFMain.shipsEscort.find(s => s.neverFCF))
 			);
 		},
+		hasChuuhaSettings: function() {
+			return !!((this.fleetFMain.ships && this.fleetFMain.ships.find(s => s.retreatOnChuuha)) || (this.fleetFMain.shipsEscort && this.fleetFMain.shipsEscort.find(s => s.retreatOnChuuha)));
+		},
+		hasNoTaihaSettings: function() {
+			return !!((this.fleetFMain.ships && this.fleetFMain.ships.find(s => s.noRetreatOnTaiha)) || (this.fleetFMain.shipsEscort && this.fleetFMain.shipsEscort.find(s => s.noRetreatOnTaiha)));
+		},
 		
 		autoBonusStatus: function() {
-			return !this.autoBonus ? 'Off' : 'Active';
+			return !this.autoBonus ? this.$i18n.t('autobonus_off') : this.$i18n.t('autobonus_active');
 		},
 		classAutoBonusStatus: function() {
 			return this.autoBonus ? 'good' : '';
 		},
 		autoBonusName: function() {
 			if (!this.autoBonus) return '';
-			if (this.autoBonus.type == 'preset') return 'Preset: ' + COMMON.BONUS_MANAGER.PRESET_INDEX[this.autoBonus.key].name;
+			if (this.autoBonus.type == 'preset') return this.$i18n.t('autobonus_preset') + ': ' + this.$i18n.t('bonus.' + COMMON.BONUS_MANAGER.PRESET_INDEX[this.autoBonus.key].name);
 			if (this.autoBonus.type == 'dewy') return 'kc-event-bonus: ' + COMMON.BONUS_MANAGER.getDewyName(this.autoBonus.key);
 			return '';
 		},
 		autoBonusNodes: function() {
-			return this.autoBonus ? this.battles.map(battle => this.autoBonus.nodeToLetter[battle.id] || '(default)').join('\u2192') + (this.autoBonus.useDebuff ? ', Debuffed' : '') : '';
+			return this.autoBonus ? this.battles.map(battle => this.autoBonus.nodeToLetter[battle.id] || this.$i18n.t('autobonus_node_default')).join('\u2192') + (this.autoBonus.useDebuff ? this.$i18n.t('autobonus_debuffed') : '') : '';
+		},
+		
+		numSimMax: function() {
+			return CONST.numSimMax;
+		},
+		simProgressPercent: function() {
+			return Math.round(100*this.simProgressNum/this.simProgressTotal);
+		},
+		
+		styleWatchCount: function() {
+			return this.isRunningWatch ? {} : this.watchFound ? { 'color': 'green' } : { 'color': 'red' };
+		},
+		
+		resultsFuelHPPer: function() {
+			return Math.round(1000*this.results.perHPRes*this.results.fuelHP)/1000;
+		},
+		resultsAmmoHPPer: function() {
+			return Math.round(1000*this.results.perHPRes*this.results.ammoHP)/1000;
+		},
+		resultsSteelHPPer: function() {
+			return Math.round(1000*this.results.perHPRes*this.results.steelHP)/1000;
+		},
+		resultsBauxHPPer: function() {
+			return Math.round(1000*this.results.perHPRes*this.results.bauxHP)/1000;
+		},
+		resultsBucketHPPer: function() {
+			return Math.round(1000*this.results.perHPRes*this.results.bucketHP)/1000;
+		},
+		resultsDameconHPPer: function() {
+			return Math.round(1000*this.results.perHPRes*this.results.dameconHP)/1000;
+		},
+		resultsUnderwayHPPer: function() {
+			return Math.round(1000*this.results.perHPRes*this.results.underwayHP)/1000;
+		},
+		resultsFuelTPPer: function() {
+			return Math.round(1000*this.results.perTPRes*this.results.fuelTP)/1000;
+		},
+		resultsAmmoTPPer: function() {
+			return Math.round(1000*this.results.perTPRes*this.results.ammoTP)/1000;
+		},
+		resultsSteelTPPer: function() {
+			return Math.round(1000*this.results.perTPRes*this.results.steelTP)/1000;
+		},
+		resultsBauxTPPer: function() {
+			return Math.round(1000*this.results.perTPRes*this.results.bauxTP)/1000;
+		},
+		resultsBucketTPPer: function() {
+			return Math.round(1000*this.results.perTPRes*this.results.bucketTP)/1000;
+		},
+		resultsDameconTPPer: function() {
+			return Math.round(1000*this.results.perTPRes*this.results.dameconTP)/1000;
+		},
+		resultsUnderwayTPPer: function() {
+			return Math.round(1000*this.results.perTPRes*this.results.underwayTP)/1000;
+		},
+		
+		enableAntiSubRaid: {
+			get() { return !!this.settings.mechanics.length && this.settings.mechanics.find(m => m.key == 'antiSubRaid').enabled },
+			set(v) { this.settings.mechanics.find(m => m.key == 'antiSubRaid').enabled = v },
 		},
 	},
 	methods: {
@@ -284,10 +451,14 @@ var UI_MAIN = Vue.createApp({
 				lbasWaves: [false,false,false,false,false,false],
 				addCostFuel: null,
 				addCostAmmo: null,
+				addCostMax: null,
 				subOnly: false,
 				useNormalSupport: 0,
 				useBalloon: false,
+				useAtoll: false,
 				useSmoke: false,
+				useAnchorageRepair: false,
+				offrouteRate: 0,
 					
 				enemyComps: [],
 			};
@@ -347,6 +518,7 @@ var UI_MAIN = Vue.createApp({
 			this.results.flagSunkHP = formatNum(resultSim.totalGaugeDamage / totalNum);
 			this.results.flagSunkHPBoss = formatNum(resultSim.totalGaugeDamage / nodeLast.num);
 			this.results.transport = formatNum(resultSim.totalTransport / totalNum);
+			this.results.canAdvanceAfter = formatNum(resultSim.totalCanAdvanceAfter / totalNum);
 			
 			this.results.fuelSupply = formatNum(resultSim.totalFuelS / totalNum);
 			this.results.ammoSupply = formatNum(resultSim.totalAmmoS / totalNum);
@@ -355,6 +527,7 @@ var UI_MAIN = Vue.createApp({
 			this.results.steelRepair = formatNum(resultSim.totalSteelR / totalNum);
 			this.results.bucket = formatNum(resultSim.totalBuckets / totalNum);
 			this.results.damecon = formatNum(resultSim.totalDamecon / totalNum);
+			this.results.underway = formatNum(resultSim.totalUnderway / totalNum);
 			
 			let rateS = nodeLast.ranks.S / totalNum;
 			this.results.fuelS = formatNum((resultSim.totalFuelS + resultSim.totalFuelR) / totalNum / rateS);
@@ -363,7 +536,43 @@ var UI_MAIN = Vue.createApp({
 			this.results.bauxS = formatNum((resultSim.totalBauxS) / totalNum / rateS);
 			this.results.bucketS = formatNum((resultSim.totalBuckets) / totalNum / rateS);
 			this.results.dameconS = formatNum((resultSim.totalDamecon) / totalNum / rateS);
+			this.results.underwayS = formatNum((resultSim.totalUnderway) / totalNum / rateS);
 			
+			let rateA = (nodeLast.ranks.S + nodeLast.ranks.A) / totalNum;
+			this.results.fuelA = formatNum((resultSim.totalFuelS + resultSim.totalFuelR) / totalNum / rateA);
+			this.results.ammoA = formatNum((resultSim.totalAmmoS) / totalNum / rateA);
+			this.results.steelA = formatNum((resultSim.totalSteelR) / totalNum / rateA);
+			this.results.bauxA = formatNum((resultSim.totalBauxS) / totalNum / rateA);
+			this.results.bucketA = formatNum((resultSim.totalBuckets) / totalNum / rateA);
+			this.results.dameconA = formatNum((resultSim.totalDamecon) / totalNum / rateA);
+			this.results.underwayA = formatNum((resultSim.totalUnderway) / totalNum / rateA);
+			
+			let rateB = (nodeLast.ranks.S + nodeLast.ranks.A + nodeLast.ranks.B) / totalNum;
+			this.results.fuelB = formatNum((resultSim.totalFuelS + resultSim.totalFuelR) / totalNum / rateB);
+			this.results.ammoB = formatNum((resultSim.totalAmmoS) / totalNum / rateB);
+			this.results.steelB = formatNum((resultSim.totalSteelR) / totalNum / rateB);
+			this.results.bauxB = formatNum((resultSim.totalBauxS) / totalNum / rateB);
+			this.results.bucketB = formatNum((resultSim.totalBuckets) / totalNum / rateB);
+			this.results.dameconB = formatNum((resultSim.totalDamecon) / totalNum / rateB);
+			this.results.underwayB = formatNum((resultSim.totalUnderway) / totalNum / rateB);
+			
+			this.results.fuelHP = (resultSim.totalFuelS + resultSim.totalFuelR) / resultSim.totalGaugeDamage;
+			this.results.ammoHP = (resultSim.totalAmmoS) / resultSim.totalGaugeDamage;
+			this.results.steelHP = (resultSim.totalSteelR) / resultSim.totalGaugeDamage;
+			this.results.bauxHP = (resultSim.totalBauxS) / resultSim.totalGaugeDamage;
+			this.results.bucketHP = (resultSim.totalBuckets) / resultSim.totalGaugeDamage;
+			this.results.dameconHP = (resultSim.totalDamecon) / resultSim.totalGaugeDamage;
+			this.results.underwayHP = (resultSim.totalUnderway) / resultSim.totalGaugeDamage;
+			
+			this.results.fuelTP = (resultSim.totalFuelS + resultSim.totalFuelR) / resultSim.totalTransport;
+			this.results.ammoTP = (resultSim.totalAmmoS) / resultSim.totalTransport;
+			this.results.steelTP = (resultSim.totalSteelR) / resultSim.totalTransport;
+			this.results.bauxTP = (resultSim.totalBauxS) / resultSim.totalTransport;
+			this.results.bucketTP = (resultSim.totalBuckets) / resultSim.totalTransport;
+			this.results.dameconTP = (resultSim.totalDamecon) / resultSim.totalTransport;
+			this.results.underwayTP = (resultSim.totalUnderway) / resultSim.totalTransport;
+			
+			this.results.fcfUsed = formatNum(resultSim.totalFCFUsed / totalNum);
 			this.results.emptiedPlane = formatNum(resultSim.totalEmptiedPlanes / totalNum);
 			this.results.emptiedLBAS = formatNum(resultSim.totalEmptiedLBAS / totalNum);
 			
@@ -374,9 +583,11 @@ var UI_MAIN = Vue.createApp({
 			this.results.bauxSunk = formatNum((resultSim.totalBauxS) / totalNum / rateSunk);
 			this.results.bucketSunk = formatNum((resultSim.totalBuckets) / totalNum / rateSunk);
 			this.results.dameconSunk = formatNum((resultSim.totalDamecon) / totalNum / rateSunk);
+			this.results.underwaySunk = formatNum((resultSim.totalUnderway) / totalNum / rateSunk);
 			
 			for (let i=0; i<resultSim.nodes.length; i++) {
 				let node = resultSim.nodes[i];
+				this.results.nodeReached[i] = formatNum(node.num / totalNum);
 				for (let letter in node.ranks) {
 					let key = 'rank'+letter;
 					this.results[key+'Node'][i] = formatNum(node.ranks[letter] / node.num);
@@ -384,13 +595,19 @@ var UI_MAIN = Vue.createApp({
 				this.results.flagSunkNode[i] = formatNum(node.flagsunk / node.num);
 				this.results.taiha[i] = formatNum(node.taiha / node.num);
 				this.results.noChuuha[i] = formatNum(node.undamaged / node.num);
+				this.results.dameconAny[i] = formatNum(node.dameconAny / node.num);
+				this.results.sunkFAny[i] = formatNum(node.sunkFAny / node.num);
 				for (let num=1; num<=7; num++) {
 					this.results['mvp'+num][i] = formatNum(node.mvps[num-1] / node.num);
 					this.results['taiha'+num][i] = formatNum(node.taihaIndiv[num-1] / node.num);
+					this.results['damecon'+num][i] = formatNum(node.dameconIndiv[num-1] / node.num);
+					this.results['sunkF'+num][i] = formatNum(node.sunkFIndiv[num-1] / node.num);
 				}
 				for (let num=1; num<=6; num++) {
 					this.results['mvpE'+num][i] = formatNum(node.mvpsC[num-1] / node.num);
 					this.results['taihaE'+num][i] = formatNum(node.taihaIndivC[num-1] / node.num);
+					this.results['dameconE'+num][i] = formatNum(node.dameconIndivC[num-1] / node.num);
+					this.results['sunkFE'+num][i] = formatNum(node.sunkFIndivC[num-1] / node.num);
 				}
 				this.results.airAI[i] = formatNum(node.airStates[0] / node.num);
 				this.results.airAD[i] = formatNum(node.airStates[1] / node.num);
@@ -462,23 +679,26 @@ var UI_MAIN = Vue.createApp({
 		},
 		callbackSimStats: function(res) {
 			if (res.errors) {
-				this.results.errors = res.errors.filter(obj => this._includeError(obj)).map(obj => obj.txt);
+				this.results.errors = res.errors.filter(obj => this._includeError(obj)).map(obj => ({ key: obj.key, args: obj.args }));
 				this.canSim = true;
+				this.showProgress = false;
 				return;
 			}
 			if (res.warnings) {
-				this.results.warnings = res.warnings.filter(obj => this._includeError(obj)).map(obj => obj.txt);
+				this.results.warnings = res.warnings.filter(obj => this._includeError(obj)).map(obj => ({ key: obj.key, args: obj.args }));
 			}
 			if (res.didReset) {
 				this.results.active = false;
 			}
 			if (res.progress != null) {
-				this.simProgress = Math.round(100*res.progress/res.progressTotal);
+				this.simProgressNum = res.progress;
+				this.simProgressTotal = res.progressTotal;
 			}
 			if (res.result) {
 				this.results.active = true;
 				this.updateResults(res.result);
 				this.canSim = true;
+				this.showProgress = false;
 				console.log(res.result);
 			}
 		},
@@ -487,22 +707,68 @@ var UI_MAIN = Vue.createApp({
 			this.results.errors = [];
 			this.numSim = Math.min(this.numSim,CONST.numSimMax);
 			this.canSim = false;
+			this.showProgress = true;
 			SIM.runStats(CONVERT.uiToSimInput(this),this.callbackSimStats);
 			
 			this.results.showCFWarning = !!(this.fleetFMain.combined || this.battles.find(battle => +battle.formation == 6 || battle.enemyComps.find(comp => comp.fleet.combined || comp.fleet.formation == 6)));
 		},
-		onclickWatch: function() {
-			if (!this.canSim) return;
-			this.results.errors = [];
-			let replay = CONVERT.uiToReplay(this);
-			let errors = SIM.runReplay(CONVERT.uiToSimInput(this),replay);
-			if (errors) {
-				this.results.errors = errors.filter(obj => this._includeError(obj)).map(obj => obj.txt);;
+		
+		_getWatch: function(replay,numRun=0) {
+			if (!this.isRunningWatch) {
+				this.canSim = true;
+				this.watchFound = false;
 				return;
 			}
+			
+			replay.battles = [];
+			let errors = SIM.runReplay(CONVERT.uiToSimInput(this),replay,this.watchCondition!='none');
+			if (errors) {
+				this.results.errors = errors.filter(obj => this._includeError(obj)).map(obj => ({ key: obj.key, args: obj.args }));
+				this.canSim = true;
+				this.isRunningWatch = false;
+				return;
+			}
+			
+			if (this.watchCondition != 'none') {
+				this.watchCount = ++numRun;
+				if (numRun >= CONST.watchCountMax) {
+					this.canSim = true;
+					this.watchFound = false;
+					this.isRunningWatch = false;
+					return;
+				}
+				let found = SIM.simResultPrev && ((this.watchCondition == 'no_boss' && SIM.simResultPrev.battleNum < this.battles.length)
+					|| (this.watchCondition == 'boss' && SIM.simResultPrev.battleNum == this.battles.length)
+					|| (this.watchCondition == 'flagsunk' && SIM.simResultPrev.battleNum == this.battles.length && SIM.simResultPrev.result.flagsunk)
+					|| (this.watchCondition == 'S' && SIM.simResultPrev.battleNum == this.battles.length && SIM.simResultPrev.result.rank == 'S')
+					|| (this.watchCondition == 'A' && SIM.simResultPrev.battleNum == this.battles.length && SIM.simResultPrev.result.rank == 'A')
+					|| (this.watchCondition == 'B' && SIM.simResultPrev.battleNum == this.battles.length && SIM.simResultPrev.result.rank == 'B')
+					|| (this.watchCondition == 'C' && SIM.simResultPrev.battleNum == this.battles.length && SIM.simResultPrev.result.rank == 'C')
+					|| (this.watchCondition == 'D' && SIM.simResultPrev.battleNum == this.battles.length && SIM.simResultPrev.result.rank == 'D')
+					|| (this.watchCondition == 'E' && SIM.simResultPrev.battleNum == this.battles.length && SIM.simResultPrev.result.rank == 'E'));
+				if (!found) {
+					setTimeout(() => this._getWatch(replay,numRun),1);
+					return;
+				} else {
+					simConsole.print();
+				}
+			}
+			
 			console.log(replay)
 			let s = JSON.stringify(replay);
 			window.open('battleplayer.html#'+s,'_blank');
+			this.canSim = true;
+			this.isRunningWatch = false;
+			this.watchFound = true;
+		},
+		onclickWatch: function() {
+			if (!this.canSim) return;
+			this.canSim = false;
+			this.isRunningWatch = true;
+			this.watchCount = 0;
+			this.results.errors = [];
+			let replay = CONVERT.uiToReplay(this);
+			this._getWatch(replay,0);
 		},
 		onclickClear: function() {
 			if (!this.canSim) return;
@@ -511,6 +777,120 @@ var UI_MAIN = Vue.createApp({
 		},
 		onclickCancel: function() {
 			SIM.cancelRun = true;
+		},
+		
+		onclickCopyResults: function(typeString) {
+			let t = this.$i18n.t;
+			let txt = '';
+			if (typeString == 'S') {
+				let rateNonS = 1 - this.results.rankS - this.results.retreat;
+				txt += `${t('results.S_rate')}: ${Math.round(this.results.rankS*1000)/10}% (${t('results.retreat_rate')}: ${Math.round(this.results.retreat*1000)/10}%, ${t('results.non_S_rate')}: ${Math.round(rateNonS*1000)/10}%)
+${t('results.avg_per_S')}
+${t('results.fuel')}:	${this.results.fuelS}
+${t('results.ammo')}:	${this.results.ammoS}
+${t('results.steel')}:	${this.results.steelS}
+${t('results.baux')}:	${this.results.bauxS}
+${t('results.buckets')}:	${this.results.bucketS}`;
+				if (this.results.dameconS) {
+					txt += '\n' + t('results.damecon') + ': ' + this.results.dameconS;
+				}
+				if (this.results.underwayS) {
+					txt += '\n' + t('results.underway') + ': ' + this.results.underwayS;
+				}
+			} else if (typeString == 'A') {
+				let rateA = this.results.rankS + this.results.rankA, rateNonA = 1 - rateA - this.results.retreat;
+				txt += `${t('results.A_rate')}: ${Math.round(rateA*1000)/10}% (${t('results.retreat_rate')}: ${Math.round(this.results.retreat*1000)/10}%, ${t('results.non_A_rate')}: ${Math.round(rateNonA*1000)/10}%)
+${t('results.avg_per_A')}
+${t('results.fuel')}:	${this.results.fuelA}
+${t('results.ammo')}:	${this.results.ammoA}
+${t('results.steel')}:	${this.results.steelA}
+${t('results.baux')}:	${this.results.bauxA}
+${t('results.buckets')}:	${this.results.bucketA}`;
+				if (this.results.dameconA) {
+					txt += '\n' + t('results.damecon') + ': ' + this.results.dameconA;
+				}
+				if (this.results.underwayA) {
+					txt += '\n' + t('results.underway') + ': ' + this.results.underwayA;
+				}
+			} else if (typeString == 'B') {
+				let rateB = this.results.rankS + this.results.rankA + this.results.rankB, rateNonB = 1 - rateB - this.results.retreat;
+				txt += `${t('results.B_rate')}: ${Math.round(rateB*1000)/10}% (${t('results.retreat_rate')}: ${Math.round(this.results.retreat*1000)/10}%, ${t('results.non_B_rate')}: ${Math.round(rateNonB*1000)/10}%)
+${t('results.avg_per_B')}
+${t('results.fuel')}:	${this.results.fuelB}
+${t('results.ammo')}:	${this.results.ammoB}
+${t('results.steel')}:	${this.results.steelB}
+${t('results.baux')}:	${this.results.bauxB}
+${t('results.buckets')}:	${this.results.bucketB}`;
+				if (this.results.dameconB) {
+					txt += '\n' + t('results.damecon') + ': ' + this.results.dameconB;
+				}
+				if (this.results.underwayB) {
+					txt += '\n' + t('results.underway') + ': ' + this.results.underwayB;
+				}
+			} else if (typeString == 'flagsunk') {
+				let rateNonSunk = 1 - this.results.flagSunk - this.results.retreat;
+				txt += `${t('results.flagsunk_rate')}: ${Math.round(this.results.flagSunk*1000)/10}% (${t('results.retreat_rate')}: ${Math.round(this.results.retreat*1000)/10}%, ${t('results.non_flagsunk_rate')}: ${Math.round(rateNonSunk*1000)/10}%)
+${t('results.avg_per_flagsunk')}
+${t('results.fuel')}:	${this.results.fuelSunk}
+${t('results.ammo')}:	${this.results.ammoSunk}
+${t('results.steel')}:	${this.results.steelSunk}
+${t('results.baux')}:	${this.results.bauxSunk}
+${t('results.buckets')}:	${this.results.bucketSunk}`;
+				if (this.results.dameconSunk) {
+					txt += '\n' + t('results.damecon') + ': ' + this.results.dameconSunk;
+				}
+				if (this.results.underwaySunk) {
+					txt += '\n' + t('results.underway') + ': ' + this.results.underwaySunk;
+				}
+			} else if (typeString == 'hp') {
+				txt += `${t('results.avg_per_hp',[this.results.perHPRes])}
+${t('results.fuel')}:	${this.resultsFuelHPPer}
+${t('results.ammo')}:	${this.resultsAmmoHPPer}
+${t('results.steel')}:	${this.resultsSteelHPPer}
+${t('results.baux')}:	${this.resultsBauxHPPer}
+${t('results.buckets')}:	${this.resultsBucketHPPer}`;
+				if (this.results.dameconHP) {
+					txt += '\n' + t('results.damecon') + ': ' + this.resultsDameconHPPer;
+				}
+				if (this.results.underwayHP) {
+					txt += '\n' + t('results.underway') + ': ' + this.resultsUnderwayHPPer;
+				}
+			} else if (typeString == 'tp') {
+				txt += `${t('results.avg_per_tp',[this.results.perTPRes])}
+${t('results.fuel')}:	${this.resultsFuelTPPer}
+${t('results.ammo')}:	${this.resultsAmmoTPPer}
+${t('results.steel')}:	${this.resultsSteelTPPer}
+${t('results.baux')}:	${this.resultsBauxTPPer}
+${t('results.buckets')}:	${this.resultsBucketTPPer}`;
+				if (this.results.dameconTP) {
+					txt += '\n' + t('results.damecon') + ': ' + this.resultsDameconTPPer;
+				}
+				if (this.results.underwayTP) {
+					txt += '\n' + t('results.underway') + ': ' + this.resultsUnderwayTPPer;
+				}
+			}
+			navigator.clipboard.writeText(txt);
+			this.noticeTxt = t('copied_to_clipboard');
+			let n = ++this.showNoticeCount;
+			setTimeout(() => n == this.showNoticeCount && (this.showNoticeCount = 0), 1000);
+		},
+		onclickScreenShot: function() {
+			this.$refs.divResults.style.backgroundColor = window.getComputedStyle(document.body).backgroundColor;
+			html2canvas(this.$refs.divResults).then(canvas => {
+				canvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({ 'image/png':blob })]));
+				this.noticeTxt = this.$i18n.t('copied_to_clipboard');
+				let n = ++this.showNoticeCount;
+				setTimeout(() => n == this.showNoticeCount && (this.showNoticeCount = 0), 1000);
+				
+				let filename = 'KanColle_Sortie_Simulator_Statistics_' + (new Date).toISOString().slice(0,19).replace(/:/g,'-') + '.png';
+				let a = window.document.createElement('a');
+				a.href = canvas.toDataURL('image/png');
+				a.download = filename;
+				document.body.appendChild(a);
+				a.click();
+				document.body.removeChild(a);
+			});
+			this.$refs.divResults.style.backgroundColor = '';
 		},
 		
 		onclickDeckbuilder: function() {
@@ -533,12 +913,129 @@ var UI_MAIN = Vue.createApp({
 			style.innerText = '#divMain > *, #divOther { display: none; }';
 			document.head.appendChild(style);
 			this.canSim = false;
+			this.showProgress = true;
 			this.results.isFromImport = true;
 			SIM.runStats(dataInput,this.callbackSimStats);
 		},
 		
 		onclickSetFCF: function() {
 			UI_FCFSETTINGS.doOpen(this.settingsFCF);
+		},
+		onclickSetRetreat: function() {
+			UI_RETREATSETTINGS.doOpen();
+		},
+		
+		onclickNavButton: function(ref,idx) {
+			let e = this.$refs[ref];
+			if (idx != null) e = this.$refs[ref][idx];
+			e.scrollIntoView({ behavior: 'smooth' });
+		},
+		onclickNavSim: function() {
+			this.$refs.divSimulationScroll.scrollIntoView();
+			this.onclickGo();
+		},
+		
+		
+		getNelsonTouchFormula: function() {
+			if (FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[0]) || FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[2]) || FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[4])) return 0;
+			let rate = 25;
+			rate += 1.1*Math.sqrt(this.fleetFMain.ships[0].level) + 1.4*Math.sqrt(this.fleetFMain.ships[0].statsBase.luk);
+			rate += Math.sqrt(this.fleetFMain.ships[2].level);
+			rate += Math.sqrt(this.fleetFMain.ships[4].level);
+			return Math.max(0, Math.min(100, Math.floor(rate)));
+		},
+		getNagatoSpecialFormula: function() {
+			if (FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[0]) || FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[1])) return 0;
+			let rate = 25;
+			rate += Math.sqrt(this.fleetFMain.ships[0].level) + 1.5*Math.sqrt(this.fleetFMain.ships[0].statsBase.luk);
+			rate += Math.sqrt(this.fleetFMain.ships[1].level) + 1.5*Math.sqrt(this.fleetFMain.ships[1].statsBase.luk);
+			return Math.max(0, Math.min(100, Math.floor(rate)));
+		},
+		getKongouSpecialFormula: function() {
+			let shipsF = this.fleetFMain.type > 0 && this.fleetFMain.type != 7 && this.fleetFMain.shipsEscort ? this.fleetFMain.shipsEscort : this.fleetFMain.ships;
+			if (FLEET_MODEL.shipIsEmpty(shipsF[0]) || FLEET_MODEL.shipIsEmpty(shipsF[1])) return 0;
+			let rate = -33;
+			rate += 3.5*Math.sqrt(shipsF[0].level) + 1.1*Math.sqrt(shipsF[0].statsBase.luk);
+			rate += 3.5*Math.sqrt(shipsF[1].level) + 1.1*Math.sqrt(shipsF[1].statsBase.luk);
+			if (shipsF[0].mstId == 591) {
+				if (shipsF[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 8)) rate += 30;
+				if (shipsF[0].equips.find(eq => eq.mstId && [42].includes(EQDATA[eq.mstId].type))) rate += 10;
+			} else if (shipsF[0].mstId == 592) {
+				if (shipsF[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 8)) rate += 10;
+				if (shipsF[0].equips.find(eq => eq.mstId && [42].includes(EQDATA[eq.mstId].type))) rate += 30;
+			} else if (shipsF[0].mstId == 593) {
+				if (shipsF[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 8)) rate += 15;
+			} else if (shipsF[0].mstId == 954) {
+				if (shipsF[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 8)) rate += 20;
+			}
+			return Math.max(0, Math.min(100, Math.floor(rate)));
+		},
+		getYamatoSpecial2Formula: function() {
+			if (FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[0]) || FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[1])) return 0;
+			let rate = 33;
+			rate += Math.sqrt(this.fleetFMain.ships[0].level) + 1.25*Math.sqrt(this.fleetFMain.ships[0].statsBase.luk);
+			rate += Math.sqrt(this.fleetFMain.ships[1].level) + 1.25*Math.sqrt(this.fleetFMain.ships[1].statsBase.luk);
+			if ([911,916].includes(this.fleetFMain.ships[1].mstId)) rate += 4;
+			if ([143,148,546].includes(this.fleetFMain.ships[1].mstId)) rate += 7;
+			if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].ACC >= 8)) rate += 10;
+			if (this.fleetFMain.ships[1].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].ACC >= 8)) rate += 10;
+			return Math.max(0, Math.min(100, Math.floor(rate)));
+		},
+		
+		getNelsonTouchFormulaJervis: function() {
+			if (FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[0]) || FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[2]) || FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[4])) return 0;
+			let rate = 12;
+			rate += 2*Math.sqrt(this.fleetFMain.ships[0].level) + Math.sqrt(this.fleetFMain.ships[0].statsBase.luk);
+			rate += Math.sqrt(this.fleetFMain.ships[2].level) + .5*Math.sqrt(this.fleetFMain.ships[2].statsBase.luk);
+			rate += Math.sqrt(this.fleetFMain.ships[4].level) + .5*Math.sqrt(this.fleetFMain.ships[4].statsBase.luk);
+			return Math.max(0, Math.min(100, Math.floor(rate)));
+		},
+		getNagatoSpecialFormulaJervis: function() {
+			if (FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[0]) || FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[1])) return 0;
+			let rate = 30;
+			rate += Math.sqrt(this.fleetFMain.ships[0].level) + 1.2*Math.sqrt(this.fleetFMain.ships[0].statsBase.luk);
+			rate += Math.sqrt(this.fleetFMain.ships[1].level) + 1.2*Math.sqrt(this.fleetFMain.ships[1].statsBase.luk);
+			return Math.max(0, Math.min(100, Math.floor(rate)));
+		},
+		getKongouSpecialFormulaJervis: function() {
+			if (FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[0]) || FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[1])) return 0;
+			let rate = -55;
+			rate += 6*Math.sqrt(this.fleetFMain.ships[0].level) + 1.2*Math.sqrt(this.fleetFMain.ships[0].statsBase.luk);
+			rate += 3*Math.sqrt(this.fleetFMain.ships[1].level) + .6*Math.sqrt(this.fleetFMain.ships[1].statsBase.luk);
+			if (this.fleetFMain.ships[0].mstId == 591) {
+				if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 8)) rate += 31;
+				if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [42].includes(EQDATA[eq.mstId].type))) rate += 10;
+			} else if (this.fleetFMain.ships[0].mstId == 592) {
+				if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 8)) rate += 10;
+				if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [42].includes(EQDATA[eq.mstId].type))) rate += 31;
+			} else if (this.fleetFMain.ships[0].mstId == 593) {
+				if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 8)) rate += 16;
+			} else if (this.fleetFMain.ships[0].mstId == 954) {
+				if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 8)) rate += 21;
+			}
+			return Math.max(0, Math.min(100, Math.floor(rate)));
+		},
+		getYamatoSpecial2FormulaJervis: function() {
+			if (FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[0]) || FLEET_MODEL.shipIsEmpty(this.fleetFMain.ships[1])) return 0;
+			let rate = 35;
+			rate += Math.sqrt(this.fleetFMain.ships[0].level) + Math.sqrt(this.fleetFMain.ships[0].statsBase.luk);
+			rate += Math.sqrt(this.fleetFMain.ships[1].level) + Math.sqrt(this.fleetFMain.ships[1].statsBase.luk);
+			if ([911,916].includes(this.fleetFMain.ships[0].mstId)) rate += 2;
+			if (SHIPDATA[this.fleetFMain.ships[1].mstId].sclass == 37) rate += 5;
+			if (this.fleetFMain.ships[0].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 5)) rate += 10;
+			if (this.fleetFMain.ships[1].equips.find(eq => eq.mstId && [12,13,93].includes(EQDATA[eq.mstId].type) && EQDATA[eq.mstId].LOS >= 5)) rate += 10;
+			return Math.max(0, Math.min(100, Math.floor(rate)));
+		},
+		
+		onclickFFSetLuck: function(val) {
+			if (val === null) return;
+			for (let comp of this.fleetsFFriend) {
+				for (let ship of comp.fleet.ships) {
+					if (FLEET_MODEL.shipIsEmpty(ship)) continue;
+					let luckMin = SHIPDATA[ship.mstId].LUK, luckMax = SHIPDATA[ship.mstId].LUKmax || SHIPDATA[ship.mstId].LUK;
+					ship.statsBase.luk = val == 'min' ? luckMin : val == 'max' ? luckMax : Math.max(luckMin,Math.min(luckMax,+val));
+				}
+			}
 		},
 	},
 }).component('vbattle',{
@@ -568,7 +1065,7 @@ var UI_MAIN = Vue.createApp({
 	methods: {
 		hasBonusMain: function() {
 			for (let key of ['ships','shipsEscort']) {
-				if (UI_MAIN.fleetFMain[key] && UI_MAIN.fleetFMain[key].find(ship => !FLEET_MODEL.shipIsEmpty(ship) && ship.bonusByNode[this.battle.id] && Object.values(ship.bonusByNode[this.battle.id]).find(v => v))) return true;
+				if (UI_MAIN.fleetFMain[key] && UI_MAIN.fleetFMain[key].find(ship => !FLEET_MODEL.shipIsEmpty(ship) && ((ship.bonusByNode[this.battle.id] && Object.values(ship.bonusByNode[this.battle.id]).find(v => v))) || this.getShipHasPlaneBonus(ship))) return true;
 			}
 			return false;
 		},
@@ -577,6 +1074,12 @@ var UI_MAIN = Vue.createApp({
 		},
 		hasBonusFF: function() {
 			return false;
+		},
+		hasSpecialAttack: function() {
+			return COMMON.checkSpecialAttackUI(UI_MAIN,this.battle.formation);
+		},
+		getShipHasPlaneBonus: function(ship) {
+			return !!(ship.equips && ship.equips.find(equip => equip.bonusByNode && equip.bonusByNode[this.battle.id] && equip.bonusByNode[this.battle.id].bonusGroups));
 		},
 		
 		onclickDeleteBattle: function() {
@@ -614,9 +1117,6 @@ var UI_MAIN = Vue.createApp({
 		},
 	},
 	methods: {
-		getCompName: function(comp) {
-			return this.fleetname + ' - Comp ' + comp.num;
-		},
 		getCompPercent: function(comp) {
 			let total = this.comps.reduce((a,b) => a + Math.max(0,b.rate),0);
 			if (total <= 0) return Math.round(100/this.comps.length);
@@ -664,8 +1164,23 @@ var UI_BONUSEDITOR = Vue.createApp({
 		doClose: function() {
 			this.active = false;
 		},
+		
+		getShipHasPlane: function(ship) {
+			return !!ship.equips.find(equip => equip.mstId && EQTDATA[EQDATA[equip.mstId].type].isPlane);
+		},
+		getShipHasPlaneBonus: function(ship) {
+			return !!ship.equips.find(equip => equip.bonusByNode && equip.bonusByNode[this.nodeId] && equip.bonusByNode[this.nodeId].bonusGroups);
+		},
+		getShipHasPlaneBonusMapwide: function(ship) {
+			if (this.getShipHasPlaneBonus(ship)) return false;
+			return !!ship.equips.find(equip => equip.bonusGroups);
+		},
+		onclickPlaneBonus: function(ship) {
+			if (!this.getShipHasPlane(ship)) return;
+			COMMON.global.fleetEditorOpenPlaneBonus(ship,this.nodeId);
+		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).mount('#divBonusEditor');
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divBonusEditor');
 
 
 var UI_DECKBUILDERIMPORTER = Vue.createApp({
@@ -684,6 +1199,8 @@ var UI_DECKBUILDERIMPORTER = Vue.createApp({
 	methods: {
 		doOpen: function() {
 			this.active = true;
+			let dataDb = this.getDataDb();
+			this.textExport = JSON.stringify(dataDb);
 		},
 		
 		getDataDb: function() {
@@ -732,6 +1249,7 @@ var UI_DECKBUILDERIMPORTER = Vue.createApp({
 			}
 			if (this.importLBAS) {
 				CONVERT.loadSaveLBAS(CONVERT.deckbuilderToSaveLBAS(dataDb),UI_MAIN.landBases);
+				COMMON.BONUS_MANAGER.applyAutoLBAS();
 			}
 			COMMON.global.fleetEditorMoveTemp();
 		},
@@ -748,8 +1266,27 @@ var UI_DECKBUILDERIMPORTER = Vue.createApp({
 			let dataDb = this.getDataDb();
 			window.open(CONST.urlLBASSim + encodeURI(JSON.stringify(dataDb)));
 		},
+		onclickOpenJervis: function() {
+			let dataDb = this.getDataDb();
+			window.open(CONST.urlJervis + encodeURI(JSON.stringify(dataDb)));
+		},
+		onclickOpenCompassSim: function() {
+			let dataDb = this.getDataDb();
+			window.open(CONST.urlCompassSim + encodeURI(JSON.stringify(dataDb)));
+		},
+		onclickSelectAll: function(event) {
+			event.target.select();
+		},
+		
+		oninputTextImport: function() {
+			if (!this.textImport) return;
+			let m = this.textImport.match(/"t":\s*(\d),/);
+			if (m && [0,1,2,3].includes(+m[1])) {
+				this.fleetNumMain = +m[1] == 0 ? 1 : 10 + +m[1];
+			}
+		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).mount('#divDeckbuilderImporter');
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divDeckbuilderImporter');
 
 
 var UI_KCNAVCOMPIMPORTER = Vue.createApp({
@@ -783,7 +1320,7 @@ var UI_KCNAVCOMPIMPORTER = Vue.createApp({
 		optionsLetter: [],
 	}),
 	mounted: function() {
-		let keys = [1,2,3,7,4,5,6].concat(Object.keys(MAPDATA).filter(id => +id > 7 && +id >= CONST.kcnavEventFirst).sort((a,b) => +a-+b));
+		let keys = [1,2,3,7,4,5,6].concat(Object.keys(MAPDATA).filter(id => +id > 7 && +id >= CONST.kcnavEventFirst).sort((a,b) => +b-+a));
 		for (let id of keys) {
 			this.optionsWorld.push({ id: +id, name: MAPDATA[id].name.replace('Event ','') });
 		}
@@ -913,6 +1450,33 @@ var UI_KCNAVCOMPIMPORTER = Vue.createApp({
 					}
 				}
 				let compsSave = CONVERT.kcnavToSaveComps(compsNav.result);
+				
+				if (this.isFriendFleet) {
+					let improveSpecial = COMMON.friendFleetImproveSpecial[this.world + '-' + this.mapnum];
+					if (improveSpecial) {
+						let compSaveByKey = {};
+						for (let compSave of compsSave) {
+							let key = compSave.fleet.ships.map(ship => ship.mstId).join(',');
+							compSaveByKey[key] = compSave;
+							compSave.rate = 0;
+						}
+						let rateLeft = 1;
+						for (let item of improveSpecial) {
+							let key = item.ships.map(ship => ship.id).join(',');
+							let compSave = compSaveByKey[key];
+							if (!compSave) continue;
+							for (let i=0; i<item.ships.length; i++) {
+								let shipSave = compSave.fleet.ships[i];
+								for (let j=0; j<item.ships[i].improvement.length; j++) {
+									shipSave.equips[j].level = item.ships[i].improvement[j];
+								}
+							}
+							compSave.rate = Math.round(10*item.rate*rateLeft) || 1;
+							rateLeft *= (1-item.rate/100);
+						}
+					}
+				}
+				
 				compsSave.sort((a,b) => b.rate - a.rate);
 				for (let i=this.comps.length; i>compsSave.length; i--) UI_MAIN.deleteComp(this.comps);
 				for (let comp of this.comps) comp.fleet = FLEET_MODEL.getBlankFleet(comp.fleet);
@@ -937,7 +1501,7 @@ var UI_KCNAVCOMPIMPORTER = Vue.createApp({
 			}.bind(this),500);
 		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).mount('#divKCNavCompImporter');
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divKCNavCompImporter');
 
 
 var UI_BONUSIMPORTER = Vue.createApp({
@@ -1162,7 +1726,7 @@ var UI_BONUSIMPORTER = Vue.createApp({
 			}.bind(this),500);
 		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).mount('#divBonusImporter');
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divBonusImporter');
 
 
 var UI_BACKUP = Vue.createApp({
@@ -1172,6 +1736,10 @@ var UI_BACKUP = Vue.createApp({
 		isReplayImport: false,
 		confirmReset: false,
 		showImportError: false,
+		shareURLLoading: false,
+		showShareURLCopied: false,
+		showShareURLError: false,
+		shareURL: '',
 		
 		callback: null,
 	}),
@@ -1187,6 +1755,9 @@ var UI_BACKUP = Vue.createApp({
 				this.canClose = false;
 				this.callback = callbackReplayImport;
 			}
+			this.shareURLLoading = false;
+			this.showShareURLCopied = false;
+			this.showShareURLError = false;
 		},
 		
 		onclickDownload: function() {
@@ -1252,8 +1823,32 @@ var UI_BACKUP = Vue.createApp({
 			localStorage.sim2 = '';
 			window.location.reload();
 		},
+		
+		onclickShareURL: function() {
+			this.shareURLLoading = true;
+			LZMA.compress(JSON.stringify(CONVERT.uiToSave(UI_MAIN)), 9, (ab) => {
+				// let url = window.location.href.split(/[?#]/)[0] + '#backup=' + COMMON.arrayBufferToBase64(ab);
+				let url = 'https://kc3kai.github.io/kancolle-replay/simulator.html' + '#backup=' + COMMON.arrayBufferToBase64(ab);
+				fetch('https://tinyurl.com/api-create.php?url=' + encodeURIComponent(url)).then(async(res) => {
+					let txt = await res.text();
+					console.log(txt);
+					if (!res.ok) {
+						throw new Error('tinyurl: ' + txt);
+						return;
+					}
+					navigator.clipboard.writeText(txt + '+');
+					this.shareURL = txt + '+';
+					this.showShareURLCopied = true;
+					this.showShareURLError = false;
+				}).catch(error => {
+					console.log(error);
+					this.showShareURLCopied = false;
+					this.showShareURLError = true;
+				});
+			});
+		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).mount('#divSimBackup');;
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divSimBackup');;
 
 
 var UI_FCFSETTINGS = Vue.createApp({
@@ -1316,11 +1911,39 @@ var UI_FCFSETTINGS = Vue.createApp({
 			ship.neverFCF = !ship.neverFCF;
 		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).mount('#divFCFSettings');;
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divFCFSettings');;
 
-
-
-
+var UI_RETREATSETTINGS = Vue.createApp({
+	data: () => ({
+		active: false,
+		canClose: true,
+		
+		shipGroups: [],
+		retreatIfAll: 0,
+	}),
+	methods: {
+		doOpen: function() {
+			this.active = true;
+			this.shipGroups = [];
+			this.shipGroups.push(UI_MAIN.fleetFMain.ships.filter(ship => !FLEET_MODEL.shipIsEmpty(ship)));
+			if (UI_MAIN.fleetFMain.shipsEscort && UI_MAIN.fleetFMain.combined) this.shipGroups.push(UI_MAIN.fleetFMain.shipsEscort.filter(ship => !FLEET_MODEL.shipIsEmpty(ship)));
+			this.retreatIfAll = UI_MAIN.settings.retreatOnChuuhaIfAll ?? 0;
+		},
+		
+		onclickShipNoTaiha: function(ship) {
+			ship.noRetreatOnTaiha = !ship.noRetreatOnTaiha;
+			if (ship.noRetreatOnTaiha && ship.retreatOnChuuha) ship.retreatOnChuuha = false;
+		},
+		onclickShipChuuha: function(ship) {
+			ship.retreatOnChuuha = !ship.retreatOnChuuha;
+			if (ship.retreatOnChuuha && ship.noRetreatOnTaiha) ship.noRetreatOnTaiha = false;
+		},
+		onchangeRetreatIfAll: function() {
+			UI_MAIN.settings.retreatOnChuuhaIfAll = +this.retreatIfAll;
+		},
+	},
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divRetreatSettings');;
+	
 
 var UI_AUTOBONUS = Vue.createApp({
 	data: () => ({
@@ -1360,7 +1983,14 @@ var UI_AUTOBONUS = Vue.createApp({
 		hashes: { preset: {}, dewy: {} },
 	}),
 	mounted: function() {
-		for (let key in COMMON.BONUS_MANAGER.PRESET_INDEX) {
+		for (let key of Object.keys(COMMON.BONUS_MANAGER.PRESET_INDEX).sort((keyA,keyB) => {
+			let sA = keyA.split('-'), sB = keyB.split('-');
+			if (sA[0] == sB[0]) return +sA[1]-+sB[1];
+			if (+sA[0] < 10 && +sB[0] < 10) return +sA[0]-+sB[0];
+			if (+sA[0] > 10 && +sB[0] > 10) return +sB[0]-+sA[0];
+			if (+sA[0] < 10 && +sB[0] > 10) return -1;
+			if (+sA[0] > 10 && +sB[0] < 10) return 1;
+		})) {
 			this.optionsPresetName.push({ name: COMMON.BONUS_MANAGER.PRESET_INDEX[key].name, key: key });
 		}
 	},
@@ -1505,6 +2135,7 @@ var UI_AUTOBONUS = Vue.createApp({
 					console.log(keyB, +COMMON.BARRAGE_BALLOON_NODES.includes(keyB))
 					let battle = UI_MAIN.battles.find(battle => battle.id == node.id);
 					if (battle) battle.useBalloon = COMMON.BARRAGE_BALLOON_NODES.includes(keyB);
+					if (battle) battle.useAtoll = COMMON.ATOLL_NODES.includes(keyB);
 				}
 			}
 			if (this.type == 'dewy' && this.keyDewy) {
@@ -1525,6 +2156,7 @@ var UI_AUTOBONUS = Vue.createApp({
 					let keyB = this.keyDewy + '-' + node.letter;
 					let battle = UI_MAIN.battles.find(battle => battle.id == node.id);
 					if (battle) battle.useBalloon = COMMON.BARRAGE_BALLOON_NODES.includes(keyB);
+					if (battle) battle.useAtoll = COMMON.ATOLL_NODES.includes(keyB);
 				}
 			}
 			UI_MAIN.autoBonus = autoBonus;
@@ -1658,7 +2290,15 @@ var UI_AUTOBONUS = Vue.createApp({
 			this.canStart ? this.$refs.txtLoading.stop() : this.$refs.txtLoading.start();
 		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).component('vloading',COMMON.CMP_LOADING).mount('#divAutoBonus');
+}).component('vmodal',COMMON.CMP_MODAL).component('vloading',COMMON.CMP_LOADING).use(COMMON.i18n).mount('#divAutoBonus');
+
+
+
+var UI_OTHER = Vue.createApp({
+	data: () => ({
+		
+	})
+}).use(COMMON.i18n).mount('#divOther');
 
 
 
@@ -1670,4 +2310,4 @@ document.body.onunload = function() {
 
 COMMON.UI_MAIN = UI_MAIN; //debug
 
-})();
+})

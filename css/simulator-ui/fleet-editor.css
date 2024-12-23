@@ -52,6 +52,7 @@ div.fleetEditor div.statWide {
 div.fleetEditor div.statWide input[type=number] {
 	width: 80px;
 	margin-left: auto;
+	align-self: center;
 }
 div.fleetEditor div.statHalf {
 	margin: 0 1px;
@@ -73,7 +74,13 @@ div.fleetEditor span.statBonus.negative {
 div.fleetEditor span.statDebuff {
 	color: darkred;
 }
-div.fleetEditor input.unknown {
+div.fleetEditor input.unknownHigh {
+	background-color: #FF8080;
+}
+div.fleetEditor input.unknownMed {
+	background-color: #FFD280;
+}
+div.fleetEditor input.changed {
 	background-color: yellow;
 }
 div.fleetEditor div.bonusWrap {
@@ -247,4 +254,73 @@ div.additionalStatsMain div.sub {
 }
 #divKC3ProfileHelp span.bold {
 	font-weight: bold;
+}
+
+div.iconOverlay {
+	position: absolute;
+	width: 160px;
+}
+div.iconOverlay .exclamation {
+	text-shadow: white -1px -1px 0, white -1px 1px 0, white 1px -1px 0, white 1px 1px 0;
+	padding-right: 5px;
+	margin-top: -2px;
+	margin-right: 3px;
+	text-align: right;
+	font-weight: bold;
+	font-size: 24px;
+}
+div.iconOverlay .exclamation.high {
+	color: red;
+}
+div.iconOverlay .exclamation.med {
+	color: orange;
+}
+div.iconOverlay .circle {
+	text-shadow: black -1px -1px 0, black -1px 1px 0, black 1px -1px 0, black 1px 1px 0;
+	padding-right: 5px;
+	text-align: right;
+	color: yellow;
+}
+div.iconOverlay .debuff {
+	padding: 2px;
+	text-align: right;
+}
+
+#divPlaneBonus input[type=number] {
+	width: 80px;
+}
+#divPlaneBonus td {
+	text-align: center;
+}
+#divPlaneBonus .bonusHeader {
+	text-wrap: nowrap;
+}
+#divPlaneBonus .equipHeader {
+	display: flex;
+	align-items: center;
+	height: 100%;
+}
+#divPlaneBonus img.equipIcon {
+	width: 24px;
+	height: 24px;
+}
+#divPlaneBonus img.equipIcon.top {
+	position: absolute;
+}
+#divPlaneBonus .equipName {
+	font-size: 10px;
+	margin-left: 5px;
+	max-width: 100px;
+}
+#divPlaneBonusTotals {
+	margin-top: 20px;
+	display: flex;
+	align-items: end;
+	gap: 30px;
+}
+#divPlaneBonusTotals th, #divPlaneBonusTotals td {
+	padding: 0 10px;
+}
+#divPlaneBonusNotes {
+	margin-bottom: 20px;
 }

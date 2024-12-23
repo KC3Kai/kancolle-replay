@@ -1,4 +1,4 @@
-(() => {
+COMMON.promiseI18n.then(() => {
 
 var CONST = window.COMMON.getConst({
 	numShipMax: 7,
@@ -13,7 +13,9 @@ var CONST = window.COMMON.getConst({
 	shipImgNameDefault: 'Kblank.png',
 	equipImgNameDefault: 'empty',
 	
-	tooltipUnknownStat: 'This stat\'s true value is currently unknown.',
+	tooltipUnknownStat: 'stat_true_value_unknown',
+	tooltipUnknownStatPlaceholder: 'stat_true_value_placeholder',
+	tooltipUnknownStatDBEstimate: 'stat_true_value_db_estimate',
 	
 	rankExceptTypes: [],
 	rankDefaultSpecial: {},
@@ -27,6 +29,8 @@ var CONST = window.COMMON.getConst({
 	modHPMax: 2,
 	modASWMax: 9,
 	
+	planeBonusGroupsMax: 9,
+	
 	statBList: [
 		{ key: 'fp', name: 'Firepower' },
 		{ key: 'tp', name: 'Torpedo' },
@@ -38,6 +42,13 @@ var CONST = window.COMMON.getConst({
 	],
 	
 	urlDeckbuilder: 'http://www.kancolle-calc.net/deckbuilder.html?predeck=',
+	
+	STAT_UNKNOWN: {
+		NONE: 1,
+		PLACEHOLDER: 2,
+		DB_ESTIMATE: 3,
+	},
+	statWarnIgnore: ['los','asw'],
 	
 	EQTDATA_COPY: {},
 });
@@ -118,6 +129,7 @@ var FLEET_MODEL = {
 			
 			mstId: +mstId,
 			name: sdata.name,
+			type: sdata.type,
 			level: level,
 			hp: sdata.HP,
 			hpInit: sdata.HP,
@@ -151,6 +163,7 @@ var FLEET_MODEL = {
 			statsBonus: {
 				
 			},
+			statsDefault: {},
 			statsUnknown: {},
 			equips: [],
 			slots: sdata.SLOTS.slice(),
@@ -162,6 +175,8 @@ var FLEET_MODEL = {
 			bonusByNode: {},
 			
 			neverFCF: false,
+			retreatOnChuuha: false,
+			noRetreatOnTaiha: false,
 			
 			isFaraway: false,
 		};
@@ -172,9 +187,13 @@ var FLEET_MODEL = {
 			obj.statsBase.asw = COMMON.getScaledStat(sdata.ASWbase,sdata.ASW,obj.level);
 			obj.statsBase.los = COMMON.getScaledStat(sdata.LOSbase,sdata.LOS,obj.level);
 		}
+		for (let stat in obj.statsBase) {
+			obj.statsDefault[stat] = obj.statsBase[stat];
+		}
 		if (sdata.unknownstats) {
-			obj.statsUnknown.ev = obj.statsUnknown.asw = obj.statsUnknown.los = CONST.tooltipUnknownStat;
-			if (!isFriend) obj.statsUnknown.luk = obj.statsUnknown.tacc = CONST.tooltipUnknownStat;
+			for (let stat in sdata.unknownstats) {
+				obj.statsUnknown[stat.toLowerCase()] = sdata.unknownstats[stat];
+			}
 		}
 		for (let i=0; i<CONST.numEquipMax; i++) {
 			obj.equips.push(this.getBlankEquip(i));
@@ -285,6 +304,16 @@ window.CMP_FLEET = {
 				FLEET_MODEL.fleetCurrent = null;
 				COMMON.global.fleetEditorClose();
 			}
+		},
+		
+		hasStatUnknown(ship,types) {
+			return !!(ship.statsUnknown && Object.keys(ship.statsUnknown).find(stat => !CONST.statWarnIgnore.includes(stat) && types.includes(ship.statsUnknown[stat]) && ship.statsBase[stat] == ship.statsDefault[stat]));
+		},
+		hasStatChanged(ship) {
+			return !!(COMMON.isShipIdAbyssal(ship.mstId) && ship.statsDefault && ship.statsBase && Object.keys(ship.statsBase).find(stat => ship.statsBase[stat] != ship.statsDefault[stat]));
+		},
+		hasStatDebuff(ship) {
+			return !!(COMMON.isShipIdAbyssal(ship.mstId) && ship.statsDefault && ship.statsBase && ship.statsBase.ar < ship.statsDefault.ar);
 		},
 	},
 	watch: {
@@ -414,6 +443,7 @@ var UI_FLEETEDITOR = Vue.createApp({
 			
 			let shipPrev = this.fleet[shipsProp][ind];
 			let ship = this.fleet[shipsProp][ind] = FLEET_MODEL.getDefaultShip(mstId,ind);
+			if (this.fleet.isFriend && SHIPDATA[mstId] && SHIPDATA[mstId].LUKmax) ship.statsBase.luk = SHIPDATA[mstId].LUKmax;
 			let eqDef;
 			if (mstId > 0 && (eqDef = SHIPDATA[mstId].EQUIPS)) {
 				for (let i=0; i<eqDef.length; i++) {
@@ -484,10 +514,26 @@ var UI_FLEETEDITOR = Vue.createApp({
 		updateCode: function() {
 			this.loadCode = JSON.stringify(CONVERT.uiToSaveFleet(this.fleet));
 		},
+		onclickSelectAll: function(event) {
+			event.target.select();
+		},
 		
 		getStatTotal: function(ship,stat) {
 			if (stat == 'range') return Math.max(ship.statsBase.range,ship.statsEquip.range) + (ship.statsBonus.range || 0);
 			return (+ship.statsBase[stat] || 0) + (+ship.statsEquip[stat] || 0) + ((this.showEquipBonus && +ship.statsBonus[stat]) || 0);
+		},
+		getClassStat: function(ship,stat) {
+			if (ship.statsBase[stat] != ship.statsDefault[stat]) return {changed:COMMON.isShipIdAbyssal(ship.mstId) || stat == 'luk'};
+			if (ship.statsUnknown[stat] == CONST.STAT_UNKNOWN.NONE) return {unknownHigh:true};
+			if (ship.statsUnknown[stat] == CONST.STAT_UNKNOWN.PLACEHOLDER) return {unknownHigh:true};
+			if (ship.statsUnknown[stat] == CONST.STAT_UNKNOWN.DB_ESTIMATE) return {unknownMed:true};
+		},
+		getTitleStat: function(ship,stat) {
+			if (ship.statsBase[stat] != ship.statsDefault[stat]) return '';
+			if (ship.statsUnknown[stat] == CONST.STAT_UNKNOWN.NONE) return CONST.tooltipUnknownStat;
+			if (ship.statsUnknown[stat] == CONST.STAT_UNKNOWN.PLACEHOLDER) return CONST.tooltipUnknownStatPlaceholder;
+			if (ship.statsUnknown[stat] == CONST.STAT_UNKNOWN.DB_ESTIMATE) return CONST.tooltipUnknownStatDBEstimate;
+			return '';
 		},
 		getClassHP: function(ship) {
 			if (ship.hpInit/ship.hp <= .25) return 'damage heavy';
@@ -517,6 +563,12 @@ var UI_FLEETEDITOR = Vue.createApp({
 			let hNow = Math.floor(timeNow/3600), mNow = Math.floor((timeNow-hNow*3600)/60), sNow = Math.floor(timeNow-hNow*3600-mNow*60);
 			let hMax = Math.floor(timeMax/3600), mMax = Math.floor((timeMax-hMax*3600)/60), sMax = Math.floor(timeMax-hMax*3600-mMax*60);
 			return 'Repair: ' + hNow + 'h ' + mNow + 'm ' + sNow + 's (max ' + hMax + 'h ' + mMax + 'm ' + sMax + 's)';
+		},
+		getShipHasPlane: function(ship) {
+			return !!ship.equips.find(equip => equip.mstId && EQTDATA[EQDATA[equip.mstId].type].isPlane);
+		},
+		getShipHasPlaneBonus: function(ship) {
+			return !!ship.equips.find(equip => equip.bonusGroups);
 		},
 		
 		doOpen: function(fleet) {
@@ -553,6 +605,7 @@ var UI_FLEETEDITOR = Vue.createApp({
 			this.isDraggingShip = true;
 			this.selectedShipsProp = shipsProp;
 			this.selectedShipInd = ship.ind;
+			if (COMMON.UI_MAIN) COMMON.UI_MAIN.isDragging = true;
 		},
 		ondropShip: function(shipTo,shipsPropTo) {
 			if (!this.isDraggingShip) return;
@@ -565,6 +618,7 @@ var UI_FLEETEDITOR = Vue.createApp({
 		},
 		ondragendShip: function() {
 			this.isDraggingShip = false;
+			if (COMMON.UI_MAIN) COMMON.UI_MAIN.isDragging = false;
 		},
 		
 		onclickEquip: METHODS_COMMON.methods.onclickEquip,
@@ -654,6 +708,14 @@ var UI_FLEETEDITOR = Vue.createApp({
 				this.loadData(data);
 			}
 		},
+		oninputLoadCode: function() {
+			if (!this.loadCode) return;
+			if (!this.fleet.isPlayer) return;
+			let m = this.loadCode.match(/"t":\s*(\d),/);
+			if (m && [0,1,2,3].includes(+m[1])) {
+				this.loadCodeFleet = +m[1] == 0 ? 1 : 10 + +m[1];
+			}
+		},
 		onchangeFileKC3: function(e) {
 			if (!e.target.files.length) return;
 			let reader = new FileReader();
@@ -730,6 +792,11 @@ var UI_FLEETEDITOR = Vue.createApp({
 			}
 		},
 		
+		onclickPlaneBonus: function(ship) {
+			if (!this.getShipHasPlane(ship)) return;
+			UI_PLANEBONUS.doOpen(ship);
+		},
+		
 		refocusShip: function() {
 			setTimeout(() => this.$refs[this.selectedShipsProp+this.selectedShipInd][0].focus(),1);
 		},
@@ -782,6 +849,17 @@ window.CMP_LBASEDITOR = {
 			}
 			
 			COMMON.BONUS_MANAGER.applyAutoLBAS(base.ind);
+		},
+		
+		getBaseHasPlane: function(base) {
+			return !!base.equips.find(equip => equip.mstId && EQTDATA[EQDATA[equip.mstId].type].isPlane);
+		},
+		getBaseHasPlaneBonus: function(base) {
+			return !!base.equips.find(equip => equip.bonusGroups);
+		},
+		onclickPlaneBonus: function(base) {
+			if (!this.getBaseHasPlane(base)) return;
+			UI_PLANEBONUS.doOpen(base,null,true);
 		},
 		
 		onclickEquip: METHODS_COMMON.methods.onclickEquip,
@@ -839,6 +917,7 @@ var UI_ADDITIONALSTATS = Vue.createApp({
 			los2: null,
 			los3: null,
 			los4: null,
+			transport: null,
 		},
 		ships: [],
 	}),
@@ -847,7 +926,7 @@ var UI_ADDITIONALSTATS = Vue.createApp({
 			console.log(fleetSim);
 			this.active = true;
 			this.ships = [];
-			let aaciAll = [];
+			let aaciAll = [], nightScoutAll = [];
 			let ind = 0;
 			for (let ship of fleetSim.ships) {
 				let stats = {
@@ -856,6 +935,7 @@ var UI_ADDITIONALSTATS = Vue.createApp({
 					nbPower: ship.canNB() ? Math.floor(ship.NBPower()) : null,
 					aswPower: ship.canASW() ? Math.floor(ship.ASWPower()) : null,
 					canOASW: ship.canOASW(),
+					canCVShellInstall: ship.canShell() && ship.CVshelltype && !ship.hasDivebomber,
 					accBasic: Math.round(10*(2*Math.sqrt(ship.LVL) + 1.5*Math.sqrt(ship.LUK) + ship.equips.reduce((a,b) => a + (b.ACC || 0),0)))/10,
 					accFit: ship.ACCfit != null ? Math.round(100*ship.ACCfit)/100 : null,
 					accFitNight: ship.ACCfitN != null ? Math.round(100*ship.ACCfitN)/100 : null,
@@ -890,6 +970,7 @@ var UI_ADDITIONALSTATS = Vue.createApp({
 					modSupply: ship.supplyPostMult ? Math.round(100*ship.supplyPostMult)/100 : null,
 					modAnchorage: ship.anchoragePostMult ? Math.round(100*ship.anchoragePostMult)/100 : null,
 					modDock: ship.dockPostMult ? Math.round(100*ship.dockPostMult)/100 : null,
+					nightContactRates: [0,0,0],
 				};
 				if (ship.AStype().length && ship.canAS()) {
 					stats.asTypes = [];
@@ -958,6 +1039,9 @@ var UI_ADDITIONALSTATS = Vue.createApp({
 					aaciMap[0] = { rate: rate, rateOrig: rate, obj: obj };
 					aaciAll.push({ ind: ind, aaciMap: aaciMap });
 				}
+				for (let eq of ship.equips) {
+					if (eq.isnightscout) nightScoutAll.push({ acc: eq.ACC, pos: ship.apiID, los: eq.LOS, lvl: ship.LVL, stats: stats });
+				}
 				stats.hasImprove = !!Object.keys(stats).find(k => k.indexOf('impr') == 0 && stats[k]);
 				this.ships.push(stats);
 				ind++;
@@ -984,12 +1068,30 @@ var UI_ADDITIONALSTATS = Vue.createApp({
 				}
 				aaciAll[0].aaciMap[0].obj.rateFleet = Math.round(10000*rateLeft)/100;
 			}
+			nightScoutAll.sort((a,b) => b.acc < a.acc ? -1 : b.acc > a.acc ? 1 : a.pos < b.pos ? -1 : 1);
+			let ncRateLeft = 1;
+			for (let obj of nightScoutAll) {
+				let n = obj.acc >= 3 ? 3 : obj.acc <= 1 ? 1 : 2;
+				let rate = ncRateLeft * Math.min(1,Math.floor(Math.sqrt(obj.lvl)*Math.sqrt(obj.los))/25);
+				obj.stats.nightContactRates[n-1] += rate;
+				ncRateLeft -= rate;
+				if (ncRateLeft <= 0) break;
+			}
+			for (let stats of this.ships) {
+				for (let i=0; i<stats.nightContactRates.length; i++) {
+					if (stats.nightContactRates[i]) {
+						stats.nightContactRates[i] = Math.round(10000*stats.nightContactRates[i])/100;
+					}
+				}
+			}
 			this.fleet.airPower = fleetSim.fleetAirPower();
 			this.fleet.airPowerCombined = null;
 			this.fleet.airPowerLB = fleetSim.fleetAirPower('isPlane');
+			this.fleet.transport = fleetSim.getTransport();
 			if (fleetSim.combinedWith) {
 				this.fleet.airPowerCombined = fleetSim.fleetAirPower() + fleetSim.combinedWith.fleetAirPower();
 				this.fleet.airPowerLB += fleetSim.combinedWith.fleetAirPower('isPlane');
+				this.fleet.transport += fleetSim.combinedWith.getTransport();
 			}
 			for (let i=1; i<=4; i++) {
 				let los = fleetSim.fleetELoS(i);
@@ -1004,7 +1106,7 @@ var UI_ADDITIONALSTATS = Vue.createApp({
 			this.active = false;
 		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).mount('#divAdditionalStats');
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divAdditionalStats');
 
 
 var UI_ADDITIONALSTATSLBAS = Vue.createApp({
@@ -1056,8 +1158,128 @@ var UI_ADDITIONALSTATSLBAS = Vue.createApp({
 			this.active = false;
 		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).mount('#divAdditionalStatsLBAS');
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divAdditionalStatsLBAS');
 
+
+var UI_PLANEBONUS = Vue.createApp({
+	data: () => ({
+		active: false,
+		canClose: true,
+		
+		ship: null,
+		equips: [],
+		groups: [],
+		nodeId: null,
+		isLBAS: false,
+	}),
+	computed: {
+		hasBonusOnEquip: function() {
+			return this.isLBAS && this.ship.equips.find(eq => ['bonusDmg','bonusAcc'].find(key => ![0,1,'',null,undefined].includes(eq[key])));
+		},
+	},
+	methods: {
+		doOpen: function(ship,nodeId,isLBAS) {
+			this.active = true;
+			this.equips = [];
+			this.groups = [];
+			this.nodeId = nodeId || null;
+			this.isLBAS = !!isLBAS;
+			
+			this.ship = ship;
+			for (let equip of ship.equips) {
+				if (FLEET_MODEL.equipIsEmpty(equip)) continue;
+				if (!EQTDATA[EQDATA[equip.mstId].type].isPlane) continue;
+				this.equips.push(equip);
+			}
+			
+			for (let n=1; n<=CONST.planeBonusGroupsMax; n++) {
+				this.groups.push({
+					num: n,
+					bonusDmg: 1,
+					bonusAcc: 1,
+					bonusEva: 1,
+					airOnly: false,
+					equipIdx: Array(this.equips.length).fill(false),
+				});
+			}
+			for (let i=0; i<this.equips.length; i++) {
+				let equipObj = this.equips[i];
+				if (this.nodeId) {
+					if (!this.equips[i].bonusByNode) continue;
+					equipObj = this.equips[i].bonusByNode[this.nodeId];
+				}
+				if (!equipObj || !equipObj.bonusGroups) continue;
+				for (let group in equipObj.bonusGroups) {
+					let found = false;
+					for (let key of ['bonusDmg','bonusAcc','bonusEva']) {
+						if (![1,'',null,undefined].includes(equipObj.bonusGroups[group][key])) {
+							this.groups[group-1][key] = equipObj.bonusGroups[group][key];
+							found = true;
+						}
+					}
+					if (found) {
+						this.groups[group-1].airOnly = !equipObj.bonusGroups[group].notAirOnly;
+						this.groups[group-1].equipIdx[i] = true;
+					}
+				}
+			}
+		},
+		doClose: function() {
+			this.update();
+			this.active = false;
+		},
+		
+		update: function() {
+			for (let equip of this.equips) {
+				let equipObj = equip;
+				if (this.nodeId) {
+					if (!equip.bonusByNode) equip.bonusByNode = {};
+					if (!equip.bonusByNode[this.nodeId]) equip.bonusByNode[this.nodeId] = {};
+					equipObj = equip.bonusByNode[this.nodeId];
+				}
+				delete equipObj.bonusGroups;
+			}
+			for (let group of this.groups) {
+				for (let i=0; i<group.equipIdx.length; i++) {
+					if (!group.equipIdx[i]) continue;
+					let equipObj = this.nodeId ? this.equips[i].bonusByNode[this.nodeId] : this.equips[i];
+					if (!equipObj.bonusGroups) equipObj.bonusGroups = {};
+					if (!equipObj.bonusGroups[group.num]) equipObj.bonusGroups[group.num] = { bonusDmg: 1, bonusAcc: 1, bonusEva: 1, notAirOnly: !group.airOnly };
+					for (let key of ['bonusDmg','bonusAcc','bonusEva']) {
+						if (![1,'',null,undefined].includes(group[key])) {
+							equipObj.bonusGroups[group.num][key] = group[key];
+						}
+					}
+				}
+			}
+			for (let equip of this.equips) {
+				let equipObj = equip;
+				if (this.nodeId) equipObj = equip.bonusByNode[this.nodeId];
+				if (equipObj.bonusGroups && !Object.keys(equipObj.bonusGroups).find(group => ['bonusDmg','bonusAcc','bonusEva'].find(key => ![1,'',null,undefined].includes(equipObj.bonusGroups[group][key])))) {
+					delete equipObj.bonusGroups;
+				}
+			}
+		},
+		
+		getBonusTotal: function(key) {
+			let mod = 1;
+			for (let group of this.groups) {
+				if (group[key] != '' && group[key] != null && group.equipIdx.find(v => v)) mod *= group[key];
+			}
+			return Math.round(1e10*mod)/1e10;
+		},
+		getBonusTotalShip: function(key) {
+			let shipObj = this.ship;
+			if (this.nodeId && this.ship.bonusByNode && this.ship.bonusByNode[this.nodeId] && this.ship.bonusByNode[this.nodeId][key]) {
+				shipObj = this.ship.bonusByNode[this.nodeId];
+			}
+			return Math.round(1e10 * this.getBonusTotal(key) * (shipObj[key] != '' && shipObj[key] != null ? shipObj[key] : 1))/1e10;
+		},
+		getBonusTotalEquip: function(key,equip) {
+			return Math.round(1e10 * this.getBonusTotal(key) * (equip[key] != '' && equip[key] != null ? equip[key] : 1))/1e10;
+		},
+	},
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divPlaneBonus');
 
 
 COMMON.global.fleetEditorOpen = function(fleet) {
@@ -1081,5 +1303,8 @@ COMMON.global.fleetEditorMoveTemp = function(elFrom) {
 		document.getElementById('divFleetEditorTemp').appendChild(e);
 	}
 }
+COMMON.global.fleetEditorOpenPlaneBonus = function(ship,nodeId) {
+	UI_PLANEBONUS.doOpen(ship,nodeId);
+}
 
-})();
+})

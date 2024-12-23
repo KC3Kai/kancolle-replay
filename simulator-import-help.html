@@ -58,6 +58,7 @@ If ship/equip "masterId" not in simulator's database, "stats" is required.
 				bonusDmg: &lt;float&gt;
 			},
 			neverFCF: &lt;bool&gt; if 1, never use FCF to retreat this ship (default 0)
+			retreatOnChuuha: &lt;bool&gt; if 1, end sortie if this ship becomes medium damaged or more (default 0)
 		}],
 		combineType: &lt;int&gt; 1=CTF, 2=STF, 3=TCF (optional),
 		shipsC: [&lt;same as ships&gt;] (optional),
@@ -91,14 +92,18 @@ If ship/equip "masterId" not in simulator's database, "stats" is required.
 		airRaid: &lt;bool&gt; (default 0),
 		noAmmo: &lt;bool&gt; (default 0),
 		formationOverride: &lt;int&gt; overrides value in fleetF (optional),
+		formationUseLAIfNoSpAttack: &lt;bool&gt; use Line Ahead if single or CF4 if combined, if special attack becomes impossible before this battle, overrides all (optional),
 		lbas: [&lt;int&gt;] waves to send, e.g. [1,1,2,2] (optional),
 		addCostFuel: &lt;float&gt; 0-1 percent, additional fuel per ship subtracted before battle (optional),
 		addCostAmmo: &lt;float&gt; 0-1 percent, additional ammo per ship subtracted before battle (optional),
+		addCostMax: &lt;int&gt; hard cap to fuel/ammo subtracted by addCostFuel/addCostAmmo (optional),
 		useNormalSupport: &lt;bool&gt; works for last node only (default 0),
 		useBalloon: &lt;bool&gt; enable Barrage Balloon bonus on this node,
+		useAtoll: &lt;bool&gt; enable atoll node mechanics on this node,
 		useSmoke: &lt;bool&gt; attempt to trigger smokescreen on this node,
 	}],
 	continueOnTaiha: &lt;bool&gt; (default 0),
+	allowAnyFormation: &lt;bool&gt; don't replace impossible formations due to ship count (default 0),
 	bucketHPPercent: &lt;int&gt; if HP percent &lt;= bucketHPPercent, report as bucket used (default 0),
 	bucketTime: &lt;int&gt; if repair time in seconds &gt; bucketTime, report as bucket used (default "infinity"),
 	bucketTimeIgnore: &lt;int&gt; if repair time in seconds &lt; bucketTimeIgnore, ignore bucketHPPercent and bucketTime and do not report as bucket used (default 0),
