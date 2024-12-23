@@ -1351,6 +1351,7 @@
 			<tr><td v-for="s in ships"><div v-show="s.nbPower!=null">{{$t('nb_power')}}: {{s.nbPower}}</div></td></tr>
 			<tr><td v-for="s in ships"><div v-show="s.aswPower!=null">{{$t('asw_power')}}: {{s.aswPower}}</div></td></tr>
 			<tr><td v-for="s in ships"><div v-show="s.canOASW">{{$t('can_oasw')}}</div></td></tr>
+			<tr><td v-for="s in ships"><div v-show="s.canCVShellInstall">{{$t('can_cv_shell_install')}}</div></td></tr>
 			<tr><td v-for="s in ships"><div v-show="s.accBasic!=null"><span class="tooltip" :title="$t('standard_accuracy_tooltip')">{{$t('standard_accuracy')}}</span>: {{s.accBasic}}</div></td></tr>
 			<tr><td v-for="s in ships"><div v-show="s.accFit!=null">{{$t('fit_accuracy')}}: {{s.accFit}}</div></td></tr>
 			<tr><td v-for="s in ships"><div v-show="s.accFitNight!=null">{{$t('fit_accuracy_night')}}: {{s.accFitNight}}</div></td></tr>

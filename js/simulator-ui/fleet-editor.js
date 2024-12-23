@@ -935,6 +935,7 @@ var UI_ADDITIONALSTATS = Vue.createApp({
 					nbPower: ship.canNB() ? Math.floor(ship.NBPower()) : null,
 					aswPower: ship.canASW() ? Math.floor(ship.ASWPower()) : null,
 					canOASW: ship.canOASW(),
+					canCVShellInstall: ship.canShell() && ship.CVshelltype && !ship.hasDivebomber,
 					accBasic: Math.round(10*(2*Math.sqrt(ship.LVL) + 1.5*Math.sqrt(ship.LUK) + ship.equips.reduce((a,b) => a + (b.ACC || 0),0)))/10,
 					accFit: ship.ACCfit != null ? Math.round(100*ship.ACCfit)/100 : null,
 					accFitNight: ship.ACCfitN != null ? Math.round(100*ship.ACCfitN)/100 : null,

@@ -2025,9 +2025,7 @@ function AO(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 };
 AO.prototype = Object.create(Ship.prototype);
 AO.prototype.loadEquips = function(equips,levels,profs,addstats,isSupport) {
-	Ship.prototype.loadEquips.call(this,equips,levels,profs,addstats,isSupport);
-	
-	if (this.canAirAttack && this.equips.find(eq => eq.type == TORPBOMBER || eq.type == DIVEBOMBER)) {
+	if (this.canAirAttack && equips.find(id => EQDATA[id].type == TORPBOMBER || EQDATA[id].type == DIVEBOMBER)) {
 		this.planeasw = 2;
 		this.CVshelltype = true;
 		this.shellPower = CV.prototype.shellPower;
@@ -2035,6 +2033,8 @@ AO.prototype.loadEquips = function(equips,levels,profs,addstats,isSupport) {
 		this.canStillShell = CV.prototype.canStillShell;
 		this.canStillShellDamage = CV.prototype.canStillShellDamage;
 	}
+	
+	Ship.prototype.loadEquips.call(this,equips,levels,profs,addstats,isSupport);
 }
 AO.prototype.canASW = DD.prototype.canASW;
 

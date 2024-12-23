@@ -507,6 +507,7 @@
 	"nb_power": "NB Power",
 	"asw_power": "ASW Power",
 	"can_oasw": "Can OASW",
+	"can_cv_shell_install": "Can Shell Installation",
 	"standard_accuracy": "Standard Accuracy",
 	"standard_accuracy_tooltip": "Includes Level term + Luck term + equipment stats",
 	"fit_accuracy": "Fit Accuracy",

@@ -507,6 +507,7 @@
 	"nb_power": "夜戦火力",
 	"asw_power": "対潜攻撃力",
 	"can_oasw": "先制対潜",
+	"can_cv_shell_install": "対地攻撃",
 	"standard_accuracy": "命中",
 	"standard_accuracy_tooltip": "レベル、運、装備を加味した値",
 	"fit_accuracy": "フィット砲命中",
