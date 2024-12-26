@@ -2025,7 +2025,7 @@ function AO(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 };
 AO.prototype = Object.create(Ship.prototype);
 AO.prototype.loadEquips = function(equips,levels,profs,addstats,isSupport) {
-	if (this.canAirAttack && equips.find(id => EQDATA[id].type == TORPBOMBER || EQDATA[id].type == DIVEBOMBER)) {
+	if (this.canAirAttack && equips.find(id => EQDATA[id] && (EQDATA[id].type == TORPBOMBER || EQDATA[id].type == DIVEBOMBER))) {
 		this.planeasw = 2;
 		this.CVshelltype = true;
 		this.shellPower = CV.prototype.shellPower;
