@@ -6334,6 +6334,34 @@ var EQDATA = {
 		ASW: 10,
 		LOS: 3,
 	},
+	550: {
+		name: 'Prototype Myoujou (Additional Trial Model)',
+		nameJP: '試製 明星(増加試作機)',
+		added: '2024-12-26',
+		type: DIVEBOMBER,
+		DIVEBOMB: 4,
+		ASW: 4,
+		LOS: 1,
+	},
+	551: {
+		name: 'Myoujou Kai',
+		nameJP: '明星改',
+		added: '2024-12-26',
+		type: DIVEBOMBER,
+		DIVEBOMB: 5,
+		ASW: 5,
+		LOS: 2,
+	},
+	552: {
+		name: 'Type 99 Training Bomber Model 22 Kai (Experimental w/ Night Equipment)',
+		nameJP: '九九式練爆二二型改(夜間装備実験機)',
+		added: '2024-12-26',
+		type: DIVEBOMBER, image: 58,
+		DIVEBOMB: 6,
+		ACC: 1,
+		ASW: 6,
+		LOS: 4,
+	},
 	1501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
@@ -8165,6 +8193,9 @@ var LBASDATA = {
 	545: { distance: 6, cost: 8 },
 	546: { distance: 2, cost: 9 },
 	549: { distance: 3, cost: 5 },
+	550: { distance: 3, cost: 2 },
+	551: { distance: 4, cost: 3 },
+	552: { distance: 4, cost: 4 },
 };
 
 
