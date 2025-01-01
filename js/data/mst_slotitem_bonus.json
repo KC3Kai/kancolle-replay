@@ -9515,5 +9515,19 @@
 				"level": 10
 			}
 		]
+	},
+	{
+		"ids": [258],
+		"bonuses": [
+			{
+				"bonus": { "houm": 1, "kaih": 1 },
+				"level": 2
+			},
+			{
+				"bonus": { "houg": 1, "houm": 1, "kaih": 1 },
+				"shipId": [156,599,610,883,899],
+				"level": 2
+			}
+		]
 	}
 ]
