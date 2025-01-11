@@ -78,6 +78,7 @@ const B_NIGHTFIGHTER = 14;
 const B_NIGHTBOMBER = 15;
 const B_NIGHTBOMBER2 = 16;
 const B_NIGHTCREW = 17;
+const B_NIGHTBOMBER_DB = 18;
 const B_OTHER = 0;
 
 //anti-air type
@@ -6357,6 +6358,7 @@ var EQDATA = {
 		nameJP: '九九式練爆二二型改(夜間装備実験機)',
 		added: '2024-12-26',
 		type: DIVEBOMBER, image: 58,
+		btype: B_NIGHTBOMBER_DB,
 		DIVEBOMB: 6,
 		ACC: 1,
 		ASW: 6,
