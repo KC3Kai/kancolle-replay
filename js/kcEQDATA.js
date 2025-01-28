@@ -6364,6 +6364,17 @@ var EQDATA = {
 		ASW: 6,
 		LOS: 4,
 	},
+	553: {
+		name: '10cm Twin High-angle Gun Mount Kai',
+		nameJP: '10cm連装高角砲改',
+		added: '2025-01-28',
+		type: MAINGUNS, image: 16,
+		FP: 2,
+		AA: 7,
+		AR: 1,
+		ACC: 1,
+		RNG: 1,
+	},
 	1501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
