@@ -256,6 +256,7 @@ var SIMCONSTS = {
 	nbattack8New: { dmgMod: 1.2, accMod: 1.65, chanceMod: 1.4, name: 'DDCI (LTR) x1', replace: 12, replaceChance: .5 },
 	aaciRatesOld: { 2: .58, 5: .55, 34: .6, 35: .55, 36: .55, 37: .4, 38: .62 },
 	aaciRatesNew: { 2: .55, 5: .5, 34: .55, 35: .54, 36: .53, 37: .44, 38: .58 },
+	aaci49Fubuki: true,
 	airstrikeDmgMF: -10,
 	airstrikeDmgMFRaid: -10,
 	airstrikeDmgME: -10,
