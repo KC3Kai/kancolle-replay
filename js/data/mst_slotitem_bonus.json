@@ -9664,5 +9664,50 @@
 				"level": 10
 			}
 		]
+	},
+	{
+		"ids": [554],
+		"bonuses": [
+			{
+				"bonus": { "houg": 1 },
+				"level": 2
+			},
+			{
+				"bonus": { "houm": 1 },
+				"level": 4
+			},
+			{
+				"bonus": { "tais": 1 },
+				"level": 6
+			},
+			{
+				"bonus": { "houg": 1 },
+				"level": 8
+			},
+			{
+				"bonus": { "houm": 1 },
+				"level": 10
+			},
+			{
+				"bonus": { "houg": 1, "kaih": 1, "tais": 1 },
+				"shipType": [7]
+			},
+			{
+				"bonus": { "houg": 1, "houm": 1 },
+				"shipId": [117,285,318,555,560,883,888,894]
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipId": [894]
+			},
+			{
+				"bonus": { "houm": 1, "kaih": 1, "tais": 1 },
+				"shipClass": [27,76]
+			},
+			{
+				"bonus": { "houg": 3, "houm": 2, "kaih": 1, "tais": 3 },
+				"requiresId": [402]
+			}
+		]
 	}
 ]
