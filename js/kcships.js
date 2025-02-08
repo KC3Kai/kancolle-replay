@@ -1606,6 +1606,17 @@ Ship.prototype.getAACItype = function(atypes) {
 	if ([981,986].includes(this.mid) || (SIMCONSTS.aaci49Fubuki && [426].includes(this.mid))) {
 		if (atypes[A_HAFD] >= 2 && this.equips.find(eq => eq.btype == B_RADAR && eq.AA >= 4)) types.push(49);
 	}
+	if ([330,346,357,537,538,968,986].includes(this.mid) || (SIMCONSTS.aaci49Fubuki && [426].includes(this.mid))) {
+		let num10cmK = this.equips.filter(eq => [533,553].includes(eq.mid)).length;
+		let hasRadar = this.equips.find(eq => eq.btype == B_RADAR && eq.AA >= 4);
+		let hasAAFD = this.equips.find(eq => eq.mid == 121);
+		if (num10cmK >= 2 && hasRadar && hasAAFD) types.push(50);
+		if ([986].includes(this.mid) || (SIMCONSTS.aaci49Fubuki && [426].includes(this.mid))) {
+			if (num10cmK && hasRadar && this.equips.find(eq => eq.atype == A_AAGUN && eq.AA >= 5)) types.push(51);
+			if (this.equips.filter(eq => eq.mid == 553).length >= 2 && hasAAFD) types.push(52);
+		}
+	}
+	
 	if (this.sclass == 54) {  //Akizuki-class
 		if (atypes[A_HAGUN] >= 2 && this.equiptypesB[B_RADAR]) types.push(1);
 		if (atypes[A_HAGUN] && this.equiptypesB[B_RADAR]) types.push(2);
