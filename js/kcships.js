@@ -1333,7 +1333,7 @@ Ship.prototype.NBtypes = function() {
 	let numSurfaceRadar = this.equips.filter(eq => eq.btype == B_RADAR && eq.LOS >= 5).length;
 	
 	if (mguns >= 2 && ['CL','CAV','BBV','AV'].includes(this.type)) {
-		let hasSameGuns = this.equiptypes[MAINGUNS] >= 2 || this.equiptypes[MAINGUNM] >= 2 || this.equiptypes[MAINGUNL] >= 2;
+		let hasSameGuns = true;//this.equiptypes[MAINGUNS] >= 2 || this.equiptypes[MAINGUNM] >= 2 || this.equiptypes[MAINGUNL] >= 2;
 		let numZuiun = this.equips.filter((eq,i) => eq.mid == 490 && this.planecount[i]).length;
 		if (numZuiun >= 2 && numSurfaceRadar) this._nbtypes.push(2001);
 		if (numZuiun >= 2) this._nbtypes.push(2002);
@@ -1606,12 +1606,12 @@ Ship.prototype.getAACItype = function(atypes) {
 	if ([981,986].includes(this.mid) || (SIMCONSTS.aaci49Fubuki && [426].includes(this.mid))) {
 		if (atypes[A_HAFD] >= 2 && this.equips.find(eq => eq.btype == B_RADAR && eq.AA >= 4)) types.push(49);
 	}
-	if ([330,346,357,537,538,968,986].includes(this.mid) || (SIMCONSTS.aaci49Fubuki && [426].includes(this.mid))) {
+	if ([330,346,357,537,538,968,981,986].includes(this.mid) || (SIMCONSTS.aaci49Fubuki && [426].includes(this.mid))) {
 		let num10cmK = this.equips.filter(eq => [533,553].includes(eq.mid)).length;
 		let hasRadar = this.equips.find(eq => eq.btype == B_RADAR && eq.AA >= 4);
 		let hasAAFD = this.equips.find(eq => eq.mid == 121);
 		if (num10cmK >= 2 && hasRadar && hasAAFD) types.push(50);
-		if ([986].includes(this.mid) || (SIMCONSTS.aaci49Fubuki && [426].includes(this.mid))) {
+		if ([981,986].includes(this.mid) || (SIMCONSTS.aaci49Fubuki && [426].includes(this.mid))) {
 			if (num10cmK && hasRadar && this.equips.find(eq => eq.atype == A_AAGUN && eq.AA >= 5)) types.push(51);
 			if (this.equips.filter(eq => eq.mid == 553).length >= 2 && hasAAFD) types.push(52);
 		}
