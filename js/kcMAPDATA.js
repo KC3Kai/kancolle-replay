@@ -2213,6 +2213,39 @@ var MAPDATA = {
 			},
 		}
 	},
+	60: {
+		name: 'Spring 2025',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmDN: 255,
+				bgmNN: 255,
+				bgmDB: 256,
+				bgmNB: 256,
+				bossnode: ['O'],
+			},
+			2: {
+				name: 'E2',
+				bgmDN: 255,
+				bgmNN: 255,
+				bgmDB: 257,
+				bgmNB: 257,
+				bossnode: ['U','W'],
+			},
+			3: {
+				name: 'E3',
+				bgmDN: 257,
+				bgmNN: 257,
+				bgmDB: 256,
+				bgmNB: 256,
+				bossnode: ['G','R','X'],
+				overrideBGM: {
+					'R': { bgmDB: 258, bgmNB: 258 },
+					'X': { bgmDB: 258, bgmNB: 258 },
+				},
+			},
+		}
+	},
 }
 
 //-------------------------------------

@@ -2038,7 +2038,7 @@
 			},
 			{
 				"bonus": { "houm": 1, "kaih": 2, "tais": 1 },
-				"shipBase": [35,63,64,100,101,114,511,516,574],
+				"shipBase": [35,63,64,100,101,114,511,516,574,1001],
 				"level": 7
 			},
 			{
@@ -2093,7 +2093,7 @@
 		"bonuses": [
 			{
 				"bonus": { "houg": 2, "souk": 1 },
-				"shipClass": [73,81]
+				"shipCountry": ["RU"]
 			},
 			{
 				"bonus": { "houg": 2, "souk": 1 },
@@ -2109,11 +2109,11 @@
 		"ids": [283],
 		"bonuses": [
 			{
-				"bonus": { "houg": 1, "raig": 3, "souk": 1 },
-				"shipClass": [73,81]
+				"bonus": { "houg": 1, "raig": 6, "souk": 1 },
+				"shipCountry": ["RU"]
 			},
 			{
-				"bonus": { "houg": 1, "raig": 3, "souk": 1 },
+				"bonus": { "houg": 1, "raig": 6, "souk": 1 },
 				"shipId": [147]
 			}
 		]
@@ -4883,7 +4883,7 @@
 		"ids": [400],
 		"bonuses": [
 			{
-				"bonus": { "houg": 1, "raig": 5, "souk": 1, "kaih": 2 },
+				"bonus": { "houg": 1, "raig": 8, "souk": 1, "kaih": 2 },
 				"shipId": [147]
 			},
 			{
@@ -4893,12 +4893,12 @@
 				"num": 1
 			},
 			{
-				"bonus": { "houg": 1, "raig": 5, "souk": 1, "kaih": 2 },
-				"shipClass": [73,81]
+				"bonus": { "houg": 1, "raig": 8, "souk": 1, "kaih": 2 },
+				"shipCountry": ["RU"]
 			},
 			{
 				"bonus": { "houg": 2 },
-				"shipClass": [73,81],
+				"shipCountry": ["RU"],
 				"requiresId": [282],
 				"num": 1
 			}
@@ -9738,6 +9738,46 @@
 			{
 				"bonus": { "houg": 3, "houm": 2, "kaih": 1, "tais": 3 },
 				"requiresId": [402]
+			}
+		]
+	},
+	{
+		"ids": [555],
+		"bonuses": [
+			{
+				"bonus": { "houg": 1 },
+				"level": 3
+			},
+			{
+				"bonus": { "houm": 1 },
+				"level": 7
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"level": 10
+			},
+			{
+				"bonus": { "houg": 2, "houm": 1, "tais": 1 },
+				"shipBase": [1001]
+			},
+			{
+				"bonus": { "houg": 1, "houm": 1, "tyku": 3, "kaih": 2 },
+				"shipBase": [1001],
+				"requiresId": [556]
+			},
+			{
+				"bonus": { "houg": 1, "kaih": 2, "tais": 1 },
+				"shipBase": [1001],
+				"requiresId": [402]
+			}
+		]
+	},
+	{
+		"ids": [556],
+		"bonuses": [
+			{
+				"bonus": { "houg": 1, "houm": 1, "kaih": 1, "tyku": 3 },
+				"shipBase": [511,1001]
 			}
 		]
 	}
