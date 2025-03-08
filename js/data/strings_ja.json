@@ -799,7 +799,8 @@
 		"Early-Spring 2023": "2023早春",
 		"Summer 2023": "2023夏",
 		"Early-Spring 2024": "2024早春",
-		"Summer": "2024夏"
+		"Summer 2024": "2024夏",
+		"Spring 2025": "2025春"
 	},
 	"bonus": {
 		"World 7-4": "7-4",
@@ -819,7 +820,10 @@
 		"Summer 2024 E2": "2024夏 E2",
 		"Summer 2024 E3": "2024夏 E3",
 		"Summer 2024 E4": "2024夏 E4",
-		"Summer 2024 E5": "2024夏 E5"
+		"Summer 2024 E5": "2024夏 E5",
+		"Spring 2025 E1": "2025春 E1",
+		"Spring 2025 E2": "2025春 E2",
+		"Spring 2025 E3": "2025春 E3"
 	},
 	"sim_error": {
 		"bad_data": "データの形式が正しくありません",
