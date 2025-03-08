@@ -799,7 +799,8 @@
 		"Early-Spring 2023": "Early-Spring 2023",
 		"Summer 2023": "Summer 2023",
 		"Early-Spring 2024": "Early-Spring 2024",
-		"Summer 2024": "Summer 2024"
+		"Summer 2024": "Summer 2024",
+		"Spring 2025": "Spring 2025"
 	},
 	"bonus": {
 		"World 7-4": "World 7-4",
@@ -819,7 +820,10 @@
 		"Summer 2024 E2": "Summer 2024 E2",
 		"Summer 2024 E3": "Summer 2024 E3",
 		"Summer 2024 E4": "Summer 2024 E4",
-		"Summer 2024 E5": "Summer 2024 E5"
+		"Summer 2024 E5": "Summer 2024 E5",
+		"Spring 2025 E1": "Spring 2025 E1",
+		"Spring 2025 E2": "Spring 2025 E2",
+		"Spring 2025 E3": "Spring 2025 E3"
 	},
 	"sim_error": {
 		"bad_data": "Bad format data",
