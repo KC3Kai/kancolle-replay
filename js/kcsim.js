@@ -952,7 +952,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 	return (target.HP <= 0);
 }
 
-function ASW(ship,target,isnight,APIhou,isOASW) {
+function ASW(ship,target,isNightDmg,APIhou,isOASW,isNightActual) {
 	var sonarAcc = 0;
 	for (var i=0; i<ship.equips.length; i++) if (ship.equips[i].btype == B_SONAR) sonarAcc += 2*ship.equips[i].ASW;
 	if (ship.improves.ACCasw) sonarAcc += ship.improves.ACCasw;
@@ -979,10 +979,11 @@ function ASW(ship,target,isnight,APIhou,isOASW) {
 	
 	var res = rollHit(accuracyAndCrit(ship,target,acc,target.getFormation().ASWev,evFlat,1.3,usePlaneProf),usePlaneProf ? ship.critdmgbonus : null);
 	var dmg = 0, realdmg = 0;
-	var premod = (isnight)? 0 : ship.getFormation().ASWmod*ENGAGEMENT*ship.damageMod();
+	var premod = (isNightDmg)? 0 : ship.getFormation().ASWmod*ENGAGEMENT*ship.damageMod();
 	let postMod = 1;
 	if (ship.bonusSpecial) postMod *= getBonusDmg(ship,target);
 	if (SIMCONSTS.enablePlaneBonus && (usePlaneProf || ship.bonusSpecialPNotAirOnly)) postMod *= getBonusSpecialPlane(ship,'bonusSpecialP',usePlaneProf);
+	if (!isNightActual) postMod *= 1 + (ship.fleet.getNumBalloons()/50);
 	if (res) {
 		let pow = Math.floor(softCap(ship.ASWPower()*premod, SIMCONSTS.aswDmgCap))*postMod;
 		dmg = damageCommon(ship,target,pow,res);
@@ -1654,7 +1655,7 @@ function nightPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,NBonly,API
 					let target = nightPhaseTarget(order1[i],alive2,subsalive2,slrerolls2,light2).target;
 					if (target) {
 						if (target.isSub) {
-							if (ASW(order1[i],target,(!NBonly&&!order1[i].isescort),APIhou)) subsalive2.splice(subsalive2.indexOf(target),1);
+							if (ASW(order1[i],target,(!NBonly&&!order1[i].isescort),APIhou,false,true)) subsalive2.splice(subsalive2.indexOf(target),1);
 						} else {
 							if (NBattack(order1[i],target,NBonly,[[star1,star2],[light1,light2],[scout1,scout2]],APIhou)) alive2.splice(alive2.indexOf(target),1);
 						}
@@ -1667,7 +1668,7 @@ function nightPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,NBonly,API
 			let target = nightPhaseTarget(order2[i],alive1,subsalive1,slrerolls1,light1).target;
 			if (target) {
 				if (target.isSub) {
-					if (ASW(order2[i],target,(!NBonly&&!order2[i].isescort),APIhou)) subsalive1.splice(subsalive1.indexOf(target),1);
+					if (ASW(order2[i],target,(!NBonly&&!order2[i].isescort),APIhou,false,true)) subsalive1.splice(subsalive1.indexOf(target),1);
 				} else {
 					if (NBattack(order2[i],target,NBonly,[[star2,star1],[light2,light1],[scout2,scout1]],APIhou)) alive1.splice(alive1.indexOf(target),1);
 				}
@@ -2255,11 +2256,12 @@ function choiceWProtect(targets,searchlightRerolls,includeEscort,ignoreVanguard)
 	return target;
 }
 
-function AADefenceFighters(carriers,showplanes,APIkouku,eqtFilter) {
+function AADefenceFighters(carriers,showplanes,APIkouku,eqtFilter,excludeGyro) {
 	eqtFilter = eqtFilter || 'isfighter';
 	for (var i=0; i<carriers.length; i++) {
 		var ship = carriers[i], hasfighter = false;
 		for (var j=0; j<ship.equips.length; j++) {
+			if (excludeGyro && [AUTOGYRO,ASWPLANE].includes(ship.equips[j].type)) continue;
 			if (ship.equips[j][eqtFilter]) {
 				var lostcount;
 				if (ship.side != 1) {
@@ -2774,7 +2776,7 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 			}
 			var prevAS = alive2[0].fleet.AS;
 			compareAP(shipsS[0].fleet,alive2[0].fleet);
-			AADefenceFighters(shipsS,false,(C)? BAPI.data.api_support_info.api_support_airatack : null);
+			AADefenceFighters(shipsS,false,(C)? BAPI.data.api_support_info.api_support_airatack : null,false); //,true); //unconfirmed
 			AADefenceBombersAndAirstrike(shipsS,alive2,alive2.concat(subsalive2).filter(s => !s.isFaraway),(C)? BAPI.data.api_support_info.api_support_airatack : null,true,false,alive2[0].fleet.combinedWith);
 			alive2[0].fleet.AS = prevAS;
 		}
@@ -4666,7 +4668,7 @@ function nightPhaseCombined(order1,order2,alive1,subsalive1,alive2,subsalive2,ni
 			if (subsalive2.length && order1[i].canASWNight() && (!order1[i].canNBAirAttack() || alive2.length <= 0)) {
 				var target = choiceWProtect(subsalive2);
 				if (target) {
-					ASW(order1[i],target,false,APIhou);
+					ASW(order1[i],target,false,APIhou,false,true);
 					removeSunk(subsalive2);
 				}
 			} else if (alive2.length) {
@@ -4682,7 +4684,7 @@ function nightPhaseCombined(order1,order2,alive1,subsalive1,alive2,subsalive2,ni
 			if (subsalive1.length && order2[i].canASWNight() && (!order2[i].canNBAirAttack() || alive1.length <= 0)) {
 				var target = choiceWProtect(subsalive1);
 				if (target) {
-					ASW(order2[i],target,false,APIhou);
+					ASW(order2[i],target,false,APIhou,false,true);
 					removeSunk(subsalive1);
 				}
 			} else if (alive1.length) {
@@ -4795,7 +4797,7 @@ function friendFleetPhase(fleet1,fleet2,alive2,subsalive2,BAPI) {
 					let target = nightPhaseTargetFF(attacker,alive2,subsalive2,nightEquips);
 					if (target) {
 						if (target.isSub) {
-							ASW(attacker,target,false,APIhou);
+							ASW(attacker,target,false,APIhou,false,true);
 							removeSunk(subsalive2);
 						} else {
 							NBattack(attacker,target,false,nightEquips,APIhou);
@@ -4816,7 +4818,7 @@ function friendFleetPhase(fleet1,fleet2,alive2,subsalive2,BAPI) {
 			let target = nightPhaseTarget(attacker,alive1,subsalive1,nightEquips[3][0],true).target;
 			if (target) {
 				if (target.isSub) {
-					ASW(attacker,target,false,APIhou);
+					ASW(attacker,target,false,APIhou,false,true);
 					removeSunk(subsalive1);
 				} else {
 					NBattack(attacker,target,false,nightEquips,APIhou);

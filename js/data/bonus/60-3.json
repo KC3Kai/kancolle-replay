@@ -1,0 +1,78 @@
+{
+	"world": 60,
+	"mapnum": 3,
+	"date": "2025-03-11",
+	"note": "damage only",
+	"listBonus": [
+		{
+			"bonuses": [
+				{ "dmg": 1.12, "shipType": [1] },
+				{ "dmg": 1.03, "shipType": [2] },
+				{ "dmg": 1.04, "shipType": [3] },
+				{ "dmg": 1.08, "shipType": [16,20] },
+				{ "dmg": 1.28, "shipBase": [699,995] },
+				{ "dmg": 1.16, "shipBase": [15,16,18,38,40,41,49,63,64,100,101,114,631] },
+				{ "dmg": 1.13, "shipClass": [73,81,131] },
+				{ "dmg": 1.13, "shipId": [147] },
+				{ "dmg": 1.12, "requireEquipId": [268], "requireEquipLevel": 7, "perEquip": 0 },
+				{ "dmg": 1.18, "requireEquipId": [554], "requireEquipIdNumX": 1, "perEquip": 0, "isPlane": 1 },
+				{ "dmg": 1.28, "requireEquipId": [554], "requireEquipIdNum": 2, "perEquip": 0, "isPlane": 1 }
+			]
+		},
+		{
+			"nodes": ["E2","F","F1"],
+			"bonuses": [
+				{ "dmg": 1.04, "shipBase": [63,64] },
+				{ "dmg": 1.06, "shipBase": [100,101,114] },
+				{ "dmg": 1.08, "shipBase": [15,16,18,38,40,41,49,631] }
+			]
+		},
+		{
+			"nodes": ["G"],
+			"bonuses": [
+				{ "dmg": 1.07, "shipBase": [63,64] },
+				{ "dmg": 1.06, "shipBase": [100,101,114] },
+				{ "dmg": 1.05, "shipBase": [15,16,18,38,40,41,49,631] }
+			]
+		},
+		{
+			"nodes": ["R","U"],
+			"bonuses": [
+				{ "dmg": 1.11, "shipType": [2,16,17] }
+			]
+		},
+		{
+			"nodes": ["X"],
+			"bonuses": [
+				{ "dmg": 1.07, "shipType": [2] },
+				{ "dmg": 1.08, "shipBase": [63,64] },
+				{ "dmg": 1.08, "shipBase": [100,101,114] },
+				{ "dmg": 1.06, "shipBase": [15,16,18,38,40,41,49,631] }
+			]
+		}
+	],
+	"listBonusLBAS": [
+		{
+			"bonuses": [
+				{ "dmg": 1.16, "isPlane": 1, "requireEquipId": [170,388,454,493,554], "perEquip": 0 }
+			]
+		}
+	],
+	"listDebuff": [
+		{
+			"nodes": ["V"],
+			"debuffs": [
+				{ "shipId": [1617,1618], "amount": 23 }
+			]
+		},
+		{
+			"nodes": ["X"],
+			"debuffs": [
+				{ "shipId": [2282,2283,2284,2285,2286,2287], "amount": 39 },
+				{ "shipId": [1793,1794,1795,1796,1797,1798], "amount": 49 },
+				{ "shipId": [1895,1896], "amount": 48 },
+				{ "shipId": [1541,1542,1543,1594,1595,1765,1780], "amount": 23 }
+			]
+		}
+	]
+}
