@@ -6385,7 +6385,7 @@ var EQDATA = {
 		LOS: 2,
 	},
 	555: {
-		name: '18cm/57 三連装主砲',
+		name: '18cm/57 Triple Main Gun Mount',
 		nameJP: '18cm/57 三連装主砲',
 		added: '2025-03-08',
 		type: MAINGUNM,
@@ -6395,7 +6395,7 @@ var EQDATA = {
 		RNG: 2,
 	},
 	556: {
-		name: '10cm/56 単装高角砲(集中配備)',
+		name: '10cm/56 Single High-angle Gun Mount (Concentrated Deployment)',
 		nameJP: '10cm/56 単装高角砲(集中配備)',
 		added: '2025-03-08',
 		type: SECGUN, image: 16,
@@ -7992,7 +7992,7 @@ var EQDATA = {
 		RNG: 2,
 	},
 	1653: {
-		name: '深海5inch連装砲 Mk.30+GFCS',
+		name: 'Abyssal 5inch Twin Gun Mount Mk.30 + GFCS',
 		nameJP: '深海5inch連装砲 Mk.30+GFCS',
 		added: '2025-03-08',
 		type: MAINGUNS, image: 16,
@@ -8004,7 +8004,7 @@ var EQDATA = {
 		RNG: 2,
 	},
 	1654: {
-		name: '深海18cm三連装砲+深海SG',
+		name: 'Abyssal 18cm Twin Gun Mount + Abyssal SG',
 		nameJP: '深海18cm三連装砲+深海SG',
 		added: '2025-03-08',
 		type: MAINGUNM,

@@ -678,6 +678,9 @@ var UI_FLEETEDITOR = Vue.createApp({
 		
 		onchangeEquipLevel: function(ship) {
 			FLEET_MODEL.updateEquipStats(ship);
+			if (ship.mstId > 0 && this.canBonus) {
+				COMMON.BONUS_MANAGER.applyAutoBonusShip(ship,this.fleet.isFriend);
+			}
 		},
 		
 		onchangeType: function() {
