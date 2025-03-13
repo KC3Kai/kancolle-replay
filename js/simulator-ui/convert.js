@@ -1038,6 +1038,11 @@ window.CONVERT = {
 		dataSave.settingsFCF = this._copyObj(dataUI.settingsFCF);
 		if (dataUI.autoBonus) dataSave.autoBonus = this._copyObj(dataUI.autoBonus);
 		
+		let results = {};
+		if (+dataUI.results.perHPRes != 1) results.perHPRes = dataUI.results.perHPRes;
+		if (+dataUI.results.perTPRes != 1) results.perTPRes = dataUI.results.perTPRes;
+		if (Object.keys(results).length) dataSave.results = results;
+		
 		dataSave.version = this._SAVE_VERSION_CURRENT;
 		
 		return dataSave;
@@ -1175,6 +1180,12 @@ window.CONVERT = {
 		if (dataSave.autoBonus) {
 			dataUI.autoBonus = {};
 			this._copyObj(dataSave.autoBonus,null,dataUI.autoBonus);
+		}
+		
+		if (dataSave.results) {
+			for (let key in dataSave.results) {
+				dataUI.results[key] = dataSave.results[key];
+			}
 		}
 	},
 };

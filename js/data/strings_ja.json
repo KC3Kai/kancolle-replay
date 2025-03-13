@@ -485,7 +485,7 @@
 	"ammo_percent": "弾薬残量(%)",
 	"air_sub_node": "対潜空襲マス",
 	"air_sub_support": "攻撃不能",
-	"show_equipped_stats": "装備補正値を見る",
+	"show_equipped_stats": "装備加算値を表示",
 	"autoscale_stats": "自動調整 {img_hp}/{img_ev}/{img_asw}/{img_los} with {img_lv}",
 	"preserve_bonus_on_change": "艦の変更時に特効を維持",
 	"show_additional_stats": "\u24d8 艦隊詳細",
