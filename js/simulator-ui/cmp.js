@@ -30,11 +30,15 @@ COMMON.CMP_MODAL = {
 					let h = Math.ceil(rect.height/2)*2;
 					this.$refs.content.style = 'width:' + w + ';height:' + h;
 				});
+				if (COMMON.modalCount++ <= 0) document.body.style.overflow = 'hidden';
+			} else {
+				if (--COMMON.modalCount <= 0) document.body.style.overflow = '';
 			}
 		},
 	},
 	template: document.getElementById('tmpModal')
 };
+COMMON.modalCount = 0;
 
 COMMON.CMP_LOADING = {
 	props: [],
