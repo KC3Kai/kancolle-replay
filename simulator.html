@@ -1125,7 +1125,7 @@
 		</div>
 	</div>
 	<div v-show="showKC3ProfileHelp">
-		<vmodal @vclose="showKC3ProfileHelp=false">
+		<vmodal :active="showKC3ProfileHelp" @vclose="showKC3ProfileHelp=false">
 		<div id="divKC3ProfileHelp">
 			<div>{{$t('kc3kai_import_desc_0')}}</div>
 			<div>1. {{$t('kc3kai_import_desc_1')}}</div>

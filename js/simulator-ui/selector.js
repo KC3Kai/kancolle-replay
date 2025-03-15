@@ -20,6 +20,7 @@ var METHODS_COMMON = {
 			this.searchSelected = null;
 			this.searchInd = 0;
 			this.buttonsChoice = null;
+			if (--COMMON.modalCount <= 0) document.body.style.overflow = '';
 			METHODS_COMMON.callbackClose();
 		},
 		doSubmit: function(mstId) {
@@ -164,6 +165,7 @@ var UI_SHIPSELECTOR = Vue.createApp({
 				this.oninputSearch();
 			}
 			this.$nextTick(() => this.$refs.inputShipSelSearch.focus());
+			if (COMMON.modalCount++ <= 0) document.body.style.overflow = 'hidden';
 		},
 		doClose: METHODS_COMMON.methods.doClose,
 		doSubmit: METHODS_COMMON.methods.doSubmit,
@@ -234,6 +236,7 @@ var UI_EQUIPSELECTOR = Vue.createApp({
 				this.oninputSearch();
 			}
 			this.$nextTick(() => this.$refs.inputEquipSelSearch.focus());
+			if (COMMON.modalCount++ <= 0) document.body.style.overflow = 'hidden';
 		},
 		doClose: METHODS_COMMON.methods.doClose,
 		doSubmit: METHODS_COMMON.methods.doSubmit,
