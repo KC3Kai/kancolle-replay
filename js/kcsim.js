@@ -1934,14 +1934,14 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 		acc *= smokeModAcc[smokeType-1];
 	}
 	
-	if (ship.fleet.useBalloon) {
+	if (ship.fleet.useBalloon || (ship.fleet.combinedWith && ship.fleet.combinedWith.useBalloon)) {
 		let num = ship.fleet.getNumBalloons();
 		if (num) {
 			acc *= SIMCONSTS.balloonSelfAirMod[num-1] ?? 1;
 			acc += SIMCONSTS.balloonSelfAirFlat[num-1]/100 ?? 0;
 		}
 	}
-	if (target.fleet.useBalloon) {
+	if (target.fleet.useBalloon || (target.fleet.combinedWith && target.fleet.combinedWith.useBalloon)) {
 		let num = target.fleet.getNumBalloons();
 		if (num) {
 			acc *= SIMCONSTS.balloonOppoAirMod[num-1] ?? 1;
@@ -3135,14 +3135,14 @@ function airstrikeLBAS(lbas,target,slot,contactMod,contactModLB,isjetphase) {
 		if (equip.bonusSpecialAccPSelf) acc *= equip.bonusSpecialAccPSelf;
 	}
 	
-	if (FLEETS1[0] && FLEETS1[0].useBalloon) {
+	if (FLEETS1[0] && (FLEETS1[0].useBalloon || (FLEETS1[0].combinedWith && FLEETS1[0].combinedWith.useBalloon))) {
 		let num = FLEETS1[0].getNumBalloons();
 		if (num) {
 			acc *= SIMCONSTS.balloonSelfLBASMod[num-1] ?? 1;
 			acc += SIMCONSTS.balloonSelfLBASFlat[num-1]/100 ?? 0;
 		}
 	}
-	if (target.fleet.useBalloon) {
+	if (target.fleet.useBalloon || (target.fleet.combinedWith && target.fleet.combinedWith.useBalloon)) {
 		let num = target.fleet.getNumBalloons();
 		if (num) {
 			acc *= SIMCONSTS.balloonOppoLBASMod[num-1] ?? 1;
