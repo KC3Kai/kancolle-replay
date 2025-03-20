@@ -1326,6 +1326,22 @@ function canSpecialAttackUnique(ship,isNB,isCheck) {
 			if (ship.fleet.combinedWith) ship.fleet.combinedWith.didSpecial = 2;
 			return true;
 		}
+	} else if (ship.attackSpecial == 106) {
+		if (ship.fleet.didSpecial) return false;
+		if (ship.fleet.ships[0] != ship || (!isNB && ship.isescort)) return false;
+		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated && !ship.isSub).length < 6) return false;
+		if (!isCheck && ship.fleet.formation.id != 12 && ship.fleet.formation.id != 4) return false;
+		if (ship.HP/ship.maxHP <= .5) return false;
+		if (![364,733].includes(ship.fleet.ships[1].mid)) return false;
+		if (ship.fleet.ships[1].HP/ship.fleet.ships[1].maxHP <= .25) return false;
+		if (isCheck) return true;
+		if (ship.fleet.combineType == 1 && ship.fleet.battleType == '12v6') return false;
+		let rate = SIMCONSTS.qeSpecialRate;
+		if (Math.random() < rate/100) {
+			ship.fleet.didSpecial = 1;
+			if (ship.fleet.combinedWith) ship.fleet.combinedWith.didSpecial = 2;
+			return true;
+		}
 	}
 	return false;
 }
@@ -1341,6 +1357,8 @@ function getSpecialAttackShips(ships,attackSpecial,shipCurrent) {
 	} else if (attackSpecial == 104) {
 		attackers = [ships[0], ships[1]];
 	} else if (attackSpecial == 105) {
+		attackers = [ships[0], ships[0], ships[1]];
+	} else if (attackSpecial == 106) {
 		attackers = [ships[0], ships[0], ships[1]];
 	} else if (attackSpecial == 200) {
 		attackers = [shipCurrent,shipCurrent];
@@ -1439,6 +1457,11 @@ function getSpecialAttackMod(ship,attackSpecial) {
 		else if (numGun == 1) mod *= 1.11;
 	} else if (attackSpecial == 105) {
 		mod = ship.isflagship && [392,969].includes(ship.mid) ? 1.3 : 1.24;
+		modAcc = 1.4;
+		if (ship.equiptypesB[B_APSHELL]) { mod *= 1.35; modAcc *= 1.15; }
+		if (ship.equiptypesB[B_RADAR]) { mod *= 1.15; modAcc *= 1.15; }
+	} else if (attackSpecial == 106) {
+		mod = ship.isflagship && [733].includes(ship.mid) ? 1.2 : 1.24;
 		modAcc = 1.4;
 		if (ship.equiptypesB[B_APSHELL]) { mod *= 1.35; modAcc *= 1.15; }
 		if (ship.equiptypesB[B_RADAR]) { mod *= 1.15; modAcc *= 1.15; }

@@ -265,6 +265,7 @@
 	"yamato_special_2": "Yamato Special (2-ship)",
 	"submarine_special": "Submarine Special Attack",
 	"richelieu_special": "Richelieu Special Attack",
+	"qe_special": "Queen Elizabeth Special Attack",
 	"use_provisional_B-25": "Use provisional B-25 bonuses for Abyssal skip bomb airstrikes",
 	"cf_airstrike_base_mods": "Combined Fleet Airstrike Base Mods",
 	"damage_base": "Damage (Base {0})",

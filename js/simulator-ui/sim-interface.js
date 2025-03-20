@@ -720,7 +720,7 @@ var SIM = {
 		}
 		
 		if (dataInput.nodes.find(node => node.useSmoke) && dataInput.consts && dataInput.consts.smokeChanceUseFormula) {
-			this._addWarning('warn_smoke_formula',FLEETS1[0].getSmokeRates());
+			this._addWarning('warn_smoke_formula',FLEETS1[0].getSmokeRates().map(n => Math.round(1000*n)/1000));
 		}
 		
 		this._resultsCountDamecon = !!(dataInput.continueOnTaiha || shipsAll.find(ship => ship.noRetreatOnTaiha) || shipsAll.find(ship => ship.equips.find(eq => eq.masterId == 42 || eq.masterId == 43)));

@@ -80,6 +80,7 @@ var COMMON = {
 		{ attackSpecial: 102, formations: [4,12] },
 		{ attackSpecial: 103, formations: [4,12] },
 		{ attackSpecial: 105, formations: [2,12] },
+		{ attackSpecial: 106, formations: [4,12] },
 		{ ids: [546,911,916], formations: [4,12] },
 		{ types: ['AS'], formations: [4,5] },
 	],
