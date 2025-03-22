@@ -6405,6 +6405,29 @@ var EQDATA = {
 		LOS: 1,
 		RNG: 1,
 	},
+	557: {
+		name: 'Type 0 Fighter Model 62 Kai (Night Fighter-bomber)',
+		nameJP: '零式艦戦62型改(夜間爆戦)',
+		added: '2025-03-23',
+		type: DIVEBOMBER, image: 58,
+		DIVEBOMB: 5,
+		AA: 4,
+		ACC: 1,
+		ASW: 3,
+		LOS: 1,
+	},
+	558: {
+		name: 'Type 0 Fighter Model 62 Kai (Skilled/Night Fighter-bomber)',
+		nameJP: '零式艦戦62型改(熟練/夜間爆戦)',
+		added: '2025-03-23',
+		type: DIVEBOMBER, image: 58,
+		DIVEBOMB: 6,
+		AA: 5,
+		ACC: 1,
+		EV: 2,
+		ASW: 4,
+		LOS: 2,
+	},
 	1501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
@@ -8265,6 +8288,8 @@ var LBASDATA = {
 	551: { distance: 4, cost: 3 },
 	552: { distance: 4, cost: 4 },
 	554: { distance: 4, cost: 5 },
+	557: { distance: 4, cost: 5 },
+	558: { distance: 5, cost: 5 },
 };
 
 
