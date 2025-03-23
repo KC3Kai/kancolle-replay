@@ -824,7 +824,10 @@
 		"Summer 2024 E5": "Summer 2024 E5",
 		"Spring 2025 E1": "Spring 2025 E1",
 		"Spring 2025 E2": "Spring 2025 E2",
-		"Spring 2025 E3": "Spring 2025 E3"
+		"Spring 2025 E3": "Spring 2025 E3",
+		"Spring 2025 E4": "Spring 2025 E4",
+		"Spring 2025 E5": "Spring 2025 E5",
+		"Spring 2025 E6": "Spring 2025 E6"
 	},
 	"sim_error": {
 		"bad_data": "Bad format data",
