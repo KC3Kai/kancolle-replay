@@ -37236,7 +37236,7 @@ var SHIPDATA = {
 		EQUIPS: [1654, 1654, 1654, 1575, 1603],
 	},
 	2288: {
-		name: 'Ra-Class Destroyer Gamma (Initial Model)',
+		name: 'DD Ra-Class Gamma (Initial Model)',
 		nameJP: '駆逐ラ級γ(初期型)',
 		image: 'S2288.jpg',
 		type: 'DD',
@@ -37259,7 +37259,7 @@ var SHIPDATA = {
 		EQUIPS: [1653, 1653, 1645, 1646],
 	},
 	2289: {
-		name: 'Ra-Class Destroyer Gamma 1',
+		name: 'DD Ra-Class Gamma 1',
 		nameJP: '駆逐ラ級γ',
 		image: 'S2288.jpg',
 		type: 'DD',
@@ -37283,7 +37283,7 @@ var SHIPDATA = {
 		EQUIPS: [1653, 1653, 1645, 1646],
 	},
 	2290: {
-		name: 'Ra-Class Destroyer Gamma 2',
+		name: 'DD Ra-Class Gamma 2',
 		nameJP: '駆逐ラ級γ',
 		image: 'S2288.jpg',
 		type: 'DD',
@@ -37307,7 +37307,7 @@ var SHIPDATA = {
 		EQUIPS: [1653, 1653, 1645, 1646],
 	},
 	2291: {
-		name: 'Ra-Class Destroyer Delta (Initial Model)',
+		name: 'DD Ra-Class Delta (Initial Model)',
 		nameJP: '駆逐ラ級δ(初期型)',
 		image: 'S2291.jpg',
 		type: 'DD',
@@ -37330,7 +37330,7 @@ var SHIPDATA = {
 		EQUIPS: [1653, 1653, 1645, 1646],
 	},
 	2292: {
-		name: 'Ra-Class Destroyer Delta 1',
+		name: 'DD Ra-Class Delta 1',
 		nameJP: '駆逐ラ級δ',
 		image: 'S2291.jpg',
 		type: 'DD',
@@ -37354,7 +37354,7 @@ var SHIPDATA = {
 		EQUIPS: [1653, 1653, 1645, 1646],
 	},
 	2293: {
-		name: 'Ra-Class Destroyer Delta 2',
+		name: 'DD Ra-Class Delta 2',
 		nameJP: '駆逐ラ級δ',
 		image: 'S2291.jpg',
 		type: 'DD',
@@ -37378,7 +37378,7 @@ var SHIPDATA = {
 		EQUIPS: [1653, 1653, 1645, 1646],
 	},
 	2294: {
-		name: 'Ra-Class Destroyer Zeta (Initial Model)',
+		name: 'DD Ra-Class Zeta (Initial Model)',
 		nameJP: '駆逐ラ級ζ',
 		image: 'S2294.jpg',
 		type: 'DD',
@@ -37401,7 +37401,7 @@ var SHIPDATA = {
 		EQUIPS: [1653, 1653, 1645, 1646],
 	},
 	2295: {
-		name: 'Ra-Class Destroyer Zeta 1',
+		name: 'DD Ra-Class Zeta 1',
 		nameJP: '駆逐ラ級ζ',
 		image: 'S2294.jpg',
 		type: 'DD',
@@ -37424,7 +37424,7 @@ var SHIPDATA = {
 		EQUIPS: [],
 	},
 	2296: {
-		name: 'Ra-Class Destroyer Zeta 2',
+		name: 'DD Ra-Class Zeta 2',
 		nameJP: '駆逐ラ級ζ',
 		image: 'S2294.jpg',
 		type: 'DD',
@@ -37448,7 +37448,7 @@ var SHIPDATA = {
 		EQUIPS: [1653, 1653, 1645, 1646],
 	},
 	2297: {
-		name: 'Ra-Class Destroyer Zeta - Damaged 1',
+		name: 'DD Ra-Class Zeta - Damaged 1',
 		nameJP: '駆逐ラ級ζ-壊',
 		image: 'S2297.jpg',
 		type: 'DD',
@@ -37471,7 +37471,7 @@ var SHIPDATA = {
 		EQUIPS: [1653, 1653, 1645, 1646],
 	},
 	2298: {
-		name: 'Ra-Class Destroyer Zeta - Damaged 2',
+		name: 'DD Ra-Class Zeta - Damaged 2',
 		nameJP: '駆逐ラ級ζ-壊',
 		image: 'S2297.jpg',
 		type: 'DD',
@@ -37494,7 +37494,7 @@ var SHIPDATA = {
 		EQUIPS: [],
 	},
 	2299: {
-		name: 'Ra-Class Destroyer Zeta - Damaged 3',
+		name: 'DD Ra-Class Zeta - Damaged 3',
 		nameJP: '駆逐ラ級ζ-壊',
 		image: 'S2297.jpg',
 		type: 'DD',
