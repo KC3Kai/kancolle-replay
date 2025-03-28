@@ -6421,6 +6421,8 @@ var EQDATA = {
 		nameJP: '零式艦戦62型改(熟練/夜間爆戦)',
 		added: '2025-03-23',
 		type: DIVEBOMBER, image: 58,
+		aaResistShip: .6,
+		aaResistFleet: .7,
 		DIVEBOMB: 6,
 		AA: 5,
 		ACC: 1,
