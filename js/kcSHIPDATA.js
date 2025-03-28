@@ -37379,7 +37379,7 @@ var SHIPDATA = {
 		EQUIPS: [1653, 1653, 1645, 1646],
 	},
 	2294: {
-		name: 'DD Ra-Class Zeta (Initial Model)',
+		name: 'DD Ra-Class Zeta 1',
 		nameJP: '駆逐ラ級ζ',
 		image: 'S2294.jpg',
 		type: 'DD',
@@ -37402,7 +37402,7 @@ var SHIPDATA = {
 		EQUIPS: [1653, 1653, 1645, 1646],
 	},
 	2295: {
-		name: 'DD Ra-Class Zeta 1',
+		name: 'DD Ra-Class Zeta 2',
 		nameJP: '駆逐ラ級ζ',
 		image: 'S2294.jpg',
 		type: 'DD',
@@ -37426,7 +37426,7 @@ var SHIPDATA = {
 		EQUIPS: [1653, 1653, 1645, 1646],
 	},
 	2296: {
-		name: 'DD Ra-Class Zeta 2',
+		name: 'DD Ra-Class Zeta 3',
 		nameJP: '駆逐ラ級ζ',
 		image: 'S2294.jpg',
 		type: 'DD',

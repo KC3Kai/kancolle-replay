@@ -1,0 +1,92 @@
+{
+	"world": 60,
+	"mapnum": 5,
+	"date": "2025-03-28",
+	"note": "damage only, LBAS WIP, no debuff yet",
+	"listBonus": [
+		{
+			"bonuses": [
+				{ "dmg": 1.12, "shipType": [1,21] },
+				{ "dmg": 1.03, "shipType": [2] },
+				{ "dmg": 1.04, "shipType": [3] },
+				{ "dmg": 1.08, "shipType": [16,20] },
+				{ "dmg": 1.11, "shipBase": [49,64,183,410,425,992,994] },
+				{ "dmg": 1.13, "shipBase": [16,35,41,43,65,77,79,87,184] },
+				{ "dmg": 1.08, "shipBase": [20,22,25,167,170,181,642,643] },
+				{ "dmg": 1.04, "shipBase": [183] },
+				{ "dmg": 1.05, "shipClass": [38] },
+				{ "dmg": 1.06, "shipBase": [64] },
+				{ "dmg": 1.07, "shipClass": [101] },
+				{ "dmg": 1.08, "shipBase": [49] },
+				{ "dmg": 1.02, "isPlane": 1, "notAirOnly": 1, "requireEquipId": [118,238,239,338,339,344,345,373,374,523,545], "perEquip": 0 },
+				{ "dmg": 1.04, "isPlane": 1, "notAirOnly": 1, "requireEquipId": [237,322,323,469,490,521,540,552,557,558], "perEquip": 0 }
+			]
+		},
+		{
+			"nodes": ["K"],
+			"bonuses": [
+				{ "dmg": 1.05, "shipBase": [16,35,41,43,65,77,79,87,184] },
+				{ "dmg": 1.06, "shipBase": [20,22,25,167,170,181,642,643] }
+			]
+		},
+		{
+			"nodes": ["M","N","O","P","P1"],
+			"bonuses": [
+				{ "dmg": 1.05, "shipBase": [49,64,183,410,425,992,994] }
+			]
+		},
+		{
+			"nodes": ["Q"],
+			"bonuses": [
+				{ "dmg": 1.06, "shipBase": [49,64,183,410,425,992,994] }
+			]
+		},
+		{
+			"nodes": ["R"],
+			"bonuses": [
+				{ "dmg": 1.07, "shipBase": [49,64,183,410,425,992,994] }
+			]
+		},
+		{
+			"nodes": ["T"],
+			"bonuses": [
+				{ "dmg": 1.09, "shipBase": [49,64,183,410,425,992,994] },
+				{ "dmg": 1.04, "isPlane": 1, "notAirOnly": 1, "requireEquipId": [118,238,239,338,339,344,345,373,374,523,545], "perEquip": 0 },
+				{ "dmg": 1.06, "isPlane": 1, "notAirOnly": 1, "requireEquipId": [237,322,323,469,490,521,540,552,557,558], "perEquip": 0 }
+			]
+		},
+		{
+			"nodes": ["U","U1","U2","U3","V","X","Y"],
+			"bonuses": [
+				{ "dmg": 1.03, "shipBase": [49,64,183,410,425,992,994] }
+			]
+		},
+		{
+			"nodes": ["Q","X"],
+			"bonuses": [
+				{ "dmg": 1.05, "isPlane": 1, "notAirOnly": 1, "requireEquipId": [118,238,239,338,339,344,345,373,374,523,545], "perEquip": 0 },
+				{ "dmg": 1.08, "isPlane": 1, "notAirOnly": 1, "requireEquipId": [237,322,323,469,490,521,540,552,557,558], "perEquip": 0 }
+			]
+		},
+		{
+			"nodes": ["Z"],
+			"bonuses": [
+				{ "dmg": 1.11, "shipBase": [49,64,183,410,425,992,994] },
+				{ "dmg": 1.06, "isPlane": 1, "notAirOnly": 1, "requireEquipId": [118,238,239,338,339,344,345,373,374,523,545], "perEquip": 0 },
+				{ "dmg": 1.08, "isPlane": 1, "notAirOnly": 1, "requireEquipId": [237,322,323,469,490,521,540,552,557,558], "perEquip": 0 }
+			]
+		}
+	],
+	"listBonusLBAS": [
+		{
+			"bonuses": [
+				{ "dmg": 1.11, "isPlane": 1, "requireEquipId": [201,311,459], "perEquip": 0 },
+				{ "dmg": 1.17, "isPlane": 1, "requireEquipId": [218,312,343,396], "perEquip": 0 },
+				{ "dmg": 0.6, "isPlane": 1, "requireEquipIdNot": [201,311,218,312,395,396,459,552], "perEquip": 0 }
+			]
+		}
+	],
+	"listDebuff": [
+		
+	]
+}

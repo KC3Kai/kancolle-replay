@@ -24,6 +24,7 @@ COMMON.BONUS_MANAGER = {
 		'60-2': { name: 'Spring 2025 E2' },
 		'60-3': { name: 'Spring 2025 E3' },
 		'60-4': { name: 'Spring 2025 E4' },
+		'60-5': { name: 'Spring 2025 E5' },
 	},
 	_URL_DEWY_INDEX: 'https://api.github.com/repos/sorewachigauyo/kc-event-bonus/git/trees/master?recursive=1',
 	_URL_DEWY_PATH: 'https://raw.githubusercontent.com/sorewachigauyo/kc-event-bonus/master/',
@@ -181,6 +182,7 @@ COMMON.BONUS_MANAGER = {
 				if (bonus.requireEquipId && !bonus.requireEquipId.includes(equip.mstId)) continue;
 				if (bonus.requireEquipId && bonus.requireEquipIdNum && ship.equips.filter(eq => bonus.requireEquipId.includes(eq.mstId)).length < bonus.requireEquipIdNum) continue;
 				if (bonus.requireEquipId && bonus.requireEquipIdNumX && ship.equips.filter(eq => bonus.requireEquipId.includes(eq.mstId)).length != bonus.requireEquipIdNumX) continue;
+				if (bonus.requireEquipIdNot && bonus.requireEquipIdNot.includes(equip.mstId)) continue;
 				if (bonus.requireEquipType && !bonus.requireEquipType.includes(EQDATA[equip.mstId].type)) continue;
 				
 				let equipObj = equip;
