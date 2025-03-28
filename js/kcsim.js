@@ -274,6 +274,7 @@ var SIMCONSTS = {
 	airstrikeAccEE: -15,
 	nbOnlyCFAccBase: 69,
 	supportASWAccBase: 50,
+	supportTorpAccBase: 54,
 	smokeChance: [0,0,0],
 	smokeChanceUseFormula: false,
 	smokeModShellAccF: [1,1,1],
@@ -2740,7 +2741,7 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 					formMod = FLEETS1[0].formation.torpacc;
 					if (FLEETS1[0].formation.id == 6 && target.type == 'DD') formMod *= 1.2;
 				}
-				accCrit = accuracyAndCrit(ship,target,hitRate(ship,54,ship.ACC/*+torpDmg*.35*/,ship.moraleMod(true)*formMod*accMod),target.getFormation().torpev,evFlat,1.2);
+				accCrit = accuracyAndCrit(ship,target,hitRate(ship,SIMCONSTS.supportTorpAccBase,ship.ACC/*+torpDmg*.35*/,ship.moraleMod(true)*formMod*accMod),target.getFormation().torpev,evFlat,1.2);
 			} else if (suptype == 2) {
 				var baseacc;
 				if (isboss) baseacc = (SIMCONSTS.supportShellB != null)? SIMCONSTS.supportShellB : 64;
