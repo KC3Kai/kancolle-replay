@@ -71,6 +71,7 @@ var UI_MAIN = Vue.createApp({
 			dameconNumTaiha: null,
 			retreatOnChuuhaIfAll: 0,
 			replaceImpossibleFormations: true,
+			tpFormula: 'def',
 			mechanics: [],
 			shellDmgCap: SIMCONSTS.shellDmgCap,
 			aswDmgCap: SIMCONSTS.aswDmgCap,
@@ -323,6 +324,8 @@ var UI_MAIN = Vue.createApp({
 							dataSave = CONVERT.replayToSave(dataReplay);
 							this.settings.airRaidCostW6 = dataReplay.world == 6;
 							this.enableAntiSubRaid = !(dataReplay.world < 20);
+							let keyWorldMap = dataReplay.world + '-' + dataReplay.mapnum;
+							if (Array.from(this.$refs.selTPFormula.options).find(opt => opt.value == keyWorldMap)) this.settings.tpFormula = keyWorldMap;
 							if (localStorage.sim2 && !CONVERT.saveIsEmpty(JSON.parse(localStorage.sim2))) {
 								let style = document.createElement('style');
 								style.innerText = '#divMain > *, #divOther { display: none; }';
@@ -2138,6 +2141,7 @@ var UI_AUTOBONUS = Vue.createApp({
 					if (battle) battle.useBalloon = COMMON.BARRAGE_BALLOON_NODES.includes(keyB);
 					if (battle) battle.useAtoll = COMMON.ATOLL_NODES.includes(keyB);
 				}
+				if (Array.from(UI_MAIN.$refs.selTPFormula.options).find(opt => opt.value == this.keyPreset)) UI_MAIN.settings.tpFormula = this.keyPreset;
 			}
 			if (this.type == 'dewy' && this.keyDewy) {
 				autoBonus = {

@@ -127,7 +127,7 @@ var SIM = {
 			});
 		}
 	},
-	_updateResultsNode: function(resultSim,battleInd) {
+	_updateResultsNode: function(resultSim,battleInd,dataInput) {
 		let rNode = this._results.nodes[battleInd];
 		rNode.num++;
 		rNode.ranks[resultSim.rank]++;
@@ -146,8 +146,9 @@ var SIM = {
 		rNode.undamaged += +!!resultSim.undamaged;
 		rNode.airStates[FLEETS1[0].AS+2] += 1;
 		if (battleInd == this._results.nodes.length-1 && (resultSim.rank == 'S' || resultSim.rank == 'A')) {
-			let tp = FLEETS1[0].getTransport();
-			if (FLEETS1[1]) tp += FLEETS1[1].getTransport();
+			let tpFuncName = COMMON.getTPFormulaSimFunction(dataInput.tpFormula);
+			let tp = FLEETS1[0][tpFuncName]();
+			if (FLEETS1[1]) tp += FLEETS1[1][tpFuncName]();
 			if (resultSim.rank == 'A') tp = Math.floor(tp*.7);
 			this._results.totalTransport += tp;
 		}
@@ -947,7 +948,7 @@ var SIM = {
 			
 			if (isBossNode) {
 				if (!dataReplay) {
-					this._updateResultsNode(result,battleInd);
+					this._updateResultsNode(result,battleInd,dataInput);
 				}
 				break;
 			}
@@ -983,7 +984,7 @@ var SIM = {
 			}
 			
 			if (!dataReplay) {
-				this._updateResultsNode(result,battleInd);
+				this._updateResultsNode(result,battleInd,dataInput);
 			}
 			
 			for (let ship of shipsAll) delete ship._tempFCF;

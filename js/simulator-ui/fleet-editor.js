@@ -1090,11 +1090,12 @@ var UI_ADDITIONALSTATS = Vue.createApp({
 			this.fleet.airPower = fleetSim.fleetAirPower();
 			this.fleet.airPowerCombined = null;
 			this.fleet.airPowerLB = fleetSim.fleetAirPower('isPlane');
-			this.fleet.transport = fleetSim.getTransport();
+			let tpFuncName = COMMON.getTPFormulaSimFunction(COMMON.UI_MAIN ? COMMON.UI_MAIN.settings.tpFormula : 'def');
+			this.fleet.transport = fleetSim[tpFuncName]();
 			if (fleetSim.combinedWith) {
 				this.fleet.airPowerCombined = fleetSim.fleetAirPower() + fleetSim.combinedWith.fleetAirPower();
 				this.fleet.airPowerLB += fleetSim.combinedWith.fleetAirPower('isPlane');
-				this.fleet.transport += fleetSim.combinedWith.getTransport();
+				this.fleet.transport += fleetSim.combinedWith[tpFuncName]();
 			}
 			for (let i=1; i<=4; i++) {
 				let los = fleetSim.fleetELoS(i);
