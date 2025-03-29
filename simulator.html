@@ -173,6 +173,12 @@
 				<div><label><input type="checkbox" v-model="enableAntiSubRaid" /> <span class="tooltip" :title="$t('enable_anti_sub_raid_desc')">{{$t('enable_anti_sub_raid')}}</span></label></div>
 			</div>
 			<div>
+				<div><img src="assets/items/25.png"/><label>{{$t('tp_formula')}}: <select ref="selTPFormula" v-model="settings.tpFormula">
+					<option value="def">{{$t('tp_formula_name.default')}}</option>
+					<option value="60-2">{{$t('tp_formula_name.60-2')}}</option>
+				</select></label></div>
+			</div>
+			<div>
 				<div class="scrollAnchor"><div ref="divSettingsHistoricalScroll"></div></div>
 				<div><span class="subheader">{{$t('historical_bonus')}}:</span></div>
 				<div>

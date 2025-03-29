@@ -22,6 +22,12 @@ var COMMON = {
 	BARRAGE_BALLOON_NODES: ['3-5-H','4-3-N','4-5-T','57-5-L1','57-5-L2','57-5-O','57-6-C2','57-6-Q','57-7-A5','57-7-H','57-7-P','57-7-U','57-7-Z','59-1-I','59-1-M','59-2-M','59-2-U','59-3-V1','59-3-X','60-1-O','60-2-W','60-3-R','60-3-U','60-5-Q','60-5-Z'],
 	ATOLL_NODES: ['58-2-Y','58-3-Z','58-4-S'],
 	
+	_tpFormulaKeyToSimFunction: {
+		'def': 'getTransport',
+		'60-2': 'getTransport602',
+	},
+	getTPFormulaSimFunction: function(key) { return this._tpFormulaKeyToSimFunction[key] || 'getTransport' },
+	
 	ID_GEN: {
 		_ids: {},
 		nextId: function(key) {

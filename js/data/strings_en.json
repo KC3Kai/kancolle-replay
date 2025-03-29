@@ -241,6 +241,7 @@
 	"use_default_w6_air_raid": "Use default World 6 costs for Air Raid",
 	"enable_anti_sub_raid": "Enable Anti-Sub Air Raid",
 	"enable_anti_sub_raid_desc": "Used only in event maps, disable if simulating normal world maps",
+	"tp_formula": "Transport Formula",
 	"bucket_count_use": "Count use if HP \u2264 {inp_hp}% OR repair time > {inp_time} hours",
 	"bucket_do_not_count_use": "Do not count if repair time < {inp_time} hours (regardless of above)",
 	"carry_over_ship_hp": "Carry over ship HP between sims unless {img_bucket} conditions (not including \"Do not count if repair time <\")",
@@ -828,6 +829,11 @@
 		"Spring 2025 E4": "Spring 2025 E4",
 		"Spring 2025 E5": "Spring 2025 E5",
 		"Spring 2025 E6": "Spring 2025 E6"
+	},
+	"tp_formula_name": {
+		"default": "Default",
+		"60-2": "Spring 2025 E2",
+		"60-5": "Spring 2025 E5"
 	},
 	"sim_error": {
 		"bad_data": "Bad format data",

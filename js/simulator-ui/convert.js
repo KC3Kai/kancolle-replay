@@ -850,6 +850,7 @@ window.CONVERT = {
 			bucketTimeIgnore: (dataUI.settings.bucketTimeIgnore||0)*60*60,
 			carryOverHP: dataUI.settings.carryOverHP,
 			carryOverMorale: dataUI.settings.carryOverMorale,
+			tpFormula: dataUI.settings.tpFormula,
 			mechanics: null,
 			consts: null,
 		};
