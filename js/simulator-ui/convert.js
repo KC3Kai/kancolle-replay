@@ -313,7 +313,7 @@ window.CONVERT = {
 			if (bdata.api_kouku2) {
 				battleSave.nodeType = CONST.NODE_AIR;
 			}
-			if ((bdata.api_name && bdata.api_name.includes('ld_airbattle')) || (!bdata.api_name && bdata.api_hougeki1 === undefined && bdata.kouku2 === undefined)) {
+			if ((bdata.api_name && bdata.api_name.includes('ld_airbattle')) || (!bdata.api_name && bdata.api_opening_atack === undefined && bdata.api_kouku2 === undefined)) {
 				battleSave.nodeType = CONST.NODE_RAID;
 			}
 			if (ship_ke.every(id => SHIPDATA[id] && ['SS','SSV'].includes(SHIPDATA[id].type))) {
