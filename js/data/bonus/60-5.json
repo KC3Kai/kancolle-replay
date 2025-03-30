@@ -6,7 +6,7 @@
 	"listBonus": [
 		{
 			"bonuses": [
-				{ "dmg": 1.12, "shipType": [1,21] },
+				{ "dmg": 1.12, "shipType": [1] },
 				{ "dmg": 1.03, "shipType": [2] },
 				{ "dmg": 1.04, "shipType": [3] },
 				{ "dmg": 1.08, "shipType": [16,20] },
