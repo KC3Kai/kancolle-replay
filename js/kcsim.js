@@ -1832,7 +1832,7 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 		let accMod = ship.getFormation().torpacc*ship.moraleMod(true);
 		if (ship.fleet.formation.id == 6 && target.type == 'DD') accMod *= 1.2;
 		
-		var evFlat = (target.improves.EVtorp)? ship.improves.EVtorp : 0;
+		var evFlat = (target.improves.EVtorp)? target.improves.EVtorp : 0;
 		if (target.fleet.formation.id == 6) {
 			if (SIMCONSTS.vanguardUseType == 1) {
 				evFlat += (target.type == 'DD') ? SIMCONSTS.vanguardEvTorpDD[target.num-1] || 0 : SIMCONSTS.vanguardEvTorpOther[target.num-1] || 0;
