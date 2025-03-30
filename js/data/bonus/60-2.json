@@ -1,59 +1,60 @@
 {
 	"world": 60,
 	"mapnum": 2,
-	"date": "2025-03-18",
-	"note": "damage only",
+	"date": "2025-03-30",
+	"note": "acc/eva: see also https://x.com/Divinity_123/status/1906192535241838769",
 	"listBonus": [
 		{
 			"bonuses": [
-				{ "dmg": 1.12, "shipType": [1] },
-				{ "dmg": 1.03, "shipType": [2] },
-				{ "dmg": 1.04, "shipType": [3] },
-				{ "dmg": 1.08, "shipType": [16,20] },
-				{ "dmg": 1.28, "shipBase": [699,995] },
-				{ "dmg": 1.16, "shipBase": [15,16,18,38,40,41,49,63,64,100,101,114,631] },
-				{ "dmg": 1.12, "shipClass": [73,81,131] },
-				{ "dmg": 1.12, "shipId": [147] },
-				{ "dmg": 1.12, "requireEquipId": [268], "requireEquipLevel": 7, "perEquip": 0 },
-				{ "dmg": 1.18, "requireEquipId": [554], "requireEquipIdNumX": 1, "perEquip": 0, "isPlane": 1 },
-				{ "dmg": 1.28, "requireEquipId": [554], "requireEquipIdNum": 2, "perEquip": 0, "isPlane": 1 }
+				{ "dmg": 1.12, "acc": 1.07, "eva": 1.07, "shipType": [1] },
+				{ "dmg": 1.03, "acc": 1.0, "eva": 1.03, "shipType": [2] },
+				{ "dmg": 1.04, "acc": 1.02, "eva": 1.0, "shipType": [3] },
+				{ "dmg": 1.08, "acc": 1.08, "eva": 1.08, "shipType": [16,20] },
+				{ "dmg": 1.28, "acc": 1.25, "eva": 1.25, "shipBase": [699,995] },
+				{ "dmg": 1.16, "acc": 1.02, "eva": 1.03, "shipBase": [15,16,18,38,40,41,49,63,64,100,101,114,631] },
+				{ "dmg": 1.12, "acc": 1.04, "eva": 1.04, "shipClass": [73,81,131] },
+				{ "dmg": 1.12, "acc": 1.04, "eva": 1.04, "shipId": [147] },
+				{ "dmg": 1.12, "acc": 1.0, "eva": 1.3, "requireEquipId": [268], "requireEquipLevel": 7, "perEquip": 0 },
+				{ "dmg": 1.18, "acc": 1.1, "eva": 1.0, "requireEquipId": [554], "requireEquipIdNumX": 1, "perEquip": 0, "isPlane": 1 },
+				{ "dmg": 1.28, "acc": 1.1, "eva": 1.0, "requireEquipId": [554], "requireEquipIdNum": 2, "perEquip": 0, "isPlane": 1 }
 			]
 		},
 		{
 			"nodes": ["A1","A2","C","D","F","F1","F2","G","H","I","K"],
 			"bonuses": [
-				{ "dmg": 1.16, "shipBase": [9,10,12,13,14,24,25,26,27,32,34,35,36,37,39,52,54,59,60,61,77,80,81,87,95,123,414,452,479,480,486,527,528,674,675] }
+				{ "dmg": 1.16, "acc": 1.06, "eva": 1.06, "shipBase": [9,10,12,13,14,24,25,26,27,32,34,35,36,37,39,52,54,59,60,61,77,80,81,87,95,123,414,452,479,480,486,527,528,674,675] }
 			]
 		},
 		{
 			"nodes": ["U"],
 			"bonuses": [
-				{ "dmg": 1.12, "shipBase": [63,64] },
-				{ "dmg": 1.08, "shipBase": [100,101,114] },
-				{ "dmg": 1.06, "shipBase": [15,16,18,38,40,41,49,631] }
+				{ "dmg": 1.12, "acc": 1.05, "eva": 1.06, "shipBase": [63,64] },
+				{ "dmg": 1.08, "acc": 1.1, "eva": 1.06, "shipBase": [100,101,114] },
+				{ "dmg": 1.06, "acc": 1.15, "eva": 1.06, "shipBase": [15,16,18,38,40,41,49,631] }
 			]
 		},
 		{
 			"nodes": ["V"],
 			"bonuses": [
-				{ "dmg": 1.06, "shipBase": [63,64] },
-				{ "dmg": 1.05, "shipBase": [100,101,114] },
-				{ "dmg": 1.04, "shipBase": [15,16,18,38,40,41,49,631] }
+				{ "dmg": 1.06, "acc": 1.05, "eva": 1.06, "shipBase": [63,64] },
+				{ "dmg": 1.05, "acc": 1.05, "eva": 1.06, "shipBase": [100,101,114] },
+				{ "dmg": 1.04, "acc": 1.05, "eva": 1.06, "shipBase": [15,16,18,38,40,41,49,631] }
 			]
 		},
 		{
 			"nodes": ["W"],
 			"bonuses": [
-				{ "dmg": 1.16, "shipBase": [63,64] },
-				{ "dmg": 1.12, "shipBase": [100,101,114] },
-				{ "dmg": 1.08, "shipBase": [15,16,18,38,40,41,49,631] }
+				{ "dmg": 1.0, "acc": 1.0, "eva": 1.08, "shipType": [2,3,7] },
+				{ "dmg": 1.16, "acc": 1.05, "eva": 1.06, "shipBase": [63,64] },
+				{ "dmg": 1.12, "acc": 1.05, "eva": 1.0, "shipBase": [100,101,114] },
+				{ "dmg": 1.08, "acc": 1.1, "eva": 1.0, "shipBase": [15,16,18,38,40,41,49,631] }
 			]
 		}
 	],
 	"listBonusLBAS": [
 		{
 			"bonuses": [
-				{ "dmg": 1.16, "isPlane": 1, "requireEquipId": [170,388,454,493,554], "perEquip": 0 }
+				{ "dmg": 1.16, "acc": 1.04, "isPlane": 1, "requireEquipId": [170,388,454,493,554], "perEquip": 0 }
 			]
 		}
 	],
