@@ -865,7 +865,8 @@
 		"warn_range_weights_f": "Warning: Player Fleets - Following range combination weights are unknown and not used: {0}",
 		"warn_range_weights_e": "Warning: Enemy Fleets - Following range combination weights are unknown and not used: {0}",
 		"warn_special_attack": "Note: Special Attack activation rate calculations are unknown or provisional and must be set manually, see Show Advanced to review defaults and adjust settings",
-		"warn_smoke_formula": "Note: Using provisional smoke formula, initial rates: 1 = {0}%, 2 = {1}%, 3 = {2}%"
+		"warn_smoke_formula": "Note: Using provisional smoke formula, initial rates: 1 = {0}%, 2 = {1}%, 3 = {2}%",
+		"warn_tp_formula_605": "Warning: Transport Formula Spring 2025 E5 is provisional and subject to change."
 	},
 	
 	"ui_search": "Search",

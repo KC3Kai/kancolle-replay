@@ -37,6 +37,7 @@ var CONST = window.COMMON.getConst({
 		'warn_range_weights_e': { txt: 'Warning: Enemy Fleets - Following range combination weights are unknown and not used: <0>' },
 		'warn_special_attack': { txt: 'Note: Special Attack activation rate calculations are unknown and must be set manually, see Show Advanced to review defaults and adjust settings' },
 		'warn_smoke_formula': { txt: '' },
+		'warn_tp_formula_605': { txt: '' },
 	},
 	
 	keysSmoke: ['smokeModShellAccF','smokeModShellAccFRadar','smokeModShellAccE','smokeModShellAccERadar','smokeModASWAccF','smokeModASWAccE','smokeModTorpAccF','smokeModTorpAccE','smokeModAirAccF','smokeModAirAccE'],
@@ -725,6 +726,10 @@ var SIM = {
 		}
 		
 		this._resultsCountDamecon = !!(dataInput.continueOnTaiha || shipsAll.find(ship => ship.noRetreatOnTaiha) || shipsAll.find(ship => ship.equips.find(eq => eq.masterId == 42 || eq.masterId == 43)));
+		
+		if (dataInput.tpFormula == '60-5') {
+			this._addWarning('warn_tp_formula_605');
+		}
 	},
 	
 	_checkWarningsPostRun: function(dataInput) {

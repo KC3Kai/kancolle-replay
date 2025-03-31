@@ -25,6 +25,7 @@ var COMMON = {
 	_tpFormulaKeyToSimFunction: {
 		'def': 'getTransport',
 		'60-2': 'getTransport602',
+		'60-5': 'getTransport605',
 	},
 	getTPFormulaSimFunction: function(key) { return this._tpFormulaKeyToSimFunction[key] || 'getTransport' },
 	
