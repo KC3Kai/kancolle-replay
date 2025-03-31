@@ -283,6 +283,22 @@ Fleet.prototype.getTransport602 = function() {
 	}
 	return Math.floor(tpBonus + .65*tpBase);
 }
+Fleet.prototype.getTransport605 = function() {
+	let tpBase = this.getTransport();
+	let tpBonus = 0;
+	let bonusById = { 166: 6, 167: 18, 230: 12, 355: 14, 436: 8, 449: 22, 482: 10, 494: 11, 495: 13, 496: 5, 497: 8, 498: 10, 499: 13, 514: 15, 525: 15, 526: 18 };
+	for (let ship of this.ships) {
+		if (ship.HP <= 0 || ship.retreated) continue;
+		if (ship.mid == 487) {
+			tpBonus += 8;
+			tpBase -= 8;
+		}
+		for (let eq of ship.equips) {
+			tpBonus += bonusById[eq.mid] || 0;
+		}
+	}
+	return Math.floor(tpBonus + .8*tpBase);
+}
 Fleet.prototype.getNumBalloons = function() {
 	if (this.useBalloon || (this.combinedWith && this.combinedWith.useBalloon)) {
 		let ships = this.combinedWith ? this.combinedWith.ships.concat(this.ships) : this.ships;
