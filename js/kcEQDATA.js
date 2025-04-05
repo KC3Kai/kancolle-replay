@@ -317,6 +317,7 @@ EQTDATA[SEAPLANEBOMBER] = {
 EQTDATA[CARRIERSCOUT] = {
 	name: 'Scout Plane',
 	image: 9,
+	improve: {LOS:1.2},
 	canequip: ['CVL','CV','CVB','LandBase'],
 	canequipS: [553, 554],
 	cannotequipS: [380, 381, 382, 521, 522, 526, 534, 884],
