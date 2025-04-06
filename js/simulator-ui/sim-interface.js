@@ -424,7 +424,7 @@ var SIM = {
 			
 			sdata = SHIPDATA[shipInput.masterId];
 			let shipSim = new ShipType(shipInput.masterId,sdata.name,side,level,stats.HP,stats.FP,stats.TP,stats.AA,stats.AR,stats.EV,stats.ASW,stats.LOS,stats.LUK,stats.RNG,stats.SLOTS);
-			if (stats.TACC) shipSim.TACC = stats.TACC;
+			if (stats.TACC != null) shipSim.TACC = stats.TACC;
 			if (shipInput.HPInit != null) shipSim.HPDefault = shipInput.HPInit;
 			if (shipInput.morale != null) shipSim.moraleDefault = shipSim.morale = shipInput.morale;
 			if (shipInput.fuelInit != null) shipSim.fuelleft = shipSim.fuelDefault = sdata.fuel ? 10*Math.round(sdata.fuel*shipInput.fuelInit)/sdata.fuel : 10*shipInput.fuelInit;
