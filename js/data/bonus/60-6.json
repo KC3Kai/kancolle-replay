@@ -1,18 +1,18 @@
 {
 	"world": 60,
 	"mapnum": 6,
-	"date": "2025-03-30",
-	"note": "WIP, damage only",
+	"date": "2025-04-06",
+	"note": "damage only",
 	"listBonus": [
 		{
 			"bonuses": [
 				{ "dmg": 1.12, "shipType": [1] },
 				{ "dmg": 1.06, "shipType": [2] },
-				{ "dmg": 1.08, "shipType": [3] },
-				{ "dmg": 1.08, "shipType": [16,20,21] },
+				{ "dmg": 1.08, "shipType": [3,21] },
+				{ "dmg": 1.08, "shipType": [16,20] },
 				{ "dmg": 1.14, "shipBase": [49,64,183,410,425,992,994] },
 				{ "dmg": 1.17, "shipBase": [16,35,41,43,65,77,79,87,184] },
-				{ "dmg": 1.12, "shipBase": [20,22,25,167,170,181,642,643] },
+				{ "dmg": 1.12, "shipBase": [20,22,25,167,170,181,465,642,643] },
 				{ "dmg": 1.04, "shipBase": [183] },
 				{ "dmg": 1.05, "shipClass": [38] },
 				{ "dmg": 1.09, "shipBase": [64] },
@@ -31,7 +31,7 @@
 			"nodes": ["I"],
 			"bonuses": [
 				{ "dmg": 1.04, "shipBase": [16,35,41,43,65,77,79,87,184] },
-				{ "dmg": 1.04, "shipBase": [20,22,25,167,170,181,642,643] },
+				{ "dmg": 1.04, "shipBase": [20,22,25,167,170,181,465,642,643] },
 				{ "dmg": 1.14, "shipBase": [49,64,183,410,425,992,994] }
 			]
 		},
@@ -40,7 +40,7 @@
 			"bonuses": [
 				{ "dmg": 1.08, "shipType": [2,3,4] },
 				{ "dmg": 1.08, "shipBase": [16,35,41,43,65,77,79,87,184] },
-				{ "dmg": 1.04, "shipBase": [20,22,25,167,170,181,642,643] }
+				{ "dmg": 1.04, "shipBase": [20,22,25,167,170,181,465,642,643] }
 			]
 		},
 		{
@@ -86,11 +86,29 @@
 	"listBonusLBAS": [
 		{
 			"bonuses": [
-				{ "dmg": 1.14, "isPlane": 1, "requireEquipId": [170,388,444,454,484,493,504], "perEquip": 0 }
+				{ "dmg": 1.14, "isPlane": 1, "requireEquipId": [170,388,404,444,453,454,484,493,504], "perEquip": 0 }
 			]
 		}
 	],
 	"listDebuff": [
+		{
+			"nodes": ["S"],
+			"debuffs": [
+				{ "shipId": [1578,1895,1896,1897], "amount": 28 }
+			]
+		},
+		{
+			"nodes": ["T"],
+			"debuffs": [
+				{ "shipId": [1578], "amount": 28 }
+			]
+		},
+		{
+			"nodes": ["X"],
+			"debuffs": [
+				{ "shipId": [2073,2074,2075,2076], "amount": 48 }
+			]
+		},
 		{
 			"nodes": ["Z"],
 			"debuffs": [
