@@ -800,6 +800,42 @@ var UI_FLEETEDITOR = Vue.createApp({
 			UI_PLANEBONUS.doOpen(ship);
 		},
 		
+		_divToCanvas: async function(div) {
+			div.style.backgroundColor = window.getComputedStyle(document.body).backgroundColor;
+			let canvas = await html2canvas(div);
+			div.style.backgroundColor = '';
+			return canvas;
+		},
+		onclickScreenShot: async function() {
+			let divs = [this.$refs['divShipWrap'][0]];
+			if (this.fleet.combined) divs.push(this.$refs['divShipWrap'][1]);
+			let style = document.createElement('style');
+			document.head.appendChild(style);
+			style.sheet.insertRule('div.shipWrap select { padding: 3px 4px }');
+			let canvasParts = await Promise.all(divs.map(div => this._divToCanvas(div)));
+			style.remove();
+			
+			let canvasBase = document.createElement('canvas');
+			canvasBase.height = canvasParts.map(c => c.height).reduce((a,b) => a+b,0);
+			canvasBase.width = canvasParts.map(c => c.width).reduce((a,b) => Math.max(a,b),0);
+			let ctx = canvasBase.getContext('2d'), offsetY = 0;
+			for (let canvas of canvasParts) {
+				ctx.drawImage(canvas,0,offsetY);
+				offsetY += canvas.height;
+			}
+			
+			canvasBase.toBlob(blob => navigator.clipboard.write([new ClipboardItem({ 'image/png':blob })]));
+			COMMON.global.showNotice(this.$i18n.t('copied_to_clipboard'));
+			
+			let filename = 'KanColle_Sortie_Simulator_Fleet_' + (new Date).toISOString().slice(0,19).replace(/:/g,'-') + '.png';
+			let a = window.document.createElement('a');
+			a.href = canvasBase.toDataURL('image/png');
+			a.download = filename;
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+		},
+		
 		refocusShip: function() {
 			setTimeout(() => this.$refs[this.selectedShipsProp+this.selectedShipInd][0].focus(),1);
 		},
@@ -903,6 +939,25 @@ window.CMP_LBASEDITOR = {
 		onclickAdditionalStats: function() {
 			SIM.setMechanics(CONVERT.uiToSimInputMechanics());
 			UI_ADDITIONALSTATSLBAS.doOpen(SIM.createSimLBAS(CONVERT.uiToSimInputLBAS(this.bases)));
+		},
+		
+		onclickScreenShot: async function() {
+			let style = document.createElement('style');
+			document.head.appendChild(style);
+			style.sheet.insertRule('div.shipWrap select { padding: 3px 4px }');
+			let canvas = await html2canvas(this.$refs.divShipWrap);
+			style.remove();
+			
+			canvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({ 'image/png':blob })]));
+			COMMON.global.showNotice(this.$i18n.t('copied_to_clipboard'));
+			
+			let filename = 'KanColle_Sortie_Simulator_LBAS_' + (new Date).toISOString().slice(0,19).replace(/:/g,'-') + '.png';
+			let a = window.document.createElement('a');
+			a.href = canvas.toDataURL('image/png');
+			a.download = filename;
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
 		},
 	},
 	template: document.getElementById('tmpLBASEditor')
