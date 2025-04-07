@@ -80,9 +80,10 @@
 	"listBonusLBAS": [
 		{
 			"bonuses": [
-				{ "dmg": 1.11, "isPlane": 1, "requireEquipId": [201,311,459], "perEquip": 0 },
-				{ "dmg": 1.17, "isPlane": 1, "requireEquipId": [218,312,343,396], "perEquip": 0 },
-				{ "dmg": 0.6, "isPlane": 1, "requireEquipIdNot": [201,311,218,312,395,396,459,552], "perEquip": 0 }
+				{ "dmg": 1.11, "isPlane": 1, "requireEquipId": [201,311,395,459], "perEquip": 0 },
+				{ "dmg": 1.168, "isPlane": 1, "requireEquipId": [218,312,396], "perEquip": 0 },
+				{ "dmg": 0.812, "isPlane": 1, "requireEquipId": [170,269,270,388], "perEquip": 0 },
+				{ "dmg": 0.6, "isPlane": 1, "requireEquipIdNot": [201,311,218,312,395,396,459,552,170,269,270,388], "perEquip": 0 }
 			]
 		}
 	],
