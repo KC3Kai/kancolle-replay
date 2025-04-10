@@ -1881,7 +1881,10 @@ BBV.prototype = Object.create(Ship.prototype);
 BBV.prototype.planeasw = 1;
 BBV.prototype.APweak = true;
 BBV.prototype.enableSecondShelling = true;
-BBV.prototype.canASW = CAV.prototype.canASW;
+BBV.prototype.canASW = function() {
+	if (this.equiptypes[DEPTHCHARGE] && [411,412].includes(this.mid)) return true;
+	return CAV.prototype.canASW.call(this);
+}
 BBV.prototype.canOASW = function() {
 	if (this.mid == 554) {
 		if (this.equips.find(eq => eq.mid == 326 || eq.mid == 327)) return true;
