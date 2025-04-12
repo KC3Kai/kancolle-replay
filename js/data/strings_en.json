@@ -634,7 +634,8 @@
 	"reset_all_data": "Reset All Data (Reloads Page)",
 	"reset_confirm": "Confirm",
 	"continue": "Continue",
-	"create_shared_link": "Create Shared Link (TinyURL)",
+	"create_shared_link": "Create Shared Link",
+	"create_shared_link_tinyurl": "Create Shared Link (TinyURL)",
 	"create_shared_link_note": "TinyURL is a link shortening service. When opening other people's links, please be careful that the link is for KanColle Sortie Simulator (having \"+\" at the end of a TinyURL link allows you to preview before opening).",
 	
 	"require_los_after_fcf": "Require LoS (after FCF)",

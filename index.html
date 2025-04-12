@@ -3,7 +3,28 @@
 	<head>
 		<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 		<script type="text/javascript">
-			window.location = "battleplayer.html";
+			let p = new URLSearchParams(window.location.search);
+			if (p.has('s')) {
+				fetch('https://kcrdb.hitomaru.dev/simulators/' + p.get('s') + '/data').then(async(res) => {
+					if (!res.ok) {
+						document.body.innerText = 'Invalid simulator link';
+					} else {
+						let txt = await res.text();
+						window.location = 'simulator.html#backup=' + txt;
+					}
+				});
+			} else if (p.has('r')) {
+				fetch('https://kcrdb.hitomaru.dev/replays/' + p.get('r') + '/data').then(async(res) => {
+					if (!res.ok) {
+						document.body.innerText = 'Invalid replay link';
+					} else {
+						let txt = await res.text();
+						window.location = 'battleplayer.html#' + txt;
+					}
+				});
+			} else {
+				window.location = "battleplayer.html";
+			}
 		</script>
 	</head>
 	<body>
