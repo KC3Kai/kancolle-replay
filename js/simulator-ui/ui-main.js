@@ -1829,27 +1829,57 @@ var UI_BACKUP = Vue.createApp({
 			window.location.reload();
 		},
 		
+		_shareTinyURL: function(strSim) {
+			// let url = window.location.href.split(/[?#]/)[0] + '#backup=' + strSim;
+			let url = 'https://kc3kai.github.io/kancolle-replay/simulator.html' + '#backup=' + strSim;
+			fetch('https://tinyurl.com/api-create.php?url=' + encodeURIComponent(url)).then(async(res) => {
+				let txt = await res.text();
+				console.log(txt);
+				if (!res.ok) {
+					throw new Error('tinyurl: ' + txt);
+					return;
+				}
+				navigator.clipboard.writeText(txt + '+');
+				this.shareURL = txt + '+';
+				this.showShareURLCopied = true;
+				this.showShareURLError = false;
+			}).catch(error => {
+				console.log(error);
+				this.showShareURLCopied = false;
+				this.showShareURLError = true;
+			});
+		},
+		_shareURLKCRDB: function(strSim) {
+			fetch('https://kcrdb.hitomaru.dev/simulators', {
+				method: 'POST',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ data: strSim }),
+			}).then(async(res) => {
+				let txt = await res.text();
+				if (!res.ok) {
+					throw new Error('kcrdb: ' + txt);
+					return;
+				}
+				let data = JSON.parse(txt);
+				let url = 'https://kc3kai.github.io/kancolle-replay/?s=' + data.id;
+				navigator.clipboard.writeText(url);
+				console.log(url);
+				this.shareURL = url;
+				this.showShareURLCopied = true;
+				this.showShareURLError = false;
+			}).catch(error => {
+				console.log(error);
+				this.showShareURLCopied = false;
+				this.showShareURLError = true;
+			});
+		},
 		onclickShareURL: function() {
 			this.shareURLLoading = true;
 			LZMA.compress(JSON.stringify(CONVERT.uiToSave(UI_MAIN)), 9, (ab) => {
-				// let url = window.location.href.split(/[?#]/)[0] + '#backup=' + COMMON.arrayBufferToBase64(ab);
-				let url = 'https://kc3kai.github.io/kancolle-replay/simulator.html' + '#backup=' + COMMON.arrayBufferToBase64(ab);
-				fetch('https://tinyurl.com/api-create.php?url=' + encodeURIComponent(url)).then(async(res) => {
-					let txt = await res.text();
-					console.log(txt);
-					if (!res.ok) {
-						throw new Error('tinyurl: ' + txt);
-						return;
-					}
-					navigator.clipboard.writeText(txt + '+');
-					this.shareURL = txt + '+';
-					this.showShareURLCopied = true;
-					this.showShareURLError = false;
-				}).catch(error => {
-					console.log(error);
-					this.showShareURLCopied = false;
-					this.showShareURLError = true;
-				});
+				this._shareURLKCRDB(COMMON.arrayBufferToBase64(ab));
 			});
 		},
 	},

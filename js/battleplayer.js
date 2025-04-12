@@ -299,7 +299,7 @@ function base64ToArrayBuffer(base64) {
 	}
 	return bytes;
 }
-function onclickCreateSharedLink() {
+function onclickCreateSharedLinkTinyURL() {
 	if (!API || Object.keys(API).length <= 0) return;
 	LZMA.compress(JSON.stringify(API), 9, (ab) => {
 		let url = 'https://kc3kai.github.io/kancolle-replay/battleplayer.html#fromLZMA=' + arrayBufferToBase64(ab);
@@ -315,5 +315,29 @@ function onclickCreateSharedLink() {
 		}).catch(error => {
 			document.getElementById('error').innerText = 'Error';
 		});
+	});
+}
+function onclickCreateSharedLink() {
+	if (!API || Object.keys(API).length <= 0) return;
+	fetch('https://kcrdb.hitomaru.dev/replays', {
+		method: 'POST',
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({ data: API }),
+	}).then(async(res) => {
+		let txt = await res.text();
+		if (!res.ok) {
+			throw new Error('kcrdb: ' + txt);
+			return;
+		}
+		let data = JSON.parse(txt);
+		let url = 'https://kc3kai.github.io/kancolle-replay/?r=' + data.id;
+		navigator.clipboard.writeText(url);
+		console.log(url);
+		document.getElementById('error').innerText = 'Copied to Clipboard';
+	}).catch(error => {
+		document.getElementById('error').innerText = 'Error';
 	});
 }
