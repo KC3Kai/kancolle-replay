@@ -139,6 +139,7 @@ loader.load(function() { ALLLOADED = true; });
 var loader2 = new PIXI.loaders.Loader();
 var SHIPSLOADED = true; //will be set to false in processAPI if PRELOADSHIPS == true
 var PRELOADSHIPS = true;
+var API_TXT_ORIG = '';
 
 // create a new Sprite using the texture
 var bg = PIXI.Sprite.fromImage('assets/82_res.images.ImgBackgroundDay.jpg');
@@ -4189,7 +4190,7 @@ function loadCode(fromOwn,callback) {
 					apitxt = apitxt.slice(0,apitxt.lastIndexOf('}')+1); 
 					$('#code').val(apitxt);
 				}
-				API = JSON.parse(apitxt);
+				API = JSON.parse(API_TXT_ORIG = apitxt);
 			}
 			processAPI(API);
 			if (callback) callback(API);
@@ -4197,6 +4198,7 @@ function loadCode(fromOwn,callback) {
 			console.log(e);
 			document.getElementById("error").innerHTML = 'Error';
 			CANRESET = true;
+			API_TXT_ORIG = '';
 			return;
 		}
 		started = true;

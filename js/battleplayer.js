@@ -319,13 +319,15 @@ function onclickCreateSharedLinkTinyURL() {
 }
 function onclickCreateSharedLink() {
 	if (!API || Object.keys(API).length <= 0) return;
+	if (!API_TXT_ORIG) return;
 	fetch('https://kcrdb.hitomaru.dev/replays', {
 		method: 'POST',
 		headers: {
 			'Accept': 'application/json',
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
+			'Data-Origin': 'replayer',
 		},
-		body: JSON.stringify({ data: API }),
+		body: '{"data":' + API_TXT_ORIG + '}',
 	}).then(async(res) => {
 		let txt = await res.text();
 		if (!res.ok) {

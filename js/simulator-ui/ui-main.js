@@ -1854,7 +1854,8 @@ var UI_BACKUP = Vue.createApp({
 				method: 'POST',
 				headers: {
 					'Accept': 'application/json',
-					'Content-Type': 'application/json'
+					'Content-Type': 'application/json',
+					'Data-Origin': 'simulator',
 				},
 				body: JSON.stringify({ data: strSim }),
 			}).then(async(res) => {
