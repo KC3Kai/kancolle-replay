@@ -1233,7 +1233,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		F1C.AS = F1.AS;
 		F2C.AS = F2.AS;
 		F2.airstrikeMod = -10; F2C.airstrikeMod = -20;
-		airPhase(alive1.concat(alive1C),subsalive1.concat(subsalive1C),alive2.concat(alive2C),subsalive2.concat(alive2C),(C)? BAPI.data.api_kouku:undefined,false,bombing,true);
+		airPhase(alive1.concat(alive1C),subsalive1.concat(subsalive1C),alive2.concat(alive2C),subsalive2.concat(subsalive2C),(C)? BAPI.data.api_kouku:undefined,false,bombing,true);
 		if (C) {
 			if (BAPI.data.api_kouku.api_stage1) BAPI.data.api_kouku.api_stage1.api_disp_seiku = {4:1,3:2,2:0,1:3,0:4}[F1.AS+2];
 			else BAPI.data.api_kouku = null;

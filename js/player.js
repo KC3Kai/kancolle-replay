@@ -797,9 +797,10 @@ function processAPI(root) {
 				if (kouku.api_plane_from[1] && kouku.api_plane_from[1][0] != -1) {
 					for (var i=0; i<kouku.api_plane_from[1].length; i++) {
 						var slot = kouku.api_plane_from[1][i];
-						if (slot > 6) slot -= 6;
-						attackdata.push([f2[slot-1],[],[]]);
-						attackers.push(f2[slot-1]);
+						if (OLDFORMAT && slot > 6) slot -= 6;
+						let ship = slot > 6 && f2c && f2c[slot-7] ? f2c[slot-7] : f2[slot-1];
+						attackdata.push([ship,[],[]]);
+						attackers.push(ship);
 					}
 				}
 				//defenders
@@ -1319,8 +1320,13 @@ function processAPI(root) {
 		if (data.api_air_base_injection) {
 			data.api_air_base_injection.api_plane_from[1] = [];
 			data.api_air_base_injection.api_squadron_plane = data.api_air_base_injection.api_air_base_data;
-			for (var j=0; j<f2.length; j++)
-				if (f2[j].planetypes.length) data.api_air_base_injection.api_plane_from[1].push(7+j);
+			if (OLDFORMAT) {
+				for (var j=0; j<f2.length; j++)
+					if (f2[j].planetypes.length) data.api_air_base_injection.api_plane_from[1].push(7+j);
+			} else {
+				for (let j=0; j<f2.length; j++) { if (f2[j].planetypes.length) data.api_air_base_injection.api_plane_from[1].push(1+j); }
+				for (let j=0; j<f2c.length; j++) { if (f2c[j].planetypes.length) data.api_air_base_injection.api_plane_from[1].push(7+j); }
+			}
 			if (data.api_air_base_injection.api_plane_from[1].length <= 0) data.api_air_base_injection.api_plane_from[1] = [-1];
 			if (!data.api_air_base_injection.api_plane_from[0]) data.api_air_base_injection.api_plane_from[0] = [-1]; //new format, add back
 			for (var j=0; j<data.api_air_base_injection.api_squadron_plane.length; j++) 
@@ -1335,8 +1341,13 @@ function processAPI(root) {
 		if (data.api_air_base_attack) {
 			for (var i=0; i<data.api_air_base_attack.length; i++) {
 				data.api_air_base_attack[i].api_plane_from[1] = [];
-				for (var j=0; j<f2.length; j++)
-					if (f2[j].planetypes.length) data.api_air_base_attack[i].api_plane_from[1].push(7+j);
+				if (OLDFORMAT) {
+					for (var j=0; j<f2.length; j++)
+						if (f2[j].planetypes.length) data.api_air_base_attack[i].api_plane_from[1].push(7+j);
+				} else {
+					for (let j=0; j<f2.length; j++) { if (f2[j].planetypes.length) data.api_air_base_attack[i].api_plane_from[1].push(1+j); }
+					for (let j=0; j<f2c.length; j++) { if (f2c[j].planetypes.length) data.api_air_base_attack[i].api_plane_from[1].push(7+j); }
+				}
 				if (data.api_air_base_attack[i].api_plane_from[1].length <= 0) data.api_air_base_attack[i].api_plane_from[1] = [-1];
 				if (!data.api_air_base_attack[i].api_plane_from[0]) data.api_air_base_attack[i].api_plane_from[0] = [-1]; //new format, add back
 				for (var j=0; j<data.api_air_base_attack[i].api_squadron_plane.length; j++) 
