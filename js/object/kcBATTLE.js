@@ -444,9 +444,9 @@ var BATTLE = (function() {
 		if (!islbas && kouku.api_plane_from[1] && kouku.api_plane_from[1][0] != -1) {
 			for (var i = 0; i < kouku.api_plane_from[1].length; i++) {
 				var slot = kouku.api_plane_from[1][i];
-				if (slot > 6)
+				if (version == 1 && slot > 6)
 					slot -= 6;
-				eAttackers.push(opponent.mainFleet[slot - 1]);
+				eAttackers.push(slot > 6 && opponent.escortFleet && opponent.escortFleet[slot - 7] ? opponent.escortFleet[slot - 7] : opponent.mainFleet[slot - 1]);
 			}
 			table.append(getTextRow("AIR_START", [arrayToString(eAttackers), stage1.api_e_count, (stage2 && stage2.api_e_count) ? stage2.api_e_count: 0], "end"));
 		}
