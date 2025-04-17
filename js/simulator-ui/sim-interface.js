@@ -727,9 +727,9 @@ var SIM = {
 		
 		this._resultsCountDamecon = !!(dataInput.continueOnTaiha || shipsAll.find(ship => ship.noRetreatOnTaiha) || shipsAll.find(ship => ship.equips.find(eq => eq.masterId == 42 || eq.masterId == 43)));
 		
-		if (dataInput.tpFormula == '60-5') {
-			this._addWarning('warn_tp_formula_605');
-		}
+		// if (dataInput.tpFormula == '60-5') {
+			// this._addWarning('warn_tp_formula_605');
+		// }
 	},
 	
 	_checkWarningsPostRun: function(dataInput) {
