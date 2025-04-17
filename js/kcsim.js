@@ -6,7 +6,7 @@ var LINEABREAST = {shellmod:.6,torpmod:.6,ASWmod:1.3,AAmod:1, shellacc:1.2,torpa
 var VANGUARD1 = {shellmod:0.5,torpmod:1,ASWmod:1,AAmod:1.1, shellacc:.8,torpacc:.7,NBacc:.8,ASWacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:6};
 var VANGUARD2 = {shellmod:1,torpmod:1,ASWmod:.6,AAmod:1.1, shellacc:1.2,torpacc:.9,NBacc:1.2,ASWacc:1.1, shellev:1,torpev:1,NBev:1,ASWev:1, id:6};
 
-var COMBINEDCF1 = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellacc:.9,torpacc:.6,NBacc:.8,ASWacc:1.25, shellev:1,torpev:1,NBev:1,ASWev:1, id:11};
+var COMBINEDCF1 = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellacc:.9,torpacc:.75,NBacc:.8,ASWacc:1.25, shellev:1.1,torpev:1,NBev:1,ASWev:1, id:11};
 var COMBINEDCF2 = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1, shellacc:1,torpacc:1,NBacc:.9,ASWacc:1, shellev:1.2,torpev:1,NBev:1,ASWev:1, id:12};
 var COMBINEDCF3 = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellacc:.8,torpacc:.35,NBacc:.7,ASWacc:1.1, shellev:1.1,torpev:1,NBev:1.1,ASWev:1, id:13};
 var COMBINEDCF4 = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellacc:1.1,torpacc:1.2,NBacc:1,ASWacc:.7, shellev:1,torpev:1,NBev:1,ASWev:1, id:14};
