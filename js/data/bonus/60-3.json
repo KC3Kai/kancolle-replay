@@ -38,7 +38,7 @@
 		{
 			"nodes": ["R","U"],
 			"bonuses": [
-				{ "dmg": 1.11, "acc": 1.0, "eva": 1.0, "shipType": [2,16,17] }
+				{ "dmg": 1.11, "acc": 1.04, "eva": 1.0, "shipType": [2,16,17] }
 			]
 		},
 		{
