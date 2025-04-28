@@ -288,7 +288,7 @@ var SIMCONSTS = {
 	smokeModAirAccF: [1,1,1],
 	smokeModAirAccE: [1,1,1],
 	smokeEst: {
-		smokeModShellAccF: [.25,.25,.25],
+		smokeModShellAccF: [.01,.01,.01],
 		smokeModShellAccFRadar: [.35,.25,.25],
 		smokeModShellAccE: [.5,.5,.5],
 		smokeModShellAccERadar: [.9,.83,.75],
