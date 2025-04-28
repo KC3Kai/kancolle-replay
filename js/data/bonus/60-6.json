@@ -2,7 +2,7 @@
 	"world": 60,
 	"mapnum": 6,
 	"date": "2025-04-28",
-	"note": "Node Z acc tuned assuming smoke mod = 0.25 with radar (0 without), see also https://x.com/Divinity_123/status/1906192535241838769",
+	"note": "Node Z acc tuned assuming smoke mod = 0.25 with radar and 0.01 without (MUST BE SET MANUALLY)",
 	"listBonus": [
 		{
 			"bonuses": [
