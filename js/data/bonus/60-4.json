@@ -1,7 +1,7 @@
 {
 	"world": 60,
 	"mapnum": 4,
-	"date": "2025-04-06",
+	"date": "2025-04-29",
 	"note": "damage only",
 	"listBonus": [
 		{
@@ -43,6 +43,19 @@
 		}
 	],
 	"listDebuff": [
+		{
+			"nodes": ["T"],
+			"debuffs": [
+				{ "shipId": [2270,2271,2273,2274], "amount": 18 }
+			]
+		},
+		{
+			"nodes": ["U"],
+			"debuffs": [
+				{ "shipId": [1765,1895], "amount": 14 },
+				{ "shipId": [1577,1578,1591,2090,2310], "amount": 8 }
+			]
+		},
 		{
 			"nodes": ["W"],
 			"debuffs": [
