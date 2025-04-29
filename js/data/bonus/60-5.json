@@ -1,8 +1,8 @@
 {
 	"world": 60,
 	"mapnum": 5,
-	"date": "2025-04-28",
-	"note": "acc/eva: see also https://x.com/Divinity_123/status/1906192535241838769",
+	"date": "2025-04-29",
+	"note": "acc/eva: see also https://x.com/Divinity_123/status/1917008169315729803",
 	"listBonus": [
 		{
 			"bonuses": [
@@ -123,7 +123,7 @@
 		{
 			"nodes": ["R"],
 			"debuffs": [
-				{ "shipId": [1594,1595,1895,2090], "amount": 18 },
+				{ "shipId": [1595,1895,2090], "amount": 14 },
 				{ "shipId": [1578,1591,1592,1624], "amount": 8 }
 			]
 		},
