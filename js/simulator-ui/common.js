@@ -142,6 +142,17 @@ var COMMON = {
 			{ "ships": [{ "id": 639, "improvement": [10,10] }, { "id": 976, "improvement": [10,10,5] }, { "id": 977, "improvement": [10,10,4] }], "rate": 100 }
 		]
 	},
+	friendFleetEquipImproveException: {
+		172: 0,
+		183: 4,
+		308: 0,
+		376: 4,
+		387: 7,
+		456: 0,
+		468: 6,
+		534: 8,
+		536: 8,
+	},
 	
 	getHash: function(str) {
 		var hash = 0, i, chr;

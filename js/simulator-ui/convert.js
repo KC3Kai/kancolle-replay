@@ -587,6 +587,11 @@ window.CONVERT = {
 				}
 			} else {
 				if (SHIPDATA[shipSave.mstId] && SHIPDATA[shipSave.mstId].LUKmax) shipSave.statsBase.luk = SHIPDATA[shipSave.mstId].LUKmax;
+				for (let i=0; i<SHIPDATA[shipSave.mstId].SLOTS.length; i++) {
+					let equip = shipSave.equips[i];
+					if (EQDATA[equip.mstId] && [24,46,52].includes(EQDATA[equip.mstId].type)) continue; //temp
+					equip.level = COMMON.friendFleetEquipImproveException[equip.mstId] ?? 10;
+				}
 			}
 			shipsSave.push(shipSave);
 		}
