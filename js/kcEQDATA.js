@@ -6412,6 +6412,7 @@ var EQDATA = {
 		added: '2025-03-23',
 		type: DIVEBOMBER, image: 58,
 		btype: B_NIGHTBOMBER_DB,
+		aaResistShip: .6,
 		DIVEBOMB: 5,
 		AA: 4,
 		ACC: 1,
