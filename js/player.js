@@ -421,6 +421,7 @@ function createShip(data,side,i,damaged) {
 			//else if (eq.type==SEAPLANE||eq.type==FLYINGBOAT) ship.planetypes.push(11);
 			if (eqt.istorpbomber||eqt.isdivebomber||eq.type==AUTOGYRO||eq.type==ASWPLANE) ship.hasbomber = true;
 			if (eqt.istorpbomber) ship.hastorpbomber = true;
+			if (eq.type == DIVEBOMBER) ship.hasdivebomber = true;
 			if (hasonlytorp == undefined && eq.type == TORPEDO) hasonlytorp = true;
 			if ([MAINGUNS,MAINGUNM,MAINGUNL].indexOf(eq.type) != -1) hasonlytorp = false;
 			if (eq.type == WG42) ship.hasWG = true;
@@ -436,7 +437,7 @@ function createShip(data,side,i,damaged) {
 	ship.hasonlytorp = hasonlytorp;
 	ship.issub = (sdata.type == 'SS' || sdata.type == 'SSV');
 	ship.isinstall = (sdata.type == 'Installation' || sdata.installtype > 0 || sdata.isAnchorage);
-	ship.isCV = (sdata.type == 'CV' || sdata.type == 'CVL' || sdata.type == 'CVB' || (sdata.type=='AO'&&ship.hastorpbomber));
+	ship.isCV = (sdata.type == 'CV' || sdata.type == 'CVL' || sdata.type == 'CVB' || (sdata.type=='AO'&&(ship.hastorpbomber||ship.hasdivebomber)));
 	ship.isfog = (parseInt(data[0]) >= 9000 && parseInt(data[0]) <= 9100);
 	if (sdata.nightattack==2) ship.nightgun = true;
 	ship.shakepid = 0;

@@ -2080,6 +2080,13 @@ AO.prototype.loadEquips = function(equips,levels,profs,addstats,isSupport) {
 	}
 	
 	Ship.prototype.loadEquips.call(this,equips,levels,profs,addstats,isSupport);
+	
+	if (this.canAirAttackNB && CV.prototype.hasNBAirGear.call(this)) {
+		this.canNBAirAttack = CV.prototype.canNBAirAttack;
+		this.hasNBAirGear = CV.prototype.hasNBAirGear;
+		this.NBPower = CV.prototype.NBPower;
+		this.canStillShellDamage = CV.prototype.canStillShellDamage;
+	}
 }
 AO.prototype.canASW = DD.prototype.canASW;
 
