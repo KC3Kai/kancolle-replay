@@ -313,6 +313,7 @@ var SIMCONSTS = {
 	balloonOppoAirFlat: [0,0,0],
 	balloonOppoLBASMod: [1,1,1],
 	balloonOppoLBASFlat: [0,0,0],
+	fixCTF12v6Special: true, //spring25?
 }
 SIMCONSTS.vanguardEvShellDDMod = SIMCONSTS.vanguardEvShellDDModNormal.slice();
 SIMCONSTS.vanguardEvTorpDDMod = SIMCONSTS.vanguardEvTorpDDModNormal.slice();
@@ -1254,7 +1255,7 @@ function canSpecialAttackUnique(ship,isNB,isCheck) {
 		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[1].type) == -1) return false;
 		if (ship.fleet.ships[1].HP/ship.fleet.ships[1].maxHP <= .25) return false;
 		if (isCheck) return true;
-		if (ship.fleet.combineType == 1 && ship.fleet.battleType == '12v6') return false;
+		if (!SIMCONSTS.fixCTF12v6Special && ship.fleet.combineType == 1 && ship.fleet.battleType == '12v6') return false;
 		let rate = (ship.attackSpecial == 101)? SIMCONSTS.nagatoSpecialRate : SIMCONSTS.mutsuSpecialRate;
 		if (Math.random() < rate/100) {
 			ship.fleet.didSpecial = 1;
@@ -1320,7 +1321,7 @@ function canSpecialAttackUnique(ship,isNB,isCheck) {
 		if (![392,724,969].includes(ship.fleet.ships[1].mid)) return false;
 		if (ship.fleet.ships[1].HP/ship.fleet.ships[1].maxHP <= .25) return false;
 		if (isCheck) return true;
-		if (ship.fleet.combineType == 1 && ship.fleet.battleType == '12v6') return false;
+		if (!SIMCONSTS.fixCTF12v6Special && ship.fleet.combineType == 1 && ship.fleet.battleType == '12v6') return false;
 		let rate = SIMCONSTS.richelieuSpecialRate;
 		if (Math.random() < rate/100) {
 			ship.fleet.didSpecial = 1;
@@ -1336,7 +1337,7 @@ function canSpecialAttackUnique(ship,isNB,isCheck) {
 		if (![364,733].includes(ship.fleet.ships[1].mid)) return false;
 		if (ship.fleet.ships[1].HP/ship.fleet.ships[1].maxHP <= .25) return false;
 		if (isCheck) return true;
-		if (ship.fleet.combineType == 1 && ship.fleet.battleType == '12v6') return false;
+		if (!SIMCONSTS.fixCTF12v6Special && ship.fleet.combineType == 1 && ship.fleet.battleType == '12v6') return false;
 		let rate = SIMCONSTS.qeSpecialRate;
 		if (Math.random() < rate/100) {
 			ship.fleet.didSpecial = 1;
