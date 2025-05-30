@@ -6434,6 +6434,28 @@ var EQDATA = {
 		ASW: 4,
 		LOS: 2,
 	},
+	559: {
+		name: 'Ju87 D-4(Fliegerass)',
+		nameJP: 'Ju87 D-4(Fliegerass)',
+		added: '2025-05-30',
+		type: TORPBOMBER,
+		FP: 4,
+		TP: 7,
+		AA: 1,
+		ACC: 3,
+		ASW: 7,
+		LOS: 3,
+	},
+	560: {
+		name: 'Bf109 T-3(G)',
+		nameJP: 'Bf109 T-3(G)',
+		added: '2025-05-30',
+		type: FIGHTER,
+		FP: 1,
+		AA: 9,
+		ACC: 2,
+		EV: 4,
+	},
 	1501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
@@ -8296,6 +8318,8 @@ var LBASDATA = {
 	554: { distance: 4, cost: 5 },
 	557: { distance: 4, cost: 5 },
 	558: { distance: 5, cost: 5 },
+	559: { distance: 4, cost: 6 },
+	560: { distance: 2, cost: 6 },
 };
 
 
