@@ -162,6 +162,9 @@
 					<template v-slot:inp_hp><input type="number" min="0" max="100" v-model="settings.bucketPercent" :class="getClassSetting('bucketPercent')"/></template>
 					<template v-slot:inp_time><input type="number" min="0" max="100" v-model="settings.bucketTime" :class="getClassSetting('bucketTime')"/></template>
 				</i18n-t></div>
+				<div style="margin-left:26px">
+					<input type="button" :value="$t('individual_override')" @click="onclickSetBucket"/> <span v-show="hasBucketIndivSettings" class="bonusMarker bucket">&#11044;</span>
+				</div>
 				<div style="margin-left:26px"><i18n-t keypath="bucket_do_not_count_use" scope="global">
 					<template v-slot:inp_time><input type="number" min="0" max="100" v-model="settings.bucketTimeIgnore" :class="getClassSetting('bucketTimeIgnore')"/></template>
 				</i18n-t></div>
@@ -186,7 +189,7 @@
 					<input type="button" :value="$t('auto_set_bonus')" @click="onclickAutoBonus"/>
 					<span class="autoBonusStatus" :class="classAutoBonusStatus">&nbsp;{{autoBonusStatus}}</span> <span v-if="autoBonus">({{autoBonusName}}, {{$t('autobonus_nodes')}}: {{autoBonusNodes}})</span>
 				</div>
-				<div style="margin-top:20px">
+				<div style="margin-top:20px" v-show="showOutdated">
 					<input type="button" :value="$t('import_mapwide_bonuses_once')" @click="onclickBonusImporter"/>
 				</div>
 			</div>
@@ -459,6 +462,9 @@
 						</div>
 					</div>
 				</div>
+			</div>
+			<div>
+				<label><input type="checkbox" v-model="showOutdated" @change="onchangeOutdated"/> <span style="color:grey">{{$t('show_outdated_settings')}}</span></label>
 			</div>
 			<div>
 				<input type="button" :value="$t('restore_defaults')" @click="onclickRestoreSettings"/>
@@ -884,7 +890,14 @@
 					<div v-show="hasBonusMain()" class="bonusMarker main" :title="$t('main_fleet_set')">&#11044;</div>
 					<div v-show="hasBonusLBAS()" class="bonusMarker lbas" :title="$t('lbas_set')">&#11044;</div>
 					<div v-show="hasBonusFF()" class="bonusMarker friend" :title="$t('friend_fleet_set')">&#11044;</div>
-					<div><input type="button" :value="$t('import_bonuses_once')" @click="onclickImportBonus"/></div>
+					<div v-show="showOutdated"><input type="button" :value="$t('import_bonuses_once')" @click="onclickImportBonus"/></div>
+					<div class="space"><label><span class="header">{{$t('force_engagement')}}: </span><select v-model.number="battle.forceEngagement">
+						<option value="0"></option>
+						<option value="1">{{$t('parallel')}}</option>
+						<option value="2">{{$t('headon')}}</option>
+						<option value="3">{{$t('tadvantage')}}</option>
+						<option value="4">{{$t('tdisadvantage')}}</option>
+					</select></label></div>
 				</div>
 			</div>
 			<div ref="comps"><vfleetcomps :comps="battle.enemyComps" :fleetname="$t('enemy_fleet')" canimportkcnav="1"></vfleetcomps></div>
@@ -1055,7 +1068,7 @@
 							<div class="statWide"><span :title="$t('bonus_eva_desc')"><i18n-t keypath="bonus_eva" scope="global">
 								<template v-slot:br><br></template>
 							</i18n-t>:</span><input type="number" v-model.number="ship.bonusEva" min="0" max="99" step="any" @change="onchangeStat($event,ship,'bonusEva',1)"/></div>
-							<div class="statWide" v-show="fleet.isFriend"><span class="statDebuff" :title="$t('debuff_dmg_desc')"><i18n-t keypath="debuff_dmg" scope="global">
+							<div class="statWide" v-show="showOutdated && fleet.isFriend"><span class="statDebuff" :title="$t('debuff_dmg_desc')"><i18n-t keypath="debuff_dmg" scope="global">
 								<template v-slot:br><br></template>
 							</i18n-t>:</span><input type="number" v-model.number="ship.bonusDmgDebuff" min="0" max="99" step="any" @change="onchangeStat($event,ship,'bonusDmgDebuff',1)"/></div>
 							<div class="statWide">
@@ -1329,7 +1342,7 @@
 									</i18n-t>:</td>
 									<td><input type="number" min="0" max="99" step="any" :placeholder="ship.bonusEva" v-model.number="ship.bonusByNode[nodeId].bonusEva"/></td>
 								</tr>
-								<tr v-show="isBossNode">
+								<tr v-show="showOutdated && isBossNode">
 									<td><span class="statDebuff" :title="$t('debuff_dmg_desc')"><i18n-t keypath="debuff_dmg" scope="global">
 										<template v-slot:br><br></template>
 									</i18n-t>:</span></td>
@@ -1734,6 +1747,29 @@
 		</vmodal>
 	</div></div>
 	
+	<div id="divBucketSettings"><div v-show="active">
+		<vmodal :active="active" @vclose="canClose&&(active=false)">
+		<div id="divBucketSettingsMain">
+			<div>
+				<div v-for="ships in shipGroups" class="shipGroup" style="margin-bottom:10px">
+					<div v-for="ship in ships" style="position:relative">
+						<div>
+							<img :src="'assets/icons/' + ship.imgName"/>
+							<span class="shipType">{{ship.type}}</span>
+						</div>
+						<div><i18n-t keypath="bucket_percent_input" scope="global">
+							<template v-slot:input><input type="number" min="0" max="100" v-model="ship.bucketPercent" style="width:40px"/></template>
+						</i18n-t></div>
+						<div><i18n-t keypath="bucket_time_input" scope="global">
+							<template v-slot:input><input type="number" min="0" max="99" v-model="ship.bucketTime" style="width:50px"/></template>
+						</i18n-t></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</vmodal>
+	</div></div>
+	
 	<div id="divAutoBonus"><div v-show="active">
 		<vmodal :active="active" @vclose="canClose&&(active=false)">
 		<div class="autoBonusMain" v-show="!isPreloader">
@@ -1745,7 +1781,7 @@
 			</div>
 			<div v-show="!isUpdate">
 				<label><input value="preset" type="radio" v-model="type"/> <span class="tooltip" :title="$t('manually_compiled_bonuses')">{{$t('simulator_preset')}}</span></label>&nbsp;&nbsp;&nbsp;
-				<label><input value="dewy" type="radio" v-model="type" @change="onclickDewy"/> <span class="tooltip" :title="$t('bonus_ranges_auto_calc')">{{$t('dewy')}}</span></label> (<a href="https://github.com/sorewachigauyo/kc-event-bonus" target="_blank">kc-event-bonus</a>)
+				<span v-show="showOutdated"><label><input value="dewy" type="radio" v-model="type" @change="onclickDewy"/> <span class="tooltip" :title="$t('bonus_ranges_auto_calc')">{{$t('dewy')}}</span></label> (<a href="https://github.com/sorewachigauyo/kc-event-bonus" target="_blank">kc-event-bonus</a>)</span>
 			</div>
 			<div v-show="type=='preset'">
 				<div>

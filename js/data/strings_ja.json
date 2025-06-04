@@ -243,6 +243,7 @@
 	"enable_anti_sub_raid_desc": "2022年春イベ以降のイベント海域では空襲マスにおいて対潜哨戒機を装備した敵艦による自艦隊潜水艦への攻撃が発生します",
 	"tp_formula": "TP計算方式",
 	"bucket_count_use": "HPが {inp_hp}%以下、または入渠が {inp_time} 時間以上でバケツを使用する",
+	"individual_override": "さらに艦ごとの修理条件を設定",
 	"bucket_do_not_count_use": "入渠が {inp_time} 時間未満なら使用しない(上記とは関係なく)",
 	"carry_over_ship_hp": "{img_bucket} の使用条件に合致しない限りHPを持ち越す(不使用条件は含まない)",
 	"carry_over_ship_morale": "艦のcond値を持ち越す",
@@ -312,6 +313,7 @@
 	"balloon_airstrike": "航空戦",
 	"balloon_lbas": "基地航空隊",
 	"balloon_acc": "命中",
+	"show_outdated_settings": "旧仕様の設定法を表示する",
 	
 	"normal_day": "道中支援(昼戦)",
 	"normal_night": "道中支援(夜戦)",
@@ -422,6 +424,11 @@
 	"enable_atoll_node_effects": "特四式内火艇/改による越環礁攻撃を実施する",
 	"use_anchorage_repair_before_battle": "戦闘前に緊急泊地修理を実施する",
 	"override_historical_bonuses": "史実特効上書き",
+	"force_engagement": "交戦形態固定",
+	"parallel": "同航戦",
+	"headon": "反航戦",
+	"tadvantage": "T字戦有利",
+	"tdisadvantage": "T字戦不利",
 	"enemy_fleet": "敵艦隊",
 	"set_bonuses": "手動セット",
 	"main_fleet_set": "出撃艦隊",
@@ -650,6 +657,9 @@
 	"never_use_on": "離脱を許可しない艦",
 	"note_require_on_node": "「Node: [Node番号] において」は指定したNodeとそれより前の全てのNodeに対して適用します。例.Node番号に2を指定: Node1とNode2に適用し、Node3以降には適用しない",
 	
+	"bucket_percent_input": "HP \u2264 {input}%",
+	"bucket_time_input": "入渠時間 > {input} h",
+	
 	"auto_set_historical_bonus": "史実特効の自動設定(艦隊が変更されても自動反映)",
 	"current_data_set_updated": "現在適用しているデータセットが{date}に更新されました。今すぐ全ての特効を再適用しますか?",
 	"manually_compiled_bonuses": "手動で編集した特効(可能であれば推奨)",
@@ -867,7 +877,8 @@
 		"warn_range_weights_e": "注意: 敵艦隊 - 以下の射程における攻撃順の偏向は不明であり、適用されません: {0}",
 		"warn_special_attack": "メモ: 特殊砲撃の発動率の計算は不明であり、手動で設定する必要があります。「詳細設定」でデフォルト値の確認と発動率の指定ができます",
 		"warn_smoke_formula": "メモ: 煙幕発生率は暫定計算式より、出撃時点: 1重 = {0}%, 2重 = {1}%, 3重 = {2}%",
-		"warn_tp_formula_605": "注意: 2025春E-5の新TP計算式は暫定的で、更新される可能性があります。"
+		"warn_tp_formula_605": "注意: 2025春E-5の新TP計算式は暫定的で、更新される可能性があります。",
+		"warn_force_engagement": "{n}番目のNodeの交戦形態は固定されています"
 	},
 	
 	"ui_search": "検索",

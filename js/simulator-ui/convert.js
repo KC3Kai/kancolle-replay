@@ -5,7 +5,7 @@ var CONST = window.COMMON.getConst({});
 
 window.CONVERT = {
 	_fleetPropsSaved: ['type','formation'],
-	_shipPropsSaved: ['mstId','level','hp','hpInit','morale','fuelInit','ammoInit','statsBase','slots','bonusDmg','bonusAcc','bonusEva','bonusDmgDebuff','isFaraway','neverFCF','retreatOnChuuha','noRetreatOnTaiha'],
+	_shipPropsSaved: ['mstId','level','hp','hpInit','morale','fuelInit','ammoInit','statsBase','slots','bonusDmg','bonusAcc','bonusEva','bonusDmgDebuff','isFaraway','neverFCF','retreatOnChuuha','noRetreatOnTaiha','bucketPercent','bucketTime'],
 	_equipPropsSaved: ['mstId','level','rank','bonusDmg','bonusAcc','bonusGroups'],
 	
 	_UI_MAIN: null,
@@ -744,6 +744,8 @@ window.CONVERT = {
 			if (shipUI.neverFCF) shipInput.neverFCF = 1;
 			if (shipUI.retreatOnChuuha) shipInput.retreatOnChuuha = 1;
 			if (shipUI.noRetreatOnTaiha) shipInput.noRetreatOnTaiha = 1;
+			if (shipUI.bucketPercent != null && shipUI.bucketPercent !== '') shipInput.bucketPercent = shipUI.bucketPercent/100;
+			if (shipUI.bucketTime != null && shipUI.bucketTime !== '') shipInput.bucketTime = shipUI.bucketTime*3600;
 			
 			shipsInput.push(shipInput);
 		}			
@@ -879,6 +881,7 @@ window.CONVERT = {
 				offrouteRate: battleUI.offrouteRate/100,
 			};
 			if (battleUI.doNBCond) nodeInput.doNBCond = battleUI.doNBCond;
+			if (+battleUI.forceEngagement) nodeInput.forceEngagement = +battleUI.forceEngagement;
 			if (battleUI.formationUseLAIfNoSpAttack && COMMON.checkSpecialAttackUI(this._UI_MAIN,+battleUI.formation)) nodeInput.formationUseLAIfNoSpAttack = true;
 			for (let i=0; i<battleUI.lbasWaves.length; i++) {
 				if (battleUI.lbasWaves[i]) {

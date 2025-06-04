@@ -215,6 +215,7 @@ var UI_MAIN = Vue.createApp({
 		showNoticeCount: 0,
 		noticeTxt: '',
 		showMechanics: false,
+		showOutdated: false,
 		
 		isDragging: false,
 		showDropdownPlayer: false,
@@ -261,6 +262,20 @@ var UI_MAIN = Vue.createApp({
 					if (document.querySelector('#divSettingsAdvanced input.changed')) this.settings.showAdvanced = true;
 					if (document.querySelector('#divSettingsMechanics input.changed') || this.settings.mechanics.find(m => !m.enabled)) this.showMechanics = true;
 				}.bind(this),1);
+				
+				let ships = this.fleetFMain.ships.slice();
+				if (this.fleetFMain.shipsEscort) ships = ships.concat(this.fleetFMain.shipsEscort);
+				for (let compId in this.fleetsFFriend) {
+					if (this.fleetsFFriend[compId].fleet) ships = ships.concat(this.fleetsFFriend[compId].fleet.ships);
+				}
+				for (let ship of ships) {
+					if (ship.bonusDmgDebuff != null && ![1,''].includes(ship.bonusDmgDebuff)) this.showOutdated = true;
+					for (let nodeId in ship.bonusByNode) {
+						if (ship.bonusByNode[nodeId].bonusDmgDebuff != null && ![1,''].includes(ship.bonusByNode[nodeId].bonusDmgDebuff)) this.showOutdated = true;
+					}
+				}
+				if (this.autoBonus && this.autoBonus.type == 'dewy') this.showOutdated = true;
+				COMMON.global.fleetEditorToggleOutdated(this.showOutdated);
 			}.bind(this);
 			if (window.location.hash.length >= 3) {
 				if (window.location.hash.substr(0,8) == '#backup=') {
@@ -364,6 +379,12 @@ var UI_MAIN = Vue.createApp({
 		hasNoTaihaSettings: function() {
 			return !!((this.fleetFMain.ships && this.fleetFMain.ships.find(s => s.noRetreatOnTaiha)) || (this.fleetFMain.shipsEscort && this.fleetFMain.shipsEscort.find(s => s.noRetreatOnTaiha)));
 		},
+		hasBucketIndivSettings: function() {
+			return !!(
+				(this.fleetFMain.ships && this.fleetFMain.ships.find(s => (s.bucketPercent != null && s.bucketPercent !== '') || (s.bucketTime != null && s.bucketTime !== ''))) || 
+				(this.fleetFMain.shipsEscort && this.fleetFMain.shipsEscort.find(s => (s.bucketPercent != null && s.bucketPercent !== '') || (s.bucketTime != null && s.bucketTime !== '')))
+			);
+		},
 		
 		autoBonusStatus: function() {
 			return !this.autoBonus ? this.$i18n.t('autobonus_off') : this.$i18n.t('autobonus_active');
@@ -463,6 +484,7 @@ var UI_MAIN = Vue.createApp({
 				useSmoke: false,
 				useAnchorageRepair: false,
 				offrouteRate: 0,
+				forceEngagement: 0,
 					
 				enemyComps: [],
 			};
@@ -632,6 +654,9 @@ var UI_MAIN = Vue.createApp({
 			if (mechanic.key == 'eqBonus') {
 				COMMON.global.fleetEditorToggleEquipBonus(mechanic.enabled);
 			}
+		},
+		onchangeOutdated: function() {
+			COMMON.global.fleetEditorToggleOutdated(this.showOutdated);
 		},
 		onclickRestoreSettings: function() {
 			for (let key in SIMCONSTS.defaults) {
@@ -929,6 +954,9 @@ ${t('results.buckets')}:	${this.resultsBucketTPPer}`;
 		onclickSetRetreat: function() {
 			UI_RETREATSETTINGS.doOpen();
 		},
+		onclickSetBucket: function() {
+			UI_BUCKETSETTINGS.doOpen();
+		},
 		
 		onclickNavButton: function(ref,idx) {
 			let e = this.$refs[ref];
@@ -1150,6 +1178,7 @@ var UI_BONUSEDITOR = Vue.createApp({
 		shipGroups: [],
 		nodeId: 0,
 		isBossNode: false,
+		showOutdated: false,
 	}),
 	methods: {
 		doOpen: function(nodeId,isBossNode) {
@@ -1165,6 +1194,7 @@ var UI_BONUSEDITOR = Vue.createApp({
 					if (!ship.bonusByNode[nodeId]) ship.bonusByNode[nodeId] = {};
 				}
 			}
+			this.showOutdated = UI_MAIN.showOutdated;
 		},
 		doClose: function() {
 			this.active = false;
@@ -1981,6 +2011,24 @@ var UI_RETREATSETTINGS = Vue.createApp({
 }).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divRetreatSettings');;
 	
 
+var UI_BUCKETSETTINGS = Vue.createApp({
+	data: () => ({
+		active: false,
+		canClose: true,
+		
+		shipGroups: [],
+	}),
+	methods: {
+		doOpen: function() {
+			this.active = true;
+			this.shipGroups = [];
+			this.shipGroups.push(UI_MAIN.fleetFMain.ships.filter(ship => !FLEET_MODEL.shipIsEmpty(ship)));
+			if (UI_MAIN.fleetFMain.shipsEscort && UI_MAIN.fleetFMain.combined) this.shipGroups.push(UI_MAIN.fleetFMain.shipsEscort.filter(ship => !FLEET_MODEL.shipIsEmpty(ship)));
+		},
+	},
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divBucketSettings');;
+
+
 var UI_AUTOBONUS = Vue.createApp({
 	data: () => ({
 		active: false,
@@ -2017,6 +2065,8 @@ var UI_AUTOBONUS = Vue.createApp({
 		isUpdate: false,
 		
 		hashes: { preset: {}, dewy: {} },
+		
+		showOutdated: false,
 	}),
 	mounted: function() {
 		for (let key of Object.keys(COMMON.BONUS_MANAGER.PRESET_INDEX).sort((keyA,keyB) => {
@@ -2052,6 +2102,7 @@ var UI_AUTOBONUS = Vue.createApp({
 			if (autoBonusInit) {
 				this._initSettings(autoBonusInit)
 			}
+			this.showOutdated = UI_MAIN.showOutdated;
 		},
 		doOpenPreloader: async function(autoBonus) {
 			if (!autoBonus) return;
