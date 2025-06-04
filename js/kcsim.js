@@ -3543,11 +3543,15 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 		F1.formation = ECHELON;
 	}
 	
-	var r = Math.random();
-	if (r < .45) ENGAGEMENT = 1;
-	else if (r < .6) ENGAGEMENT = 1.2;
-	else if (r < .9 || F1.noRedT || F2.noRedT) ENGAGEMENT = .8;
-	else ENGAGEMENT = .6;
+	if (F1.forceEngagement) {
+		ENGAGEMENT = [1,.8,1.2,.6][F1.forceEngagement-1];
+	} else {
+		var r = Math.random();
+		if (r < .45) ENGAGEMENT = 1;
+		else if (r < .6) ENGAGEMENT = 1.2;
+		else if (r < .9 || F1.noRedT || F2.noRedT) ENGAGEMENT = .8;
+		else ENGAGEMENT = .6;
+	}
 	
 	if (F1.useSmoke && alive1.length >= 4) F1.smokeType = getSmokeType(alive1);
 	

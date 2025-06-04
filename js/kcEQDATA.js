@@ -6439,6 +6439,7 @@ var EQDATA = {
 		nameJP: 'Ju87 D-4(Fliegerass)',
 		added: '2025-05-30',
 		type: TORPBOMBER,
+		aaResistShip: .6,
 		FP: 4,
 		TP: 7,
 		AA: 1,

@@ -50,6 +50,9 @@ div.bonusMarker.lbas {
 .bonusMarker.chuuha {
 	color: orange;
 }
+.bonusMarker.bucket {
+	color: #90EE90;
+}
 .bonusMarker.plane {
 	color: green;
 	font-size: 14px;
@@ -461,25 +464,25 @@ div.kcnavImporterSettingsWrap select.suggestion {
 	margin-left: auto;
 }
 
-#divFCFSettingsMain, #divRetreatSettingsMain {
+#divFCFSettingsMain, #divRetreatSettingsMain, #divBucketSettingsMain {
 	background-color: #DDEEFF;
 	border: 1px solid transparent;
 	box-shadow: 0 0 5px black;
 	padding: 20px;
 }
-#divFCFSettingsMain > div:not(:first-child), #divRetreatSettingsMain > div:not(:first-child) {
+#divFCFSettingsMain > div:not(:first-child), #divRetreatSettingsMain > div:not(:first-child), #divBucketSettingsMain > div:not(:first-child) {
 	margin-top: 10px;
 }
-#divFCFSettingsMain span.header, #divRetreatSettingsMain span.header {
+#divFCFSettingsMain span.header, #divRetreatSettingsMain span.header, #divBucketSettingsMain span.header {
 	font-weight: bold;
 }
-#divFCFSettingsMain div.shipGroup, #divRetreatSettingsMain div.shipGroup {
+#divFCFSettingsMain div.shipGroup, #divRetreatSettingsMain div.shipGroup, #divBucketSettingsMain div.shipGroup {
 	display: flex;
 }
 #divFCFSettingsMain div.shipGroup img:hover, #divRetreatSettingsMain div.shipGroup img:hover {
 	cursor: pointer;
 }
-#divFCFSettingsMain div.shipGroup span.shipType, #divRetreatSettingsMain div.shipGroup span.shipType {
+#divFCFSettingsMain div.shipGroup span.shipType, #divRetreatSettingsMain div.shipGroup span.shipType, #divBucketSettingsMain div.shipGroup span.shipType {
 	padding: 1px;
 	font-size: 16px;
 	font-weight: bold;

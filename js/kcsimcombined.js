@@ -34,11 +34,15 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		F2.formation = SIMCONSTS.echelonOld;
 	}
 	
-	var r = Math.random();
-	if (r < .45) ENGAGEMENT = 1;
-	else if (r < .6) ENGAGEMENT = 1.2;
-	else if (r < .9 || F1.noRedT || F2.noRedT || F1C.noRedT) ENGAGEMENT = .8;
-	else ENGAGEMENT = .6;
+	if (F1.forceEngagement) {
+		ENGAGEMENT = [1,.8,1.2,.6][F1.forceEngagement-1];
+	} else {
+		var r = Math.random();
+		if (r < .45) ENGAGEMENT = 1;
+		else if (r < .6) ENGAGEMENT = 1.2;
+		else if (r < .9 || F1.noRedT || F2.noRedT || F1C.noRedT) ENGAGEMENT = .8;
+		else ENGAGEMENT = .6;
+	}
 	
 	if (F1.useSmoke) F1.smokeType = F1C.smokeType = getSmokeType(alive1.concat(alive1C));
 	
@@ -716,11 +720,15 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 		F1.formation = SIMCONSTS.echelonOld;
 	}
 	
-	var r = Math.random();
-	if (r < .45) ENGAGEMENT = 1;
-	else if (r < .6) ENGAGEMENT = 1.2;
-	else if (r < .9 || F1.noRedT || F2.noRedT || F2C.noRedT) ENGAGEMENT = .8;
-	else ENGAGEMENT = .6;
+	if (F1.forceEngagement) {
+		ENGAGEMENT = [1,.8,1.2,.6][F1.forceEngagement-1];
+	} else {
+		var r = Math.random();
+		if (r < .45) ENGAGEMENT = 1;
+		else if (r < .6) ENGAGEMENT = 1.2;
+		else if (r < .9 || F1.noRedT || F2.noRedT || F2C.noRedT) ENGAGEMENT = .8;
+		else ENGAGEMENT = .6;
+	}
 	
 	if (F1.useSmoke && alive1.length >= 4) F1.smokeType = getSmokeType(alive1);
 	
@@ -1116,11 +1124,15 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		if (ships2C[i].isInstall) hasInstall2C = true;
 	}
 	
-	var r = Math.random();
-	if (r < .45) ENGAGEMENT = 1;
-	else if (r < .6) ENGAGEMENT = 1.2;
-	else if (r < .9 || F1.noRedT || F2.noRedT || F1C.noRedT || F2C.noRedT) ENGAGEMENT = .8;
-	else ENGAGEMENT = .6;
+	if (F1.forceEngagement) {
+		ENGAGEMENT = [1,.8,1.2,.6][F1.forceEngagement-1];
+	} else {
+		var r = Math.random();
+		if (r < .45) ENGAGEMENT = 1;
+		else if (r < .6) ENGAGEMENT = 1.2;
+		else if (r < .9 || F1.noRedT || F2.noRedT || F1C.noRedT || F2C.noRedT) ENGAGEMENT = .8;
+		else ENGAGEMENT = .6;
+	}
 	
 	if (F1.useSmoke) F1.smokeType = F1C.smokeType = getSmokeType(alive1.concat(alive1C));
 	

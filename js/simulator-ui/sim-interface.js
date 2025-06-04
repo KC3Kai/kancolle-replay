@@ -38,6 +38,7 @@ var CONST = window.COMMON.getConst({
 		'warn_special_attack': { txt: 'Note: Special Attack activation rate calculations are unknown and must be set manually, see Show Advanced to review defaults and adjust settings' },
 		'warn_smoke_formula': { txt: '' },
 		'warn_tp_formula_605': { txt: '' },
+		'warn_force_engagement': { txt: '' },
 	},
 	
 	keysSmoke: ['smokeModShellAccF','smokeModShellAccFRadar','smokeModShellAccE','smokeModShellAccERadar','smokeModASWAccF','smokeModASWAccE','smokeModTorpAccF','smokeModTorpAccE','smokeModAirAccF','smokeModAirAccE'],
@@ -190,7 +191,8 @@ var SIM = {
 			if (!fleet) continue;
 			for (let ship of fleet.ships) {
 				let repairTime = window.getRepairTime(ship);
-				let useBucket = (ship.HP/ship.maxHP <= window.BUCKETPERCENT || repairTime > window.BUCKETTIME) && repairTime >= (dataInput.bucketTimeIgnore || 0);
+				let bucketPercent = ship._dataOrig.bucketPercent ?? window.BUCKETPERCENT, bucketTime = ship._dataOrig.bucketTime ?? window.BUCKETTIME;
+				let useBucket = (ship.HP/ship.maxHP <= bucketPercent || repairTime > bucketTime) && repairTime >= (dataInput.bucketTimeIgnore || 0);
 				if (!window.CARRYOVERHP || useBucket) {
 					let cost = window.getRepairCost(ship);
 					this._results.totalFuelR += cost[0];
@@ -730,6 +732,13 @@ var SIM = {
 		// if (dataInput.tpFormula == '60-5') {
 			// this._addWarning('warn_tp_formula_605');
 		// }
+		
+		for (let i=0; i<dataInput.nodes.length; i++) {
+			let node = dataInput.nodes[i];
+			if (node.forceEngagement) {
+				this._addWarning('warn_force_engagement',[i+1,node.forceEngagement]);
+			}
+		}
 	},
 	
 	_checkWarningsPostRun: function(dataInput) {
@@ -921,6 +930,8 @@ var SIM = {
 				}
 			}
 			
+			fleetF.forceEngagement = node.forceEngagement || null;
+			
 			let result;
 			let apiBattle = null;
 			if (dataReplay) {
@@ -1004,7 +1015,8 @@ var SIM = {
 					if (!fleet) continue;
 					fleet.reset(true);
 					for (let ship of fleet.ships) {
-						let notHP = window.CARRYOVERHP && ship.HP/ship.maxHP > window.BUCKETPERCENT && window.getRepairTime(ship) <= window.BUCKETTIME;
+						let bucketPercent = ship._dataOrig.bucketPercent ?? window.BUCKETPERCENT, bucketTime = ship._dataOrig.bucketTime ?? window.BUCKETTIME;
+						let notHP = window.CARRYOVERHP && ship.HP/ship.maxHP > bucketPercent && window.getRepairTime(ship) <= bucketTime;
 						ship.reset(notHP, window.CARRYOVERMORALE);
 						if (window.CARRYOVERMORALE) ship.morale = Math.max(49, ship.morale - 15);
 					}

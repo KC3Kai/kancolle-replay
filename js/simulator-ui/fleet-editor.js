@@ -177,6 +177,8 @@ var FLEET_MODEL = {
 			neverFCF: false,
 			retreatOnChuuha: false,
 			noRetreatOnTaiha: false,
+			bucketPercent: null,
+			bucketTime: null,
 			
 			isFaraway: false,
 		};
@@ -397,6 +399,8 @@ var UI_FLEETEDITOR = Vue.createApp({
 		presetListComp: [],
 		
 		fleet: FLEET_MODEL.getBlankFleet(),
+		
+		showOutdated: false,
 	}),
 	mounted: function() {
 		for (let world in ENEMYCOMPS) {
@@ -1349,6 +1353,9 @@ COMMON.global.fleetEditorClose = function() {
 }
 COMMON.global.fleetEditorToggleEquipBonus = function(show) {
 	UI_FLEETEDITOR.showEquipBonus = show;
+}
+COMMON.global.fleetEditorToggleOutdated = function(show) {
+	UI_FLEETEDITOR.showOutdated = show;
 }
 COMMON.global.fleetEditorMoveTemp = function(elFrom) {
 	elFrom = elFrom || document;
