@@ -243,7 +243,7 @@
 	"enable_anti_sub_raid_desc": "2022年春イベ以降のイベント海域では空襲マスにおいて対潜哨戒機を装備した敵艦による自艦隊潜水艦への攻撃が発生します",
 	"tp_formula": "TP計算方式",
 	"bucket_count_use": "HPが {inp_hp}%以下、または入渠が {inp_time} 時間以上でバケツを使用する",
-	"individual_override": "さらに艦ごとの修理条件を設定",
+	"individual_override": "さらに艦ごとの使用条件を設定",
 	"bucket_do_not_count_use": "入渠が {inp_time} 時間未満なら使用しない(上記とは関係なく)",
 	"carry_over_ship_hp": "{img_bucket} の使用条件に合致しない限りHPを持ち越す(不使用条件は含まない)",
 	"carry_over_ship_morale": "艦のcond値を持ち越す",
