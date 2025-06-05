@@ -443,7 +443,7 @@ window.CONVERT = {
 			if (itemX) shipSave.equips.push(itemX);
 			let statsBase = {};
 			if (shipDb.luck > -1) statsBase.luk = shipDb.luck;
-			if (shipDb.hp && shipDb.hp > -1) statsBase.hp = shipDb.hp;
+			if (shipDb.hp && shipDb.hp > -1) shipSave.hp = shipSave.hpInit = shipDb.hp;
 			if (shipDb.asw && shipDb.asw > -1) {
 				let eqs = shipSave.equips.filter(eq => !FLEET_MODEL.equipIsEmpty(eq));
 				let statsBonus = window.getBonusStats(shipSave.mstId,eqs.map(eq => eq.mstId),eqs.map(eq => eq.level || 0));

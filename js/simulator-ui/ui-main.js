@@ -1256,7 +1256,7 @@ var UI_DECKBUILDERIMPORTER = Vue.createApp({
 			if (isSupport) {
 				if (+fleetNum >= 10) return;
 				let fleetKey = 'f'+fleetNum;
-				if (dataDb[fleetKey].s7) delete dataDb[fleetKey].s7;
+				if (dataDb[fleetKey] && dataDb[fleetKey].s7) delete dataDb[fleetKey].s7;
 			}
 			CONVERT.loadSaveFleet(CONVERT.deckbuilderToSaveFleet(dataDb,fleetNum),fleetUI,true);
 		},
