@@ -481,6 +481,7 @@ EQTDATA[DRUM] = {
 EQTDATA[SCAMP] = {
 	name: 'Misc',
 	image: 29,
+	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['CAV','BBV','CVL','CV','CVB','AO'],
 	canequipS: [166, 372, 450, 488, 491, 496, 507, 547, 574, 579, 581, 586, 626, 630, 652, 662, 663, 668, 690, 879, 943, 948],
 	cannotequipS: [645, 699],
