@@ -193,7 +193,6 @@ EQTDATA[TORPEDOSS] = {
 	name: 'Torpedo',
 	image: 5,
 	btype: B_TORPEDO,
-	improve: {Ptorp:1.2,Pnb:1,ACCtorp:2,ACCnb:1.3},
 	canequip: ['SS','SSV'],
 };
 EQTDATA[MIDGETSUB] = {
