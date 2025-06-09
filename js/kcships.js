@@ -2325,7 +2325,6 @@ Equip.prototype.setImprovement = function(level) {
 	}
 	
 	var improve = (this.improve)? this.improve : EQTDATA[this.type].improve;
-	if (!improve) return;
 	for (var key in improve) {
 		this.improves[key] = improve[key]*Math.sqrt(level);
 	}
