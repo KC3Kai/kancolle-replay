@@ -2265,7 +2265,7 @@ function Equip(equipid,level,rank,forLBAS) {
 		if (this.image == 16) this.atype = A_HAGUN;
 		if (this.atype == A_HAGUN && this.AA >= 8) this.atype = A_HAFD;
 		if (this.atype == A_AAGUN && this.AA >= 9) this.isconcentrated = true;
-		if (this.atype == A_AAGUN && this.AA <= 2) this.atype = 0;
+		// if (this.atype == A_AAGUN && this.AA <= 2) this.atype = 0; //?
 	}
 	
 	if (level) this.setImprovement(level);
