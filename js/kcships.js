@@ -1708,7 +1708,7 @@ Ship.prototype.getAACItype = function(atypes) {
 	
 	var add6 = false;
 	if (this.type=='BB'||this.type=='BBV'||this.type=='FBB') {  //is BB
-		if (atypes[A_GUN] && atypes[A_TYPE3SHELL] && atypes[A_AAFD]) {
+		if (((this.equiptypes[MAINGUNL] || 0) + (this.equiptypes[MAINGUNXL] || 0)) && atypes[A_TYPE3SHELL] && atypes[A_AAFD]) {
 			if (atypes[A_AIRRADAR]) types.push(4);
 			add6 = true;
 		}
