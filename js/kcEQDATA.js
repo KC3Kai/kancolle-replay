@@ -6457,6 +6457,19 @@ var EQDATA = {
 		ACC: 2,
 		EV: 4,
 	},
+	561: {
+		name: 'Ho 229',
+		nameJP: 'Ho229',
+		added: '2025-06-27',
+		type: JETBOMBER, image: 59,
+		aaResistShip: .5, //temp
+		aaResistFleet: .5, //temp
+		FP: 3,
+		DIVEBOMB: 16,
+		AA: 8,
+		LOS: 3,
+		RNG: 5,
+	},
 	1501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
@@ -8321,6 +8334,7 @@ var LBASDATA = {
 	558: { distance: 5, cost: 5 },
 	559: { distance: 4, cost: 6 },
 	560: { distance: 2, cost: 6 },
+	561: { distance: 4, cost: 14 },
 };
 
 
