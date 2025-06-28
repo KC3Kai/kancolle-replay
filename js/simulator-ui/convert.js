@@ -307,13 +307,13 @@ window.CONVERT = {
 				nodeType: CONST.NODE_NORMAL,
 				doNB: i == dataReplay.battles.length-1,
 			};
-			if (!battle.data || Object.keys(battle.data).length <= 0) {
+			if (!battle.data || Object.keys(battle.data).length <= 0 || battle.data.api_n_support_flag !== undefined) {
 				battleSave.nodeType = CONST.NODE_NIGHT;
 			}
 			if (bdata.api_kouku2) {
 				battleSave.nodeType = CONST.NODE_AIR;
 			}
-			if ((bdata.api_name && bdata.api_name.includes('ld_airbattle')) || (!bdata.api_name && bdata.api_opening_atack === undefined && bdata.api_kouku2 === undefined)) {
+			if ((bdata.api_name && bdata.api_name.includes('ld_airbattle')) || (!bdata.api_name && bdata.api_opening_atack === undefined && bdata.api_kouku2 === undefined && bdata.api_n_support_flag === undefined)) {
 				battleSave.nodeType = CONST.NODE_RAID;
 			}
 			if (ship_ke.every(id => SHIPDATA[id] && ['SS','SSV'].includes(SHIPDATA[id].type))) {
