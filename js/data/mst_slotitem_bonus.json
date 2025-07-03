@@ -4901,6 +4901,34 @@
 				"shipCountry": ["RU"],
 				"requiresId": [282],
 				"num": 1
+			},
+			{
+				"bonus": { "houm": 1 },
+				"level": 2
+			},
+			{
+				"bonus": { "raig": 1 },
+				"level": 4
+			},
+			{
+				"bonus": { "souk": 1 },
+				"level": 6
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"level": 7
+			},
+			{
+				"bonus": { "raig": 1 },
+				"level": 8
+			},
+			{
+				"bonus": { "houm": 1 },
+				"level": 9
+			},
+			{
+				"bonus": { "raig": 1 },
+				"level": 10
 			}
 		]
 	},
@@ -6953,6 +6981,31 @@
 			{
 				"bonus": { "houg": 1, "kaih": 1 },
 				"shipId": [707,930]
+			},
+			{
+				"bonus": { "tyku": 1 },
+				"shipCountry": ["US","GB"],
+				"level": 7
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"shipCountry": ["FR"],
+				"level": 7
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipCountry": ["US","GB","FR"],
+				"level": 8
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipCountry": ["US","GB","FR"],
+				"level": 9
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipCountry": ["US","GB","FR"],
+				"level": 10
 			}
 		]
 	},
@@ -8663,32 +8716,32 @@
 		"bonuses": [
 			{
 				"bonus": { "kaih": 1 },
-				"shipClass": [78,112],
+				"shipCountry": ["GB"],
 				"level": 4
 			},
 			{
 				"bonus": { "houm": 1 },
-				"shipClass": [78,112],
+				"shipCountry": ["GB"],
 				"level": 6
 			},
 			{
-				"bonus": { "houg": 1 },
-				"shipClass": [78,112],
+				"bonus": { "houg": 1, "tyku": 1 },
+				"shipCountry": ["GB"],
 				"level": 7
 			},
 			{
-				"bonus": { "kaih": 1 },
-				"shipClass": [78,112],
+				"bonus": { "kaih": 2 },
+				"shipCountry": ["GB"],
 				"level": 8
 			},
 			{
-				"bonus": { "houm": 1 },
-				"shipClass": [78,112],
+				"bonus": { "houm": 1, "houg": 1 },
+				"shipCountry": ["GB"],
 				"level": 9
 			},
 			{
-				"bonus": { "houg": 1 },
-				"shipClass": [78,112],
+				"bonus": { "houg": 1, "houm": 1 },
+				"shipCountry": ["GB"],
 				"level": 10
 			}
 		]
@@ -9951,6 +10004,33 @@
 			{
 				"bonus": { "houg": 1, "houm": 1, "tyku": 2, "kaih": 3 },
 				"shipBase": [83,534]
+			}
+		]
+	},
+	{
+		"ids": [309],
+		"bonuses": [
+			{
+				"bonus": { "kaih": 1 },
+				"shipId": [118,119,506,507,586,623,657,668,690],
+				"level": 7
+			},
+			{
+				"bonus": { "houm": 1, "kaih": -1 },
+				"shipId": [118,119,506,507,586,623,657,668,690],
+				"level": 8
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"level": 8
+			},
+			{
+				"bonus": { "raig": 1 },
+				"level": 9
+			},
+			{
+				"bonus": { "houm": 1 },
+				"level": 10
 			}
 		]
 	}
