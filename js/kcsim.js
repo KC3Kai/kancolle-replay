@@ -83,7 +83,7 @@ var AACIDATA = {
 	24:{num:3,rate:.55,mod:1.25,equip:'HG',num1:1},
 	25:{num:7,rate:.6,mod:1.55,equip:'GRS',num1:1},
 	26:{num:6,rate:.6,mod:1.4,equip:'HR',num1:1},
-	27:{num:5,rate:.55,mod:1.55,equip:'BGR',num1:1},
+	27:{num:6,rate:.55,mod:1.55,equip:'BGR',num1:1},
 	28:{num:4,rate:.55,mod:1.4,equip:'GR',num1:1},
 	29:{num:5,rate:.6,mod:1.55,equip:'HR',num1:1},
 	30:{num:3,rate:.45,mod:1.3,equip:'HHH',num1:1},
@@ -101,14 +101,14 @@ var AACIDATA = {
 	42:{num:10,rate:.65,mod:1.65,equip:'HHRG',num1:1},
 	43:{num:8,rate:.58,mod:1.6,equip:'HHR',num1:1},
 	44:{num:6,rate:.55,mod:1.6,equip:'HRG',num1:1},
-	45:{num:5,rate:.5,mod:1.55,equip:'HR',num1:1},
+	45:{num:6,rate:.5,mod:1.55,equip:'HR',num1:1},
 	46:{num:8,rate:.6,mod:1.55,equip:'MCR',num1:1},
 	47:{num:2,rate:.7,mod:1.3,equip:'MG',num1:1},
 	48:{num:8,rate:.65,mod:1.75,equip:'HHR',num1:1},
-	49:{num:5,rate:.5,mod:1.5,equip:'HHR',num1:1},
+	49:{num:6,rate:.5,mod:1.5,equip:'HHR',num1:1},
 	50:{num:7,rate:.5,mod:1.5,equip:'HHAR',num1:1},
-	51:{num:5,rate:.5,mod:1.35,equip:'HCR',num1:1},
-	52:{num:4,rate:.5,mod:1.35,equip:'HHA',num1:1},
+	51:{num:5,rate:.5,mod:1.4,equip:'HCR',num1:1},
+	52:{num:5,rate:.5,mod:1.4,equip:'HHA',num1:1},
 };
 (() => {
 	let orderKnown = [38,39,40,42,41,10,43,46,11,25,48,1,34,44,26,4,2,35,36,27,45,50,49,51,52,19,21,29,16,14,3,5,6,28,37,33,30,8,13,15,7,20,24,32,12,31,47,17,18,22,9,23];
@@ -260,6 +260,11 @@ var SIMCONSTS = {
 	aaciRatesOld: { 2: .58, 5: .55, 34: .6, 35: .55, 36: .55, 37: .4, 38: .62 },
 	aaciRatesNew: { 2: .55, 5: .5, 34: .55, 35: .54, 36: .53, 37: .44, 38: .58 },
 	aaci49Fubuki: true,
+	aaci27Old: {num:5,rate:.55,mod:1.55,equip:'BGR',num1:1},
+	aaci45Old: {num:5,rate:.5,mod:1.55,equip:'HR',num1:1},
+	aaci49Old: {num:5,rate:.5,mod:1.5,equip:'HHR',num1:1},
+	aaci51Old: {num:5,rate:.5,mod:1.35,equip:'HCR',num1:1},
+	aaci52Old: {num:4,rate:.5,mod:1.35,equip:'HHA',num1:1},
 	airstrikeDmgMF: -10,
 	airstrikeDmgMFRaid: -10,
 	airstrikeDmgME: -10,
@@ -2002,7 +2007,6 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 		if (target.isSub) {
 			preMod = (planebase >= 10)? .7 + Math.random()*.3 : .35 + Math.random()*.45;
 		}
-		if (equip.isjet && !isjetphase) preMod *= 1/Math.sqrt(2);
 		if (SIMCONSTS.enableSkipTorpBonus && equip.isSkipBomber) {
 			if (target.isInstall) {
 				preMod *= .9;
@@ -2062,7 +2066,11 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 		}
 		if (ship.bonusSpecial) postMod *= getBonusDmg(ship,target);
 		if (SIMCONSTS.enablePlaneBonus) postMod *= getBonusSpecialPlane(ship,'bonusSpecialP',true);
-		let pow = Math.floor(softCap((base+Math.sqrt(ship.planecount[slot])*planebase)*preMod, SIMCONSTS.airDmgCap))*contactMod*postMod;
+		let pow = (base+Math.sqrt(ship.planecount[slot])*planebase)*preMod;
+		if (equip.isjet && !isjetphase) pow = pow*.7 + .5;
+		pow = Math.floor(softCap(pow, SIMCONSTS.airDmgCap))*contactMod*postMod;
+		
+		pow = Math.floor(softCap(pow));
 		if (!SIMCONSTS.enableAirstrikeSpecialBonus && target.isPT && !NERFPTIMPS) {
 			pow *= (Math.random() < .5 ? .5 : .8);
 		}
@@ -3221,7 +3229,6 @@ function airstrikeLBAS(lbas,target,slot,contactMod,contactModLB,isjetphase) {
 		let slotMod = isjetphase ? 1 : 1.8;
 		var dmgbase = 25+planebase*Math.sqrt(slotMod*lbas.planecount[slot]);
 		var preMod = (equip.type == LANDBOMBER || equip.type == LANDBOMBERL)? .8 : 1;
-		if (equip.isjet && !isjetphase) preMod = 1/Math.sqrt(2);
 		if (target.isSub) {
 			preMod = (planebase >= 10)? .7 + Math.random()*.3 : .35 + Math.random()*.45;
 		}
@@ -3285,7 +3292,9 @@ function airstrikeLBAS(lbas,target,slot,contactMod,contactModLB,isjetphase) {
 		if (equip.type == SEAPLANE) {
 			postMod = 0;
 		}
-		let pow = Math.floor(softCap(dmgbase*preMod, SIMCONSTS.lbasDmgCap));
+		let pow = dmgbase*preMod;
+		if (equip.isjet && !isjetphase) pow = pow*.7 + .5;
+		pow = Math.floor(softCap(pow, SIMCONSTS.lbasDmgCap));
 		if (!SIMCONSTS.enableAirstrikeSpecialBonus) {
 			if ((target.installtype == 3 || target.isSupplyDepot) && target.mid <= 1658) {
 				pow = pow*target.divebombWeak + 100;
