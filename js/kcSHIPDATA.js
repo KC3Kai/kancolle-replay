@@ -20353,7 +20353,7 @@ var SHIPDATA = {
 	},
 	1010: {
 		name: 'Minneapolis Kai',
-		nameJP: 'Minneapolisa改',
+		nameJP: 'Minneapolis改',
 		image: 'K1010.jpg',
 		type: 'CA', sclass: 121,
 		nid: 610,

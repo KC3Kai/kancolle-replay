@@ -3249,7 +3249,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod,contactModLB,isjetphase) {
 			// else postMod *= 1.18;
 		// }
 		if (SIMCONSTS.enableAirstrikeSpecialBonus) {
-			if ([1557,1586].includes(target.mid)) {
+			if ([1557,1586,1620].includes(target.mid)) { //1620 provisional
 				postMod *= Math.random() < .35 ? 3 : 1.7;
 			} else if (target.isPT) {
 				postMod *= Math.random() < .4 ? .7 : .4;
