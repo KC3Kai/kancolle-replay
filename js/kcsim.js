@@ -2110,8 +2110,8 @@ function hitRate(ship,accBase,accFlat,accMod) {
 function accuracyAndCrit(ship,target,hit,evMod,evFlat,critMod,isPlanes,critBonusFlat,evModPost=1) {
 	if (evMod===undefined) evMod = 1;
 	
-	var evade = (target.EV+Math.sqrt(target.LUK*2)) * evMod; //formation
-	var dodge = (evade>65)? 55+2*Math.sqrt(evade-65) : ((evade>40)? 40+3*Math.sqrt(evade-40) : evade);
+	var evade = Math.floor((target.EV+Math.sqrt(target.LUK*2)) * evMod); //formation
+	var dodge = (evade>65)? Math.floor(55+2*Math.sqrt(evade-65)) : ((evade>40)? Math.floor(40+3*Math.sqrt(evade-40)) : evade);
 	dodge*=.01;
 	if (target.fuelleft < 7.5) dodge -= (7.5-target.fuelleft)/10;
 	if (evFlat) dodge += evFlat*.01;
@@ -2137,16 +2137,19 @@ function accuracyAndCrit(ship,target,hit,evMod,evFlat,critMod,isPlanes,critBonus
 	}
 	
 	if (C) simConsole.log('	hit: '+hit+' dodge: '+dodge + ' (' + evFlat + ')');
-	acc = Math.max(hit-dodge,.1);
+	hit = Math.floor(Math.round(hit*1000000)/10000);
+	dodge = Math.floor(Math.round(dodge*1000000)/10000);
+	acc = Math.max(hit-dodge,10);
 	acc *= target.moraleModEv();
-	acc = Math.min(.96,acc);
+	acc = Math.min(96,Math.floor(acc));
+	if (isPlanes && ship.ACCplane) acc += ship.ACCplane;
 	
-	var crit = Math.sqrt(100*acc)*critMod*.01;
-	if (isPlanes) {
-		if (ship.ACCplane) acc += ship.ACCplane*.01;
-		if (ship.critratebonus) crit += ship.critratebonus*.01;
-	}
-	crit += critBonusFlat || 0;
+	var crit = Math.sqrt(acc)*critMod;
+	if (isPlanes && ship.critratebonus) crit += ship.critratebonus;
+	crit += critBonusFlat*100 || 0;
+	
+	acc = Math.floor(acc)/100;
+	crit = Math.floor(crit)/100;
 	if (C) simConsole.log('	accfinal: '+acc+', crit: '+crit);
 	return [acc,crit];
 }
