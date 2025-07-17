@@ -381,8 +381,8 @@ var UI_MAIN = Vue.createApp({
 		},
 		hasBucketIndivSettings: function() {
 			return !!(
-				(this.fleetFMain.ships && this.fleetFMain.ships.find(s => (s.bucketPercent != null && s.bucketPercent !== '') || (s.bucketTime != null && s.bucketTime !== ''))) || 
-				(this.fleetFMain.shipsEscort && this.fleetFMain.shipsEscort.find(s => (s.bucketPercent != null && s.bucketPercent !== '') || (s.bucketTime != null && s.bucketTime !== '')))
+				(this.fleetFMain.ships && this.fleetFMain.ships.find(s => (s.bucketPercent != null && s.bucketPercent !== '') || (s.bucketTime != null && s.bucketTime !== '') || s.bucketNoCount)) || 
+				(this.fleetFMain.shipsEscort && this.fleetFMain.shipsEscort.find(s => (s.bucketPercent != null && s.bucketPercent !== '') || (s.bucketTime != null && s.bucketTime !== '') || s.bucketNoCount))
 			);
 		},
 		

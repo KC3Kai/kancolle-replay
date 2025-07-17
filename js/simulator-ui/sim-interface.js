@@ -192,7 +192,7 @@ var SIM = {
 			for (let ship of fleet.ships) {
 				let repairTime = window.getRepairTime(ship);
 				let bucketPercent = ship._dataOrig.bucketPercent ?? window.BUCKETPERCENT, bucketTime = ship._dataOrig.bucketTime ?? window.BUCKETTIME;
-				let useBucket = (ship.HP/ship.maxHP <= bucketPercent || repairTime > bucketTime) && repairTime >= (dataInput.bucketTimeIgnore || 0);
+				let useBucket = (ship.HP/ship.maxHP <= bucketPercent || repairTime > bucketTime) && repairTime >= (dataInput.bucketTimeIgnore || 0) && !ship._dataOrig.bucketNoCount;
 				if (!window.CARRYOVERHP || useBucket) {
 					let cost = window.getRepairCost(ship);
 					this._results.totalFuelR += cost[0];

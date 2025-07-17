@@ -162,13 +162,17 @@
 					<template v-slot:inp_hp><input type="number" min="0" max="100" v-model="settings.bucketPercent" :class="getClassSetting('bucketPercent')"/></template>
 					<template v-slot:inp_time><input type="number" min="0" max="100" v-model="settings.bucketTime" :class="getClassSetting('bucketTime')"/></template>
 				</i18n-t></div>
+				<div style="margin-left:26px"><i18n-t keypath="bucket_do_not_count_use" scope="global">
+					<template v-slot:inp_time><input type="number" min="0" max="100" v-model="settings.bucketTimeIgnore" :class="getClassSetting('bucketTimeIgnore')"/></template>
+					<template v-slot:img_bucket><img src="assets/stats/bucket.png" /></template>
+				</i18n-t></div>
 				<div style="margin-left:26px">
 					<input type="button" :value="$t('individual_override')" @click="onclickSetBucket"/> <span v-show="hasBucketIndivSettings" class="bonusMarker bucket">&#11044;</span>
 				</div>
-				<div style="margin-left:26px"><i18n-t keypath="bucket_do_not_count_use" scope="global">
-					<template v-slot:inp_time><input type="number" min="0" max="100" v-model="settings.bucketTimeIgnore" :class="getClassSetting('bucketTimeIgnore')"/></template>
-				</i18n-t></div>
-				<div><label><input type="checkbox" v-model="settings.carryOverHP" /><i18n-t keypath="carry_over_ship_hp" scope="global"><template v-slot:img_bucket><img src="assets/stats/bucket.png" /></template></i18n-t></label></div>
+				<div><label><input type="checkbox" v-model="settings.carryOverHP" /><i18n-t keypath="carry_over_ship_hp" scope="global">
+					<template v-slot:img_bucket><img src="assets/stats/bucket.png" /></template>
+					<template v-slot:note><span class="tooltip" :title="$t('carry_over_ship_hp_tooltip')">{{$t('carry_over_ship_hp_note')}}</span></template>
+				</i18n-t></label></div>
 				<div><label><input type="checkbox" v-model="settings.carryOverMorale" />{{$t('carry_over_ship_morale')}}</label></div>
 			</div>
 			<div>
@@ -1763,6 +1767,7 @@
 						<div><i18n-t keypath="bucket_time_input" scope="global">
 							<template v-slot:input><input type="number" min="0" max="99" v-model="ship.bucketTime" style="width:50px"/></template>
 						</i18n-t></div>
+						<div><label><input type="checkbox" v-model="ship.bucketNoCount"/>{{$t('do_not_count_stats')}}</label></div>
 					</div>
 				</div>
 			</div>
