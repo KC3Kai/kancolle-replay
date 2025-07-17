@@ -179,6 +179,7 @@ var FLEET_MODEL = {
 			noRetreatOnTaiha: false,
 			bucketPercent: null,
 			bucketTime: null,
+			bucketNoCount: false,
 			
 			isFaraway: false,
 		};
