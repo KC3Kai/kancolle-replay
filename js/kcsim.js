@@ -1950,7 +1950,7 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 		}
 	}
 	if (SIMCONSTS.enableSkipTorpBonus && equip.isSkipBomber) {
-		if (['FBB','BB','BBV','CVL','CV'].includes(target.type)) acc += .31;
+		if (['FBB','BB','BBV','CVL','CV','CVB','AT'].includes(target.type)) acc += .31;
 		else if (['CA','CAV'].includes(target.type)) acc += .22;
 		else if (['CL','CLT','AV'].includes(target.type)) acc += .18;
 		else if (['DD'].includes(target.type) && !target.isPT) acc += .14;
@@ -2014,7 +2014,7 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 				if (['DD'].includes(target.type)) preMod *= 1.9;
 				if (['CL','CLT','AV'].includes(target.type)) preMod *= 1.75;
 				if (['CA','CAV'].includes(target.type)) preMod *= 1.6;
-				if (['CVL','FBB','BB','BBV','CV','AT'].includes(target.type)) preMod *= 1.3;
+				if (['CVL','FBB','BB','BBV','CV','CVB','AT'].includes(target.type)) preMod *= 1.3;
 			}
 		}
 		var postMod = (issupport && MECHANICS.LBASBuff)? 1.35 : 1;
@@ -3157,7 +3157,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod,contactModLB,isjetphase) {
 	}
 	if (equip.mid == 459 || (SIMCONSTS.enableSkipTorpBonus && equip.isSkipBomber)) {
 		if (target.isInstall) acc -= .09
-		else if (['FBB','BB','BBV','CVL','CV','AT'].includes(target.type)) acc += .31;
+		else if (['FBB','BB','BBV','CVL','CV','CVB','AT'].includes(target.type)) acc += .31;
 		else if (['CA','CAV'].includes(target.type)) acc += .22;
 		else if (['CL','CLT','AV'].includes(target.type)) acc += .18;
 		else if (['DD'].includes(target.type) && !target.isPT) acc += .13;
@@ -3244,7 +3244,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod,contactModLB,isjetphase) {
 				if (['DD'].includes(target.type)) preMod *= 1.9;
 				if (['CL','CLT','AV'].includes(target.type)) preMod *= 1.75;
 				if (['CA','CAV'].includes(target.type)) preMod *= 1.6;
-				if (['CVL','FBB','BB','BBV','CV','AT'].includes(target.type)) preMod *= 1.3;
+				if (['CVL','FBB','BB','BBV','CV','CVB','AT'].includes(target.type)) preMod *= 1.3;
 			}
 		}
 		// if (target.isInstall) { //https://cdn.discordapp.com/attachments/178613137430282240/284476587783618560/isohime.PNG
