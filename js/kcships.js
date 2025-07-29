@@ -1049,7 +1049,7 @@ Ship.prototype.getFit = function() {
 		let num46cm = this.equips.filter(eq => [9].includes(eq.mid)).length;
 		let numP46cm = this.equips.filter(eq => [117].includes(eq.mid)).length;
 		let num41cm = this.equips.filter(eq => [8,105,236,290,298,299,300,318,330,331,332,381,385,390].includes(eq.mid)).length;
-		let num356cm = this.equips.filter(eq => [7,76,103,104,114,190,192,289,328,329,502,503].includes(eq.mid)).length;
+		let num356cm = this.equips.filter(eq => [7,76,103,104,114,190,192,289,328,329,502,503,530].includes(eq.mid)).length;
 		let num381mm = this.equips.filter(eq => [133,137].includes(eq.mid)).length;
 		let num46cmK = this.equips.filter(eq => [276].includes(eq.mid)).length;
 		let num51cm = this.equips.filter(eq => [128,281,465].includes(eq.mid)).length;
@@ -1091,7 +1091,7 @@ Ship.prototype.getFit = function() {
 		let num46cm = this.equips.filter(eq => [9].includes(eq.mid)).length;
 		let numP46cm = this.equips.filter(eq => [117].includes(eq.mid)).length;
 		let num41cm = this.equips.filter(eq => [8,105,236,290,298,299,300,318,330,331,332,381,385,390].includes(eq.mid)).length;
-		let num356cm = this.equips.filter(eq => [7,76,103,104,114,190,192,289,328,329,502,503].includes(eq.mid)).length;
+		let num356cm = this.equips.filter(eq => [7,76,103,104,114,190,192,289,328,329,502,503,530].includes(eq.mid)).length;
 		let num381mm = this.equips.filter(eq => [133,137].includes(eq.mid)).length;
 		let num46cmK = this.equips.filter(eq => [276].includes(eq.mid)).length;
 		let num51cm = this.equips.filter(eq => [128,281,465].includes(eq.mid)).length;
@@ -2233,12 +2233,32 @@ LandBase.createJetLandBase = function(landbases) {
 			if (landbases[i].equips[j].isjet) { equips.push(landbases[i].equips[j]); planecounts.push(landbases[i].planecount[j]); }
 		}
 	}
-	var jetLBAS = new LandBase([],[],[],);
-	jetLBAS.equips = equips;
-	jetLBAS.planecount = planecounts;
-	jetLBAS.PLANESLOTS = planecounts.slice();
-	return jetLBAS;
+	
+	let key = landbases.map(base => base.id).join(',');
+	if (!LandBase._jetLBAS[key]) {
+		LandBase._jetLBAS[key] = new Fleet(0);
+		let ships = [];
+		for (let i=0; i<equips.length; i++) {
+			let ship = new Ship(0,'JET LBAS',0, 1,1, 0,0,0,0, 0, 0,0,3, 1);
+			ship.loadEquips([equips[i].mid],[equips[i].level],[equips[i].rank]);
+			ships.push(ship);
+		}
+		LandBase._jetLBAS[key].loadShips(ships);
+	}
+	LandBase._jetLBAS[key].resetBattle();
+	for (let i=0; i<planecounts.length; i++) {
+		LandBase._jetLBAS[key].ships[i].planecount[0] = planecounts[i];
+	}
+	return LandBase._jetLBAS[key];
 }
+LandBase.refresh = function(bases) {
+	LandBase._jetLBAS = {};
+	for (let i=0; i<bases.length; i++) {
+		if (!bases[i]) continue;
+		bases[i].id = i+1;
+	}
+}
+LandBase._jetLBAS = {};
 
 var PLANEDEFAULT = new Ship(0,'PLANEDEFAULT',0, 1,1, 0,0,0,0, 0, 0,0,3, 1);
 PLANEDEFAULT.CVshelltype = true;
