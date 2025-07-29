@@ -591,6 +591,7 @@ var SIM = {
 		FLEETS1S[0] = this._getSimFleet(dataInput.fleetSupportN,0,true);
 		FLEETS1S[1] = this._getSimFleet(dataInput.fleetSupportB,0,true);
 		LBAS = this._getSimLBAS(dataInput.lbas);
+		LandBase.refresh(LBAS);
 		
 		if (FLEETS1S[0] && FLEETS1S[0].getSupportType() == 0) FLEETS1S[0] = null;
 		if (FLEETS1S[1] && FLEETS1S[1].getSupportType() == 0) FLEETS1S[1] = null;

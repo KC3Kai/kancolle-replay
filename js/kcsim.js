@@ -1644,12 +1644,12 @@ function nightPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,NBonly,API
 	var light1 = false, lightship1 = 0, slrerolls1 = 0;
 	for (var i=0; i<alive1.length; i++) {
 		if (alive1[i].retreated) continue;
-		if (alive1[i].hasSearchlight) { light1 = true; lightship1 = i; slrerolls1 = alive1[i].hasSearchlight; break; }
+		if (alive1[i].hasSearchlight && alive1[i].hasSearchlight > slrerolls1) { light1 = true; lightship1 = i; slrerolls1 = alive1[i].hasSearchlight; }
 	}
 	var light2 = false, lightship2 = 0, slrerolls2 = 0;
 	for (var i=0; i<alive2.length; i++) {
 		if (alive2[i].retreated) continue;
-		if (alive2[i].hasSearchlight) { light2 = true; lightship2 = i; slrerolls2 = alive2[i].hasSearchlight; break; }
+		if (alive2[i].hasSearchlight && alive2[i].hasSearchlight > slrerolls2) { light2 = true; lightship2 = i; slrerolls2 = alive2[i].hasSearchlight; }
 	}
 	var scout1 = null, scout2 = null;
 	let ship1 = alive1[0] || subsalive1[0];
@@ -2649,8 +2649,10 @@ function airPhase(alive1,subsalive1,alive2,subsalive2,APIkouku,isjetphase,isbomb
 	var carriers1 = [], carriers2 = [];
 	for (var i=0; i<alive1.length; i++) if ((includeEscort||!alive1[i].isescort) && (!isjetphase||alive1[i].hasjet)) carriers1.push(alive1[i]);
 	for (var i=0; i<subsalive1.length; i++) if ((includeEscort||!subsalive1[i].isescort) && (!isjetphase||subsalive1[i].hasjet)) carriers1.push(subsalive1[i]);
-	for (var i=0; i<alive2.length; i++) if ((!isjetphase||alive2[i].hasjet)) carriers2.push(alive2[i]);
-	for (var i=0; i<subsalive2.length; i++) if ((!isjetphase||subsalive2[i].hasjet)) carriers2.push(subsalive2[i]);
+	if (isjetphase != 2) {
+		for (var i=0; i<alive2.length; i++) if ((!isjetphase||alive2[i].hasjet)) carriers2.push(alive2[i]);
+		for (var i=0; i<subsalive2.length; i++) if ((!isjetphase||subsalive2[i].hasjet)) carriers2.push(subsalive2[i]);
+	}
 	
 	if ((carriers1.length && (!isjetphase||alive2.length)) || (carriers2.length && (!isjetphase||alive1.length))) {
 		if (C) {
@@ -3590,22 +3592,30 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 	
 	//jet lbas
 	if (LBASwaves && LBASwaves.length && !NBonly && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length > 0) {
-		if (C) BAPI.data.api_air_base_injection = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null};
 		var uniqueLBs = [];
 		for (var i=0; i<LBASwaves.length; i++) {
 			if (uniqueLBs.indexOf(LBASwaves[i]) == -1) uniqueLBs.push(LBASwaves[i]);
 		}
-		var jetLBAS = LandBase.createJetLandBase(uniqueLBs);
-		if (jetLBAS.equips.length) {
-			compareAP(jetLBAS,F2,'isjet');
-			LBASPhase(jetLBAS,alive2,subsalive2,true,(C)?BAPI.data.api_air_base_injection:undefined);
-			removeSunk(alive2); removeSunk(subsalive2);
-			if (C) {
-				BAPI.data.api_air_base_injection.api_stage1.api_disp_seiku = {4:1,3:2,2:0,1:3,0:4}[jetLBAS.AS+2];
+		if (uniqueLBs.find(lb => lb.equips.find(eq => eq.isjet))) {
+			if (C) BAPI.data.api_air_base_injection = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null};
+			var jetLBAS = LandBase.createJetLandBase(uniqueLBs);
+			if (jetLBAS.ships.length) {
+				compareAP(jetLBAS,F2,'isjet');
+				airPhase(jetLBAS.ships,[],alive2,subsalive2,(C)?BAPI.data.api_air_base_injection:undefined,2);
+				removeSunk(alive2); removeSunk(subsalive2);
+				if (C) {
+					BAPI.data.api_air_base_injection.api_stage1.api_disp_seiku = {4:1,3:2,2:0,1:3,0:4}[jetLBAS.AS+2];
+					BAPI.data.api_air_base_injection.api_air_base_data = [];
+					for (let i=0; i<jetLBAS.ships.length; i++) {
+						let eq = jetLBAS.ships[i].equips[0];
+						if (!eq.isPlane) continue;
+						BAPI.data.api_air_base_injection.api_air_base_data.push({ api_mst_id: eq.mid, api_count: jetLBAS.ships[i].planecount[0] });
+					}
+				}
+				F2.AS = 0;
+			} else {
+				if (C) delete BAPI.data.api_air_base_injection;
 			}
-			F2.AS = 0;
-		} else {
-			if (C) delete BAPI.data.api_air_base_injection;
 		}
 	}
 	
@@ -3613,7 +3623,7 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 	if (!NBonly && !bombing && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length > 0) {
 		if (C) BAPI.data.api_injection_kouku = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null};
 		compareAP(F1,F2,'isjet');
-		airPhase(alive1,subsalive1,alive2,subsalive2,(C)? BAPI.data.api_injection_kouku:undefined,true);
+		airPhase(alive1,subsalive1,alive2,subsalive2,(C)? BAPI.data.api_injection_kouku:undefined,1);
 		if (C) {
 			if (!BAPI.data.api_injection_kouku.api_stage1) delete BAPI.data.api_injection_kouku;
 			if (BAPI.data.api_injection_kouku) delete BAPI.data.api_injection_kouku.api_stage3_combined;
@@ -3669,7 +3679,7 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 	if (!NBonly && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length > 0) {
 		if (C) BAPI.data.api_kouku = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null};
 		compareAP(F1,F2);
-		airPhase(alive1,subsalive1,alive2,subsalive2,(C)? BAPI.data.api_kouku:undefined,false,bombing);
+		airPhase(alive1,subsalive1,alive2,subsalive2,(C)? BAPI.data.api_kouku:undefined,0,bombing);
 		if (C) {
 			if (BAPI.data.api_kouku.api_stage1) BAPI.data.api_kouku.api_stage1.api_disp_seiku = {4:1,3:2,2:0,1:3,0:4}[F1.AS+2];
 			else BAPI.data.api_kouku = null;
@@ -4532,12 +4542,12 @@ function getNightEquips(alive1,alive2,APIyasen) {
 	var light1 = false, lightship1 = 0, slrerolls1 = 0;
 	for (var i=0; i<alive1.length; i++) {
 		if (alive1[i].retreated) continue;
-		if (alive1[i].hasSearchlight) { light1 = true; lightship1 = i; slrerolls1 = alive1[i].hasSearchlight; break; }
+		if (alive1[i].hasSearchlight && alive1[i].hasSearchlight > slrerolls1) { light1 = true; lightship1 = i; slrerolls1 = alive1[i].hasSearchlight; }
 	}
 	var light2 = false, lightship2 = 0, slrerolls2 = 0;
 	for (var i=0; i<alive2.length; i++) {
 		if (alive2[i].retreated) continue;
-		if (alive2[i].hasSearchlight) { light2 = true; lightship2 = i; slrerolls2 = alive2[i].hasSearchlight; break; }
+		if (alive2[i].hasSearchlight && alive2[i].hasSearchlight > slrerolls2) { light2 = true; lightship2 = i; slrerolls2 = alive2[i].hasSearchlight; }
 	}
 	var scout1 = getNightEquipsScout(alive1[0].fleet.ships);
 	var scout2 = getNightEquipsScout(alive2[0].fleet.combinedWith ? alive2[0].fleet.ships.concat(alive2[0].fleet.combinedWith.ships) : alive2[0].fleet.ships); //FF only

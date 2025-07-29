@@ -9891,6 +9891,16 @@
 				"shipBase": [1001]
 			},
 			{
+				"bonus": { "houg": 1 },
+				"shipBase": [1001],
+				"level": 9
+			},
+			{
+				"bonus": { "houg": 2 },
+				"shipBase": [1001],
+				"level": 10
+			},
+			{
 				"bonus": { "houg": 1, "houm": 1, "tyku": 3, "kaih": 2 },
 				"shipBase": [1001],
 				"requiresId": [556]
