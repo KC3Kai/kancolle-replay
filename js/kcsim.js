@@ -2070,7 +2070,6 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 		if (equip.isjet && !isjetphase) pow = pow*.7 + .5;
 		pow = Math.floor(softCap(pow, SIMCONSTS.airDmgCap))*contactMod*postMod;
 		
-		pow = Math.floor(softCap(pow));
 		if (!SIMCONSTS.enableAirstrikeSpecialBonus && target.isPT && !NERFPTIMPS) {
 			pow *= (Math.random() < .5 ? .5 : .8);
 		}
