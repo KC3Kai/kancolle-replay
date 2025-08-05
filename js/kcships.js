@@ -1468,13 +1468,11 @@ Ship.prototype.APacc = function(target) {
 }
 
 function WGpower(num) {
-	switch (num) {
-		case 1: return 75;
-		case 2: return 110;
-		case 3: return 140;
-		case 4: return 160;
-		default: return 0;
-	}
+	if (num >= 4) return 160;
+	else if (num == 3) return 140;
+	else if (num == 2) return 110;
+	else if (num == 1) return 75;
+	return 0;
 }
 
 Ship.prototype.shellPower = function(target,base) {
