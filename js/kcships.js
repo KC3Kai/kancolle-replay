@@ -1398,8 +1398,8 @@ Ship.prototype.NBchance = function() {
 	if (this._nbchance === undefined) {
 		this._nbchance = (this.isflagship)? 15 : 0;
 		if (['DD','CL','CLT'].includes(this.type) && this.equips.find(eq => eq.mid == 412)) this._nbchance += 8;
-		else if (this.equips.find(eq => eq.mid == 129)) this._nbchance += 5;
-		if (this.LUK >= 50) this._nbchance += Math.floor(65+Math.sqrt(this.LUK-50)+Math.sqrt(this.LVL)*.8);
+		if (this.equips.find(eq => eq.mid == 129)) this._nbchance += 5;
+		if (this.LUK >= 50) this._nbchance += 65 + Math.floor(Math.sqrt(this.LUK-50)) + Math.floor(Math.sqrt(this.LVL)*.8);
 		else this._nbchance += Math.floor(this.LUK+15+Math.sqrt(this.LVL)*.75);
 	}
 	return this._nbchance;
