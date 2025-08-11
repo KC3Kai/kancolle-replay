@@ -1428,7 +1428,7 @@ function getSpecialAttackMod(ship,attackSpecial) {
 		} else {
 			mod = MECHANICS.coloradoSpecialBuff2 ? 1.3 : 1.15;
 			let ship2 = ship.fleet.ships[1];
-			if ([19,88,93].indexOf(ship2.sclass) != -1) mod2 *= MECHANICS.coloradoSpecialBuff2 ? 1.15 : 1.1;
+			if ([275,541, 276,573, 576, 601,1496, 913,918].indexOf(ship2.mid) != -1) mod2 *= MECHANICS.coloradoSpecialBuff2 ? 1.15 : 1.1;
 			if (ship2.equiptypesB[B_APSHELL]) mod2 *= 1.35;
 			if (ship2.equiptypesB[B_RADAR]) mod2 *= 1.15;
 			if (ship.num == 2) {
@@ -1436,7 +1436,7 @@ function getSpecialAttackMod(ship,attackSpecial) {
 			}
 			if (ship.num == 3) {
 				if (MECHANICS.coloradoSpecialFix) mod2 = 1;
-				if ([19,88,93].indexOf(ship.sclass) != -1) {
+				if ([275,541, 276,573, 576, 601,1496, 913,918].indexOf(ship.mid) != -1) {
 					mod *= MECHANICS.coloradoSpecialBuff2 ? 1.17 : 1.15;
 					mod *= mod2;
 				} else if (!MECHANICS.coloradoSpecialFix && SHIPDATA[ship2.mid].SLOTS.length == 5 && ship2.equips[4] && !ship2.equips[5]) {
@@ -1462,6 +1462,7 @@ function getSpecialAttackMod(ship,attackSpecial) {
 		let numGun = ship.equips.filter(eq => [503,530].includes(eq.mid)).length;
 		if (numGun >= 2) mod *= 1.15;
 		else if (numGun == 1) mod *= 1.11;
+		modAcc = MECHANICS.kongouSpecialBuff3 ? 1.4 : 1.25; //https://x.com/Xe_UCH/status/1666963884748709888
 	} else if (attackSpecial == 105) {
 		mod = ship.isflagship && [392,969].includes(ship.mid) ? 1.3 : 1.24;
 		modAcc = 1.4;
@@ -1492,6 +1493,7 @@ function getSpecialAttackMod(ship,attackSpecial) {
 		}
 		if (ship.equiptypesB[B_APSHELL]) mod *= 1.35;
 		if (ship.equips.find(eq => eq.btype == B_RADAR && eq.LOS >= 5)) mod *= 1.15;
+		modAcc = mod;
 	} else if (attackSpecial == 401) {
 		mod = 1.4;
 		let ship1 = ship.fleet.ships[0], ship2 = ship.fleet.ships[1];
