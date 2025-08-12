@@ -1410,7 +1410,7 @@ function getSpecialAttackMod(ship,attackSpecial) {
 		}
 		modAcc = 1.4;
 		if (ship.equiptypesB[B_APSHELL]) { mod *= 1.35; modAcc *= 1.15; }
-		if (ship.equiptypesB[B_RADAR]) { mod *= 1.15; modAcc *= 1.15; }
+		if (ship.equips.find(eq => eq.btype == B_RADAR && eq.LOS >= 5)) { mod *= 1.15; modAcc *= 1.15; }
 	} else if (attackSpecial == 102) {
 		mod = (ship.isflagship)? 1.4 : 1.2;
 		if (ship.fleet.ships[1].mid == 80 || ship.fleet.ships[1].mid == 275) {
@@ -1420,7 +1420,7 @@ function getSpecialAttackMod(ship,attackSpecial) {
 		}
 		modAcc = 1.4;
 		if (ship.equiptypesB[B_APSHELL]) { mod *= 1.35; modAcc *= 1.15; }
-		if (ship.equiptypesB[B_RADAR]) { mod *= 1.15; modAcc *= 1.15; }
+		if (ship.equips.find(eq => eq.btype == B_RADAR && eq.LOS >= 5)) { mod *= 1.15; modAcc *= 1.15; }
 	} else if (attackSpecial == 103) {
 		let mod2 = 1;
 		if (ship.isflagship) {
@@ -1430,7 +1430,7 @@ function getSpecialAttackMod(ship,attackSpecial) {
 			let ship2 = ship.fleet.ships[1];
 			if ([275,541, 276,573, 576, 601,1496, 913,918].indexOf(ship2.mid) != -1) mod2 *= MECHANICS.coloradoSpecialBuff2 ? 1.15 : 1.1;
 			if (ship2.equiptypesB[B_APSHELL]) mod2 *= 1.35;
-			if (ship2.equiptypesB[B_RADAR]) mod2 *= 1.15;
+			if (ship.equips.find(eq => eq.btype == B_RADAR && eq.LOS >= 5)) mod2 *= 1.15;
 			if (ship.num == 2) {
 				mod *= mod2;
 			}
@@ -1449,12 +1449,12 @@ function getSpecialAttackMod(ship,attackSpecial) {
 		}
 		if (mod2 == 1) {
 			if (ship.equiptypesB[B_APSHELL]) mod *= 1.35;
-			if (ship.equiptypesB[B_RADAR]) mod *= 1.15;
+			if (ship.equips.find(eq => eq.btype == B_RADAR && eq.LOS >= 5)) mod *= 1.15;
 		}
 		if (MECHANICS.coloradoSpecialBuff2 && ship.equips.find(eq => eq.mid == 456)) mod *= 1.15;
 		modAcc = 1.4;
 		if (ship.equiptypesB[B_APSHELL]) { modAcc *= 1.15; }
-		if (ship.equiptypesB[B_RADAR]) { modAcc *= 1.15; }
+		if (ship.equips.find(eq => eq.btype == B_RADAR && eq.LOS >= 5)) { modAcc *= 1.15; }
 	} else if (attackSpecial == 104) {
 		mod = MECHANICS.kongouSpecialBuff3 ? 2.4 : MECHANICS.kongouSpecialBuff2 ? 2.2 : 1.9;
 		if (ENGAGEMENT == 1.2) mod *= 1.25;
@@ -1467,12 +1467,12 @@ function getSpecialAttackMod(ship,attackSpecial) {
 		mod = ship.isflagship && [392,969].includes(ship.mid) ? 1.3 : 1.24;
 		modAcc = 1.4;
 		if (ship.equiptypesB[B_APSHELL]) { mod *= 1.35; modAcc *= 1.15; }
-		if (ship.equiptypesB[B_RADAR]) { mod *= 1.15; modAcc *= 1.15; }
+		if (ship.equips.find(eq => eq.btype == B_RADAR && eq.LOS >= 5)) { mod *= 1.15; modAcc *= 1.15; }
 	} else if (attackSpecial == 106) {
 		mod = ship.isflagship && [733].includes(ship.mid) ? 1.2 : 1.24;
 		modAcc = 1.4;
 		if (ship.equiptypesB[B_APSHELL]) { mod *= 1.35; modAcc *= 1.15; }
-		if (ship.equiptypesB[B_RADAR]) { mod *= 1.15; modAcc *= 1.15; }
+		if (ship.equips.find(eq => eq.btype == B_RADAR && eq.LOS >= 5)) { mod *= 1.15; modAcc *= 1.15; }
 	} else if (attackSpecial == 300 || attackSpecial == 301 || attackSpecial == 302) {
 		mod = 1.2 + 0.04*Math.sqrt(ship.LVL);
 	} else if (attackSpecial == 400) {
@@ -1501,7 +1501,8 @@ function getSpecialAttackMod(ship,attackSpecial) {
 			if (ship1.mid == 546 || ship2.mid == 546) mod *= 1.1;
 		} else if (ship.num == 2) {
 			mod = 1.55;
-			if (ship1.mid == 546 || ship2.mid == 546) mod *= 1.2;
+			if (ship.mid == 916) mod *= 1.25;
+			else if ([546,911].includes(ship.mid)) mod *= 1.2;
 		}
 		if (ship.equips.find(eq => [142,460].includes(eq.mid))) mod *= 1.1;
 		if (ship.equiptypesB[B_APSHELL]) mod *= 1.35;
