@@ -506,7 +506,6 @@ function shell(ship,target,APIhou,attackSpecial,combinedAll) {
 		let mods = getSpecialAttackMod(ship,attackSpecial);
 		postModCI *= mods.modPow;
 		accMod *= mods.modAcc;
-		if (ENGAGEMENT == .6 && attackSpecial == 100) postModCI *= 1.25;
 		if (attackSpecial >= 300 && attackSpecial <= 302) {
 			preMod = 1;
 			FPfit += ship.TP - ship.shellPower(target,ship.fleet.basepowshell);
@@ -1395,17 +1394,18 @@ function getSpecialAttackMod(ship,attackSpecial) {
 	if (attackSpecial == 100) {
 		mod = 2;
 		modAcc = 1.05;
+		if (ENGAGEMENT == .6) mod *= 1.25;
 		if (ship.sclass == 88 && (ship.fleet.ships[2].sclass == 88 || ship.fleet.ships[4].sclass == 88)) {
 			if (ship.isflagship) mod *= 1.15;
 			else mod *= 1.2;
 		}
 	} else if (attackSpecial == 101) {
 		mod = (ship.isflagship)? 1.4 : 1.2;
-		if (ship.fleet.ships[1].mid == 81 || ship.fleet.ships[1].mid == 276) {
+		if (ship.fleet.ships[1].mid == 276) {
 			mod *= ((ship.isflagship)? 1.15 : 1.35);
 		} else if (ship.fleet.ships[1].mid == 573) {
 			mod *= ((ship.isflagship)? 1.2 : 1.4);
-		} else if (ship.fleet.ships[1].mid == 571 || ship.fleet.ships[1].mid == 576) {
+		} else if (ship.fleet.ships[1].mid == 576) {
 			mod *= ((ship.isflagship)? 1.1 : 1.25);
 		}
 		modAcc = 1.4;
@@ -1413,7 +1413,7 @@ function getSpecialAttackMod(ship,attackSpecial) {
 		if (ship.equips.find(eq => eq.btype == B_RADAR && eq.LOS >= 5)) { mod *= 1.15; modAcc *= 1.15; }
 	} else if (attackSpecial == 102) {
 		mod = (ship.isflagship)? 1.4 : 1.2;
-		if (ship.fleet.ships[1].mid == 80 || ship.fleet.ships[1].mid == 275) {
+		if (ship.fleet.ships[1].mid == 275) {
 			mod *= ((ship.isflagship)? 1.15 : 1.35);
 		} else if (ship.fleet.ships[1].mid == 541) {
 			mod *= ((ship.isflagship)? 1.2 : 1.4);
