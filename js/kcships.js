@@ -941,15 +941,6 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats,isSupport) {
 	
 	if (this.repairs) this.repairsOrig = this.repairs.slice();
 	
-	if (MECHANICS.divebomberInstall && this.hasDivebomber) {
-		for (let eq of this.equips) {
-			if (eq.canShellInstall) {
-				this.hasDivebomber = false;
-				break;
-			}
-		}
-	}
-	
 	this.hasTorpStat = this.TP - tpEquip > 0 && SHIPDATA[this.mid].TP > 0;
 	
 	if (aswPenetrate > 0) this.aswPenetrate = aswPenetrate;
@@ -1314,6 +1305,7 @@ Ship.prototype.isAntiAtollShip = function() {
 
 Ship.prototype.canShell = function() { return (this.HP > 0); }
 Ship.prototype.canStillShell = function() { return this.canShell(); }
+Ship.prototype.canShellInstallation = function() { return true; }
 Ship.prototype.canNB = function() { return (this.HP/this.maxHP > .25 && !this.retreated); }
 Ship.prototype.canTorp = function() { return this.hasTorpStat && (this.HP/this.maxHP > .5); }
 Ship.prototype.canOpTorp = function() { return this.hasMidgetSub; }
@@ -1908,6 +1900,9 @@ CV.prototype.canStillShell = function(isOASW) {
 CV.prototype.canStillShellDamage = function() {
 	return this.HP > this.maxHP*.5;
 }
+CV.prototype.canShellInstallation = function() {
+	return (MECHANICS.divebomberInstall && this.equips.find((eq,i) => eq.canShellInstall && this.planecount[i])) || !this.equips.find((eq,i) => [DIVEBOMBER,JETBOMBER].includes(eq.type) && this.planecount[i]);
+}
 CV.prototype.CVshelltype = true;
 CV.prototype.shellPower = function(target,base) {
 	var dp = 0, tp = 0;
@@ -2078,6 +2073,7 @@ AO.prototype.loadEquips = function(equips,levels,profs,addstats,isSupport) {
 		this.canShell = CV.prototype.canShell;
 		this.canStillShell = CV.prototype.canStillShell;
 		this.canStillShellDamage = CV.prototype.canStillShellDamage;
+		this.canShellInstallation = CV.prototype.canShellInstallation;
 	}
 	
 	Ship.prototype.loadEquips.call(this,equips,levels,profs,addstats,isSupport);

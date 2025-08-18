@@ -1088,7 +1088,7 @@ function shellPhaseTarget(ship,alive,subsalive,isOASW) {
 			}
 		} else {
 			var targets;
-			if (ship.hasDivebomber) {
+			if (ship.hasDivebomber && !ship.canShellInstallation()) {
 				targets = [];
 				for (var j=0; j<alive.length; j++) if (!alive[j].isInstall) targets.push(alive[j]);
 			} else if (ship.isSub) {
