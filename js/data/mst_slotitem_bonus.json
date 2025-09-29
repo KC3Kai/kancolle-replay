@@ -5463,6 +5463,46 @@
 			{
 				"bonus": { "houg": 2, "tyku": 2, "kaih": 2 },
 				"shipId": [707]
+			},
+			{
+				"bonus": { "tyku": 1 },
+				"shipCountry": ["US"],
+				"level": 7
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"shipCountry": ["US"],
+				"level": 8
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipCountry": ["US"],
+				"level": 9
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipCountry": ["US"],
+				"level": 10
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"shipType": [7],
+				"level": 6
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipType": [7],
+				"level": 8
+			},
+			{
+				"bonus": { "tyku": 1 },
+				"shipType": [7],
+				"level": 9
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipType": [7],
+				"level": 10
 			}
 		]
 	},
@@ -10046,6 +10086,51 @@
 			},
 			{
 				"bonus": { "houm": 1 },
+				"level": 10
+			}
+		]
+	},
+	{
+		"ids": [28],
+		"bonuses": [
+			{
+				"bonus": { "kaih": 1 },
+				"shipBase": [44,583],
+				"level": 7
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipBase": [44,583],
+				"level": 8
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"shipBase": [44,583],
+				"level": 9
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipBase": [44,583],
+				"level": 10
+			}
+		]
+	},
+	{
+		"ids": [88,240,506,517],
+		"bonuses": [
+			{
+				"bonus": { "kaih": 1 },
+				"shipBase": [44,583],
+				"level": 8
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"shipBase": [44,583],
+				"level": 9
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipBase": [44,583],
 				"level": 10
 			}
 		]
