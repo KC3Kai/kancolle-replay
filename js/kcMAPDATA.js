@@ -2277,6 +2277,35 @@ var MAPDATA = {
 			},
 		}
 	},
+	61: {
+		name: 'Fall 2025',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmDN: 266,
+				bgmNN: 266,
+				bgmDB: 267,
+				bgmNB: 267,
+				bossnode: ['O','V'],
+			},
+			2: {
+				name: 'E2',
+				bgmDN: 266,
+				bgmNN: 266,
+				bgmDB: 267,
+				bgmNB: 267,
+				bossnode: ['M','X','Y'],
+			},
+			3: {
+				name: 'E3',
+				bgmDN: 267,
+				bgmNN: 267,
+				bgmDB: 268,
+				bgmNB: 268,
+				bossnode: ['M','W','Z'],
+			},
+		}
+	},
 }
 
 //-------------------------------------
