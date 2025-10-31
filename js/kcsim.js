@@ -3232,6 +3232,9 @@ function airstrikeLBAS(lbas,target,slot,contactMod,contactModLB,isjetphase) {
 				if (['CVL','FBB','BB','BBV','CV'].includes(target.type)) planebase += 2.25;
 			}
 		}
+		if (equip.mid == 562 && !target.isInstall) {
+			if (['DD'].indexOf(target.type) != -1) planebase *= 1.25;
+		}
 		if (planebase && !target.isSub) planebase += (equip.airstrikePowerImprove || 0);
 		let slotMod = isjetphase ? 1 : 1.8;
 		var dmgbase = 25+planebase*Math.sqrt(slotMod*lbas.planecount[slot]);

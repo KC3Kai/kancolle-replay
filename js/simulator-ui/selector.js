@@ -284,10 +284,16 @@ function init() {
 			if (!COMMON.isShipIdKanmusu(id)) continue; 
 			let ship = SHIPDATA[id];
 			if (!types.includes(ship.type)) continue;
-			if (ship.prev && types.includes(SHIPDATA[ship.prev].type)) continue;
-			let r = remodels[+id] = [+id];
-			while (ship.next && types.includes(SHIPDATA[ship.next].type) && !r.includes(ship.next)) {
-				r.push(ship.next);
+			let foundPrev = false, idPrev = ship.prev;
+			while (idPrev) {
+				if (types.includes(SHIPDATA[idPrev].type)) { foundPrev = true; break; }
+				idPrev = SHIPDATA[idPrev].prev;
+			}
+			if (foundPrev) continue;
+			let r = remodels[+id] = [+id], done = [+id];
+			while (ship.next && !done.includes(ship.next)) {
+				if (types.includes(SHIPDATA[ship.next].type)) r.push(ship.next);
+				done.push(ship.next);
 				ship = SHIPDATA[ship.next];
 			}
 		}
