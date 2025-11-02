@@ -816,7 +816,8 @@
 		"Summer 2023": "Summer 2023",
 		"Early-Spring 2024": "Early-Spring 2024",
 		"Summer 2024": "Summer 2024",
-		"Spring 2025": "Spring 2025"
+		"Spring 2025": "Spring 2025",
+		"Fall 2025": "Fall 2025"
 	},
 	"bonus": {
 		"World 7-4": "World 7-4",
@@ -842,7 +843,10 @@
 		"Spring 2025 E3": "Spring 2025 E3",
 		"Spring 2025 E4": "Spring 2025 E4",
 		"Spring 2025 E5": "Spring 2025 E5",
-		"Spring 2025 E6": "Spring 2025 E6"
+		"Spring 2025 E6": "Spring 2025 E6",
+		"Fall 2025 E1": "Fall 2025 E1",
+		"Fall 2025 E2": "Fall 2025 E2",
+		"Fall 2025 E3": "Fall 2025 E3"
 	},
 	"tp_formula_name": {
 		"default": "Default",
