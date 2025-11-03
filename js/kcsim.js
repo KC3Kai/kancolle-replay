@@ -240,6 +240,7 @@ var SIMCONSTS = {
 	enableModSummerCA: true,
 	enableModSummerCV: true,
 	enableModFrenchBB: true,
+	enableModEuroWP: true,
 	enableModDock: true,
 	enableSkipTorpBonus: true,
 	enableAirstrikeSpecialBonus: true,
@@ -576,6 +577,9 @@ function shell(ship,target,APIhou,attackSpecial,combinedAll) {
 	if (SIMCONSTS.enableModFrenchBB && target.isFrenchBB) {
 		postModExtra *= ship.frenchBBPostMult;
 	}
+	if (SIMCONSTS.enableModEuroWP && target.isEuroWP) {
+		postModExtra *= ship.euroWPPostMult;
+	}
 	
 	if (ship.bonusSpecial) postModExtra *= getBonusDmg(ship,target);
 	if (SIMCONSTS.enablePlaneBonus && (ship.CVshelltype || ship.bonusSpecialPNotAirOnly)) postModExtra *= getBonusSpecialPlane(ship,'bonusSpecialP',ship.CVshelltype);
@@ -847,6 +851,9 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 	}
 	if (SIMCONSTS.enableModFrenchBB && target.isFrenchBB) {
 		postMod *= ship.frenchBBPostMult;
+	}
+	if (SIMCONSTS.enableModEuroWP && target.isEuroWP) {
+		postMod *= ship.euroWPPostMult;
 	}
 	
 	if (ship.bonusSpecial) postMod *= getBonusDmg(ship,target);
@@ -1887,6 +1894,9 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 		if (SIMCONSTS.enableModFrenchBB && target.isFrenchBB) {
 			postMod *= ship.frenchBBPostMult;
 		}
+		if (SIMCONSTS.enableModEuroWP && target.isEuroWP) {
+			postMod *= ship.euroWPPostMult;
+		}
 		if (ship.bonusSpecial) postMod *= getBonusDmg(ship,target);
 		if (SIMCONSTS.enablePlaneBonus && ship.bonusSpecialPNotAirOnly) postMod *= getBonusSpecialPlane(ship,'bonusSpecialP',false);
 		
@@ -2066,6 +2076,9 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 		}
 		if (SIMCONSTS.enableModFrenchBB && target.isFrenchBB) {
 			postMod *= ship.frenchBBPostMult;
+		}
+		if (SIMCONSTS.enableModEuroWP && target.isEuroWP) {
+			postMod *= ship.euroWPPostMult;
 		}
 		if (ship.bonusSpecial) postMod *= getBonusDmg(ship,target);
 		if (SIMCONSTS.enablePlaneBonus) postMod *= getBonusSpecialPlane(ship,'bonusSpecialP',true);

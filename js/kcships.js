@@ -868,6 +868,13 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats,isSupport) {
 	if (this.equiptypes[DIVEBOMBER] >= 2) this.frenchBBPostMult *= 1.15;
 	if ([70,79,128,129].includes(this.sclass)) this.frenchBBPostMult *= 1.15;
 	
+	this.euroWPPostMult = 1;
+	if (this.equiptypes[APSHELL]) this.euroWPPostMult *= 1.15;
+	if (this.equiptypes[SEAPLANEBOMBER] || this.equiptypes[SEAPLANEFIGHTER]) this.euroWPPostMult *= 1.1;
+	if (numSwordfish) this.euroWPPostMult *= 1.2;
+	if (numSwordfish >= 2) this.euroWPPostMult *= 1.2; //>=1.2, temp
+	if ([171,172,173,176,177,178,393,515,571,574,576,579,630].includes(this.mid)) this.euroWPPostMult *= 1.15;
+	
 	this.anchoragePostMult = 1;
 	if (numMortar) this.anchoragePostMult *= 1.1;
 	if (numRocket4) this.anchoragePostMult *= 1.15;
