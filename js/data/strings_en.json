@@ -851,7 +851,8 @@
 	"tp_formula_name": {
 		"default": "Default",
 		"60-2": "Spring 2025 E2",
-		"60-5": "Spring 2025 E5"
+		"60-5": "Spring 2025 E5",
+		"61-2": "Fall 2025 E2"
 	},
 	"sim_error": {
 		"bad_data": "Bad format data",
