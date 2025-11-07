@@ -1,7 +1,7 @@
 {
 	"world": 61,
 	"mapnum": 2,
-	"date": "2025-11-04",
+	"date": "2025-11-08",
 	"note": "damage only",
 	"listBonus": [
 		{
@@ -78,7 +78,7 @@
 			"bonuses": [
 				{ "dmg": 1.05, "isPlane": 1, "requireEquipId": [250,251,252,253,423,433,434,435,471,473,474,475,476,479,480,481,515,516,561], "perEquip": 0 },
 				{ "dmg": 1.03, "isPlane": 1, "requireEquipId": [158,159,178,184,189,249,353,354,401,405,406,431,432,459,510,562], "perEquip": 0 },
-				{ "dmg": 1.2, "isPlane": 1, "requireEquipId": [395,396], "perEquip": 0 }
+				{ "dmg": 1.24, "isPlane": 1, "requireEquipId": [395,396], "perEquip": 0 }
 			]
 		}
 	],
