@@ -1,7 +1,7 @@
 {
 	"world": 61,
 	"mapnum": 1,
-	"date": "2025-11-08",
+	"date": "2025-11-10",
 	"note": "damage only",
 	"listBonus": [
 		{
@@ -37,7 +37,7 @@
 				{ "dmg": 1.03, "isPlane": 1, "notAirOnly": 1, "requireEquipId": [64,115,184,188,194,243,248,249,305,306,316,473,474,475,510,543,544,567], "perEquip": 0 },
 				{ "dmg": 1.04, "isPlane": 1, "notAirOnly": 1, "requireEquipId": [189,244,252,423,424,425,434,435,471,476,481,515,538,559], "perEquip": 0 },
 				{ "dmg": 1.04, "isPlane": 1, "notAirOnly": 1, "requireEquipId": [242,243,244,367,368,369,370], "perEquip": 0 },
-				{ "dmg": 1.04, "isPlane": 1, "notAirOnly": 1, "requireEquipId": [510,515], "perEquip": 0 },
+				{ "dmg": 1.04, "isPlane": 1, "notAirOnly": 1, "requireEquipId": [423,510,515], "perEquip": 0 },
 				{ "dmg": 1.02, "isPlane": 1, "notAirOnly": 1, "requireEquipId": [194,471,538], "perEquip": 0 },
 				{ "dmg": 1.06, "isPlane": 1, "notAirOnly": 1, "requireEquipId": [115], "perEquip": 0 },
 				{ "dmg": 1.04, "requireEquipId": [167,230,436,494,495,496,507,508,513,525], "perEquip": 0 },
@@ -62,7 +62,7 @@
 				{ "dmg": 1.04, "isPlane": 1, "notAirOnly": 1, "requireEquipId": [64,115,184,188,194,243,248,249,305,306,316,473,474,475,510,543,544,567], "perEquip": 0 },
 				{ "dmg": 1.05, "isPlane": 1, "notAirOnly": 1, "requireEquipId": [189,244,252,423,424,425,434,435,471,476,481,515,538,559], "perEquip": 0 },
 				{ "dmg": 1.04, "isPlane": 1, "notAirOnly": 1, "requireEquipId": [242,243,244,367,368,369,370], "perEquip": 0 },
-				{ "dmg": 1.05, "isPlane": 1, "notAirOnly": 1, "requireEquipId": [510,515], "perEquip": 0 },
+				{ "dmg": 1.05, "isPlane": 1, "notAirOnly": 1, "requireEquipId": [423,510,515], "perEquip": 0 },
 				{ "dmg": 1.02, "isPlane": 1, "notAirOnly": 1, "requireEquipId": [194,471,538], "perEquip": 0 },
 				{ "dmg": 1.07, "isPlane": 1, "notAirOnly": 1, "requireEquipId": [115], "perEquip": 0 }
 			]
