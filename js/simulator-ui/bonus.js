@@ -29,6 +29,7 @@ COMMON.BONUS_MANAGER = {
 		'61-1': { name: 'Fall 2025 E1' },
 		'61-2': { name: 'Fall 2025 E2' },
 		'61-3': { name: 'Fall 2025 E3' },
+		'61-4': { name: 'Fall 2025 E4' },
 	},
 	_URL_DEWY_INDEX: 'https://api.github.com/repos/sorewachigauyo/kc-event-bonus/git/trees/master?recursive=1',
 	_URL_DEWY_PATH: 'https://raw.githubusercontent.com/sorewachigauyo/kc-event-bonus/master/',
@@ -377,7 +378,10 @@ COMMON.BONUS_MANAGER = {
 						}
 					}
 				}
-				this._applyAutoBonusPresetPlaneEnd(base,autoBonus,false,item.bonuses.filter(b => b.isPlane),-1,true);
+				bonusesPlane = bonusesPlane.concat(item.bonuses.filter(b => b.isPlane));
+			}
+			if (bonusesPlane.length) {
+				this._applyAutoBonusPresetPlaneEnd(base,autoBonus,false,bonusesPlane,-1,true);
 			}
 			for (let eq of equipsAll) {
 				eq.bonusDmg = Math.round(1e10*eq.bonusDmg)/1e10;
