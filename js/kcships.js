@@ -2400,7 +2400,7 @@ Equip.prototype.setImprovement = function(level) {
 		this.improves.Pnb = .2*level;
 	}
 	
-	if (this.type == RADARS || this.type == RADARL) {
+	if (this.type == RADARS || this.type == RADARL || this.type == RADARXL) {
 		if (this.ACC >= 3) {
 			this.improves.ACCshell = 1.7*Math.sqrt(level);
 			this.improves.ACCnb = 1.6*Math.sqrt(level);
