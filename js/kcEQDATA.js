@@ -6521,6 +6521,16 @@ var EQDATA = {
 		EV: 1,
 		LOS: 1,
 	},
+	568: {
+		name: 'Kyoufuu Kai 2 (Skilled)',
+		nameJP: '強風改二(熟練)',
+		added: '2025-11-28',
+		type: SEAPLANEFIGHTER,
+		AA: 7,
+		ACC: 2,
+		EV: 5,
+		LOS: 3,
+	},
 	1501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
@@ -8424,6 +8434,7 @@ var LBASDATA = {
 	561: { distance: 4, cost: 14 },
 	562: { distance: 4, cost: 16 },
 	567: { distance: 2, cost: 3 },
+	568: { distance: 3, cost: 6 },
 };
 
 
