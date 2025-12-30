@@ -599,6 +599,16 @@
 				"shipId": [501,502,506,507],
 				"requiresId": [410],
 				"num": 1
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipClass": [137],
+				"level": 9
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipClass": [137],
+				"level": 10
 			}
 		]
 	},
@@ -996,6 +1006,16 @@
 			{
 				"bonus": { "houg": 1 },
 				"shipId": [501,502,506,507]
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipClass": [137],
+				"level": 9
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipClass": [137],
+				"level": 10
 			}
 		]
 	},
