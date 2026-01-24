@@ -402,6 +402,9 @@ var UI_FLEETEDITOR = Vue.createApp({
 		fleet: FLEET_MODEL.getBlankFleet(),
 		
 		showOutdated: false,
+		
+		moraleSet: 49,
+		moraleSetFleet: 'both',
 	}),
 	mounted: function() {
 		for (let world in ENEMYCOMPS) {
@@ -794,6 +797,8 @@ var UI_FLEETEDITOR = Vue.createApp({
 		onclickSetMoraleAll: function(morale) {
 			let ships = this.fleet.ships;
 			if (this.fleet.shipsEscort) ships = ships.concat(this.fleet.shipsEscort);
+			if (this.fleet.combined && this.moraleSetFleet == 'main') ships = this.fleet.ships;
+			if (this.fleet.combined && this.moraleSetFleet == 'escort') ships = this.fleet.shipsEscort;
 			for (let ship of ships) {
 				if (FLEET_MODEL.shipIsEmpty(ship)) continue;
 				ship.morale = +morale;

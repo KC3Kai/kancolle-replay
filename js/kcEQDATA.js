@@ -841,7 +841,7 @@ var EQDATA = {
 	},
 	22: {
 		name: 'Prototype Reppuu Late Model',
-		nameJP: '試製烈風 前期型',
+		nameJP: '試製烈風 後期型',
 		added: '2013-04-17',
 		type: FIGHTER,
 		AA: 10
