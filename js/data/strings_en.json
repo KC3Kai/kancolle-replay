@@ -277,6 +277,7 @@
 	"accuracy_base": "Accuracy (Base {0})",
 	"main": "Main",
 	"escort": "Escort",
+	"main_escort_both": "Both",
 	"player_target_battle": "Player Target (Battle)",
 	"player_target_raid": "Player Target (Raid)",
 	"enemy_target": "Enemy Target",
