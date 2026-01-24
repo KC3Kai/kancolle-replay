@@ -493,7 +493,7 @@ window.CONVERT = {
 					rank: equipDb.mas,
 				});
 				if (EQDATA[equipDb.id]) {
-					baseSave.slots.push(COMMON.getLBASSlotDefault(EQDATA[equipDb.id].type));
+					baseSave.slots.push(equipDb.count ?? COMMON.getLBASSlotDefault(EQDATA[equipDb.id].type));
 				} else {
 					baseSave.slots.push(0);
 				}
@@ -557,6 +557,7 @@ window.CONVERT = {
 					id: equipSave.mstId,
 					rf: equipSave.level || 0,
 					mas: equipSave.rank || 0,
+					count: basesSave[i].slots[j],
 				};
 			}
 		}

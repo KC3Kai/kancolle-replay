@@ -1151,6 +1151,8 @@
 		</div>
 		<div style="margin:10px">
 			<label>{{$t('set_all_morale_to')}}: </label><input type="button" value="0" @click="onclickSetMoraleAll(0)"/> <input type="button" value="49" @click="onclickSetMoraleAll(49)"/> <input type="button" value="85" @click="onclickSetMoraleAll(85)"/>
+			&nbsp;<input type="button" :value="$t('ff_luck_value')" @click="onclickSetMoraleAll(moraleSet)"/><input type="number" v-model.number="moraleSet" min="0" max="999"/>
+			<span v-show="fleet.combined">&nbsp;<select v-model="moraleSetFleet"><option value="both">Both</option><option value="main">{{$t('main')}}</option><option value="escort">{{$t('escort')}}</option></select></span>
 		</div>
 	</div>
 	<div v-show="showKC3ProfileHelp">
