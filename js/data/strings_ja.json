@@ -277,6 +277,7 @@
 	"accuracy_base": "命中(基礎: {0})",
 	"main": "主力",
 	"escort": "随伴",
+	"main_escort_both": "主力+随伴",
 	"player_target_battle": "自艦隊(砲撃戦)",
 	"player_target_raid": "自艦隊(空襲)",
 	"enemy_target": "敵艦隊",
