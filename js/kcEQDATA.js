@@ -6325,6 +6325,16 @@ var EQDATA = {
 		ACC: 5,
 		EV: 4,
 	},
+	547: {
+		name: 'Shinden Kai 2 (Carrier-based Fighter Model Kai 2)',
+		nameJP: '震電改二(艦戦型改二)',
+		added: '2026-01-28',
+		type: FIGHTER,
+		AA: 16,
+		ACC: 1,
+		EV: 1,
+		LOS: 1,
+	},
 	549: {
 		name: 'Type 3 Command Liaison Aircraft Kai 2',
 		nameJP: '三式指揮連絡機改二',
@@ -8435,6 +8445,7 @@ var LBASDATA = {
 	562: { distance: 4, cost: 16 },
 	567: { distance: 2, cost: 3 },
 	568: { distance: 3, cost: 6 },
+	547: { distance: 3, cost: 9 },
 };
 
 
