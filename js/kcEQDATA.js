@@ -53,6 +53,7 @@ const SUBRADAR = 51;
 const ARMYUNIT = 52;
 const LANDBOMBERL = 53;
 const SMOKESCREEN = 54;
+const JETFIGHTER = 56;
 const JETBOMBER = 57;
 const JETSCOUT = 59;
 const RADARXL = 93;
@@ -575,6 +576,15 @@ EQTDATA[LANDBOMBERL] = {
 	isdivebomber: true,
 	istorpbomber: true,
 	isLB: true,
+};
+EQTDATA[JETFIGHTER] = {
+	name: 'Jet Fighter',
+	image: 60,
+	canequip: ['LandBase'],
+	canequipS: [466, 467, 646, 713, 1031],
+	isPlane: true,
+	isfighter: true,
+	isjet: true,
 };
 EQTDATA[JETBOMBER] = {
 	name: 'Jet Fighter-Bomber',
@@ -6335,6 +6345,16 @@ var EQDATA = {
 		EV: 1,
 		LOS: 1,
 	},
+	548: {
+		name: 'Shinden Kai 3 (Prototype Jet Shinden)',
+		nameJP: '震電改三(試製 噴式震電)',
+		added: '2026-02-13',
+		type: JETFIGHTER,
+		FP: 1,
+		AA: 17,
+		ACC: 2,
+		EV: 3,
+	},
 	549: {
 		name: 'Type 3 Command Liaison Aircraft Kai 2',
 		nameJP: '三式指揮連絡機改二',
@@ -6540,6 +6560,25 @@ var EQDATA = {
 		ACC: 2,
 		EV: 5,
 		LOS: 3,
+	},
+	569: {
+		name: 'Type 3 Depth Charge Projector Kai',
+		nameJP: '三式爆雷投射機改',
+		added: '2026-01-30',
+		type: DEPTHCHARGE,
+		ASW: 10,
+	},
+	570: {
+		name: 'Ryuusei Kai (Tomonaga Squadron)',
+		nameJP: '流星改(友永隊)',
+		added: '2026-02-13',
+		type: TORPBOMBER,
+		TP: 16,
+		AA: 3,
+		ACC: 3,
+		EV: 1,
+		ASW: 7,
+		LOS: 6,
 	},
 	1501: {
 		name: '5inch Single Cannon',
@@ -8446,6 +8485,8 @@ var LBASDATA = {
 	567: { distance: 2, cost: 3 },
 	568: { distance: 3, cost: 6 },
 	547: { distance: 3, cost: 9 },
+	548: { distance: 2, cost: 10 },
+	570: { distance: 6, cost: 9 },
 };
 
 

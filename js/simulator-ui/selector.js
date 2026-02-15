@@ -443,7 +443,7 @@ function init() {
 	EQUIP_CATEGORIES['7'] = getCategoryEquip([6]);
 	EQUIP_CATEGORIES['8'] = getCategoryEquip([7]);
 	EQUIP_CATEGORIES['9'] = getCategoryEquip([8]);
-	EQUIP_CATEGORIES['10'] = getCategoryEquip([9,25,26,57,59,94]);
+	EQUIP_CATEGORIES['10'] = getCategoryEquip([9,25,26,56,57,59,94]);
 	EQUIP_CATEGORIES['11'] = getCategoryEquip([10,41]);
 	EQUIP_CATEGORIES['12'] = getCategoryEquip([11]);
 	EQUIP_CATEGORIES['13'] = getCategoryEquip([45]);
