@@ -2120,11 +2120,17 @@ function AS(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
 };
 AS.prototype = Object.create(Ship.prototype);
+AS.prototype.canASW = function() {
+	return !!this.equiptypes[DEPTHCHARGE];
+}
 
 function AR(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
 };
 AR.prototype = Object.create(Ship.prototype);
+AR.prototype.canASW = function() {
+	return !!this.equiptypes[DEPTHCHARGE];
+}
 
 function CT(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
