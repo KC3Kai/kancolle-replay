@@ -382,6 +382,7 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		
 		if (C) {
 			if (!BAPI.yasen) BAPI.yasen = {};
+			if (!NBonly) apiSetBasic(BAPI.yasen,ships1,ships2,ships1C,null,true);
 			BAPI.yasen.api_hougeki = {api_at_list:[-1],api_damage:[-1],api_df_list:[-1],api_sp_list:[-1],api_cl_list:[-1],api_n_mother_list:[-1],api_si_list:[-1]};
 			if (NEWFORMAT) {
 				formatRemovePadding(BAPI.yasen.api_hougeki);
@@ -1042,6 +1043,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 		
 		if (C) {
 			if (!BAPI.yasen) BAPI.yasen = {};
+			if (!NBonly) apiSetBasic(BAPI.yasen,ships1,ships2,null,ships2C,true);
 			BAPI.yasen.api_hougeki = {api_at_list:[-1],api_damage:[-1],api_df_list:[-1],api_sp_list:[-1],api_cl_list:[-1],api_n_mother_list:[-1]};
 			if (NEWFORMAT) {
 				formatRemovePadding(BAPI.yasen.api_hougeki);
@@ -1521,6 +1523,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		
 		if (C) {
 			if (!BAPI.yasen) BAPI.yasen = {};
+			if (!NBonly) apiSetBasic(BAPI.yasen,ships1,ships2,ships1C,ships2C,true);
 			BAPI.yasen.api_hougeki = {api_at_list:[-1],api_damage:[-1],api_df_list:[-1],api_sp_list:[-1],api_cl_list:[-1],api_n_mother_list:[-1]};
 			if (NEWFORMAT) {
 				formatRemovePadding(BAPI.yasen.api_hougeki);

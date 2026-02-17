@@ -540,6 +540,13 @@ span.autoBonusStatus.good {
 	padding: 20px;
 }
 
+#divTimeStatsInfoMain {
+	background-color: #DDEEFF;
+	border: 1px solid transparent;
+	box-shadow: 0 0 5px black;
+	padding: 20px;
+}
+
 
 #divNotice {
 	position: fixed;

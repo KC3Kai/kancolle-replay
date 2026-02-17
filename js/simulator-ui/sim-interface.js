@@ -39,6 +39,7 @@ var CONST = window.COMMON.getConst({
 		'warn_smoke_formula': { txt: '' },
 		'warn_tp_formula_605': { txt: '' },
 		'warn_force_engagement': { txt: '' },
+		'warn_time_stats': { txt: '' },
 	},
 	
 	keysSmoke: ['smokeModShellAccF','smokeModShellAccFRadar','smokeModShellAccE','smokeModShellAccERadar','smokeModASWAccF','smokeModASWAccE','smokeModTorpAccF','smokeModTorpAccE','smokeModAirAccF','smokeModAirAccE'],
@@ -107,6 +108,11 @@ var SIM = {
 			totalUnderway: 0,
 			totalCanAdvanceAfter: 0,
 			nodes: [],
+			time: {
+				all: { num: 0, time: 0, animations: {} },
+				completed: { num: 0, time: 0, animations: {} },
+				nodes: [],
+			},
 		};
 		for (let n=0; n<numNodes; n++) {
 			this._results.nodes.push({
@@ -187,6 +193,7 @@ var SIM = {
 	_updateResultsTotal: function(dataInput) {
 		this._results.totalnum++;
 		let foundRetreated = false, foundUnderway = false;
+		let numBuckets = 0;
 		for (let fleet of FLEETS1) {
 			if (!fleet) continue;
 			for (let ship of fleet.ships) {
@@ -198,7 +205,7 @@ var SIM = {
 					this._results.totalFuelR += cost[0];
 					this._results.totalSteelR += cost[1];
 				}
-				if (useBucket) this._results.totalBuckets++;
+				if (useBucket) { this._results.totalBuckets++; numBuckets++; }
 				let fuelleft = ship.fuelleft - (ship._fuelUnderway || 0);
 				let ammoleft = ship.ammoleft - (ship._ammoUnderway || 0);
 				let costFuel = Math.round(ship.fuel * (10-fuelleft)/10);
@@ -259,6 +266,40 @@ var SIM = {
 		this._results.totalGaugeDamage += shipBossFlag.maxHP - Math.max(0,shipBossFlag.HP);
 		let ship1 = FLEETS1[0].ships[0];
 		if (ship1 && this.simResultPrev && this.simResultPrev.battleNum == dataInput.nodes.length && (ship1.HP/ship1.maxHP > .25 || (ship1.repairs && ship1.repairs.length))) this._results.totalCanAdvanceAfter++;
+		
+		if (this._results.replay) {
+			let resultsTime = COMMON.TIME_BATTLE.getTimeStats(this._results.replay);
+			this._results.time.all.num++;
+			this._results.time.all.time += resultsTime.time;
+			for (let key in resultsTime.animations) {
+				if (!this._results.time.all.animations[key]) this._results.time.all.animations[key] = 0;
+				this._results.time.all.animations[key] += resultsTime.animations[key];
+			}
+			if (!this._results.time.all.animations.bucket) this._results.time.all.animations.bucket = 0;
+			this._results.time.all.animations.bucket += numBuckets;
+			if (this.simResultPrev && this.simResultPrev.battleNum == dataInput.nodes.length) {
+				this._results.time.completed.num++;
+				this._results.time.completed.time += resultsTime.time;
+				for (let key in resultsTime.animations) {
+					if (!this._results.time.completed.animations[key]) this._results.time.completed.animations[key] = 0;
+					this._results.time.completed.animations[key] += resultsTime.animations[key];
+				}
+				if (!this._results.time.completed.animations.bucket) this._results.time.completed.animations.bucket = 0;
+				this._results.time.completed.animations.bucket += numBuckets;
+			}
+			for (let n=0; n<resultsTime.battles.length; n++) {
+				if (this._results.time.nodes.length-1 < n) {
+					this._results.time.nodes.push({ num: 0, time: 0, animations: {} });
+				}
+				this._results.time.nodes[n].num++;
+				this._results.time.nodes[n].time += resultsTime.battles[n].time;
+				for (let key in resultsTime.battles[n].animations) {
+					if (!this._results.time.nodes[n].animations[key]) this._results.time.nodes[n].animations[key] = 0;
+					this._results.time.nodes[n].animations[key] += resultsTime.battles[n].animations[key];
+				}
+			}
+			this._results.replay.battles = [];
+		}
 	},
 
 	_inputEquivalent: function(v1,v2) {
@@ -740,6 +781,10 @@ var SIM = {
 				this._addWarning('warn_force_engagement',[i+1,node.forceEngagement]);
 			}
 		}
+		
+		if (dataInput.includeTimeStats) {
+			this._addWarning('warn_time_stats');
+		}
 	},
 	
 	_checkWarningsPostRun: function(dataInput) {
@@ -841,6 +886,7 @@ var SIM = {
 			}
 		}
 	
+		let includeResults = !dataReplay || dataInput.includeTimeStats;
 	
 		for (let battleInd=0; battleInd<dataInput.nodes.length; battleInd++) {
 			let node = dataInput.nodes[battleInd];
@@ -964,7 +1010,7 @@ var SIM = {
 			this.simResultPrev = { battleNum: battleInd+1, result: result };
 			
 			if (isBossNode) {
-				if (!dataReplay) {
+				if (includeResults) {
 					this._updateResultsNode(result,battleInd,dataInput);
 				}
 				break;
@@ -1000,7 +1046,7 @@ var SIM = {
 				}
 			}
 			
-			if (!dataReplay) {
+			if (includeResults) {
 				this._updateResultsNode(result,battleInd,dataInput);
 			}
 			
@@ -1008,7 +1054,8 @@ var SIM = {
 			if (isRetreat) break;
 		}
 		
-		if (!dataReplay) {
+		if (includeResults) {
+			this._results.replay = dataReplay;
 			this._updateResultsTotal(dataInput);
 		
 			if (window.CARRYOVERHP || window.CARRYOVERMORALE) {
@@ -1050,7 +1097,8 @@ var SIM = {
 	
 	runStats: function(dataInput,callback) {
 		console.log(dataInput)
-		window.C = false;
+		let includeAPI = dataInput.includeTimeStats;
+		window.C = includeAPI ? 2: false;
 		
 		let n = 0;
 		this._inputPrev.numSims = dataInput.numSims;
@@ -1073,16 +1121,18 @@ var SIM = {
 		let numSim = Math.min(CONST.numSimMax, dataInput.numSims || CONST.numSimDefault);
 		callback({ progress: n, progressTotal: numSim, didReset: doReset, warnings: this._warnings.slice() });
 		
+		let dataReplay = includeAPI ? CONVERT.uiToReplay(COMMON.UI_MAIN) : null;
 		this.cancelRun = false;
 		let timeStart = Date.now();
 		let runStep = function() {
 			let numStep = Math.min(CONST.numSimStep,numSim-n);
 			for (let i=0; i<numStep; i++) {
-				this._doSimSortie(dataInput);
+				this._doSimSortie(dataInput,dataReplay);
 			}
 			n += numStep;
 			if (n >= numSim || this.cancelRun) {
 				this._checkWarningsPostRun(dataInput);
+				delete this._results.replay;
 				callback({ progress: n, progressTotal: numSim, result: this._results, warnings: this._warnings.slice() });
 				let timeTotal = Date.now() - timeStart;
 				console.log('time: ' + (timeTotal/1000) + ' sec');
@@ -1096,6 +1146,7 @@ var SIM = {
 	},
 	
 	runReplay: function(dataInput,dataReplay,noLog) {
+		dataInput.includeTimeStats = false;
 		if (!noLog) console.log(dataInput);
 		window.C = noLog ? 2 : 1;
 		

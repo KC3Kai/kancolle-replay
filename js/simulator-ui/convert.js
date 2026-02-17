@@ -862,6 +862,7 @@ window.CONVERT = {
 			tpFormula: dataUI.settings.tpFormula,
 			mechanics: null,
 			consts: null,
+			includeTimeStats: dataUI.includeTimeStats,
 		};
 		for (let battleUI of dataUI.battles) {
 			let nodeInput = {
@@ -1052,7 +1053,10 @@ window.CONVERT = {
 		let results = {};
 		if (+dataUI.results.perHPRes != 1) results.perHPRes = dataUI.results.perHPRes;
 		if (+dataUI.results.perTPRes != 1) results.perTPRes = dataUI.results.perTPRes;
+		if (+dataUI.results.timeIncludeBucket) results.timeIncludeBucket = dataUI.results.timeIncludeBucket;
 		if (Object.keys(results).length) dataSave.results = results;
+		
+		if (dataUI.includeTimeStats) dataSave.includeTimeStats = COMMON.TIME_BATTLE.VER;
 		
 		dataSave.version = this._SAVE_VERSION_CURRENT;
 		
@@ -1197,6 +1201,10 @@ window.CONVERT = {
 			for (let key in dataSave.results) {
 				dataUI.results[key] = dataSave.results[key];
 			}
+		}
+		
+		if (dataSave.includeTimeStats && dataSave.includeTimeStats == COMMON.TIME_BATTLE.VER) {
+			dataUI.includeTimeStats = true;
 		}
 	},
 };

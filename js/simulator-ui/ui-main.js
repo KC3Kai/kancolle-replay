@@ -169,6 +169,7 @@ var UI_MAIN = Vue.createApp({
 		watchFound: false,
 		isRunningWatch: false,
 		numSim: CONST.numSimDefault,
+		includeTimeStats: false,
 		showProgress: false,
 		simProgressNum: 0,
 		simProgressTotal: 0,
@@ -207,6 +208,9 @@ var UI_MAIN = Vue.createApp({
 			fuelHP: 0, ammoHP: 0, steelHP: 0, bauxHP: 0, bucketHP: 0, dameconHP: 0, underwayHP: 0,
 			fuelTP: 0, ammoTP: 0, steelTP: 0, bauxTP: 0, bucketTP: 0, dameconTP: 0, underwayTP: 0,
 			perHPRes: 1, perTPRes: 1,
+			showTime: false,
+			time: { _timeAllBasic: 0, _timeCompletedBasic: 0, timeNodes: [], animations: [], animationsOther: [], _timeAllBucket: 0, _timeCompletedBucket: 0 },
+			timeIncludeBucket: false,
 		},
 		
 		lang: 'en',
@@ -455,6 +459,12 @@ var UI_MAIN = Vue.createApp({
 		resultsUnderwayTPPer: function() {
 			return Math.round(1000*this.results.perTPRes*this.results.underwayTP)/1000;
 		},
+		resultsTimeAll: function() {
+			return Math.round(1000*(this.results.time._timeAllBasic + (this.results.timeIncludeBucket ? this.results.time._timeAllBucket : 0)))/1000;
+		},
+		resultsTimeCompleted: function() {
+			return Math.round(1000*(this.results.time._timeCompletedBasic + (this.results.timeIncludeBucket ? this.results.time._timeCompletedBucket : 0)))/1000;
+		},
 		
 		enableAntiSubRaid: {
 			get() { return !!this.settings.mechanics.length && this.settings.mechanics.find(m => m.key == 'antiSubRaid').enabled },
@@ -641,6 +651,31 @@ var UI_MAIN = Vue.createApp({
 				this.results.airAS[i] = formatNum(node.airStates[3] / node.num);
 				this.results.airASP[i] = formatNum(node.airStates[4] / node.num);
 			}
+			
+			if (this.results.showTime = !!(resultSim.time && resultSim.time.all.num)) {
+				this.results.time._timeAllBasic = resultSim.time.all.time / resultSim.time.completed.num;
+				this.results.time._timeCompletedBasic = resultSim.time.completed.time / resultSim.time.completed.num;
+				
+				let timeBucket = COMMON.TIME_BATTLE.ANIMATIONS.find(a => a.key == 'bucket').time;
+				this.results.time._timeAllBucket = resultSim.time.all.animations.bucket * timeBucket / resultSim.time.completed.num;
+				this.results.time._timeCompletedBucket = resultSim.time.completed.animations.bucket * timeBucket / resultSim.time.all.num;
+				
+				this.results.time.timeNodes = resultSim.time.nodes.map(node => formatNum(node.time / node.num));
+				
+				this.results.time.animations = [];
+				this.results.time.animationsOther = [];
+				for (let animation of COMMON.TIME_BATTLE.ANIMATIONS) {
+					let numAll = formatNum(resultSim.time.all.animations[animation.key] / resultSim.time.completed.num);
+					let numCompleted = formatNum(resultSim.time.completed.animations[animation.key] / resultSim.time.completed.num);
+					let numNodes = resultSim.time.nodes.map(node => formatNum(node.animations[animation.key] / node.num));
+					let obj = { key: animation.key, time: (animation.time || '???'), numAll: numAll, numCompleted: numCompleted, numNodes: numNodes };
+					if (COMMON.TIME_BATTLE.ANIMATIONS_SIM_ONLY.includes(animation.key)) {
+						this.results.time.animationsOther.push(obj);
+					} else {
+						this.results.time.animations.push(obj);
+					}
+				}
+			}
 		},
 		
 		onclickInsertBattle: function(ind) {
@@ -701,6 +736,16 @@ var UI_MAIN = Vue.createApp({
 			this.settings.smokeModTorpAccE = SIMCONSTS.smokeEst.smokeModTorpAccE.slice();
 			this.settings.smokeModAirAccF = SIMCONSTS.smokeEst.smokeModAirAccF.slice();
 			this.settings.smokeModAirAccE = SIMCONSTS.smokeEst.smokeModAirAccE.slice();
+		},
+		
+		onclickTimeStats: function(e) {
+			if (localStorage.sim2_timeStatsVer != COMMON.TIME_BATTLE.VER) {
+				UI_TIMESTATSINFO.doOpen();
+				e.preventDefault();
+			}
+		},
+		onclickTimeStatsInfo: function(e) {
+			UI_TIMESTATSINFO.doOpen();
 		},
 		
 		_includeError(error) {
@@ -1914,7 +1959,7 @@ var UI_BACKUP = Vue.createApp({
 			});
 		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divSimBackup');;
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divSimBackup');
 
 
 var UI_FCFSETTINGS = Vue.createApp({
@@ -1977,7 +2022,7 @@ var UI_FCFSETTINGS = Vue.createApp({
 			ship.neverFCF = !ship.neverFCF;
 		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divFCFSettings');;
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divFCFSettings');
 
 var UI_RETREATSETTINGS = Vue.createApp({
 	data: () => ({
@@ -2008,7 +2053,7 @@ var UI_RETREATSETTINGS = Vue.createApp({
 			UI_MAIN.settings.retreatOnChuuhaIfAll = +this.retreatIfAll;
 		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divRetreatSettings');;
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divRetreatSettings');
 	
 
 var UI_BUCKETSETTINGS = Vue.createApp({
@@ -2026,7 +2071,7 @@ var UI_BUCKETSETTINGS = Vue.createApp({
 			if (UI_MAIN.fleetFMain.shipsEscort && UI_MAIN.fleetFMain.combined) this.shipGroups.push(UI_MAIN.fleetFMain.shipsEscort.filter(ship => !FLEET_MODEL.shipIsEmpty(ship)));
 		},
 	},
-}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divBucketSettings');;
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divBucketSettings');
 
 
 var UI_AUTOBONUS = Vue.createApp({
@@ -2380,6 +2425,27 @@ var UI_AUTOBONUS = Vue.createApp({
 	},
 }).component('vmodal',COMMON.CMP_MODAL).component('vloading',COMMON.CMP_LOADING).use(COMMON.i18n).mount('#divAutoBonus');
 
+
+var UI_TIMESTATSINFO = Vue.createApp({
+	data: () => ({
+		active: false,
+		canClose: true,
+		
+		showAcknowledge: true,
+	}),
+	methods: {
+		doOpen: function() {
+			this.active = true;
+			this.showAcknowledge = localStorage.sim2_timeStatsVer != COMMON.TIME_BATTLE.VER;
+		},
+		
+		onclickAcknowledge: function() {
+			localStorage.sim2_timeStatsVer = COMMON.TIME_BATTLE.VER;
+			UI_MAIN.includeTimeStats = true;
+			this.active = false;
+		},
+	},
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divTimeStatsInfo');
 
 
 var UI_OTHER = Vue.createApp({
