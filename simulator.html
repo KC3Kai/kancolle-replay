@@ -504,6 +504,9 @@
 				<input type="button" :value="'&#9654; ' + $t('go')" :disabled="!canSim" @click="onclickGo"/>
 				<input type="button" :value="$t('clear')" v-show="results.active&&canSim" @click="onclickClear"/>
 			</div>
+			<div style="margin-top:10px">
+				<label><input type="checkbox" v-model="includeTimeStats" @click="onclickTimeStats"/>{{$t('include_time_statistics')}}</label> <a href="#" @click.prevent="onclickTimeStatsInfo" style="font-weight:bold">(?)</a>
+			</div>
 		</div>
 		<div id="divResultsOuter">
 			<div style="display:flex;gap:10px" v-show="!canSim && showProgress">
@@ -775,6 +778,24 @@
 							<tr class="tableSpace" v-show="results.hasCF"></tr>
 							<tr v-for="n in 6" v-show="results.hasCF"><th><img :src="'assets/stats/F' + n + '.png'" :alt="$t('ship_n',[n])"/></th><td v-for="stat in results['sunkFE'+n]">{{stat}}</td></tr>
 							</table>
+						</div>
+					</div>
+				</div>
+				<div class="divResultColsWrap" v-show="results.showTime">
+					<div class="resultCol">
+						<div>
+							<div>{{$t('time_statistics')}}:</div>
+							<div class="note">{{$t('warn_time_statistics')}}</div>
+							<table class="multi">
+							<tr><th>&nbsp;</th><th><span class="tooltip" :title="$t('all_runs_desc')">{{$t('all_runs')}}</span></th><th><span class="tooltip" :title="$t('completed_runs_desc')">{{$t('completed_runs')}}</span></th><th v-for="n in results.numNodes">{{n}}</th></tr>
+							<tr><th style="text-align:right">{{$t('average_time')}}</th><td>{{$t('x_sec',[resultsTimeAll])}}</td><td>{{$t('x_sec',[resultsTimeCompleted])}}</td><td v-for="time in results.time.timeNodes">{{$t('x_sec',[time])}}</td></tr>
+							<tr class="tableSpace"></tr>
+							<tr v-for="animation in results.time.animations" v-show="animation.numAll"><th style="text-align:right">{{$t('animation_header.' + animation.key, { sec: animation.time })}}</th><td>{{animation.numAll}}</td><td>{{animation.numCompleted}}</td><td v-for="num in animation.numNodes">{{num}}</td></tr>
+							<tr class="tableSpace"></tr>
+							<tr v-for="animation in results.time.animationsOther" v-show="animation.numAll"><th style="text-align:right">{{$t('animation_header.' + animation.key, { sec: animation.time })}}</th><td>{{animation.numAll}}</td><td>{{animation.numCompleted}}</td><td v-for="num in animation.numNodes">{{num}}</td></tr>
+							<tr class="tableSpace"></tr>
+							</table>
+							<div><label><input type="checkbox" v-model="results.timeIncludeBucket"/>{{$t('include_repair_with_bucket')}}</label></div>
 						</div>
 					</div>
 				</div>
@@ -1920,6 +1941,43 @@
 	</div></div>
 	
 	
+	<div id="divTimeStatsInfo"><div v-show="active">
+		<vmodal :active="active" @vclose="canClose&&(active=false)">
+		<div id="divTimeStatsInfoMain">
+			<div><i18n-t keypath="time_statistics_info_1" scope="global">
+				<template v-slot:bold><span style="font-weight:bold">{{$t('time_statistics_info_1b')}}</span></template>
+			</i18n-t></div>
+			<div>{{$t('time_statistics_info_2')}} <a href="https://x.com/shiro_sh39/status/1562484362553110529" target="_blank">[1]</a> <a href="https://github.com/ha15224/kancolle-sortie-time-calculator" target="_blank">[2]</a></div>
+			<div><i18n-t keypath="time_statistics_info_3" scope="global">
+				<template v-slot:bold><span style="font-weight:bold">{{$t('time_statistics_info_3b')}}</span></template>
+			</i18n-t></div>
+			<div>{{$t('time_statistics_info_4')}}<ul>
+				<li>{{$t('time_statistics_info_li0')}}</li>
+				<li>{{$t('time_statistics_info_li1')}}</li>
+				<li>{{$t('time_statistics_info_li2')}}</li>
+				<li>{{$t('time_statistics_info_li3')}}</li>
+				<li>{{$t('time_statistics_info_li4')}}</li>
+				<li>{{$t('time_statistics_info_li5')}}</li>
+				<li>{{$t('time_statistics_info_li6')}}</li>
+				<li>{{$t('time_statistics_info_li7')}}</li>
+				<li>{{$t('time_statistics_info_li8')}}</li>
+				<li>{{$t('time_statistics_info_li9')}}</li>
+				<li>{{$t('time_statistics_info_li10')}}</li>
+				<li>{{$t('time_statistics_info_li11')}}</li>
+				<li>{{$t('time_statistics_info_li12')}}</li>
+				<li>{{$t('time_statistics_info_li13')}}</li>
+				<li>{{$t('time_statistics_info_li14')}}</li>
+				<li>{{$t('time_statistics_info_li15')}}</li>
+				<li>{{$t('time_statistics_info_li16')}}</li>
+				<li>{{$t('time_statistics_info_li17')}}</li>
+			</ul></div>
+
+			<div v-show="showAcknowledge"><input type="button" :value="$t('acknowledge')" @click="onclickAcknowledge"/></div>
+		</div>
+		</vmodal>
+	</div></div>
+	
+	
 	<template id="tmpModal">
 		<div class="overlayDark" tabindex="1" @focus.prevent="focusContentTop" @click="$emit('vclose')"></div>
 		<div class="modalContent" tabindex="-1" ref="content" @keydown="onkeypressClose">
@@ -1938,6 +1996,7 @@
 	
 	<script src="js/simulator-ui/cmp.js"></script>
 	<script src="js/simulator-ui/bonus.js"></script>
+	<script src="js/simulator-ui/time-battle.js"></script>
 	<script src="js/simulator-ui/fleet-editor.js"></script>
 	<script src="js/simulator-ui/selector.js"></script>
 	<script src="js/simulator-ui/convert.js"></script>

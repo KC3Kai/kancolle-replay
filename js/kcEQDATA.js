@@ -6514,7 +6514,7 @@ var EQDATA = {
 		LOS: 3,
 	},
 	564: {
-		name: '21cm Single Main Gun Mount‎',
+		name: '21cm Single Main Gun Mount',
 		nameJP: '21cm単装主砲',
 		added: '2025-10-30',
 		type: MAINGUNM,
@@ -6523,7 +6523,7 @@ var EQDATA = {
 		RNG: 2,
 	},
 	565: {
-		name: '15cm Single Secondary Gun Mount‎',
+		name: '15cm Single Secondary Gun Mount',
 		nameJP: '15cm単装副砲',
 		added: '2025-10-30',
 		type: SECGUN,
@@ -6532,7 +6532,7 @@ var EQDATA = {
 		RNG: 1,
 	},
 	566: {
-		name: '10.2cm Triple Secondary Gun Mount‎',
+		name: '10.2cm Triple Secondary Gun Mount',
 		nameJP: '10.2cm三連装副砲',
 		added: '2025-10-30',
 		type: SECGUN,
@@ -6566,6 +6566,7 @@ var EQDATA = {
 		nameJP: '三式爆雷投射機改',
 		added: '2026-01-30',
 		type: DEPTHCHARGE,
+		isDCProjector: true,
 		ASW: 10,
 	},
 	570: {
@@ -6573,6 +6574,8 @@ var EQDATA = {
 		nameJP: '流星改(友永隊)',
 		added: '2026-02-13',
 		type: TORPBOMBER,
+		aaResistShip: .6,
+		aaResistFleet: .7,
 		TP: 16,
 		AA: 3,
 		ACC: 3,

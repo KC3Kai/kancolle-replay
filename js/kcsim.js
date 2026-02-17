@@ -3370,7 +3370,7 @@ function getSmokeType(ships) {
 	return 0;
 }
 
-function apiSetBasic(dataroot,ships1,ships2,ships1C,ships2C) {
+function apiSetBasic(dataroot,ships1,ships2,ships1C,ships2C,isNB) {
 	dataroot.api_deck_id = 1;
 	var retreatlist = [];
 	for (var i=0; i<ships1.length; i++) if (ships1[i].retreated) retreatlist.push(i+1);
@@ -3450,9 +3450,6 @@ function apiSetBasic(dataroot,ships1,ships2,ships1C,ships2C) {
 		}
 	}
 	
-	dataroot.api_search = [0,1];
-	dataroot.api_search[0] = getDetection(ships1,ships2); //watch mode only
-	
 	if (NEWFORMAT) {
 		dataroot.api_fParam = [];
 		for (let ship of ships1) {
@@ -3478,14 +3475,23 @@ function apiSetBasic(dataroot,ships1,ships2,ships1C,ships2C) {
 				dataroot.api_ship_lv_combined.push(ship.LVL);
 			}
 		}
-		dataroot.api_stage_flag = [0,0,0];
-		dataroot.api_opening_taisen_flag = 0;
-		dataroot.api_opening_flag = 0;
-		dataroot.api_hourai_flag = [0,0,0,0];
+		if (!isNB) {
+			dataroot.api_stage_flag = [0,0,0];
+			dataroot.api_opening_taisen_flag = 0;
+			dataroot.api_opening_flag = 0;
+			dataroot.api_hourai_flag = [0,0,0,0];
+		}
 	}
 	
-	dataroot.api_balloon_cell = +!!ships1[0].fleet.useBalloon;
-	dataroot.api_smoke_type = ships1[0].fleet.smokeType || 0;
+	if (!isNB) {
+		dataroot.api_search = [0,1];
+		dataroot.api_search[0] = getDetection(ships1,ships2); //watch mode only
+		
+		dataroot.api_balloon_cell = +!!ships1[0].fleet.useBalloon;
+		dataroot.api_smoke_type = ships1[0].fleet.smokeType || 0;
+	} else {
+		dataroot.api_formation = [ships1[0].fleet.formation.id,ships2[0].fleet.formation.id,{1:1,.8:2,1.2:3,.6:4}[ENGAGEMENT]];
+	}
 }
 
 function apiUpdateFlag(dataroot,isRaid,combineTypeF,combinedE) {
@@ -3860,6 +3866,7 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 		
 		if (C) {
 			if (!BAPI.yasen) BAPI.yasen = {};
+			if (!NBonly) apiSetBasic(BAPI.yasen,ships1,ships2,null,null,true);
 			BAPI.yasen.api_hougeki = {api_at_list:[-1],api_damage:[-1],api_df_list:[-1],api_sp_list:[-1],api_cl_list:[-1],api_n_mother_list:[-1],api_si_list:[-1]};
 			if (NEWFORMAT) {
 				formatRemovePadding(BAPI.yasen.api_hougeki);

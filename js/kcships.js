@@ -1627,10 +1627,10 @@ Ship.prototype.getAACItype = function(atypes) {
 	if ([330,346,357,537,538,963,968].includes(this.mid)) {
 		if (this.equips.filter(eq => eq.mid == 533).length >= 2 && this.equips.find(eq => eq.btype == B_RADAR && eq.AA >= 4)) types.push(48);
 	}
-	if ([981,986].includes(this.mid) || (SIMCONSTS.aaci49Fubuki && [426].includes(this.mid))) {
+	if ([981,982,983,986,987].includes(this.mid) || (SIMCONSTS.aaci49Fubuki && [426].includes(this.mid))) {
 		if (atypes[A_HAFD] >= 2 && this.equips.find(eq => eq.btype == B_RADAR && eq.AA >= 4)) types.push(49);
 	}
-	if (this.sclass == 54 || [981,983,986,987].includes(this.mid) || (SIMCONSTS.aaci49Fubuki && [426].includes(this.mid))) {
+	if (this.sclass == 54 || [981,982,983,986,987].includes(this.mid) || (SIMCONSTS.aaci49Fubuki && [426].includes(this.mid))) {
 		let num10cmK = this.equips.filter(eq => [533,553].includes(eq.mid)).length;
 		let hasRadar = this.equips.find(eq => eq.btype == B_RADAR && eq.AA >= 4);
 		let hasAAFD = this.equips.find(eq => eq.mid == 121);
