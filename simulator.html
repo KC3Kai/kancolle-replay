@@ -73,7 +73,7 @@
 			<h2>{{$t('fleets')}}</h2>
 			<div class="fleetSection">
 				<div class="scrollAnchor"><div ref="divPlayerMainScroll"></div></div>
-				<vfleet :fleet="fleetFMain" :fleetname="$t('main_fleet')"></vfleet>
+				<vfleet :fleet="fleetFMain" :fleetname="$t('main_fleet')" ref="fleetFMain"></vfleet>
 			</div>
 			<div class="fleetSection">
 				<div class="scrollAnchor"><div ref="divPlayerSupportNScroll"></div></div>
@@ -103,7 +103,7 @@
 						</div>
 					</div>
 					<div v-show="lbExpanded">
-						<vlbaseditor :bases="landBases"></vlbaseditor>
+						<vlbaseditor :bases="landBases" ref="lbasEditor"></vlbaseditor>
 					</div>
 				</div>
 			</div>
@@ -524,7 +524,7 @@
 			<div id="divResults" ref="divResults" v-show="results.active">
 				<h3>
 					{{$t('statistics')}}
-					<svg @click="onclickScreenShot" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 22px;cursor: pointer;fill: #9b9b9b;margin-left: 4px;"><path d="M20,4H16.83L15,2H9L7.17,4H4A2,2 0 0,0 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6A2,2 0 0,0 20,4M20,18H4V6H8.05L9.88,4H14.12L15.95,6H20V18M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15Z" /></svg>
+					<span :title="$t('stats_ss_tooltip')"><svg @click="onclickScreenShot" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 22px;cursor: pointer;fill: #9b9b9b;margin-left: 4px;"><path d="M20,4H16.83L15,2H9L7.17,4H4A2,2 0 0,0 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6A2,2 0 0,0 20,4M20,18H4V6H8.05L9.88,4H14.12L15.95,6H20V18M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15Z" /></svg></span>
 				</h3>
 				<div class="note">{{$t('note_calc_wip')}}</div>
 				<div class="noteBold" v-show="results.showCFWarning">{{$t('warn_combined_fleet')}}</div>

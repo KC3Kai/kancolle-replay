@@ -816,7 +816,7 @@ var UI_FLEETEDITOR = Vue.createApp({
 			div.style.backgroundColor = '';
 			return canvas;
 		},
-		onclickScreenShot: async function() {
+		screenshotGetCanvas: async function() {
 			let divs = [this.$refs['divShipWrap'][0]];
 			if (this.fleet.combined) divs.push(this.$refs['divShipWrap'][1]);
 			let style = document.createElement('style');
@@ -833,6 +833,10 @@ var UI_FLEETEDITOR = Vue.createApp({
 				ctx.drawImage(canvas,0,offsetY);
 				offsetY += canvas.height;
 			}
+			return canvasBase;
+		},
+		onclickScreenShot: async function() {
+			let canvasBase = await this.screenshotGetCanvas();
 			
 			canvasBase.toBlob(blob => navigator.clipboard.write([new ClipboardItem({ 'image/png':blob })]));
 			COMMON.global.showNotice(this.$i18n.t('copied_to_clipboard'));
@@ -951,12 +955,16 @@ window.CMP_LBASEDITOR = {
 			UI_ADDITIONALSTATSLBAS.doOpen(SIM.createSimLBAS(CONVERT.uiToSimInputLBAS(this.bases)));
 		},
 		
-		onclickScreenShot: async function() {
+		screenshotGetCanvas: async function() {
 			let style = document.createElement('style');
 			document.head.appendChild(style);
 			style.sheet.insertRule('div.shipWrap select { padding: 3px 4px }');
 			let canvas = await html2canvas(this.$refs.divShipWrap);
 			style.remove();
+			return canvas;
+		},
+		onclickScreenShot: async function() {
+			let canvas = await this.screenshotGetCanvas();
 			
 			canvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({ 'image/png':blob })]));
 			COMMON.global.showNotice(this.$i18n.t('copied_to_clipboard'));
@@ -1377,6 +1385,9 @@ COMMON.global.fleetEditorMoveTemp = function(elFrom) {
 }
 COMMON.global.fleetEditorOpenPlaneBonus = function(ship,nodeId) {
 	UI_PLANEBONUS.doOpen(ship,nodeId);
+}
+COMMON.global.fleetEditorGetCanvas = async function() {
+	return await UI_FLEETEDITOR.screenshotGetCanvas();
 }
 
 })
