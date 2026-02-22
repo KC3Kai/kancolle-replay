@@ -352,6 +352,7 @@
 	"cancel": "Cancel",
 	"clear": "Clear",
 	"statistics": "Statistics",
+	"stats_ss_tooltip": "Alt+Click = Include Main Fleet",
 	"note_calc_wip": "Accuracy of calculations is a work in progress and will be improved as new information is discovered. Please note that values are rough and may not exactly reflect real in-game rates.",
 	"warn_combined_fleet": "Warning: Combined fleet and vanguard calculations are extremely tentative, so these results are especially rough. See Show Advanced for settings.",
 	"number_of_runs": "Number of runs",

@@ -951,21 +951,71 @@ ${t('results.buckets')}:	${this.resultsBucketTPPer}`;
 			navigator.clipboard.writeText(txt);
 			this.showNotice(t('copied_to_clipboard'));
 		},
-		onclickScreenShot: function() {
+		onclickScreenShot: async function(e) {
+			let includeFleet = !!e.altKey;
+		
 			this.$refs.divResults.style.backgroundColor = window.getComputedStyle(document.body).backgroundColor;
-			html2canvas(this.$refs.divResults).then(canvas => {
-				canvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({ 'image/png':blob })]));
-				this.showNotice(this.$i18n.t('copied_to_clipboard'));
-				
-				let filename = 'KanColle_Sortie_Simulator_Statistics_' + (new Date).toISOString().slice(0,19).replace(/:/g,'-') + '.png';
-				let a = window.document.createElement('a');
-				a.href = canvas.toDataURL('image/png');
-				a.download = filename;
-				document.body.appendChild(a);
-				a.click();
-				document.body.removeChild(a);
-			});
+			let canvas = await html2canvas(this.$refs.divResults);
 			this.$refs.divResults.style.backgroundColor = '';
+			
+			if (includeFleet) {
+				let canvasStats = canvas;
+				let rectBase = document.querySelector('#divResults').getBoundingClientRect();
+				let offsetX = 20 + Array.from(document.querySelectorAll('div.divResultColsWrap')).map(e => {
+					let divs = Array.from(e.querySelectorAll('div.resultCol'));
+					let rect = divs[divs.length-1].getBoundingClientRect();
+					return rect.x + rect.width - rectBase.x;
+				}).reduce((a,b) => Math.max(a,b),0);
+				let offsetY = document.querySelector('div.divResultColsWrap').getBoundingClientRect().y - rectBase.y;
+				
+				let hasWait = false;
+				if (!this.$refs.fleetFMain.expanded) {
+					this.$refs.fleetFMain.onclickExpand();
+					hasWait = true;
+				}
+				let includeLBAS = this.battles.some(battle => battle.lbasWaves.some(a=>a));
+				if (includeLBAS && !this.lbExpanded) {
+					this.lbExpanded = true;
+					hasWait = true;
+				}
+				if (hasWait) {
+					await new Promise(res => setTimeout(() => res(),500));
+				}
+				
+				let canvasFleet = await COMMON.global.fleetEditorGetCanvas();
+				let canvasFleetWidth = canvasFleet.width, canvasFleetHeight = canvasFleet.height;
+				let canvasLBAS = null;
+				if (includeLBAS) {
+					canvasLBAS = await this.$refs.lbasEditor.screenshotGetCanvas();
+					canvasFleetWidth = Math.max(canvasFleet.width,canvasLBAS.width);
+					canvasFleetHeight = canvasFleet.height + canvasLBAS.height + 10;
+				}
+				
+				canvas = document.createElement('canvas');
+				canvas.width = Math.max(canvasStats.width, canvasFleetWidth + offsetX);
+				canvas.height = Math.max(canvasStats.height, canvasFleetHeight + offsetY);
+				let ctx = canvas.getContext('2d');
+				ctx.fillStyle = '#ffffff';
+				ctx.fillRect(0,0,canvas.width,canvas.height);
+				ctx.fillStyle = window.getComputedStyle(document.querySelector('#divResults')).backgroundColor;
+				ctx.fillRect(0,0,canvas.width,canvas.height);
+				ctx.drawImage(canvasStats,0,0);
+				ctx.drawImage(canvasFleet,offsetX,offsetY);
+				if (includeLBAS) {
+					ctx.drawImage(canvasLBAS,offsetX,offsetY+canvasFleet.height+10);
+				}
+			}
+			
+			canvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({ 'image/png':blob })]));
+			this.showNotice(this.$i18n.t('copied_to_clipboard'));
+			
+			let filename = 'KanColle_Sortie_Simulator_Statistics_' + (new Date).toISOString().slice(0,19).replace(/:/g,'-') + '.png';
+			let a = window.document.createElement('a');
+			a.href = canvas.toDataURL('image/png');
+			a.download = filename;
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
 		},
 		
 		onclickDeckbuilder: function() {

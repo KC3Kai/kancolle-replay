@@ -352,6 +352,7 @@
 	"cancel": "Cancel",
 	"clear": "Clear",
 	"statistics": "演算結果",
+	"stats_ss_tooltip": "Alt+Click = Include Main Fleet",
 	"note_calc_wip": "計算の精度は現在も改善中で、新しい情報が発見されるにつれて改善されます。値は大まかなものであり、実際のゲーム内レートを正確に反映していない可能性があることに注意してください。",
 	"warn_combined_fleet": "警告: 連合艦隊と警戒陣の計算は非常に暫定的なため、これらの結果は特に大まかです。設定については、「詳細設定」を参照してください。",
 	"number_of_runs": "演算回数",
