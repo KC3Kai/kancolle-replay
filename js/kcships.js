@@ -1642,13 +1642,16 @@ Ship.prototype.getAACItype = function(atypes) {
 		}
 		if (this.equips.filter(eq => eq.mid == 553).length >= 2 && hasAAFD) types.push(52);
 	}
+	if ([1031].includes(this.mid) && concentrated && this.equips.find(eq => eq.btype == B_RADAR && eq.AA >= 4)) {
+		types.push(53);
+	}
 	
 	if (this.sclass == 54) {  //Akizuki-class
 		if (atypes[A_HAGUN] >= 2 && this.equiptypesB[B_RADAR]) types.push(1);
 		if (atypes[A_HAGUN] && this.equiptypesB[B_RADAR]) types.push(2);
 		if (atypes[A_HAGUN] >= 2) types.push(3);
 	}
-	if (this.mid == 428 && concentrated && (atypes[A_HAGUN]||atypes[A_HAFD])) {   //428 = Maya Kai Ni
+	if ([428,1031].includes(this.mid) && concentrated && (atypes[A_HAGUN]||atypes[A_HAFD])) {   //428 = Maya Kai Ni
 		if (atypes[A_AIRRADAR]) types.push(10);
 		types.push(11);
 	}
@@ -1714,7 +1717,7 @@ Ship.prototype.getAACItype = function(atypes) {
 	if (!MECHANICS.aaci8Up && this.sclass != 54 && atypes[A_HAFD] && atypes[A_AIRRADAR]) types.push(8);
 	
 	if (([546,911,916].includes(this.mid) || (MECHANICS.yamatoSpecial && [136,148].includes(this.mid))) && hasID[275] && atypes[A_AIRRADAR]) types.push(26); //Musashi/Yamato Kai Ni
-	if ([321].includes(this.mid) && hasID[275] && hasID[274] && atypes[A_AIRRADAR]) types.push(27); //Ooyodo
+	if ([321,1031].includes(this.mid) && (hasID[275] || hasID[71] || hasID[220]) && hasID[274] && atypes[A_AIRRADAR]) types.push(27); //Ooyodo
 	if ([82,88,553,554,148,546].indexOf(this.mid) != -1 && hasID[274] && atypes[A_AIRRADAR]) types.push(28); //Ise-class Kai + Musashi Kai
 	if ((this.mid == 557 || this.mid == 558) && atypes[A_HAGUN] && atypes[A_AIRRADAR]) types.push(29); //Isokaze+Hamakaze B Kai
 	

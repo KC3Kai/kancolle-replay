@@ -6583,6 +6583,16 @@ var EQDATA = {
 		ASW: 7,
 		LOS: 6,
 	},
+	571: {
+		name: '53cm Twin Torpedo Mount Kai (Oxygen Torpedo)',
+		nameJP: '53cm連装魚雷改(酸素魚雷)',
+		added: '2026-02-27',
+		type: TORPEDO,
+		TP: 7,
+		ACC: 1,
+		EV: 2,
+		RNG: 1,
+	},
 	1501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
