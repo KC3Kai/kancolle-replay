@@ -109,9 +109,10 @@ var AACIDATA = {
 	50:{num:7,rate:.5,mod:1.5,equip:'HHAR',num1:1},
 	51:{num:5,rate:.5,mod:1.4,equip:'HCR',num1:1},
 	52:{num:5,rate:.5,mod:1.4,equip:'HHA',num1:1},
+	53:{num:4,rate:.6,mod:1.6,equip:'CR',num1:1},
 };
 (() => {
-	let orderKnown = [38,39,40,42,41,10,43,46,11,25,48,1,34,44,26,4,2,35,36,27,45,50,49,51,52,19,21,29,16,14,3,5,6,28,37,33,30,8,13,15,7,20,24,32,12,31,47,17,18,22,9,23];
+	let orderKnown = [38,39,40,42,41,10,43,46,11,25,48,1,34,44,26,4,2,35,36,27,45,50,49,51,52,19,21,29,53,16,14,3,5,6,28,37,33,30,8,13,15,7,20,24,32,12,31,47,17,18,22,9,23];
 	let orderUnknown = Object.keys(AACIDATA).map(key => +key).filter(type => !orderKnown.includes(type)).sort((a,b) => AACIDATA[a].num != AACIDATA[b].num ? AACIDATA[b].num - AACIDATA[a].num : AACIDATA[a].mod != AACIDATA[b].mod ? AACIDATA[b].mod - AACIDATA[a].mod : +a-+b);
 	let orderAll = [], n = 0;
 	for (let id of orderKnown) {
@@ -3247,6 +3248,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod,contactModLB,isjetphase) {
 		}
 		if (equip.mid == 562 && !target.isInstall) {
 			if (['DD'].indexOf(target.type) != -1) planebase *= 1.25;
+			if (['FBB','BB','BBV'].includes(target.type)) planebase *= 1.15;
 		}
 		if (planebase && !target.isSub) planebase += (equip.airstrikePowerImprove || 0);
 		let slotMod = isjetphase ? 1 : 1.8;

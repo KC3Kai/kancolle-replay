@@ -140,7 +140,7 @@
 			{
 				"bonus": { "raig": 5 },
 				"shipId": [592],
-				"requiresId": [174],
+				"requiresId": [174,571],
 				"num": 1
 			},
 			{
@@ -151,7 +151,7 @@
 			{
 				"bonus": { "raig": 7 },
 				"shipId": [694],
-				"requiresId": [174],
+				"requiresId": [174,571],
 				"num": 1
 			}
 		]
@@ -2492,13 +2492,13 @@
 			{
 				"bonus": { "houg": 2, "raig": 4 },
 				"shipClass": [28,66],
-				"requiresId": [174],
+				"requiresId": [174,571],
 				"num": 1
 			},
 			{
 				"bonus": { "houg": 1, "raig": 3 },
 				"shipClass": [28,66],
-				"requiresId": [174],
+				"requiresId": [174,571],
 				"requiresIdNum": 2,
 				"num": 1
 			},
@@ -7972,6 +7972,26 @@
 				"num": 1
 			},
 			{
+				"bonus": { "raig": 5 },
+				"shipId": [591,592,593,694,954],
+				"requiresId": [571],
+				"num": 1
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipId": [591,592,593,694,954],
+				"requiresId": [571],
+				"requiresIdLevel": 7,
+				"num": 1
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipId": [591,592,593,694,954],
+				"requiresId": [571],
+				"requiresIdLevel": 10,
+				"num": 1
+			},
+			{
 				"bonus": { "houg": 2, "houm": 2, "kaih": 2 },
 				"shipId": [591,592,593,694,954],
 				"requiresAccR": 1,
@@ -9098,6 +9118,26 @@
 				"bonus": { "houg": 1 },
 				"shipId": [591,592,593,694,954],
 				"requiresId": [174],
+				"requiresIdLevel": 10,
+				"num": 1
+			},
+			{
+				"bonus": { "raig": 7 },
+				"shipId": [591,592,593,694,954],
+				"requiresId": [571],
+				"num": 1
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipId": [591,592,593,694,954],
+				"requiresId": [571],
+				"requiresIdLevel": 7,
+				"num": 1
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipId": [591,592,593,694,954],
+				"requiresId": [571],
 				"requiresIdLevel": 10,
 				"num": 1
 			},
@@ -10567,6 +10607,47 @@
 			},
 			{
 				"bonus": { "houm": 1 },
+				"level": 10
+			}
+		]
+	},
+		{
+		"ids": [571],
+		"bonuses": [
+			{
+				"bonus": { "houg": 1, "raig": 7, "kaih": 3, "houm": 2 },
+				"shipClass": [66]
+			},
+			{
+				"bonus": { "houg": 1, "raig": 8, "kaih": 4, "houm": 2 },
+				"shipId": [591,592,694,954]
+			},
+			{
+				"bonus": { "raig": 7, "kaih": 3, "houm": 1 },
+				"shipId": [593]
+			},
+			{
+				"bonus": { "houg": 3, "raig": 8, "kaih": 6, "houm": 2 },
+				"shipId": [488,622,623,624]
+			},
+			{
+				"bonus": { "raig": 1 },
+				"level": 6
+			},
+			{
+				"bonus": { "raig": 1 },
+				"level": 7
+			},
+			{
+				"bonus": { "houm": 1 },
+				"level": 8
+			},
+			{
+				"bonus": { "kaih": 6 },
+				"level": 9
+			},
+			{
+				"bonus": { "raig": 1 },
 				"level": 10
 			}
 		]
