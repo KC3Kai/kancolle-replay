@@ -1642,7 +1642,7 @@ Ship.prototype.getAACItype = function(atypes) {
 		}
 		if (this.equips.filter(eq => eq.mid == 553).length >= 2 && hasAAFD) types.push(52);
 	}
-	if ([1031].includes(this.mid) && concentrated && this.equips.find(eq => eq.btype == B_RADAR && eq.AA >= 4)) {
+	if ([1031].includes(this.mid) && this.equips.find(eq => eq.atype == A_HAFD && eq.AA >= 9) && this.equips.find(eq => eq.btype == B_RADAR && eq.AA >= 4)) {
 		types.push(53);
 	}
 	
@@ -1726,7 +1726,7 @@ Ship.prototype.getAACItype = function(atypes) {
 	if((this.mid == 579 || this.mid == 630) && atypes[A_HAGUN] && atypes[A_AAGUN]) types.push(33); //Gotland Kai
 	
 	if (concentrated && atypes[A_AAGUN] >= 2 && atypes[A_AIRRADAR]) types.push(12);
-	if (this.mid != 428 && concentrated && atypes[A_HAFD] && atypes[A_AIRRADAR]) types.push(13);
+	if (![428,1031].includes(this.mid) && concentrated && atypes[A_HAFD] && atypes[A_AIRRADAR]) types.push(13);
 	
 	if ((this.mid == 418 || this.mid == 979) && concentrated) types.push(18); //Satsuki Kai Ni
 	if (this.mid == 487 && concentrated) types.push(20); //Kinu Kai Ni (2)
