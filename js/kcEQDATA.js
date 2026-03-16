@@ -8588,22 +8588,26 @@ function getBonusStats(mid,eqids,improves) {
 			if (bonusData.shipId && bonusData.shipId.indexOf(mid) == -1) continue;
 			if (bonusData.shipBase && bonusData.shipBase.indexOf(getBaseId(mid)) == -1) continue;
 			if (bonusData.shipType && bonusData.shipType.indexOf(mapShipTypeId[sdata.type]) == -1) continue;
-			if (bonusData.requiresId) {
-				let count = 0, reqNum = bonusData.requiresIdNum || 1;
-				for (let id of bonusData.requiresId) {
-					if (bonusData.requiresIdLevel) {
-						if (eqImproves[id]) count += eqImproves[id].filter(n => n >= bonusData.requiresIdLevel);
-					} else {
-						count += eqCounts[id] || 0;
+			let reqEqObjs = bonusData.requiresEquipList || [bonusData];
+			if (reqEqObjs.find(function(obj) {
+				if (obj.requiresId) {
+					let count = 0, reqNum = obj.requiresIdNum || 1;
+					for (let id of obj.requiresId) {
+						if (obj.requiresIdLevel) {
+							if (eqImproves[id]) count += eqImproves[id].filter(n => n >= obj.requiresIdLevel);
+						} else {
+							count += eqCounts[id] || 0;
+						}
 					}
+					if (count < reqNum) return true;
 				}
-				if (count < reqNum) continue;
-			}
-			if (bonusData.requiresType) {
-				let count = 0, reqNum = bonusData.requiresTypeNum || 1;
-				for (let type of bonusData.requiresType) count += eqCountsType[type] || 0;
-				if (count < reqNum) continue;
-			}
+				if (obj.requiresType) {
+					let count = 0, reqNum = obj.requiresTypeNum || 1;
+					for (let type of obj.requiresType) count += eqCountsType[type] || 0;
+					if (count < reqNum) return true;
+				}
+				return false;
+			})) continue;
 			let num = eqNum;
 			if (bonusData.level) {
 				num = improves.filter(level => level >= bonusData.level).length;
