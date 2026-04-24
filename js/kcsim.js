@@ -138,6 +138,9 @@ var ARTILLERYSPOTDATA = {
 	71: { dmgMod: 1.25, accMod: 1.35, chanceMod: 1.25, id: 7, name: 'CVCI (FBA)' },
 	72: { dmgMod: 1.2, accMod: 1.2, chanceMod: 1.4, id: 7, name: 'CVCI (BBA)' },
 	73: { dmgMod: 1.15, accMod: 1.18, chanceMod: 1.55, id: 7, name: 'CVCI (BA)' },
+	74: { dmgMod: 1.35, accMod: 1.35, chanceMod: 1.35, id: 7, name: 'CVCI (jFjBjB)' },
+	75: { dmgMod: 1.3, accMod: 1.35, chanceMod: 1.25, id: 7, name: 'CVCI (jFjB)' },
+	76: { dmgMod: 1.27, accMod: 1.35, chanceMod: 1.15, id: 7, name: 'CVCI (jFBA)' },
 	200: { dmgMod: 1.35, accMod: 1.2, chanceMod: 1.2, name: 'Zuiun CI' },
 	201: { dmgMod: 1.3, accMod: 1.2, chanceMod: 1.3, name: 'DB CI' },
 }

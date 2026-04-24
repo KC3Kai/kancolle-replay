@@ -1430,6 +1430,9 @@ Ship.prototype.AStype = function() {
 	}
 	
 	if (MECHANICS.CVCI && this.CVshelltype && !this.cannotCVCI) {
+		if (this.equiptypes[JETFIGHTER] && this.equiptypes[JETBOMBER] >= 2) this._astype.push(74);
+		if (this.equiptypes[JETFIGHTER] && this.equiptypes[JETBOMBER]) this._astype.push(75);
+		if (this.equiptypes[JETFIGHTER] && this.equiptypes[DIVEBOMBER] && this.equiptypes[TORPBOMBER]) this._astype.push(76);
 		if (this.equiptypes[DIVEBOMBER] && this.equiptypes[TORPBOMBER] && this.equiptypes[FIGHTER]) this._astype.push(71);
 		if (this.equiptypes[DIVEBOMBER] >= 2 && this.equiptypes[TORPBOMBER]) this._astype.push(72);
 		if (this.equiptypes[DIVEBOMBER] && this.equiptypes[TORPBOMBER]) this._astype.push(73);
@@ -1627,10 +1630,10 @@ Ship.prototype.getAACItype = function(atypes) {
 	if ([330,346,357,537,538,963,968].includes(this.mid)) {
 		if (this.equips.filter(eq => eq.mid == 533).length >= 2 && this.equips.find(eq => eq.btype == B_RADAR && eq.AA >= 4)) types.push(48);
 	}
-	if ([981,982,983,986,987].includes(this.mid) || (SIMCONSTS.aaci49Fubuki && [426].includes(this.mid))) {
+	if ([981,982,983,986,987,1033].includes(this.mid) || (SIMCONSTS.aaci49Fubuki && [426,1035,1040].includes(this.mid))) {
 		if (atypes[A_HAFD] >= 2 && this.equips.find(eq => eq.btype == B_RADAR && eq.AA >= 4)) types.push(49);
 	}
-	if (this.sclass == 54 || [981,982,983,986,987].includes(this.mid) || (SIMCONSTS.aaci49Fubuki && [426].includes(this.mid))) {
+	if (this.sclass == 54 || [981,982,983,986,987,1033].includes(this.mid) || (SIMCONSTS.aaci49Fubuki && [426,1035,1040].includes(this.mid))) {
 		let num10cmK = this.equips.filter(eq => [533,553].includes(eq.mid)).length;
 		let hasRadar = this.equips.find(eq => eq.btype == B_RADAR && eq.AA >= 4);
 		let hasAAFD = this.equips.find(eq => eq.mid == 121);
@@ -1901,12 +1904,14 @@ CV.prototype = Object.create(Ship.prototype);
 CV.prototype.canNB = function() { return (((this.nightattack && this.HP/this.maxHP > .25) || this.canNBAirAttack()) && !this.retreated); }
 CV.prototype.canAS = function() {
 	if (this.HP/this.maxHP <= .25) return false;
-	let diveFlag = false, torpFlag = false;
+	let diveFlag = false, torpFlag = false, jetFighterFlag = false, jetBomberFlag = false;
 	for (var i=0; i<this.equips.length; i++) {
 		if(this.equips[i].type == DIVEBOMBER && this.planecount[i]) diveFlag = true;
 		if(this.equips[i].type == TORPBOMBER && this.planecount[i]) torpFlag = true;
+		if(this.equips[i].type == JETFIGHTER && this.planecount[i]) jetFighterFlag = true;
+		if(this.equips[i].type == JETBOMBER && this.planecount[i]) jetBomberFlag = true;
 	}
-	return diveFlag && torpFlag && this.AStype();
+	return ((diveFlag && torpFlag) || (jetFighterFlag && jetBomberFlag)) && this.AStype();
 }
 CV.prototype.APweak = true;
 CV.prototype.canShell = function(isOASW) {
