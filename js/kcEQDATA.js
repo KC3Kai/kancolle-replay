@@ -6627,6 +6627,16 @@ var EQDATA = {
 		EV: 4,
 		LOS: 10,
 	},
+	575: {
+		name: '25mm Twin Autocannon (Skilled Gunner Squad)',
+		nameJP: '25mm連装機銃(熟練機銃員分隊)',
+		added: '2026-05-29',
+		type: AAGUN,
+		AA: 9,
+		AR: 1,
+		ACC: 1,
+		EV: 2,
+	},
 	1501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
