@@ -1627,13 +1627,13 @@ Ship.prototype.getAACItype = function(atypes) {
 		hasID[this.equips[i].mid] = hasID[this.equips[i].mid] + 1 || 1;
 	}
 	
-	if ([330,346,357,537,538,963,968].includes(this.mid)) {
+	if ([330,346,357,537,538,963,968,1040].includes(this.mid)) {
 		if (this.equips.filter(eq => eq.mid == 533).length >= 2 && this.equips.find(eq => eq.btype == B_RADAR && eq.AA >= 4)) types.push(48);
 	}
-	if ([981,982,983,986,987,1033].includes(this.mid) || (SIMCONSTS.aaci49Fubuki && [426,1035,1040].includes(this.mid))) {
+	if ([745,981,982,983,986,987,1033,1034].includes(this.mid) || (SIMCONSTS.aaci49Fubuki && [426,1035,1040].includes(this.mid))) {
 		if (atypes[A_HAFD] >= 2 && this.equips.find(eq => eq.btype == B_RADAR && eq.AA >= 4)) types.push(49);
 	}
-	if (this.sclass == 54 || [981,982,983,986,987,1033].includes(this.mid) || (SIMCONSTS.aaci49Fubuki && [426,1035,1040].includes(this.mid))) {
+	if (this.sclass == 54 || [745,981,982,983,986,987,1033,1034].includes(this.mid) || (SIMCONSTS.aaci49Fubuki && [426,1035,1040].includes(this.mid))) {
 		let num10cmK = this.equips.filter(eq => [533,553].includes(eq.mid)).length;
 		let hasRadar = this.equips.find(eq => eq.btype == B_RADAR && eq.AA >= 4);
 		let hasAAFD = this.equips.find(eq => eq.mid == 121);
@@ -1647,6 +1647,13 @@ Ship.prototype.getAACItype = function(atypes) {
 	}
 	if ([1031].includes(this.mid) && this.equips.find(eq => eq.atype == A_HAFD && eq.AA >= 9) && this.equips.find(eq => eq.btype == B_RADAR && eq.AA >= 4)) {
 		types.push(53);
+	}
+	if (this.mid == 1040) {
+		if (atypes[A_HAGUN] && this.equiptypesB[B_RADAR]) types.push(2);
+		if (atypes[A_HAGUN] && atypes[A_AAGUN]) types.push(15);
+		if (atypes[A_HAGUN] && atypes[A_AAGUN] && atypes[A_AIRRADAR]) types.push(16);
+		if (atypes[A_HAGUN] && atypes[A_AIRRADAR]) types.push(21);
+		if (hasID[308] >= 2) types.push(34);
 	}
 	
 	if (this.sclass == 54) {  //Akizuki-class

@@ -460,17 +460,21 @@ function processAPI(root) {
 	//abyssal eq shift 2022-11-09 //root.time*1000 < Date.UTC(2022,11,9); 
 	let IS_BEFORE_ENEMY_EQ_SHIFT = !PVPMODE && !root.source;
 	
-	if (root.now_maphp && root.max_maphp) {
-		bossbar.maxhp = root.max_maphp;
-		bossbar.nowhp = root.now_maphp;
-		bossbar.mode = 2;
-		bossbar.show = true;
-	} else if (root.defeat_count != undefined && MAPDATA[root.world] && MAPDATA[root.world].maps[root.mapnum] && root.defeat_count < MAPDATA[root.world].maps[root.mapnum].bossHP) {
-		bossbar.maxhp = (MAPDATA[root.world].maps[root.mapnum].bossHP)? MAPDATA[root.world].maps[root.mapnum].bossHP : 5;
-		bossbar.nowhp = Math.max(1,bossbar.maxhp - root.defeat_count);
-		bossbar.mode = 1;
-		bossbar.show = true;
-	} else bossbar.show = false;
+	if ((!root.mapinfo || root.mapinfo.api_gauge_type != 3) && (!root.eventmap || root.eventmap.api_gauge_type != 3)) {
+		if (root.now_maphp && root.max_maphp) {
+			bossbar.maxhp = root.max_maphp;
+			bossbar.nowhp = root.now_maphp;
+			bossbar.mode = 2;
+			bossbar.show = true;
+		} else if (root.defeat_count != undefined && ((MAPDATA[root.world] && MAPDATA[root.world].maps[root.mapnum] && root.defeat_count < MAPDATA[root.world].maps[root.mapnum].bossHP) || root.required_defeat_count != undefined)) {
+			bossbar.maxhp = (MAPDATA[root.world].maps[root.mapnum].bossHP)? MAPDATA[root.world].maps[root.mapnum].bossHP : (root.required_defeat_count || 5);
+			bossbar.nowhp = Math.max(1,bossbar.maxhp - root.defeat_count);
+			bossbar.mode = 1;
+			bossbar.show = true;
+		} else bossbar.show = false;
+	} else {
+		bossbar.show = false;
+	}
 	
 	var battlenumstate = 0;
 	var getState = function(newbattle) {

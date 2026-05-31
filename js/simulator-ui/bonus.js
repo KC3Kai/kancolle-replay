@@ -2,6 +2,7 @@
 
 COMMON.BONUS_MANAGER = {
 	PRESET_INDEX: {
+		'5-6': { name: 'World 5-6' },
 		'7-4': { name: 'World 7-4' },
 		'7-5': { name: 'World 7-5' },
 		'57-1': { name: 'Summer 2023 E1' },
