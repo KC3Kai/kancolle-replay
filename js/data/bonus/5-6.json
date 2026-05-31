@@ -1,0 +1,35 @@
+{
+	"world": 5,
+	"mapnum": 6,
+	"date": "2026-05-31",
+	"note": "WIP (http://twitter.com/yukicacoon/status/2060943560401420721)",
+	"listBonus": [
+		{
+			"nodes": ["A","B","C2"],
+			"bonuses": [
+				{ "dmg": 1.13, "shipBase": [10,14,20,95,98,186,413,486] }
+			]
+		},
+		{
+			"nodes": ["G"],
+			"bonuses": [
+				{ "dmg": 1.16, "shipBase": [10,14,20,95,98,186,413,486] }
+			]
+		},
+		{
+			"nodes": ["J","L"],
+			"bonuses": [
+				{ "dmg": 1.1, "shipBase": [50,68,69,70,124,138] },
+				{ "dmg": 1.15, "shipBase": [485,528,674,675] }
+			]
+		},
+		{
+			"nodes": ["Z"],
+			"bonuses": [
+				{ "dmg": 1.1, "shipType": [2,3] },
+				{ "dmg": 1.12, "shipBase": [50,68,69,70,124,138] },
+				{ "dmg": 1.18, "shipBase": [485,528,674,675] }
+			]
+		}
+	]
+}
