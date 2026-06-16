@@ -470,7 +470,7 @@ function shell(ship,target,APIhou,attackSpecial,combinedAll) {
 			critRateBonus = .13*avgExp/120 - ship.critratebonus*.01;
 			if (ship.equips[0]) {
 				let type0 = ship.equips[0].type;
-				if (type0 == DIVEBOMBER || type0 == TORPBOMBER || (type0 == FIGHTER && AStypes[i] == 71)) {
+				if ({ 71: [6,7,8], 72: [7,8], 73: [7,8], 74: [56,57], 75: [56,57], 76: [56,7,8] }[AStypes[i]].includes(type0)) {
 					let exp0 = ship.equips[0].exp || 0;
 					if (exp0 >= 100) {
 						overrideCritDmgBonus = 1 + exp0*.003 + avgExp*.001 - 0.23;
