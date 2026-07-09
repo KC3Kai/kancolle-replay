@@ -6637,6 +6637,36 @@ var EQDATA = {
 		ACC: 1,
 		EV: 2,
 	},
+	576: {
+		name: 'Daihatsu Landing Craft (R35 & French Soldiers)',
+		nameJP: '大発動艇(R35&フランス兵)',
+		added: '2026-06-30',
+		type: LANDINGCRAFT,
+		FP: 1,
+	},
+	577: {
+		name: '61cm Quadruple (Oxygen) Torpedo Mount Model 5 Kai 3',
+		nameJP: '61cm四連装(酸素)魚雷五型改三',
+		added: '2026-07-08',
+		type: TORPEDO,
+		TP: 13,
+		AR: 3,
+		ACC: 3,
+		RNG: 1,
+	},
+	578: {
+		name: 'SB2U-2',
+		nameJP: 'SB2U-2',
+		added: '2026-07-08',
+		type: DIVEBOMBER,
+		FP: 1,
+		DIVEBOMB: 5,
+		AA: 1,
+		ACC: 1,
+		EV: 1,
+		ASW: 4,
+		LOS: 2,
+	},
 	1501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
@@ -8544,6 +8574,7 @@ var LBASDATA = {
 	547: { distance: 3, cost: 9 },
 	548: { distance: 2, cost: 10 },
 	570: { distance: 6, cost: 9 },
+	578: { distance: 4, cost: 5 },
 };
 
 

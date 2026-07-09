@@ -2336,6 +2336,38 @@ var MAPDATA = {
 			},
 		}
 	},
+	62: {
+		name: 'Summer 2026',
+		maps: {
+			1: {
+				name: 'E1',
+				bgmDN: 276,
+				bgmNN: 276,
+				bgmDB: 277,
+				bgmNB: 277,
+				bossnode: ['I','T','X'],
+			},
+			2: {
+				name: 'E2',
+				bgmDN: 276,
+				bgmNN: 276,
+				bgmDB: 277,
+				bgmNB: 277,
+				bossnode: ['P','V','Y'],
+			},
+			3: {
+				name: 'E3',
+				bgmDN: 276,
+				bgmNN: 276,
+				bgmDB: 277,
+				bgmNB: 277,
+				bossnode: ['O','Q','X','Z'],
+				overrideBGM: {
+					'Z': { bgmDB: 278, bgmNB: 278 },
+				},
+			},
+		}
+	},
 }
 
 //-------------------------------------
