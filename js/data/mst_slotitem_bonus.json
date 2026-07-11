@@ -2660,6 +2660,22 @@
 			{
 				"bonus": { "houg": 6, "kaih": 1 },
 				"shipId": [553,554]
+			},
+			{
+				"bonus": { "houm": 1 },
+				"level": 4
+			},
+			{
+				"bonus": { "tyku": 1 },
+				"level": 6
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"level": 8
+			},
+			{
+				"bonus": { "houg": 1 },
+				"level": 10
 			}
 		]
 	},
@@ -6859,6 +6875,12 @@
 				"num": 1
 			},
 			{
+				"bonus": { "houm": 1 },
+				"shipId": [916],
+				"requiresId": [460],
+				"level": 5
+			},
+			{
 				"bonus": { "houg": 1, "kaih": 2, "houm": 1 },
 				"shipId": [546,911]
 			},
@@ -6873,6 +6895,17 @@
 				"shipClass": [37],
 				"requiresId": [142,460],
 				"num": 1
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipClass": [37],
+				"level": 3
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipClass": [37],
+				"requiresId": [142,460],
+				"level": 4
 			}
 		]
 	},
