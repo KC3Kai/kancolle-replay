@@ -2365,6 +2365,26 @@ var MAPDATA = {
 				overrideBGM: {
 					'Z': { bgmDB: 278, bgmNB: 278 },
 				},
+			4: {
+				name: 'E4',
+				bgmDN: 280,
+				bgmNN: 280,
+				bgmDB: 281,
+				bgmNB: 281,
+				bossnode: ['D','N','S','X','Z'],
+			},
+			5: {
+				name: 'E5',
+				bgmDN: 280,
+				bgmNN: 280,
+				bgmDB: 124,
+				bgmNB: 124,
+				bossnode: ['G','J2','S','ZZ'],
+				overrideBGM: {
+					'J2': { bgmDB: 278, bgmNB: 278 },
+					'S': { bgmDB: 281, bgmNB: 281 },
+					'ZZ': { bgmDB: 282, bgmNB: 282 },
+				},
 			},
 		}
 	},
