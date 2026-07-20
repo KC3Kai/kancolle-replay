@@ -6669,7 +6669,7 @@ var EQDATA = {
 		LOS: 2,
 	},
 	579: {
-		name: '13.8cm単装砲 Modèle 1927',
+		name: '13.8cm Single Gun Mount Modèle 1927',
 		nameJP: '13.8cm単装砲 Modèle 1927',
 		added: '2026-07-18',
 		type: MAINGUNS,
@@ -6678,7 +6678,7 @@ var EQDATA = {
 		RNG: 1,
 	},
 	580: {
-		name: '55cm三連装魚雷 Modèle 1924',
+		name: '55cm Triple Torpedo Mount Modèle 1924',
 		nameJP: '55cm三連装魚雷 Modèle 1924',
 		added: '2026-07-18',
 		type: TORPEDO,
@@ -6687,7 +6687,7 @@ var EQDATA = {
 		RNG: 1,
 	},
 	581: {
-		name: '55cm複合配置五連装魚雷 Modèle 1932',
+		name: '55cm 5-tube Composite Arrangement Torpedo Mount Modèle 1932',
 		nameJP: '55cm複合配置五連装魚雷 Modèle 1932',
 		added: '2026-07-18',
 		type: TORPEDO,
@@ -6696,7 +6696,7 @@ var EQDATA = {
 		RNG: 1,
 	},
 	582: {
-		name: '20.3cm/50 連装砲 Modèle 1931',
+		name: '20.3cm/50 Twin Gun Mount Modèle 1931',
 		nameJP: '20.3cm/50 連装砲 Modèle 1931',
 		added: '2026-07-18',
 		type: MAINGUNM,
@@ -6707,7 +6707,7 @@ var EQDATA = {
 		RNG: 2,
 	},
 	583: {
-		name: '20.3cm/50 連装砲改(SHS改良弾)',
+		name: '20.3cm/50 Twin Gun Mount Kai (SHS Improved Shells)',
 		nameJP: '20.3cm/50 連装砲改(SHS改良弾)',
 		added: '2026-07-18',
 		type: MAINGUNM,
@@ -6718,7 +6718,7 @@ var EQDATA = {
 		RNG: 2,
 	},
 	584: {
-		name: 'Bofors 12cm単装両用砲',
+		name: 'Bofors 12cm Single Dual-purpose Gun Mount',
 		nameJP: 'Bofors 12cm単装両用砲',
 		added: '2026-07-18',
 		type: MAINGUNS,
@@ -6729,7 +6729,7 @@ var EQDATA = {
 		RNG: 1,
 	},
 	585: {
-		name: 'PL101(偵察)',
+		name: 'PL101 (Reconnaissance)',
 		nameJP: 'PL101(偵察)',
 		added: '2026-07-18',
 		type: CARRIERSCOUT,
@@ -6739,7 +6739,7 @@ var EQDATA = {
 		LOS: 3,
 	},
 	586: {
-		name: 'PL101(爆装)',
+		name: 'PL101 (Bombing)',
 		nameJP: 'PL101(爆装)',
 		added: '2026-07-18',
 		type: DIVEBOMBER,
@@ -6749,7 +6749,7 @@ var EQDATA = {
 		LOS: 3,
 	},
 	587: {
-		name: 'V-156F(SB2U輸出型)',
+		name: 'V-156F (SB2U Export Model)',
 		nameJP: 'V-156F(SB2U輸出型)',
 		added: '2026-07-18',
 		type: DIVEBOMBER,
@@ -6762,7 +6762,7 @@ var EQDATA = {
 		LOS: 2,
 	},
 	588: {
-		name: 'G-36A(F4F輸出型)',
+		name: 'G-36A (F4F Export Model)',
 		nameJP: 'G-36A(F4F輸出型)',
 		added: '2026-07-18',
 		type: FIGHTER,
@@ -8382,7 +8382,7 @@ var EQDATA = {
 		RNG: 3,
 	},
 	1655: {
-		name: '深海8.25inch単装主砲',
+		name: 'Abyssal 8.25inch Single Main Gun Mount',
 		nameJP: '深海8.25inch単装主砲',
 		added: '2025-10-30',
 		type: MAINGUNM,
@@ -8394,7 +8394,7 @@ var EQDATA = {
 		RNG: 2,
 	},
 	1656: {
-		name: '深海6inch副砲群',
+		name: 'Abyssal 6inch Secondary Gun Mount Battery',
 		nameJP: '深海6inch副砲群',
 		added: '2025-10-30',
 		type: SECGUN,
@@ -8406,7 +8406,7 @@ var EQDATA = {
 		RNG: 2,
 	},
 	1657: {
-		name: '深海4inch三連装副砲',
+		name: 'Abyssal 4inch Triple Secondary Gun Mount',
 		nameJP: '深海4inch三連装副砲',
 		added: '2025-10-30',
 		type: SECGUN,
@@ -8418,7 +8418,7 @@ var EQDATA = {
 		RNG: 2,
 	},
 	1658: {
-		name: '深海28.3cm L/52 三連装砲',
+		name: 'Abyssal 28.3cm L/52 Triple Gun Mount',
 		nameJP: '深海28.3cm L/52 三連装砲',
 		added: '2026-07-18',
 		type: MAINGUNL,
@@ -8430,7 +8430,7 @@ var EQDATA = {
 		RNG: 3,
 	},
 	1659: {
-		name: '深海20.3cm SHS連装砲',
+		name: 'Abyssal 20.3cm SHS Twin Gun Mount',
 		nameJP: '深海20.3cm SHS連装砲',
 		added: '2026-07-18',
 		type: MAINGUNM,
