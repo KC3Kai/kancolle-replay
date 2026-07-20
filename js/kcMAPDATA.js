@@ -2365,6 +2365,7 @@ var MAPDATA = {
 				overrideBGM: {
 					'Z': { bgmDB: 278, bgmNB: 278 },
 				},
+			},
 			4: {
 				name: 'E4',
 				bgmDN: 280,
