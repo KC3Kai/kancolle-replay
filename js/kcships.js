@@ -2368,6 +2368,7 @@ Equip.prototype.setImprovement = function(level) {
 		case JETBOMBER:
 			if (this.isFighterBomber) {
 				this.AAImprove = .25*level;
+				if ([487].includes(this.mid)) this.improves.Pasw = .2*level;
 			} else {
 				this.improves.Pshell = .2*level;
 				this.improves.Pasw = .2*level;
@@ -2408,6 +2409,12 @@ Equip.prototype.setImprovement = function(level) {
 	var improve = (this.improve)? this.improve : EQTDATA[this.type].improve;
 	for (var key in improve) {
 		this.improves[key] = improve[key]*Math.sqrt(level);
+	}
+	if (improve && improve.Pshell == 1 && this.FP >= 13) {
+		this.improves.Pshell = 1.5*Math.sqrt(level);
+	}
+	if (improve && improve.Pshell == 1.5 && this.FP < 13) {
+		this.improves.Pshell = Math.sqrt(level);
 	}
 	
 	if (this.atype == A_HAGUN) {
