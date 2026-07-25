@@ -27,6 +27,7 @@ var COMMON = {
 		'60-2': 'getTransport602',
 		'60-5': 'getTransport605',
 		'61-2': 'getTransport612',
+		'62-5': 'getTransport612',
 	},
 	getTPFormulaSimFunction: function(key) { return this._tpFormulaKeyToSimFunction[key] || 'getTransport' },
 	

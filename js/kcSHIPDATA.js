@@ -40765,7 +40765,7 @@ var SHIPDATA = {
 		EQUIPS: [1658, 1658, 1658, 1611, 1541],
 	},
 	2386: {
-		name: 'French Sorrowful Heavy Princess 1',
+		name: 'Tragic French Heavy Princess 1',
 		nameJP: '仏蘭西哀重姫',
 		image: 'S2386.jpg',
 		type: 'CA',
@@ -40786,7 +40786,7 @@ var SHIPDATA = {
 		EQUIPS: [1659, 1659, 1659, 1593, 1611],
 	},
 	2387: {
-		name: 'French Sorrowful Heavy Princess 2',
+		name: 'Tragic French Heavy Princess 2',
 		nameJP: '仏蘭西哀重姫',
 		image: 'S2386.jpg',
 		type: 'CA',
@@ -40807,7 +40807,7 @@ var SHIPDATA = {
 		EQUIPS: [1659, 1659, 1659, 1593, 1611],
 	},
 	2388: {
-		name: 'French Sorrowful Heavy Princess 3',
+		name: 'Tragic French Heavy Princess 3',
 		nameJP: '仏蘭西哀重姫',
 		image: 'S2386.jpg',
 		type: 'CA',
@@ -40828,7 +40828,7 @@ var SHIPDATA = {
 		EQUIPS: [1659, 1659, 1659, 1593, 1611],
 	},
 	2389: {
-		name: 'French Sorrowful Heavy Princess - Damaged 1',
+		name: 'Tragic French Heavy Princess - Damaged 1',
 		nameJP: '仏蘭西哀重姫-壊',
 		image: 'S2389.jpg',
 		type: 'CAV',
@@ -40849,7 +40849,7 @@ var SHIPDATA = {
 		EQUIPS: [1659, 1659, 1659, 1593, 1634],
 	},
 	2390: {
-		name: 'French Sorrowful Heavy Princess - Damaged 2',
+		name: 'Tragic French Heavy Princess - Damaged 2',
 		nameJP: '仏蘭西哀重姫-壊',
 		image: 'S2389.jpg',
 		type: 'CAV',
@@ -40870,7 +40870,7 @@ var SHIPDATA = {
 		EQUIPS: [1659, 1659, 1659, 1593, 1634],
 	},
 	2391: {
-		name: 'French Sorrowful Heavy Princess - Damaged 3',
+		name: 'Tragic French Heavy Princess - Damaged 3',
 		nameJP: '仏蘭西哀重姫-壊',
 		image: 'S2389.jpg',
 		type: 'CAV',
@@ -40893,7 +40893,7 @@ var SHIPDATA = {
 		EQUIPS: [1659, 1659, 1659, 1593, 1634],
 	},
 	2392: {
-		name: 'French Caged Aircraft Carrier Princess 1',
+		name: 'Caged French Aircraft Carrier Princess 1',
 		nameJP: '仏蘭西空母籠姫',
 		image: 'S2392.jpg',
 		type: 'CV',
@@ -40915,7 +40915,7 @@ var SHIPDATA = {
 		EQUIPS: [1618, 1634, 1617, 1619, 1608],
 	},
 	2393: {
-		name: 'French Caged Aircraft Carrier Princess 2',
+		name: 'Caged French Aircraft Carrier Princess 2',
 		nameJP: '仏蘭西空母籠姫',
 		image: 'S2392.jpg',
 		type: 'CV',
@@ -40937,7 +40937,7 @@ var SHIPDATA = {
 		EQUIPS: [],
 	},
 	2394: {
-		name: 'French Caged Aircraft Carrier Princess 3',
+		name: 'Caged French Aircraft Carrier Princess 3',
 		nameJP: '仏蘭西空母籠姫',
 		image: 'S2392.jpg',
 		type: 'CV',
@@ -40959,7 +40959,7 @@ var SHIPDATA = {
 		EQUIPS: [1618, 1634, 1617, 1619, 1608],
 	},
 	2395: {
-		name: 'French Caged Aircraft Carrier Princess - Damaged 1',
+		name: 'Caged French Aircraft Carrier Princess - Damaged 1',
 		nameJP: '仏蘭西空母籠姫-壊',
 		image: 'S2395.jpg',
 		type: 'CV',
@@ -40981,7 +40981,7 @@ var SHIPDATA = {
 		EQUIPS: [1618, 1634, 1617, 1619, 1608],
 	},
 	2396: {
-		name: 'French Caged Aircraft Carrier Princess - Damaged 2',
+		name: 'Caged French Aircraft Carrier Princess - Damaged 2',
 		nameJP: '仏蘭西空母籠姫-壊',
 		image: 'S2395.jpg',
 		type: 'CV',
@@ -41003,7 +41003,7 @@ var SHIPDATA = {
 		EQUIPS: [],
 	},
 	2397: {
-		name: 'French Caged Aircraft Carrier Princess - Damaged 3',
+		name: 'Caged French Aircraft Carrier Princess - Damaged 3',
 		nameJP: '仏蘭西空母籠姫-壊',
 		image: 'S2395.jpg',
 		type: 'CV',
