@@ -1,7 +1,7 @@
 {
 	"world": 62,
 	"mapnum": 4,
-	"date": "2026-07-23",
+	"date": "2026-07-25",
 	"note": "damage only",
 	"listBonus": [
 		{
@@ -23,6 +23,7 @@
 				{ "dmg": 1.11, "shipBase": [64] },
 				{ "dmg": 1.06, "shipBase": [448] },
 				{ "dmg": 1.08, "shipBase": [449] },
+				{ "dmg": 1.05, "shipBase": [1022] },
 				{ "dmg": 1.07, "shipBase": [439] },
 				{ "dmg": 1.11, "shipBase": [515] },
 				{ "dmg": 1.04, "shipBase": [965] },

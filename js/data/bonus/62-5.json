@@ -1,7 +1,7 @@
 {
 	"world": 62,
 	"mapnum": 5,
-	"date": "2026-07-23",
+	"date": "2026-07-25",
 	"note": "damage only, no debuff, no LBAS",
 	"listBonus": [
 		{
@@ -71,7 +71,7 @@
 		{
 			"nodes": ["J2","L1","L2","P3","S"],
 			"bonuses": [
-				{ "dmg": 1.12, "shipType": [2,3] },
+				{ "dmg": 1.12, "shipType": [2,3,4] },
 				{ "dmg": 1.15, "shipType": [5,6] },
 				{ "dmg": 1.2, "shipType": [11,18] },
 				{ "dmg": 1.25, "shipType": [16,17] },
