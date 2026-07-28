@@ -6660,6 +6660,7 @@ var EQDATA = {
 		nameJP: 'SB2U-2',
 		added: '2026-07-08',
 		type: DIVEBOMBER,
+		canShellInstall: true,
 		FP: 1,
 		DIVEBOMB: 5,
 		AA: 1,
