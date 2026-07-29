@@ -2487,6 +2487,7 @@ Equip.prototype.setProficiency = function(rank,forLBAS) {
 		case FIGHTER:
 		case SEAPLANEFIGHTER:
 		case INTERCEPTOR:
+		case JETFIGHTER:
 			this.APbonus += [0,0,2,5,9,14,14,22][this.rank]; break;
 		case SEAPLANEBOMBER:
 			this.APbonus += [0,0,1,1,1,3,3,6][this.rank]; break;
