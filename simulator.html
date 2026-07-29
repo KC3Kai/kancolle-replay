@@ -399,13 +399,13 @@
 					</div>
 					<div>
 						<div><span class="subheader">{{$t('shelling_range_tie_randomness_weights')}}:</span></div>
-						<div><label><input type="checkbox" v-model="settings.enableRangeWeights" :class="getClassSetting('enableRangeWeights')"/>{{$t('enable_heuristic_weights')}}</label></div>
-						<div style="color:red">{{$t('warning_experimental_subject_to_change')}}</div>
+						<div><label><input type="checkbox" v-model="settings.enableRangeWeights" :class="getClassSetting('enableRangeWeights')"/>{{$t('enable_range_weights')}}</label></div>
 						<div :style="{'font-style':($i18n.locale=='en' ? 'italic' : '')}"><i18n-t keypath="shelling_range_tie_description" scope="global"><template v-slot:br><br></template></i18n-t></div>
 						<div>
 							{{$t('explanation')}}:&nbsp;
 							<a href="https://en.kancollewiki.net/Shooting_Order_and_Targeting#Range_Tie_Randomness">[1]</a>&nbsp;
 							<a href="https://docs.google.com/spreadsheets/d/1grAtIhlm2YMN9iyvniJA-j1YNCC-SCnA8q6WUi-Ctpg/edit#gid=0">[2]</a>&nbsp;
+							<a href="https://docs.google.com/spreadsheets/d/1bcTUcsVv2NCclrwRiJTk_Ap2Y-8nU3HpdbdchtGmdnk/edit#gid=0">[3]</a>&nbsp;
 						</div>
 					</div>
 					<div>

@@ -33,8 +33,6 @@ var CONST = window.COMMON.getConst({
 		'warn_vanguard': { txt: 'Note: Destroyers have different vanguard evasion mods in event maps, see "Show Advanced" if simulating event maps', excludeImport: true },
 		'warn_enemy_unset_stats': { txt: 'Warning: Node <0> has enemies with unknown and unset evasion/luck stats (still set to 0/1).', excludeImport: true },
 		'warn_debuff_dmg': { txt: 'Warning: "Debuff Dmg" is a legacy setting and may be inaccurate to the mechanic, recommended to modify enemy\'s Armour stat instead.' },
-		'warn_range_weights_f': { txt: 'Warning: Player Fleets - Following range combination weights are unknown and not used: <0>' },
-		'warn_range_weights_e': { txt: 'Warning: Enemy Fleets - Following range combination weights are unknown and not used: <0>' },
 		'warn_special_attack': { txt: 'Note: Special Attack activation rate calculations are unknown and must be set manually, see Show Advanced to review defaults and adjust settings' },
 		'warn_smoke_formula': { txt: '' },
 		'warn_tp_formula_605': { txt: '' },
@@ -757,10 +755,6 @@ var SIM = {
 			}
 		}
 		
-		if (dataInput.consts && dataInput.consts.enableRangeWeights) {
-			SHELL_RANGE_WEIGHTS.resetMissing();
-		}
-		
 		if (FLEETS1[0] && FLEETS1[0].ships && canSpecialAttackUnique(FLEETS1[0].ships[0],false,true) || canSpecialAttackUnique(FLEETS1[0].ships[0],true,true)) {
 			this._addWarning('warn_special_attack');
 		}
@@ -784,15 +778,6 @@ var SIM = {
 		
 		if (dataInput.includeTimeStats) {
 			this._addWarning('warn_time_stats');
-		}
-	},
-	
-	_checkWarningsPostRun: function(dataInput) {
-		if (dataInput.consts && dataInput.consts.enableRangeWeights) {
-			let keysMissingF = SHELL_RANGE_WEIGHTS.getMissing(0);
-			if (keysMissingF.length) this._addWarning('warn_range_weights_f', [keysMissingF.join(', ')]);
-			let keysMissingE = SHELL_RANGE_WEIGHTS.getMissing(1);
-			if (keysMissingE.length) this._addWarning('warn_range_weights_e', [keysMissingE.join(', ')]);
 		}
 	},
 	
@@ -1131,7 +1116,6 @@ var SIM = {
 			}
 			n += numStep;
 			if (n >= numSim || this.cancelRun) {
-				this._checkWarningsPostRun(dataInput);
 				delete this._results.replay;
 				callback({ progress: n, progressTotal: numSim, result: this._results, warnings: this._warnings.slice() });
 				let timeTotal = Date.now() - timeStart;

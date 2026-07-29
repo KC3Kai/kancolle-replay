@@ -3342,21 +3342,60 @@ function airstrikeLBAS(lbas,target,slot,contactMod,contactModLB,isjetphase) {
 	return realdmg;
 }
 
-function orderByRange(ships,order,includeSubs,isOASW) {
-	if (SIMCONSTS.enableRangeWeights && ships.length && !ships.find(ship => ship.isSub)) {
-		let orderShips = SHELL_RANGE_WEIGHTS.getRollShips(ships,includeSubs,isOASW);
-		if (orderShips) {
-			order.push.apply(order,orderShips);
-			return;
+//zend_qsort from php-src PHP-5.6 (Zend/zend_qsort.c), what PHP 5 usort() runs
+//the tie comparator is non-transitive, so tied ships do not come out uniformly shuffled - the
+//distribution is specific to this quicksort, do not substitute sort() or cache the coin flip
+function zendQsort(arr,compare) {
+	if (arr.length < 2) return;
+	let stack = [[0,arr.length-1]];
+	while (stack.length) {
+		let [begin,end] = stack.pop();
+		while (begin < end) {
+			let mid = begin + ((end-begin) >> 1);
+			let tmp = arr[begin]; arr[begin] = arr[mid]; arr[mid] = tmp; //pivot to begin
+			let seg1 = begin+1, seg2 = end;
+			while (true) {
+				while (seg1 < seg2 && compare(arr[begin],arr[seg1]) > 0) seg1++;
+				while (seg2 >= seg1 && compare(arr[seg2],arr[begin]) > 0) seg2--;
+				if (seg1 >= seg2) break;
+				tmp = arr[seg1]; arr[seg1] = arr[seg2]; arr[seg2] = tmp;
+				seg1++; seg2--;
+			}
+			tmp = arr[begin]; arr[begin] = arr[seg2]; arr[seg2] = tmp; //pivot into place
+			if (seg2-begin <= end-seg2) { //recurse into the smaller side
+				if (seg2+1 < end) stack.push([seg2+1,end]);
+				if (seg2 === begin) break;
+				end = seg2-1;
+			} else {
+				if (begin+1 < seg2) stack.push([begin,seg2-1]);
+				begin = seg2+1;
+			}
 		}
 	}
-	var ranges = []; //fleet 1
+}
+
+function compareShellRange(shipA,shipB) {
+	if (shipA.RNG != shipB.RNG) return shipB.RNG - shipA.RNG; //longer range shells earlier
+	return (Math.random() < .5)? 1 : -1; //fresh coin on EVERY call, never cached
+}
+
+function orderByRange(ships,order,includeSubs,isOASW) {
+	var shipsCanShell = [];
 	for (var i=0; i<ships.length; i++) {
 		if (!includeSubs && ships[i].isSub) continue;
 		if (!ships[i].canShell(isOASW)) continue;
 		if (ships[i].retreated) continue;
-		if (!ranges[ships[i].RNG]) ranges[ships[i].RNG] = [];
-		ranges[ships[i].RNG].push(ships[i]);
+		shipsCanShell.push(ships[i]);
+	}
+	if (SIMCONSTS.enableRangeWeights && !ships.find(ship => ship.isSub)) {
+		zendQsort(shipsCanShell,compareShellRange);
+		order.push.apply(order,shipsCanShell);
+		return;
+	}
+	var ranges = []; //fleet 1
+	for (var i=0; i<shipsCanShell.length; i++) {
+		if (!ranges[shipsCanShell[i].RNG]) ranges[shipsCanShell[i].RNG] = [];
+		ranges[shipsCanShell[i].RNG].push(shipsCanShell[i]);
 	}
 	for (var i=0; i<ranges.length; i++) if (ranges[i]) shuffle(ranges[i]);
 	for (var i=ranges.length-1; i>=0; i--) {
@@ -5014,47 +5053,3 @@ function getDetection(shipsF,shipsE) {
 	if (numReconSlots <= 0) return DetectionResult.NotFound;
 	return (shotdownVal <= 0)? DetectionResult.Failure : DetectionResult.FailureLost;
 }
-
-var SHELL_RANGE_WEIGHTS = {
-	_data: null,
-	_cache: { ranges: {}, weightTotals: {} },
-	_keysMiss: null,
-	
-	init: async function() {
-		this._data = await fetch('js/data/shell_range_weights.json').then(resp => resp.ok ? resp.json() : null);
-	},
-	
-	getRangeKey: function(ranges) {
-		let rangesOrder = [...new Set(ranges)].sort((a,b)=>b-a);
-		let key = ranges.join('');
-		return this._cache.ranges[key] || (this._cache.ranges[key] = ranges.map(r => String.fromCharCode(65+rangesOrder.indexOf(r))).join(''));
-	},
-	getRoll: function(rangeKey) {
-		if (!this._data[rangeKey]) return null;
-		let orderKeys = Object.keys(this._data[rangeKey]);
-		let weightTotal = this._cache.weightTotals[rangeKey] || (this._cache.weightTotals[rangeKey] = orderKeys.reduce((a,b) => a + this._data[rangeKey][b],0));
-		let roll = Math.floor(Math.random()*weightTotal);
-		for (let orderKey of orderKeys) {
-			if (roll < this._data[rangeKey][orderKey]) return orderKey;
-			roll -= this._data[rangeKey][orderKey];
-		}
-		return null;
-	},
-	getRollShips: function(ships,includeSubs,isOASW) {
-		let shipsCanShell = ships.filter(ship => !ship.retreated && (includeSubs || !ship.isSub) && ship.canShell(isOASW));
-		let rangeKey = this.getRangeKey(shipsCanShell.map(ship => ship.RNG));
-		let orderKey = this.getRoll(rangeKey);
-		if (!orderKey && shipsCanShell.length) {
-			this._keysMiss[shipsCanShell[0].side][rangeKey] = this._keysMiss[shipsCanShell[0].side][rangeKey] + 1 || 1;
-		}
-		return orderKey && orderKey.split('').map(num => shipsCanShell[+num]);
-	},
-	
-	resetMissing: function() {
-		this._keysMiss = { 0: {}, 1: {} };
-	},
-	getMissing: function(side) {
-		return Object.keys(this._keysMiss[side]).filter(key => key.length >= 2 && key.length > (new Set(key)).size).sort((a,b) => this._keysMiss[side][b] - this._keysMiss[side][a]);
-	},
-};
-SHELL_RANGE_WEIGHTS.init();
