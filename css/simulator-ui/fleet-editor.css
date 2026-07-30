@@ -242,6 +242,33 @@ div.additionalStatsMain div.sub {
 	margin-left: 16px;
 }
 
+#divShellOrderMain {
+	min-width: 800px;
+	background-color: #DDEEFF;
+	border: 1px solid transparent;
+	box-shadow: 0 0 5px black;
+	padding: 20px;
+}
+#divShellOrderMain div.tabButtons {
+	display: flex;
+}
+#divShellOrderMain div.tabButtons > div {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 80px;
+	height: 30px;
+	background-color: #C0D0E0;
+	cursor: pointer;
+}
+#divShellOrderMain div.tabButtons > div.selected {
+	background-color: #88BBEE;
+}
+#divShellOrderMain div.orderList {
+	max-height: 160px;
+	overflow-y: scroll;
+}
+
 #divKC3ProfileHelp {
 	padding: 30px;
 	font-size: 18px;

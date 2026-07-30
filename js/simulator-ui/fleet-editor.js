@@ -1047,6 +1047,8 @@ var UI_ADDITIONALSTATS = Vue.createApp({
 					modAnchorage: ship.anchoragePostMult ? Math.round(100*ship.anchoragePostMult)/100 : null,
 					modDock: ship.dockPostMult ? Math.round(100*ship.dockPostMult)/100 : null,
 					nightContactRates: [0,0,0],
+					range: ship.RNG,
+					canShell: ship.canShell(),
 				};
 				if (ship.AStype().length && ship.canAS()) {
 					stats.asTypes = [];
@@ -1181,6 +1183,9 @@ var UI_ADDITIONALSTATS = Vue.createApp({
 		},
 		doClose: function() {
 			this.active = false;
+		},
+		onclickShellOrder: function() {
+			UI_SHELLORDER.doOpen(this.ships);
 		},
 	},
 }).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divAdditionalStats');
@@ -1358,6 +1363,94 @@ var UI_PLANEBONUS = Vue.createApp({
 	},
 }).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divPlaneBonus');
 
+
+var UI_SHELLORDER = Vue.createApp({
+	data: () => ({
+		active: false,
+		canClose: true,
+		
+		tabSelected: '',
+		shell: { ships: [], rateMax: 0, orders: [] },
+		oasw: { ships: [], rateMax: 0, orders: [] },
+	}),
+	methods: {
+		_getOrderRatesR: function(input,rollsPrev,result) {
+			let rollIdx = 0;
+			let inputC = input.slice();
+			COMMON.zendQsort(inputC,function(a,b) {
+				if (a.range != b.range) return b.range - a.range;
+				if (rollIdx < rollsPrev.length) return rollsPrev[rollIdx++];
+				let rollsNow = rollsPrev.slice();
+				rollsNow.push(-1);
+				this._getOrderRatesR(input,rollsNow,result);
+				rollsPrev.push(1);
+				rollIdx++;
+				return 1;
+			}.bind(this));
+			let key = inputC.map(ship => ship.num).join('');
+			if (!result[key]) result[key] = 0;
+			result[key] += Math.pow(2,-rollIdx);
+		},
+		_getOrderRates: function(ships) {
+			let input = ships.map((ship,i) => ({ num: i, range: ship.range }));
+			let result = {};
+			this._getOrderRatesR(input,[],result);
+			return result;
+		},
+		_updateShips: function(shipsStats,obj,keyFilter) {
+			obj.ships = []; obj.rateMax = 0; obj.orders = [];
+			for (let i=0; i<shipsStats.length; i++) {
+				let ship = shipsStats[i];
+				if (!ship[keyFilter]) continue;
+				obj.ships.push({
+					num: i+1,
+					imgName: ship.imgName,
+					range: ship.range,
+					posRates: null,
+				});
+			}
+			if (obj.ships.length <= 0) return;
+			let orderRates = this._getOrderRates(obj.ships);
+			for (let ship of obj.ships) {
+				ship.posRates = Array(obj.ships.length).fill(0);
+			}
+			for (let key in orderRates) {
+				for (let i=0; i<key.length; i++) {
+					obj.ships[+key[i]].posRates[i] += orderRates[key];
+				}
+				obj.orders.push({ order: key.split('').map(n => +n+1).join('\u2192'), rate: orderRates[key] });
+			}
+			obj.orders.sort((a,b) => a.rate != b.rate ? b.rate - a.rate : a.order < b.order ? -1 : 1);
+			for (let ship of obj.ships) {
+				for (let i=0; i<ship.posRates.length; i++) {
+					ship.posRates[i] = Math.round(ship.posRates[i]*100000)/100000;
+					obj.rateMax = Math.max(obj.rateMax,ship.posRates[i]);
+				}
+			}
+		},
+		doOpen: function(shipsStats) {
+			this.active = true;
+			this.tabSelected = '';
+			
+			this._updateShips(shipsStats,this.shell,'canShell');
+			this._updateShips(shipsStats,this.oasw,'canOASW');
+			
+			if (this.shell.ships.length) this.tabSelected = 'shell';
+			else if (this.oasw.ships.length) this.tabSelected = 'oasw';
+		},
+		doClose: function() {
+			this.active = false;
+		},
+		getFraction(rate) {
+			let d = 1;
+			for (let i=0; i<30; i++) {
+				if (Math.abs(rate*d - Math.round(rate*d)) < .000000001) break;
+				d *= 2;
+			}
+			return Math.round(rate*d) + '/' + d;
+		},
+	},
+}).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divShellOrder');
 
 COMMON.global.fleetEditorOpen = function(fleet) {
 	UI_FLEETEDITOR.doOpen(fleet);

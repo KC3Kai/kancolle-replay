@@ -1,6 +1,11 @@
 {
 	"change_log": [
 		{
+			"date": "2026-07-30",
+			"txt": "{link0} (thanks to {link1}), Shelling Order Rates viewer in Show Additional Stats, \"Shelling Range Tie Randomness Weights\" setting removed",
+			"links": [ { "txt": "Precise formula for shelling range ties", "url": "https://github.com/dube116/kancolle-shelling-order#%E8%89%A6%E3%81%93%E3%82%8C-%E7%A0%B2%E6%93%8A%E9%A0%86%E5%BA%8F%E6%A9%9F%E5%88%B6%E8%A7%A3%E6%9E%90" }, { "txt": "dube116", "url": "https://github.com/dube116?tab=repositories" } ]
+		},
+		{
 			"date": "2026-02-17",
 			"txt": "Time Statistics (based on {link0})",
 			"links": [ { "txt": "kancolle-sortie-time-calculator", "url": "https://github.com/ha15224/kancolle-sortie-time-calculator" } ]
@@ -533,6 +538,7 @@
 	"fleet_air_power_lbas": "vs LBAS",
 	"transport": "Transport",
 	"effective_los": "Effective LoS (HQ120)",
+	"shelling_order_rates": "Shelling Order Rates",
 	"shell_power": "Shell Power",
 	"nb_power": "NB Power",
 	"asw_power": "ASW Power",
@@ -741,6 +747,9 @@
 	"plane_bonus_note_1_lbas": "\u2022 Applied only if at least 1 associated plane has slots remaining",
 	"plane_bonus_note_2_ship": "\u2022 Applied to the entire ship, stacks with the ship's normal Bonus settings",
 	"plane_bonus_note_2_lbas": "\u2022 Applied to all planes in the entire land base, stacks with each plane's normal Bonus settings",
+	
+	"oasw": "OASW",
+	"full_order_rates": "Full Order Rates",
 	
 	"time_statistics_info_1": "This is a {bold}. Time values and calculations are WIP. They are NOT precise and are subject to change.",
 	"time_statistics_info_1b": "provisional implementation",
