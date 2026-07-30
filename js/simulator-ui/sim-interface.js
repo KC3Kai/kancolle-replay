@@ -758,7 +758,8 @@ var SIM = {
 		}
 		
 		if (dataInput.consts && dataInput.consts.enableRangeWeights) {
-			SHELL_RANGE_WEIGHTS.resetMissing();
+			dataInput.consts.enableRangeWeights = false;
+			// SHELL_RANGE_WEIGHTS.resetMissing();
 		}
 		
 		if (FLEETS1[0] && FLEETS1[0].ships && canSpecialAttackUnique(FLEETS1[0].ships[0],false,true) || canSpecialAttackUnique(FLEETS1[0].ships[0],true,true)) {
@@ -789,10 +790,11 @@ var SIM = {
 	
 	_checkWarningsPostRun: function(dataInput) {
 		if (dataInput.consts && dataInput.consts.enableRangeWeights) {
-			let keysMissingF = SHELL_RANGE_WEIGHTS.getMissing(0);
-			if (keysMissingF.length) this._addWarning('warn_range_weights_f', [keysMissingF.join(', ')]);
-			let keysMissingE = SHELL_RANGE_WEIGHTS.getMissing(1);
-			if (keysMissingE.length) this._addWarning('warn_range_weights_e', [keysMissingE.join(', ')]);
+			dataInput.consts.enableRangeWeights = false;
+			// let keysMissingF = SHELL_RANGE_WEIGHTS.getMissing(0);
+			// if (keysMissingF.length) this._addWarning('warn_range_weights_f', [keysMissingF.join(', ')]);
+			// let keysMissingE = SHELL_RANGE_WEIGHTS.getMissing(1);
+			// if (keysMissingE.length) this._addWarning('warn_range_weights_e', [keysMissingE.join(', ')]);
 		}
 	},
 	

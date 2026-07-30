@@ -186,6 +186,36 @@ var COMMON = {
 		return bytes;
 	},
 	
+	//https://github.com/dube116/kancolle-shelling-order
+	zendQsort: function(a, cmp) {
+		if (a.length < 2) return;
+		const stack = [[0, a.length - 1]];
+		while (stack.length) {
+			let [begin, end] = stack.pop();
+			while (begin < end) {
+				const mid = begin + ((end - begin) >> 1);
+				const t = a[begin]; a[begin] = a[mid]; a[mid] = t;      // 樞紐 → begin
+				let seg1 = begin + 1, seg2 = end;
+				for (;;) {
+					while (seg1 < seg2 && cmp(a[begin], a[seg1]) > 0) seg1++;
+					while (seg2 >= seg1 && cmp(a[seg2], a[begin]) > 0) seg2--;
+					if (seg1 >= seg2) break;
+					const u = a[seg1]; a[seg1] = a[seg2]; a[seg2] = u;
+					seg1++; seg2--;
+				}
+				const v = a[begin]; a[begin] = a[seg2]; a[seg2] = v;    // 樞紐定位
+				if (seg2 - begin <= end - seg2) {
+					if (seg2 + 1 < end) stack.push([seg2 + 1, end]);
+					if (seg2 === begin) break;
+					end = seg2 - 1;
+				} else {
+					if (begin + 1 < seg2) stack.push([begin, seg2 - 1]);
+					begin = seg2 + 1;
+				}
+			}
+		}
+	},
+	
 	_init: function() {
 		//https://github.com/tc39/proposal-relative-indexing-method#polyfill
 		function at(n) {

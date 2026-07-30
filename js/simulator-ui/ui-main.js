@@ -138,7 +138,6 @@ var UI_MAIN = Vue.createApp({
 			smokeModTorpAccE: SIMCONSTS.smokeModTorpAccE.slice(),
 			smokeModAirAccF: SIMCONSTS.smokeModAirAccF.slice(),
 			smokeModAirAccE: SIMCONSTS.smokeModAirAccE.slice(),
-			enableRangeWeights: SIMCONSTS.enableRangeWeights,
 			overrideSupportChanceDayN: SIMCONSTS.overrideSupportChanceDayN,
 			overrideSupportChanceDayB: SIMCONSTS.overrideSupportChanceDayB,
 			overrideSupportChanceNightN: SIMCONSTS.overrideSupportChanceNightN,

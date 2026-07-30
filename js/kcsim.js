@@ -3343,6 +3343,21 @@ function airstrikeLBAS(lbas,target,slot,contactMod,contactModLB,isjetphase) {
 }
 
 function orderByRange(ships,order,includeSubs,isOASW) {
+	let shipsR = [];
+	for (let ship of ships) {
+		if (!includeSubs && ship.isSub) continue;
+		if (!ship.canShell(isOASW)) continue;
+		if (ship.retreated) continue;
+		shipsR.push(ship);
+	}
+	COMMON.zendQsort(shipsR,(ship1,ship2) => {
+		if (ship1.RNG != ship2.RNG) return ship2.RNG - ship1.RNG;
+		return Math.random() < .5 ? 1 : -1;
+	});
+	for (let ship of shipsR) order.push(ship);
+}
+
+function orderByRangeOld(ships,order,includeSubs,isOASW) {
 	if (SIMCONSTS.enableRangeWeights && ships.length && !ships.find(ship => ship.isSub)) {
 		let orderShips = SHELL_RANGE_WEIGHTS.getRollShips(ships,includeSubs,isOASW);
 		if (orderShips) {
@@ -5057,4 +5072,4 @@ var SHELL_RANGE_WEIGHTS = {
 		return Object.keys(this._keysMiss[side]).filter(key => key.length >= 2 && key.length > (new Set(key)).size).sort((a,b) => this._keysMiss[side][b] - this._keysMiss[side][a]);
 	},
 };
-SHELL_RANGE_WEIGHTS.init();
+// SHELL_RANGE_WEIGHTS.init();

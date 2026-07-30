@@ -397,7 +397,7 @@
 						<div><a href="https://docs.google.com/spreadsheets/d/1I_HMplw81mR7g9_jUKRmI7ylhlhKkuvGKtrpj3DJ9zo/edit#gid=0" target="_blank">{{$t('activation_rate_suggestions')}}</a></div>
 						<div><a href="https://docs.google.com/spreadsheets/d/1sznusxVurE6iCr2s-gLNpBQ_g1BD5mEMDlltluMB1CE/edit#gid=1397813463" target="_blank">{{$t('other_suggestions_and_data')}}</a></div>
 					</div>
-					<div>
+					<!--<div>
 						<div><span class="subheader">{{$t('shelling_range_tie_randomness_weights')}}:</span></div>
 						<div><label><input type="checkbox" v-model="settings.enableRangeWeights" :class="getClassSetting('enableRangeWeights')"/>{{$t('enable_heuristic_weights')}}</label></div>
 						<div style="color:red">{{$t('warning_experimental_subject_to_change')}}</div>
@@ -407,7 +407,7 @@
 							<a href="https://en.kancollewiki.net/Shooting_Order_and_Targeting#Range_Tie_Randomness">[1]</a>&nbsp;
 							<a href="https://docs.google.com/spreadsheets/d/1grAtIhlm2YMN9iyvniJA-j1YNCC-SCnA8q6WUi-Ctpg/edit#gid=0">[2]</a>&nbsp;
 						</div>
-					</div>
+					</div>-->
 					<div>
 						<div><span class="subheader">{{$t('override_support_chance')}}:</span></div>
 						<div :style="{'font-style':($i18n.locale=='en' ? 'italic' : '')}">{{$t('override_support_chance_desc')}}</div>
@@ -1396,8 +1396,15 @@
 	<div id="divAdditionalStats"><div v-show="active">
 		<vmodal :active="active" @vclose="doClose">
 		<div id="divAdditionalStatsMain" class="additionalStatsMain">
-			<div>{{$t('fleet_air_power')}}: {{fleet.airPower}} (<span v-show="fleet.airPowerCombined">{{$t('fleet_air_power_combined')}} = {{fleet.airPowerCombined}}, </span>{{$t('fleet_air_power_lbas')}} = {{fleet.airPowerLB}})&nbsp;&nbsp;&nbsp;&nbsp;{{$t('transport')}}: {{fleet.transport}}</div>
-			<div>{{$t('effective_los')}}: C1 = {{fleet.los1}}, C2 = {{fleet.los2}}, C3 = {{fleet.los3}}, C4 = {{fleet.los4}}</div>
+			<div style="display:flex;justify-content:space-between">
+				<div>
+					<div>{{$t('fleet_air_power')}}: {{fleet.airPower}} (<span v-show="fleet.airPowerCombined">{{$t('fleet_air_power_combined')}} = {{fleet.airPowerCombined}}, </span>{{$t('fleet_air_power_lbas')}} = {{fleet.airPowerLB}})&nbsp;&nbsp;&nbsp;&nbsp;{{$t('transport')}}: {{fleet.transport}}</div>
+					<div>{{$t('effective_los')}}: C1 = {{fleet.los1}}, C2 = {{fleet.los2}}, C3 = {{fleet.los3}}, C4 = {{fleet.los4}}</div>
+				</div>
+				<div>
+					<div><input type="button" :value="$t('shelling_order_rates')" @click="onclickShellOrder" :disabled="!ships.find(ship=>ship.canShell||ship.canOASW)" /></div>
+				</div>
+			</div>
 			<table>
 			<tr><td v-for="s in ships"><img :src="'assets/icons/' + s.imgName"/></td></tr>
 			<tr><td v-for="s in ships"><div v-show="s.shellPower!=null">{{$t('shell_power')}}: {{s.shellPower}}</div></td></tr>
@@ -1940,6 +1947,26 @@
 		</vmodal>
 	</div></div>
 	
+	<div id="divShellOrder"><div v-show="active">
+		<vmodal :active="active" @vclose="canClose&&doClose()">
+		<div id="divShellOrderMain">
+			<div class="tabButtons">
+				<div v-show="shell.ships.length" :class="{selected:tabSelected=='shell'}" @click="tabSelected='shell'">{{$t('shelling')}}</div>
+				<div v-show="oasw.ships.length" :class="{selected:tabSelected=='oasw'}" @click="tabSelected='oasw'">{{$t('oasw')}}</div>
+			</div>
+			<div v-for="key in ['shell','oasw']" v-show="tabSelected==key">
+				<table>
+				<tr><th></th><th></th><th></th><th v-for="n in this[key].ships.length">#{{n}}</th></tr>
+				<tr v-for="(ship,i) in this[key].ships"><th>{{i+1}}</th><td style="width:160px"><img :src="'assets/icons/' + ship.imgName"/></td><td style="width:40px"><img src="assets/stats/rn.png"/>{{ship.range}}</td><td style="width:80px" :style="{ background: 'rgba(0,117,255,'+rate/this[key].rateMax+')' }" v-for="(rate,i) in ship.posRates">{{rate}}</td></tr>
+				</table>
+				<div style="font-weight:bold;margin-top:20px">{{$t('full_order_rates')}}:</div>
+				<div class="orderList">
+					<div v-for="obj in this[key].orders">{{obj.order}}:&nbsp;&nbsp;&nbsp;&nbsp;{{obj.rate}}&nbsp;&nbsp;&nbsp;&nbsp;({{getFraction(obj.rate)}})</div>
+				</div>
+			</div>
+		</div>
+		</vmodal>
+	</div>
 	
 	<div id="divTimeStatsInfo"><div v-show="active">
 		<vmodal :active="active" @vclose="canClose&&(active=false)">
