@@ -10,7 +10,8 @@ var CONST = window.COMMON.getConst({
 	
 	urlDeckbuilder: 'http://www.kancolle-calc.net/deckbuilder.html?predeck=',
 	urlLBASSim: 'https://noro6.github.io/kc-web?predeck=',
-	urlJervis: 'https://jervis.vercel.app/?predeck=',
+	// urlJervis: 'https://jervis.vercel.app/?predeck=',
+	urlJervis: 'https://fleethub.madonoharu.workers.dev/?predeck=',
 	urlCompassSim: 'https://x-20a.github.io/compass/?predeck=',
 	urlKCNavEnemyComps: 'https://tsunkit.net/api/routing/maps/{maps}/edges/{edges}/enemycomps',
 	urlKCNavFriendFleets: 'https://tsunkit.net/api/routing/maps/{maps}/edges/{edges}/friendfleets',
