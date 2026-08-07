@@ -2,8 +2,8 @@
 	"change_log": [
 		{
 			"date": "2026-07-30",
-			"txt": "{link0} (thanks to {link1}), Shelling Order Rates viewer in Show Additional Stats, \"Shelling Range Tie Randomness Weights\" setting removed",
-			"links": [ { "txt": "Precise formula for shelling range ties", "url": "https://github.com/dube116/kancolle-shelling-order#%E8%89%A6%E3%81%93%E3%82%8C-%E7%A0%B2%E6%93%8A%E9%A0%86%E5%BA%8F%E6%A9%9F%E5%88%B6%E8%A7%A3%E6%9E%90" }, { "txt": "dube116", "url": "https://github.com/dube116?tab=repositories" } ]
+			"txt": "{link0}(thanks to {link1})。「艦隊詳細」に「砲撃順の確率」表示を追加。旧「砲撃戦において同射程の艦が複数存在するときの攻撃順の偏向」設定を削除",
+			"links": [ { "txt": "同射程艦が複数存在する場合の砲撃順の正確な計算式を実装", "url": "https://github.com/dube116/kancolle-shelling-order#%E8%89%A6%E3%81%93%E3%82%8C-%E7%A0%B2%E6%93%8A%E9%A0%86%E5%BA%8F%E6%A9%9F%E5%88%B6%E8%A7%A3%E6%9E%90" }, { "txt": "dube116", "url": "https://github.com/dube116?tab=repositories" } ]
 		},
 		{
 			"date": "2026-02-17",
@@ -538,7 +538,7 @@
 	"fleet_air_power_lbas": "基地制空",
 	"transport": "TP(S)",
 	"effective_los": "索敵値 (HQ120)",
-	"shelling_order_rates": "Shelling Order Rates",
+	"shelling_order_rates": "砲撃順の確率",
 	"shell_power": "砲戦火力",
 	"nb_power": "夜戦火力",
 	"asw_power": "対潜攻撃力",
@@ -749,7 +749,7 @@
 	"plane_bonus_note_2_lbas": "\u2022 航空隊ごとに計算され、航空隊内の各部隊に一律で適用されます",
 	
 	"oasw": "先制対潜",
-	"full_order_rates": "Full Order Rates",
+	"full_order_rates": "砲撃順の組み合わせごとの確率",
 	
 	"time_statistics_info_1": "{bold}時間の値および計算は現在開発途中（WIP）です。正確ではなく、今後更新される可能性があります。",
 	"time_statistics_info_1b": "暫定的な実装です。",
