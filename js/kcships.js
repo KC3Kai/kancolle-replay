@@ -37,7 +37,7 @@ Fleet.prototype.loadShips = function(ships) {
 				if (!ship) continue;
 				if (ship.type == 'DD' || ship.type == 'DE') {
 					ship.isAntiPT = true;
-					ships[i].ptAccFlat = 32;
+					ship.ptAccFlat = 32;
 				}
 			}
 		}

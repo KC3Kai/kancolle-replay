@@ -1098,7 +1098,7 @@ function shellPhaseTarget(ship,alive,subsalive,isOASW) {
 				result.alive = alive;
 			}
 		} else {
-			var targets;
+			var targets, targetsProtect = null;
 			if (ship.hasDivebomber && !ship.canShellInstallation()) {
 				targets = [];
 				for (var j=0; j<alive.length; j++) if (!alive[j].isInstall) targets.push(alive[j]);
@@ -1108,7 +1108,10 @@ function shellPhaseTarget(ship,alive,subsalive,isOASW) {
 			} else targets = alive;
 			if (ship.isAntiPT) {
 				let targetsPT = alive.filter(ship => ship.isPT);
-				if (targetsPT.length) targets = targetsPT;
+				if (targetsPT.length) {
+					targetsProtect = targets;
+					targets = targetsPT;
+				}
 			}
 			if (ship.isAntiInstall) {
 				let targetsT = alive.filter(ship => ship.isInstall);
@@ -1116,7 +1119,7 @@ function shellPhaseTarget(ship,alive,subsalive,isOASW) {
 			}
 			if (targets.length) {
 				result.type = 1;
-				result.target = choiceWProtect(targets);
+				result.target = choiceWProtect(targets,null,null,null,targetsProtect);
 				result.alive = alive;
 			}
 		}
@@ -2277,7 +2280,7 @@ function compareAP(fleet1,fleet2,eqtFilter1,includeEscort,eqtFilter2) {
 	if (C) simConsole.log('AS: '+ap1+' '+ap2+' '+fleet1.AS + ' '+fleet2.AS);
 }
 
-function choiceWProtect(targets,searchlightRerolls,includeEscort,ignoreVanguard) {
+function choiceWProtect(targets,searchlightRerolls,includeEscort,ignoreVanguard,targetsProtectOverride) {
 	DIDPROTECT = false; //disgusting hack, rework later?
 	targets = targets.filter(target => !target.isFaraway);
 	if (targets.length <= 0) return null;
@@ -2298,6 +2301,7 @@ function choiceWProtect(targets,searchlightRerolls,includeEscort,ignoreVanguard)
 	if (!rate) rate = .6;
 	if (Math.random() < rate) {
 		var defenders = [];
+		if (targetsProtectOverride) targets = targetsProtectOverride;
 		for (var i=0; i<targets.length; i++) {
 			if (targets[i] != target && targets[i].HP/targets[i].maxHP > .75 && (includeEscort || !targets[i].isescort) && !targets[i].isInstall) defenders.push(targets[i]);
 		}
