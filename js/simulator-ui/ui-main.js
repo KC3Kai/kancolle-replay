@@ -1178,7 +1178,24 @@ ${t('results.buckets')}:	${this.resultsBucketTPPer}`;
 		hasNB: function() {
 			return this.battle.nodeType == CONST.NODE_NORMAL || this.battle.nodeType == CONST.NODE_AIR;
 		},
+		isImpOnly: function() {
+			return this.battle.enemyComps.find(comp => comp.fleet.ships.find(ship => !FLEET_MODEL.shipIsEmpty(ship))) && !this.battle.enemyComps.find(comp => comp.fleet.ships.find(ship => !FLEET_MODEL.shipIsEmpty(ship) && !SHIPDATA[ship.mstId].isPT));
+		},
+		isSubstrike: function() {
+			return this.battle.enemyComps.find(comp => comp.fleet.ships.find(ship => ship.isFaraway));
+		},
 		battleClass: function() {
+			if (this.battle.nodeType==CONST.NODE_NORMAL) {
+				if (this.isSubstrike) {
+					return 'substrike';
+				}
+				if (this.isImpOnly) {
+					return 'imp';
+				}
+				if (this.battle.subOnly) {
+					return 'sub';
+				}
+			}
 			return {
 				normal: this.battle.nodeType==CONST.NODE_NORMAL,
 				night: this.battle.nodeType==CONST.NODE_NIGHT,

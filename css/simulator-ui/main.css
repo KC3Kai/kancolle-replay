@@ -57,6 +57,12 @@ div.bonusMarker.lbas {
 	color: green;
 	font-size: 14px;
 }
+.bonusMarker.imp {
+	color: #0054D3;
+}
+.bonusMarker.substrike {
+	color: #FF7979;
+}
 .bonusMarker.overridable {
 	opacity: .25;
 }
@@ -100,6 +106,15 @@ div.fleet div.iconForm img {
 }
 #divBattles div.battleWrap.air {
 	background-color: #C8F7C8;
+}
+#divBattles div.battleWrap.sub {
+	background-color: #E0E0E0;
+}
+#divBattles div.battleWrap.imp {
+	background-color: #D0D8F0;
+}
+#divBattles div.battleWrap.substrike {
+	background-color: #FFF0F0;
 }
 #divBattles div.deleteB {
 	float: right;

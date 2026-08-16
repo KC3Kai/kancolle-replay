@@ -433,6 +433,8 @@
 	"only_flag_not_sunk_tooltip": "If enemy combined fleet, does not do Night Battle if the enemy escort fleet would be fought AND Friend Fleet is not used.",
 	"offroute_before_battle": "Off-route before battle",
 	"resupply_cost": "Resupply Cost",
+	"imp_node_desc": "Imp Node\nFuel 4% Ammo 8%",
+	"substrike_node_desc": "Airstrike Supported Battle Node\nFuel 12% Ammo 6%",
 	"submarine_only": "Submarine Only",
 	"add_cost": "Add Cost (% of current supply before battle)",
 	"add_cost_max": "Max",

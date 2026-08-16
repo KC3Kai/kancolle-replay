@@ -433,6 +433,8 @@
 	"only_flag_not_sunk_tooltip": "敵連合艦隊第一艦隊との夜戦権が無い場合は夜戦を行わない(友軍艦隊を使用する場合を除く)",
 	"offroute_before_battle": "戦闘前帰還率",
 	"resupply_cost": "資源消費タイプ",
+	"imp_node_desc": "小鬼群マス\n燃料4% 弾薬8%",
+	"substrike_node_desc": "対潜空襲マス\n燃料12% 弾薬6%",
 	"submarine_only": "潜水艦のみ",
 	"add_cost": "追加コスト(戦闘開始前に現在の残り資源から)",
 	"add_cost_max": "上限値",
