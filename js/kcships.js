@@ -1800,7 +1800,7 @@ Ship.prototype.reset = function(notHP,notMorale) {
 	this.ammoleft = this.ammoDefault;
 	if (!notMorale) this.morale = this.moraleDefault;
 	if (this.repairsOrig) this.repairs = this.repairsOrig.slice();
-	if (this.side==0 && isPlayable(this.mid)) this.protection = true;
+	if (this.side==0 && isPlayable(this.mid)) this.protection = this.isflagship || this.HP/this.maxHP > .25;
 	if (this.retreated) this.retreated = false;
 	delete this._fuelUnderway;
 	delete this._ammoUnderway;
