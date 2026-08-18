@@ -688,7 +688,7 @@ function processAPI(root) {
 		
 		var nowhps = data.api_f_nowhps || data.api_nowhps.slice(1);
 		for (var i=0, j=0; i<fleet1.length; i++) {
-			if (fleet1[i].hpTrack <= 0) continue; //sunk ship not in api, known bug: does not handle shifted api IDs later (ship 5 sinks, ship 6 becomes 5), will not fix for now due to existing replays without all equipment included, and sinking is rare
+			if (root.source != 11 && fleet1[i].hpTrack <= 0) continue; //sunk ship not in api, known bug: does not handle shifted api IDs later (ship 5 sinks, ship 6 becomes 5), will not fix for now due to existing replays without all equipment included, and sinking is rare
 			fleet1[i].hpTrack = nowhps[j];
 			j++;
 		}
