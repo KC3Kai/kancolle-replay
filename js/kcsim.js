@@ -3677,12 +3677,8 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 			if (BAPI.data.api_injection_kouku) delete BAPI.data.api_injection_kouku.api_stage3_combined;
 		}
 	
-		for (var i=0; i<alive1.length; i++) {   //remove dead things
-			if (alive1[i].HP <= 0) { alive1.splice(i,1); i--; F1.clearFleetAntiAir(); }
-		}
-		for (var i=0; i<alive2.length; i++) {
-			if (alive2[i].HP <= 0) { alive2.splice(i,1); i--; F2.clearFleetAntiAir(); }
-		}
+		removeSunk(alive1);
+		removeSunk(alive2);
 	}
 	
 	//lbas
@@ -3734,12 +3730,8 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 			if (BAPI.api_kouku) delete BAPI.data.api_kouku.api_stage3_combined;
 		}
 		
-		for (var i=0; i<alive1.length; i++) {   //remove dead things
-			if (alive1[i].HP <= 0) { alive1.splice(i,1); i--; F1.clearFleetAntiAir(); }
-		}
-		for (var i=0; i<alive2.length; i++) {
-			if (alive2[i].HP <= 0) { alive2.splice(i,1); i--; F2.clearFleetAntiAir(); }
-		}
+		removeSunk(alive1);
+		removeSunk(alive2);
 	}
 	
 	//second airphase
@@ -3753,12 +3745,8 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 			delete BAPI.data.api_kouku.api_stage3_combined;
 		}
 		
-		for (var i=0; i<alive1.length; i++) {   //remove dead things
-			if (alive1[i].HP <= 0) { alive1.splice(i,1); i--; F1.clearFleetAntiAir(); }
-		}
-		for (var i=0; i<alive2.length; i++) {
-			if (alive2[i].HP <= 0) { alive2.splice(i,1); i--; F2.clearFleetAntiAir(); }
-		}
+		removeSunk(alive1);
+		removeSunk(alive2);
 	}
 	
 	//support phase
