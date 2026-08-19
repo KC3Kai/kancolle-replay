@@ -44,6 +44,7 @@ Fleet.prototype.loadShips = function(ships) {
 	}
 	this.ships[0].isflagship = true;
 	this.DMGTOTALS = this.ships.map(s => 0);
+	this.fleetAntiAir();
 }
 Fleet.prototype.fleetAirPower = function(eqtFilter) {  //get air power
 	this.AP = 0;
@@ -124,6 +125,7 @@ Fleet.prototype.supportChance = function(isboss) {
 	return c;
 }
 Fleet.prototype.reset = function(notShips) {
+	let hasSunkRetreat = this.side == 0 && this.ships.find(ship => ship.retreated || ship.HP <= 0);
 	if (!notShips) {
 		for (var i=0; i<this.ships.length; i++) this.ships[i].reset();
 	}
@@ -131,12 +133,19 @@ Fleet.prototype.reset = function(notShips) {
 	delete this.numSpecialKongou;
 	delete this.smokeUsed;
 	this.resetBattle();
+	if (hasSunkRetreat) {
+		this.clearFleetAntiAir();
+		this.fleetAntiAir();
+	}
 }
 Fleet.prototype.resetBattle = function() {
 	this.AS = 0;
 	LandBase.airStatePrev = 0;
 	delete LandBase.contactPrev;
-	this.clearFleetAntiAir();
+	if (this.side == 0 && this.ships.find(ship => ship.retreated || ship.HP <= 0)) {
+		this.clearFleetAntiAir();
+		this.fleetAntiAir();
+	}
 	this.clearFleetLoS();
 	this.DMGTOTALS.fill(0);
 	delete this.smokeType;
