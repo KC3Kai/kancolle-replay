@@ -29,7 +29,7 @@ var METHODS_COMMON = {
 		},
 		
 		addResult: function(id,name,imgName) {
-			let ind = name.toLowerCase().indexOf(this.searchName.toLowerCase()), len = ind >= 0 ? this.searchName.length : 0;
+			let ind = simplifyName(name).indexOf(simplifyName(this.searchName)), len = ind >= 0 ? this.searchName.length : 0;
 			this.searchResults.push({
 				id: id,
 				namePre: name.slice(0,ind),
@@ -52,7 +52,7 @@ var METHODS_COMMON = {
 					this.addResult(obj.id,obj.name,obj.imgName);
 				}
 			} else {
-				let searchNameL = this.searchName.toLowerCase();
+				let searchNameL = simplifyName(this.searchName);
 				let n = 0;
 				for (let obj of OBJ_LIST) {
 					if (obj.nameL.indexOf(searchNameL) != 0) continue;
@@ -258,7 +258,9 @@ var UI_EQUIPSELECTOR = Vue.createApp({
 }).component('vmodal',COMMON.CMP_MODAL).use(COMMON.i18n).mount('#divEquipSel');
 
 
-
+function simplifyName(name) {
+	return name.replaceAll('é','e').replaceAll('è','e').toLowerCase();
+}
 function init() {
 	//set up here and don't use i18n/$t because performance
 	SHIP_LIST_ORDER = { 'en': [], 'ja': [] };
@@ -267,13 +269,13 @@ function init() {
 		for (let id in SHIPDATA) {
 			if (!COMMON.isShipIdPlayable(id)) continue;
 			let name = SHIPDATA[id][keyName] || '';
-			SHIP_LIST_ORDER[lang].push({ id: id, name: name, nameL: name.toLowerCase() });
+			SHIP_LIST_ORDER[lang].push({ id: id, name: name, nameL: simplifyName(name) });
 		}
 		SHIP_LIST_ORDER[lang].sort((a,b) => a.name < b.name ? -1 : 1);
 		for (let id of Object.keys(SHIPDATA).sort((a,b) => +a-+b)) {
 			if (COMMON.isShipIdPlayable(id)) continue;
 			let name = SHIPDATA[id][keyName] || '';
-			SHIP_LIST_ORDER[lang].push({ id: id, name: name, nameL: name.toLowerCase() });
+			SHIP_LIST_ORDER[lang].push({ id: id, name: name, nameL: simplifyName(name) });
 		}
 	}
 	
@@ -404,7 +406,7 @@ function init() {
 		for (let id of Object.keys(EQDATA).sort((a,b)=>+a-+b)) {
 			if (id == 0) continue;
 			let name = EQDATA[id][keyName] || '';
-			EQUIP_LIST_ORDER[lang].push({ id: id, name: name, nameL: name.toLowerCase(), imgName: EQDATA[id].image || EQTDATA[EQDATA[id].type].image });
+			EQUIP_LIST_ORDER[lang].push({ id: id, name: name, nameL: simplifyName(name), imgName: EQDATA[id].image || EQTDATA[EQDATA[id].type].image });
 		}
 	}
 	
