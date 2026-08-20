@@ -6051,6 +6051,7 @@ var EQDATA = {
 		AR: 1,
 		ACC: 2,
 		RNG: 2,
+		CANBbonus: 15,
 	},
 	521: {
 		name: 'Shiun (Skilled)',
