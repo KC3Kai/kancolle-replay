@@ -328,6 +328,10 @@ window.CONVERT = {
 				}
 			}
 			
+			if (bdata.api_smoke_type) {
+				battleSave.useSmoke = true;
+			}
+			
 			let keyWorldMap = dataReplay.world + '-' + dataReplay.mapnum;
 			let letter = window.EDGES['World ' + keyWorldMap] && window.EDGES['World ' + keyWorldMap][battle.node] ? window.EDGES['World ' + keyWorldMap][battle.node][1] : null;
 			if (letter && COMMON.BARRAGE_BALLOON_NODES.includes(keyWorldMap + '-' + letter)) {

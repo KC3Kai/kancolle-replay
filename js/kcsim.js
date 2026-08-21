@@ -2009,7 +2009,8 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase,isRaid) {
 	if (C) simConsole.log('		'+slot+' '+planebase);
 	if (res) {
 		if (MECHANICS.eqBonusTorp && !issupport && !isjetphase) {
-			planebase += ship.getEquipBonusCVTorp(slot);
+			let eqBonusCV = ship.getEquipBonusCVTorp(slot);
+			planebase += eqBonusCV.TPPlane + (equip.type == TORPBOMBER ? eqBonusCV.TPCrew : eqBonusCV.DBCrew);
 		}
 		var base = (issupport)? 3 : 25;
 		if (target.fleet.combinedWith && !issupport) {
