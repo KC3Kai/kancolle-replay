@@ -1292,8 +1292,8 @@ Ship.prototype.updateProficiencyBonus = function() {
 	}
 }
 Ship.prototype.getEquipBonusCVTorp = function(slot) {
-	if (slot >= this.equips.length || (!this.equips[slot].istorpbomber && !this.equips[slot].isdivebomber)) return 0;
-	let bonusTotal = 0;
+	if (slot !== undefined && (slot >= this.equips.length || (!this.equips[slot].istorpbomber && !this.equips[slot].isdivebomber))) return 0;
+	let bonusTotal = { TPPlane: 0, TPCrew: 0, DBCrew: 0 };
 	let statMax = 0, carryMax = 0, slotMax = -1, equipToBonus = {};
 	for (let i=0; i<this.equips.length; i++) {
 		let eq = this.equips[i];
@@ -1310,14 +1310,14 @@ Ship.prototype.getEquipBonusCVTorp = function(slot) {
 			slotMax = i;
 		}
 	}
-	if (slotMax == slot) {
+	if (slot === undefined || slotMax == slot) {
 		if (equipToBonus[522] != undefined || equipToBonus[523] != undefined) {
-			bonusTotal += (equipToBonus[522] || 0) + (equipToBonus[523] || 0);
+			bonusTotal.TPPlane += (equipToBonus[522] || 0) + (equipToBonus[523] || 0);
 		} else {
 			let eqList = [238,239,521,118,369,368, 372,373,374,425,424].concat(Object.keys(equipToBonus).filter(a => equipToBonus[a]).sort((a,b) => +b-+a).map(a => +a));
 			for (let id of eqList) {
 				if (equipToBonus[id] != undefined) {
-					bonusTotal += equipToBonus[id] || 0;
+					bonusTotal.TPPlane += equipToBonus[id] || 0;
 					break;
 				}
 			}
@@ -1330,8 +1330,8 @@ Ship.prototype.getEquipBonusCVTorp = function(slot) {
 		if (eq.statsEqBonus.TP && (!bonusCrewTPMin || bonusCrewTPMin > eq.statsEqBonus.TP)) bonusCrewTPMin = eq.statsEqBonus.TP;
 		if (eq.statsEqBonus.DIVEBOMB && (!bonusCrewDBMin || bonusCrewDBMin > eq.statsEqBonus.DIVEBOMB)) bonusCrewDBMin = eq.statsEqBonus.DIVEBOMB;
 	}
-	if (this.equips[slot].type == TORPBOMBER) bonusTotal += bonusCrewTPMin || 0;
-	else bonusTotal += bonusCrewDBMin || 0;
+	bonusTotal.TPCrew += bonusCrewTPMin;
+	bonusTotal.DBCrew += bonusCrewDBMin;
 	return bonusTotal;
 }
 Ship.prototype.getFormation = function() {
@@ -1978,8 +1978,9 @@ CV.prototype.shellPower = function(target,base) {
 		if(this.equips[i].TP) tp += this.equips[i].TP;
 	}
 	if (MECHANICS.eqBonusTorp) {
-		tp += this.statsEqBonus.TP || 0;
-		dp += this.statsEqBonus.DIVEBOMB || 0;
+		let eqBonusCV = this.getEquipBonusCVTorp();
+		tp += eqBonusCV.TPPlane + eqBonusCV.TPCrew;
+		dp += eqBonusCV.DBCrew;
 	}
 	var bonus = (base||0) + 5;
 	if (target && target.isInstall) tp = 0;
@@ -2010,6 +2011,10 @@ CV.prototype.shellPower = function(target,base) {
 CV.prototype.NBPower = function(target) {
 	if (this.canNBAirAttack()) {
 		let power = this.statsBase.FP;
+		if (MECHANICS.eqBonusTorp && !(target && target.isInstall)) {
+			let eqBonusCV = this.getEquipBonusCVTorp();
+			power += eqBonusCV.TPPlane + eqBonusCV.TPCrew; //https://bbs.nga.cn/read.php?tid=27928741
+		}
 		if (this.hasNBAirGear()) {
 			for (let i=0; i<this.equips.length; i++) {
 				let equip = this.equips[i];
