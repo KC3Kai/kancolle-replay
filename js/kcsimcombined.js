@@ -777,6 +777,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 			var jetLBAS = LandBase.createJetLandBase(uniqueLBs);
 			if (jetLBAS.ships.length) {
 				compareAP(jetLBAS,F2,'isjet',true);
+				F2C.AS = F2.AS;
 				airPhase(jetLBAS.ships,[],alive2.concat(alive2C),subsalive2.concat(subsalive2C),(C)?BAPI.data.api_air_base_injection:undefined,2);
 				removeSunk(alive2); removeSunk(alive2C);
 				removeSunk(subsalive2); removeSunk(subsalive2C);
@@ -800,6 +801,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	if (!NBonly && !bombing && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
 		if (C) BAPI.data.api_injection_kouku = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null,api_stage3_combined:null};
 		compareAP(F1,F2,'isjet',true);
+		F2C.AS = F2.AS;
 		airPhase(alive1,subsalive1,alive2.concat(alive2C),subsalive2.concat(subsalive2C),(C)? BAPI.data.api_injection_kouku:undefined,1,false,true);
 		if (C) {
 			if (!BAPI.data.api_injection_kouku.api_stage1) BAPI.data.api_injection_kouku = null;
@@ -819,6 +821,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 			if (alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
 				LBASwaves[i].planecount = LBASwaves[i]._currentSlots.slice();
 				compareAP(LBASwaves[i],F2,'isPlane',true);
+				F2C.AS = F2.AS;
 				var LBAPI = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null};
 				LBASPhase(LBASwaves[i],alive2.concat(alive2C),subsalive2.concat(subsalive2C),false,(C)?LBAPI:undefined);
 				removeSunk(alive2); removeSunk(alive2C);
@@ -1192,6 +1195,8 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 			var jetLBAS = LandBase.createJetLandBase(uniqueLBs);
 			if (jetLBAS.ships.length) {
 				compareAP(jetLBAS,F2,'isjet',true);
+				F1C.AS = F1.AS;
+				F2C.AS = F2.AS;
 				airPhase(jetLBAS.ships,[],alive2.concat(alive2C),subsalive2.concat(subsalive2C),(C)?BAPI.data.api_air_base_injection:undefined,2);
 				removeSunk(alive2); removeSunk(alive2C);
 				removeSunk(subsalive2); removeSunk(subsalive2C);
@@ -1215,6 +1220,8 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	if (!NBonly && !bombing && alive1.length+subsalive1.length+alive2C.length+subsalive1C.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
 		if (C) BAPI.data.api_injection_kouku = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null,api_stage3_combined:null};
 		compareAP(F1,F2,'isjet',true);
+		F1C.AS = F1.AS;
+		F2C.AS = F2.AS;
 		airPhase(alive1.concat(alive1C),subsalive1.concat(subsalive1C),alive2.concat(alive2C),subsalive2.concat(subsalive2C),(C)? BAPI.data.api_injection_kouku:undefined,1,false,true);
 		if (C) {
 			if (!BAPI.data.api_injection_kouku.api_stage1) BAPI.data.api_injection_kouku = null;
@@ -1233,6 +1240,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 			if (alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
 				LBASwaves[i].planecount = LBASwaves[i]._currentSlots.slice();
 				compareAP(LBASwaves[i],F2,'isPlane',true);
+				F2C.AS = F2.AS;
 				var LBAPI = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null};
 				LBASPhase(LBASwaves[i],alive2.concat(alive2C),subsalive2.concat(subsalive2C),false,(C)?LBAPI:undefined);
 				removeSunk(alive2); removeSunk(alive2C);
@@ -1284,6 +1292,8 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	//second airphase
 	if (!NBonly && aironly && !bombing && alive1.length+subsalive1.length+alive2C.length+subsalive1C.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
 		compareAP(F1,F2,null,true);
+		F1C.AS = F1.AS;
+		F2C.AS = F2.AS;
 		if (C) BAPI.data.api_kouku2 = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null};
 		airPhase(alive1.concat(alive1C),subsalive1.concat(subsalive1C),alive2.concat(alive2C),subsalive2.concat(subsalive2C),(C)? BAPI.data.api_kouku2:undefined,0,false,true);
 		if (C) {
