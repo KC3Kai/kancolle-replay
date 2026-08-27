@@ -695,6 +695,11 @@ var SIM = {
 			if (!node.noAmmo && fleetsSimE.every(fleetSim => !fleetSim.combinedWith && fleetSim.ships.every(ship => (ship.type == 'SS' || ship.type == 'SSV') && !ship.isFaraway))) {
 				this._addWarning('warn_no_subonly',[i+1]);
 			}
+			if (fleetsSimE.every(fleetSim => fleetSim.ships.every(ship => ship.isPT))) {
+				for (let fleetSim of fleetsSimE) {
+					fleetSim.isImpOnly = true;
+				}
+			}
 		}
 		
 		window.DORETREAT = !dataInput.continueOnTaiha;
@@ -981,6 +986,8 @@ var SIM = {
 			
 			fleetF.forceEngagement = node.forceEngagement || null;
 			
+			fleetF.isNoSpecialNode = fleetE.isImpOnly;
+			
 			let result;
 			let apiBattle = null;
 			if (dataReplay) {
@@ -1010,6 +1017,8 @@ var SIM = {
 				}
 			}
 			this.simResultPrev = { battleNum: battleInd+1, result: result };
+			
+			fleetF.isNoSpecialNode = null;
 			
 			if (isBossNode) {
 				if (includeResults) {

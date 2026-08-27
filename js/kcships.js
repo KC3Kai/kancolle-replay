@@ -149,6 +149,8 @@ Fleet.prototype.resetBattle = function() {
 	this.clearFleetLoS();
 	this.DMGTOTALS.fill(0);
 	delete this.smokeType;
+	delete this.basepowshell;
+	delete this.baseaccshell;
 	for (let ship of this.ships) ship.dameconUsed = 0;
 }
 Fleet.prototype.giveCredit = function(ship,damage) {
