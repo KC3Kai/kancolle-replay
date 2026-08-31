@@ -465,7 +465,7 @@ function shell(ship,target,APIhou,attackSpecial,combinedAll) {
 			}
 		}
 		if (cutin == 7) { //special CVCI crit bonus
-			let planes = ship.equips.filter(eq => (eq.isdivebomber||eq.istorpbomber) && (eq.DIVEBOMB || eq.TP));
+			let planes = ship.equips.filter(eq => eq.hasAttackProficiency);
 			let avgExp = planes.reduce((a,eq) => a + (eq.exp||0)*([ASWPLANE,AUTOGYRO].includes(eq.type) ? .825 : 1),0)/planes.length;
 			critRateBonus = .13*avgExp/120 - ship.critratebonus*.01;
 			if (ship.equips[0]) {
@@ -2537,7 +2537,7 @@ function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupp
 		bombers.push([]);
 		for (var j=0; j<ship.equips.length; j++) {
 			var e = ship.equips[j];
-			if ((e.istorpbomber || e.isdivebomber) && ship.planecount[j]>0 && (!isjetphase||e.isjet) && !e.isLB && (e.DIVEBOMB || e.TP) && (e.is20th || (e.type != ASWPLANE && e.type != AUTOGYRO))) {
+			if ((e.isBomberS2 || (MECHANICS.aswPlaneAir && e.is20th)) && ship.planecount[j] > 0 && (!isjetphase || e.isjet)) {
 				bombers[i].push(j);
 				hasbomber = true;
 				var side = (ship.side == 2 || ship.side == 3)? 0 : ship.side;

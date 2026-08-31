@@ -196,7 +196,7 @@ Fleet.prototype.getSupportType = function() {
 		if (['CA','CAV'].includes(ship.type)) numCA++;
 		if (['DD','CL','CLT'].includes(ship.type)) numTorpedo++;
 		if (!hasBomber && ['CVL','CV','CVB','AV','LHA','BBV','CAV','AO'].includes(ship.type)) {
-			if (ship.equips.find(eq => (eq.isdivebomber || eq.istorpbomber) && !eq.isLB && (eq.DIVEBOMB || eq.TP))) hasBomber = true;
+			if (ship.equips.find(eq => eq.isBomberS2)) hasBomber = true;
 		}
 		if (ship.type == 'CVL') numCVL++;
 		if (ship.type == 'DE') numDE++;
@@ -1258,7 +1258,7 @@ Ship.prototype.updateProficiencyBonus = function() {
 			if (!this.APbonus) this.APbonus = 0;
 			this.APbonus += eq.APbonus;
 		}
-		if ((eq.isdivebomber||eq.istorpbomber) && (eq.DIVEBOMB || eq.TP)) {
+		if (eq.hasAttackProficiency) {
 			if (eq.exp > 0) {
 				if (!this.critratebonus) this.critratebonus = 0;
 				if (!this.critdmgbonus) this.critdmgbonus = 1;
@@ -2012,7 +2012,7 @@ CV.prototype.shellPower = function(target,base) {
 }
 CV.prototype.NBPower = function(target) {
 	if (this.canNBAirAttack()) {
-		let power = this.statsBase.FP;
+		let power = this.statsBase.FP + this.statsBase.TP;
 		if (MECHANICS.eqBonusTorp && !(target && target.isInstall)) {
 			let eqBonusCV = this.getEquipBonusCVTorp();
 			power += eqBonusCV.TPPlane + eqBonusCV.TPCrew; //https://bbs.nga.cn/read.php?tid=27928741
@@ -2352,6 +2352,8 @@ function Equip(equipid,level,rank,forLBAS) {
 	if (EQTDATA[eq.type].canContact) this.canContact = true;
 	if (EQTDATA[eq.type].canDetect) this.canDetect = true;
 	if (EQTDATA[eq.type].canSupportASW && eq.ASW) this.canSupportASW = true;
+	if (EQTDATA[eq.type].isBomberS2) this.isBomberS2 = true;
+	if (EQTDATA[eq.type].hasAttackProficiency || (MECHANICS.aswPlaneAir && [AUTOGYRO,ASWPLANE].includes(this.type) && this.DIVEBOMB > 0)) this.hasAttackProficiency = true;
 	
 	if (eq.btype == null && EQTDATA[eq.type].btype) {
 		this.btype = EQTDATA[eq.type].btype;
