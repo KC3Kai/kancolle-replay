@@ -2537,7 +2537,7 @@ function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupp
 		bombers.push([]);
 		for (var j=0; j<ship.equips.length; j++) {
 			var e = ship.equips[j];
-			if ((e.isBomberS2 || (MECHANICS.aswPlaneAir && e.is20th)) && ship.planecount[j] > 0 && (!isjetphase || e.isjet)) {
+			if ((e.isBomberS2 || (MECHANICS.aswPlaneAir && !issupport && e.is20th)) && ship.planecount[j] > 0 && (!isjetphase || e.isjet)) {
 				bombers[i].push(j);
 				hasbomber = true;
 				var side = (ship.side == 2 || ship.side == 3)? 0 : ship.side;
