@@ -6742,7 +6742,7 @@ var EQDATA = {
 		RNG: 1,
 	},
 	585: {
-		name: 'PL101 (Reconnaissance)',
+		name: 'PL 101 (Reconnaissance)',
 		nameJP: 'PL101(偵察)',
 		added: '2026-07-18',
 		type: CARRIERSCOUT,
@@ -6752,14 +6752,15 @@ var EQDATA = {
 		LOS: 3,
 	},
 	586: {
-		name: 'PL101 (Bombing)',
+		name: 'PL 101 (Bomb-carrying)',
 		nameJP: 'PL101(爆装)',
 		added: '2026-07-18',
 		type: DIVEBOMBER,
+		DIVEBOMB: 1,
 		ACC: 1,
 		EV: 1,
 		ASW: 3,
-		LOS: 3,
+		LOS: 2,
 	},
 	587: {
 		name: 'V-156F (SB2U Export Model)',
