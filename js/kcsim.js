@@ -4858,6 +4858,10 @@ function friendFleetPhase(fleet1,fleet2,alive2,subsalive2,BAPI) {
 			for (let ship of fleet1.ships) {
 				ship.getFormation = () => ship.num <= 2 ? VANGUARD1 : VANGUARD2;
 			}
+		} else {
+			for (let ship of fleet1.ships) {
+				delete ship.getFormation;
+			}
 		}
 	}
 	
@@ -4888,7 +4892,7 @@ function friendFleetPhase(fleet1,fleet2,alive2,subsalive2,BAPI) {
 					let k=0;
 					for (; k<ships.length; k++) {
 						if (alive2.length <= 0) break;
-						var target = nightPhaseTargetFF(attacker,alive2,subsalive2,nightEquips);
+						var target = nightPhaseTargetFF(attacker,alive2,[],nightEquips);
 						if (target) {
 							if (attacker.attackSpecial == 200) { nightEquips[0][0] = true; nightEquipsE[0][1] = true; }
 							if (NBattack(ships[k],target,false,nightEquips,APIhou,attacker.attackSpecial)) alive2.splice(alive2.indexOf(target),1);

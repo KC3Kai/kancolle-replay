@@ -259,7 +259,7 @@ var UI_EQUIPSELECTOR = Vue.createApp({
 
 
 function simplifyName(name) {
-	return name.replaceAll('é','e').replaceAll('è','e').toLowerCase();
+	return name.replaceAll('é','e').replaceAll('è','e').replaceAll('ä','a').toLowerCase();
 }
 function init() {
 	//set up here and don't use i18n/$t because performance

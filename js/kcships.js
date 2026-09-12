@@ -422,6 +422,9 @@ function Ship(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	if (this.installtype) {
 		this.isInstall = true;
 	}
+	if (this.ASWbase && this.ASWbase >= 50 && ![554].includes(+this.mid)) {
+		this.alwaysOASW = true;
+	}
 }
 Ship.prototype.loadEquips = function(equips,levels,profs,addstats,isSupport) {
 	if (!equips || this.equips.length > 0) return;  //don't load if already have equips, do removeEquips() first
@@ -1409,7 +1412,7 @@ Ship.prototype.NBtypes = function() {
 	var torps = (this.equiptypesB[B_TORPEDO])? this.equiptypesB[B_TORPEDO] : 0;
 	let numSurfaceRadar = this.equips.filter(eq => eq.btype == B_RADAR && eq.LOS >= 5).length;
 	
-	if (mguns >= 2 && ['CL','CAV','BBV','AV'].includes(this.type)) {
+	if (mguns >= 2 && ['CL','CLT','CAV','BBV','AV'].includes(this.type)) {
 		let hasSameGuns = true;//this.equiptypes[MAINGUNS] >= 2 || this.equiptypes[MAINGUNM] >= 2 || this.equiptypes[MAINGUNL] >= 2;
 		let numZuiun = this.equips.filter((eq,i) => eq.mid == 490 && this.planecount[i]).length;
 		if (numZuiun >= 2 && numSurfaceRadar) this._nbtypes.push(2001);
@@ -1660,7 +1663,7 @@ Ship.prototype.getAACItype = function(atypes) {
 	if ([330,346,357,537,538,963,968,1040].includes(this.mid)) {
 		if (this.equips.filter(eq => eq.mid == 533).length >= 2 && this.equips.find(eq => eq.btype == B_RADAR && eq.AA >= 4)) types.push(48);
 	}
-	if ([745,981,982,983,986,987,1033,1034].includes(this.mid) || (SIMCONSTS.aaci49Fubuki && [426,1035,1040].includes(this.mid))) {
+	if ([745,981,982,983,986,987,1033,1034,1071].includes(this.mid) || (SIMCONSTS.aaci49Fubuki && [426,1035,1040].includes(this.mid))) {
 		if (atypes[A_HAFD] >= 2 && this.equips.find(eq => eq.btype == B_RADAR && eq.AA >= 4)) types.push(49);
 	}
 	if (this.sclass == 54 || [745,981,982,983,986,987,1033,1034].includes(this.mid) || (SIMCONSTS.aaci49Fubuki && [426,1035,1040].includes(this.mid))) {
@@ -1675,7 +1678,7 @@ Ship.prototype.getAACItype = function(atypes) {
 		}
 		if (this.equips.filter(eq => eq.mid == 553).length >= 2 && hasAAFD) types.push(52);
 	}
-	if ([1031].includes(this.mid) && this.equips.find(eq => eq.atype == A_HAFD && eq.AA >= 9) && this.equips.find(eq => eq.btype == B_RADAR && eq.AA >= 4)) {
+	if ([1031,1071].includes(this.mid) && this.equips.find(eq => eq.atype == A_HAFD && eq.AA >= 9) && this.equips.find(eq => eq.btype == B_RADAR && eq.AA >= 4)) {
 		types.push(53);
 	}
 	if (this.mid == 1040) {
@@ -1691,13 +1694,13 @@ Ship.prototype.getAACItype = function(atypes) {
 		if (atypes[A_HAGUN] && this.equiptypesB[B_RADAR]) types.push(2);
 		if (atypes[A_HAGUN] >= 2) types.push(3);
 	}
-	if ([428,1031].includes(this.mid) && concentrated && (atypes[A_HAGUN]||atypes[A_HAFD])) {   //428 = Maya Kai Ni
+	if ([428,1031,1071].includes(this.mid) && concentrated && (atypes[A_HAGUN]||atypes[A_HAFD])) {   //428 = Maya Kai Ni
 		if (atypes[A_AIRRADAR]) types.push(10);
-		types.push(11);
+		if ([428,1031].includes(this.mid)) types.push(11);
 	}
-	if (this.mid == 141 && atypes[A_HAGUN] && atypes[A_AAGUN]) { //Isuzu Kai Ni
+	if ([141,1071].includes(this.mid) && atypes[A_HAGUN] && atypes[A_AAGUN]) { //Isuzu Kai Ni
 		if (atypes[A_AIRRADAR]) types.push(14);
-		types.push(15);
+		if ([141].includes(this.mid)) types.push(15);
 	}
 	if ((this.mid == 470 || this.mid == 622) && atypes[A_HAGUN] && atypes[A_AAGUN] && atypes[A_AIRRADAR]) { //Kasumi Kai 2 B, Yuubari Kai Ni
 		types.push(16);
@@ -1706,7 +1709,7 @@ Ship.prototype.getAACItype = function(atypes) {
 		types.push(17);
 	}
 	if (this.mid == 487 && concentrated && atypes[A_HAGUN] > (atypes[A_HAFD] || 0)) types.push(19); //Kinu Kai Ni (1)
-	if (this.mid == 488 && atypes[A_HAGUN] && atypes[A_AIRRADAR]) types.push(21); //Yura Kai Ni
+	if ([488,1071].includes(this.mid) && atypes[A_HAGUN] && atypes[A_AIRRADAR]) types.push(21); //Yura Kai Ni
 	if ([82,88,553,554].indexOf(this.mid) != -1 && hasID[274] && atypes[A_AIRRADAR] && atypes[A_TYPE3SHELL]) types.push(25); //Ise-class Kai
 
 	if (this.sclass == 91) { //Fletcher-class
