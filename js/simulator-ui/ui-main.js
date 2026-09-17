@@ -2523,7 +2523,7 @@ var UI_OTHER = Vue.createApp({
 
 
 
-document.body.onunload = function() {
+document.body.onbeforeunload = function() {
 	if (UI_MAIN.canSave) {
 		localStorage.sim2 = JSON.stringify(CONVERT.uiToSave(UI_MAIN));
 	}
