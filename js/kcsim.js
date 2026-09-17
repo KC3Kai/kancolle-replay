@@ -265,6 +265,7 @@ var SIMCONSTS = {
 	aaciRatesOld: { 2: .58, 5: .55, 34: .6, 35: .55, 36: .55, 37: .4, 38: .62 },
 	aaciRatesNew: { 2: .55, 5: .5, 34: .55, 35: .54, 36: .53, 37: .44, 38: .58 },
 	aaci49Fubuki: true,
+	aaci2HAFD: true,
 	aaci27Old: {num:5,rate:.55,mod:1.55,equip:'BGR',num1:1},
 	aaci45Old: {num:5,rate:.5,mod:1.55,equip:'HR',num1:1},
 	aaci49Old: {num:5,rate:.5,mod:1.5,equip:'HHR',num1:1},

@@ -21335,6 +21335,7 @@ var SHIPDATA = {
 		type: 'CVL', sclass: 116,
 		nid: 626,
 		added: '2026-07-08',
+		hasBuiltInNightCrew: true,
 		HP: 46, HPmax: 71,
 		FP: 50, FPbase: 32,
 		TP: 0, TPbase: 0,

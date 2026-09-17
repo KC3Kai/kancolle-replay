@@ -1681,17 +1681,25 @@ Ship.prototype.getAACItype = function(atypes) {
 	if ([1031,1071].includes(this.mid) && this.equips.find(eq => eq.atype == A_HAFD && eq.AA >= 9) && this.equips.find(eq => eq.btype == B_RADAR && eq.AA >= 4)) {
 		types.push(53);
 	}
-	if (this.mid == 1040) {
-		if (atypes[A_HAGUN] && this.equiptypesB[B_RADAR]) types.push(2);
+	if (this.mid == 1035) {
 		if (atypes[A_HAGUN] && atypes[A_AAGUN]) types.push(15);
 		if (atypes[A_HAGUN] && atypes[A_AAGUN] && atypes[A_AIRRADAR]) types.push(16);
 		if (atypes[A_HAGUN] && atypes[A_AIRRADAR]) types.push(21);
+		if (atypes[A_HAGUN] && atypes[A_AAGUN] > concentrated) types.push(24);
+	}
+	if (this.mid == 1040) {
+		if (atypes[A_HAFD] && this.equiptypesB[B_RADAR]) types.push(2);
+		if (atypes[A_HAGUN] && atypes[A_AIRRADAR]) types.push(21);
+		let num5Mk30 = (hasID[313] || 0) + (hasID[284] || 0);
 		if (hasID[308] >= 2) types.push(34);
+		if (num5Mk30 >= 1 && hasID[308] >= 1) types.push(35);
+		if (num5Mk30 >= 2 && hasID[307]) types.push(36);
 	}
 	
 	if (this.sclass == 54) {  //Akizuki-class
 		if (atypes[A_HAGUN] >= 2 && this.equiptypesB[B_RADAR]) types.push(1);
-		if (atypes[A_HAGUN] && this.equiptypesB[B_RADAR]) types.push(2);
+		if (!SIMCONSTS.aaci2HAFD && atypes[A_HAGUN] && this.equiptypesB[B_RADAR]) types.push(2);
+		if (SIMCONSTS.aaci2HAFD && atypes[A_HAFD] && this.equiptypesB[B_RADAR]) types.push(2);
 		if (atypes[A_HAGUN] >= 2) types.push(3);
 	}
 	if ([428,1031,1071].includes(this.mid) && concentrated && (atypes[A_HAGUN]||atypes[A_HAFD])) {   //428 = Maya Kai Ni
@@ -2455,13 +2463,14 @@ Equip.prototype.setImprovement = function(level) {
 		this.improves.AAself = mod*Math.sqrt(level);
 	}
 	
-	if ([12,234,247,463,467].includes(this.mid)) {
-		this.improves.Pshell = .3*level;
-		this.improves.Pnb = .3*level;
-	}
-	if ([10,66,71,220,275,358,464,524].includes(this.mid)) {
-		this.improves.Pshell = .2*level;
-		this.improves.Pnb = .2*level;
+	if (this.type == SECGUN) {
+		if ([12,234,247,463,467].includes(this.mid)) {
+			this.improves.Pshell = .3*level;
+			this.improves.Pnb = .3*level;
+		} else if (![11,77,130,134,135].includes(this.mid)) { //prev: [10,66,71,220,275,358,464,524]
+			this.improves.Pshell = .2*level;
+			this.improves.Pnb = .2*level;
+		}
 	}
 	if (this.type == TORPEDOSS) {
 		this.improves.Ptorp = .2*level;
@@ -2484,6 +2493,9 @@ Equip.prototype.setImprovement = function(level) {
 	
 	if (this.type == FLYINGBOAT && level >= 4) {
 		this.AAImprove = .5;
+	}
+	if ([486,487].includes(this.mid)) {
+		this.AAImprove = .3*level;
 	}
 }
 Equip.prototype.setProficiency = function(rank,forLBAS) {
