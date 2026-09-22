@@ -174,10 +174,10 @@ var COMMON = {
 		for (let i = 0; i < len; i++) {
 			binary += String.fromCharCode(bytes[i]);
 		}
-		return window.btoa(binary);
+		return self.btoa(binary);
 	},
 	base64ToArrayBuffer: function(base64) {
-		let binary_string = window.atob(base64);
+		let binary_string = self.atob(base64);
 		let len = binary_string.length;
 		let bytes = new Uint8Array(len);
 		for (let i = 0; i < len; i++) {

@@ -848,6 +848,7 @@ window.CONVERT = {
 		for (let i=0; i<dataUI.battles.length; i++) nodeIdToNum[dataUI.battles[i].id] = i+1;
 		let dataInput = {
 			numSims: dataUI.numSim,
+			numSimThread: dataUI.useSimThread ? dataUI.numSimThread : null,
 			fleetF: this.uiToSimInputFleet(dataUI.fleetFMain,nodeIdToNum),
 			fleetSupportN: dataUI.useSupportN ? this.uiToSimInputFleet(dataUI.fleetFSupportN) : null,
 			fleetSupportB: dataUI.useSupportB ? this.uiToSimInputFleet(dataUI.fleetFSupportB) : null,
@@ -1066,6 +1067,15 @@ window.CONVERT = {
 		
 		return dataSave;
 	},
+	uiToSaveGlobal: function(dataUI) {
+		let dataSave = {
+			version: this._SAVE_VERSION_CURRENT,
+			numSim: dataUI.numSim,
+			numSimThread: dataUI.numSimThread,
+			useSimThread: dataUI.useSimThread,
+		};
+		return dataSave;
+	},
 	
 	_loadSaveShips: function(shipsSave,shipsUI,version) {
 		for (let i=0; i<shipsSave.length; i++) {
@@ -1210,6 +1220,11 @@ window.CONVERT = {
 		if (dataSave.includeTimeStats && dataSave.includeTimeStats == COMMON.TIME_BATTLE.VER) {
 			dataUI.includeTimeStats = true;
 		}
+	},
+	loadSaveGlobal: function(dataSave,dataUI) {
+		dataUI.numSim = dataSave.numSim;
+		dataUI.numSimThread = dataSave.numSimThread;
+		dataUI.useSimThread = dataSave.useSimThread;
 	},
 };
 

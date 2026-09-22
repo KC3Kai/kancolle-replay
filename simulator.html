@@ -500,12 +500,18 @@
 		</div>
 		<div id="divSimStats">
 			<i18n-t keypath="simulate_n_times_and_show_stats" scope="global"><template v-slot:inp_num><input type="number" min="1" :max="numSimMax" v-model="numSim" /></template></i18n-t>:
+			<div style="margin-left:26px">
+				<div><label><input type="checkbox" v-model="includeTimeStats" @click="onclickTimeStats"/>{{$t('include_time_statistics')}}</label> <a href="#" @click.prevent="onclickTimeStatsInfo" style="font-weight:bold">(?)</a></div>
+				<div>
+					<div><label><input type="checkbox" v-model="useSimThread"/>{{$t('use_multithreading')}} <span :title="$t('use_multithreading_desc1')" style="font-weight:bold;text-decoration:underline;cursor:help">(?)</span></label>: <label><i18n-t keypath="n_threads" scope="global">
+						<template v-slot:inp_num><input type="number" v-model.number="numSimThread" min="1" :max="numSimThreadMax" :disabled="!useSimThread" @change="onchangeNumSimThread"/></template>
+					</i18n-t></label></div>
+					<div v-show="useSimThread"><span style="color:red">{{$t('use_multithreading_desc1')}} {{$t('use_multithreading_desc2',[numSimThreadMax])}}</span></div>
+				</div>
+			</div>
 			<div id="divSimStatsButtons">
 				<input type="button" :value="'&#9654; ' + $t('go')" :disabled="!canSim" @click="onclickGo"/>
 				<input type="button" :value="$t('clear')" v-show="results.active&&canSim" @click="onclickClear"/>
-			</div>
-			<div style="margin-top:10px">
-				<label><input type="checkbox" v-model="includeTimeStats" @click="onclickTimeStats"/>{{$t('include_time_statistics')}}</label> <a href="#" @click.prevent="onclickTimeStatsInfo" style="font-weight:bold">(?)</a>
 			</div>
 		</div>
 		<div id="divResultsOuter">

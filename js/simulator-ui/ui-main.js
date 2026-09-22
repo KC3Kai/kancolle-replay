@@ -169,6 +169,8 @@ var UI_MAIN = Vue.createApp({
 		watchFound: false,
 		isRunningWatch: false,
 		numSim: CONST.numSimDefault,
+		numSimThread: 2,
+		useSimThread: false,
 		includeTimeStats: false,
 		showProgress: false,
 		simProgressNum: 0,
@@ -246,6 +248,12 @@ var UI_MAIN = Vue.createApp({
 		this.addNewBattle();
 		
 		COMMON.BONUS_MANAGER.init(this);
+		
+		try {
+			if (localStorage.sim2_g) CONVERT.loadSaveGlobal(JSON.parse(localStorage.sim2_g),this);
+		} catch(e) {
+			console.error(e);
+		}
 		
 		initEQDATA(() => {
 			document.body.style = '';
@@ -408,6 +416,9 @@ var UI_MAIN = Vue.createApp({
 		
 		numSimMax: function() {
 			return CONST.numSimMax;
+		},
+		numSimThreadMax: function() {
+			return navigator.hardwareConcurrency;
 		},
 		simProgressPercent: function() {
 			return Math.round(100*this.simProgressNum/this.simProgressTotal);
@@ -746,6 +757,11 @@ var UI_MAIN = Vue.createApp({
 		},
 		onclickTimeStatsInfo: function(e) {
 			UI_TIMESTATSINFO.doOpen();
+		},
+		
+		onchangeNumSimThread: function() {
+			if (!this.numSimThread || this.numSimThread < 1) this.numSimThread = 1;
+			if (this.numSimThread > navigator.hardwareConcurrency*2) this.numSimThread = navigator.hardwareConcurrency*2;
 		},
 		
 		_includeError(error) {
@@ -2526,6 +2542,7 @@ var UI_OTHER = Vue.createApp({
 document.body.onbeforeunload = function() {
 	if (UI_MAIN.canSave) {
 		localStorage.sim2 = JSON.stringify(CONVERT.uiToSave(UI_MAIN));
+		localStorage.sim2_g = JSON.stringify(CONVERT.uiToSaveGlobal(UI_MAIN));
 	}
 }
 

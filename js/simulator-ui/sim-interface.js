@@ -1,6 +1,6 @@
 (() => {
 	
-var CONST = window.COMMON.getConst({
+var CONST = self.COMMON.getConst({
 	shipTypeIdToHull: { 1:'DE',2:'DD',3:'CL',4:'CLT',5:'CA',6:'CAV',7:'CVL',8:'FBB',9:'BB',10:'BBV',11:'CV',13:'SS',14:'SSV',15:'AT',16:'AV',17:'LHA',18:'CVB',19:'AR',20:'AS',21:'CT',22:'AO' },
 
 	numSimDefault: 1000,
@@ -40,6 +40,7 @@ var CONST = window.COMMON.getConst({
 		'warn_tp_formula_605': { txt: '' },
 		'warn_force_engagement': { txt: '' },
 		'warn_time_stats': { txt: '' },
+		'warn_carryover_multithread': { txt: '' },
 	},
 	
 	keysSmoke: ['smokeModShellAccF','smokeModShellAccFRadar','smokeModShellAccE','smokeModShellAccERadar','smokeModASWAccF','smokeModASWAccE','smokeModTorpAccF','smokeModTorpAccE','smokeModAirAccF','smokeModAirAccE'],
@@ -58,6 +59,11 @@ var SIM = {
 	
 	cancelRun: false,
 	simResultPrev: null,
+	
+	_poolWorker: [],
+	_getWorker: function() {
+		return this._poolWorker.length ? this._poolWorker.pop() : new Worker('./worker-sim-runStats.js');
+	},
 
 	_addError: function(key,args) {
 		let txt = CONST.errorText[key].txt;
@@ -197,11 +203,11 @@ var SIM = {
 		for (let fleet of FLEETS1) {
 			if (!fleet) continue;
 			for (let ship of fleet.ships) {
-				let repairTime = window.getRepairTime(ship);
-				let bucketPercent = ship._dataOrig.bucketPercent ?? window.BUCKETPERCENT, bucketTime = ship._dataOrig.bucketTime ?? window.BUCKETTIME;
+				let repairTime = self.getRepairTime(ship);
+				let bucketPercent = ship._dataOrig.bucketPercent ?? self.BUCKETPERCENT, bucketTime = ship._dataOrig.bucketTime ?? self.BUCKETTIME;
 				let useBucket = (ship.HP/ship.maxHP <= bucketPercent || repairTime > bucketTime) && repairTime >= (dataInput.bucketTimeIgnore || 0) && !ship._dataOrig.bucketNoCount;
-				if (!window.CARRYOVERHP || useBucket) {
-					let cost = window.getRepairCost(ship);
+				if (!self.CARRYOVERHP || useBucket) {
+					let cost = self.getRepairCost(ship);
 					this._results.totalFuelR += cost[0];
 					this._results.totalSteelR += cost[1];
 				}
@@ -431,7 +437,7 @@ var SIM = {
 				stats.RNG = sdata.RNG;
 				stats.SPD = sdata.SPD;
 				stats.SLOTS = sdata.SLOTS.slice();
-				ShipType = window[sdata.type];
+				ShipType = self[sdata.type];
 			}
 			if (shipInput.stats) {
 				for (let stat in stats) {
@@ -439,8 +445,8 @@ var SIM = {
 				}
 				if (shipInput.stats.type) {
 					let overrideType = (typeof shipInput.stats.type === 'number')? CONST.shipTypeIdToHull[shipInput.stats.type] : shipInput.stats.type;
-					if (window[overrideType]) {
-						ShipType = window[overrideType];
+					if (self[overrideType]) {
+						ShipType = self[overrideType];
 					} else {
 						this._addError('bad_ship_type',[shipInput.stats.type]);
 						continue;
@@ -583,10 +589,10 @@ var SIM = {
 					this._addWarning('warn_bad_mechanic',[key]);
 				}
 			}
-			if (dataInput.mechanics.enable_echelon != null) window.toggleEchelon(dataInput.mechanics.enable_echelon);
-			if (dataInput.mechanics.enable_DDCI != null) window.toggleDDCIBuff(dataInput.mechanics.enable_DDCI);
-			if (dataInput.mechanics.enable_ASWPlaneAir != null) window.toggleASWPlaneAir(dataInput.mechanics.enable_ASWPlaneAir);
-			if (dataInput.mechanics.enable_AACIRework != null) window.toggleAACIRework(dataInput.mechanics.enable_AACIRework);
+			if (dataInput.mechanics.enable_echelon != null) self.toggleEchelon(dataInput.mechanics.enable_echelon);
+			if (dataInput.mechanics.enable_DDCI != null) self.toggleDDCIBuff(dataInput.mechanics.enable_DDCI);
+			if (dataInput.mechanics.enable_ASWPlaneAir != null) self.toggleASWPlaneAir(dataInput.mechanics.enable_ASWPlaneAir);
+			if (dataInput.mechanics.enable_AACIRework != null) self.toggleAACIRework(dataInput.mechanics.enable_AACIRework);
 		}
 		
 		if (dataInput.consts) {
@@ -702,11 +708,11 @@ var SIM = {
 			}
 		}
 		
-		window.DORETREAT = !dataInput.continueOnTaiha;
-		window.CARRYOVERHP = !!dataInput.carryOverHP;
-		window.CARRYOVERMORALE = !!dataInput.carryOverMorale;
-		if (dataInput.bucketHPPercent != null) window.BUCKETPERCENT = dataInput.bucketHPPercent/100;
-		if (dataInput.bucketTime != null) window.BUCKETTIME = dataInput.bucketTime*3600;
+		self.DORETREAT = !dataInput.continueOnTaiha;
+		self.CARRYOVERHP = !!dataInput.carryOverHP;
+		self.CARRYOVERMORALE = !!dataInput.carryOverMorale;
+		if (dataInput.bucketHPPercent != null) self.BUCKETPERCENT = dataInput.bucketHPPercent/100;
+		if (dataInput.bucketTime != null) self.BUCKETTIME = dataInput.bucketTime*3600;
 		
 		if (dataInput.didSpecial) MECHANICS.specialAttacks = false;
 		
@@ -790,6 +796,10 @@ var SIM = {
 		
 		if (dataInput.includeTimeStats) {
 			this._addWarning('warn_time_stats');
+		}
+		
+		if (dataInput.numSimThread >= 2 && (dataInput.carryOverHP || dataInput.carryOverMorale)) {
+			this._addWarning('warn_carryover_multithread');
 		}
 	},
 	
@@ -960,7 +970,7 @@ var SIM = {
 			}
 			
 			if (isBossNode) {
-				window.underwaySupply(fleetF);
+				self.underwaySupply(fleetF);
 			}
 			
 			if (node.useAnchorageRepair) {
@@ -1069,15 +1079,15 @@ var SIM = {
 			this._results.replay = dataReplay;
 			this._updateResultsTotal(dataInput);
 		
-			if (window.CARRYOVERHP || window.CARRYOVERMORALE) {
+			if (self.CARRYOVERHP || self.CARRYOVERMORALE) {
 				for (let fleet of FLEETS1) {
 					if (!fleet) continue;
 					fleet.reset(true);
 					for (let ship of fleet.ships) {
-						let bucketPercent = ship._dataOrig.bucketPercent ?? window.BUCKETPERCENT, bucketTime = ship._dataOrig.bucketTime ?? window.BUCKETTIME;
-						let notHP = window.CARRYOVERHP && ship.HP/ship.maxHP > bucketPercent && window.getRepairTime(ship) <= bucketTime;
-						ship.reset(notHP, window.CARRYOVERMORALE);
-						if (window.CARRYOVERMORALE) ship.morale = Math.max(49, ship.morale - 15);
+						let bucketPercent = ship._dataOrig.bucketPercent ?? self.BUCKETPERCENT, bucketTime = ship._dataOrig.bucketTime ?? self.BUCKETTIME;
+						let notHP = self.CARRYOVERHP && ship.HP/ship.maxHP > bucketPercent && self.getRepairTime(ship) <= bucketTime;
+						ship.reset(notHP, self.CARRYOVERMORALE);
+						if (self.CARRYOVERMORALE) ship.morale = Math.max(49, ship.morale - 15);
 					}
 				}
 			} else {
@@ -1106,13 +1116,20 @@ var SIM = {
 		return this._getSimLBAS(lbasInput);
 	},
 	
+	_isIncludeAPI: function(dataInput) {
+		return !!dataInput.includeTimeStats;
+	},
+	
 	runStats: function(dataInput,callback) {
 		console.log(dataInput)
-		let includeAPI = dataInput.includeTimeStats;
-		window.C = includeAPI ? 2: false;
+		let includeAPI = this._isIncludeAPI(dataInput);
+		self.C = includeAPI ? 2: false;
+		
+		if (dataInput.numSimThread > navigator.hardwareConcurrency*2) dataInput.numSimThread = navigator.hardwareConcurrency*2;
 		
 		let n = 0;
 		this._inputPrev.numSims = dataInput.numSims;
+		this._inputPrev.numSimThread = dataInput.numSimThread;
 		let doReset = !this._inputEquivalent(dataInput,this._inputPrev);
 		if (doReset) {
 			this._resetResults(dataInput.nodes.length);
@@ -1135,6 +1152,83 @@ var SIM = {
 		let dataReplay = includeAPI ? CONVERT.uiToReplay(COMMON.UI_MAIN) : null;
 		this.cancelRun = false;
 		let timeStart = Date.now();
+		
+		if (dataInput.numSimThread >= 2) {
+			let numWorkers = dataInput.numSimThread;
+			let numSimLeft = numSim, numWorkersLeft = numWorkers;
+			for (let i=0; i<numWorkers; i++) {
+				let numSimW = Math.round(numSimLeft/(numWorkers-i));
+				if (numSimW <= 0) { numWorkersLeft--; continue; }
+				numSimLeft -= numSimW;
+				let worker = this._getWorker();
+				worker.onmessage = function(e) {
+					switch (e.data.type) {
+						case 'progress':
+							n += e.data.numDone;
+							if (e.data.result) {
+								this._combineResultsWorker(e.data.result,this._results);
+								this._poolWorker.push(worker);
+								if (--numWorkersLeft <= 0) {
+									//this._checkWarningsPostRun unused/unimplemented
+									callback({ progress: n, progressTotal: numSim, result: this._results, warnings: this._warnings.slice() });
+									let timeTotal = Date.now() - timeStart;
+									console.log('time: ' + (timeTotal/1000) + ' sec');
+									this.cancelRun = false;
+									while (this._poolWorker.length > navigator.hardwareConcurrency) {
+										(this._poolWorker.pop()).terminate();
+									}
+								}
+							} else {
+								callback({ progress: n, progressTotal: numSim });
+								if (this.cancelRun) {
+									worker.postMessage({ type: 'cancel' });
+								}
+							}
+							break;
+					}
+				}.bind(this);
+				worker.postMessage({ type: 'init', numSim: numSimW, dataInput: dataInput, dataReplay: dataReplay });
+			}
+		} else {
+			let runStep = function() {
+				let numStep = Math.min(CONST.numSimStep,numSim-n);
+				for (let i=0; i<numStep; i++) {
+					this._doSimSortie(dataInput,dataReplay);
+				}
+				n += numStep;
+				if (n >= numSim || this.cancelRun) {
+					this._checkWarningsPostRun(dataInput);
+					delete this._results.replay;
+					callback({ progress: n, progressTotal: numSim, result: this._results, warnings: this._warnings.slice() });
+					let timeTotal = Date.now() - timeStart;
+					console.log('time: ' + (timeTotal/1000) + ' sec');
+					this.cancelRun = false;
+				} else {
+					callback({ progress: n, progressTotal: numSim });
+					setTimeout(runStep.bind(this),1);
+				}
+			}
+			setTimeout(runStep.bind(this),1);
+		}
+	},
+	_combineResultsWorker: function(resultsFrom,resultsTo) {
+		for (let key in resultsFrom) {
+			if (typeof resultsFrom[key] === 'object') {
+				if (resultsTo[key] == null) resultsTo[key] = Array.isArray(resultsFrom[key]) ? [] : {};
+				this._combineResultsWorker(resultsFrom[key],resultsTo[key]);
+			} else {
+				if (resultsTo[key] == null) resultsTo[key] = 0;
+				resultsTo[key] += resultsFrom[key];
+			}
+		}
+	},
+	runStatsWorker: function(workerS,dataInput,dataReplay,numSim) {
+		self.C = this._isIncludeAPI(dataInput) ? 2: false;
+		this._resetResults(dataInput.nodes.length);
+		this._load(dataInput);
+		this._inputPrev = dataInput;
+		this.cancelRun = false;
+		let n = 0;
 		let runStep = function() {
 			let numStep = Math.min(CONST.numSimStep,numSim-n);
 			for (let i=0; i<numStep; i++) {
@@ -1142,24 +1236,19 @@ var SIM = {
 			}
 			n += numStep;
 			if (n >= numSim || this.cancelRun) {
-				this._checkWarningsPostRun(dataInput);
-				delete this._results.replay;
-				callback({ progress: n, progressTotal: numSim, result: this._results, warnings: this._warnings.slice() });
-				let timeTotal = Date.now() - timeStart;
-				console.log('time: ' + (timeTotal/1000) + ' sec');
-				this.cancelRun = false;
+				workerS.postMessage({ type: 'progress', numDone: numStep, result: this._results });
 			} else {
-				callback({ progress: n, progressTotal: numSim });
-				setTimeout(runStep.bind(this),1);
+				workerS.postMessage({ type: 'progress', numDone: numStep });
+				setTimeout(runStep,1);
 			}
-		}
-		setTimeout(runStep.bind(this),1);
+		}.bind(this);
+		runStep();
 	},
 	
 	runReplay: function(dataInput,dataReplay,noLog) {
 		dataInput.includeTimeStats = false;
 		if (!noLog) console.log(dataInput);
-		window.C = noLog ? 2 : 1;
+		self.C = noLog ? 2 : 1;
 		
 		this._load(dataInput);
 		if (this._errors.length) {
@@ -1174,6 +1263,6 @@ var SIM = {
 	},
 };
 
-window.SIM = SIM;
+self.SIM = SIM;
 	
 })()
