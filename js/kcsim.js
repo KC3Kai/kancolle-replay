@@ -4139,7 +4139,7 @@ function createDefaultShip(mid,overrideStats) {
 	} else {
 		data = dataOrig;
 	}
-	var ShipType = window[data.type];
+	var ShipType = self[data.type];
 	var ship = new ShipType(mid,data.name,(isPlayable(mid))?0:1,(isPlayable(mid))?99:1,data.HP,data.FP,data.TP,data.AA,data.AR,data.EV,data.ASW,data.LOS,data.LUK,data.RNG,data.SLOTS);
 	if (ship.isSub) ship.LVL = 50;
 	if (data.EQUIPS) ship.loadEquips(data.EQUIPS,[0,0,0,0],[0,0,0,0],true);
@@ -4957,7 +4957,7 @@ function chLoadFriendFleet(friendData) {
 	let simShips = [];
 	for (let ship of friendData.ships) {
 		let sdata = SHIPDATA[ship.mid];
-		let ShipType = window[sdata.type];
+		let ShipType = self[sdata.type];
 		let ev = sdata.EVbase + Math.floor((sdata.EV - sdata.EVbase)*ship.LVL/99);
 		let asw = sdata.ASWbase + Math.floor((sdata.ASW - sdata.ASWbase)*ship.LVL/99);
 		let los = sdata.LOSbase + Math.floor((sdata.LOS - sdata.LOSbase)*ship.LVL/99);
