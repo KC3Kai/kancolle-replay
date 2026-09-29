@@ -2,7 +2,7 @@
 	"change_log": [
 		{
 			"date": "2026-09-22",
-			"txt": "Simulation Multithreading settings"
+			"txt": "シミュレーションのマルチスレッド対応"
 		},
 		{
 			"date": "2026-07-30",
@@ -356,10 +356,10 @@
 	"simulate_n_times": "(Simulate {0} times)",
 	"simulate_n_times_and_show_stats": "シミュレート{inp_num}回の統計を表示",
 	"include_time_statistics": "演出時間を計算する",
-	"use_multithreading": "Use Multithreading",
-	"n_threads": "{inp_num} threads",
-	"use_multithreading_desc1": "Multithreading may increase simulation speed in exchange for a heavier load on the CPU.",
-	"use_multithreading_desc2": "The optimal number of threads depends on your CPU and what you are simulating; higher numbers may not always be faster, so please adjust accordingly. Recommended limit for your CPU (auto-detected): {0}",
+	"use_multithreading": "マルチスレッドを使用",
+	"n_threads": "{inp_num} スレッド",
+	"use_multithreading_desc1": "マルチスレッドを使用すると、複数のシミュレーションを並列実行することでシミュレーション速度が向上しますが、CPUへの負荷が増加します。",
+	"use_multithreading_desc2": "最適なスレッド数は、お使いのCPUやシミュレーションの内容によって異なります。スレッド数を増やしても必ずしも加速するとは限らないため、適宜調整してください。お使いのCPUに推奨されるスレッド数の上限（自動検出）：{0}",
 	"go": "Go",
 	"stop": "Stop",
 	"cancel": "Cancel",
@@ -1002,7 +1002,7 @@
 		"warn_tp_formula_605": "注意: 2025春E-5の新TP計算式は暫定的で、更新される可能性があります。",
 		"warn_force_engagement": "メモ: {0}番目のNodeの交戦形態は固定されています",
 		"warn_time_stats": "注意：演出時間を計算すると、結果の出力が大きく遅れる可能性があります。",
-		"warn_carryover_multithread": "Warning: When using Multithreading, since \"Carry over\" settings start at initial values separately for each thread, results may be skewed if the number of threads is high and/or the number of simulations is low."
+		"warn_carryover_multithread": "注意：マルチスレッドを使用する場合、HP/condの持ち越しは各スレッドでそれぞれの設定初期値から開始されます。そのため、スレッド数が多い場合やシミュレーション回数が少ない場合、結果に偏りが生じる可能性があります。"
 	},
 	
 	"ui_search": "検索",
