@@ -2463,7 +2463,7 @@ Equip.prototype.setImprovement = function(level) {
 		this.improves.AAself = mod*Math.sqrt(level);
 	}
 	
-	if (this.type == SECGUN) {
+	if (this.type == SECGUN || this.type == SECGUNL) {
 		if ([12,234,247,463,467].includes(this.mid)) {
 			this.improves.Pshell = .3*level;
 			this.improves.Pnb = .3*level;
