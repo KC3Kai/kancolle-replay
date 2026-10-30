@@ -6784,6 +6784,17 @@ var EQDATA = {
 		AA: 4,
 		EV: 2,
 	},
+	589: {
+		name: 'XF6F-6',
+		nameJP: 'XF6F-6',
+		added: '2026-10-30',
+		type: FIGHTER,
+		FP: 1,
+		AA: 12,
+		ACC: 1,
+		EV: 3,
+		LOS: 1,
+	},
 	1501: {
 		name: '5inch Single Gun Mount',
 		nameJP: '5inch単装砲',
@@ -8718,6 +8729,7 @@ var LBASDATA = {
 	586: { distance: 2, cost: 3 },
 	587: { distance: 4, cost: 5 },
 	588: { distance: 4, cost: 5 },
+	589: { distance: 4, cost: 8 },
 };
 
 
