@@ -3163,6 +3163,29 @@
 		]
 	},
 	{
+		"ids": [305],
+		"bonuses": [
+			{
+				"bonus": { "kaih": 1 },
+				"shipBase": [521,522,534],
+				"level": 1
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipBase": [521,522,534],
+				"level": 3
+			},
+			{
+				"bonus": { "tais": 1 },
+				"level": 2
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"level": 4
+			}
+		]
+	},
+	{
 		"ids": [307],
 		"bonuses": [
 			{
@@ -11731,6 +11754,11 @@
 			{
 				"bonus": { "houg": 1 },
 				"level": 6
+			},
+			{
+				"bonus": { "houg": 1 },
+				"shipCountry": ["FR"],
+				"level": 4
 			}
 		]
 	},
@@ -11757,6 +11785,26 @@
 				"bonus": { "raig": 1, "houm": 1 },
 				"shipClass": [128,129,138,139],
 				"requiresSR": 1
+			},
+			{
+				"bonus": { "raig": 1 },
+				"shipCountry": ["FR"],
+				"level": 7
+			},
+			{
+				"bonus": { "kaih": 1 },
+				"shipCountry": ["FR"],
+				"level": 8
+			},
+			{
+				"bonus": { "raig": 1 },
+				"shipCountry": ["FR"],
+				"level": 9
+			},
+			{
+				"bonus": { "houm": 1 },
+				"shipCountry": ["FR"],
+				"level": 10
 			}
 		]
 	},
